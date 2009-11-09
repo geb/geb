@@ -116,6 +116,8 @@ class GebSpecification extends Specification {
 		get(otherServer.baseUrl)
 		then:
 		response.contentAsString == "yes"
+		cleanup:
+		otherServer.stop()
 	}
 
 	def "redirect handling"() {
