@@ -20,7 +20,7 @@ import org.codehaus.geb.test.TestHttpServer
 import spock.lang.Shared
 import spock.lang.Specification
 
-class BaseGebSpec extends Specification {
+abstract class BaseGebSpec extends Specification {
 
 	@Shared server
 	@Shared geb
