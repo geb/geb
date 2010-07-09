@@ -145,4 +145,18 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
+  
+  <distributionManagement>
+    <repository>
+      <id>codehaus.org</id>
+      <name>Geb Codehaus Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/geb/</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>Geb Codehaus Snapshot Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/geb/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
 </project>
