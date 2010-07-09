@@ -23,6 +23,9 @@ import org.codehaus.geb.url.UrlUtils
 import com.gargoylesoftware.htmlunit.html.HtmlForm
 import com.gargoylesoftware.htmlunit.*
 
+// This is needed to avoid clashing with JDK CookieManager
+import com.gargoylesoftware.htmlunit.CookieManager
+
 import org.apache.commons.httpclient.Cookie
 
 /**
