@@ -10,6 +10,12 @@
   <packaging>jar</packaging>
   <name>geb</name>
 
+  <scm>
+    <connection>scm:git:git@github.com:alkemist/geb.git</connection>
+    <url>scm:git:git@github.com:alkemist/geb.git</url>
+    <developerConnection>scm:git:git@github.com:alkemist/geb.git</developerConnection>
+  </scm>
+    
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
