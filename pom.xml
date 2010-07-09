@@ -12,34 +12,66 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.groovy.maven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <version>1.0</version>
-        <configuration>
-          <providerSelection>1.6</providerSelection>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.spockframework</groupId>
-        <artifactId>spock-maven</artifactId>
-        <version>0.3-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>find-specks</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <plugin>
+      <groupId>org.codehaus.gmaven</groupId>
+      <artifactId>gmaven-plugin</artifactId>
+      <version>1.2</version>
+      <configuration>
+        <providerSelection>1.6</providerSelection>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>compile</goal>
+            <goal>testCompile</goal>
+          </goals>
+        </execution>
+      </executions>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.gmaven.runtime</groupId>
+          <artifactId>gmaven-runtime-1.6</artifactId>
+          <version>1.2</version>
+          <exclusions>
+            <exclusion>
+              <groupId>org.codehaus.groovy</groupId>
+              <artifactId>groovy-all</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <version>1.6.7</version>
+          <exclusions> <!-- for some reason, the following dependencies aren't marked as optional in groovy-all POM -->
+            <exclusion>
+              <groupId>junit</groupId>
+              <artifactId>junit</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant-launcher</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+      </dependencies>
+    </plugin>
+        <plugin>
+          <groupId>org.spockframework</groupId>
+          <artifactId>spock-maven</artifactId>
+          <version>0.4-groovy-1.6</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>find-specs</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
     </plugins>
   </build>
 
@@ -51,8 +83,8 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy</artifactId>
-      <version>1.6.5</version>
+      <artifactId>groovy-all</artifactId>
+      <version>1.6.7</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -64,7 +96,13 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4-groovy-1.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -77,6 +115,13 @@
         <enabled>false</enabled>
       </releases>
     </repository>
+    <repository>
+      <id>spock-releases</id>
+      <url>http://m2repo.spockframework.org/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -86,6 +131,13 @@
       <releases>
         <enabled>false</enabled>
       </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spock-releases</id>
+      <url>http://m2repo.spockframework.org/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </pluginRepository>
   </pluginRepositories>
 </project>
