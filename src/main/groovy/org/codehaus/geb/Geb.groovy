@@ -28,6 +28,8 @@ import com.gargoylesoftware.htmlunit.CookieManager
 
 import org.apache.commons.httpclient.Cookie
 
+import be.roam.hue.doj.Doj
+
 /**
  * A Groovier wrapper for HTMLUnit's WebClient that provides an API
  * suited for a series of sequenced requests.
@@ -143,6 +145,17 @@ class Geb {
 		currentWindow?.enclosedPage
 	}
 
+	/**
+	 * Finds elements on the current page, using Doj.
+	 * 
+	 * @param selector the Doj selector to match for
+	 * @return a Doj instance of the matched elements
+	 * @see Doj
+	 */
+	Doj find(selector) {
+		Doj.on(page).get(selector.toString())
+	}
+	
 	/**
 	 * @return the response associated with the current page
 	 * @see Page#getWebResponse()

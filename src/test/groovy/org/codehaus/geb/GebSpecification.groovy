@@ -15,16 +15,11 @@
 
 package org.codehaus.geb
 
+import spock.lang.Shared
 import org.codehaus.geb.test.TestHttpServer
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm
 
-import spock.lang.Shared
-import spock.lang.Specification
-
-class GebSpecification extends Specification {
-	@Shared server
-	@Shared geb
+class GebSpecification extends BaseGebSpec {
 
 	@Shared simpleRedirect = { req, res ->
 		if (req.requestURI == "/first") {
@@ -32,24 +27,6 @@ class GebSpecification extends Specification {
 		} else {
 			res.outputStream << "yes"
 		}
-	}
-
-	def setupSpec() {
-		server = new TestHttpServer()
-		server.start()
-		geb = new Geb(server.baseUrl)
-	}
-
-	def methodMissing(String name, args) {
-		geb."$name"(*args)
-	}
-
-	def propertyMissing(String name) {
-		geb."$name"
-	}
-
-	def propertyMissing(String name, value) {
-		geb."$name" = value
 	}
 
 	def "simple get"() {
@@ -348,7 +325,4 @@ class GebSpecification extends Specification {
 		getMeta('doesntexist') == null
 	}
 
-	def cleanupSpec() {
-		server.stop()
-	}
 }
