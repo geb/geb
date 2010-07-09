@@ -20,7 +20,6 @@ import org.codehaus.geb.request.WebRequestSettingsConfigurer
 import org.codehaus.geb.form.FormWrapper
 import org.codehaus.geb.url.UrlUtils
 
-import com.gargoylesoftware.htmlunit.html.ClickableElement
 import com.gargoylesoftware.htmlunit.html.HtmlForm
 import com.gargoylesoftware.htmlunit.*
 
@@ -396,11 +395,7 @@ class Geb {
 			throw new IllegalArgumentException("No such element for id or anchorIdentifier text [${anchorIdentifier}]")
 		}
 
-		if (anchor instanceof ClickableElement) {
-			anchor.click()
-		} else {
-			throw new IllegalArgumentException("Found element for id or anchorIdentifier text [${anchorIdentifier}] but it is not clickable: ${anchor}")
-		}
+		anchor.click()
 	}
 
 	/**

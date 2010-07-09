@@ -17,7 +17,7 @@
 package org.codehaus.geb.request
 
 import com.gargoylesoftware.htmlunit.WebRequestSettings
-import org.apache.commons.httpclient.NameValuePair
+import com.gargoylesoftware.htmlunit.util.NameValuePair
 
 class WebRequestSettingsConfigurer {
 	final WebRequestSettings settings

@@ -50,14 +50,10 @@ class FormWrapper {
 		}
 
 		if (!field) {
-			field = form.getInputsByValue(idOrNameOrValue)?.find { it instanceof ClickableElement }
+			field = form.getInputsByValue(idOrNameOrValue)?.first()
 		}
 
-		if (field && (field instanceof ClickableElement)) {
-			field.click()
-		} else {
-			throw new IllegalArgumentException("Unable to 'click' element named '$idOrNameOrValue', clickable element not found")
-		}
+		field.click()
 	}
 
 	void setValue(String name, value) {
