@@ -19,7 +19,7 @@ import spock.lang.Shared
 import org.codehaus.geb.test.TestHttpServer
 import com.gargoylesoftware.htmlunit.html.HtmlForm
 
-class GebSpecification extends BaseGebSpec {
+class CoreGebSpec extends BaseGebSpec {
 
 	@Shared simpleRedirect = { req, res ->
 		if (req.requestURI == "/first") {
