@@ -18,7 +18,7 @@ package org.codehaus.geb.url
 
 import spock.lang.Specification
 
-class UrlUtilsSpecification extends Specification {
+class UrlUtilsSpec extends Specification {
 	def relativize() {
 		expect:
 		UrlUtils.relativize(input) == output
