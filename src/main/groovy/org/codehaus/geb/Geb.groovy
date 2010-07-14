@@ -146,6 +146,16 @@ class Geb {
 	}
 
 	/**
+	 * Returns a doj for the current page.
+	 * 
+	 * @return a Doj instance matching the entire page.
+	 * @see Doj
+	 */
+	Doj getDoj() {
+		Doj.on(page)
+	}
+
+	/**
 	 * Finds elements on the current page, using Doj.
 	 * 
 	 * @param selector the Doj selector to match for
@@ -153,7 +163,7 @@ class Geb {
 	 * @see Doj
 	 */
 	Doj find(selector) {
-		Doj.on(page).get(selector.toString())
+		doj.get(selector.toString())
 	}
 	
 	/**
