@@ -1,14 +1,32 @@
 package geb
 
+import geb.error.DriveException
+
 class Driver {
 
 	private Page page
 	private Geb geb
 	
+	Driver() {
+		this(new Geb(""))
+	}
+	
+	Driver(Class pageClass) {
+		this(pageClass.url, pageClass)
+	}
+	
+	Driver(String baseUrl, Class pageClass = null) {
+		this(new Geb(baseUrl ?: ""), pageClass)
+		if (baseUrl) {
+			get "/"
+		}
+	}
+	
 	Driver(Geb geb, Class pageClass = null) {
 		this.geb = geb
+		page(pageClass ?: Page)
 		if (pageClass) {
-			page(pageClass)
+			go(pageClass.url)
 		}
 	}
 	
@@ -39,6 +57,18 @@ class Driver {
 		geb
 	}
 	
+	def go(String url) {
+		to([:], url)
+	}
+	
+	def go(Map params, String url) {
+		geb.get(url ?: "/") {
+			params.each { k,v ->
+				delegate."$k" = v
+			}
+		}
+	}
+	
 	def to(Class pageClass, Object[] args) {
 		to([:], pageClass, *args)
 	}
@@ -49,7 +79,7 @@ class Driver {
 
 	def to(Map params, Class pageClass, Object[] args) {
 		page(pageClass)
-		page.to(params, pageClass, *args)
+		page.to(params, *args)
 	}
 	
 	protected ___createPage(Class pageClass) {
@@ -57,5 +87,38 @@ class Driver {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
 		pageClass.newInstance(driver: this)
+	}
+	
+	static drive(Closure script) {
+		doDrive(new Driver(), script)
+	}
+	
+	static drive(Class pageClass, Closure script) {
+		doDrive(new Driver(pageClass), script)
+	}
+	
+	static drive(String baseUrl, Closure script) {
+		doDrive(new Driver(baseUrl), script)
+	}
+	
+	static drive(String baseUrl, Class pageClass, Closure script) {
+		doDrive(new Driver(baseUrl, pageClass), script)
+	}
+	
+	static drive(Geb geb, Closure script) {
+		doDrive(new Driver(geb), script)
+	}
+	
+	static drive(Geb geb, Class pageClass, Closure script) {
+		doDrive(new Driver(geb, pageClass), script)
+	}
+	
+	private static doDrive(Driver driver, Closure script) {
+		script.delegate = driver
+		try {
+			script()
+		} catch (Throwable e) {
+			throw new DriveException(driver, e)
+		}
 	}
 }

@@ -20,7 +20,7 @@ import geb.page.PageContentTemplateBuilder
 class Page {
 
 	static at = null
-	static url = "/"
+	static url = ""
 	
 	Driver driver
 	
@@ -90,21 +90,12 @@ class Page {
 		contentTemplates.containsKey(name)
 	}
 	
-	def to(Class pageClass, Object[] args) {
-		to(null, pageClass, *args)
-	}
-
-	def to(Map params, Class pageClass) {
-		to(params, pageClass, *[])
-	}
-
-	def to(Map params, Class pageClass, Object[] args) {
-		driver.page(pageClass)
-		geb.get(getPageUrl(convertToPath(args))) {
-			params.each { k,v ->
-				delegate."$k" = v
-			}
+	def to(Map params, Object[] args) {
+		def path = convertToPath(args)
+		if (path == null) {
+			path = ""
 		}
+		driver.go(params, getPageUrl(path))
 	}
 	
 	def getPageUrl() {
@@ -117,7 +108,10 @@ class Page {
 	}
 	
 	def convertToPath(Object[] args) {
-		args ? args*.toString().join('/') : null
+		args ? args*.toString().join('/') : ""
 	}	
 	
+	def getPageTitle() {
+		geb.page.titleText
+	}
 }

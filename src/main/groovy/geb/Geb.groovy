@@ -481,10 +481,10 @@ class Geb {
 	 * @return A URL of base + urlPath
 	 */
 	protected URL makeRequestURLRelativeToBase(String urlPath) {
-		if (this.base) {
+		if (base) {
 			new URL(new URL(base), urlPath)
 		} else {
-			throw new IllegalArgumentException("Cannot makeRequestURLRelativeToBase for $urlPath as 'base' is not set".toString())
+			new URL(urlPath)
 		}
 	}
 

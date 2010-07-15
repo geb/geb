@@ -56,7 +56,7 @@ abstract class GebSpec extends Specification {
 	}
 	
 	def getBaseUrl() {
-		null
+		""
 	}
 		
 	def getReportDir() {

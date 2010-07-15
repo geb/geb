@@ -24,10 +24,10 @@ class GoogleSearchModule extends Module {
 	
 	// content is defined using a DSL with a Jquery like finding API
 	static content = {
-		searchField { find("input").withName("q") }
+		field { find("input").withName("q") }
 		
 		// content can define which page is next when it is clicked
-		searchButton(toPage: GoogleResultsPage) { 
+		button(toPage: GoogleResultsPage) { 
 			// can use instance variables in content locators
 			find("input").withValue(buttonValue) 
 		}
@@ -36,7 +36,7 @@ class GoogleSearchModule extends Module {
 	// instance methods refer to content by name
 	def search(term) {
 		// Jquery like API for setting input values and clicking
-		searchField.value(term)
-		searchButton.click()
+		field.value(term)
+		button.click()
 	}
 }
