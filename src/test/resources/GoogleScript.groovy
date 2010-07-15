@@ -9,7 +9,7 @@ Driver.drive("http://google.com") {
 	find("input").withName("q").value("wikipedia")
 	find("input").withValue("Google Search").click()
 	assert pageTitle.endsWith("Google Search")
-	find("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
+	assert find("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
 }
 
 // With page objects
