@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb.form
+package geb.form
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException
 import com.gargoylesoftware.htmlunit.html.*

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb.test
+package geb.test
 
 import org.mortbay.jetty.Server
 import org.mortbay.jetty.servlet.Context

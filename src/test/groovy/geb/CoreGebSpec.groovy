@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb
+package geb
 
+import geb.test.*
 import spock.lang.Shared
-import org.codehaus.geb.test.TestHttpServer
+import geb.test.TestHttpServer
 import com.gargoylesoftware.htmlunit.html.HtmlForm
 
-class CoreGebSpec extends BaseGebSpec {
+class CoreGebSpec extends GebSpecWithServer {
 
 	@Shared simpleRedirect = { req, res ->
 		if (req.requestURI == "/first") {

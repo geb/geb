@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb.form
+package geb.url
 
-import com.gargoylesoftware.htmlunit.html.HtmlRadioButtonInput
-
-class RadioGroup {
-	final String fieldName
-	final List<HtmlRadioButtonInput> radioButtons
-
-	RadioGroup(String fieldName, List<HtmlRadioButtonInput> radioButtons) {
-		this.fieldName = fieldName
-		this.radioButtons = radioButtons
+class UrlUtils {
+	static boolean isAbsolutePath(urlPath) {
+		urlPath.startsWith('/')
 	}
 
-	void setChecked(String value) {
-		def radio = radioButtons.find { it.valueAttribute == value }
-		if (radio) {
-			radio.checked = true
+	static String relativize(String urlPath) {
+		if (urlPath.startsWith('/')) {
+			(urlPath.size() > 1) ? urlPath.substring(1) : ""
 		} else {
-			throw new IllegalArgumentException("No radio button with name '$fieldName' for value '$value' found")
+			urlPath
 		}
 	}
-
-	String getChecked() {
-		radioButtons.find { it.checked }?.valueAttribute
+		
+	static String forceTrailingSlash(String url) {
+		(url.endsWith('/')) ? url : "$url/"
 	}
 }

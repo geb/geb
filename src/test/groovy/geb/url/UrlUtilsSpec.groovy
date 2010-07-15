@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb.url
+package geb.url
 
 import spock.lang.Specification
 

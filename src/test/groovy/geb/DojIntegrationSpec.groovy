@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb
+package geb
 
+import geb.test.*
 import be.roam.hue.doj.Doj
 
-class DojIntegrationSpec extends BaseGebSpec {
+class DojIntegrationSpec extends GebSpecWithServer {
 
 	def "basic doj integration"() {
 		given:

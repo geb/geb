@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb.request
+package geb.request
 
 import com.gargoylesoftware.htmlunit.WebRequestSettings
 import com.gargoylesoftware.htmlunit.util.NameValuePair

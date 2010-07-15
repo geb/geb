@@ -13,36 +13,24 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb
+package geb.test
 
-import org.codehaus.geb.test.TestHttpServer
+import geb.*
+import spock.lang.*
 
-import spock.lang.Shared
-import spock.lang.Specification
-
-abstract class BaseGebSpec extends Specification {
+abstract class GebSpecWithServer extends GebSpec {
 
 	@Shared server
-	@Shared geb
 	
 	def setupSpec() {
 		server = new TestHttpServer()
 		server.start()
-		geb = new Geb(server.baseUrl)
 	}
-
-	def methodMissing(String name, args) {
-		geb."$name"(*args)
+	
+	def getBaseUrl() {
+		server.baseUrl
 	}
-
-	def propertyMissing(String name) {
-		geb."$name"
-	}
-
-	def propertyMissing(String name, value) {
-		geb."$name" = value
-	}
-
+	
 	def cleanupSpec() {
 		server.stop()
 	}

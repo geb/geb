@@ -2,7 +2,7 @@
 
 Geb is best explained by example…
 
-	import org.codehaus.geb.Geb
+	import geb.Geb
 	
 	new Geb("http://google.com").with {
 		get "/"
@@ -15,7 +15,7 @@ Geb is best explained by example…
 	
 Or…
 
-	import org.codehaus.geb.Geb
+	import geb.Geb
 	
 	new Geb("http://google.com").with {
 		get "/" {

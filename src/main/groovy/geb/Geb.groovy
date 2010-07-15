@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb
+package geb
 
-import org.codehaus.geb.request.WebRequestSettingsConfigurer
-import org.codehaus.geb.form.FormWrapper
-import org.codehaus.geb.url.UrlUtils
+import geb.request.WebRequestSettingsConfigurer
+import geb.form.FormWrapper
+import geb.url.UrlUtils
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm
+import com.gargoylesoftware.htmlunit.Page
 import com.gargoylesoftware.htmlunit.*
 
 // This is needed to avoid clashing with JDK CookieManager

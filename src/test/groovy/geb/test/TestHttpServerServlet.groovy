@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.geb.test
+package geb.test
 
 import javax.servlet.ServletException
 import javax.servlet.http.*
