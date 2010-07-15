@@ -16,6 +16,7 @@ package geb.example
 
 import geb.*
 import geb.test.*
+import geb.example.pages.*
 import spock.lang.*
 
 //@Ignore // ignored because it requires a network connection
@@ -68,85 +69,4 @@ class GoogleSpockSpec extends GebSpec {
 		resultLink(0).text() ==~ /.+Wikipedia, the free encyclopedia/
 	}
 
-}
-
-// Modules are content that is independent of a particular page
-class GoogleSearchModule extends Module {
-	
-	// Modules can be parameterised
-	def buttonValue
-	
-	// content is defined using a DSL with a Jquery like finding API
-	static content = {
-		searchField { find("input").withName("q") }
-		
-		// content can define which page is next when it is clicked
-		searchButton(toPage: GoogleResultsPage) { 
-			// can use instance variables in content locators
-			find("input").withValue(buttonValue) 
-		}
-	}
-	
-	// instance methods refer to content by name
-	def search(term) {
-		// Jquery like API for setting input values and clicking
-		searchField.value(term)
-		searchButton.click()
-	}
-}
-
-// Pages contain content and modules
-class GoogleHomePage extends Page {
-
-	// can define a URL for going straight to the page
-	static url = "http://google.com"
-
-	// can define a custom check to verify the page content matches expectations
-	static at = { page.titleText == "Google" }
-	
-	// can include parameterised modules
-	static content = {
-		search { module GoogleSearchModule, buttonValue: "Google Search" }
-	}
-}
-
-class GoogleResultsPage extends Page {
-	static url = "http://www.google.com/search"
-	static at = { page.titleText.endsWith("Google Search") }
-	
-	// Pages can define individual content and/or modules
-	static content = {
-		// Reuse the module, with different params
-		search { module GoogleSearchModule, buttonValue: "Search" }
-		
-		
-		results { find("li.g") }
-		// Content can be paramterised
-		result { results.get(it) }
-		// Content can be defined relative to other content
-		resultLink { result(it).get("a.l") }
-	}
-}
-
-class GoogleCodePage extends Page {
-	static at = { projectSummary.present }
-		
-	static content = {
-		projectSummary { find("a#project_summary_link") }
-		
-		// If content might not exist, it can be marked non required
-		// If content is required and it's not present when requested, an assertion error is thrown
-		signInLink(required: false) { topToolbarLink("Sign in") }
-		signOutLink(required: false) { topToolbarLink("Sign out") }
-		topToolbar { find("#gaia") }
-		topToolbarLink(required: false) { topToolbar.getByTag("u").withTextMatching(it).parent("a") }
-		
-		peopleTable { find("table.pmeta").get(2) }
-		projectOwner { peopleTable.getByTag("a").first() }
-	}
-}
-
-class SpockGoogleCodePage extends GoogleCodePage {
-	// Pages can subclass, inheriting all defined content and overriding where necessary 
-	static at = { projectSummary.text() == "the enterprise ready specification framework" }
 }
