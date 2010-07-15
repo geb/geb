@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>geb</groupId>
   <artifactId>geb</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <packaging>jar</packaging>
   <name>geb</name>
 
