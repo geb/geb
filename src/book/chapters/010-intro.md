@@ -63,4 +63,4 @@ The following example is the same, except that it utilises page objects.
     
 ## How it works
 
-Geb is an integration of [Groovy](http://groovy.codehaus.org/ "Groovy - Home"), [HTMLUnit](http://htmlunit.sourceforge.net/ "HtmlUnit - Welcome to HtmlUnit") (the underlying browser technology) and the [Hue/Doj](http://code.google.com/p/hue/ "hue - Project Hosting on Google Code") library (a [JQuery](http://jquery.com/ "jQuery: The Write Less, Do More, JavaScript Library") like API for traversing and manipulating pages in HTMLUnit). Typically, the only API you need to know and use is the API for [Doj](http://hue.googlecode.com/svn/api/1.1/be/roam/hue/doj/Doj.html "Doj (Hue 1.1 API)") objects which are the building blocks of pages.
+Geb is an integration of [Groovy][groovy], [HTMLUnit][htmlunit] (the underlying browser technology) and the [Hue/Doj][hue] library (a [JQuery][jquery] like API for traversing and manipulating pages in HTMLUnit). Typically, the only API you need to know and use is the API for [Doj][dojapi] objects which are the building blocks of pages.
