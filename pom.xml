@@ -87,6 +87,19 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.0</version>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.markdown2book</groupId>
+        <artifactId>markdown2book-maven-plugin</artifactId>
+        <version>LATEST</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     
     <extensions>

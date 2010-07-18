@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href="css/stylesheet.css" rel="stylesheet" type="text/css">
+  <title>The Book Of Geb - <%= chapter.title %></title>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="header">
+      <% if (prev) { %><span class="left">&#x25C0; <a href="<%= prev.filename %>"><%= prev.title %></a></span><% } %>
+      <span class="center"><a href="index.html">Table of Contents</a></span>
+      <% if (next) { %><span class="right"><a href="<%= next.filename %>"><%= next.title %></a> &#x25B6;</span><% } %>
+    </div>
+    <hr />
+    <div class="page_toc">
+      <%= chapter.toc %>
+    </div>
+    <hr />
+    <%= chapter.content %>
+    <hr />
+    <div id="footer">
+      <% if (prev) { %><span class="left">&#x25C0; <a href="<%= prev.filename %>"><%= prev.title %></a></span><% } %>
+      <span class="center"><a href="index.html">Table of Contents</a></span>
+      <% if (next) { %><span class="right"><a href="<%= next.filename %>"><%= next.title %></a> &#x25B6;</span><% } %>
+    </div>
+  </div>
+</body>
+</html>
