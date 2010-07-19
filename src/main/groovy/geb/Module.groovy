@@ -71,10 +71,7 @@ class Module extends PageContent {
 		def locator = getLocatorDefinition()
 		if (locator) {
 			def locatorClone = locator.clone()
-			locatorClone.find = { Object[] args -> 
-				containerBase.find(*args) 
-			}
-			
+			locatorClone.delegate = new ModuleLocatorDefinitionDelegate(module: this, base: containerBase)
 			def result = locatorClone()
 			if (result instanceof Doj || result instanceof PageContent) {
 				result
@@ -115,4 +112,17 @@ class Module extends PageContent {
 		contentTemplates.containsKey(name)
 	}
 	
+}
+
+class ModuleLocatorDefinitionDelegate {
+	def module
+	def base
+	
+	def propertyMissing(String name) {
+		module."$name"
+	}
+	
+	def find(selector) {
+		base.find(selector)
+	}
 }

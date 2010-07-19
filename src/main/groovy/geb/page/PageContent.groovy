@@ -16,6 +16,7 @@ package geb.page
 
 import geb.Page
 import geb.page.error.RequiredPageContentNotPresent
+import be.roam.hue.doj.Doj
 
 abstract class PageContent {
 
@@ -65,7 +66,14 @@ abstract class PageContent {
 	}
 	
 	def find(selector) {
-		base.find(selector.toString())
+		// Something is up here, we need a unified API
+		if (base instanceof Doj) {
+			base.get(selector.toString())
+		} else if (base instanceof PageContent || base instanceof Page) {
+			base.find(selector.toString())
+		} else {
+			throw new IllegalStateException("Can't handle base $base")
+		}
 	}
 	
 	boolean isPresent() {
