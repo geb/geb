@@ -61,7 +61,7 @@ class PageContentTemplate {
 
 	private create(Object[] args) {
 		def definitionResult = invokeDefinition(*args)
-		def content = wrapDefinitionResult(definitionResult)
+		def content = wrapDefinitionResult(definitionResult, *args)
 		if (required) {
 			content.require()
 		}
@@ -87,9 +87,9 @@ class PageContentTemplate {
 	}
 
 	private wrapDefinitionResult(definitionResult, Object[] args) {
-		if (definitionResult instanceof Doj) {
+		if (definitionResult instanceof Doj || definitionResult instanceof Component) {
 			new Component(template: this, container: definitionResult, args: args)
-		} else if (definitionResult instanceof PageContent) {
+		} else if (definitionResult instanceof Module) {
 			definitionResult
 		} else {
 			throw new InvalidPageContent("definition of content '${toString()}' did not return page content")
