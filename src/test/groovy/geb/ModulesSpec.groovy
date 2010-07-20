@@ -39,19 +39,33 @@ class ModulesSpec extends GebSpecWithServer {
 		divNoBase("a").p.text() == "a"
 		divWithBase("a").p.text() == "a"
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
+		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
 		divA.p.text() == "a"
 		divC.innerDiv.p.text() == "d"
+		divCWithRelativeInner.innerDiv.p.text() == "d"
 	}
 	
 }
 
 class ModulesSpecPage extends Page {
 	static content = {
+		// A module that doesn't define a locator, given one at construction
 		divNoBase { module ModulesSpecDivModuleNoLocator, find("div.$it") }
+		
+		// A module that defines a locator, given a param at construction
 		divWithBase { module ModulesSpecDivModuleWithLocator, className: it }
+		
+		// A module that defines a location, and uses a param given at construction in the locator
 		divWithBaseAndSpecificBaseAndParam { module ModulesSpecDivModuleWithLocator, find("div.c"), className: "d" }
+		
+		// A module that defines a location, and is contructed with no base or params
 		divA { module ModulesSpecSpecificDivModule }
+		
+		// A module that itself has a module
 		divC { module ModulesSpecDivModuleWithNestedDiv }
+		
+		// A module whose inner module is defined by the owner module's base
+		divCWithRelativeInner { module ModulesSpecDivModuleWithNestedDivRelativeToModuleBase }
 	}
 }
 
@@ -80,5 +94,12 @@ class ModulesSpecDivModuleWithNestedDiv extends Module {
 	static locator = { find("div.c") }
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, className: "d" }
+	}
+}
+
+class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
+	static locator = { find("div.c") }
+	static content = {
+		innerDiv { module ModulesSpecDivModuleWithLocator, base, className: "d" }
 	}
 }
