@@ -29,8 +29,6 @@ class PageContentTemplate {
 	
 	def container
 	def cache = [:]
-
-	private definitionDelegate
 	
 	String toString() {
 		"$name - $container"
