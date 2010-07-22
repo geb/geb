@@ -49,24 +49,4 @@ class GoogleSpockSpec extends GebSpec {
 		projectOwner.text() == 'pniederw'
 	}
 	
-	def "go straight to search results"() {
-		when:
-		// Go to pages with GET parameters
-		to GoogleResultsPage, q: "spock framework"
-		then:
-		at GoogleResultsPage
-		resultLink(0).text() == "spock - Project Hosting on Google Code"
-	}
-	
-	def "use the search module from the results page"() {
-		expect:
-		// Still at GoogleResultsPage because this spec is Stepwise
-		at GoogleResultsPage
-		when:
-		// Call the search module defined in the results page object
-		search.search "groovy programming language"
-		then:
-		resultLink(0).text() ==~ /.+Wikipedia, the free encyclopedia/
-	}
-
 }
