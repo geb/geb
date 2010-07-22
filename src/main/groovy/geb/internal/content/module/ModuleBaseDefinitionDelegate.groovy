@@ -38,6 +38,10 @@ class ModuleBaseDefinitionDelegate {
 		}
 	}
 	
+	Doj $() {
+		startingBase
+	}
+
 	Doj $(int index) {
 		startingBase.get(index)
 	}

@@ -68,21 +68,19 @@ abstract class TemplateDerivedPageContent implements PageContent {
 			_template.page.driver.page(pageClass)
 		}
 	}
-	
+
+	Doj $() {
+		navigator
+	}
+
 	Doj $(int index) {
 		navigator.get(index)
 	}
 
-	/**
-	 * @see get(String)
-	 */	
 	Doj $(String name) {
 		navigator.get(name)
 	}
 	
-	/**
-	 * @see get(String)
-	 */
 	Doj $(String selector, int index) {
 		navigator.get(selector, index)
 	}

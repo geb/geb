@@ -67,6 +67,10 @@ class Page implements Content {
 		_getContent(name)
 	}
 
+	Doj $() {
+		navigator
+	}
+	
 	Doj $(int index) {
 		navigator.get(index)
 	}
