@@ -12,18 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.page.error
+package geb.internal.content
 
-import geb.error.GebAssertionError
-import geb.page.PageContent
+class SimplePageContent extends TemplateDerivedPageContent {
 
-class RequiredPageContentNotPresent extends GebAssertionError {
-
-	final PageContent content
 	
-	RequiredPageContentNotPresent(PageContent content) {
-		super("The required page content '$content' is not present")
-		this.content = content
-	}
 
 }

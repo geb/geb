@@ -12,9 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.page.error
-
-import geb.error.GebException
+package geb.error
 
 class UndefinedPageContentException extends GebException {
 

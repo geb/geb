@@ -14,24 +14,36 @@
  */
 package geb
 
-import geb.page.error.UndefinedPageContentException
-import geb.page.PageContentTemplateBuilder
+import geb.error.UndefinedPageContentException
+import geb.internal.content.PageContentTemplateBuilder
+import geb.internal.content.Content
+import be.roam.hue.doj.Doj
 
-class Page {
+class Page implements Content {
 
 	static at = null
 	static url = ""
 	
 	Driver driver
 	
-	protected contentTemplates
+	@Delegate private Doj navigator
+	
+	protected _contentTemplates
 	
 	Page() {
-		contentTemplates = buildContentTemplates()
+		_contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
 	}
 	
-	protected buildContentTemplates() {
-		PageContentTemplateBuilder.build(this, 'content', this.class, Page)
+	Doj getNavigator() {
+		this.navigator
+	}
+	
+	void setDriver(Driver driver) {
+		this.driver = driver
+	}
+	
+	void setNavigator(Doj navigator) {
+		this.navigator = navigator
 	}
 	
 	String toString() {
@@ -54,40 +66,48 @@ class Page {
 	}
 	
 	def methodMissing(String name, args) {
-		if (hasContent(name)) {
-			getContent(name, *args)
-		} else {
-			geb."$name"(*args)
-		}
+		_getContent(name, *args)
 	}
 
-	def propertyMissing(String name) {
-		if (hasContent(name)) {
-			getContent(name)
-		} else {
-			geb."$name"
-		}
-	}
-	
-	def propertyMissing(String name, value) {
-		geb."$name" = value
-	}
-	
-	protected getGeb() {
-		driver.geb
+	/**
+	 * @see get(String)
+	 */
+	def find(int index) {
+		navigator.get(index)
 	}
 
-	def getContent(String name, Object[] args) {
-		def contentTemplate = contentTemplates[name]
+	/**
+	 * @see get(String)
+	 */	
+	def find(String name) {
+		navigator.get(name)
+	}
+	
+	/**
+	 * @see get(String)
+	 */
+	def find(String selector, int index) {
+		navigator.get(selector, index)
+	}
+	
+	/**
+	 * Groovy will delegate property access to a get(String) method,
+	 * so we need to override to get defined content. For selecting content,
+	 * we have to use find() to start navigating.
+	 * 
+	 * The doj replacement should not have a get(String) method for this reason.
+	 */
+	def get(String name) {
+		_getContent(name)
+	}
+
+	private _getContent(String name, Object[] args) {
+		def contentTemplate = _contentTemplates[name]
 		if (contentTemplate) {
 			contentTemplate.get(*args)
 		} else {
 			throw new UndefinedPageContentException(this, name)
 		}
-	}
-	
-	boolean hasContent(String name) {
-		contentTemplates.containsKey(name)
 	}
 	
 	def to(Map params, Object[] args) {
@@ -96,6 +116,7 @@ class Page {
 			path = ""
 		}
 		driver.go(params, getPageUrl(path))
+		driver.page(this)
 	}
 	
 	def getPageUrl() {
@@ -111,7 +132,7 @@ class Page {
 		args ? args*.toString().join('/') : ""
 	}	
 	
-	def getPageTitle() {
-		geb.page.titleText
+	def getTitle() {
+		driver.client.currentWindow?.enclosedPage?.titleText
 	}
 }

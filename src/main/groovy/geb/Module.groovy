@@ -14,115 +14,41 @@
  */
 package geb
 
-import geb.page.*
-import geb.page.error.*
-import be.roam.hue.doj.Doj
+import geb.internal.content.*
+import geb.error.*
 
-class Module extends PageContent {
+class Module extends TemplateDerivedPageContent {
 
-	static absolute = false
-	static locator = null
+	static base = null
 	
-	private actualContainer
 	private _contentTemplates
 	
-/*	Module() {
-		contentTemplates = buildContentTemplates()
+	Module() {
+		_contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
 	}
-*/	
-	def getContentTemplates() {
-		if (_contentTemplates == null) {
-			_contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
-		}
-		_contentTemplates
-	}
-	
-	def getBase() {
-		if (!actualContainer) {
-			actualContainer = calculateActualContainer()
-		}
-		actualContainer
-	}
-	
-	boolean isHasAbsoluteLocation() {
-		this.class.absolute != null
-	}
-	
-	private getLocatorDefinition() {
-		def locator  = this.class.locator
-		if (locator == null) {
-			null
-		} else {
-			if (!(locator instanceof Closure)) {
-				throw new InvalidPageContent("The 'locator' static property of ${toString()} should be a Closure")
-			}
-			locator
-		}
-	}
-	
-	private calculateActualContainer() {
-		def containerBase
-		if (hasAbsoluteLocation) {
-			containerBase = getPage()
-		} else {
-			containerBase = super.container
-		}
-		
-		def locator = getLocatorDefinition()
-		if (locator) {
-			def locatorClone = locator.clone()
-			locatorClone.delegate = new ModuleLocatorDefinitionDelegate(module: this, base: containerBase)
-			def result = locatorClone()
-			if (result instanceof Doj || result instanceof PageContent) {
-				result
-			} else {
-				throw new InvalidPageContent("The 'locator' static property of ${toString()} should return page content")
-			}
-		} else {
-			containerBase
-		}
-	}
-	
+
 	def methodMissing(String name, args) {
-		if (hasContent(name)) {
-			getContent(name, *args)
-		} else {
-			base."$name"(*args)
-		}
+		_getContent(name, *args)
+	}
+	
+	/**
+	 * Groovy will delegate property access to a get(String) method,
+	 * so we need to override to get defined content. For selecting content,
+	 * we have to use find() to start navigating.
+	 * 
+	 * The doj replacement should not have a get(String) method for this reason.
+	 */
+	def get(String name) {
+		_getContent(name)
 	}
 
-	def propertyMissing(String name) {
-		if (hasContent(name)) {
-			getContent(name)
-		} else {
-			base."$name"
-		}
-	}
-
-	def getContent(String name, Object[] args) {
-		def contentTemplate = contentTemplates[name]
+	private _getContent(String name, Object[] args) {
+		def contentTemplate = _contentTemplates[name]
 		if (contentTemplate) {
 			contentTemplate.get(*args)
 		} else {
 			throw new UndefinedPageContentException(this, name)
 		}
 	}
-	
-	boolean hasContent(String name) {
-		contentTemplates.containsKey(name)
-	}
-	
 }
 
-class ModuleLocatorDefinitionDelegate {
-	def module
-	def base
-	
-	def propertyMissing(String name) {
-		module."$name"
-	}
-	
-	def find(selector) {
-		base.find(selector)
-	}
-}

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.page
+package geb.internal.content
 
 class PageContentTemplateBuilder {
 
@@ -22,7 +22,7 @@ class PageContentTemplateBuilder {
 		toPage: null
 	]
 
-	def container
+	Content container
 	final templates = [:]
 	
 	def methodMissing(String name, args) {
@@ -57,19 +57,14 @@ class PageContentTemplateBuilder {
 	}
 	
 	private create(name, params, definition) {
-		new PageContentTemplate(
-			name: name,
-			params: mergeWithDefaultParams(params),
-			container: container,
-			definition: definition
-		)
+		new PageContentTemplate(container, name, mergeWithDefaultParams(params), definition)
 	}
 
 	protected mergeWithDefaultParams(Map params) {
 		params ? PARAM_DEFAULTS + params : PARAM_DEFAULTS.clone()
 	}
 
-	static build(container, List<Closure> templatesDefinitions) {
+	static build(Content container, List<Closure> templatesDefinitions) {
 		if (container == null) {
 			throw new IllegalArgumentException("'container' can not be null")
 		}
@@ -81,7 +76,7 @@ class PageContentTemplateBuilder {
 		builder.templates
 	}
 	
-	static build(container, String property, Class startAt, Class stopAt = Object) {
+	static build(Content container, String property, Class startAt, Class stopAt = Object) {
 		if (!stopAt.isAssignableFrom(startAt)) {
 			throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
 		}

@@ -12,21 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.content
+package geb.error
 
-/**
- * Content which was derived from a PageContentTemplate
- */
-interface TemplatedPageContent extends PageContent {
-		
-	/**
-	 * The arguments passed to the template to create this
-	 * particular instance of the content
-	 */
-	Object[] getArgs()
+class InvalidPageContent extends GebException {
+
+	InvalidPageContent(String message, Throwable cause = null) {
+		super(message, cause)
+	}
 	
-	/**
-	 * The template that created this content
-	 */
-	PageContentTemplate getTemplate()
 }

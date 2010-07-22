@@ -19,6 +19,7 @@ import geb.*
 import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
+import com.gargoylesoftware.htmlunit.WebClient
 
 abstract class GebSpec extends Specification {
 
@@ -29,7 +30,7 @@ abstract class GebSpec extends Specification {
 	
 	def setup() {
 		if (driver == null) {
-			driver = new Driver(createGeb())
+			driver = new Driver(createClient(), getBaseUrl())
 		}
 		def reportDir = getClassReportDir()
 		if (reportDir?.exists() && _testCounter == 0) {
@@ -51,12 +52,12 @@ abstract class GebSpec extends Specification {
 		driver."$name" = value
 	}
 	
-	def createGeb() {
-		new Geb(getBaseUrl())
+	def createClient() {
+		new WebClient()
 	}
 	
 	def getBaseUrl() {
-		""
+		null
 	}
 		
 	def getReportDir() {
@@ -67,20 +68,24 @@ abstract class GebSpec extends Specification {
 		def testCount = ++_testCounter
 		def reportDir = getClassReportDir()
 	
-		if (reportDir && driver?.response) {
+		if (reportDir && _getLastResponse()) {
 			if (!reportDir.exists() && !reportDir.mkdirs()) {
 				throw new IllegalStateException("Could not create class report dir '${reportDir}'")
 			}
 			
-			def extension = getFileExtension(driver.response)
+			def extension = getFileExtension(_getLastResponse())
 			def fileName = "${testCount}-${_testName.methodName}.$extension"
 			def output = new File(reportDir, fileName)
-			output << response.contentAsStream
+			output << _getLastResponse().contentAsStream
 		}
 	}
 
 	private getFileExtension(response) {
-		response.contentType.split('/').toList().last() ?: 'html'
+		_getLastResponse()?.contentType.split('/').toList().last() ?: 'html'
+	}
+	
+	private _getLastResponse() {
+		driver.client.currentWindow?.enclosedPage?.webResponse
 	}
 	
 	private getClassReportDir() {

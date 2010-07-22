@@ -1,72 +1,87 @@
 package geb
 
 import geb.error.DriveException
+import com.gargoylesoftware.htmlunit.WebClient
+import be.roam.hue.doj.Doj
 
 class Driver {
 
-	private Page page
-	private Geb geb
+	Page page
+	final WebClient client
 	
-	Driver() {
-		this(new Geb(""))
+	String baseUrl
+	
+	Driver(Class pageClass, Map params = null) {
+		this(null, null, pageClass, params)
 	}
 	
-	Driver(Class pageClass) {
-		this(pageClass.url, pageClass)
+	Driver(String baseUrl, Class pageClass = null, Map params = null) {
+		this(null, baseUrl, pageClass)
 	}
 	
-	Driver(String baseUrl, Class pageClass = null) {
-		this(new Geb(baseUrl ?: ""), pageClass)
-		if (baseUrl) {
-			get "/"
-		}
-	}
-	
-	Driver(Geb geb, Class pageClass = null) {
-		this.geb = geb
-		page(pageClass ?: Page)
+	Driver(WebClient client = null, String baseUrl = null, Class pageClass = null, Map params = null) {
+		this.client = client ?: new WebClient()
+		this.baseUrl = baseUrl
+		
+		params = params == null ? [:] : params
+		
 		if (pageClass) {
-			go(pageClass.url)
+			to(pageClass, *:params)
+		} else {
+			page Page
 		}
 	}
 	
 	def methodMissing(String name, args) {
-		(page ?: geb)."$name"(*args)
+		page."$name"(*args)
 	}
 
 	def propertyMissing(String name) {
-		(page ?: geb)."$name"
+		page."$name"
 	}
 	
 	def propertyMissing(String name, value) {
-		(page ?: geb)."$name" = value
+		page."$name" = value
 	}	
 	
 	void page(Class pageClass) {
-		page = ___createPage(pageClass)
+		page(pageClass.newInstance())
 	}
 
+	void page(Page page) {
+		this.page = page
+		page.driver = this
+		if (client.currentWindow?.enclosedPage) {
+			page.navigator = Doj.on(client.currentWindow?.enclosedPage)
+		}
+	}
+	
 	boolean at(Class pageClass) {
 		if (!page) {
 			page(pageClass)
 		}
 		page.verifyAt() && page.class == pageClass
 	}
+
+	def go() {
+		go([:], null)
+	}
 	
-	Geb getGeb() {
-		geb
+	def go(Map params) {
+		go(params, null)
 	}
 	
 	def go(String url) {
-		to([:], url)
+		go([:], url)
 	}
 	
 	def go(Map params, String url) {
-		geb.get(url ?: "/") {
-			params.each { k,v ->
-				delegate."$k" = v
-			}
+		def newUrl = _calculateUri(url, params)
+		def newPage = client.getPage(newUrl)
+		if (!page) {
+			page(Page)
 		}
+		page.navigator = Doj.on(newPage)
 	}
 	
 	def to(Class pageClass, Object[] args) {
@@ -82,11 +97,36 @@ class Driver {
 		page.to(params, *args)
 	}
 	
-	protected ___createPage(Class pageClass) {
+	protected _calculateUri(String path, Map params) {
+		def uri = new URI(path)
+		if (!uri.absolute) {
+			uri = new URI(baseUrl).resolve(uri)
+		}
+		
+		def queryString = _toQueryString(params)
+		if (queryString) {
+			def joiner = uri.query ? '&' : '?'
+			new URL(uri.toString() + joiner + queryString)
+		} else {
+			uri.toURL()
+		}
+	}
+	
+	protected _createPage(Class pageClass) {
 		if (!Page.isAssignableFrom(pageClass)) {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
-		pageClass.newInstance(driver: this)
+		
+	}
+	
+	protected _toQueryString(Map params) {
+		if (params) {
+			params.collect { name, value -> 
+				"${URLEncoder.encode(name, "UTF-8")}&${URLEncoder.encode(value, "UTF-8")}" 
+			}.join("&")
+		} else {
+			""
+		}
 	}
 	
 	static drive(Closure script) {
@@ -98,19 +138,21 @@ class Driver {
 	}
 	
 	static drive(String baseUrl, Closure script) {
-		doDrive(new Driver(baseUrl), script)
+		def driver = new Driver(baseUrl)
+		driver.go("")
+		doDrive(driver, script)
 	}
 	
 	static drive(String baseUrl, Class pageClass, Closure script) {
 		doDrive(new Driver(baseUrl, pageClass), script)
 	}
 	
-	static drive(Geb geb, Closure script) {
-		doDrive(new Driver(geb), script)
+	static drive(WebClient client, Closure script) {
+		doDrive(new Driver(client), script)
 	}
 	
-	static drive(Geb geb, Class pageClass, Closure script) {
-		doDrive(new Driver(geb, pageClass), script)
+	static drive(WebClient client, Class pageClass, Closure script) {
+		doDrive(new Driver(client, pageClass), script)
 	}
 	
 	private static doDrive(Driver driver, Closure script) {

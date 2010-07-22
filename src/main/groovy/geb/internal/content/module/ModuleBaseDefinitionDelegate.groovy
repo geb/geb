@@ -12,17 +12,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.content
+package geb.internal.content.module
 
 import be.roam.hue.doj.Doj
 
-/**
- * Represents some kind of definition of content.
- * 
- * e.g. a whole page, or part of a page etc.
- */
-interface Content {
+class ModuleBaseDefinitionDelegate {
 
-	Doj getNavigator()
+	private startingBase
+	private params
 	
+	ModuleBaseDefinitionDelegate(Doj startingBase, Map params) {
+		this.startingBase = startingBase
+		this.params = params
+	}
+	
+	def methodMissing(String name, args) {
+		startingBase."$name"(*args)
+	}
+	
+	def propertyMissing(String name) {
+		if (params.containsKey(name)) {
+			params[name]
+		} else {
+			startingBase."$name"
+		}
+	}
+	
+	def find(int index) {
+		startingBase.get(index)
+	}
+	
+	def find(String name) {
+		startingBase.get(name)
+	}
+	
+	def find(String name, int index) {
+		startingBase.get(name, index)
+	}
 }

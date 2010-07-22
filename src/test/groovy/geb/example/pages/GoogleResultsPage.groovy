@@ -18,7 +18,7 @@ import geb.*
 
 class GoogleResultsPage extends Page {
 	static url = "http://www.google.com/search"
-	static at = { page.titleText.endsWith("Google Search") }
+	static at = { title.endsWith("Google Search") }
 	
 	// Pages can define individual content and/or modules
 	static content = {

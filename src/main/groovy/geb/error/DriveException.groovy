@@ -16,29 +16,16 @@ package geb.error
 
 import geb.Driver
 
+/**
+ * @todo need better error messages here incorporating the response
+ */
 class DriveException extends GebException {
 
 	final Driver driver
 	
 	DriveException(Driver driver, Throwable cause) {
-		super(calculateMessage(driver), cause)
+		super(null, cause)
 		this.driver = driver
 	}
 	
-	static calculateMessage(Driver driver) {
-		def response = driver.response
-		if (response) {
-			def contentType = response.contentType
-			if (contentType ==~ /text\/.+/) {
-				def sb = new StringBuilder("Last Response: ")
-				sb << response.contentAsStream
-				sb.toString()
-			} else {
-				"Last response was non text (contentType: $contentType)"
-			}
-		} else {
-			"No Response"
-		}
-	}
-
 }

@@ -41,6 +41,7 @@ class ModulesSpec extends GebSpecWithServer {
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
 		divA.p.text() == "a"
+		divC.size() == 1
 		divC.innerDiv.p.text() == "d"
 		divCWithRelativeInner.innerDiv.p.text() == "d"
 	}
@@ -77,29 +78,29 @@ class ModulesSpecDivModuleNoLocator extends Module {
 
 class ModulesSpecDivModuleWithLocator extends Module {
 	def className
-	static locator = { find("div.$className") }
+	static base = { find("div.$className") }
 	static content = {
 		p { find("p") }
 	}
 }
 
 class ModulesSpecSpecificDivModule extends Module {
-	static locator = { find("div.a") }
+	static base = { find("div.a") }
 	static content = {
 		p { find("p") }
 	}
 }
 
 class ModulesSpecDivModuleWithNestedDiv extends Module {
-	static locator = { find("div.c") }
+	static base = { find("div.c") }
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, className: "d" }
 	}
 }
 
 class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
-	static locator = { find("div.c") }
+	static base = { find("div.c") }
 	static content = {
-		innerDiv { module ModulesSpecDivModuleWithLocator, base, className: "d" }
+		innerDiv { module ModulesSpecDivModuleWithLocator, navigator, className: "d" }
 	}
 }

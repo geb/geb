@@ -14,10 +14,12 @@
  */
 package geb.internal.content
 
+import geb.Page
+
 /**
  * Content which is encapsulated in a page
  */
-interface PageContent extends DefinedContent {
+interface PageContent extends Content {
 	
 	/**
 	 * The page that this content is part of

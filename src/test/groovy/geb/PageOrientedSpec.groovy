@@ -37,17 +37,17 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "verify our server is configured correctly"() {
 		when:
-		get("/")
+		go "/"
 		then:
 		find("#a").empty == false
 		
 		when:
-		get("/a")
+		go "/a"
 		then:
 		find("#a").empty == false
 		
 		when:
-		get("/b")
+		go "/b"
 		then:
 		find("#b").empty == false
 	}
