@@ -27,7 +27,7 @@
         <artifactId>gmaven-plugin</artifactId>
         <version>1.2</version>
         <configuration>
-          <providerSelection>1.6</providerSelection>
+          <providerSelection>1.7</providerSelection>
         </configuration>
         <executions>
           <execution>
@@ -52,7 +52,7 @@
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.6.7</version>
+            <version>1.7.3</version>
             <exclusions> <!-- for some reason, the following dependencies aren't marked as optional in groovy-all POM -->
               <exclusion>
                 <groupId>junit</groupId>
@@ -73,7 +73,7 @@
       <plugin>
         <groupId>org.spockframework</groupId>
         <artifactId>spock-maven</artifactId>
-        <version>0.4-groovy-1.6</version>
+        <version>0.5-groovy-1.7-SNAPSHOT</version>
         <executions>
           <execution>
             <goals>
@@ -126,7 +126,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.6.7</version>
+      <version>1.7.3</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -138,7 +138,7 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>0.4-groovy-1.6</version>
+      <version>0.5-groovy-1.7-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
