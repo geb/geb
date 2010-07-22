@@ -38,15 +38,15 @@ class ModuleBaseDefinitionDelegate {
 		}
 	}
 	
-	def find(int index) {
+	Doj $(int index) {
 		startingBase.get(index)
 	}
 	
-	def find(String name) {
+	Doj $(String name) {
 		startingBase.get(name)
 	}
 	
-	def find(String name, int index) {
+	Doj $(String name, int index) {
 		startingBase.get(name, index)
 	}
 }

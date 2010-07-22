@@ -26,7 +26,7 @@ class GoogleResultsPage extends Page {
 		search { module GoogleSearchModule, buttonValue: "Search" }
 		
 		
-		results { find("li.g") }
+		results { $("li.g") }
 		// Content can be paramterised
 		result { results.get(it) }
 		// Content can be defined relative to other content

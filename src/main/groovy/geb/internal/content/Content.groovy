@@ -23,6 +23,8 @@ import be.roam.hue.doj.Doj
  */
 interface Content {
 
-	Doj getNavigator()
+	Doj $(int index)
+	Doj $(String selector)
+	Doj $(String selector, int index)
 	
 }

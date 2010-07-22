@@ -20,16 +20,16 @@ class GoogleCodePage extends Page {
 	static at = { projectSummary.present }
 		
 	static content = {
-		projectSummary { find("a#project_summary_link") }
+		projectSummary { $("a#project_summary_link") }
 		
 		// If content might not exist, it can be marked non required
 		// If content is required and it's not present when requested, an assertion error is thrown
 		signInLink(required: false) { topToolbarLink("Sign in") }
 		signOutLink(required: false) { topToolbarLink("Sign out") }
-		topToolbar { find("#gaia") }
+		topToolbar { $("#gaia") }
 		topToolbarLink(required: false) { topToolbar.getByTag("u").withTextMatching(it).parent("a") }
 		
-		peopleTable { find("table.pmeta").get(2) }
+		peopleTable { $("table.pmeta", 2) }
 		projectOwner { peopleTable.getByTag("a").first() }
 	}
 }

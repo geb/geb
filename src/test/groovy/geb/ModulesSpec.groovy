@@ -41,7 +41,6 @@ class ModulesSpec extends GebSpecWithServer {
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
 		divA.p.text() == "a"
-		divC.size() == 1
 		divC.innerDiv.p.text() == "d"
 		divCWithRelativeInner.innerDiv.p.text() == "d"
 	}
@@ -51,13 +50,13 @@ class ModulesSpec extends GebSpecWithServer {
 class ModulesSpecPage extends Page {
 	static content = {
 		// A module that doesn't define a locator, given one at construction
-		divNoBase { module ModulesSpecDivModuleNoLocator, find("div.$it") }
+		divNoBase { module ModulesSpecDivModuleNoLocator, $("div.$it") }
 		
 		// A module that defines a locator, given a param at construction
 		divWithBase { module ModulesSpecDivModuleWithLocator, className: it }
 		
 		// A module that defines a location, and uses a param given at construction in the locator
-		divWithBaseAndSpecificBaseAndParam { module ModulesSpecDivModuleWithLocator, find("div.c"), className: "d" }
+		divWithBaseAndSpecificBaseAndParam { module ModulesSpecDivModuleWithLocator, $("div.c"), className: "d" }
 		
 		// A module that defines a location, and is contructed with no base or params
 		divA { module ModulesSpecSpecificDivModule }
@@ -72,34 +71,34 @@ class ModulesSpecPage extends Page {
 
 class ModulesSpecDivModuleNoLocator extends Module {
 	static content = {
-		p { find("p") }
+		p { $("p") }
 	}
 }
 
 class ModulesSpecDivModuleWithLocator extends Module {
 	def className
-	static base = { find("div.$className") }
+	static base = { $("div.$className") }
 	static content = {
-		p { find("p") }
+		p { $("p") }
 	}
 }
 
 class ModulesSpecSpecificDivModule extends Module {
-	static base = { find("div.a") }
+	static base = { $("div.a") }
 	static content = {
-		p { find("p") }
+		p { $("p") }
 	}
 }
 
 class ModulesSpecDivModuleWithNestedDiv extends Module {
-	static base = { find("div.c") }
+	static base = { $("div.c") }
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, className: "d" }
 	}
 }
 
 class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
-	static base = { find("div.c") }
+	static base = { $("div.c") }
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, navigator, className: "d" }
 	}

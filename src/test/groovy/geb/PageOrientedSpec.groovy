@@ -39,17 +39,17 @@ class PageOrientedSpec extends GebSpecWithServer {
 		when:
 		go "/"
 		then:
-		find("#a").empty == false
+		$("#a").empty == false
 		
 		when:
 		go "/a"
 		then:
-		find("#a").empty == false
+		$("#a").empty == false
 		
 		when:
 		go "/b"
 		then:
-		find("#b").empty == false
+		$("#b").empty == false
 	}
 	
 	def "verify the Page API works"() {
@@ -116,16 +116,16 @@ class PageOrientedSpec extends GebSpecWithServer {
 class PageA extends Page {
 	static at = { link }
 	static content = {
-		link(toPage: PageB) { find("#a") }
+		link(toPage: PageB) { $("#a") }
 		
-		notPresentRequired { find("div#nonexistant") }
-		notPresentNotRequired(required: false) { find("div#nonexistant") }
+		notPresentRequired { $("div#nonexistant") }
+		notPresentNotRequired(required: false) { $("div#nonexistant") }
 	}
 }
 
 class PageB extends Page {
 	static at = { link }
 	static content = {
-		link(toPage: PageA) { find("#b") }
+		link(toPage: PageA) { $("#b") }
 	}
 }

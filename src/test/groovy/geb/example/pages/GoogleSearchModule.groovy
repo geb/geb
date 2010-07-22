@@ -24,12 +24,12 @@ class GoogleSearchModule extends Module {
 	
 	// content is defined using a DSL with a Jquery like finding API
 	static content = {
-		field { find("input").withName("q") }
+		field { $("input").withName("q") }
 		
 		// content can define which page is next when it is clicked
 		button(toPage: GoogleResultsPage) { 
 			// can use instance variables in content locators
-			find("input").withValue(buttonValue) 
+			$("input").withValue(buttonValue) 
 		}
 	}
 	

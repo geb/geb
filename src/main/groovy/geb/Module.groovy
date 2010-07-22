@@ -31,14 +31,7 @@ class Module extends TemplateDerivedPageContent {
 		_getContent(name, *args)
 	}
 	
-	/**
-	 * Groovy will delegate property access to a get(String) method,
-	 * so we need to override to get defined content. For selecting content,
-	 * we have to use find() to start navigating.
-	 * 
-	 * The doj replacement should not have a get(String) method for this reason.
-	 */
-	def get(String name) {
+	def propertyMissing(String name) {
 		_getContent(name)
 	}
 

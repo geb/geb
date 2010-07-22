@@ -51,9 +51,6 @@ class Driver {
 	void page(Page page) {
 		this.page = page
 		page.driver = this
-		if (client.currentWindow?.enclosedPage) {
-			page.navigator = Doj.on(client.currentWindow?.enclosedPage)
-		}
 	}
 	
 	boolean at(Class pageClass) {
@@ -81,7 +78,6 @@ class Driver {
 		if (!page) {
 			page(Page)
 		}
-		page.navigator = Doj.on(newPage)
 	}
 	
 	def to(Class pageClass, Object[] args) {

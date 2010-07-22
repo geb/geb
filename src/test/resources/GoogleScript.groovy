@@ -6,11 +6,11 @@ import geb.example.pages.*
 // Without page objects
 Driver.drive("http://google.com") {
 	title == "Google"
-	find("input").withName("q").value("wikipedia")
-	find("input").withValue("Google Search").click()
+	$("input").withName("q").value("wikipedia")
+	$("input").withValue("Google Search").click()
 	assert title.endsWith("Google Search")
 	page geb.Page // currently have to do this to get a new navigator based on the new page
-	assert find("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
+	assert $("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
 }
 
 // With page objects
