@@ -9,7 +9,6 @@ Driver.drive("http://google.com") {
 	$("input").withName("q").value("wikipedia")
 	$("input").withValue("Google Search").click()
 	assert title.endsWith("Google Search")
-	page geb.Page // currently have to do this to get a new navigator based on the new page
 	assert $("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
 }
 
