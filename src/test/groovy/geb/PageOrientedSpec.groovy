@@ -116,7 +116,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 class PageA extends Page {
 	static at = { link }
 	static content = {
-		link(toPage: PageB) { $("#a") }
+		link(to: PageB) { $("#a") }
 		
 		notPresentRequired { $("div#nonexistant") }
 		notPresentNotRequired(required: false) { $("div#nonexistant") }
@@ -126,6 +126,6 @@ class PageA extends Page {
 class PageB extends Page {
 	static at = { link }
 	static content = {
-		link(toPage: PageA) { $("#b") }
+		link(to: PageA) { $("#b") }
 	}
 }

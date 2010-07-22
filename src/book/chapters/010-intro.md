@@ -36,7 +36,7 @@ The following example is the same, except that it utilises page objects.
         def buttonValue
         static content = {
             field { find("input").withName("q") }
-            button(toPage: GoogleResultsPage) { 
+            button(to: GoogleResultsPage) { 
                 find("input").withValue(buttonValue)
             }
         }

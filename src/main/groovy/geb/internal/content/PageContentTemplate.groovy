@@ -48,8 +48,8 @@ class PageContentTemplate {
 		params.dynamic
 	}
 	
-	Class getToPage() {
-		params.toPage
+	Class getto() {
+		params.to
 	}
 	
 	Page getPage() {

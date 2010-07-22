@@ -19,7 +19,7 @@ class PageContentTemplateBuilder {
 	static PARAM_DEFAULTS = [
 		required: true,
 		dynamic: false,
-		toPage: null
+		to: null
 	]
 
 	Content container

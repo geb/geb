@@ -27,7 +27,7 @@ class GoogleSearchModule extends Module {
 		field { $("input").withName("q") }
 		
 		// content can define which page is next when it is clicked
-		button(toPage: GoogleResultsPage) { 
+		button(to: GoogleResultsPage) { 
 			// can use instance variables in content locators
 			$("input").withValue(buttonValue) 
 		}

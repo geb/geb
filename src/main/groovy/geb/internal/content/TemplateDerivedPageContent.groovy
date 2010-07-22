@@ -59,7 +59,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	}
 	
 	void click() {
-		click(_template.toPage)
+		click(_template.to)
 	}
 	
 	void click(Class pageClass) {
