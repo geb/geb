@@ -50,6 +50,15 @@ if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
 			snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
 				authentication(userName: codehausUsername, password: codehausPassword)
 			}
+			pom.project {
+				licenses {
+					license {
+						name 'The Apache Software License, Version 2.0'
+						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+						distribution 'repo'
+					}
+				}
+			}
 		}
 	}
 }
