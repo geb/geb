@@ -1,3 +1,5 @@
 target
 *.tmproj
 .DS_Store
+build
+.gradle

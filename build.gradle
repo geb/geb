@@ -1,0 +1,55 @@
+group = 'org.codehaus.geb'
+version = '0.4-SNAPSHOT'
+archivesBaseName = 'geb'
+
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+configurations {
+	compile.transitive = true
+	testCompile.transitive = true
+	deployerJars
+}
+
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+
+compileGroovy.options.fork = false
+compileTestGroovy.options.fork = false
+
+repositories {
+	mavenCentral()
+	mavenRepo name: "spock-snapshots", urls: ["http://m2repo.spockframework.org/snapshots"]
+}
+
+dependencies {
+	groovy "org.codehaus.groovy:groovy-all:1.6.7"
+	compile "net.sourceforge.htmlunit:htmlunit:2.7"
+	compile "be.roam.hue:hue:1.1"
+	testCompile "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
+	testCompile "junit:junit:4.8.1"
+	testCompile "org.mortbay.jetty:jetty:6.1.21"
+	deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
+}
+
+sourceSets {
+	test {
+		resources {
+			fileTree('src/test/resources').include('**/*.groovy')
+		}
+	}
+}
+
+if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
+	uploadArchives {
+		repositories.mavenDeployer {
+			configuration = configurations.deployerJars
+			repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
+				authentication(userName: codehausUsername, password: codehausPassword)
+			}
+			snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
+				authentication(userName: codehausUsername, password: codehausPassword)
+			}
+		}
+	}
+}
