@@ -21,8 +21,8 @@ import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
 
 class TestHttpServer {
-	final protected server
-	final boolean started
+	protected server
+	boolean started
 
 	Closure get
 	Closure post
