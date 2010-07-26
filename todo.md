@@ -7,6 +7,7 @@
 * API
     * make API WebDriver agnostic?
     * support concepts from RenderedWebElement
+    * all methods that return WebElement should be package protected
 * syntax
     * replace with* methods with filter(String) and filter(Map)
     * remove getBy* (make non-public as used internally)

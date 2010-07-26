@@ -25,7 +25,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use any(Closure) on Navigator"() {
 		expect: navigator.any { it.hasClass("article") } == expectedResult
 		where:
-		navigator                     | expectedResult
+		navigator               | expectedResult
 		onPage.find("div")      | true  // some match
 		onPage.find(".article") | true  // all match
 		onPage.find("ol")       | false // none match
@@ -36,7 +36,7 @@ class NavigatorGroovySpec extends Specification {
 		when: def list = navigator.collect { it.id() }
 		then: list == expectedList
 		where:
-		navigator                       | expectedList
+		navigator                 | expectedList
 		onPage.find(".article")   | ["article-1", "article-2", "article-3"]
 		onPage.find("#article-1") | ["article-1"]
 		onPage.find("bdo")        | []
@@ -47,7 +47,7 @@ class NavigatorGroovySpec extends Specification {
 		when: navigator = navigator.each { list << it.id() }
 		then: list == expectedList
 		where:
-		navigator                       | expectedList
+		navigator                 | expectedList
 		onPage.find(".article")   | ["article-1", "article-2", "article-3"]
 		onPage.find("#article-1") | ["article-1"]
 		onPage.find("bdo")        | []
@@ -58,7 +58,7 @@ class NavigatorGroovySpec extends Specification {
 		when: navigator = navigator.eachWithIndex { e, i -> map[e.id()] = i }
 		then: map == expectedMap
 		where:
-		navigator                       | expectedMap
+		navigator                 | expectedMap
 		onPage.find(".article")   | ["article-1": 0, "article-2": 1, "article-3": 2]
 		onPage.find("#article-1") | ["article-1": 0]
 		onPage.find("bdo")        | [:]
@@ -67,7 +67,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use every(Closure) on Navigator"() {
 		expect: navigator.every { it.hasClass("article") } == expectedResult
 		where:
-		navigator                     | expectedResult
+		navigator               | expectedResult
 		onPage.find("div")      | false // some match
 		onPage.find(".article") | true  // all match
 		onPage.find("ol")       | false // none match
@@ -78,7 +78,7 @@ class NavigatorGroovySpec extends Specification {
 		when: def result = navigator.find { it.hasClass("article") }
 		then: (result != null) == expectedResult
 		where:
-		navigator                     | expectedResult
+		navigator               | expectedResult
 		onPage.find("div")      | true
 		onPage.find(".article") | true
 		onPage.find("ol")       | false
@@ -90,7 +90,7 @@ class NavigatorGroovySpec extends Specification {
 		then: result.size() == expectedSize
 		and: result instanceof Navigator // findAll should return a Navigator not a Collection<Navigator>
 		where:
-		navigator                     | expectedSize
+		navigator               | expectedSize
 		onPage.find("div")      | 3
 		onPage.find(".article") | 3
 		onPage.find("ol")       | 0
@@ -100,7 +100,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use findIndexOf(Closure) on Navigator"() {
 		expect: navigator.findIndexOf { it.hasClass("article") } == expectedIndex
 		where:
-		navigator                     | expectedIndex
+		navigator               | expectedIndex
 		onPage.find("div")      | 5
 		onPage.find(".article") | 0
 		onPage.find("ol")       | -1
@@ -110,7 +110,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use findIndexOf(int, Closure) on Navigator"() {
 		expect: navigator.findIndexOf(startIndex) { it.hasClass("article") } == expectedIndex
 		where:
-		navigator                     | startIndex | expectedIndex
+		navigator               | startIndex | expectedIndex
 		onPage.find("div")      | 5          | 5
 		onPage.find("div")      | 1          | 5
 		onPage.find(".article") | 1          | 1
@@ -168,7 +168,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use getAt(Range) on Navigator"() {
 		expect: navigator[range].ids() == expectedIds
 		where:
-		navigator                     | range  | expectedIds
+		navigator               | range  | expectedIds
 		onPage.find("div")      | 0..1   | ["container", "header"]
 		onPage.find("div")      | 0..<2  | ["container", "header"]
 		onPage.find("div")      | 0..<0  | []
@@ -178,7 +178,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use getAt(Collection) on Navigator"() {
 		expect: navigator[indexes].ids() == expectedIds
 		where:
-		navigator                     | indexes    | expectedIds
+		navigator               | indexes    | expectedIds
 		onPage.find("div")      | [0, 2, 4]  | ["container", "navigation", "main"]
 		onPage.find("div")      | [0, -1, 4] | ["container", "footer", "main"]
 	}
@@ -188,7 +188,7 @@ class NavigatorGroovySpec extends Specification {
 		navigator.head().size() == expectedSize
 		navigator.head().id() == expectedId
 		where:
-		navigator                     | expectedSize | expectedId
+		navigator               | expectedSize | expectedId
 		onPage.find("div")      | 1            | "container"
 		onPage.find(".article") | 1            | "article-1"
 		onPage.find("bdo")      | 0            | null
@@ -199,17 +199,17 @@ class NavigatorGroovySpec extends Specification {
 		navigator.tail().size() == expectedSize
 		navigator.tail().ids() == expectedIds
 		where:
-		navigator                     | expectedSize | expectedIds
+		navigator               | expectedSize | expectedIds
 		onPage.find(".article") | 2            | ["article-2", "article-3"]
 		onPage.find("bdo")      | 0            | []
 	}
 	
 	def "can use plus(Navigator) on Navigator"() {
-		when: def navigator = doj1 + doj2
+		when: def navigator = navigator1 + navigator2
 		then: navigator.size() == expectedSize
 		and: navigator.ids() == expectedIds
 		where:
-		doj1                      | doj2                      | expectedSize | expectedIds
+		navigator1                | navigator2                | expectedSize | expectedIds
 		onPage.find("#article-1") | onPage.find("#article-2") | 2            | ["article-1", "article-2"]
 		onPage.find(".article")   | onPage.find("#container") | 4            | ["article-1", "article-2", "article-3", "container"]
 		onPage.find(".article")   | onPage.find("#article-1") | 3            | ["article-1", "article-2", "article-3"]
