@@ -107,7 +107,7 @@ class Page implements Content {
 	
 	def getPageUrl(String path) {
 		def pageUrl = getPageUrl()
-		path ? "$pageUrl/$path" : pageUrl
+		path ? (pageUrl ? "$pageUrl/$path" : path) : pageUrl
 	}
 	
 	def convertToPath(Object[] args) {
