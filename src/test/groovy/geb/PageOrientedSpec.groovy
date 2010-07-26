@@ -126,12 +126,30 @@ class PageOrientedSpec extends GebSpecWithServer {
 		notThrown(RequiredPageContentNotPresent)
 	}
 	
+	def "variant to should cycle through and select match"() {
+		when:
+		to PageA
+		linkWithVariantTo.click()
+		then:
+		at PageB
+	}
+	
+	def "exception should be thrown when no to values match"() {
+		when:
+		to PageA
+		linkWithVariantToNoMatches.click()
+		then:
+		thrown(UnexpectedPageException)
+	}
+	
 }
 
 class PageA extends Page {
 	static at = { link }
 	static content = {
 		link(to: PageB) { $("#a") }
+		linkWithVariantTo(to: [PageD, PageC, PageB]) { link }
+		linkWithVariantToNoMatches(to: [PageD, PageC]) { link }
 		linkText { link.trimmedText() }
 		notPresentValueRequired { $("div#asdfasdf").text() }
 		notPresentRequired { $("div#nonexistant") }
@@ -145,4 +163,12 @@ class PageB extends Page {
 		link(to: PageA) { $("#b") }
 		linkText { link.text() }
 	}
+}
+
+class PageC extends Page {
+	static at = { false }
+}
+
+class PageD extends Page {
+	static at = { false }
 }

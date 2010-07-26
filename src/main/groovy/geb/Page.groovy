@@ -48,7 +48,7 @@ class Page implements Content {
 	 * To be implemented by page subclasses to check that the current
 	 * actual page is the page for this page object.
 	 */
-	def verifyAt() {
+	boolean verifyAt() {
 		def verifier = this.class.at?.clone()
 		if (verifier) {
 			verifier.delegate = this
