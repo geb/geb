@@ -1,7 +1,17 @@
+buildscript {
+    repositories {
+        mavenRepo urls: "http://gradle.artifactoryonline.com/gradle/plugins"
+    }
+    dependencies {
+        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
+    }
+}
+
 group = 'org.codehaus.geb'
 version = '0.4-SNAPSHOT'
 archivesBaseName = 'geb'
 
+apply plugin: "org.gradle.idea"
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
@@ -24,6 +34,8 @@ repositories {
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.6.7"
+	groovy "org.seleniumhq.selenium:selenium-htmlunit-driver:2.0a4"
+	groovy "org.seleniumhq.selenium:selenium-firefox-driver:2.0a4"
 	compile "net.sourceforge.htmlunit:htmlunit:2.7"
 	compile "be.roam.hue:hue:1.1"
 	testCompile "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
