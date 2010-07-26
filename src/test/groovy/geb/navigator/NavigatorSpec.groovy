@@ -40,7 +40,7 @@ class NavigatorSpec extends Specification {
 		navigator.size() == expectedSize
 
 		where:
-		navigator                           | index | iterations | expectedSize
+		navigator                     | index | iterations | expectedSize
 		onPage.find("li")             | 5     | 1          | 22
 		onPage.find("li")             | 0     | 1          | 22
 		onPage.find("li")             | -1    | 1          | 22
@@ -93,7 +93,7 @@ class NavigatorSpec extends Specification {
 		navigator.id() == expectedId
 
 		where:
-		navigator                         | expectedId
+		navigator                   | expectedId
 		onPage.find(".article", 0)  | "article-1"
 		onPage.find(".article", 1)  | "article-2"
 		onPage.find(".article", 2)  | "article-3"
@@ -126,7 +126,7 @@ class NavigatorSpec extends Specification {
 		expect: navigator.filter(filter).ids() == expectedIds
 
 		where:
-		navigator                     | filter        | expectedIds
+		navigator               | filter        | expectedIds
 		onPage.find(".article") | "#article-2"  | ["article-2"]
 		onPage.find(".article") | "#no-such-id" | []
 		onPage.find("div")      | ".article"    | ["article-1", "article-2", "article-3"]
@@ -171,7 +171,7 @@ class NavigatorSpec extends Specification {
 		expect: expectedId ? navigator.next(tag).id() == expectedId : navigator.next(tag).isEmpty()
 
 		where:
-		navigator                      | tag      | expectedId
+		navigator                | tag      | expectedId
 		onPage.find("#keywords") | "select" | "the_plain_select"
 		onPage.find("#keywords") | "bdo"    | null
 	}
@@ -181,7 +181,7 @@ class NavigatorSpec extends Specification {
 		navigator.previous().is(expectedTag)
 
 		where:
-		navigator                | expectedTag
+		navigator          | expectedTag
 		onPage.find("div") | "div"
 		onPage.find("div") | "hr"
 	}
@@ -218,7 +218,7 @@ class NavigatorSpec extends Specification {
 		expectedId ? navigator.id() == expectedId : navigator.isEmpty()
 
 		where:
-		navigator                                 | tag     | expectedId
+		navigator                           | tag     | expectedId
 		onPage.find("#the_multiple_select") | "input" | "checker2"
 		onPage.find("#keywords")            | "bdo"   | null
 	}
@@ -257,18 +257,18 @@ class NavigatorSpec extends Specification {
 		!expectedId || navigator.id() == expectedId
 
 		where:
-		navigator                            | tag    | expectedId
+		navigator                      | tag    | expectedId
 		onPage.find("ol.ol-simple li") | "div"  | "sidebar"
 		onPage.find("option")          | "form" | null
 	}
 
 	def unique() {
-		when: def navigator = (doj1 + doj2).unique()
+		when: def navigator = (navigator1 + navigator2).unique()
 
 		then: navigator.size() == expectedSize
 
 		where:
-		doj1                      | doj2                    | expectedSize
+		navigator1                | navigator2                    | expectedSize
 		onPage.find("#article-1") | onPage.find(".article") | 3
 	}
 
@@ -288,7 +288,7 @@ class NavigatorSpec extends Specification {
 		navigator.id() == expectedId
 
 		where:
-		navigator                           | expectedId
+		navigator                     | expectedId
 		onPage.find("div", 0)         | "container"
 		onPage.find("div div", 1)     | "navigation"
 		onPage.find("#article-1 div") | ""
@@ -300,7 +300,7 @@ class NavigatorSpec extends Specification {
 		navigator.ids() == expectedIds
 
 		where:
-		navigator                       | expectedIds
+		navigator                 | expectedIds
 		onPage.find("div")[0..<5] | ["container", "header", "navigation", "content", "main"]
 		onPage.find("bdo")        | []
 	}
@@ -334,7 +334,7 @@ class NavigatorSpec extends Specification {
 		navigator.hasClass(className) == expectedResult
 
 		where:
-		navigator                     | className | expectedResult
+		navigator               | className | expectedResult
 		onPage.find(".article") | "article" | true
 		onPage.find("div")      | "module"  | true
 		onPage.find("#content") | "col-3"   | true
@@ -347,7 +347,7 @@ class NavigatorSpec extends Specification {
 		navigator.is(expectedTag) == expectedResult
 
 		where:
-		navigator                                     | expectedTag  | expectedResult
+		navigator                               | expectedTag  | expectedResult
 		onPage.find("div")                      | "div"        | true
 		onPage.find("#article-1 p").parent()    | "div"        | true
 		onPage.find("#article-1 p").parent()    | "blockquote" | true
@@ -422,7 +422,7 @@ class NavigatorSpec extends Specification {
 		navigator.text().contains(expectedText) == expectedResult
 
 		where:
-		navigator                       | expectedText      | expectedResult
+		navigator                 | expectedText      | expectedResult
 		onPage                    | "Article title 2" | true
 		onPage.find("#article-2") | "Article title 2" | true
 		onPage.find("#article-3") | "Article title 2" | false
@@ -433,7 +433,7 @@ class NavigatorSpec extends Specification {
 		navigator.texts() == expectedValues
 
 		where:
-		navigator                        | expectedValues
+		navigator                  | expectedValues
 		onPage.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
 	}
 
@@ -442,7 +442,7 @@ class NavigatorSpec extends Specification {
 		navigator.trimmedText() == expectedText
 
 		where:
-		navigator                            | expectedText
+		navigator                      | expectedText
 		onPage.find("#article-2 h2 a") | "Article title 2"
 		onPage.find("ol li")           | "Item #1"
 	}
@@ -452,7 +452,7 @@ class NavigatorSpec extends Specification {
 		navigator.trimmedTexts() == ["Article title 1", "Article title 2", "Article title 3"]
 
 		where:
-		navigator                        | expectedValues
+		navigator                  | expectedValues
 		onPage.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
 	}
 
@@ -461,7 +461,7 @@ class NavigatorSpec extends Specification {
 		navigator.attribute(key) == expectedValue
 
 		where:
-		navigator                                                   | key     | expectedValue
+		navigator                                             | key     | expectedValue
 		onPage.find("#header")                                | "id"    | "header"
 		onPage.find("#article-3")                             | "class" | "article"
 		onPage.find("input").withName("site").with("checked") | "value" | "google"
@@ -473,7 +473,7 @@ class NavigatorSpec extends Specification {
 		navigator.attributes(key) == expectedValues
 
 		where:
-		navigator                                  | key       | expectedValues
+		navigator                             | key       | expectedValues
 		onPage.find("input").withName("site") | "value"   | ["google", "thisone"]
 		onPage.find("input").withName("site") | "checked" | ["checked", ""]
 	}
@@ -483,7 +483,7 @@ class NavigatorSpec extends Specification {
 		navigator.value() == expectedValue
 
 		where:
-		navigator                                                           | expectedValue
+		navigator                                                     | expectedValue
 		onPage.find("select", name: "plain_select")                   | "4"
 		onPage.find("select", name: "multiple_select")                | ["2", "4"]
 		onPage.find("select", name: "plain_select").find("option")    | "1"
@@ -501,7 +501,7 @@ class NavigatorSpec extends Specification {
 		navigator.value(expectedValue).value() == expectedValue
 
 		where:
-		navigator                                 | expectedValue             | newValue
+		navigator                           | expectedValue             | newValue
 		onPage.find("#the_plain_select")    | "4"                       | "2"
 		onPage.find("#the_multiple_select") | ["2", "4"]                | ["1", "3", "5"]
 		onPage.find("#keywords")            | "Enter keywords here"     | "bar"
@@ -517,7 +517,7 @@ class NavigatorSpec extends Specification {
 		navigator.values() == expectedValues
 
 		where:
-		navigator                                                   | expectedValues
+		navigator                                             | expectedValues
 		onPage.find("select").withName("multiple_select")     | ["2", "4"]
 		onPage.find("input").withName("site")                 | ["google", "thisone"]
 		onPage.find("select").withName("that_does_not_exist") | []
@@ -533,7 +533,7 @@ class NavigatorSpec extends Specification {
 		navigator.first().id() == expectedId
 
 		where:
-		navigator                     | expectedId
+		navigator               | expectedId
 		onPage.find(".article") | "article-1"
 	}
 
@@ -542,7 +542,7 @@ class NavigatorSpec extends Specification {
 		navigator.firstElement().getAttribute("id") == expectedId
 
 		where:
-		navigator                     | expectedId
+		navigator               | expectedId
 		onPage.find(".article") | "article-1"
 	}
 
@@ -552,7 +552,7 @@ class NavigatorSpec extends Specification {
 		navigator.last().id() == expectedId
 
 		where:
-		navigator                     | expectedId
+		navigator               | expectedId
 		onPage.find(".article") | "article-3"
 	}
 
@@ -561,7 +561,7 @@ class NavigatorSpec extends Specification {
 		navigator.lastElement().getAttribute("id") == expectedId
 
 		where:
-		navigator                     | expectedId
+		navigator               | expectedId
 		onPage.find(".article") | "article-3"
 	}
 
@@ -587,7 +587,7 @@ class NavigatorSpec extends Specification {
 		navigator.withTextContaining(text).attribute(attribute) == expectedValue
 
 		where:
-		navigator              | text    | attribute | expectedValue
+		navigator        | text    | attribute | expectedValue
 		onPage.find("a") | "Home"  | "href"    | "#home"
 		onPage.find("a") | "About" | "href"    | "#about"
 	}
@@ -597,7 +597,7 @@ class NavigatorSpec extends Specification {
 		navigator.withTextMatching(pattern).size() == expectedSize
 
 		where:
-		navigator              | pattern      | expectedSize
+		navigator        | pattern      | expectedSize
 		onPage.find("p") | /.*block.*/  | 1
 		onPage.find("p") | ~/.*block.*/ | 1
 		onPage.find("p") | /.*Nono.*/   | 0
@@ -609,7 +609,7 @@ class NavigatorSpec extends Specification {
 		navigator.withAttributeMatching(attribute, pattern).size() == expectedSize
 
 		where:
-		navigator                  | attribute | pattern        | expectedSize
+		navigator            | attribute | pattern        | expectedSize
 		onPage.find("div")   | "class"   | /.*col\-\d.*/  | 4
 		onPage.find("div")   | "class"   | ~/.*col\-\d.*/ | 4
 		onPage.find("input") | "value"   | /.*nono.*/     | 0
