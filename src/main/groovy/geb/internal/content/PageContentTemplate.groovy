@@ -19,6 +19,7 @@ import geb.Page
 import geb.Module
 
 import geb.error.InvalidPageContent
+import geb.error.RequiredPageValueNotPresent
 
 class PageContentTemplate {
 
@@ -48,7 +49,7 @@ class PageContentTemplate {
 		params.dynamic
 	}
 	
-	Class getto() {
+	Class getTo() {
 		params.to
 	}
 	
@@ -62,11 +63,15 @@ class PageContentTemplate {
 
 	private create(Object[] args) {
 		def factoryReturn = invokeFactory(*args)
-		def pageContent = wrapFactoryReturn(factoryReturn, *args)
+		def creation = wrapFactoryReturn(factoryReturn, *args)
 		if (required) {
-			pageContent.require()
+			if (creation != null && creation instanceof PageContent) {
+				creation.require()
+			} else if (creation == null) {
+				throw new RequiredPageValueNotPresent(this, *args)
+			}
 		}
-		pageContent
+		creation
 	}
 	
 	private fromCache(Object[] args) {
@@ -100,7 +105,8 @@ class PageContentTemplate {
 		} else if (factoryReturn instanceof Module) {
 			factoryReturn
 		} else {
-			throw new InvalidPageContent("definition of content '${toString()}' did not return page content")
+			// Is some kind of value, like the text content of a node
+			factoryReturn
 		}
 	}
 	

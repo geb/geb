@@ -93,7 +93,7 @@ class Page implements Content {
 	}
 	
 	def to(Map params, Object[] args) {
-		def path = convertToPath(args)
+		def path = convertToPath(*args)
 		if (path == null) {
 			path = ""
 		}

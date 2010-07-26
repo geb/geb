@@ -72,11 +72,26 @@ class PageOrientedSpec extends GebSpecWithServer {
 		at PageA
 	}
 	
+	def "check accessing non navigator content"() {
+		when:
+		to PageA
+		then:
+		linkText == "b"
+	}
+	
 	def "verify at checking works"() {
 		when:
 		to PageA
 		then:
 		at(PageB) == false
+	}
+	
+	def "error when required value not present"() {
+		when:
+		to PageA
+		notPresentValueRequired.text()
+		then:
+		thrown(RequiredPageValueNotPresent)
 	}
 	
 	def "error when required component not present"() {
@@ -117,7 +132,8 @@ class PageA extends Page {
 	static at = { link }
 	static content = {
 		link(to: PageB) { $("#a") }
-		
+		linkText { link.trimmedText() }
+		notPresentValueRequired { $("div#asdfasdf").text() }
 		notPresentRequired { $("div#nonexistant") }
 		notPresentNotRequired(required: false) { $("div#nonexistant") }
 	}
@@ -127,5 +143,6 @@ class PageB extends Page {
 	static at = { link }
 	static content = {
 		link(to: PageA) { $("#b") }
+		linkText { link.text() }
 	}
 }
