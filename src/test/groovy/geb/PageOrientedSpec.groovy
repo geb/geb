@@ -170,5 +170,5 @@ class PageC extends Page {
 }
 
 class PageD extends Page {
-	static at = { false }
+	static at = { assert 1 == 2 }
 }

@@ -89,7 +89,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 			def isAt = false
 			try {
 				isAt = potential.verifyAt()
-			} catch (AssertionError) {
+			} catch (AssertionError e) {
 				// at checker may use assertions
 			}
 			if (isAt) {
