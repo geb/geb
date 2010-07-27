@@ -117,9 +117,12 @@ class Driver {
 	
 	protected _toQueryString(Map params) {
 		if (params) {
-			params.collect { name, value -> 
-				"${URLEncoder.encode(name, "UTF-8")}&${URLEncoder.encode(value, "UTF-8")}" 
-			}.join("&")
+			params.collect { name, value ->
+				def values = value instanceof Collection ? value : [value]
+				values.collect { v ->
+					"${URLEncoder.encode(name.toString(), "UTF-8")}=${URLEncoder.encode(v.toString(), "UTF-8")}" 
+				}
+			}.flatten().join("&")
 		} else {
 			""
 		}
