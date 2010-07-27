@@ -19,6 +19,56 @@ class NonEmptyNavigator extends Navigator {
 		this.contextElements = contextElements as List
 	}
 
+	Navigator find(String selectorString) {
+		if (contextElements.head() instanceof FindsByCssSelector) {
+			List<WebElement> list = []
+			contextElements.each {
+				println "using native css '$selectorString'"
+				list.addAll it.findElements(By.cssSelector(selectorString))
+			}
+			on(list)
+		} else {
+			on CssSelector.findByCssSelector(allElements(), selectorString)
+		}
+	}
+
+	Navigator find(Map<String, Object> predicates) {
+		List<WebElement> list = []
+		contextElements*.findElements(By.xpath("descendant::*")).flatten().each { WebElement element ->
+			if (matches(element, predicates)) {
+				list << element
+			}
+		}
+		on list
+	}
+
+	Navigator find(Map<String, Object> predicates, String selector) {
+		def navigator = find(selector)
+		on navigator.allElements().findAll { WebElement element ->
+			matches(element, predicates)
+		}
+	}
+
+	private boolean matches(WebElement element, Map<String, Object> predicates) {
+		return predicates.every { name, requiredValue ->
+			def actualValue = name == "text" ? element.text : element.getAttribute(name)
+			if (requiredValue instanceof Pattern) {
+				actualValue ==~ requiredValue
+			} else {
+				actualValue == requiredValue
+			}
+		}
+	}
+
+	Navigator filter(String selectorString) {
+		def selectors = CssSelector.compile(selectorString)
+		on contextElements.findAll { element ->
+			selectors.any { selectorGroup ->
+				selectorGroup.every { it.matches(element) }
+			}
+		}
+	}
+
 	Navigator getAt(int index) {
 		on getElement(index)
 	}
@@ -128,42 +178,6 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator unique() {
 		new NonEmptyNavigator(contextElements.unique())
-	}
-
-	Navigator find(String selectorString) {
-		if (contextElements.head() instanceof FindsByCssSelector) {
-			List<WebElement> list = []
-			contextElements.each {
-				println "using native css '$selectorString'"
-				list.addAll it.findElements(By.cssSelector(selectorString))
-			}
-			on(list)
-		} else {
-			on CssSelector.findByCssSelector(allElements(), selectorString)
-		}
-	}
-
-	Navigator find(Map<String, Object> predicates, String selector) {
-		def navigator = find(selector)
-		on navigator.allElements().findAll { WebElement element ->
-			predicates.every { name, requiredValue ->
-				def actualValue = name == "text" ? element.text : element.getAttribute(name)
-				if (requiredValue instanceof Pattern) {
-					actualValue ==~ requiredValue
-				} else {
-					actualValue == requiredValue
-				}
-			}
-		}
-	}
-
-	Navigator filter(String selectorString) {
-		def selectors = CssSelector.compile(selectorString)
-		on contextElements.findAll { element ->
-			selectors.any { selectorGroup ->
-				selectorGroup.every { it.matches(element) }
-			}
-		}
 	}
 
 	Navigator findByAttribute(String attribute, MatchType matchType, String value) {

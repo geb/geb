@@ -87,6 +87,25 @@ class NavigatorSpec extends Specification {
 		"div ol  , #sidebar   , blockquote,bdo" | 5 + 1 + 1 + 0
 	}
 
+	def "find by attributes"() {
+		expect: onPage.find(attributes).ids() == expectedIds
+
+		where:
+		attributes                      | expectedIds
+		[name: "keywords"]              | ["keywords"]
+		[name: ~/checker\d/]            | ["checker1", "checker2"]
+		[name: "site", value: "google"] | ["site-1"]
+	}
+
+	def "find by text"() {
+		expect: onPage.find(text: text).size() == expectedSize
+
+		where:
+		text                            | expectedSize
+		"First paragraph of article 2." | 1
+		~/.*article 1\./                | 2
+	}
+
 	def "find by selector and index"() {
 		expect:
 		navigator.size() == 1
@@ -100,11 +119,11 @@ class NavigatorSpec extends Specification {
 		onPage.find(".article", -1) | "article-3"
 	}
 
-	def "find by selector and predicates"() {
-		expect: onPage.find(predicates, selector).ids() == expectedIds
+	def "find by selector and attributes"() {
+		expect: onPage.find(attributes, selector).ids() == expectedIds
 
 		where:
-		selector   | predicates                              | expectedIds
+		selector   | attributes                              | expectedIds
 		"input"    | [type: "checkbox"]                      | ["checker1", "checker2"]
 		"input"    | [name: "site"]                          | ["site-1", "site-2"]
 		"input"    | [name: "site", value: "google"]         | ["site-1"]
