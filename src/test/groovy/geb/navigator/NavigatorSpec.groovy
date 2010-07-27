@@ -145,7 +145,7 @@ class NavigatorSpec extends Specification {
 		"p"        | "DOES NOT EXIST"                | 0
 	}
 
-	def "filter by selector selects from current node set"() {
+	def "filter by selector"() {
 		expect: navigator.filter(filter).ids() == expectedIds
 
 		where:
@@ -156,7 +156,7 @@ class NavigatorSpec extends Specification {
 		// TODO: case for filter by tag
 	}
 
-	def "filter by attributes selects from current node set"() {
+	def "filter by attributes"() {
 		expect: navigator.filter(filter).ids() == expectedIds
 
 		where:
@@ -166,6 +166,16 @@ class NavigatorSpec extends Specification {
 		onPage.find("input")      | [name: "site", value: "google"] | ["site-1"]
 		onPage.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
 		onPage.find("#article-1") | [id: "article-2"]               | []
+	}
+
+	def "filter by text"() {
+		expect: navigator.filter(text: text).size() == expectedSize
+
+		where:
+		navigator        | text                            | expectedSize
+		onPage.find("p") | "First paragraph of article 2." | 1
+		onPage.find("p") | ~/.*article 1\./                | 2
+		onPage.find("p") | "DOES NOT EXIST"                | 0
 	}
 
 	def "next selects following elements"() {
