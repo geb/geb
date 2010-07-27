@@ -49,7 +49,10 @@ class PageContentTemplate {
 		params.dynamic
 	}
 	
-	Class getTo() {
+	/**
+	 * Can return Class or List&lt;Class&gt;
+	 */
+	def getTo() {
 		params.to
 	}
 	

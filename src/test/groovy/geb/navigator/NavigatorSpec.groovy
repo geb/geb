@@ -5,6 +5,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
+import spock.lang.Ignore
 import geb.navigator.Navigator
 import geb.navigator.MatchType
 import geb.navigator.EmptyNavigatorException
@@ -210,6 +211,7 @@ class NavigatorSpec extends Specification {
 		onPage.find("#keywords") | "bdo"    | null
 	}
 
+	@Ignore
 	def "previous selects preceding elements"() {
 		expect:
 		navigator.previous().is(expectedTag)
@@ -220,6 +222,7 @@ class NavigatorSpec extends Specification {
 		onPage.find("div") | "hr"
 	}
 
+	@Ignore
 	def "previous selects single element"() {
 		when:
 		def navigator = onPage.find(selector)
@@ -244,6 +247,7 @@ class NavigatorSpec extends Specification {
 		navigator.isEmpty()
 	}
 
+	@Ignore
 	def "previous with tag argument"() {
 		when:
 		navigator = navigator.previous(tag)
@@ -502,6 +506,7 @@ class NavigatorSpec extends Specification {
 		onPage.find("#article-3")                             | "style" | ""
 	}
 
+	@Ignore
 	def attributes() {
 		expect:
 		navigator.attributes(key) == expectedValues

@@ -48,7 +48,7 @@ class Page implements Content {
 	 * To be implemented by page subclasses to check that the current
 	 * actual page is the page for this page object.
 	 */
-	def verifyAt() {
+	boolean verifyAt() {
 		def verifier = this.class.at?.clone()
 		if (verifier) {
 			verifier.delegate = this
@@ -107,7 +107,7 @@ class Page implements Content {
 	
 	def getPageUrl(String path) {
 		def pageUrl = getPageUrl()
-		path ? "$pageUrl/$path" : pageUrl
+		path ? (pageUrl ? "$pageUrl/$path" : path) : pageUrl
 	}
 	
 	def convertToPath(Object[] args) {

@@ -16,6 +16,7 @@ package geb.internal.content
 
 import geb.Page
 import geb.error.RequiredPageContentNotPresent
+import geb.error.UnexpectedPageException
 import be.roam.hue.doj.Doj
 
 abstract class TemplateDerivedPageContent implements PageContent {
@@ -59,13 +60,47 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	}
 	
 	void click() {
-		click(_template.to)
+		def to = _template.to
+		if (to == null) {
+			_navigator.click()
+		} else if (to instanceof Class) {
+			click(to)
+		} else if (to instanceof List) {
+			click(to)
+		} else {
+			throw new IllegalStateException("Unhandleable 'to' value from template $_template: $to")
+		}
 	}
 	
 	void click(Class pageClass) {
 		_navigator.click()
 		if (pageClass) {
 			_template.page.driver.page(pageClass)
+		}
+	}
+
+	void click(List<Class> potentialPageClasses) {
+		_navigator.click()
+		
+		def potentialPageClassesClone = potentialPageClasses.clone()
+		def match = null
+		while (match == null && !potentialPageClassesClone.empty) {
+			def potential = page.driver.createPage(potentialPageClassesClone.remove(0))
+			def isAt = false
+			try {
+				isAt = potential.verifyAt()
+			} catch (AssertionError e) {
+				// at checker may use assertions
+			}
+			if (isAt) {
+				match = potential
+			}
+		}
+		
+		if (match) {
+			page.driver.page(match)
+		} else {
+			throw new UnexpectedPageException(this, potentialPageClasses)
 		}
 	}
 

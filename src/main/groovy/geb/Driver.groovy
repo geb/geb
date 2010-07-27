@@ -45,7 +45,7 @@ class Driver {
 	}	
 	
 	void page(Class pageClass) {
-		page(pageClass.newInstance())
+		page(createPage(pageClass))
 	}
 
 	void page(Page page) {
@@ -108,11 +108,11 @@ class Driver {
 		}
 	}
 	
-	protected _createPage(Class pageClass) {
+	Page createPage(Class pageClass) {
 		if (!Page.isAssignableFrom(pageClass)) {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
-		
+		pageClass.newInstance(driver: this)
 	}
 	
 	protected _toQueryString(Map params) {
