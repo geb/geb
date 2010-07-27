@@ -178,6 +178,15 @@ class NavigatorSpec extends Specification {
 		onPage.find("p") | "DOES NOT EXIST"                | 0
 	}
 
+	def "filter by selector and attributes"() {
+		expect: navigator.filter(attributes, selector).ids() == expectedIds
+
+		where:
+		navigator                       | selector | attributes         | expectedIds
+		onPage.find("a, input, select") | "input"  | [type: "checkbox"] | ["checker1", "checker2"]
+		onPage.find("a, input, select") | "select" | [type: "checkbox"] | []
+	}
+
 	def "next selects following elements"() {
 		expect:
 		navigator.next().is(expectedTag)

@@ -43,10 +43,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator find(Map<String, Object> predicates, String selector) {
-		def navigator = find(selector)
-		on navigator.allElements().findAll { WebElement element ->
-			matches(element, predicates)
-		}
+		find(selector).filter(predicates)
 	}
 
 	private boolean matches(WebElement element, Map<String, Object> predicates) {
@@ -71,6 +68,10 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator filter(Map<String, Object> predicates) {
 		on contextElements.findAll { matches(it, predicates) }
+	}
+
+	Navigator filter(Map<String, Object> predicates, String selector) {
+		filter(selector).filter(predicates)
 	}
 
 	Navigator getAt(int index) {

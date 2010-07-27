@@ -22,6 +22,8 @@ import static java.util.Collections.EMPTY_LIST
 
 	Navigator filter(Map<String, Object> predicates) { this }
 
+	Navigator filter(Map<String, Object> predicates, String selector) { this }
+
 	Navigator unique() { this }
 
 	Navigator withTag(String tag) { this }

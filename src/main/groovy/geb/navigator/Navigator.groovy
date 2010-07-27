@@ -82,6 +82,8 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	abstract Navigator filter(Map<String, Object> predicates)
 
+	abstract Navigator filter(Map<String, Object> predicates, String selector)
+
 	/**
 	 * Gets the wrapped element at the given index.
 	 * <p>
