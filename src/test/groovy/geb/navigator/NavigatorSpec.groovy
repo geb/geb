@@ -95,6 +95,7 @@ class NavigatorSpec extends Specification {
 		[name: "keywords"]              | ["keywords"]
 		[name: ~/checker\d/]            | ["checker1", "checker2"]
 		[name: "site", value: "google"] | ["site-1"]
+		[name: "DOES-NOT-EXIST"]        | []
 	}
 
 	def "find by text"() {
@@ -104,6 +105,7 @@ class NavigatorSpec extends Specification {
 		text                            | expectedSize
 		"First paragraph of article 2." | 1
 		~/.*article 1\./                | 2
+		"DOES NOT EXIST"                | 0
 	}
 
 	def "find by selector and index"() {
@@ -139,9 +141,10 @@ class NavigatorSpec extends Specification {
 		selector   | text                            | expectedSize
 		"p"        | "First paragraph of article 2." | 1
 		"p"        | ~/.*article 1\./                | 2
+		"p"        | "DOES NOT EXIST"                | 0
 	}
 
-	def "filter selects from current node set"() {
+	def "filter by selector selects from current node set"() {
 		expect: navigator.filter(filter).ids() == expectedIds
 
 		where:
@@ -150,6 +153,18 @@ class NavigatorSpec extends Specification {
 		onPage.find(".article") | "#no-such-id" | []
 		onPage.find("div")      | ".article"    | ["article-1", "article-2", "article-3"]
 		// TODO: case for filter by tag
+	}
+
+	def "filter by attributes selects from current node set"() {
+		expect: navigator.filter(filter).ids() == expectedIds
+
+		where:
+		navigator                 | filter                          | expectedIds
+		onPage.find("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
+		onPage.find("input")      | [name: "site"]                  | ["site-1", "site-2"]
+		onPage.find("input")      | [name: "site", value: "google"] | ["site-1"]
+		onPage.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
+		onPage.find("#article-1") | [id: "article-2"]               | []
 	}
 
 	def "next selects following elements"() {

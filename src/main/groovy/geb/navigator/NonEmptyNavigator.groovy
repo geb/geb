@@ -69,6 +69,10 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
+	Navigator filter(Map<String, Object> predicates) {
+		on contextElements.findAll { matches(it, predicates) }
+	}
+
 	Navigator getAt(int index) {
 		on getElement(index)
 	}
