@@ -665,7 +665,6 @@ class NavigatorSpec extends Specification {
 		page.find("#checker1")            | null                      | "123"
 		page.find("#checker2")            | "123"                     | null
 		page.find("input", name: "site")  | "google"                  | "thisone"
-		// TODO: tear down?
 	}
 
 	@Unroll
