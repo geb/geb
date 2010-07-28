@@ -16,7 +16,9 @@ package geb
 
 import geb.internal.content.*
 import geb.error.*
+import geb.internal.mixins.TextMatchingSupport
 
+@Mixin(TextMatchingSupport)
 class Module extends TemplateDerivedPageContent {
 
 	static base = null

@@ -45,6 +45,12 @@ class ModulesSpec extends GebSpecWithServer {
 		divCWithRelativeInner.innerDiv.p.text() == "d"
 	}
 	
+	def "call in mixed in method from TextMatchingSupport"() {
+		when:
+		to ModulesSpecPage
+		then:
+		"abc" ==~ divA.contains("b")
+	}
 }
 
 class ModulesSpecPage extends Page {

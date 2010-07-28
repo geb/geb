@@ -18,7 +18,9 @@ import geb.error.UndefinedPageContentException
 import geb.internal.content.PageContentTemplateBuilder
 import geb.internal.content.Content
 import be.roam.hue.doj.Doj
+import geb.internal.mixins.TextMatchingSupport
 
+@Mixin(TextMatchingSupport)
 class Page implements Content {
 
 	static at = null

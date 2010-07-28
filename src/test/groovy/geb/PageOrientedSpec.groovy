@@ -142,6 +142,13 @@ class PageOrientedSpec extends GebSpecWithServer {
 		thrown(UnexpectedPageException)
 	}
 	
+	def "call in mixed in method from TextMatchingSupport"() {
+		when:
+		to PageA
+		then:
+		"abc" ==~ contains("b")
+	}
+	
 }
 
 class PageA extends Page {
