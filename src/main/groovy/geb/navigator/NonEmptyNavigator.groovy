@@ -366,21 +366,62 @@ class NonEmptyNavigator extends Navigator {
 		}
 
 		if (input) {
-			def value
-			if (input.tagName == "select") {
-				if (input.getAttribute("multiple")) {
-					value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
-				} else {
-					value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
-				}
-			} else if (input.getAttribute("type") == "checkbox") {
-				value = input.isSelected() ? input.value : null
-			} else {
-				value = input.value
-			}
-			return value
+			return readInputValue(input)
 		} else {
 			throw new MissingPropertyException(name, getClass())
+		}
+	}
+
+	def propertyMissing(String name, value) {
+		def input = firstElementInContext {
+			it.findElement(By.name(name))
+		}
+
+		if (input) {
+			setInputValue(input, value)
+		} else {
+			throw new MissingPropertyException(name, getClass())
+		}
+	}
+
+	private readInputValue(WebElement input) {
+		def value
+		if (input.tagName == "select") {
+			if (input.getAttribute("multiple")) {
+				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
+			} else {
+				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
+			}
+		} else if (input.getAttribute("type") == "checkbox") {
+			value = input.isSelected() ? input.value : null
+		} else {
+			value = input.value
+		}
+		return value
+	}
+
+	private void setInputValue(WebElement input, value) {
+		if (input.tagName == "select") {
+			if (input.getAttribute("multiple")) {
+				input.findElements(By.tagName("option")).each { WebElement option ->
+					if (option.value in value) {
+						option.setSelected()
+					} else if (option.isSelected()) {
+						option.toggle()
+					}
+				}
+			} else {
+				input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
+			}
+		} else if (input.getAttribute("type") == "checkbox") {
+			if (input.value == value) {
+				input.setSelected()
+			} else if (input.isSelected()) {
+				input.toggle()
+			}
+		} else {
+			input.clear()
+			input.sendKeys value
 		}
 	}
 

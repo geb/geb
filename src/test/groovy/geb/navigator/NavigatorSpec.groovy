@@ -6,6 +6,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 import spock.lang.Ignore
+import org.openqa.selenium.By
 
 class NavigatorSpec extends Specification {
 
@@ -20,6 +21,23 @@ class NavigatorSpec extends Specification {
 
 	def cleanupSpec() {
 		driver.close()
+	}
+
+	def cleanup() {
+		driver.findElement(By.name("keywords")).clear()
+		driver.findElement(By.name("keywords")).sendKeys("Enter keywords here")
+		driver.findElement(By.name("site")).setSelected()
+		if (driver.findElement(By.name("checker1")).isSelected()) driver.findElement(By.name("checker1")).toggle()
+		driver.findElement(By.name("checker2")).setSelected()
+		driver.findElement(By.name("plain_select")).findElements(By.tagName("option"))[3].setSelected()
+		def multiSelectOptions = driver.findElement(By.name("multiple_select")).findElements(By.tagName("option"))
+		if (multiSelectOptions[0].isSelected()) multiSelectOptions[0].toggle()
+		multiSelectOptions[1].setSelected()
+		if (multiSelectOptions[2].isSelected()) multiSelectOptions[2].toggle()
+		multiSelectOptions[3].setSelected()
+		if (multiSelectOptions[4].isSelected()) multiSelectOptions[4].toggle()
+		driver.findElement(By.name("textext")).clear()
+		driver.findElement(By.name("textext")).sendKeys(" The textarea content. ")
 	}
 
 	def "getElement by index"() {
@@ -500,7 +518,7 @@ class NavigatorSpec extends Specification {
 		page.find("#article-2 h2 a") | "Article title 2"
 		page.find("ol li")           | "Item #1"
 	}
-	
+
 	def trimmedTexts() {
 		expect:
 		navigator.trimmedTexts() == ["Article title 1", "Article title 2", "Article title 3"]
@@ -564,6 +582,24 @@ class NavigatorSpec extends Specification {
 		thrown(MissingPropertyException)
 	}
 
+	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
+	def "form field values can be set using property access"() {
+		given: def form = page.find("form")
+		when: form."$fieldName" = newValue
+		then: form."$fieldName" == newValue
+
+		where:
+		fieldName         | newValue
+		"keywords"        | "Lorem ipsum dolor sit amet"
+		"site"            | "thisone"
+		"checker1"        | "123"
+		"checker2"        | null
+		"textext"         | "Lorem ipsum dolor sit amet"
+		"plain_select"    | "3"
+		"multiple_select" | ["1", "3", "5"]
+	}
+
+	@Unroll @Ignore
 	def "get value"() {
 		expect:
 		navigator.value() == expectedValue
@@ -580,6 +616,7 @@ class NavigatorSpec extends Specification {
 		page.find("input", name: "site")                            | "google"
 	}
 
+	@Ignore
 	def "set value"() {
 		expect:
 		navigator.value() == expectedValue
@@ -598,6 +635,7 @@ class NavigatorSpec extends Specification {
 		// TODO: tear down?
 	}
 
+	@Ignore
 	def values() {
 		expect:
 		navigator.values() == expectedValues
