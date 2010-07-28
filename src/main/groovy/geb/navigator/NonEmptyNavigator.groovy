@@ -122,63 +122,39 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator next() {
-		List<WebElement> siblings = []
-		contextElements.each { WebElement element ->
-			try {
-				siblings << element.findElement(By.xpath("following-sibling::*"))
-			} catch (org.openqa.selenium.NoSuchElementException e) {}
+		on collectElements {
+			it.findElement By.xpath("following-sibling::*")
 		}
-		on siblings
 	}
 
 	Navigator next(String tag) {
-		List<WebElement> siblings = []
-		contextElements.each { WebElement element ->
-			try {
-				siblings << element.findElement(By.xpath("following-sibling::$tag"))
-			} catch (org.openqa.selenium.NoSuchElementException e) {}
+		on collectElements {
+			it.findElement By.xpath("following-sibling::$tag")
 		}
-		on siblings
 	}
 
 	Navigator previous() {
-		List<WebElement> siblings = []
-		contextElements.each { WebElement element ->
-			try {
-				siblings << element.findElement(By.xpath("preceding-sibling::*"))
-			} catch (org.openqa.selenium.NoSuchElementException e) {}
+		on collectElements {
+			it.findElement By.xpath("preceding-sibling::*")
 		}
-		on siblings
 	}
 
 	Navigator previous(String tag) {
-		List<WebElement> siblings = []
-		contextElements.each { WebElement element ->
-			try {
-				siblings << element.findElement(By.xpath("preceding-sibling::$tag"))
-			} catch (org.openqa.selenium.NoSuchElementException e) {}
+		on collectElements {
+			it.findElement By.xpath("preceding-sibling::$tag")
 		}
-		on siblings
 	}
 
 	Navigator parent() {
-		List<WebElement> siblings = []
-		contextElements.each { WebElement element ->
-			try {
-				siblings << element.findElement(By.xpath("parent::*"))
-			} catch (org.openqa.selenium.NoSuchElementException e) {}
+		on collectElements {
+			it.findElement By.xpath("parent::*")
 		}
-		on siblings
 	}
 
 	Navigator parent(String tag) {
-		List<WebElement> ancestors = []
-		contextElements.each { WebElement element ->
-			try {
-				ancestors << element.findElement(By.xpath("ancestor::$tag[1]"))
-			} catch (org.openqa.selenium.NoSuchElementException e) {}
+		on collectElements {
+			it.findElement By.xpath("ancestor::$tag[1]")
 		}
-		on ancestors
 	}
 
 	Navigator unique() {
@@ -382,6 +358,46 @@ class NonEmptyNavigator extends Navigator {
 
 	String toString() {
 		contextElements*.toString()
+	}
+
+	def propertyMissing(String name) {
+		def input = firstElementInContext {
+			it.findElement(By.name(name))
+		}
+
+		if (input) {
+			input.getValue()
+		} else {
+			throw new MissingPropertyException(name, getClass())
+		}
+	}
+
+	private WebElement firstElementInContext(Closure closure) {
+		def result = null
+		for (int i = 0; !result && i < contextElements.size(); i++) {
+			try {
+				result = closure(contextElements[i])
+			} catch (org.openqa.selenium.NoSuchElementException e) { }
+		}
+		result
+	}
+
+	private List<WebElement> collectElements(Closure closure) {
+		List<WebElement> list = []
+		contextElements.each {
+			try {
+				def value = closure(it)
+				switch (value) {
+					case Collection:
+						list.addAll value
+						break
+					default:
+						// TODO: this should check for null
+						list << value
+				}
+			} catch (org.openqa.selenium.NoSuchElementException e) { }
+		}
+		list
 	}
 
 }

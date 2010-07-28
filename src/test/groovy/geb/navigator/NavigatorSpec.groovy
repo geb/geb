@@ -6,19 +6,16 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 import spock.lang.Ignore
-import geb.navigator.Navigator
-import geb.navigator.MatchType
-import geb.navigator.EmptyNavigatorException
 
 class NavigatorSpec extends Specification {
 
 	@Shared WebDriver driver
-	@Shared geb.navigator.Navigator onPage
+	@Shared geb.navigator.Navigator page
 
 	def setupSpec() {
 		driver = new HtmlUnitDriver()
 		driver.get(getClass().getResource("/test.html") as String)
-		onPage = Navigator.on(driver)
+		page = Navigator.on(driver)
 	}
 
 	def cleanupSpec() {
@@ -27,8 +24,8 @@ class NavigatorSpec extends Specification {
 
 	def "getElement by index"() {
 		expect:
-		onPage.find("div").getElement(1).getAttribute("id") == "header"
-		onPage.find("bdo").getElement(0) == null
+		page.find("div").getElement(1).getAttribute("id") == "header"
+		page.find("bdo").getElement(0) == null
 	}
 
 	def "remove"() {
@@ -41,19 +38,19 @@ class NavigatorSpec extends Specification {
 		navigator.size() == expectedSize
 
 		where:
-		navigator                     | index | iterations | expectedSize
-		onPage.find("li")             | 5     | 1          | 22
-		onPage.find("li")             | 0     | 1          | 22
-		onPage.find("li")             | -1    | 1          | 22
-		onPage.find("li")             | 1     | 1          | 22
-		onPage.find("li")             | 23    | 1          | 23
-		onPage.find("li")             | 0     | 2          | 21
-		onPage.find("li").find("bdo") | 0     | 1          | 0
+		navigator                   | index | iterations | expectedSize
+		page.find("li")             | 5     | 1          | 22
+		page.find("li")             | 0     | 1          | 22
+		page.find("li")             | -1    | 1          | 22
+		page.find("li")             | 1     | 1          | 22
+		page.find("li")             | 23    | 1          | 23
+		page.find("li")             | 0     | 2          | 21
+		page.find("li").find("bdo") | 0     | 1          | 0
 	}
 
 	def "find by CSS selector"() {
 		when:
-		def navigator = onPage.find(selector)
+		def navigator = page.find(selector)
 
 		then:
 		navigator."$property"() == expectedValue
@@ -70,7 +67,7 @@ class NavigatorSpec extends Specification {
 
 	def "find by id in element context"() {
 		expect:
-		onPage.find(selector1).find(selector2).size() == expectedSize
+		page.find(selector1).find(selector2).size() == expectedSize
 
 		where:
 		selector1    | selector2 | expectedSize
@@ -80,7 +77,7 @@ class NavigatorSpec extends Specification {
 
 	def "find with grouped selectors"() {
 		expect:
-		onPage.find(selector).size() == expectedSize
+		page.find(selector).size() == expectedSize
 
 		where:
 		selector                                | expectedSize
@@ -89,7 +86,7 @@ class NavigatorSpec extends Specification {
 	}
 
 	def "find by attributes"() {
-		expect: onPage.find(attributes).ids() == expectedIds
+		expect: page.find(attributes).ids() == expectedIds
 
 		where:
 		attributes                      | expectedIds
@@ -100,7 +97,7 @@ class NavigatorSpec extends Specification {
 	}
 
 	def "find by text"() {
-		expect: onPage.find(text: text).size() == expectedSize
+		expect: page.find(text: text).size() == expectedSize
 
 		where:
 		text                            | expectedSize
@@ -115,15 +112,15 @@ class NavigatorSpec extends Specification {
 		navigator.id() == expectedId
 
 		where:
-		navigator                   | expectedId
-		onPage.find(".article", 0)  | "article-1"
-		onPage.find(".article", 1)  | "article-2"
-		onPage.find(".article", 2)  | "article-3"
-		onPage.find(".article", -1) | "article-3"
+		navigator                 | expectedId
+		page.find(".article", 0)  | "article-1"
+		page.find(".article", 1)  | "article-2"
+		page.find(".article", 2)  | "article-3"
+		page.find(".article", -1) | "article-3"
 	}
 
 	def "find by selector and attributes"() {
-		expect: onPage.find(attributes, selector).ids() == expectedIds
+		expect: page.find(attributes, selector).ids() == expectedIds
 
 		where:
 		selector   | attributes                              | expectedIds
@@ -136,7 +133,7 @@ class NavigatorSpec extends Specification {
 	}
 
 	def "find by selector and text predicate"() {
-		expect: onPage.find(selector, text: text).size() == expectedSize
+		expect: page.find(selector, text: text).size() == expectedSize
 
 		where:
 		selector   | text                            | expectedSize
@@ -149,10 +146,10 @@ class NavigatorSpec extends Specification {
 		expect: navigator.filter(filter).ids() == expectedIds
 
 		where:
-		navigator               | filter        | expectedIds
-		onPage.find(".article") | "#article-2"  | ["article-2"]
-		onPage.find(".article") | "#no-such-id" | []
-		onPage.find("div")      | ".article"    | ["article-1", "article-2", "article-3"]
+		navigator             | filter        | expectedIds
+		page.find(".article") | "#article-2"  | ["article-2"]
+		page.find(".article") | "#no-such-id" | []
+		page.find("div")      | ".article"    | ["article-1", "article-2", "article-3"]
 		// TODO: case for filter by tag
 	}
 
@@ -160,31 +157,31 @@ class NavigatorSpec extends Specification {
 		expect: navigator.filter(filter).ids() == expectedIds
 
 		where:
-		navigator                 | filter                          | expectedIds
-		onPage.find("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
-		onPage.find("input")      | [name: "site"]                  | ["site-1", "site-2"]
-		onPage.find("input")      | [name: "site", value: "google"] | ["site-1"]
-		onPage.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
-		onPage.find("#article-1") | [id: "article-2"]               | []
+		navigator               | filter                          | expectedIds
+		page.find("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
+		page.find("input")      | [name: "site"]                  | ["site-1", "site-2"]
+		page.find("input")      | [name: "site", value: "google"] | ["site-1"]
+		page.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
+		page.find("#article-1") | [id: "article-2"]               | []
 	}
 
 	def "filter by text"() {
 		expect: navigator.filter(text: text).size() == expectedSize
 
 		where:
-		navigator        | text                            | expectedSize
-		onPage.find("p") | "First paragraph of article 2." | 1
-		onPage.find("p") | ~/.*article 1\./                | 2
-		onPage.find("p") | "DOES NOT EXIST"                | 0
+		navigator      | text                            | expectedSize
+		page.find("p") | "First paragraph of article 2." | 1
+		page.find("p") | ~/.*article 1\./                | 2
+		page.find("p") | "DOES NOT EXIST"                | 0
 	}
 
 	def "filter by selector and attributes"() {
 		expect: navigator.filter(attributes, selector).ids() == expectedIds
 
 		where:
-		navigator                       | selector | attributes         | expectedIds
-		onPage.find("a, input, select") | "input"  | [type: "checkbox"] | ["checker1", "checker2"]
-		onPage.find("a, input, select") | "select" | [type: "checkbox"] | []
+		navigator                     | selector | attributes         | expectedIds
+		page.find("a, input, select") | "input"  | [type: "checkbox"] | ["checker1", "checker2"]
+		page.find("a, input, select") | "select" | [type: "checkbox"] | []
 	}
 
 	def "next selects following elements"() {
@@ -192,14 +189,14 @@ class NavigatorSpec extends Specification {
 		navigator.next().is(expectedTag)
 
 		where:
-		navigator                | expectedTag
-		onPage.find("div") | "div"
-		onPage.find("div") | "hr"
+		navigator        | expectedTag
+		page.find("div") | "div"
+		page.find("div") | "hr"
 	}
 
 	def "next selects single element"() {
 		when:
-		def navigator = onPage.find(selector)
+		def navigator = page.find(selector)
 		iterations.times {
 			navigator = navigator.next()
 		}
@@ -215,7 +212,7 @@ class NavigatorSpec extends Specification {
 
 	def "next returns empty if element has no sibling"() {
 		when:
-		def navigator = onPage.find("body").next()
+		def navigator = page.find("body").next()
 
 		then:
 		navigator.isEmpty()
@@ -225,9 +222,9 @@ class NavigatorSpec extends Specification {
 		expect: expectedId ? navigator.next(tag).id() == expectedId : navigator.next(tag).isEmpty()
 
 		where:
-		navigator                | tag      | expectedId
-		onPage.find("#keywords") | "select" | "the_plain_select"
-		onPage.find("#keywords") | "bdo"    | null
+		navigator              | tag      | expectedId
+		page.find("#keywords") | "select" | "the_plain_select"
+		page.find("#keywords") | "bdo"    | null
 	}
 
 	@Ignore
@@ -236,15 +233,15 @@ class NavigatorSpec extends Specification {
 		navigator.previous().is(expectedTag)
 
 		where:
-		navigator          | expectedTag
-		onPage.find("div") | "div"
-		onPage.find("div") | "hr"
+		navigator        | expectedTag
+		page.find("div") | "div"
+		page.find("div") | "hr"
 	}
 
 	@Ignore
 	def "previous selects single element"() {
 		when:
-		def navigator = onPage.find(selector)
+		def navigator = page.find(selector)
 		iterations.times {
 			navigator = navigator.previous()
 		}
@@ -260,7 +257,7 @@ class NavigatorSpec extends Specification {
 
 	def "previous returns empty if element has no sibling"() {
 		when:
-		def navigator = onPage.find("head").previous()
+		def navigator = page.find("head").previous()
 
 		then:
 		navigator.isEmpty()
@@ -275,14 +272,14 @@ class NavigatorSpec extends Specification {
 		expectedId ? navigator.id() == expectedId : navigator.isEmpty()
 
 		where:
-		navigator                           | tag     | expectedId
-		onPage.find("#the_multiple_select") | "input" | "checker2"
-		onPage.find("#keywords")            | "bdo"   | null
+		navigator                         | tag     | expectedId
+		page.find("#the_multiple_select") | "input" | "checker2"
+		page.find("#keywords")            | "bdo"   | null
 	}
 
 	def "parent selects parent of single element"() {
 		when:
-		def navigator = onPage.find("#content").parent()
+		def navigator = page.find("#content").parent()
 
 		then:
 		navigator.id() == "container"
@@ -290,7 +287,7 @@ class NavigatorSpec extends Specification {
 
 	def "parent selects parents of multiple elements"() {
 		when:
-		def navigator = onPage.find(selector).parent()
+		def navigator = page.find(selector).parent()
 		if (parentTag) {
 			navigator = navigator.withTag(parentTag)
 		}
@@ -314,9 +311,9 @@ class NavigatorSpec extends Specification {
 		!expectedId || navigator.id() == expectedId
 
 		where:
-		navigator                      | tag    | expectedId
-		onPage.find("ol.ol-simple li") | "div"  | "sidebar"
-		onPage.find("option")          | "form" | null
+		navigator                    | tag    | expectedId
+		page.find("ol.ol-simple li") | "div"  | "sidebar"
+		page.find("option")          | "form" | null
 	}
 
 	def unique() {
@@ -325,13 +322,13 @@ class NavigatorSpec extends Specification {
 		then: navigator.size() == expectedSize
 
 		where:
-		navigator1                | navigator2                    | expectedSize
-		onPage.find("#article-1") | onPage.find(".article") | 3
+		navigator1              | navigator2                    | expectedSize
+		page.find("#article-1") | page.find(".article") | 3
 	}
 
 	def "unique is applied by default"() {
 		when:
-		def navigator = onPage.find("div").find("ol")
+		def navigator = page.find("div").find("ol")
 
 		then:
 		navigator.size() == expectedSize
@@ -345,11 +342,11 @@ class NavigatorSpec extends Specification {
 		navigator.id() == expectedId
 
 		where:
-		navigator                     | expectedId
-		onPage.find("div", 0)         | "container"
-		onPage.find("div div", 1)     | "navigation"
-		onPage.find("#article-1 div") | ""
-		onPage.find("bdo")            | null
+		navigator                   | expectedId
+		page.find("div", 0)         | "container"
+		page.find("div div", 1)     | "navigation"
+		page.find("#article-1 div") | ""
+		page.find("bdo")            | null
 	}
 
 	def ids() {
@@ -357,15 +354,15 @@ class NavigatorSpec extends Specification {
 		navigator.ids() == expectedIds
 
 		where:
-		navigator                 | expectedIds
-		onPage.find("div")[0..<5] | ["container", "header", "navigation", "content", "main"]
-		onPage.find("bdo")        | []
+		navigator               | expectedIds
+		page.find("div")[0..<5] | ["container", "header", "navigation", "content", "main"]
+		page.find("bdo")        | []
 	}
 
 	@Unroll("findByAttribute '#key' with value '#value' and matcher #matcher should find #expectedSize elements")
 	def findByAttribute() {
 		expect:
-		onPage.findByAttribute(key, matcher, value).size() == expectedSize
+		page.findByAttribute(key, matcher, value).size() == expectedSize
 
 		where:
 		key     | matcher                             | value       | expectedSize
@@ -391,12 +388,12 @@ class NavigatorSpec extends Specification {
 		navigator.hasClass(className) == expectedResult
 
 		where:
-		navigator               | className | expectedResult
-		onPage.find(".article") | "article" | true
-		onPage.find("div")      | "module"  | true
-		onPage.find("#content") | "col-3"   | true
-		onPage.find("#content") | "col-2"   | false
-		onPage.find("#content") | "col"     | false
+		navigator             | className | expectedResult
+		page.find(".article") | "article" | true
+		page.find("div")      | "module"  | true
+		page.find("#content") | "col-3"   | true
+		page.find("#content") | "col-2"   | false
+		page.find("#content") | "col"     | false
 	}
 
 	def is() {
@@ -404,17 +401,17 @@ class NavigatorSpec extends Specification {
 		navigator.is(expectedTag) == expectedResult
 
 		where:
-		navigator                               | expectedTag  | expectedResult
-		onPage.find("div")                      | "div"        | true
-		onPage.find("#article-1 p").parent()    | "div"        | true
-		onPage.find("#article-1 p").parent()    | "blockquote" | true
-		onPage.find("#article-1 p").parent()[0] | "blockquote" | false
+		navigator                             | expectedTag  | expectedResult
+		page.find("div")                      | "div"        | true
+		page.find("#article-1 p").parent()    | "div"        | true
+		page.find("#article-1 p").parent()    | "blockquote" | true
+		page.find("#article-1 p").parent()[0] | "blockquote" | false
 	}
 
 	@Unroll("withAttribute '#key' with value '#value' and matcher #matcher should find #expectedSize elements")
 	def withAttribute() {
 		when:
-		def navigator = selector ? onPage.find(selector) : onPage
+		def navigator = selector ? page.find(selector) : page
 
 		then:
 		navigator.withAttribute(key, matcher, value).size() == expectedSize
@@ -442,7 +439,7 @@ class NavigatorSpec extends Specification {
 
 	def hasAttribute() {
 		when:
-		def navigator = selector ? onPage.find(selector) : onPage
+		def navigator = selector ? page.find(selector) : page
 
 		then:
 		navigator.hasAttribute(key, matcher, value) == expectedResult
@@ -479,10 +476,10 @@ class NavigatorSpec extends Specification {
 		navigator.text().contains(expectedText) == expectedResult
 
 		where:
-		navigator                 | expectedText      | expectedResult
-		onPage                    | "Article title 2" | true
-		onPage.find("#article-2") | "Article title 2" | true
-		onPage.find("#article-3") | "Article title 2" | false
+		navigator               | expectedText      | expectedResult
+		page                    | "Article title 2" | true
+		page.find("#article-2") | "Article title 2" | true
+		page.find("#article-3") | "Article title 2" | false
 	}
 
 	def texts() {
@@ -490,8 +487,8 @@ class NavigatorSpec extends Specification {
 		navigator.texts() == expectedValues
 
 		where:
-		navigator                  | expectedValues
-		onPage.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
+		navigator                | expectedValues
+		page.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
 	}
 
 	def trimmedText() {
@@ -499,9 +496,9 @@ class NavigatorSpec extends Specification {
 		navigator.trimmedText() == expectedText
 
 		where:
-		navigator                      | expectedText
-		onPage.find("#article-2 h2 a") | "Article title 2"
-		onPage.find("ol li")           | "Item #1"
+		navigator                    | expectedText
+		page.find("#article-2 h2 a") | "Article title 2"
+		page.find("ol li")           | "Item #1"
 	}
 	
 	def trimmedTexts() {
@@ -509,8 +506,8 @@ class NavigatorSpec extends Specification {
 		navigator.trimmedTexts() == ["Article title 1", "Article title 2", "Article title 3"]
 
 		where:
-		navigator                  | expectedValues
-		onPage.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
+		navigator                | expectedValues
+		page.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
 	}
 
 	def attribute() {
@@ -518,11 +515,11 @@ class NavigatorSpec extends Specification {
 		navigator.attribute(key) == expectedValue
 
 		where:
-		navigator                                             | key     | expectedValue
-		onPage.find("#header")                                | "id"    | "header"
-		onPage.find("#article-3")                             | "class" | "article"
-		onPage.find("input").withName("site").with("checked") | "value" | "google"
-		onPage.find("#article-3")                             | "style" | ""
+		navigator                                           | key     | expectedValue
+		page.find("#header")                                | "id"    | "header"
+		page.find("#article-3")                             | "class" | "article"
+		page.find("input").withName("site").with("checked") | "value" | "google"
+		page.find("#article-3")                             | "style" | ""
 	}
 
 	@Ignore
@@ -531,9 +528,34 @@ class NavigatorSpec extends Specification {
 		navigator.attributes(key) == expectedValues
 
 		where:
-		navigator                             | key       | expectedValues
-		onPage.find("input").withName("site") | "value"   | ["google", "thisone"]
-		onPage.find("input").withName("site") | "checked" | ["checked", ""]
+		navigator                           | key       | expectedValues
+		page.find("input").withName("site") | "value"   | ["google", "thisone"]
+		page.find("input").withName("site") | "checked" | ["checked", ""]
+	}
+
+	@Unroll("the value of '#fieldName' retrieved via property access should be '#expectedValue'")
+	def "form field values can be retrieved using property access"() {
+		expect: page.find("form")."$fieldName" == expectedValue
+
+		where:
+		fieldName  | expectedValue
+		"keywords" | "Enter keywords here"
+	}
+
+	def "form field property access works on any node in the Navigator"() {
+		when:
+		def navigator = page.find(".article, form")
+
+		then:
+		navigator.keywords == "Enter keywords here"
+	}
+
+	def "invalid form field names raise the correct exception type"() {
+		when:
+		page.find("form").someFieldThatDoesNotExist
+
+		then:
+		thrown(MissingPropertyException)
 	}
 
 	def "get value"() {
@@ -541,15 +563,15 @@ class NavigatorSpec extends Specification {
 		navigator.value() == expectedValue
 
 		where:
-		navigator                                                     | expectedValue
-		onPage.find("select", name: "plain_select")                   | "4"
-		onPage.find("select", name: "multiple_select")                | ["2", "4"]
-		onPage.find("select", name: "plain_select").find("option")    | "1"
-		onPage.find("textarea")                                       | " The textarea content. "
-		onPage.find("#keywords")                                      | "Enter keywords here"
-		onPage.find("#checker1")                                      | null
-		onPage.find("#checker2")                                      | "123"
-		onPage.find("input", name: "site")                            | "google"
+		navigator                                                   | expectedValue
+		page.find("select", name: "plain_select")                   | "4"
+		page.find("select", name: "multiple_select")                | ["2", "4"]
+		page.find("select", name: "plain_select").find("option")    | "1"
+		page.find("textarea")                                       | " The textarea content. "
+		page.find("#keywords")                                      | "Enter keywords here"
+		page.find("#checker1")                                      | null
+		page.find("#checker2")                                      | "123"
+		page.find("input", name: "site")                            | "google"
 	}
 
 	def "set value"() {
@@ -559,14 +581,14 @@ class NavigatorSpec extends Specification {
 		navigator.value(expectedValue).value() == expectedValue
 
 		where:
-		navigator                           | expectedValue             | newValue
-		onPage.find("#the_plain_select")    | "4"                       | "2"
-		onPage.find("#the_multiple_select") | ["2", "4"]                | ["1", "3", "5"]
-		onPage.find("#keywords")            | "Enter keywords here"     | "bar"
-		onPage.find("textarea")             | " The textarea content. " | "This is the new content of the textarea. Yeah!"
-		onPage.find("#checker1")            | null                      | "123"
-		onPage.find("#checker2")            | "123"                     | null
-		onPage.find("input", name: "site")  | "google"                  | "thisone"
+		navigator                         | expectedValue             | newValue
+		page.find("#the_plain_select")    | "4"                       | "2"
+		page.find("#the_multiple_select") | ["2", "4"]                | ["1", "3", "5"]
+		page.find("#keywords")            | "Enter keywords here"     | "bar"
+		page.find("textarea")             | " The textarea content. " | "This is the new content of the textarea. Yeah!"
+		page.find("#checker1")            | null                      | "123"
+		page.find("#checker2")            | "123"                     | null
+		page.find("input", name: "site")  | "google"                  | "thisone"
 		// TODO: tear down?
 	}
 
@@ -575,10 +597,10 @@ class NavigatorSpec extends Specification {
 		navigator.values() == expectedValues
 
 		where:
-		navigator                                             | expectedValues
-		onPage.find("select").withName("multiple_select")     | ["2", "4"]
-		onPage.find("input").withName("site")                 | ["google", "thisone"]
-		onPage.find("select").withName("that_does_not_exist") | []
+		navigator                                           | expectedValues
+		page.find("select").withName("multiple_select")     | ["2", "4"]
+		page.find("input").withName("site")                 | ["google", "thisone"]
+		page.find("select").withName("that_does_not_exist") | []
 	}
 
 	def click() {
@@ -591,8 +613,8 @@ class NavigatorSpec extends Specification {
 		navigator.first().id() == expectedId
 
 		where:
-		navigator               | expectedId
-		onPage.find(".article") | "article-1"
+		navigator             | expectedId
+		page.find(".article") | "article-1"
 	}
 
 	def firstElement() {
@@ -600,8 +622,8 @@ class NavigatorSpec extends Specification {
 		navigator.firstElement().getAttribute("id") == expectedId
 
 		where:
-		navigator               | expectedId
-		onPage.find(".article") | "article-1"
+		navigator             | expectedId
+		page.find(".article") | "article-1"
 	}
 
 	def last() {
@@ -610,8 +632,8 @@ class NavigatorSpec extends Specification {
 		navigator.last().id() == expectedId
 
 		where:
-		navigator               | expectedId
-		onPage.find(".article") | "article-3"
+		navigator             | expectedId
+		page.find(".article") | "article-3"
 	}
 
 	def lastElement() {
@@ -619,8 +641,8 @@ class NavigatorSpec extends Specification {
 		navigator.lastElement().getAttribute("id") == expectedId
 
 		where:
-		navigator               | expectedId
-		onPage.find(".article") | "article-3"
+		navigator             | expectedId
+		page.find(".article") | "article-3"
 	}
 
 	def verifyNotEmpty() {
@@ -628,7 +650,7 @@ class NavigatorSpec extends Specification {
 		navigator.verifyNotEmpty()
 
 		where:
-		navigator << [onPage.find("#container"), onPage.find("#container").find("div")]
+		navigator << [page.find("#container"), page.find("#container").find("div")]
 	}
 
 	def "verifyNotEmtpy on empty Navigator"() {
@@ -636,7 +658,7 @@ class NavigatorSpec extends Specification {
 		then: thrown(EmptyNavigatorException)
 
 		where:
-		navigator = onPage.find("#does_not_exist")
+		navigator = page.find("#does_not_exist")
 	}
 
 	def withTextContaining() {
@@ -645,9 +667,9 @@ class NavigatorSpec extends Specification {
 		navigator.withTextContaining(text).attribute(attribute) == expectedValue
 
 		where:
-		navigator        | text    | attribute | expectedValue
-		onPage.find("a") | "Home"  | "href"    | "#home"
-		onPage.find("a") | "About" | "href"    | "#about"
+		navigator      | text    | attribute | expectedValue
+		page.find("a") | "Home"  | "href"    | "#home"
+		page.find("a") | "About" | "href"    | "#about"
 	}
 
 	def withTextMatching() {
@@ -655,11 +677,11 @@ class NavigatorSpec extends Specification {
 		navigator.withTextMatching(pattern).size() == expectedSize
 
 		where:
-		navigator        | pattern      | expectedSize
-		onPage.find("p") | /.*block.*/  | 1
-		onPage.find("p") | ~/.*block.*/ | 1
-		onPage.find("p") | /.*Nono.*/   | 0
-		onPage.find("p") | ~/.*Nono.*/  | 0
+		navigator      | pattern      | expectedSize
+		page.find("p") | /.*block.*/  | 1
+		page.find("p") | ~/.*block.*/ | 1
+		page.find("p") | /.*Nono.*/   | 0
+		page.find("p") | ~/.*Nono.*/  | 0
 	}
 
 	def withAttributeMatching() {
@@ -667,16 +689,16 @@ class NavigatorSpec extends Specification {
 		navigator.withAttributeMatching(attribute, pattern).size() == expectedSize
 
 		where:
-		navigator            | attribute | pattern        | expectedSize
-		onPage.find("div")   | "class"   | /.*col\-\d.*/  | 4
-		onPage.find("div")   | "class"   | ~/.*col\-\d.*/ | 4
-		onPage.find("input") | "value"   | /.*nono.*/     | 0
-		onPage.find("input") | "value"   | ~/.*nono.*/    | 0
+		navigator          | attribute | pattern        | expectedSize
+		page.find("div")   | "class"   | /.*col\-\d.*/  | 4
+		page.find("div")   | "class"   | ~/.*col\-\d.*/ | 4
+		page.find("input") | "value"   | /.*nono.*/     | 0
+		page.find("input") | "value"   | ~/.*nono.*/    | 0
 	}
 
 	def getByAttributeMatching() {
 		expect:
-		onPage.findByAttributeMatching(attribute, pattern).size() == expectedSize
+		page.findByAttributeMatching(attribute, pattern).size() == expectedSize
 
 		where:
 		attribute | pattern        | expectedSize
