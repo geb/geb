@@ -23,7 +23,6 @@ class NonEmptyNavigator extends Navigator {
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
 			contextElements.each {
-				println "using native css '$selectorString'"
 				list.addAll it.findElements(By.cssSelector(selectorString))
 			}
 			on(list)
@@ -264,21 +263,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	def value() {
-		def element = firstElement()
-		if (element.tagName ==~ /(?i)select/) {
-			if (element.getAttribute("multiple")) {
-				element.findElements(By.tagName("option")).findAll { it.isSelected() }.value
-			} else {
-				element.findElements(By.tagName("option")).find { it.isSelected() }.value
-			}
-		} else if (element.getAttribute("type") == "checkbox") {
-			element.isSelected() ? element.value : null
-		} else if (element.getAttribute("type") == "radio") {
-			// TODO: this feels a little hacky
-			withType("radio").withName(element.getAttribute("name")).allElements().find { it.isSelected() }?.value
-		} else {
-			element.value
-		}
+		getInputValue(contextElements)
 	}
 
 	Navigator value(value) {
@@ -361,67 +346,77 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	def propertyMissing(String name) {
-		def input = firstElementInContext {
-			it.findElement(By.name(name))
+		def inputs = collectElements {
+			it.findElements(By.name(name))
 		}
 
-		if (input) {
-			return readInputValue(input)
+		if (inputs) {
+			return getInputValue(inputs)
 		} else {
 			throw new MissingPropertyException(name, getClass())
 		}
 	}
 
 	def propertyMissing(String name, value) {
-		def input = firstElementInContext {
-			it.findElement(By.name(name))
+		def inputs = collectElements {
+			it.findElements(By.name(name))
 		}
 
-		if (input) {
-			setInputValue(input, value)
+		if (inputs) {
+			setInputValue(inputs, value)
 		} else {
 			throw new MissingPropertyException(name, getClass())
 		}
 	}
 
-	private readInputValue(WebElement input) {
-		def value
-		if (input.tagName == "select") {
-			if (input.getAttribute("multiple")) {
-				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
-			} else {
-				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
-			}
-		} else if (input.getAttribute("type") == "checkbox") {
-			value = input.isSelected() ? input.value : null
-		} else {
-			value = input.value
-		}
-		return value
-	}
-
-	private void setInputValue(WebElement input, value) {
-		if (input.tagName == "select") {
-			if (input.getAttribute("multiple")) {
-				input.findElements(By.tagName("option")).each { WebElement option ->
-					if (option.value in value) {
-						option.setSelected()
-					} else if (option.isSelected()) {
-						option.toggle()
-					}
+	private getInputValue(Collection<WebElement> inputs) {
+		def value = []
+		inputs.each { WebElement input ->
+			if (input.tagName == "select") {
+				if (input.getAttribute("multiple")) {
+					value << input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
+				} else {
+					value << input.findElements(By.tagName("option")).find { it.isSelected() }.value
+				}
+			} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
+				if (input.isSelected()) {
+					value << input.value
 				}
 			} else {
-				input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
+				value << input.value
 			}
-		} else if (input.getAttribute("type") == "checkbox") {
-			if (input.value == value) {
-				input.setSelected()
-			} else if (input.isSelected()) {
-				input.toggle()
+		}
+		return value.size() < 2 ? value[0] : value
+	}
+
+	private void setInputValue(Collection<WebElement> inputs, value) {
+		inputs.each { WebElement input ->
+			if (input.tagName == "select") {
+				if (input.getAttribute("multiple")) {
+					input.findElements(By.tagName("option")).each { WebElement option ->
+						if (option.value in value) {
+							option.setSelected()
+						} else if (option.isSelected()) {
+							option.toggle()
+						}
+					}
+				} else {
+					input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
+				}
+			} else if (input.getAttribute("type") == "checkbox") {
+				if (input.value == value) {
+					input.setSelected()
+				} else if (input.isSelected()) {
+					input.toggle()
+				}
+			} else if (input.getAttribute("type") == "radio") {
+				if (input.value == value) {
+					input.setSelected()
+				}
+			} else {
+				input.clear()
+				input.sendKeys value
 			}
-		} else {
-			input.clear()
-			input.sendKeys value
 		}
 	}
 

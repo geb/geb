@@ -11,7 +11,7 @@ import org.openqa.selenium.By
 class NavigatorSpec extends Specification {
 
 	@Shared WebDriver driver
-	@Shared geb.navigator.Navigator page
+	@Shared Navigator page
 
 	def setupSpec() {
 		driver = new HtmlUnitDriver()
@@ -26,16 +26,21 @@ class NavigatorSpec extends Specification {
 	def cleanup() {
 		driver.findElement(By.name("keywords")).clear()
 		driver.findElement(By.name("keywords")).sendKeys("Enter keywords here")
-		driver.findElement(By.name("site")).setSelected()
+
+		driver.findElements(By.name("site")).find { it.value == "google"}.setSelected()
+
 		if (driver.findElement(By.name("checker1")).isSelected()) driver.findElement(By.name("checker1")).toggle()
 		driver.findElement(By.name("checker2")).setSelected()
+
 		driver.findElement(By.name("plain_select")).findElements(By.tagName("option"))[3].setSelected()
+
 		def multiSelectOptions = driver.findElement(By.name("multiple_select")).findElements(By.tagName("option"))
 		if (multiSelectOptions[0].isSelected()) multiSelectOptions[0].toggle()
 		multiSelectOptions[1].setSelected()
 		if (multiSelectOptions[2].isSelected()) multiSelectOptions[2].toggle()
 		multiSelectOptions[3].setSelected()
 		if (multiSelectOptions[4].isSelected()) multiSelectOptions[4].toggle()
+		
 		driver.findElement(By.name("textext")).clear()
 		driver.findElement(By.name("textext")).sendKeys(" The textarea content. ")
 	}
@@ -558,12 +563,28 @@ class NavigatorSpec extends Specification {
 		where:
 		fieldName         | expectedValue
 		"keywords"        | "Enter keywords here"
-		"site"            | "google" // TODO: this only passes because the selected one happens to be first
 		"checker1"        | null
 		"checker2"        | "123"
 		"textext"         | " The textarea content. "
 		"plain_select"    | "4"
 		"multiple_select" | ["2", "4"]
+	}
+
+	@Unroll("when a radio button with the value '#expectedValue' is selected getting then value of the group returns '#expectedValue'")
+	def "get property access works on radio button groups"() {
+		given:
+		def radios = driver.findElements(By.name("site"))
+
+		when:
+		radios.find { it.value == expectedValue }.setSelected()
+
+		then:
+		page.find("form").site == expectedValue
+
+		where:
+		index | expectedValue
+		0     | "google"
+		1     | "thisone"
 	}
 
 	def "form field property access works on any node in the Navigator"() {
@@ -599,24 +620,36 @@ class NavigatorSpec extends Specification {
 		"multiple_select" | ["1", "3", "5"]
 	}
 
-	@Unroll @Ignore
+	@Unroll("when the radio button group's value is set to '#value' then the corresponding radio button is selected")
+	def "set property access works on radio button groups"() {
+		when:
+		page.find("form").site = value
+
+		then:
+		driver.findElements(By.name("site")).find { it.value == value }.isSelected()
+
+		where:
+		value << ["google", "thisone"]
+	}
+
+	@Unroll("input value should be '#expectedValue'")
 	def "get value"() {
 		expect:
 		navigator.value() == expectedValue
 
 		where:
-		navigator                                                   | expectedValue
-		page.find("select", name: "plain_select")                   | "4"
-		page.find("select", name: "multiple_select")                | ["2", "4"]
-		page.find("select", name: "plain_select").find("option")    | "1"
-		page.find("textarea")                                       | " The textarea content. "
-		page.find("#keywords")                                      | "Enter keywords here"
-		page.find("#checker1")                                      | null
-		page.find("#checker2")                                      | "123"
-		page.find("input", name: "site")                            | "google"
+		navigator                                                | expectedValue
+		page.find("select", name: "plain_select")                | "4"
+		page.find("select", name: "multiple_select")             | ["2", "4"]
+		page.find("select", name: "plain_select").find("option") | ["1", "2", "3", "4", "5"]
+		page.find("textarea")                                    | " The textarea content. "
+		page.find("#keywords")                                   | "Enter keywords here"
+		page.find("#checker1")                                   | null
+		page.find("#checker2")                                   | "123"
+		page.find("input", name: "site")                         | "google"
 	}
 
-	@Ignore
+	@Unroll("input value can be changed from '#expectedValue' to '#newValue'")
 	def "set value"() {
 		expect:
 		navigator.value() == expectedValue
@@ -635,7 +668,7 @@ class NavigatorSpec extends Specification {
 		// TODO: tear down?
 	}
 
-	@Ignore
+	@Unroll
 	def values() {
 		expect:
 		navigator.values() == expectedValues
