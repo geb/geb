@@ -366,7 +366,19 @@ class NonEmptyNavigator extends Navigator {
 		}
 
 		if (input) {
-			input.getValue()
+			def value
+			if (input.tagName == "select") {
+				if (input.getAttribute("multiple")) {
+					value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
+				} else {
+					value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
+				}
+			} else if (input.getAttribute("type") == "checkbox") {
+				value = input.isSelected() ? input.value : null
+			} else {
+				value = input.value
+			}
+			return value
 		} else {
 			throw new MissingPropertyException(name, getClass())
 		}

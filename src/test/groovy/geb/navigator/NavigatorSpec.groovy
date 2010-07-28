@@ -538,8 +538,14 @@ class NavigatorSpec extends Specification {
 		expect: page.find("form")."$fieldName" == expectedValue
 
 		where:
-		fieldName  | expectedValue
-		"keywords" | "Enter keywords here"
+		fieldName         | expectedValue
+		"keywords"        | "Enter keywords here"
+		"site"            | "google" // TODO: this only passes because the selected one happens to be first
+		"checker1"        | null
+		"checker2"        | "123"
+		"textext"         | " The textarea content. "
+		"plain_select"    | "4"
+		"multiple_select" | ["2", "4"]
 	}
 
 	def "form field property access works on any node in the Navigator"() {
