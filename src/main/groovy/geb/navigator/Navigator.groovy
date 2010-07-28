@@ -29,6 +29,62 @@ import org.openqa.selenium.By
 abstract class Navigator implements Iterable<Navigator> {
 
 	/**
+	 * Creates a new Navigator instance containing the elements matching the given
+	 * (simple) CSS selector.
+	 * <p>
+	 * Following selectors are allowed:
+	 * </p>
+	 * <dl>
+	 * <dt>type selectors</dt>
+	 * <dd>HTML element tag names, e.g. "h1" will only match h1 elements</dd>
+	 * <dt>class selectors</dt>
+	 * <dd>passing ".something" will only match the elements with the class "something"</dd>
+	 * <dt>id selectors</dt>
+	 * <dd>pass "#theid" to math the element with id "theid"</dd>
+	 * <dt>a combination of the above selectors</dt>
+	 * <dd>passing "div.article" wil only match the div elements with class "article"</dd>
+	 * <dt>selectors with descendant combinators</dt>
+	 * <dd>passing "div.article a.more" will only match the anchors with class "more"
+	 * that are descendants of a div with class "article". But when using a
+	 * selector such as "div.article p#someid", remember that HtmlUnit will
+	 * look for the element with the given id anywhere on the page, not
+	 * just within divs with class "article".</dd>
+	 * <dt>grouped selectors</dt>
+	 * <dd>pass "p, div, a.someClass" to matches all paragraphs, divs and anchors
+	 * (with class "someClass")</dd>
+	 * </dl>
+	 * @param selector selector to use to match elements
+	 * @return new Navigator instance
+	 */
+	abstract Navigator find(String selector)
+
+	/**
+	 * Shorthand for <code>get(selector)[indexOfElement]</code>.
+	 * @param selector selector to use
+	 * @param index index of the element matching the selector to return
+	 * @return new Navigator instance
+	 */
+	Navigator find(String selector, int index) {
+		find(selector)[index]
+	}
+
+	abstract Navigator find(Map<String, Object> predicates)
+
+	abstract Navigator find(Map<String, Object> predicates, String selector)
+
+	/**
+	 * Filters the set of elements represented by this Navigator to include only those that match
+	 * the selector.
+	 * @param selector a CSS selector, note only tag, id and class based selectors are supported for this method
+	 * @return a new Navigator instance
+	 */
+	abstract Navigator filter(String selector)
+
+	abstract Navigator filter(Map<String, Object> predicates)
+
+	abstract Navigator filter(Map<String, Object> predicates, String selector)
+
+	/**
 	 * Gets the wrapped element at the given index.
 	 * <p>
 	 * When no such element exists, an empty Navigator instance is returned.
@@ -174,56 +230,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	abstract Navigator unique()
-
-	/**
-	 * Creates a new Navigator instance containing the elements matching the given
-	 * (simple) CSS selector.
-	 * <p>
-	 * Following selectors are allowed:
-	 * </p>
-	 * <dl>
-	 * <dt>type selectors</dt>
-	 * <dd>HTML element tag names, e.g. "h1" will only match h1 elements</dd>
-	 * <dt>class selectors</dt>
-	 * <dd>passing ".something" will only match the elements with the class "something"</dd>
-	 * <dt>id selectors</dt>
-	 * <dd>pass "#theid" to math the element with id "theid"</dd>
-	 * <dt>a combination of the above selectors</dt>
-	 * <dd>passing "div.article" wil only match the div elements with class "article"</dd>
-	 * <dt>selectors with descendant combinators</dt>
-	 * <dd>passing "div.article a.more" will only match the anchors with class "more"
-	 * that are descendants of a div with class "article". But when using a
-	 * selector such as "div.article p#someid", remember that HtmlUnit will
-	 * look for the element with the given id anywhere on the page, not
-	 * just within divs with class "article".</dd>
-	 * <dt>grouped selectors</dt>
-	 * <dd>pass "p, div, a.someClass" to matches all paragraphs, divs and anchors
-	 * (with class "someClass")</dd>
-	 * </dl>
-	 * @param selector selector to use to match elements
-	 * @return new Navigator instance
-	 */
-	abstract Navigator find(String selector)
-
-	/**
-	 * Shorthand for <code>get(selector)[indexOfElement]</code>.
-	 * @param selector selector to use
-	 * @param index index of the element matching the selector to return
-	 * @return new Navigator instance
-	 */
-	Navigator find(String selector, int index) {
-		find(selector)[index]
-	}
-
-	abstract Navigator find(Map<String, Object> predicates, String selector)
-
-	/**
-	 * Filters the set of elements represented by this Navigator to include only those that match
-	 * the selector.
-	 * @param selector a CSS selector, note only tag, id and class based selectors are supported for this method
-	 * @return a new Navigator instance
-	 */
-	abstract Navigator filter(String selector)
 
 	/**
 	 * Shorthand for <code>attribute("id")</code>.

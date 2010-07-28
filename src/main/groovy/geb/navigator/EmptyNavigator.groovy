@@ -12,6 +12,18 @@ import static java.util.Collections.EMPTY_LIST
 	private static final WebElement[] EMPTY_ELEMENT_ARRAY = new WebElement[0]
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
+	Navigator find(String selector) { this }
+
+	Navigator find(Map<String, Object> predicates) { this }
+
+	Navigator find(Map<String, Object> predicates, String selector) { this }
+
+	Navigator filter(String selector) { this }
+
+	Navigator filter(Map<String, Object> predicates) { this }
+
+	Navigator filter(Map<String, Object> predicates, String selector) { this }
+
 	Navigator unique() { this }
 
 	Navigator withTag(String tag) { this }
@@ -27,10 +39,6 @@ import static java.util.Collections.EMPTY_LIST
 	Navigator first() { this }
 
 	Navigator findByAttribute(String attribute, MatchType matchType, String value) { this }
-
-	Navigator findById(String id) { this }
-
-	Navigator findByTag(String tag) { this }
 
 	Collection<WebElement> allElements() { EMPTY_ELEMENT_ARRAY }
 
@@ -88,12 +96,6 @@ import static java.util.Collections.EMPTY_LIST
 
 	Navigator getAt(Collection indexes) { this }
 
-	Navigator find(String selector) { this }
-
-	Navigator find(Map<String, Object> predicates, String selector) { this }
-
-	Navigator filter(String selector) { this }
-
 	Navigator verifyNotEmpty() { throw new EmptyNavigatorException() }
 
 	Navigator value(value) { this }
@@ -111,10 +113,6 @@ import static java.util.Collections.EMPTY_LIST
 	Navigator findByAttributeMatching(String attribute, String pattern) { this }
 
 	Navigator findByAttributeMatching(String attribute, Pattern pattern) { this }
-
-	boolean isChecked() { false }
-
-	boolean isSelected() { false }
 
 	String toString() { "[]" }
 }
