@@ -7,6 +7,7 @@ import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
+import org.openqa.selenium.WebElement
 
 class NavigatorSpec extends Specification {
 
@@ -626,10 +627,6 @@ class NavigatorSpec extends Specification {
 		page.find("#that_does_not_exist") | []
 	}
 
-	def click() {
-		// TODO: need to test this
-	}
-
 	def first() {
 		expect:
 		navigator.first().size() == 1
@@ -682,6 +679,20 @@ class NavigatorSpec extends Specification {
 
 		where:
 		navigator = page.find("#does_not_exist")
+	}
+
+	def click() {
+		given:
+		def element1 = Mock(WebElement)
+		def element2 = Mock(WebElement)
+		def navigator = new NonEmptyNavigator(element1, element2)
+
+		when: navigator.click()
+
+		then:
+		1 * element1.click()
+		1 * element2.click()
+		0 * _
 	}
 
 }

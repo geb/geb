@@ -239,7 +239,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	void click() {
-		throw new NotImplementedException()
+		contextElements*.click()
 	}
 
 	int size() {

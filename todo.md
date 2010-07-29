@@ -2,8 +2,6 @@
 
 ## Navigator
 
-* incomplete
-	* click is not implemented yet
 * API
     * make API WebDriver agnostic?
     * support concepts from RenderedWebElement
