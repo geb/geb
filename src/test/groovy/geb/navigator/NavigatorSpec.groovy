@@ -239,11 +239,11 @@ class NavigatorSpec extends Specification {
 
 		where:
 		selector     | nextSelector | expectedIds
-		"#keywords"  | "input"      | ["site-1"]
-		"#keywords"  | "select"     | ["the_plain_select"]
-		"input"      | "input"      | ["site-1", "site-2", "checker1", "checker2"]
-		"input"      | "select"     | ["the_plain_select"]
-		"#keywords"  | "bdo"        | []
+		"#keywords" | "input"  | ["site-1"]
+		"#keywords" | "select" | ["the_plain_select"]
+		"input"     | "input"  | ["site-1", "site-2", "checker1", "checker2"]
+		"input"     | "select" | ["the_plain_select"]
+		"#keywords" | "bdo"    | []
 		"#article-1" | ".article"   | ["article-2"]
 	}
 
@@ -268,11 +268,11 @@ class NavigatorSpec extends Specification {
 
 		where:
 		selector               | previousSelector | expectedIds
-		"#the_multiple_select" | "input"          | ["checker2"]
-		"#the_multiple_select" | "select"         | ["the_plain_select"]
-		"input"                | "input"          | ["keywords", "site-1", "site-2", "checker1"]
-		"select"               | "select"         | ["the_plain_select"]
-		"#the_multiple_select" | "bdo"            | []
+		"#the_multiple_select" | "input"  | ["checker2"]
+		"#the_multiple_select" | "select" | ["the_plain_select"]
+		"input"                | "input"  | ["keywords", "site-1", "site-2", "checker1"]
+		"select"               | "select" | ["the_plain_select"]
+		"#the_multiple_select" | "bdo"    | []
 		"#article-3"           | ".article"       | ["article-2"]
 	}
 
@@ -297,10 +297,10 @@ class NavigatorSpec extends Specification {
 
 		where:
 		selector     | parentSelector | expectedIds
-		"#keywords"  | "div"          | ["sidebar"]
-		"input"      | "div"          | ["sidebar"]
-		"ul, ol"     | "div"          | ["navigation", "sidebar"]
-		"#keywords"  | "bdo"          | []
+		"#keywords" | "div"    | ["sidebar"]
+		"input"     | "div"    | ["sidebar"]
+		"ul, ol"    | "div"    | ["navigation", "sidebar"]
+		"#keywords" | "bdo"    | []
 		"#article-1" | ".col-3"       | ["content"]
 	}
 
