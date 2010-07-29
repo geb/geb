@@ -115,6 +115,67 @@ As would…
 
 These methods do not take indexes as they automatically select the first matching content.
 
-## Accessing attributes and text
+## Accessing tag name, attributes, text and classes.
+
+The `name()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.
+
+Consider the following HTML…
+
+    <p title="a" class="a para">a</p>
+    <p title="b" class="b para">b</p>
+    <p title="c" class="c para">v</p>
+
+The following assertions are valid…
+
+    $("p").text() == "a"
+    $("p").name() == "p"
+    $("p").@title == "a"
+    $("p").classes() == ["a", "para"]
+
+To obtain information about all matched content, you use the Groovy _spread operator_…
+
+    $("p")*.text() == ["a", "b", "c"]
+    $("p")*.name() == ["p", "p", "p"]
+    $("p")*.@title == ["a", "b", "c"]
+    $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
+
+## Form Controls
+
+Interacting with form controls (`input`, `select` etc.) is such a common task in web functional testing that Geb provides convenient shortcuts for common functions.
+
+TODO: section on using value() (with info on what it means for different inputs)
+    
+### Shortcuts
+
+Geb supports the following shortcuts for dealing with form controls.
+
+Consider the following HTML…
+
+    <form>
+        <input type="text" name="geb" value="testing" />
+    </form>
+
+The value can be read and written via property notation…
+
+    $("form").geb == "testing"
+    $("form").geb = "goodness"
+    $("form").geb == "goodness"
+
+These are literally shortcuts for…
+
+    $("form").find("input", name: "geb").value() == "testingn"
+    $("form").find("input", name: "geb").value("goodness")
+    $("form").find("input", name: "geb").value() == "goodness"
+
+There is also a shortcut for obtaining a navigator based on a control name
+
+    $("form").geb()
+
+Which is literally a shortcut for…
+
+    $("form").find("input", name: "geb")
+
+Which can be used like so…
 
 
+    $("form").geb().@disabled == "disabled"
