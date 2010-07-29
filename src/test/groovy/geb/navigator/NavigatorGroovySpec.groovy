@@ -6,6 +6,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import spock.lang.Shared
 import spock.lang.Specification
 import geb.navigator.Navigator
+import spock.lang.Ignore
 
 class NavigatorGroovySpec extends Specification {
 
@@ -33,7 +34,7 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use collect(Closure) on Navigator"() {
-		when: def list = navigator.collect { it.id() }
+		when: def list = navigator.collect { it.@id }
 		then: list == expectedList
 		where:
 		navigator                 | expectedList
@@ -44,7 +45,7 @@ class NavigatorGroovySpec extends Specification {
 
 	def "can use each(Closure) on Navigator"() {
 		given: def list = []
-		when: navigator = navigator.each { list << it.id() }
+		when: navigator = navigator.each { list << it.@id }
 		then: list == expectedList
 		where:
 		navigator                 | expectedList
@@ -55,7 +56,7 @@ class NavigatorGroovySpec extends Specification {
 
 	def "can use eachWithIndex(Closure) on Navigator"() {
 		given: def map = [:]
-		when: navigator = navigator.eachWithIndex { e, i -> map[e.id()] = i }
+		when: navigator = navigator.eachWithIndex { e, i -> map[e.@id] = i }
 		then: map == expectedMap
 		where:
 		navigator                 | expectedMap
@@ -146,16 +147,17 @@ class NavigatorGroovySpec extends Specification {
 	def "can use inject(Object, Closure) on Navigator"() {
 		expect: navigator.inject(0) { i, e -> ++i } == expectedResult
 		where:
-		navigator                     | expectedResult
+		navigator               | expectedResult
 		onPage.find("div")      | 13
 		onPage.find(".article") | 3
 		onPage.find("bdo")      | 0
 	}
 
+	@Ignore
 	def "can use getAt(int) on Navigator"() {
-		expect: navigator[index].id() == expectedId
+		expect: navigator[index].@id == expectedId
 		where:
-		navigator                     | index | expectedId
+		navigator               | index | expectedId
 		onPage.find("div")      | 0     | "container"
 		onPage.find("div")      | 1     | "header"
 		onPage.find("div")      | -1    | "footer"
@@ -166,7 +168,7 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use getAt(Range) on Navigator"() {
-		expect: navigator[range].ids() == expectedIds
+		expect: navigator[range]*.@id == expectedIds
 		where:
 		navigator               | range  | expectedIds
 		onPage.find("div")      | 0..1   | ["container", "header"]
@@ -176,17 +178,18 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use getAt(Collection) on Navigator"() {
-		expect: navigator[indexes].ids() == expectedIds
+		expect: navigator[indexes]*.@id == expectedIds
 		where:
 		navigator               | indexes    | expectedIds
 		onPage.find("div")      | [0, 2, 4]  | ["container", "navigation", "main"]
 		onPage.find("div")      | [0, -1, 4] | ["container", "footer", "main"]
 	}
 
+	@Ignore
 	def "can use head() on Navigator"() {
 		expect:
 		navigator.head().size() == expectedSize
-		navigator.head().id() == expectedId
+		navigator.head().@id == expectedId
 		where:
 		navigator               | expectedSize | expectedId
 		onPage.find("div")      | 1            | "container"
@@ -197,7 +200,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use tail() on Navigator"() {
 		expect:
 		navigator.tail().size() == expectedSize
-		navigator.tail().ids() == expectedIds
+		navigator.tail()*.@id == expectedIds
 		where:
 		navigator               | expectedSize | expectedIds
 		onPage.find(".article") | 2            | ["article-2", "article-3"]
@@ -207,7 +210,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use plus(Navigator) on Navigator"() {
 		when: def navigator = navigator1 + navigator2
 		then: navigator.size() == expectedSize
-		and: navigator.ids() == expectedIds
+		and: navigator*.@id == expectedIds
 		where:
 		navigator1                | navigator2                | expectedSize | expectedIds
 		onPage.find("#article-1") | onPage.find("#article-2") | 2            | ["article-1", "article-2"]
