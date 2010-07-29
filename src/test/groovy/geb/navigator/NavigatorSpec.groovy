@@ -221,21 +221,21 @@ class NavigatorSpec extends Specification {
 		"#DOESNOTEXIST" | []
 	}
 
-	@Unroll("calling next(#nextSelector) on #selector should return #expectedIds")
-	def "next with selector argument"() {
+	@Unroll("calling next(#tag) on #selector should return #expectedIds")
+	def "next with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.next(nextSelector).ids() == expectedIds
+		expect: navigator.next(tag).ids() == expectedIds
 
 		where:
-		selector     | nextSelector | expectedIds
-		"#keywords"  | "input"      | ["site-1"]
-		"#keywords"  | "select"     | ["the_plain_select"]
-		"input"      | "input"      | ["site-1", "site-2", "checker1", "checker2"]
-		"input"      | "select"     | ["the_plain_select"]
-		"#keywords"  | "bdo"        | []
-		"#article-1" | ".article"   | ["article-2"]
+		selector    | tag      | expectedIds
+		"#keywords" | "input"  | ["site-1"]
+		"#keywords" | "select" | ["the_plain_select"]
+		"input"     | "input"  | ["site-1", "site-2", "checker1", "checker2"]
+		"input"     | "select" | ["the_plain_select"]
+		"#keywords" | "bdo"    | []
 	}
 
+	@Ignore
 	@Unroll("calling previous() on #selector should return #expectedIds")
 	def "previous selects immediately preceding elements"() {
 		given: def navigator = page.find(selector)
@@ -250,19 +250,19 @@ class NavigatorSpec extends Specification {
 		"#DOESNOTEXIST" | []
 	}
 
-	@Unroll("calling previous(#previousSelector) on #selector should return #expectedIds")
+	@Ignore
+	@Unroll("calling previous(#tag) on #selector should return #expectedIds")
 	def "previous with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.previous(previousSelector).ids() == expectedIds
+		expect: navigator.previous(tag).ids() == expectedIds
 
 		where:
-		selector               | previousSelector | expectedIds
-		"#the_multiple_select" | "input"          | ["checker2"]
-		"#the_multiple_select" | "select"         | ["the_plain_select"]
-		"input"                | "input"          | ["keywords", "site-1", "site-2", "checker1"]
-		"select"               | "select"         | ["the_plain_select"]
-		"#the_multiple_select" | "bdo"            | []
-		"#article-3"           | ".article"       | ["article-2"]
+		selector               | tag      | expectedIds
+		"#the_multiple_select" | "input"  | ["checker2"]
+		"#the_multiple_select" | "select" | ["the_plain_select"]
+		"input"                | "input"  | ["keywords", "site-1", "site-2", "checker1"]
+		"select"               | "select" | ["the_plain_select"]
+		"#the_multiple_select" | "bdo"    | []
 	}
 
 	@Unroll("calling parent() on #selector should return #expectedIds")
@@ -279,18 +279,17 @@ class NavigatorSpec extends Specification {
 		"#DOESNOTEXIST" | []
 	}
 
-	@Unroll("calling parent(#parentSelector) on #selector should return #expectedIds")
+	@Unroll("calling parent(#tag) on #selector should return #expectedIds")
 	def "parent with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.parent(parentSelector).ids() == expectedIds
+		expect: navigator.parent(tag).ids() == expectedIds
 
 		where:
-		selector     | parentSelector | expectedIds
-		"#keywords"  | "div"          | ["sidebar"]
-		"input"      | "div"          | ["sidebar"]
-		"ul, ol"     | "div"          | ["navigation", "sidebar"]
-		"#keywords"  | "bdo"          | []
-		"#article-1" | ".col-3"       | ["content"]
+		selector    | tag      | expectedIds
+		"#keywords" | "div"    | ["sidebar"]
+		"input"     | "div"    | ["sidebar"]
+		"ul, ol"    | "div"    | ["navigation", "sidebar"]
+		"#keywords" | "bdo"    | []
 	}
 
 	def unique() {
