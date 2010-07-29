@@ -76,6 +76,8 @@ You can select content _around_ `p.d` by…
     $("p.d").previous() // 'p.c'
     $("p.d").next() // 'p.e'
     $("p.d").parent() // 'div.b'
+    $("p.d").siblings() // 'p.c' and 'p.e'
+    $("div.a").children() // 'div.b'
 
 These methods are different to `find` & `filter` in that they operate on the _first_ matched content in the navigator.
 
@@ -91,7 +93,7 @@ The following code will select `p.b`…
 
 While the initial `$("p")` matched 3 elements, the `next()` method only operates on the _first_ match.
     
-The `previous`, `next` and `parent` methods can also take css selectors and attribute matchers.
+The `previous`, `next`, `parent`, `children` and `siblings` methods can also take css selectors and attribute matchers.
 
 Using the same html, the following code will select `p.c`…
 
@@ -163,7 +165,7 @@ The value can be read and written via property notation…
 
 These are literally shortcuts for…
 
-    $("form").find("input", name: "geb").value() == "testingn"
+    $("form").find("input", name: "geb").value() == "testing"
     $("form").find("input", name: "geb").value("goodness")
     $("form").find("input", name: "geb").value() == "goodness"
 
