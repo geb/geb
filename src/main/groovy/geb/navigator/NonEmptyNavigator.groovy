@@ -126,9 +126,10 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
-	Navigator next(String tag) {
+	Navigator next(String selectorString) {
 		on collectElements {
-			it.findElement By.xpath("following-sibling::$tag")
+			def siblings = it.findElements(By.xpath("following-sibling::*"))
+			siblings.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
@@ -139,10 +140,10 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
-	Navigator previous(String tag) {
+	Navigator previous(String selectorString) {
 		on collectElements {
-			def siblings = it.findElements(By.xpath("preceding-sibling::$tag"))
-			siblings ? siblings.last() : EMPTY_LIST
+			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
+			siblings.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
@@ -152,9 +153,10 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
-	Navigator parent(String tag) {
+	Navigator parent(String selectorString) {
 		on collectElements {
-			it.findElement By.xpath("ancestor::$tag[1]")
+			def parents = it.findElements(By.xpath("ancestor::*")).reverse()
+			parents.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
@@ -442,8 +444,7 @@ class NonEmptyNavigator extends Navigator {
 						list.addAll value
 						break
 					default:
-						// TODO: this should check for null
-						list << value
+						if (value) list << value
 				}
 			} catch (org.openqa.selenium.NoSuchElementException e) { }
 		}

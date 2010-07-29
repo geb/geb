@@ -9,8 +9,11 @@
     * support concepts from RenderedWebElement
     * all methods that return WebElement should be package protected
 * syntax
-    * replace with* methods with filter(String) and filter(Map)
-    * remove getBy* (make non-public as used internally)
+    * attribute access via .@
+    * text access via .text
+    * .tagName
+    * replace values() methods with property access to .value
+    * class names as Collection<String>
     * values() doesn't do the right thing
     * additional methods from jQuery
         * add(selector)
@@ -18,12 +21,14 @@
         * has(selector)
         * not(selector)
         * siblings()
+    * support leftShift to type in field without clearing it
 * enhancements
 	* next, previous, parent could possibly be optimised depending on the WebDriver implementation being used
 	* is() should accept selector not just tag name
-	* get could use native CSS support in non-HTMLUnit drivers
 	* FirefoxWebElement has no toString, so Navigator should fully implement it
 * cruft
+    * findBy*
+    * with*
     * do we really need MatchType enum?
 * groovy-ness
 	* next & previous imply Navigator could implement Range

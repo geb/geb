@@ -44,6 +44,15 @@ class CssSelector {
 		return result
 	}
 
+	static boolean matches(WebElement element, String selectorString) {
+		def selectors = compile(selectorString)
+		selectors.any { List<CssSelector> selectorGroup ->
+			selectorGroup.every { CssSelector selector ->
+				selector.matches(element)
+			}
+		}
+	}
+
 	List<WebElement> apply(WebElement element, boolean descend) {
 		if (descend) {
 			return select(element)
