@@ -235,7 +235,6 @@ class NavigatorSpec extends Specification {
 		"#keywords" | "bdo"    | []
 	}
 
-	@Ignore
 	@Unroll("calling previous() on #selector should return #expectedIds")
 	def "previous selects immediately preceding elements"() {
 		given: def navigator = page.find(selector)
@@ -250,7 +249,6 @@ class NavigatorSpec extends Specification {
 		"#DOESNOTEXIST" | []
 	}
 
-	@Ignore
 	@Unroll("calling previous(#tag) on #selector should return #expectedIds")
 	def "previous with tag argument"() {
 		given: def navigator = page.find(selector)

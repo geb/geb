@@ -142,8 +142,8 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator previous(String selectorString) {
 		on collectElements {
-			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
-			siblings.find { CssSelector.matches(it, selectorString) }
+			def siblings = it.findElements(By.xpath("preceding-sibling::$tag"))
+			siblings ? siblings.last() : EMPTY_LIST
 		}
 	}
 
