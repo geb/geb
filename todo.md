@@ -8,6 +8,17 @@
     * make API WebDriver agnostic?
     * support concepts from RenderedWebElement
     * all methods that return WebElement should be package protected
+    * accessing information about selection
+        * .text() - text of first match
+        * .classes() - Collection<String> of classes of first match
+        * .name() - tag name of first match
+        * .id() - id of first match
+        * .@attribute - value of attribute 'attribute' of first match
+        * *.text() - collection of texts of all matches
+        * *.classes() - collection of collections of class names of all matches
+        * *.name() - collection of tag names of all matches
+        * .id() - colllection of id's of all matches
+        * *.@attribute - collection of values of attribute 'attribute' of all matches
 * syntax
     * attribute access via .@
     * text access via .text
