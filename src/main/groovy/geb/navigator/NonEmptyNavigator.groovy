@@ -9,6 +9,12 @@ import static java.util.Collections.EMPTY_LIST
 
 class NonEmptyNavigator extends Navigator {
 
+	static {
+		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(NonEmptyNavigator))
+		mc.initialize()
+		NonEmptyNavigator.metaClass = mc
+	}
+
 	private final List<WebElement> contextElements
 
 	NonEmptyNavigator(WebElement... contextElements) {
@@ -240,7 +246,11 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
-	String text() {
+	String getTag() {
+		firstElement().tagName
+	}
+
+	String getText() {
 		firstElement().text
 	}
 
@@ -249,7 +259,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String trimmedText() {
-		text()?.replaceAll(/\s+/, " ")?.trim()
+		getText()?.replaceAll(/\s+/, " ")?.trim()
 	}
 
 	String[] trimmedTexts() {
@@ -258,12 +268,8 @@ class NonEmptyNavigator extends Navigator {
 		} as String[]
 	}
 
-	String attribute(String key) {
-			firstElement().getAttribute(key) ?: ""
-	}
-
-	String[] attributes(String key) {
-		contextElements.collect { it.getAttribute(key) ?: "" }
+	String getAttribute(String name) {
+		firstElement().getAttribute(name) ?: ""
 	}
 
 	def value() {
@@ -350,14 +356,19 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	def propertyMissing(String name) {
-		def inputs = collectElements {
-			it.findElements(By.name(name))
-		}
+		switch (name) {
+			case ~/@.+/:
+				return getAttribute(name.substring(1))
+			default:
+				def inputs = collectElements {
+					it.findElements(By.name(name))
+				}
 
-		if (inputs) {
-			return getInputValue(inputs)
-		} else {
-			throw new MissingPropertyException(name, getClass())
+				if (inputs) {
+					return getInputValue(inputs)
+				} else {
+					throw new MissingPropertyException(name, getClass())
+				}
 		}
 	}
 

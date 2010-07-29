@@ -51,6 +51,7 @@ class NavigatorSpec extends Specification {
 		page.find("bdo").getElement(0) == null
 	}
 
+	@Unroll("calling remove(#index) on the navigator should leave #expectedSize elements")
 	def "remove"() {
 		when:
 		iterations.times {
@@ -71,23 +72,22 @@ class NavigatorSpec extends Specification {
 		page.find("li").find("bdo") | 0     | 1          | 0
 	}
 
+	@Unroll("find('#selector') should return elements with #property of '#expectedValue'")
 	def "find by CSS selector"() {
-		when:
-		def navigator = page.find(selector)
-
-		then:
-		navigator."$property"() == expectedValue
+		given: def navigator = page.find(selector)
+		expect: navigator*."$property" == expectedValue
 
 		where:
-		selector                  | property       | expectedValue
-		"#content div li"         | "trimmedText"  | "Item #1"
-		"div.article h2 a"        | "trimmedTexts" | ["Article title 1", "Article title 2", "Article title 3"]
-		"#header"                 | "id"           | "header"
-		".col-3.module"           | "id"           | "navigation"
-		".module.col-3"           | "id"           | "navigation"
-		"#THIS_ID_DOES_NOT_EXIST" | "size"         | 0
+		selector                  | property | expectedValue
+		"#content div li"         | "text"   | ["Item #1", "Item #2", "Item #3", "Item #4"] * 5
+		"div.article h2 a"        | "text"   | ["Article title 1", "Article title 2", "Article title 3"]
+		"#header"                 | "@id"    | ["header"]
+		".col-3.module"           | "@id"    | ["navigation"]
+		".module.col-3"           | "@id"    | ["navigation"]
+		"#THIS_ID_DOES_NOT_EXIST" | "@id"    | []
 	}
 
+	@Unroll("find('#selector1').find('#selector2') should find #expectedSize elements")
 	def "find by id in element context"() {
 		expect:
 		page.find(selector1).find(selector2).size() == expectedSize
@@ -98,6 +98,7 @@ class NavigatorSpec extends Specification {
 		"#footer"    | "#header" | 0
 	}
 
+	@Unroll("find('#selector') should find #expectedSize elements")
 	def "find with grouped selectors"() {
 		expect:
 		page.find(selector).size() == expectedSize
@@ -108,8 +109,9 @@ class NavigatorSpec extends Specification {
 		"div ol  , #sidebar   , blockquote,bdo" | 5 + 1 + 1 + 0
 	}
 
+	@Unroll("find(#attributes) should find elements with the ids #expectedIds")
 	def "find by attributes"() {
-		expect: page.find(attributes).ids() == expectedIds
+		expect: page.find(attributes)*.@id == expectedIds
 
 		where:
 		attributes                      | expectedIds
@@ -119,6 +121,7 @@ class NavigatorSpec extends Specification {
 		[name: "DOES-NOT-EXIST"]        | []
 	}
 
+	@Unroll("find(text: '#text') should find #expectedSize elements")
 	def "find by text"() {
 		expect: page.find(text: text).size() == expectedSize
 
@@ -129,21 +132,24 @@ class NavigatorSpec extends Specification {
 		"DOES NOT EXIST"                | 0
 	}
 
+	@Unroll("find('#selector', #index) should find the element with the id '#expectedId'")
 	def "find by selector and index"() {
-		expect:
+		when: def navigator = page.find(selector, index)
+		then:
 		navigator.size() == 1
-		navigator.id() == expectedId
+		navigator.@id == expectedId
 
 		where:
-		navigator                 | expectedId
-		page.find(".article", 0)  | "article-1"
-		page.find(".article", 1)  | "article-2"
-		page.find(".article", 2)  | "article-3"
-		page.find(".article", -1) | "article-3"
+		selector   | index | expectedId
+		".article" | 0     | "article-1"
+		".article" | 1     | "article-2"
+		".article" | 2     | "article-3"
+		".article" | -1    | "article-3"
 	}
 
+	@Unroll("find('#selector', #attributes) should find elements with the ids #expectedIds")
 	def "find by selector and attributes"() {
-		expect: page.find(attributes, selector).ids() == expectedIds
+		expect: page.find(attributes, selector)*.@id == expectedIds
 
 		where:
 		selector   | attributes                              | expectedIds
@@ -155,6 +161,7 @@ class NavigatorSpec extends Specification {
 		".article" | [:]                                     | ["article-1", "article-2", "article-3"]
 	}
 
+	@Unroll("find('#selector', text: '#text') should find #expectedSize elements")
 	def "find by selector and text predicate"() {
 		expect: page.find(selector, text: text).size() == expectedSize
 
@@ -165,8 +172,9 @@ class NavigatorSpec extends Specification {
 		"p"        | "DOES NOT EXIST"                | 0
 	}
 
+	@Unroll("filter('#filter') should select elements with the ids #expectedIds")
 	def "filter by selector"() {
-		expect: navigator.filter(filter).ids() == expectedIds
+		expect: navigator.filter(filter)*.@id == expectedIds
 
 		where:
 		navigator             | filter        | expectedIds
@@ -176,8 +184,9 @@ class NavigatorSpec extends Specification {
 		// TODO: case for filter by tag
 	}
 
+	@Unroll("filter(#filter) should select elements with the ids #expectedIds")
 	def "filter by attributes"() {
-		expect: navigator.filter(filter).ids() == expectedIds
+		expect: navigator.filter(filter)*.@id == expectedIds
 
 		where:
 		navigator               | filter                          | expectedIds
@@ -188,6 +197,7 @@ class NavigatorSpec extends Specification {
 		page.find("#article-1") | [id: "article-2"]               | []
 	}
 
+	@Unroll("filter(text: '#text') should select #expectedSize elements")
 	def "filter by text"() {
 		expect: navigator.filter(text: text).size() == expectedSize
 
@@ -198,8 +208,9 @@ class NavigatorSpec extends Specification {
 		page.find("p") | "DOES NOT EXIST"                | 0
 	}
 
+	@Unroll("filter('#selector', #attributes should select elements with the ids #expectedIds")
 	def "filter by selector and attributes"() {
-		expect: navigator.filter(attributes, selector).ids() == expectedIds
+		expect: navigator.filter(attributes, selector)*.@id == expectedIds
 
 		where:
 		navigator                     | selector | attributes         | expectedIds
@@ -210,7 +221,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling next() on #selector should return #expectedIds")
 	def "next selects immediately following elements"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.next().ids() == expectedIds
+		expect: navigator.next()*.@id == expectedIds
 
 		where:
 		selector        | expectedIds
@@ -224,7 +235,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling next(#nextSelector) on #selector should return #expectedIds")
 	def "next with selector argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.next(nextSelector).ids() == expectedIds
+		expect: navigator.next(nextSelector)*.@id == expectedIds
 
 		where:
 		selector     | nextSelector | expectedIds
@@ -239,7 +250,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling previous() on #selector should return #expectedIds")
 	def "previous selects immediately preceding elements"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.previous().ids() == expectedIds
+		expect: navigator.previous()*.@id == expectedIds
 
 		where:
 		selector        | expectedIds
@@ -253,7 +264,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling previous(#previousSelector) on #selector should return #expectedIds")
 	def "previous with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.previous(previousSelector).ids() == expectedIds
+		expect: navigator.previous(previousSelector)*.@id == expectedIds
 
 		where:
 		selector               | previousSelector | expectedIds
@@ -268,7 +279,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling parent() on #selector should return #expectedIds")
 	def "parent selects immediate parent of each element"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.parent().ids() == expectedIds
+		expect: navigator.parent()*.@id == expectedIds
 
 		where:
 		selector        | expectedIds
@@ -282,7 +293,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling parent(#parentSelector) on #selector should return #expectedIds")
 	def "parent with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.parent(parentSelector).ids() == expectedIds
+		expect: navigator.parent(parentSelector)*.@id == expectedIds
 
 		where:
 		selector     | parentSelector | expectedIds
@@ -299,7 +310,7 @@ class NavigatorSpec extends Specification {
 		then: navigator.size() == expectedSize
 
 		where:
-		navigator1              | navigator2                    | expectedSize
+		navigator1              | navigator2            | expectedSize
 		page.find("#article-1") | page.find(".article") | 3
 	}
 
@@ -314,26 +325,54 @@ class NavigatorSpec extends Specification {
 		expectedSize = 5
 	}
 
-	def id() {
-		expect:
-		navigator.id() == expectedId
-
+	@Unroll("the .text property of #selector should be '#expectedText'")
+	def "text of the first element can be accessed as a property"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.text == expectedText
+		
 		where:
-		navigator                   | expectedId
-		page.find("div", 0)         | "container"
-		page.find("div div", 1)     | "navigation"
-		page.find("#article-1 div") | ""
-		page.find("bdo")            | null
+		selector | expectedText
+		"p"      | "First paragraph of article 1."
+		"hr"     | ""
+		"bdo"    | null
 	}
 
-	def ids() {
-		expect:
-		navigator.ids() == expectedIds
+	@Unroll("the .tag property of #selector should be '#expectedTag'")
+	def "tagName of the first element can be accessed as a property"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.tag == expectedTag
+		
+		where:
+		selector        | expectedTag
+		"p"             | "p"
+		".article"      | "div"
+		"input, select" | "input"
+		"bdo"           | null
+	}
+
+	@Ignore
+	@Unroll("navigator.@#attribute should return '#expectedValue'")
+	def "attribute access via field operator"() {
+		expect: navigator.@"$attribute" == expectedValue
 
 		where:
-		navigator               | expectedIds
-		page.find("div")[0..<5] | ["container", "header", "navigation", "content", "main"]
-		page.find("bdo")        | []
+		navigator                   | attribute | expectedValue
+		page.find("div", 0)         | "id"      | "container"
+		page.find("div div", 1)     | "id"      | "navigation"
+		page.find("#article-1 div") | "id"      | ""
+		page.find("#navigation a")  | "href"    | "#home"
+		page.find("bdo")            | "id"      | null
+	}
+
+	@Unroll("navigator*.@#attribute should return #expectedValue")
+	def "attributes of all elements accessed via field operator"() {
+		expect: navigator*.@"$attribute" == expectedIds
+
+		where:
+		navigator                  | attribute | expectedIds
+		page.find("div")[0..<5]    | "id"      | ["container", "header", "navigation", "content", "main"]
+		page.find("#navigation a") | "href"    | ["#home", "#about", "#contact"]
+		page.find("bdo")           | "id"      | []
 	}
 
 	@Unroll("findByAttribute '#key' with value '#value' and matcher #matcher should find #expectedSize elements")
@@ -450,7 +489,7 @@ class NavigatorSpec extends Specification {
 
 	def text() {
 		expect:
-		navigator.text().contains(expectedText) == expectedResult
+		navigator.text.contains(expectedText) == expectedResult
 
 		where:
 		navigator               | expectedText      | expectedResult
@@ -487,16 +526,17 @@ class NavigatorSpec extends Specification {
 		page.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
 	}
 
-	def attribute() {
-		expect:
-		navigator.attribute(key) == expectedValue
+	@Unroll("the value of .@#attribute on #selector should be '#expectedValue'")
+	def "attribute access"() {
+		given: def navigator = page.find(selector)
+		expect: navigator."@$attribute" == expectedValue
 
 		where:
-		navigator                                           | key     | expectedValue
-		page.find("#header")                                | "id"    | "header"
-		page.find("#article-3")                             | "class" | "article"
-		page.find("input").withName("site").with("checked") | "value" | "google"
-		page.find("#article-3")                             | "style" | ""
+		selector     | attribute | expectedValue
+		"#header"    | "id"      | "header"
+		"#article-3" | "class"   | "article"
+		"#site-1"    | "value"   | "google"
+		"#article-3" | "style"   | ""
 	}
 
 	@Ignore
@@ -640,7 +680,7 @@ class NavigatorSpec extends Specification {
 	def first() {
 		expect:
 		navigator.first().size() == 1
-		navigator.first().id() == expectedId
+		navigator.first().@id == expectedId
 
 		where:
 		navigator             | expectedId
@@ -659,7 +699,7 @@ class NavigatorSpec extends Specification {
 	def last() {
 		expect:
 		navigator.last().size() == 1
-		navigator.last().id() == expectedId
+		navigator.last().@id == expectedId
 
 		where:
 		navigator             | expectedId
@@ -694,7 +734,7 @@ class NavigatorSpec extends Specification {
 	def withTextContaining() {
 		expect:
 		navigator.withTextContaining(text).size() == 1
-		navigator.withTextContaining(text).attribute(attribute) == expectedValue
+		navigator.withTextContaining(text).@"$attribute" == expectedValue
 
 		where:
 		navigator      | text    | attribute | expectedValue

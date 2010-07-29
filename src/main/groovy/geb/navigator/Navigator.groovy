@@ -232,24 +232,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator unique()
 
 	/**
-	 * Shorthand for <code>attribute("id")</code>.
-	 * @return the id of the first context element
-	 * @see #attribute(java.lang.String)
-	 */
-	String id() {
-		return attribute("id")
-	}
-
-	/**
-	 * Shorthand for <code>attribute("id")</code>.
-	 * @return the id of all context elements
-	 * @see #attributes(java.lang.String)
-	 */
-	String[] ids() {
-		return attributes("id")
-	}
-
-	/**
 	 * Shorthand for <code>getByAttribute(attribute, MatchType.EQUALS, value)</code>.
 	 * @param attribute attribute to consider
 	 * @param value value to match exactly
@@ -512,10 +494,16 @@ abstract class Navigator implements Iterable<Navigator> {
 	@Deprecated abstract boolean hasAttribute(String key, MatchType matchType, String value)
 
 	/**
+	 * Returns the tag name of the first context element.
+	 * @return the tag name of the first context element
+	 */
+	abstract String getTag()
+
+	/**
 	 * Returns the text content of the first context element.
 	 * @return the text content of the first context element
 	 */
-	abstract String text()
+	abstract String getText()
 
 	/**
 	 * Returns the text contents of all context elements.
@@ -545,71 +533,10 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	/**
 	 * Returns the value of the given attribute of the first context element.
-	 * @param key key of the attribute
+	 * @param name name of the attribute
 	 * @return the value of the given attribute of the first context element
 	 */
-	abstract String attribute(String key)
-
-	/**
-	 * Returns the values of the given attribute of all context elements.
-	 * @param key key of the attribute
-	 * @return the values of the given attribute of all context elements
-	 */
-	abstract String[] attributes(String key)
-
-	/**
-	 * Shorthand for <code>attribute("name")</code>.
-	 * @return the value of the name attribute of the first element
-	 * @see #attribute(java.lang.String)
-	 */
-	String name() {
-		return attribute("name")
-	}
-
-	/**
-	 * Shorthand for <code>attributes("name")</code>.
-	 * @return the value of the name attribute of the elements
-	 * @see #attributes(java.lang.String)
-	 */
-	String[] names() {
-		return attributes("name")
-	}
-
-	/**
-	 * Shorthand for <code>attribute("type")</code>.
-	 * @return the value of the type attribute of the first element
-	 * @see #attribute(java.lang.String)
-	 */
-	String type() {
-		return attribute("type")
-	}
-
-	/**
-	 * Shorthand for <code>attributes("type")</code>.
-	 * @return the value of the type attribute of the elements
-	 * @see #attributes(java.lang.String)
-	 */
-	String[] types() {
-		return attributes("type")
-	}
-
-	/**
-	 * Shorthand for <code>attribute("class")</code>.
-	 * @return the value of the class attribute of the first element
-	 * @see #attribute(java.lang.String)
-	 */
-	String className() {
-		return attribute("class")
-	}
-
-	/**
-	 * Shorthand for <code>attributes("class")</code>.
-	 * @return the value of the class attribute of the elements
-	 * @see #attributes(java.lang.String)
-	 */
-	String[] classNames() {
-		return attributes("class")
-	}
+	abstract String getAttribute(String name)
 
 	/**
 	 * Returns the value of the first context element for input elements

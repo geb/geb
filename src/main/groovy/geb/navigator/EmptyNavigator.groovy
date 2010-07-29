@@ -9,6 +9,12 @@ import static java.util.Collections.EMPTY_LIST
  */
 @Singleton class EmptyNavigator extends Navigator {
 
+	static {
+		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(EmptyNavigator))
+		mc.initialize()
+		EmptyNavigator.metaClass = mc
+	}
+
 	private static final WebElement[] EMPTY_ELEMENT_ARRAY = new WebElement[0]
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
@@ -27,10 +33,6 @@ import static java.util.Collections.EMPTY_LIST
 	Navigator unique() { this }
 
 	Navigator withTag(String tag) { this }
-
-	String attribute(String key) { null }
-
-	String[] attributes(String key) { EMPTY_STRING_ARRAY }
 
 	void click() { }
 
@@ -76,13 +78,17 @@ import static java.util.Collections.EMPTY_LIST
 
 	int size() { 0 }
 
-	String text() { null }
+	String getTag() { null }
+
+	String getText() { null }
 
 	String[] texts() { EMPTY_STRING_ARRAY }
 
 	String trimmedText() { null }
 
 	String[] trimmedTexts() { EMPTY_STRING_ARRAY }
+
+	String getAttribute(String name) { null }
 
 	def value() { null }
 
@@ -115,4 +121,13 @@ import static java.util.Collections.EMPTY_LIST
 	Navigator findByAttributeMatching(String attribute, Pattern pattern) { this }
 
 	String toString() { "[]" }
+
+	def propertyMissing(String name) {
+		if (name.startsWith("@")) {
+			null
+		} else {
+			throw new MissingPropertyException(name, getClass())
+		}
+	}
+
 }
