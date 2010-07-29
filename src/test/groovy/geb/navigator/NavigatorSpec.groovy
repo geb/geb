@@ -207,136 +207,89 @@ class NavigatorSpec extends Specification {
 		page.find("a, input, select") | "select" | [type: "checkbox"] | []
 	}
 
-	def "next selects following elements"() {
-		expect:
-		navigator.next().is(expectedTag)
+	@Unroll("calling next() on #selector should return #expectedIds")
+	def "next selects immediately following elements"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.next().ids() == expectedIds
 
 		where:
-		navigator        | expectedTag
-		page.find("div") | "div"
-		page.find("div") | "hr"
+		selector        | expectedIds
+		"#main"         | ["sidebar"]
+		"#header"       | ["navigation"]
+		".col-3"        | ["content", "footer"]
+		"#container"    | []
+		"#DOESNOTEXIST" | []
 	}
 
-	def "next selects single element"() {
-		when:
-		def navigator = page.find(selector)
-		iterations.times {
-			navigator = navigator.next()
-		}
-
-		then:
-		navigator.id() == expectedId
-
-		where:
-		selector  | iterations | expectedId
-		"#header" | 1          | "navigation"
-		"#header" | 2          | "content"
-	}
-
-	def "next returns empty if element has no sibling"() {
-		when:
-		def navigator = page.find("body").next()
-
-		then:
-		navigator.isEmpty()
-	}
-
+	@Unroll("calling next(#tag) on #selector should return #expectedIds")
 	def "next with tag argument"() {
-		expect: expectedId ? navigator.next(tag).id() == expectedId : navigator.next(tag).isEmpty()
+		given: def navigator = page.find(selector)
+		expect: navigator.next(tag).ids() == expectedIds
 
 		where:
-		navigator              | tag      | expectedId
-		page.find("#keywords") | "select" | "the_plain_select"
-		page.find("#keywords") | "bdo"    | null
+		selector    | tag      | expectedIds
+		"#keywords" | "input"  | ["site-1"]
+		"#keywords" | "select" | ["the_plain_select"]
+		"input"     | "input"  | ["site-1", "site-2", "checker1", "checker2"]
+		"input"     | "select" | ["the_plain_select"]
+		"#keywords" | "bdo"    | []
 	}
 
 	@Ignore
-	def "previous selects preceding elements"() {
-		expect:
-		navigator.previous().is(expectedTag)
+	@Unroll("calling previous() on #selector should return #expectedIds")
+	def "previous selects immediately preceding elements"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.previous().ids() == expectedIds
 
 		where:
-		navigator        | expectedTag
-		page.find("div") | "div"
-		page.find("div") | "hr"
+		selector        | expectedIds
+		"#footer"       | ["content"]
+		"#navigation"   | ["header"]
+		".col-3"        | ["header", "navigation"]
+		"#container"    | []
+		"#DOESNOTEXIST" | []
 	}
 
 	@Ignore
-	def "previous selects single element"() {
-		when:
-		def navigator = page.find(selector)
-		iterations.times {
-			navigator = navigator.previous()
-		}
-
-		then:
-		navigator.id() == expectedId
-
-		where:
-		selector   | iterations | expectedId
-		"#content" | 1          | "navigation"
-		"#content" | 2          | "header"
-	}
-
-	def "previous returns empty if element has no sibling"() {
-		when:
-		def navigator = page.find("head").previous()
-
-		then:
-		navigator.isEmpty()
-	}
-
-	@Ignore
+	@Unroll("calling previous(#tag) on #selector should return #expectedIds")
 	def "previous with tag argument"() {
-		when:
-		navigator = navigator.previous(tag)
-
-		then:
-		expectedId ? navigator.id() == expectedId : navigator.isEmpty()
+		given: def navigator = page.find(selector)
+		expect: navigator.previous(tag).ids() == expectedIds
 
 		where:
-		navigator                         | tag     | expectedId
-		page.find("#the_multiple_select") | "input" | "checker2"
-		page.find("#keywords")            | "bdo"   | null
+		selector               | tag      | expectedIds
+		"#the_multiple_select" | "input"  | ["checker2"]
+		"#the_multiple_select" | "select" | ["the_plain_select"]
+		"input"                | "input"  | ["keywords", "site-1", "site-2", "checker1"]
+		"select"               | "select" | ["the_plain_select"]
+		"#the_multiple_select" | "bdo"    | []
 	}
 
-	def "parent selects parent of single element"() {
-		when:
-		def navigator = page.find("#content").parent()
-
-		then:
-		navigator.id() == "container"
-	}
-
-	def "parent selects parents of multiple elements"() {
-		when:
-		def navigator = page.find(selector).parent()
-		if (parentTag) {
-			navigator = navigator.withTag(parentTag)
-		}
-
-		then:
-		navigator.size() == expectedSize
+	@Unroll("calling parent() on #selector should return #expectedIds")
+	def "parent selects immediate parent of each element"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.parent().ids() == expectedIds
 
 		where:
-		selector   | parentTag | expectedSize
-		"#content" | null      | 1
-		"li"       | null      | 6
-		"li"       | "ol"      | 5
+		selector        | expectedIds
+		"h1"            | ["header"]
+		".article"      | ["main"]
+		"option"        | ["the_plain_select", "the_multiple_select"]
+		"html"          | []
+		"#DOESNOTEXIST" | []
 	}
 
+	@Unroll("calling parent(#tag) on #selector should return #expectedIds")
 	def "parent with tag argument"() {
-		when:
-		navigator = navigator.parent(tag)
-
-		then:
-		navigator.size() == 1
-		!expectedId || navigator.id() == expectedId
+		given: def navigator = page.find(selector)
+		expect: navigator.parent(tag).ids() == expectedIds
 
 		where:
-		navigator                    | tag    | expectedId
-		page.find("ol.ol-simple li") | "div"  | "sidebar"
-		page.find("option")          | "form" | null
+		selector    | tag      | expectedIds
+		"#keywords" | "div"    | ["sidebar"]
+		"input"     | "div"    | ["sidebar"]
+		"ul, ol"    | "div"    | ["navigation", "sidebar"]
+		"#keywords" | "bdo"    | []
 	}
 
 	def unique() {
