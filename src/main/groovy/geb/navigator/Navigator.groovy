@@ -168,7 +168,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the next sibling elements of the
 	 * current context elements, matching the given tag.
 	 * <p>
-	 * Unlike     {@link #next()}    , this method will keep looking for the first
+	 * Unlike      {@link #next()}     , this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
 	 * @param tag tag to match
@@ -187,7 +187,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the previous sibling elements of the
 	 * current context elements, matching the given tag.
 	 * <p>
-	 * Unlike     {@link #previous()}    , this method will keep looking for the first
+	 * Unlike      {@link #previous()}     , this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
 	 * @param tag tag to match
@@ -206,7 +206,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the parent elements of the current
 	 * context elements that match the given tag.
 	 * <p>
-	 * Unlike     {@link #parent()}    , this method will keep traversing up the DOM
+	 * Unlike      {@link #parent()}     , this method will keep traversing up the DOM
 	 * until a match is found or the top of the DOM has been found
 	 * </p>
 	 * @param tag tag to match
@@ -223,7 +223,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * <p>
 	 * Note that in order to function correctly, this method will need to set
 	 * some data on the element to serve as a hash code - which is missing in
-	 * HtmlUnit's     {@link HtmlElement}     - but only if there's no id to use.
+	 * HtmlUnit's      {@link HtmlElement}      - but only if there's no id to use.
 	 * </p>
 	 * @return new Navigator instance
 	 */
@@ -279,13 +279,19 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract String getAttribute(String name)
 
 	/**
+	 * Returns the class names present on all elements. The result is a unique set in no guaranteed order.
+	 * @return the class names present on all elements.
+	 */
+	abstract Collection<String> getClassNames()
+
+	/**
 	 * Returns the value of the first context element for input elements
 	 * (including textarea, select and button).
 	 * <p>
 	 * In the case of a select, the value of the first selected option is returned.
 	 * </p>
 	 * <p>
-	 * <strong>Note:</strong> use     {@link #values()}     if you want all selected
+	 * <strong>Note:</strong> use      {@link #values()}      if you want all selected
 	 * options of a multiple select or if you want the values of all context
 	 * elements.
 	 * </p>

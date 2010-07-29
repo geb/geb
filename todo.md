@@ -18,11 +18,7 @@
         * *.name() - collection of tag names of all matches
         * *.@attribute - collection of values of attribute 'attribute' of all matches
 * syntax
-    * attribute access via .@
-    * text access via .text
-    * .tagName
     * replace values() methods with property access to .value
-    * class names as Collection<String>
     * values() doesn't do the right thing
     * additional methods from jQuery
         * add(selector)

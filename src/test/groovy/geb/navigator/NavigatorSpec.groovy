@@ -1,12 +1,12 @@
 package geb.navigator
 
+import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
-import spock.lang.Ignore
-import org.openqa.selenium.By
 
 class NavigatorSpec extends Specification {
 
@@ -372,6 +372,19 @@ class NavigatorSpec extends Specification {
 		page.find("div")[0..<5]    | "id"      | ["container", "header", "navigation", "content", "main"]
 		page.find("#navigation a") | "href"    | ["#home", "#about", "#contact"]
 		page.find("bdo")           | "id"      | []
+	}
+
+	@Unroll("the class names on #selector are #expected")
+	def getClassNames() {
+		given: def navigator = page.find(selector)
+		expect: navigator.classNames == expected
+
+		where:
+		selector      | expected
+		"#article-1"  | ["article"] as Set
+		"#navigation" | ["col-3", "module"] as Set
+		"ol"          | ["ol", "simple", "ol-simple", "dummy"] as Set
+		"bdo"         | [] as Set
 	}
 
 	@Unroll("the result of findClass('#className') on #selector should be #expectedResult")

@@ -2,6 +2,7 @@ package geb.navigator
 
 import org.openqa.selenium.WebElement
 import static java.util.Collections.EMPTY_LIST
+import static java.util.Collections.EMPTY_SET
 
 /**
  * Implementation of an empty Navigator object - helps keep the other code simple.
@@ -76,6 +77,8 @@ class EmptyNavigator extends Navigator {
 	String getText() { null }
 
 	String getAttribute(String name) { null }
+
+	Collection<String> getClassNames() { EMPTY_SET }
 
 	def value() { null }
 

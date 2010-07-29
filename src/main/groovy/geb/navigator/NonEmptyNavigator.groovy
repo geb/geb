@@ -168,7 +168,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	boolean hasClass(String valueToContain) {
-		contextElements.any { it.getAttribute("class") =~ /(^|\s)$valueToContain($|\s)/ }
+		valueToContain in classNames
 	}
 
 	boolean is(String tag) {
@@ -184,7 +184,16 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String getAttribute(String name) {
-			firstElement().getAttribute(name) ?: ""
+		firstElement().getAttribute(name) ?: ""
+	}
+
+	Collection<String> getClassNames() {
+		def classNames = new HashSet<String>()
+		contextElements.collect {
+			def value = it.getAttribute("class")
+			if (value) classNames.addAll value.tokenize()
+		}
+		classNames
 	}
 
 	def value() {
