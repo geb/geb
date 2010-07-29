@@ -12,12 +12,10 @@
         * .text() - text of first match
         * .classes() - Collection<String> of classes of first match
         * .name() - tag name of first match
-        * .id() - id of first match
         * .@attribute - value of attribute 'attribute' of first match
         * *.text() - collection of texts of all matches
         * *.classes() - collection of collections of class names of all matches
         * *.name() - collection of tag names of all matches
-        * .id() - colllection of id's of all matches
         * *.@attribute - collection of values of attribute 'attribute' of all matches
 * syntax
     * attribute access via .@
@@ -45,3 +43,25 @@
 	* next & previous imply Navigator could implement Range
 	* no-arg methods such as id() could be Groovy properties
 	* withAttribute(String, String) and the like could be replaced by with(Map<String, String>) 
+
+## Input Handling/Shortcuts:
+
+Find
+
+    $("div").firstName() // methodMissing
+    $("div").find("input", name: "firstName")
+    
+Read
+
+    $("div").firstName // propertyMissing(name)
+    $("div").find("input", name: "firstName").value()
+    
+Write
+
+    $("div").firstName = "abc" // propertyMissing(name, value)
+    $("div").find("input", name: "firstName").value("abc")
+    
+Append
+
+    $("div").firstName() << "abc" // is just methodMissing() from above, but Navigator implements leftShift()
+    $("div").find("input", name: "firstName") << "abc"
