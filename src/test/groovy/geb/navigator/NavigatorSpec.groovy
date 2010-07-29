@@ -331,6 +331,35 @@ class NavigatorSpec extends Specification {
 		".article"   | ".content"    | ["div"] * 3
 	}
 
+	@Unroll("calling siblings() on #selector should return #expectedIds")
+	def "siblings selects immediately following elements"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.siblings()*.@id == expectedIds
+
+		where:
+		selector          | expectedIds
+		"#header"         | ["navigation", "content", "footer"]
+		"#footer"         | ["header", "navigation", "content"]
+		"#content"        | ["header", "navigation", "footer"]
+		"#header h1"      | []
+		"#content, #main" | ["header", "navigation", "footer", "sidebar"]
+		"#DOESNOTEXIST"   | []
+	}
+
+	@Unroll("calling siblings(#siblingSelector) on #selector should return #expectedIds")
+	def "siblings with selector argument"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.siblings(siblingSelector)*.@id == expectedIds
+
+		where:
+		selector            | siblingSelector | expectedIds
+		"#site-1"           | "input"         | ["keywords", "site-2", "checker1", "checker2"]
+		"#site-1"           | "select"        | ["the_plain_select", "the_multiple_select"]
+		"#the_plain_select" | "select"        | ["the_multiple_select"]
+		"#header"           | ".col-3"        | ["navigation", "content"]
+		"#header"           | ".col-2"        | []
+	}
+
 	def unique() {
 		when: def navigator = (navigator1 + navigator2).unique()
 

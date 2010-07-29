@@ -22,10 +22,8 @@
     * values() doesn't do the right thing
     * additional methods from jQuery
         * add(selector)
-        * children(selector)
         * has(selector)
         * not(selector)
-        * siblings()
     * support leftShift to type in field without clearing it
 * enhancements
 	* next, previous, parent could possibly be optimised depending on the WebDriver implementation being used

@@ -72,6 +72,10 @@ class EmptyNavigator extends Navigator {
 
 	Navigator children(String selector) { this }
 
+	Navigator siblings() { this }
+
+	Navigator siblings(String selector) { this }
+
 	Navigator remove(int index) { this }
 
 	int size() { 0 }

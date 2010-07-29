@@ -173,6 +173,16 @@ class NonEmptyNavigator extends Navigator {
 		children().filter(selectorString)
 	}
 
+	Navigator siblings() {
+		on collectElements {
+			it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
+		}
+	}
+
+	Navigator siblings(String selectorString) {
+		siblings().filter(selectorString)
+	}
+
 	Navigator unique() {
 		new NonEmptyNavigator(contextElements.unique())
 	}
