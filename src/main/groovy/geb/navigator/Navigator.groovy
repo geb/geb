@@ -16,11 +16,9 @@
 package geb.navigator
 
 import com.gargoylesoftware.htmlunit.html.HtmlElement
-import java.util.regex.Pattern
+import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import static geb.navigator.MatchType.EQUALS
-import org.openqa.selenium.By
 
 /**
  * Navigator is a jQuery-style DOM traversal tool that wraps a set of WebDriver WebElements.
@@ -232,51 +230,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator unique()
 
 	/**
-	 * Shorthand for <code>getByAttribute(attribute, MatchType.EQUALS, value)</code>.
-	 * @param attribute attribute to consider
-	 * @param value value to match exactly
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator findByAttribute(String attribute, String value) {
-		return findByAttribute(attribute, EQUALS, value)
-	}
-
-	/**
-	 * Creates a new Navigator instance containing all child elements of the current
-	 * context elements with the given attribute matching the given value as
-	 * determined by the match type.
-	 *
-	 * @param attribute attribute to consider
-	 * @param matchType type of match to make
-	 * @param value the value to match
-	 * @return new Navigator instance
-	 */
-	@Deprecated abstract Navigator findByAttribute(String attribute, MatchType matchType, String value)
-
-	/**
-	 * Creates a new Navigator instance containing all child elements of the current
-	 * context elements for which the value given attribute matches the given
-	 * pattern.
-	 * @param attribute attribute to use
-	 * @param pattern pattern the value of the attribute should match
-	 * @return new Navigator instance
-	 * @see #findByAttributeMatching(java.lang.String, java.util.regex.Pattern)
-	 */
-	@Deprecated abstract Navigator findByAttributeMatching(String attribute, String pattern)
-
-	/**
-	 * Creates a new Navigator instance containing all child elements of the current
-	 * context elements for which the value given attribute matches the given
-	 * pattern.
-	 * @param attribute attribute to use
-	 * @param pattern pattern the value of the attribute should match
-	 * @return new Navigator instance
-	 * @see #findByAttributeMatching(java.lang.String, java.lang.String)
-	 */
-	@Deprecated abstract Navigator findByAttributeMatching(String attribute, Pattern pattern)
-
-	/**
 	 * Returns true if at least one of the context elements has the given class.
 	 * @param className class to check for
 	 * @return true if at least one of the context elements has the given class
@@ -289,183 +242,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return true if at least one of the context elements matches the tag
 	 */
 	abstract boolean is(String tag)
-
-	/**
-	 * Creates a new Navigator instance by only retaining the elements that match
-	 * the given tag.
-	 * @param tag tag to match
-	 * @return new Navigator instance
-	 */
-	@Deprecated abstract Navigator withTag(String tag)
-
-	/**
-	 * Creates a new Navigator instance by only retaining the elements that contain
-	 * the given text, i.e.: <code>node.text().contains(textToContain)</code>
-	 * will return <code>true</code> for each node.
-	 * @param textToContain text the retained nodes should contain
-	 * @return new Navigator instance
-	 */
-	@Deprecated abstract Navigator withTextContaining(String textToContain)
-
-	/**
-	 * Creates a new Navigator instance by only retaining the elements that contain
-	 * text matching the given pattern.
-	 * @param pattern the pattern to match
-	 * @return new Navigator instance
-	 * @see #withTextMatching(java.util.regex.Pattern)
-	 */
-	@Deprecated abstract Navigator withTextMatching(String pattern)
-
-	/**
-	 * Creates a new Navigator instance by only retaining the elements that contain
-	 * text matching the given pattern.
-	 * @param pattern the pattern to match
-	 * @return new Navigator instance
-	 * @see #withTextMatching(java.lang.String)
-	 */
-	@Deprecated abstract Navigator withTextMatching(Pattern pattern)
-
-	/**
-	 * Shorthand for <code>withAttribute(key, MatchType.EXISTING, someValueOrEvenNull)</code>
-	 * @param key attribute to look for
-	 * @return a filtered context
-	 */
-	@Deprecated
-	Navigator with(String key) {
-		return withAttribute(key, MatchType.EXISTING, null)
-	}
-
-	/**
-	 * Shorthand for     {@link #withAttribute(java.lang.String, java.lang.String)}    .
-	 * @param key key to consider
-	 * @param value value to match exactly
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator with(String key, String value) {
-		return withAttribute(key, value)
-	}
-
-	/**
-	 * Shorthand for <code>withAttribute(key, MatchType.EQUALS, someValueOrEvenNull)</code>
-	 * @param key key to consider
-	 * @param value value value to match exactly
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withAttribute(String key, String value) {
-		return withAttribute(key, EQUALS, value)
-	}
-
-	/**
-	 * Creates a new Navigator instance retaining only the context elements with the
-	 * given attribute matching the pattern.
-	 * @param key key of the attribute
-	 * @param pattern pattern the value of the attribute should match
-	 * @return new Navigator instance
-	 * @see #withAttributeMatching(java.lang.String, java.util.regex.Pattern)
-	 */
-	@Deprecated abstract Navigator withAttributeMatching(String key, String pattern)
-
-	/**
-	 * Creates a new Navigator instance retaining only the context elements with the
-	 * given attribute matching the pattern.
-	 * @param key key of the attribute
-	 * @param pattern pattern the value of the attribute should match
-	 * @return new Navigator instance
-	 * @see #withAttributeMatching(java.lang.String, java.lang.String)
-	 */
-	@Deprecated abstract Navigator withAttributeMatching(String key, Pattern pattern)
-
-	/**
-	 * Creates a new Navigator instance containing all context elements with the
-	 * attribute matching the given value, as determined by the match type.
-	 * @param key key to consider
-	 * @param matchType type of match
-	 * @param value value to match
-	 * @return new Navigator instance
-	 */
-	@Deprecated abstract Navigator withAttribute(String key, MatchType matchType, String value)
-
-	/**
-	 * Shorthand for <code>withAttribute(key, MatchType.CONTAINING, someValueOrEvenNull)</code>
-	 * @param key key to consider
-	 * @param value value that should be contained by the attribute
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withAttributeContaining(String key, String value) {
-		return withAttribute(key, MatchType.CONTAINING, value)
-	}
-
-	/**
-	 * Shorthand for <code>withAttribute("class", MatchType.CONTAINED_WITH_WHITESPACE, valueToContain)</code>
-	 * @param valueToContain value
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withClass(String valueToContain) {
-		return withAttribute("class", MatchType.CONTAINED_WITH_WHITESPACE, valueToContain)
-	}
-
-	/**
-	 * Shorthand for <code>withAttribute("value", MatchType.EQUALS, valueToContain)</code>
-	 * @param valueToContain value
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withValue(String valueToContain) {
-		return withAttribute("value", MatchType.EQUALS, valueToContain)
-	}
-
-	/**
-	 * Shorthand for <code>withAttribute("id", MatchType.EQUALS, valueToContain)</code>
-	 * @param valueToContain value
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withId(String valueToContain) {
-		return withAttribute("id", MatchType.EQUALS, valueToContain)
-	}
-
-	/**
-	 * Shorthand for <code>withAttribute("type", MatchType.EQUALS, valueToContain)</code>
-	 * @param type type to match
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withType(String type) {
-		return withAttribute("type", type)
-	}
-
-	/**
-	 * Shorthand for <code>withAttribute("name", MatchType.EQUALS, valueToContain)</code>
-	 * @param name name to match
-	 * @return new Navigator instance
-	 */
-	@Deprecated
-	Navigator withName(String name) {
-		return withAttribute("name", name)
-	}
-
-	/**
-	 * Shorthand for <code>hasAttribute(key, MatchType.EXISTING, anyValue)</code>
-	 * @param key of the attribute
-	 * @return new Navigator instance
-	 */
-	boolean hasAttribute(String key) {
-		return hasAttribute(key, MatchType.EXISTING, null)
-	}
-
-	/**
-	 * Shorthand for <code>hasAttribute(key, MatchType.EQUALS, value)</code>
-	 * @param key of the attribute
-	 * @param value value to match
-	 * @return new Navigator instance
-	 */
-	boolean hasAttribute(String key, String value) {
-		return hasAttribute(key, MatchType.EQUALS, value)
-	}
 
 	/**
 	 * Shorthand for <code>hasAttribute("disabled")</code>.
@@ -482,16 +258,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	boolean isReadOnly() {
 		return hasAttribute("readonly")
 	}
-
-	/**
-	 * Returns true if one of the context elements has a value for the attribute
-	 * matching the given value as defined by the match type.
-	 * @param key key of the attribute to match
-	 * @param matchType type of match to make
-	 * @param value the value to match
-	 * @return true if one of the context elements matches
-	 */
-	@Deprecated abstract boolean hasAttribute(String key, MatchType matchType, String value)
 
 	/**
 	 * Returns the tag name of the first context element.
@@ -577,14 +343,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator first()
 
 	/**
-	 * Returns the first context element (not wrapped).
-	 * @return the first context element (not wrapped)
-	 */
-	protected WebElement firstElement() {
-		return getElement(0)
-	}
-
-	/**
 	 * Creates a new Navigator instance containing only the last context element (wrapped).
 	 * @return new Navigator instance
 	 */
@@ -595,6 +353,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	abstract Navigator tail()
+
+	/**
+	 * Returns the first context element (not wrapped).
+	 * @return the first context element (not wrapped)
+	 */
+	protected WebElement firstElement() {
+		return getElement(0)
+	}
 
 	/**
 	 * Returns the last context element (not wrapped).

@@ -1,6 +1,5 @@
 package geb.navigator
 
-import java.util.regex.Pattern
 import org.openqa.selenium.WebElement
 import static java.util.Collections.EMPTY_LIST
 
@@ -32,15 +31,11 @@ class EmptyNavigator extends Navigator {
 
 	Navigator unique() { this }
 
-	Navigator withTag(String tag) { this }
-
 	void click() { }
 
 	Navigator head() { this }
 
 	Navigator first() { this }
-
-	Navigator findByAttribute(String attribute, MatchType matchType, String value) { this }
 
 	Collection<WebElement> allElements() { EMPTY_LIST }
 
@@ -49,8 +44,6 @@ class EmptyNavigator extends Navigator {
 	List<WebElement> getElements(Range range) { EMPTY_LIST }
 
 	List<WebElement> getElements(Collection indexes) { EMPTY_LIST }
-
-	boolean hasAttribute(String key, MatchType matchType, String value) { false }
 
 	boolean hasClass(String valueToContain) { false }
 
@@ -88,8 +81,6 @@ class EmptyNavigator extends Navigator {
 
 	String[] values() { EMPTY_STRING_ARRAY }
 
-	Navigator withAttribute(String key, MatchType matchType, String value) { this }
-
 	Navigator getAt(int index) { this }
 
 	Navigator getAt(Range range) { this }
@@ -99,20 +90,6 @@ class EmptyNavigator extends Navigator {
 	Navigator verifyNotEmpty() { throw new EmptyNavigatorException() }
 
 	Navigator value(value) { this }
-
-	Navigator withTextContaining(String textToContain) { this }
-
-	Navigator withTextMatching(String pattern) { this }
-
-	Navigator withTextMatching(Pattern pattern) { this }
-
-	Navigator withAttributeMatching(String key, String pattern) { this }
-
-	Navigator withAttributeMatching(String key, Pattern pattern) { this }
-
-	Navigator findByAttributeMatching(String attribute, String pattern) { this }
-
-	Navigator findByAttributeMatching(String attribute, Pattern pattern) { this }
 
 	String toString() { "[]" }
 

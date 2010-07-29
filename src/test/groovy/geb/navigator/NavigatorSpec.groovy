@@ -374,41 +374,18 @@ class NavigatorSpec extends Specification {
 		page.find("bdo")           | "id"      | []
 	}
 
-	@Unroll("findByAttribute '#key' with value '#value' and matcher #matcher should find #expectedSize elements")
-	def findByAttribute() {
-		expect:
-		page.findByAttribute(key, matcher, value).size() == expectedSize
-
-		where:
-		key     | matcher                             | value       | expectedSize
-		"lang"  | MatchType.EXISTING                  | null        | 1
-		"align" | MatchType.EXISTING                  | "ol"        | 0
-		"class" | MatchType.EQUALS                    | "ol-simple" | 1
-		"class" | MatchType.EQUALS                    | "ol"        | 0
-		"class" | MatchType.CONTAINED_WITH_WHITESPACE | "ol-simple" | 3
-		"class" | MatchType.CONTAINED_WITH_WHITESPACE | "dummy"     | 1
-		"class" | MatchType.STARTING_WITH             | "ol-simple" | 2
-		"class" | MatchType.STARTING_WITH             | "ol"        | 3
-		"class" | MatchType.ENDING_WITH               | "imple"     | 2
-		"class" | MatchType.ENDING_WITH               | "my"        | 1
-		"class" | MatchType.CONTAINING                | "simple"    | 4
-		"class" | MatchType.CONTAINING                | "module"    | 1
-		"lang"  | MatchType.CONTAINED_WITH_HYPHENS    | "en"        | 1
-		"lang"  | MatchType.CONTAINED_WITH_HYPHENS    | "US"        | 1
-		"class" | MatchType.CONTAINED_WITH_HYPHENS    | "simple"    | 1
-	}
-
+	@Unroll("the result of findClass('#className') on #selector should be #expectedResult")
 	def hasClass() {
-		expect:
-		navigator.hasClass(className) == expectedResult
+		given: def navigator = page.find(selector)
+		expect: navigator.hasClass(className) == expectedResult
 
 		where:
-		navigator             | className | expectedResult
-		page.find(".article") | "article" | true
-		page.find("div")      | "module"  | true
-		page.find("#content") | "col-3"   | true
-		page.find("#content") | "col-2"   | false
-		page.find("#content") | "col"     | false
+		selector   | className | expectedResult
+		".article" | "article" | true
+		"div"      | "module"  | true
+		"#content" | "col-3"   | true
+		"#content" | "col-2"   | false
+		"#content" | "col"     | false
 	}
 
 	def is() {
@@ -421,69 +398,6 @@ class NavigatorSpec extends Specification {
 		page.find("#article-1 p").parent()    | "div"        | true
 		page.find("#article-1 p").parent()    | "blockquote" | true
 		page.find("#article-1 p").parent()[0] | "blockquote" | false
-	}
-
-	@Unroll("withAttribute '#key' with value '#value' and matcher #matcher should find #expectedSize elements")
-	def withAttribute() {
-		when:
-		def navigator = selector ? page.find(selector) : page
-
-		then:
-		navigator.withAttribute(key, matcher, value).size() == expectedSize
-
-		where:
-		selector          | key     | matcher                             | value       | expectedSize
-		null              | "lang"  | MatchType.EXISTING                  | null        | 1
-		"div.article div" | "class" | MatchType.EXISTING                  | null        | 3
-		null              | "lang"  | MatchType.EQUALS                    | "en-US"     | 1
-		"div.article div" | "class" | MatchType.EQUALS                    | "content"   | 3
-		"div.article div" | "class" | MatchType.EQUALS                    | " content"  | 0
-		null              | "lang"  | MatchType.CONTAINED_WITH_WHITESPACE | "en-US"     | 1
-		"ol"              | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "ol-simple" | 3
-		"ol"              | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "ol"        | 1
-		"ol"              | "class" | MatchType.STARTING_WITH             | "ol-simple" | 2
-		"ol"              | "class" | MatchType.STARTING_WITH             | "ol"        | 3
-		"ol"              | "class" | MatchType.ENDING_WITH               | "imple"     | 2
-		"ol"              | "class" | MatchType.ENDING_WITH               | "my"        | 1
-		"ol"              | "class" | MatchType.CONTAINING                | "simple"    | 4
-		"div"             | "class" | MatchType.CONTAINING                | "module"    | 1
-		null              | "lang"  | MatchType.CONTAINED_WITH_HYPHENS    | "en"        | 1
-		null              | "lang"  | MatchType.CONTAINED_WITH_HYPHENS    | "US"        | 1
-		"ol"              | "class" | MatchType.CONTAINED_WITH_HYPHENS    | "simple"    | 1
-	}
-
-	def hasAttribute() {
-		when:
-		def navigator = selector ? page.find(selector) : page
-
-		then:
-		navigator.hasAttribute(key, matcher, value) == expectedResult
-
-		where:
-		selector          | key     | matcher                             | value       | expectedResult
-		".article"        | "class" | MatchType.EXISTING                  | null        | true
-		".article"        | "bdo"   | MatchType.EXISTING                  | null        | false
-		".article"        | "class" | MatchType.EQUALS                    | "article"   | true
-		".article"        | "class" | MatchType.EQUALS                    | " article"  | false
-		"div"             | "class" | MatchType.EQUALS                    | "col-2"     | true
-		"div"             | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "module"    | true
-		"ol"              | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "ol"        | true
-		"ol"              | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "ol-simple" | true
-		"ol"              | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "dummy"     | true
-		"ol"              | "class" | MatchType.CONTAINED_WITH_WHITESPACE | "nope"      | false
-		"ol"              | "class" | MatchType.STARTING_WITH             | "ol-simple" | true
-		"ol"              | "class" | MatchType.STARTING_WITH             | "ol"        | true
-		"div"             | "class" | MatchType.STARTING_WITH             | "ola"       | false
-		"ol"              | "class" | MatchType.ENDING_WITH               | "imple"     | true
-		"ol"              | "class" | MatchType.ENDING_WITH               | "my"        | true
-		"ol"              | "class" | MatchType.ENDING_WITH               | "nono"      | false
-		"ol"              | "class" | MatchType.CONTAINING                | "simple"    | true
-		"div"             | "class" | MatchType.CONTAINING                | "module"    | true
-		"div"             | "class" | MatchType.CONTAINING                | "ol-simple" | false
-		null              | "lang"  | MatchType.CONTAINED_WITH_HYPHENS    | "en"        | true
-		null              | "lang"  | MatchType.CONTAINED_WITH_HYPHENS    | "US"        | true
-		"ol"              | "class" | MatchType.CONTAINED_WITH_HYPHENS    | "simple"    | true
-		"div"             | "class" | MatchType.CONTAINED_WITH_HYPHENS    | "simple"    | false
 	}
 
 	def text() {
@@ -634,14 +548,13 @@ class NavigatorSpec extends Specification {
 
 	@Unroll
 	def values() {
-		expect:
-		navigator.values() == expectedValues
+		expect: navigator.values() == expectedValues
 
 		where:
-		navigator                                           | expectedValues
-		page.find("select").withName("multiple_select")     | ["2", "4"]
-		page.find("input").withName("site")                 | ["google", "thisone"]
-		page.find("select").withName("that_does_not_exist") | []
+		navigator                         | expectedValues
+		page.find("#the_multiple_select") | ["2", "4"]
+		page.find("input", name: "site")  | ["google", "thisone"]
+		page.find("#that_does_not_exist") | []
 	}
 
 	def click() {
@@ -700,53 +613,6 @@ class NavigatorSpec extends Specification {
 
 		where:
 		navigator = page.find("#does_not_exist")
-	}
-
-	def withTextContaining() {
-		expect:
-		navigator.withTextContaining(text).size() == 1
-		navigator.withTextContaining(text).@"$attribute" == expectedValue
-
-		where:
-		navigator      | text    | attribute | expectedValue
-		page.find("a") | "Home"  | "href"    | "#home"
-		page.find("a") | "About" | "href"    | "#about"
-	}
-
-	def withTextMatching() {
-		expect:
-		navigator.withTextMatching(pattern).size() == expectedSize
-
-		where:
-		navigator      | pattern      | expectedSize
-		page.find("p") | /.*block.*/  | 1
-		page.find("p") | ~/.*block.*/ | 1
-		page.find("p") | /.*Nono.*/   | 0
-		page.find("p") | ~/.*Nono.*/  | 0
-	}
-
-	def withAttributeMatching() {
-		expect:
-		navigator.withAttributeMatching(attribute, pattern).size() == expectedSize
-
-		where:
-		navigator          | attribute | pattern        | expectedSize
-		page.find("div")   | "class"   | /.*col\-\d.*/  | 4
-		page.find("div")   | "class"   | ~/.*col\-\d.*/ | 4
-		page.find("input") | "value"   | /.*nono.*/     | 0
-		page.find("input") | "value"   | ~/.*nono.*/    | 0
-	}
-
-	def getByAttributeMatching() {
-		expect:
-		page.findByAttributeMatching(attribute, pattern).size() == expectedSize
-
-		where:
-		attribute | pattern        | expectedSize
-		"class"   | /.*col\-\d.*/  | 4
-		"class"   | ~/.*col\-\d.*/ | 4
-		"class"   | /.*nono.*/     | 0
-		"class"   | ~/.*nono.*/    | 0
 	}
 
 }

@@ -63,11 +63,8 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator filter(String selectorString) {
-		def selectors = CssSelector.compile(selectorString)
 		on contextElements.findAll { element ->
-			selectors.any { selectorGroup ->
-				selectorGroup.every { it.matches(element) }
-			}
+			CssSelector.matches(element, selectorString)
 		}
 	}
 
@@ -170,80 +167,12 @@ class NonEmptyNavigator extends Navigator {
 		new NonEmptyNavigator(contextElements.unique())
 	}
 
-	Navigator findByAttribute(String attribute, MatchType matchType, String value) {
-		List<WebElement> list = []
-		contextElements*.findElements(By.xpath("descendant::*")).flatten().each { WebElement child ->
-			if (matchType.isMatch(child.getAttribute(attribute), value)) {
-				list << child
-			}
-		}
-		on list
-	}
-
-	Navigator findByAttributeMatching(String attribute, String pattern) {
-		findByAttributeMatching attribute, ~pattern
-	}
-
-	Navigator findByAttributeMatching(String attribute, Pattern pattern) {
-		List<WebElement> list = []
-		contextElements*.findElements(By.xpath("descendant::*")).flatten().each { WebElement child ->
-			if (child.getAttribute(attribute) ==~ pattern) {
-				list << child
-			}
-		}
-		on list
-	}
-
 	boolean hasClass(String valueToContain) {
-		hasAttribute("class", MatchType.CONTAINED_WITH_WHITESPACE, valueToContain)
+		contextElements.any { it.getAttribute("class") =~ /(^|\s)$valueToContain($|\s)/ }
 	}
 
 	boolean is(String tag) {
 		contextElements.any { tag.equalsIgnoreCase(it.tagName) }
-	}
-
-	Navigator withTag(String tag) {
-		on contextElements.findAll { it.tagName == tag }
-	}
-
-	Navigator withTextContaining(String textToContain) {
-		on contextElements.findAll { it.text == textToContain }
-	}
-
-	Navigator withTextMatching(String pattern) {
-		withTextMatching ~pattern
-	}
-
-	Navigator withTextMatching(Pattern pattern) {
-		on contextElements.findAll { it.text ==~ pattern }
-	}
-
-	Navigator withAttributeMatching(String key, String pattern) {
-		withAttributeMatching key, ~pattern
-	}
-
-	Navigator withAttributeMatching(String key, Pattern pattern) {
-		on contextElements.findAll { it.getAttribute(key) ==~ pattern }
-	}
-
-	Navigator withAttribute(String key, MatchType matchType, String value) {
-		on contextElements.findAll {
-			matchType.isMatch(it.getAttribute(key), value)
-		}
-	}
-
-	boolean isChecked() {
-		contextElements.every { it.isSelected() }
-	}
-
-	boolean isSelected() {
-		contextElements.every { it.isSelected() }
-	}
-
-	boolean hasAttribute(String key, MatchType matchType, String value) {
-		contextElements.any {
-			matchType.isMatch(it.getAttribute(key), value)
-		}
 	}
 
 	String getTag() {
@@ -255,40 +184,15 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String getAttribute(String name) {
-		firstElement().getAttribute(name) ?: ""
+			firstElement().getAttribute(name) ?: ""
 	}
 
 	def value() {
-		getInputValue(contextElements)
+		getInputValues(contextElements)
 	}
 
 	Navigator value(value) {
-		def element = firstElement()
-		if (element.tagName ==~ /(?i)select/) {
-			if (element.getAttribute("multiple")) {
-				element.findElements(By.tagName("option")).each {
-					if (it.value in value) {
-						it.setSelected()
-					} else if (it.isSelected()) {
-						it.toggle()
-					}
-				}
-			} else {
-				element.findElements(By.tagName("option")).find { it.value == value }.setSelected()
-			}
-		} else if (element.getAttribute("type") == "checkbox") {
-			if (element.value == value) {
-				element.setSelected()
-			} else if (element.isSelected()) {
-				element.toggle()
-			}
-		} else if (element.getAttribute("type") == "radio") {
-			// TODO: this feels a little hacky
-			withType("radio").withName(element.getAttribute("name")).allElements().find { it.value == value }?.setSelected()
-		} else {
-			element.clear()
-			element.sendKeys(value)
-		}
+		setInputValues(contextElements, value)
 		this
 	}
 
@@ -351,7 +255,7 @@ class NonEmptyNavigator extends Navigator {
 				}
 
 				if (inputs) {
-					return getInputValue(inputs)
+					return getInputValues(inputs)
 				} else {
 					throw new MissingPropertyException(name, getClass())
 				}
@@ -364,60 +268,71 @@ class NonEmptyNavigator extends Navigator {
 		}
 
 		if (inputs) {
-			setInputValue(inputs, value)
+			setInputValues(inputs, value)
 		} else {
 			throw new MissingPropertyException(name, getClass())
 		}
 	}
 
-	private getInputValue(Collection<WebElement> inputs) {
-		def value = []
+	private getInputValues(Collection<WebElement> inputs) {
+		def values = []
 		inputs.each { WebElement input ->
-			if (input.tagName == "select") {
-				if (input.getAttribute("multiple")) {
-					value << input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
-				} else {
-					value << input.findElements(By.tagName("option")).find { it.isSelected() }.value
-				}
-			} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
-				if (input.isSelected()) {
-					value << input.value
-				}
-			} else {
-				value << input.value
-			}
+			def value = getInputValue(input)
+			if (value) values << value
 		}
-		return value.size() < 2 ? value[0] : value
+		return values.size() < 2 ? values[0] : values
 	}
 
-	private void setInputValue(Collection<WebElement> inputs, value) {
+	private getInputValue(WebElement input) {
+		def value = null
+		if (input.tagName == "select") {
+			if (input.getAttribute("multiple")) {
+				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
+			} else {
+				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
+			}
+		} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
+			if (input.isSelected()) {
+				value = input.value
+			}
+		} else {
+			value = input.value
+		}
+		value
+	}
+
+	private void setInputValues(Collection<WebElement> inputs, value) {
 		inputs.each { WebElement input ->
-			if (input.tagName == "select") {
-				if (input.getAttribute("multiple")) {
-					input.findElements(By.tagName("option")).each { WebElement option ->
-						if (option.value in value) {
-							option.setSelected()
-						} else if (option.isSelected()) {
-							option.toggle()
-						}
+			setInputValue(input, value)
+		}
+	}
+
+	private void setInputValue(WebElement input, value) {
+		if (input.tagName == "select") {
+			if (input.getAttribute("multiple")) {
+				input.findElements(By.tagName("option")).each { WebElement option ->
+					if (option.value in value) {
+						option.setSelected()
+					} else if (option.isSelected()) {
+						option.toggle()
 					}
-				} else {
-					input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
-				}
-			} else if (input.getAttribute("type") == "checkbox") {
-				if (input.value == value) {
-					input.setSelected()
-				} else if (input.isSelected()) {
-					input.toggle()
-				}
-			} else if (input.getAttribute("type") == "radio") {
-				if (input.value == value) {
-					input.setSelected()
 				}
 			} else {
-				input.clear()
-				input.sendKeys value
+				input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
 			}
+		} else if (input.getAttribute("type") == "checkbox") {
+			if (input.value == value) {
+				input.setSelected()
+			} else if (input.isSelected()) {
+				input.toggle()
+			}
+		} else if (input.getAttribute("type") == "radio") {
+			if (input.value == value) {
+				input.setSelected()
+			}
+		} else {
+			input.clear()
+			input.sendKeys value
 		}
 	}
 
