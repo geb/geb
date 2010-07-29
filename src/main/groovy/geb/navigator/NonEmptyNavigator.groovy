@@ -134,13 +134,15 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator previous() {
 		on collectElements {
-			it.findElement By.xpath("preceding-sibling::*")
+			def siblings = it.findElements(By.xpath("preceding-sibling::*"))
+			siblings ? siblings.last() : EMPTY_LIST
 		}
 	}
 
 	Navigator previous(String tag) {
 		on collectElements {
-			it.findElement By.xpath("preceding-sibling::$tag")
+			def siblings = it.findElements(By.xpath("preceding-sibling::$tag"))
+			siblings ? siblings.last() : EMPTY_LIST
 		}
 	}
 
