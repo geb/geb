@@ -7,7 +7,8 @@ import static java.util.Collections.EMPTY_LIST
 /**
  * Implementation of an empty Navigator object - helps keep the other code simple.
  */
-@Singleton class EmptyNavigator extends Navigator {
+@Singleton(lazy = true)
+class EmptyNavigator extends Navigator {
 
 	static {
 		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(EmptyNavigator))
@@ -15,7 +16,6 @@ import static java.util.Collections.EMPTY_LIST
 		EmptyNavigator.metaClass = mc
 	}
 
-	private static final WebElement[] EMPTY_ELEMENT_ARRAY = new WebElement[0]
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
 	Navigator find(String selector) { this }
@@ -42,7 +42,7 @@ import static java.util.Collections.EMPTY_LIST
 
 	Navigator findByAttribute(String attribute, MatchType matchType, String value) { this }
 
-	Collection<WebElement> allElements() { EMPTY_ELEMENT_ARRAY }
+	Collection<WebElement> allElements() { EMPTY_LIST }
 
 	WebElement getElement(int index) { null }
 
@@ -81,12 +81,6 @@ import static java.util.Collections.EMPTY_LIST
 	String getTag() { null }
 
 	String getText() { null }
-
-	String[] texts() { EMPTY_STRING_ARRAY }
-
-	String trimmedText() { null }
-
-	String[] trimmedTexts() { EMPTY_STRING_ARRAY }
 
 	String getAttribute(String name) { null }
 

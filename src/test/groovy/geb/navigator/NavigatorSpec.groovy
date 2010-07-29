@@ -350,7 +350,6 @@ class NavigatorSpec extends Specification {
 		"bdo"           | null
 	}
 
-	@Ignore
 	@Unroll("navigator.@#attribute should return '#expectedValue'")
 	def "attribute access via field operator"() {
 		expect: navigator.@"$attribute" == expectedValue
@@ -498,34 +497,6 @@ class NavigatorSpec extends Specification {
 		page.find("#article-3") | "Article title 2" | false
 	}
 
-	def texts() {
-		expect:
-		navigator.texts() == expectedValues
-
-		where:
-		navigator                | expectedValues
-		page.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
-	}
-
-	def trimmedText() {
-		expect:
-		navigator.trimmedText() == expectedText
-
-		where:
-		navigator                    | expectedText
-		page.find("#article-2 h2 a") | "Article title 2"
-		page.find("ol li")           | "Item #1"
-	}
-
-	def trimmedTexts() {
-		expect:
-		navigator.trimmedTexts() == ["Article title 1", "Article title 2", "Article title 3"]
-
-		where:
-		navigator                | expectedValues
-		page.find(".article h2") | ["Article title 1", "Article title 2", "Article title 3"]
-	}
-
 	@Unroll("the value of .@#attribute on #selector should be '#expectedValue'")
 	def "attribute access"() {
 		given: def navigator = page.find(selector)
@@ -542,7 +513,7 @@ class NavigatorSpec extends Specification {
 	@Ignore
 	def attributes() {
 		expect:
-		navigator.attributes(key) == expectedValues
+		navigator*.@"$key" == expectedValues
 
 		where:
 		navigator                           | key       | expectedValues

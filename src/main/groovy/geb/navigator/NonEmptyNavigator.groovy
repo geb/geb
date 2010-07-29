@@ -254,20 +254,6 @@ class NonEmptyNavigator extends Navigator {
 		firstElement().text
 	}
 
-	String[] texts() {
-		contextElements.text as String[]
-	}
-
-	String trimmedText() {
-		getText()?.replaceAll(/\s+/, " ")?.trim()
-	}
-
-	String[] trimmedTexts() {
-		texts().collect {
-			it.replaceAll(/\s+/, " ").trim()
-		} as String[]
-	}
-
 	String getAttribute(String name) {
 		firstElement().getAttribute(name) ?: ""
 	}

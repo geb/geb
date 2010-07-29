@@ -506,32 +506,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract String getText()
 
 	/**
-	 * Returns the text contents of all context elements.
-	 * @return the text contents of all context elements
-	 */
-	abstract String[] texts()
-
-	/**
-	 * Returns the trimmed text content of the first context element.
-	 * <p>
-	 * All whitespace characters, including newlines are condensed into a
-	 * single space - leading and trailing whitespace is removed.
-	 * </p>
-	 * @return the trimmed text content of the first context element
-	 */
-	abstract String trimmedText()
-
-	/**
-	 * Returns the trimmed text contents of all context elements.
-	 * <p>
-	 * All whitespace characters, including newlines are condensed into a
-	 * single space - leading and trailing whitespace is removed.
-	 * </p>
-	 * @return the trimmed text contents of all context elements
-	 */
-	abstract String[] trimmedTexts()
-
-	/**
 	 * Returns the value of the given attribute of the first context element.
 	 * @param name name of the attribute
 	 * @return the value of the given attribute of the first context element

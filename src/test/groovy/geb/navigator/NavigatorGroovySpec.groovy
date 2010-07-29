@@ -1,12 +1,9 @@
 package geb.navigator
 
 import org.openqa.selenium.WebDriver
-
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import spock.lang.Shared
 import spock.lang.Specification
-import geb.navigator.Navigator
-import spock.lang.Ignore
 
 class NavigatorGroovySpec extends Specification {
 
@@ -153,7 +150,6 @@ class NavigatorGroovySpec extends Specification {
 		onPage.find("bdo")      | 0
 	}
 
-	@Ignore
 	def "can use getAt(int) on Navigator"() {
 		expect: navigator[index].@id == expectedId
 		where:
@@ -185,7 +181,6 @@ class NavigatorGroovySpec extends Specification {
 		onPage.find("div")      | [0, -1, 4] | ["container", "footer", "main"]
 	}
 
-	@Ignore
 	def "can use head() on Navigator"() {
 		expect:
 		navigator.head().size() == expectedSize
