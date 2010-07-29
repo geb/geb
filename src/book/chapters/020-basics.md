@@ -2,11 +2,8 @@
 
 ## The Browser
 
-The API entry point to Geb is the `geb.Browser` class. A browser object drives an underlying `WebDriver` instance which does the heavy lifting of driving the real (or simulated) browser. The `geb.Browser` class also maintains a `geb.Page` instance which represents the current page that the browser is at. The browser instance delegates any method calls or property assignments or accesses that it can't handle to the page instance, which significantly cuts down on boilerplate code.
+The entry point to Geb is the `Browser` class. A browser object drives an underlying `WebDriver` instance which drives the real or simulated browser. The `Browser` class also maintains a `Page` instance that represents the current page that the browser is at. The browser instance delegates any method calls or property assignments or accesses that it can't handle to the page instance, which significantly cuts down on boilerplate code.
 
-The `geb.Geb` class provides the interface to [HTMLUnit][htmlunit] and acts as the browser for the driver. It is responsible for making requests and providing access to things like cookies and request/response headers.
-
-A browser instance can be constructed with three optional parameters; a [WebDriver][webdriverapi], a _base url_ (as a string) to resolve the initial request url against and any absolute path type URLs, the type of the initial page, and any request parameters to be used in the initial request.]
 v
 
 Here are some examples of `browser` construction…

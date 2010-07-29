@@ -61,6 +61,10 @@ The following example is the same, except that it utilises page objects.
         }
     }
     
-## How it works
+## Philosophy & Motivation
 
-Geb is an integration of [Groovy][groovy], [HTMLUnit][htmlunit] (the underlying browser technology) and the [Hue/Doj][hue] library (a [JQuery][jquery] like API for traversing and manipulating pages in HTMLUnit). Typically, the only API you need to know and use is the API for [Doj][dojapi] objects which are the building blocks of pages.
+TODO: talk about the guiding principles of Geb
+
+## The Browser Technology
+
+TODO: talk about WebDriver and why WebDriver etc.
