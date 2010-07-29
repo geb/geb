@@ -163,6 +163,16 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
+	Navigator children() {
+		on collectElements {
+			it.findElements By.xpath("child::*")
+		}
+	}
+
+	Navigator children(String selectorString) {
+		children().filter(selectorString)
+	}
+
 	Navigator unique() {
 		new NonEmptyNavigator(contextElements.unique())
 	}

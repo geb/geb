@@ -171,10 +171,10 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Unlike      {@link #next()}     , this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
-	 * @param tag tag to match
+	 * @param selector tag to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator next(String tag)
+	abstract Navigator next(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
@@ -190,10 +190,10 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Unlike      {@link #previous()}     , this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
-	 * @param tag tag to match
+	 * @param selector tag to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator previous(String tag)
+	abstract Navigator previous(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the direct parent elements of the
@@ -209,10 +209,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Unlike      {@link #parent()}     , this method will keep traversing up the DOM
 	 * until a match is found or the top of the DOM has been found
 	 * </p>
-	 * @param tag tag to match
+	 * @param selector tag to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator parent(String tag)
+	abstract Navigator parent(String selector)
+
+	abstract Navigator children()
+
+	abstract Navigator children(String selector)
 
 	/**
 	 * Creates a new Navigator instance without the duplicate elements from the original.

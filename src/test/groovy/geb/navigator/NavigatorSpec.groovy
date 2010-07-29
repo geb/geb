@@ -239,11 +239,11 @@ class NavigatorSpec extends Specification {
 
 		where:
 		selector     | nextSelector | expectedIds
-		"#keywords" | "input"  | ["site-1"]
-		"#keywords" | "select" | ["the_plain_select"]
-		"input"     | "input"  | ["site-1", "site-2", "checker1", "checker2"]
-		"input"     | "select" | ["the_plain_select"]
-		"#keywords" | "bdo"    | []
+		"#keywords"  | "input"      | ["site-1"]
+		"#keywords"  | "select"     | ["the_plain_select"]
+		"input"      | "input"      | ["site-1", "site-2", "checker1", "checker2"]
+		"input"      | "select"     | ["the_plain_select"]
+		"#keywords"  | "bdo"        | []
 		"#article-1" | ".article"   | ["article-2"]
 	}
 
@@ -297,11 +297,38 @@ class NavigatorSpec extends Specification {
 
 		where:
 		selector     | parentSelector | expectedIds
-		"#keywords" | "div"    | ["sidebar"]
-		"input"     | "div"    | ["sidebar"]
-		"ul, ol"    | "div"    | ["navigation", "sidebar"]
-		"#keywords" | "bdo"    | []
+		"#keywords"  | "div"          | ["sidebar"]
+		"input"      | "div"          | ["sidebar"]
+		"ul, ol"     | "div"          | ["navigation", "sidebar"]
+		"#keywords"  | "bdo"          | []
 		"#article-1" | ".col-3"       | ["content"]
+	}
+
+	@Unroll("calling children() on #selector should return #expected")
+	def "children selects immediate child elements of each element"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.children()*.tag == expected
+
+		where:
+		selector        | expected
+		"#header"       | ["h1"]
+		"#navigation"   | ["ul"]
+		"#content"      | ["div", "div"]
+		".article"      | ["h2", "div"] * 3
+		"p"             | []
+		"#DOESNOTEXIST" | []
+	}
+
+	@Unroll("calling children(#childSelector) on #selector should return #expected")
+	def "children with tag argument"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.children(childSelector)*.tag == expected
+
+		where:
+		selector     | childSelector | expected
+		"#header"    | "h1"          | ["h1"]
+		"#header"    | "div"         | []
+		".article"   | ".content"    | ["div"] * 3
 	}
 
 	def unique() {

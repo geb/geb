@@ -58,15 +58,19 @@ class EmptyNavigator extends Navigator {
 
 	Navigator next() { this }
 
-	Navigator next(String tag) { this }
-
-	Navigator parent() { this }
-
-	Navigator parent(String tag) { this }
+	Navigator next(String selector) { this }
 
 	Navigator previous() { this }
 
-	Navigator previous(String tag) { this }
+	Navigator previous(String selector) { this }
+
+	Navigator parent() { this }
+
+	Navigator parent(String selector) { this }
+
+	Navigator children() { this }
+
+	Navigator children(String selector) { this }
 
 	Navigator remove(int index) { this }
 
