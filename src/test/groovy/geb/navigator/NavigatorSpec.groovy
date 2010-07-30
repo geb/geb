@@ -685,9 +685,8 @@ class NavigatorSpec extends Specification {
 	@Unroll("find('#selector') << '#keystrokes' should append '#keystrokes' to the input's value")
 	def "can use leftShift to enter text in inputs"() {
 		given: def navigator = page.find(selector)
-		when: def newValue = navigator << keystrokes
+		when: navigator << keystrokes
 		then: navigator.value() == old(navigator.value()) + keystrokes
-		and: newValue == navigator.value()
 
 		where:
 		selector    | keystrokes
@@ -698,13 +697,20 @@ class NavigatorSpec extends Specification {
 	@Unroll("using leftShift on '#selector' will append text to all fields")
 	def "can use leftShift to append text to multiple inputs"() {
 		given: def navigator = page.find(selector)
-		when: def newValue = navigator << keystrokes
+		when: navigator << keystrokes
 		then: navigator.every { it.value().endsWith(keystrokes) }
-		and: newValue == navigator*.value()
 
 		where:
 		selector              | keystrokes
 		"#keywords, textarea" | "abc"
+	}
+
+	def "leftShift returns the navigator so appends can be chained"() {
+		given:
+		def navigator = page.keywords()
+
+		when: navigator << "a" << "b" << "c"
+		then: navigator.value().endsWith("abc")
 	}
 
 	def first() {

@@ -15,7 +15,6 @@
  */
 package geb.navigator
 
-import com.gargoylesoftware.htmlunit.html.HtmlElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -319,7 +318,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	abstract Navigator value(value)
 
-	abstract leftShift(value)
+	abstract Navigator leftShift(value)
 
 	/**
 	 * Clicks on the first context element.

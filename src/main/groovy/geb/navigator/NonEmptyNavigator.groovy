@@ -210,11 +210,11 @@ class NonEmptyNavigator extends Navigator {
 		this
 	}
 
-	def leftShift(keystrokes) {
+	Navigator leftShift(value) {
 		contextElements.each {
-			it.sendKeys keystrokes
+			it.sendKeys value
 		}
-		size() < 2 ? value() : collect { it.value() }
+		this
 	}
 
 	void click() {

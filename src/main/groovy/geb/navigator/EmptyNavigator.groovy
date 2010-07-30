@@ -90,7 +90,7 @@ class EmptyNavigator extends Navigator {
 
 	def value() { null }
 
-	def leftShift(value) { null }
+	Navigator leftShift(value) { this }
 
 	Navigator getAt(int index) { this }
 
