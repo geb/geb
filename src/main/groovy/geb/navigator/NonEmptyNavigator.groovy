@@ -238,6 +238,13 @@ class NonEmptyNavigator extends Navigator {
 		list as String[]
 	}
 
+	def leftShift(keystrokes) {
+		contextElements.each {
+			it.sendKeys keystrokes
+		}
+		size() < 2 ? value() : values()
+	}
+
 	void click() {
 		contextElements*.click()
 	}

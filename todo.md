@@ -20,7 +20,6 @@
         * add(selector)
         * has(selector)
         * not(selector)
-    * support leftShift to type in field without clearing it
 * enhancements
 	* next, previous, parent could possibly be optimised depending on the WebDriver implementation being used
 	* is() should accept selector not just tag name

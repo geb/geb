@@ -92,6 +92,8 @@ class EmptyNavigator extends Navigator {
 
 	String[] values() { EMPTY_STRING_ARRAY }
 
+	def leftShift(value) { null }
+
 	Navigator getAt(int index) { this }
 
 	Navigator getAt(Range range) { this }

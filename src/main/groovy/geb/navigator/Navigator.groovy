@@ -324,6 +324,8 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	abstract String[] values()
 
+	abstract leftShift(value)
+
 	/**
 	 * Clicks on the first context element.
 	 * @throws java.io.IOException

@@ -627,6 +627,31 @@ class NavigatorSpec extends Specification {
 		page.find("#that_does_not_exist") | []
 	}
 
+	@Unroll("find('#selector') << '#keystrokes' should append '#keystrokes' to the input's value")
+	def "can use leftShift to enter text in inputs"() {
+		given: def navigator = page.find(selector)
+		when: def newValue = navigator << keystrokes
+		then: navigator.value() == old(navigator.value()) + keystrokes
+		and: newValue == navigator.value()
+
+		where:
+		selector    | keystrokes
+		"#keywords" | "abc"
+		"textarea"  | "abc"
+	}
+
+	@Unroll("using leftShift on '#selector' will append text to all fields")
+	def "can use leftShift to append text to multiple inputs"() {
+		given: def navigator = page.find(selector)
+		when: def newValue = navigator << keystrokes
+		then: navigator.every { it.value().endsWith(keystrokes) }
+		and: newValue == navigator*.value()
+
+		where:
+		selector              | keystrokes
+		"#keywords, textarea" | "abc"
+	}
+
 	def first() {
 		expect:
 		navigator.first().size() == 1
