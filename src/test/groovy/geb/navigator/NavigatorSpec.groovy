@@ -432,7 +432,7 @@ class NavigatorSpec extends Specification {
 	}
 
 	@Unroll("the class names on #selector are #expected")
-	def getClassNames() {
+	def "getClassNames returns the classes of the first matched element"() {
 		given: def navigator = page.find(selector)
 		expect: navigator.classNames == expected
 
@@ -440,7 +440,7 @@ class NavigatorSpec extends Specification {
 		selector      | expected
 		"#article-1"  | ["article"] as Set
 		"#navigation" | ["col-3", "module"] as Set
-		"ol"          | ["ol", "simple", "ol-simple", "dummy"] as Set
+		"ol"          | [] as Set
 		"bdo"         | [] as Set
 	}
 
@@ -581,50 +581,77 @@ class NavigatorSpec extends Specification {
 		value << ["google", "thisone"]
 	}
 
-	@Unroll("input value should be '#expectedValue'")
-	def "get value"() {
-		expect:
-		navigator.value() == expectedValue
+	@Unroll("input value should be '#expected'")
+	def "value() returns value of first element"() {
+		expect: navigator.value() == expected
 
 		where:
-		navigator                                                | expectedValue
-		page.find("select", name: "plain_select")                | "4"
-		page.find("select", name: "multiple_select")             | ["2", "4"]
-		page.find("select", name: "plain_select").find("option") | ["1", "2", "3", "4", "5"]
-		page.find("textarea")                                    | " The textarea content. "
-		page.find("#keywords")                                   | "Enter keywords here"
-		page.find("#checker1")                                   | null
-		page.find("#checker2")                                   | "123"
-		page.find("input", name: "site")                         | "google"
+		navigator                             | expected
+		page.find("#the_plain_select")        | "4"
+		page.find("#the_multiple_select")     | ["2", "4"]
+		page.find("#the_plain_select option") | "1"
+		page.find("textarea")                 | " The textarea content. "
+		page.find("#keywords")                | "Enter keywords here"
+		page.find("#checker1")                | null
+		page.find("#checker2")                | "123"
+		page.find("#keywords, textarea")      | "Enter keywords here"
 	}
 
-	@Unroll("input value can be changed from '#expectedValue' to '#newValue'")
+	@Unroll("input values should be '#expected'")
+	def "get value on all elements"() {
+		expect: navigator*.value() == expected
+
+		where:
+		navigator                             | expected
+		page.find("select")                   | ["4", ["2", "4"]]
+		page.find("#the_plain_select option") | ["1", "2", "3", "4", "5"]
+		page.find("#keywords, textarea")      | ["Enter keywords here", " The textarea content. "]
+	}
+
+	@Unroll("input value can be changed to '#newValue'")
 	def "set value"() {
-		expect:
-		navigator.value() == expectedValue
-		navigator.value(newValue).value() == newValue
-		navigator.value(expectedValue).value() == expectedValue
+		when: navigator.value(newValue)
+		then: navigator.value() == newValue
 
 		where:
-		navigator                         | expectedValue             | newValue
-		page.find("#the_plain_select")    | "4"                       | "2"
-		page.find("#the_multiple_select") | ["2", "4"]                | ["1", "3", "5"]
-		page.find("#keywords")            | "Enter keywords here"     | "bar"
-		page.find("textarea")             | " The textarea content. " | "This is the new content of the textarea. Yeah!"
-		page.find("#checker1")            | null                      | "123"
-		page.find("#checker2")            | "123"                     | null
-		page.find("input", name: "site")  | "google"                  | "thisone"
+		navigator                         | newValue
+		page.find("#the_plain_select")    | "2"
+		page.find("#the_multiple_select") | ["1", "3", "5"]
+		page.find("#keywords")            | "bar"
+		page.find("textarea")             | "This is the new content of the textarea. Yeah!"
+		page.find("#checker1")            | "123"
+		page.find("#checker2")            | null
 	}
 
-	@Unroll
-	def values() {
-		expect: navigator.values() == expectedValues
+	@Ignore
+	@Unroll("value() on '#selector' should return '#expected'")
+	def "get value handles radio buttons as groups"() {
+		given:
+		def navigator = page.find(selector)
+
+		expect:
+		navigator.value() == expected
+		navigator*.value() == [expected]
 
 		where:
-		navigator                         | expectedValues
-		page.find("#the_multiple_select") | ["2", "4"]
-		page.find("input", name: "site")  | ["google", "thisone"]
-		page.find("#that_does_not_exist") | []
+		selector           | expected
+		"#site-1"          | "google"
+		"#site-2"          | null
+		"#site-1, #site-2" | "google"
+	}
+
+	@Ignore
+	@Unroll("value('#newValue') on '#selector' should select the matching radio button")
+	def "set value handles radio buttons as groups"() {
+		given: def navigator = page.find(selector)
+		when: navigator.value(newValue)
+		then: navigator.value() == newValue
+
+		where:
+		selector           | newValue
+		"#site-1"          | "google"
+		"#site-2"          | "thisone"
+		"#site-1, #site-2" | "thisone"
 	}
 
 	@Unroll("find('#selector') << '#keystrokes' should append '#keystrokes' to the input's value")

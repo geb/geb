@@ -1,11 +1,11 @@
 package geb.navigator
 
 import java.util.regex.Pattern
-import org.apache.commons.lang.NotImplementedException
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
+import static java.util.Collections.EMPTY_SET
 
 class NonEmptyNavigator extends Navigator {
 
@@ -188,7 +188,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	boolean hasClass(String valueToContain) {
-		valueToContain in classNames
+		any { valueToContain in it.classNames }
 	}
 
 	boolean is(String tag) {
@@ -208,16 +208,12 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Collection<String> getClassNames() {
-		def classNames = new HashSet<String>()
-		contextElements.collect {
-			def value = it.getAttribute("class")
-			if (value) classNames.addAll value.tokenize()
-		}
-		classNames
+		def classNames = contextElements.head().getAttribute("class")?.tokenize()
+		classNames as Set ?: EMPTY_SET
 	}
 
 	def value() {
-		getInputValues(contextElements)
+		getInputValue(contextElements.head())
 	}
 
 	Navigator value(value) {
@@ -225,24 +221,11 @@ class NonEmptyNavigator extends Navigator {
 		this
 	}
 
-	String[] values() {
-		def list = []
-		contextElements.collect { element ->
-			if (element.tagName ==~ /(?i)select/) {
-				def options = element.findElements(By.tagName("option")).findAll { it.isSelected() }
-				list.addAll options.value
-			} else {
-				list << element.value
-			}
-		}
-		list as String[]
-	}
-
 	def leftShift(keystrokes) {
 		contextElements.each {
 			it.sendKeys keystrokes
 		}
-		size() < 2 ? value() : values()
+		size() < 2 ? value() : collect { it.value() }
 	}
 
 	void click() {
