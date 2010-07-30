@@ -41,7 +41,7 @@ class NavigatorSpec extends Specification {
 		if (multiSelectOptions[2].isSelected()) multiSelectOptions[2].toggle()
 		multiSelectOptions[3].setSelected()
 		if (multiSelectOptions[4].isSelected()) multiSelectOptions[4].toggle()
-		
+
 		driver.findElement(By.name("textext")).clear()
 		driver.findElement(By.name("textext")).sendKeys(" The textarea content. ")
 	}
@@ -389,7 +389,7 @@ class NavigatorSpec extends Specification {
 	def "text of the first element can be accessed as a property"() {
 		given: def navigator = page.find(selector)
 		expect: navigator.text() == expectedText
-		
+
 		where:
 		selector | expectedText
 		"p"      | "First paragraph of article 1."
@@ -401,7 +401,7 @@ class NavigatorSpec extends Specification {
 	def "tagName of the first element can be accessed as a property"() {
 		given: def navigator = page.find(selector)
 		expect: navigator.tag() == expectedTag
-		
+
 		where:
 		selector        | expectedTag
 		"p"             | "p"
@@ -506,6 +506,31 @@ class NavigatorSpec extends Specification {
 		navigator                           | key       | expectedValues
 		page.find("input").withName("site") | "value"   | ["google", "thisone"]
 		page.find("input").withName("site") | "checked" | ["checked", ""]
+	}
+
+	@Unroll("the dynamic method #fieldName() should return elements with the ids #expected")
+	def "can find named inputs using a dynamic method call"() {
+		when: def navigator = context."$fieldName"()
+		then: navigator*.@id == expected
+
+		where:
+		context            | fieldName     | expected
+		page               | "keywords"    | ["keywords"]
+		page.find("form")  | "keywords"    | ["keywords"]
+		page               | "site"        | ["site-1", "site-2"]
+		page.find("#main") | "keywords"    | []
+		page               | "nosuchfield" | []
+		page.find("bdo")   | "keywords"    | []
+	}
+
+	def "dynamic methods for finding fields do not accept arguments"() {
+		when: context."$fieldName"(*arguments)
+		then: thrown(MissingMethodException)
+
+		where:
+		context          | fieldName  | arguments
+		page             | "keywords" | ["foo", "bar"]
+		page.find("bdo") | "keywords" | ["foo"]
 	}
 
 	@Unroll("the value of '#fieldName' retrieved via property access should be '#expectedValue'")

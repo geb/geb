@@ -51,17 +51,6 @@ class NonEmptyNavigator extends Navigator {
 		find(selector).filter(predicates)
 	}
 
-	private boolean matches(WebElement element, Map<String, Object> predicates) {
-		return predicates.every { name, requiredValue ->
-			def actualValue = name == "text" ? element.text : element.getAttribute(name)
-			if (requiredValue instanceof Pattern) {
-				actualValue ==~ requiredValue
-			} else {
-				actualValue == requiredValue
-			}
-		}
-	}
-
 	Navigator filter(String selectorString) {
 		on contextElements.findAll { element ->
 			CssSelector.matches(element, selectorString)
@@ -264,6 +253,16 @@ class NonEmptyNavigator extends Navigator {
 		contextElements*.toString()
 	}
 
+	def methodMissing(String name, arguments) {
+		if (!arguments) {
+			on collectElements {
+				it.findElements By.name(name)
+			}
+		} else {
+			throw new MissingMethodException(name, getClass(), arguments)
+		}
+	}
+
 	def propertyMissing(String name) {
 		switch (name) {
 			case ~/@.+/:
@@ -290,6 +289,17 @@ class NonEmptyNavigator extends Navigator {
 			setInputValues(inputs, value)
 		} else {
 			throw new MissingPropertyException(name, getClass())
+		}
+	}
+
+	private boolean matches(WebElement element, Map<String, Object> predicates) {
+		return predicates.every { name, requiredValue ->
+			def actualValue = name == "text" ? element.text : element.getAttribute(name)
+			if (requiredValue instanceof Pattern) {
+				actualValue ==~ requiredValue
+			} else {
+				actualValue == requiredValue
+			}
 		}
 	}
 

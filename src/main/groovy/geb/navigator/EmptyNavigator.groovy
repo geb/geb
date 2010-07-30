@@ -104,6 +104,11 @@ class EmptyNavigator extends Navigator {
 
 	String toString() { "[]" }
 
+	def methodMissing(String name, arguments) {
+		if (!arguments) this
+		else throw new MissingMethodException(name, getClass(), arguments)
+	}
+
 	def propertyMissing(String name) {
 		if (name.startsWith("@")) {
 			null
