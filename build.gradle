@@ -34,8 +34,7 @@ repositories {
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.6.7"
-	groovy "org.seleniumhq.selenium:selenium-htmlunit-driver:2.0a4"
-	groovy "org.seleniumhq.selenium:selenium-firefox-driver:2.0a4"
+	groovy "org.seleniumhq.selenium:selenium:2.0a5"
 	compile "net.sourceforge.htmlunit:htmlunit:2.7"
 	compile "be.roam.hue:hue:1.1"
 	testCompile "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
