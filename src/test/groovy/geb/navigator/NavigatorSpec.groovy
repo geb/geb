@@ -73,15 +73,18 @@ class NavigatorSpec extends Specification {
 		page.find("li").find("bdo") | 0     | 1          | 0
 	}
 
-	@Unroll("find('#selector') should return elements with #property of '#expectedValue'")
+	@Unroll("find('#selector') should return elements with #property of '#expected'")
 	def "find by CSS selector"() {
 		given: def navigator = page.find(selector)
-		expect: navigator*."$property" == expectedValue
+		expect: navigator*."$property" == expected
 
 		where:
-		selector                  | property | expectedValue
-		"#content div li"         | "text"   | ["Item #1", "Item #2", "Item #3", "Item #4"] * 5
-		"div.article h2 a"        | "text"   | ["Article title 1", "Article title 2", "Article title 3"]
+		selector                  | property | expected
+		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
 		"#header"                 | "@id"    | ["header"]
 		".col-3.module"           | "@id"    | ["navigation"]
 		".module.col-3"           | "@id"    | ["navigation"]
@@ -308,7 +311,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling children() on #selector should return #expected")
 	def "children selects immediate child elements of each element"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.children()*.tag == expected
+		expect: navigator.children()*.tag() == expected
 
 		where:
 		selector        | expected
@@ -323,7 +326,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling children(#childSelector) on #selector should return #expected")
 	def "children with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.children(childSelector)*.tag == expected
+		expect: navigator.children(childSelector)*.tag() == expected
 
 		where:
 		selector     | childSelector | expected
@@ -382,10 +385,10 @@ class NavigatorSpec extends Specification {
 		expectedSize = 5
 	}
 
-	@Unroll("the .text property of #selector should be '#expectedText'")
+	@Unroll("the value of text() on #selector should be '#expectedText'")
 	def "text of the first element can be accessed as a property"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.text == expectedText
+		expect: navigator.text() == expectedText
 		
 		where:
 		selector | expectedText
@@ -394,10 +397,10 @@ class NavigatorSpec extends Specification {
 		"bdo"    | null
 	}
 
-	@Unroll("the .tag property of #selector should be '#expectedTag'")
+	@Unroll("the value of tag() on #selector should be '#expectedTag'")
 	def "tagName of the first element can be accessed as a property"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.tag == expectedTag
+		expect: navigator.tag() == expectedTag
 		
 		where:
 		selector        | expectedTag
@@ -434,7 +437,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("the class names on #selector are #expected")
 	def "getClassNames returns the classes of the first matched element"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.classNames == expected
+		expect: navigator.classes() == expected
 
 		where:
 		selector      | expected
@@ -472,7 +475,7 @@ class NavigatorSpec extends Specification {
 
 	def text() {
 		expect:
-		navigator.text.contains(expectedText) == expectedResult
+		navigator.text().contains(expectedText) == expectedResult
 
 		where:
 		navigator               | expectedText      | expectedResult

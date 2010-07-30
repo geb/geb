@@ -188,18 +188,18 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	boolean hasClass(String valueToContain) {
-		any { valueToContain in it.classNames }
+		any { valueToContain in it.classes() }
 	}
 
 	boolean is(String tag) {
 		contextElements.any { tag.equalsIgnoreCase(it.tagName) }
 	}
 
-	String getTag() {
+	String tag() {
 		firstElement().tagName
 	}
 
-	String getText() {
+	String text() {
 		firstElement().text
 	}
 
@@ -207,7 +207,7 @@ class NonEmptyNavigator extends Navigator {
 		firstElement().getAttribute(name) ?: ""
 	}
 
-	Collection<String> getClassNames() {
+	Collection<String> classes() {
 		def classNames = contextElements.head().getAttribute("class")?.tokenize()
 		classNames as Set ?: EMPTY_SET
 	}

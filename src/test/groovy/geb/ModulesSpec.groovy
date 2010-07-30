@@ -15,7 +15,6 @@
 package geb
 
 import geb.test.*
-import spock.lang.*
 
 class ModulesSpec extends GebSpecWithServer {
 

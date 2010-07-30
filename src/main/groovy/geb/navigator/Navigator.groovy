@@ -280,13 +280,13 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Returns the tag name of the first context element.
 	 * @return the tag name of the first context element
 	 */
-	abstract String getTag()
+	abstract String tag()
 
 	/**
 	 * Returns the text content of the first context element.
 	 * @return the text content of the first context element
 	 */
-	abstract String getText()
+	abstract String text()
 
 	/**
 	 * Returns the value of the given attribute of the first context element.
@@ -299,7 +299,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Returns the class names present on all elements. The result is a unique set in no guaranteed order.
 	 * @return the class names present on all elements.
 	 */
-	abstract Collection<String> getClassNames()
+	abstract Collection<String> classes()
 
 	/**
 	 * Returns the value of the first context element for input elements

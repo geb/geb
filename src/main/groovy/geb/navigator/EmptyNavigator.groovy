@@ -80,13 +80,13 @@ class EmptyNavigator extends Navigator {
 
 	int size() { 0 }
 
-	String getTag() { null }
+	String tag() { null }
 
-	String getText() { null }
+	String text() { null }
 
 	String getAttribute(String name) { null }
 
-	Collection<String> getClassNames() { EMPTY_SET }
+	Collection<String> classes() { EMPTY_SET }
 
 	def value() { null }
 
