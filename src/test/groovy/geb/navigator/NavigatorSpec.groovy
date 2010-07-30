@@ -24,28 +24,6 @@ class NavigatorSpec extends Specification {
 		driver.close()
 	}
 
-	def cleanup() {
-		driver.findElement(By.name("keywords")).clear()
-		driver.findElement(By.name("keywords")).sendKeys("Enter keywords here")
-
-		driver.findElements(By.name("site")).find { it.value == "google"}.setSelected()
-
-		if (driver.findElement(By.name("checker1")).isSelected()) driver.findElement(By.name("checker1")).toggle()
-		driver.findElement(By.name("checker2")).setSelected()
-
-		driver.findElement(By.name("plain_select")).findElements(By.tagName("option"))[3].setSelected()
-
-		def multiSelectOptions = driver.findElement(By.name("multiple_select")).findElements(By.tagName("option"))
-		if (multiSelectOptions[0].isSelected()) multiSelectOptions[0].toggle()
-		multiSelectOptions[1].setSelected()
-		if (multiSelectOptions[2].isSelected()) multiSelectOptions[2].toggle()
-		multiSelectOptions[3].setSelected()
-		if (multiSelectOptions[4].isSelected()) multiSelectOptions[4].toggle()
-
-		driver.findElement(By.name("textext")).clear()
-		driver.findElement(By.name("textext")).sendKeys(" The textarea content. ")
-	}
-
 	def "getElement by index"() {
 		expect:
 		page.find("div").getElement(1).getAttribute("id") == "header"
@@ -582,9 +560,13 @@ class NavigatorSpec extends Specification {
 
 	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
 	def "form field values can be set using property access"() {
-		given: def form = page.find("form")
+		given:
+		def form = page.find("form")
+		def initialValue = form."$fieldName"
+
 		when: form."$fieldName" = newValue
 		then: form."$fieldName" == newValue
+		cleanup: form."$fieldName" = initialValue
 
 		where:
 		fieldName         | newValue
@@ -604,6 +586,9 @@ class NavigatorSpec extends Specification {
 
 		then:
 		driver.findElements(By.name("site")).find { it.value == value }.isSelected()
+
+		cleanup:
+		driver.findElement(By.id("site-1")).setSelected()
 
 		where:
 		value << ["google", "thisone"]
@@ -638,8 +623,10 @@ class NavigatorSpec extends Specification {
 
 	@Unroll("input value can be changed to '#newValue'")
 	def "set value"() {
+		given: def initialValue = navigator.value()
 		when: navigator.value(newValue)
 		then: navigator.value() == newValue
+		cleanup: navigator.value(initialValue)
 
 		where:
 		navigator                         | newValue
@@ -674,6 +661,7 @@ class NavigatorSpec extends Specification {
 		given: def navigator = page.find(selector)
 		when: navigator.value(newValue)
 		then: navigator.value() == newValue
+		cleanup: driver.findElement(By.id("site-1")).setSelected()
 
 		where:
 		selector           | newValue
@@ -684,9 +672,14 @@ class NavigatorSpec extends Specification {
 
 	@Unroll("find('#selector') << '#keystrokes' should append '#keystrokes' to the input's value")
 	def "can use leftShift to enter text in inputs"() {
-		given: def navigator = page.find(selector)
+		given:
+		def navigator = page.find(selector)
+		def initialValue = navigator.value()
+
 		when: navigator << keystrokes
 		then: navigator.value() == old(navigator.value()) + keystrokes
+
+		cleanup: navigator.value(initialValue)
 
 		where:
 		selector    | keystrokes
@@ -696,9 +689,14 @@ class NavigatorSpec extends Specification {
 
 	@Unroll("using leftShift on '#selector' will append text to all fields")
 	def "can use leftShift to append text to multiple inputs"() {
-		given: def navigator = page.find(selector)
+		given:
+		def navigator = page.find(selector)
+		def initialValue = navigator.value()
+
 		when: navigator << keystrokes
 		then: navigator.every { it.value().endsWith(keystrokes) }
+
+		cleanup: navigator.value(initialValue)
 
 		where:
 		selector              | keystrokes
@@ -708,9 +706,12 @@ class NavigatorSpec extends Specification {
 	def "leftShift returns the navigator so appends can be chained"() {
 		given:
 		def navigator = page.keywords()
+		def initialValue = navigator.value()
 
 		when: navigator << "a" << "b" << "c"
 		then: navigator.value().endsWith("abc")
+
+		cleanup: navigator.value(initialValue)
 	}
 
 	def first() {
