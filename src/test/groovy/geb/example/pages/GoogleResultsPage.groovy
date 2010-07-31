@@ -18,13 +18,14 @@ import geb.*
 
 class GoogleResultsPage extends Page {
 	static url = "http://www.google.com/search"
-	static at = { title.endsWith("Google Search") }
+	static at = { resultStats }
 	
 	// Pages can define individual content and/or modules
 	static content = {
 		// Reuse the module, with different params
 		search { module GoogleSearchModule, buttonValue: "Search" }
 		
+		resultStats { $("div#resultStats") }
 		
 		results { $("li.g") }
 		// Content can be paramterised
