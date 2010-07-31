@@ -17,7 +17,6 @@ package geb
 import geb.test.util.*
 import spock.lang.*
 import geb.error.*
-import geb.page.error.*
 
 @Stepwise
 class PageOrientedSpec extends GebSpecWithServer {
