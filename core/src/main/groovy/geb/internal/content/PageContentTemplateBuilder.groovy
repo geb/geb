@@ -55,7 +55,7 @@ class PageContentTemplateBuilder {
 	}
 	
 	private throwBadInvocationError(name, args) {
-		throw new IllegalArgumentException("Definition of page component template '$name' of '$container' is invalid, params must be either a Closure, or Map and Closure (args were: ${args*.class})")
+		throw new InvalidPageContent("Definition of page component template '$name' of '$container' is invalid, params must be either a Closure, or Map and Closure (args were: ${args*.class})")
 	}
 	
 	private create(name, params, definition) {
@@ -67,9 +67,6 @@ class PageContentTemplateBuilder {
 	}
 
 	static build(Navigable container, List<Closure> templatesDefinitions) {
-		if (container == null) {
-			throw new IllegalArgumentException("'container' can not be null")
-		}
 		def builder = newInstance(container: container)
 		for (templatesDefinition in templatesDefinitions) {
 			templatesDefinition.delegate = builder
