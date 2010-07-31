@@ -7,11 +7,17 @@ buildscript {
 	}
 }
 
+def groovyModules = ["core", "spock", "test-utils"]
+def publishedModules = ["core", "spock"]
+
 subprojects {
-	apply plugin: 'maven'
 	apply plugin: "org.gradle.idea"
 	
-	if (project.name in ["core", "spock", "test-utils"]) {
+	if (project.name in publishedModules) {
+		apply plugin: 'maven'
+	}
+	
+	if (project.name in groovyModules) {
 		apply plugin: "groovy"
 		apply from: "file:${rootDir}/clover.gradle"
 		
@@ -25,7 +31,7 @@ subprojects {
 	
 	version = '0.4-SNAPSHOT'
 	group = 'org.codehaus.geb'
-/*	project.archivesBaseName = "geb-${project.name}"*/
+	project.archivesBaseName = "geb-${project.name}"
 	
 	sourceCompatibility = 1.5
 	targetCompatibility = 1.5
