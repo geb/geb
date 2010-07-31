@@ -14,6 +14,8 @@
  */
 package geb.internal.content
 
+import geb.error.InvalidPageContent
+
 class PageContentTemplateBuilder {
 
 	static PARAM_DEFAULTS = [
@@ -30,7 +32,7 @@ class PageContentTemplateBuilder {
 		def params
 		
 		if (args.size() == 0) {
-			throw new IllegalArgumentException("Definition of page content template '$name' of '$container' contains no definition")
+			throw new InvalidPageContent("Definition of page content template '$name' of '$container' contains no definition")
 		} else if (args.size() == 1) {
 			definition = args[0]
 		} else if (args.size() == 2) {
