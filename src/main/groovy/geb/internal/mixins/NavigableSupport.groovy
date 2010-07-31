@@ -12,37 +12,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.content.module
+package geb.internal.mixins
 
 import geb.navigator.Navigator
-import geb.internal.mixins.*
-import geb.internal.content.Navigable
 
-@Mixin([NavigableSupport])
-class ModuleBaseDefinitionDelegate implements Navigable {
+class NavigableSupport {
 
-	private startingBase
-	private params
-	
-	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
-		this.startingBase = startingBase
-		this.params = params
+	Navigator $() {
+		_getNavigator()
 	}
 	
-	def methodMissing(String name, args) {
-		startingBase."$name"(*args)
+	Navigator $(int index) {
+		_getNavigator().find(index)
 	}
 	
-	def propertyMissing(String name) {
-		if (params.containsKey(name)) {
-			params[name]
-		} else {
-			startingBase."$name"
-		}
+	Navigator $(String selector) {
+		_getNavigator().find(selector)
 	}
 	
-	private _getNavigator() {
-		startingBase
+	Navigator $(Map attributes) {
+		_getNavigator().find(attributes)
 	}
+	
+	Navigator $(String selector, int index) {
+		_getNavigator().find(selector, index)
+	}
+	
+	Navigator $(Map attributes, String selector) {
+		_getNavigator().find(attributes, selector)
+	}
+	
+	Navigator $(Map attributes, int index) {
+		_getNavigator().find(attributes, index)
+	}
+	
+	Navigator $(Map attributes, String selector, int index) {
+		_getNavigator().find(attributes, selector, index)
+	}
+	
 
 }

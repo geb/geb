@@ -27,9 +27,9 @@ class GoogleCodePage extends Page {
 		signInLink(required: false) { topToolbarLink("Sign in") }
 		signOutLink(required: false) { topToolbarLink("Sign out") }
 		topToolbar { $("#gaia") }
-		topToolbarLink(required: false) { topToolbar.getByTag("u").withTextMatching(it).parent("a") }
+		topToolbarLink(required: false) { topToolbar.find("u", text: it).parent("a") }
 		
 		peopleTable { $("table.pmeta", 2) }
-		projectOwner { peopleTable.getByTag("a").first() }
+		projectOwner { peopleTable.find("a", 0) }
 	}
 }

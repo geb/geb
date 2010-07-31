@@ -1,4 +1,4 @@
-Geb is a Groovy DSL for HTMLUnit.
+Geb is a Groovy DSL for [Selenium 2 (i.e. WebDriver)](http://code.google.com/p/selenium/).
 
 It is best explained by example…
 
@@ -10,10 +10,10 @@ It is best explained by example…
     // Without page objects
     Browser.drive("http://google.com") {
         assert pageTitle == "Google"
-        find("input").withName("q").value("wikipedia")
-        find("input").withValue("Google Search").click()
-        assert pageTitle.endsWith("Google Search")
-        assert find("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
+        $("input", name: "q").value("wikipedia")
+        $("input", value: "Google Search").click()
+        assert title.endsWith("Google Search")
+        assert $("li.g", 0).find("a.l").text() == "Wikipedia, the free encyclopedia"
     }
 
     // With page objects
@@ -37,7 +37,7 @@ Page objects look like…
         static url = "http://google.com"
 
         // can define a custom check to verify the page content matches expectations
-        static at = { page.titleText == "Google" }
+        static at = { title == "Google" }
 
         // can include parameterised modules
         static content = {
@@ -59,12 +59,12 @@ And modules look like…
 
         // content is defined using a DSL with a Jquery like finding API
         static content = {
-            field { find("input").withName("q") }
+            field { $("input", name: "q") }
 
             // content can define which page is next when it is clicked
             button(to: GoogleResultsPage) { 
                 // can use instance variables in content locators
-                find("input").withValue(buttonValue) 
+                $("input", value: buttonValue)
             }
         }
 

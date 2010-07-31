@@ -12,24 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.example.pages
+package geb.driver
 
-import geb.*
+import org.openqa.selenium.WebDriver
 
-class GoogleResultsPage extends Page {
-	static url = "http://www.google.com/search"
-	static at = { title.endsWith("Google Search") }
-	
-	// Pages can define individual content and/or modules
-	static content = {
-		// Reuse the module, with different params
-		search { module GoogleSearchModule, buttonValue: "Search" }
-		
-		
-		results { $("li.g") }
-		// Content can be paramterised
-		result { results[it] }
-		// Content can be defined relative to other content
-		resultLink { result(it).find("a.l") }
-	}
+interface DriverFactory {
+
+    WebDriver getDriver()
+
 }

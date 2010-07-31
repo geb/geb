@@ -15,11 +15,11 @@
 package geb.internal.content.module
 
 import geb.error.InvalidPageContent
-import be.roam.hue.doj.Doj
+import geb.navigator.Navigator
 
 class ModuleBaseCalculator {
 
-	static Doj calculate(Class moduleClass, Doj startingBase, Map params) {
+	static Navigator calculate(Class moduleClass, Navigator startingBase, Map params) {
 		def moduleBaseDefinition = moduleClass.base
 		if (!moduleBaseDefinition) {
 			startingBase
@@ -30,8 +30,8 @@ class ModuleBaseCalculator {
 			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(startingBase, params)
 			def moduleBase = moduleBaseDefinitionClone()
 			
-			if (!(moduleBase instanceof Doj)) {
-				throw new InvalidPageContent("The static 'base' parameter of module class $moduleClass did not return a Doj")
+			if (!(moduleBase instanceof Navigator)) {
+				throw new InvalidPageContent("The static 'base' parameter of module class $moduleClass did not return a Navigator")
 			}
 			
 			moduleBase

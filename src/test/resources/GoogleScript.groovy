@@ -6,10 +6,10 @@ import geb.example.pages.*
 // Without page objects
 Browser.drive("http://google.com") {
 	title == "Google"
-	$("input").withName("q").value("wikipedia")
-	$("input").withValue("Google Search").click()
+	$("input", name: "q").value("wikipedia")
+	$("input", value: "Google Search").click()
 	assert title.endsWith("Google Search")
-	assert $("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
+	assert $("li.g", 0).find("a.l").text() == "Wikipedia, the free encyclopedia"
 }
 
 // With page objects

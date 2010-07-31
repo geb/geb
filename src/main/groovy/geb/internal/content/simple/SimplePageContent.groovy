@@ -17,7 +17,7 @@ package geb.internal.content
 class SimplePageContent extends TemplateDerivedPageContent {
 
 	def methodMissing(String name, args) {
-		navigator."$name"(*args)
+		$()."$name"(*args)
 	}
 
 }

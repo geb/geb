@@ -157,7 +157,7 @@ class PageA extends Page {
 		link(to: PageB) { $("#a") }
 		linkWithVariantTo(to: [PageD, PageC, PageB]) { link }
 		linkWithVariantToNoMatches(to: [PageD, PageC]) { link }
-		linkText { link.trimmedText() }
+		linkText { link.text().trim() }
 		notPresentValueRequired { $("div#asdfasdf").text() }
 		notPresentRequired { $("div#nonexistant") }
 		notPresentNotRequired(required: false) { $("div#nonexistant") }

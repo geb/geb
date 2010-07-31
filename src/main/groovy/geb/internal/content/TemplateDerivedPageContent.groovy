@@ -17,20 +17,22 @@ package geb.internal.content
 import geb.Page
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UnexpectedPageException
-import be.roam.hue.doj.Doj
+import geb.navigator.Navigator
+import geb.internal.mixins.*
 
-abstract class TemplateDerivedPageContent implements PageContent {
+@Mixin([NavigableSupport])
+abstract class TemplateDerivedPageContent implements PageContent, Navigable {
 
 	private PageContentTemplate _template
 	private Object[] _args
-	private Doj _navigator
+	private Navigator _navigator
 	
 	/**
 	 * Called by the template when created (i.e. is not public).
 	 * 
 	 * We don't use a constructor to prevent users from having to implement them.
 	 */
-	void init(PageContentTemplate template, Doj navigator, Object[] args) {
+	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		this._template = template
 		this._navigator = navigator
 		this._args = args
@@ -40,7 +42,8 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		"$_template.name - ${this.class.simpleName} (owner: $_template.owner, args: $_args)"
 	}
 	
-	Doj getNavigator() {
+	// Hook for NavigableSupport
+	private _getNavigator() {
 		_navigator
 	}
 	
@@ -102,22 +105,6 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		} else {
 			throw new UnexpectedPageException(this, potentialPageClasses)
 		}
-	}
-
-	Doj $() {
-		navigator
-	}
-
-	Doj $(int index) {
-		navigator.get(index)
-	}
-
-	Doj $(String name) {
-		navigator.get(name)
-	}
-	
-	Doj $(String selector, int index) {
-		navigator.get(selector, index)
 	}
 	
 }

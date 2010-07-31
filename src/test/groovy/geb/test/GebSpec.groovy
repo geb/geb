@@ -20,6 +20,7 @@ import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
 import com.gargoylesoftware.htmlunit.WebClient
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
 
 abstract class GebSpec extends Specification {
 
@@ -30,7 +31,7 @@ abstract class GebSpec extends Specification {
 	
 	def setup() {
 		if (browser == null) {
-			browser = new Browser(createClient(), getBaseUrl())
+			browser = createBrowser()
 		}
 		def reportDir = getClassReportDir()
 		if (reportDir?.exists() && _testCounter == 0) {
@@ -52,8 +53,12 @@ abstract class GebSpec extends Specification {
 		browser."$name" = value
 	}
 	
-	def createClient() {
-		new WebClient()
+	def createBrowser() {
+		new Browser(createDriver(), getBaseUrl())
+	}
+	
+	def createDriver() {
+		new HtmlUnitDriver()
 	}
 	
 	def getBaseUrl() {
@@ -68,26 +73,20 @@ abstract class GebSpec extends Specification {
 		def testCount = ++_testCounter
 		def reportDir = getClassReportDir()
 	
-		if (reportDir && _getLastResponse()) {
-			if (!reportDir.exists() && !reportDir.mkdirs()) {
-				throw new IllegalStateException("Could not create class report dir '${reportDir}'")
-			}
-			
-			def extension = getFileExtension(_getLastResponse())
-			def fileName = "${testCount}-${_testName.methodName}.$extension"
-			def output = new File(reportDir, fileName)
-			output << _getLastResponse().contentAsStream
+		if (!reportDir.exists() && !reportDir.mkdirs()) {
+			throw new IllegalStateException("Could not create class report dir '${reportDir}'")
 		}
+		
+		def extension = getFileExtension()
+		def fileName = "${testCount}-${_testName.methodName}.$extension"
+		def output = new File(reportDir, fileName)
+		output << browser.driver.pageSource
 	}
 
 	private getFileExtension(response) {
-		_getLastResponse()?.contentType.split('/').toList().last() ?: 'html'
+		'html'
 	}
-	
-	private _getLastResponse() {
-		browser.client.currentWindow?.enclosedPage?.webResponse
-	}
-	
+		
 	private getClassReportDir() {
 		def reportDir = getReportDir()
 		reportDir ? new File(reportDir, this.class.name.replace('.', '/')) : null

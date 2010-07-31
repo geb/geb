@@ -16,12 +16,12 @@ package geb
 
 import geb.error.UndefinedPageContentException
 import geb.internal.content.PageContentTemplateBuilder
-import geb.internal.content.Content
-import be.roam.hue.doj.Doj
-import geb.internal.mixins.TextMatchingSupport
+import geb.internal.content.Navigable
+import geb.navigator.Navigator
+import geb.internal.mixins.*
 
-@Mixin(TextMatchingSupport)
-class Page implements Content {
+@Mixin([TextMatchingSupport, NavigableSupport])
+class Page implements Navigable {
 
 	static at = null
 	static url = ""
@@ -38,8 +38,8 @@ class Page implements Content {
 		this.browser = browser
 	}
 	
-	Doj getNavigator() {
-		Doj.on(browser.client.currentWindow?.enclosedPage)
+	private _getNavigator() {
+		Navigator.on(browser.driver)
 	}
 	
 	String toString() {
@@ -67,22 +67,6 @@ class Page implements Content {
 
 	def propertyMissing(String name) {
 		_getContent(name)
-	}
-
-	Doj $() {
-		navigator
-	}
-	
-	Doj $(int index) {
-		navigator.get(index)
-	}
-
-	Doj $(String name) {
-		navigator.get(name)
-	}
-	
-	Doj $(String selector, int index) {
-		navigator.get(selector, index)
 	}
 	
 	private _getContent(String name, Object[] args) {
@@ -117,6 +101,6 @@ class Page implements Content {
 	}	
 	
 	def getTitle() {
-		browser.client.currentWindow?.enclosedPage?.titleText
+		browser.driver.title
 	}
 }

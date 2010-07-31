@@ -22,7 +22,7 @@ class PageContentTemplateBuilder {
 		to: null
 	]
 
-	Content container
+	Navigable container
 	final templates = [:]
 	
 	def methodMissing(String name, args) {
@@ -64,7 +64,7 @@ class PageContentTemplateBuilder {
 		params ? PARAM_DEFAULTS + params : PARAM_DEFAULTS.clone()
 	}
 
-	static build(Content container, List<Closure> templatesDefinitions) {
+	static build(Navigable container, List<Closure> templatesDefinitions) {
 		if (container == null) {
 			throw new IllegalArgumentException("'container' can not be null")
 		}
@@ -76,7 +76,7 @@ class PageContentTemplateBuilder {
 		builder.templates
 	}
 	
-	static build(Content container, String property, Class startAt, Class stopAt = Object) {
+	static build(Navigable container, String property, Class startAt, Class stopAt = Object) {
 		if (!stopAt.isAssignableFrom(startAt)) {
 			throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
 		}

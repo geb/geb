@@ -14,14 +14,14 @@
  */
 package geb
 
+import geb.driver.*
 import geb.error.DriveException
-import com.gargoylesoftware.htmlunit.WebClient
-import be.roam.hue.doj.Doj
+import org.openqa.selenium.WebDriver
 
 class Browser {
 
 	Page page
-	final WebClient client
+	final WebDriver driver
 	
 	String baseUrl
 	
@@ -33,8 +33,8 @@ class Browser {
 		this(null, baseUrl, pageClass)
 	}
 	
-	Browser(WebClient client = null, String baseUrl = null, Class pageClass = null, Map params = null) {
-		this.client = client ?: new WebClient()
+	Browser(WebDriver driver = null, String baseUrl = null, Class pageClass = null, Map params = null) {
+		this.driver = driver ?: defaultDriver
 		this.baseUrl = baseUrl
 		
 		params = params == null ? [:] : params
@@ -44,6 +44,14 @@ class Browser {
 		} else {
 			page Page
 		}
+	}
+	
+	protected WebDriver getDefaultDriver() {
+		defaultDriverFactory.driver
+	}
+	
+	protected DriverFactory getDefaultDriverFactory() {
+		new SoftLoadingHtmlUnitDriverFactory(this.class.classLoader)
 	}
 	
 	def methodMissing(String name, args) {
@@ -88,7 +96,7 @@ class Browser {
 	
 	def go(Map params, String url) {
 		def newUrl = _calculateUri(url, params)
-		def newPage = client.getPage(newUrl)
+		def newPage = driver.get(newUrl)
 		if (!page) {
 			page(Page)
 		}
@@ -160,12 +168,12 @@ class Browser {
 		doDrive(new Browser(baseUrl, pageClass), script)
 	}
 	
-	static drive(WebClient client, Closure script) {
-		doDrive(new Browser(client), script)
+	static drive(WebDriver driver, Closure script) {
+		doDrive(new Browser(driver), script)
 	}
 	
-	static drive(WebClient client, Class pageClass, Closure script) {
-		doDrive(new Browser(client, pageClass), script)
+	static drive(WebDriver driver, Class pageClass, Closure script) {
+		doDrive(new Browser(driver, pageClass), script)
 	}
 	
 	private static doDrive(Browser browser, Closure script) {

@@ -14,17 +14,13 @@
  */
 package geb.internal.content
 
-import be.roam.hue.doj.Doj
-
 /**
- * Represents some kind of definition of content.
+ * Marker interface to denote something that implements the dollar function for navigation.
  * 
- * e.g. a whole page, or part of a page etc.
+ * This interface doesn't actually specify the methods to facilitate using a mixin.
+ * 
+ * @See geb.internal.mixins.NavigableSupport
  */
-interface Content {
+interface Navigable {
 
-	Doj $(int index)
-	Doj $(String selector)
-	Doj $(String selector, int index)
-	
 }

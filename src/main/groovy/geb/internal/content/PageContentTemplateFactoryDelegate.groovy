@@ -15,7 +15,7 @@
 package geb.internal.content
 
 import geb.error.InvalidPageContent
-import be.roam.hue.doj.Doj
+import geb.navigator.Navigator
 import geb.internal.content.module.*
 
 class PageContentTemplateFactoryDelegate {
@@ -63,16 +63,16 @@ class PageContentTemplateFactoryDelegate {
 		
 		def startingBase 
 		if (base == null) {
-			startingBase = template.owner.navigator
-		} else if (base instanceof Doj) {
+			startingBase = template.owner.$()
+		} else if (base instanceof Navigator) {
 			startingBase = base
-		} else if (base instanceof Content) {
-			startingBase = base.navigator
+		} else if (base instanceof Navigable) {
+			startingBase = base.$()
 		} else {
 			throw new InvalidPageContent("The base '$base' given to module $moduleClass for template $template is not page content")
 		}
 		
-		Doj moduleBase = ModuleBaseCalculator.calculate(moduleClass, startingBase, params)
+		Navigator moduleBase = ModuleBaseCalculator.calculate(moduleClass, startingBase, params)
 		
 		def module = moduleClass.newInstance()
 		module.init(template, moduleBase, *args)

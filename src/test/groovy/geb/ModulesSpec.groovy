@@ -105,6 +105,6 @@ class ModulesSpecDivModuleWithNestedDiv extends Module {
 class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
 	static base = { $("div.c") }
 	static content = {
-		innerDiv { module ModulesSpecDivModuleWithLocator, navigator, className: "d" }
+		innerDiv { module ModulesSpecDivModuleWithLocator, $(), className: "d" }
 	}
 }

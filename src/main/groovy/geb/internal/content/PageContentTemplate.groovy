@@ -14,7 +14,7 @@
  */
 package geb.internal.content
 
-import be.roam.hue.doj.Doj
+import geb.navigator.Navigator
 import geb.Page
 import geb.Module
 
@@ -23,14 +23,14 @@ import geb.error.RequiredPageValueNotPresent
 
 class PageContentTemplate {
 
-	final Content owner
+	final Navigable owner
 	final String name
 	final Map params
 	final Closure factory
 	
 	private cache = [:]
 	
-	PageContentTemplate(Content owner, String name, Map params, Closure factory) {
+	PageContentTemplate(Navigable owner, String name, Map params, Closure factory) {
 		this.owner = owner
 		this.name = name
 		this.params = params
@@ -97,13 +97,13 @@ class PageContentTemplate {
 
 	private wrapFactoryReturn(factoryReturn, Object[] args) {
 		def pageContent
-		if (factoryReturn instanceof Doj) {
+		if (factoryReturn instanceof Navigator) {
 			pageContent = new SimplePageContent()
 			pageContent.init(this, factoryReturn, *args)
 			pageContent
 		} else if (factoryReturn instanceof SimplePageContent) {
 			pageContent = new SimplePageContent()
-			pageContent.init(this, factoryReturn.navigator, *args)
+			pageContent.init(this, factoryReturn.$(), *args)
 			pageContent
 		} else if (factoryReturn instanceof Module) {
 			factoryReturn

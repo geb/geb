@@ -19,7 +19,7 @@ import geb.Page
 /**
  * Content which is encapsulated in a page
  */
-interface PageContent extends Content {
+interface PageContent {
 	
 	/**
 	 * The page that this content is part of
