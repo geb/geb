@@ -1,11 +1,11 @@
 package geb.navigator
 
 import java.util.regex.Pattern
-import org.apache.commons.lang.NotImplementedException
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
+import static java.util.Collections.EMPTY_SET
 
 class NonEmptyNavigator extends Navigator {
 
@@ -49,17 +49,6 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator find(Map<String, Object> predicates, String selector) {
 		find(selector).filter(predicates)
-	}
-
-	private boolean matches(WebElement element, Map<String, Object> predicates) {
-		return predicates.every { name, requiredValue ->
-			def actualValue = name == "text" ? element.text : element.getAttribute(name)
-			if (requiredValue instanceof Pattern) {
-				actualValue ==~ requiredValue
-			} else {
-				actualValue == requiredValue
-			}
-		}
 	}
 
 	Navigator filter(String selectorString) {
@@ -188,18 +177,18 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	boolean hasClass(String valueToContain) {
-		valueToContain in classNames
+		any { valueToContain in it.classes() }
 	}
 
 	boolean is(String tag) {
 		contextElements.any { tag.equalsIgnoreCase(it.tagName) }
 	}
 
-	String getTag() {
+	String tag() {
 		firstElement().tagName
 	}
 
-	String getText() {
+	String text() {
 		firstElement().text
 	}
 
@@ -207,17 +196,13 @@ class NonEmptyNavigator extends Navigator {
 		firstElement().getAttribute(name) ?: ""
 	}
 
-	Collection<String> getClassNames() {
-		def classNames = new HashSet<String>()
-		contextElements.collect {
-			def value = it.getAttribute("class")
-			if (value) classNames.addAll value.tokenize()
-		}
-		classNames
+	Collection<String> classes() {
+		def classNames = contextElements.head().getAttribute("class")?.tokenize()
+		classNames as Set ?: EMPTY_SET
 	}
 
 	def value() {
-		getInputValues(contextElements)
+		getInputValue(contextElements.head())
 	}
 
 	Navigator value(value) {
@@ -225,21 +210,15 @@ class NonEmptyNavigator extends Navigator {
 		this
 	}
 
-	String[] values() {
-		def list = []
-		contextElements.collect { element ->
-			if (element.tagName ==~ /(?i)select/) {
-				def options = element.findElements(By.tagName("option")).findAll { it.isSelected() }
-				list.addAll options.value
-			} else {
-				list << element.value
-			}
+	Navigator leftShift(value) {
+		contextElements.each {
+			it.sendKeys value
 		}
-		list as String[]
+		this
 	}
 
 	void click() {
-		throw new NotImplementedException()
+		contextElements*.click()
 	}
 
 	int size() {
@@ -274,6 +253,16 @@ class NonEmptyNavigator extends Navigator {
 		contextElements*.toString()
 	}
 
+	def methodMissing(String name, arguments) {
+		if (!arguments) {
+			on collectElements {
+				it.findElements By.name(name)
+			}
+		} else {
+			throw new MissingMethodException(name, getClass(), arguments)
+		}
+	}
+
 	def propertyMissing(String name) {
 		switch (name) {
 			case ~/@.+/:
@@ -300,6 +289,17 @@ class NonEmptyNavigator extends Navigator {
 			setInputValues(inputs, value)
 		} else {
 			throw new MissingPropertyException(name, getClass())
+		}
+	}
+
+	private boolean matches(WebElement element, Map<String, Object> predicates) {
+		return predicates.every { name, requiredValue ->
+			def actualValue = name == "text" ? element.text : element.getAttribute(name)
+			if (requiredValue instanceof Pattern) {
+				actualValue ==~ requiredValue
+			} else {
+				actualValue == requiredValue
+			}
 		}
 	}
 

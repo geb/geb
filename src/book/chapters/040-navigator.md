@@ -166,7 +166,7 @@ The value can be read and written via property notation…
 
 These are literally shortcuts for…
 
-    $("form").find("input", name: "geb").value() == "testingn"
+    $("form").find("input", name: "geb").value() == "testing"
     $("form").find("input", name: "geb").value("goodness")
     $("form").find("input", name: "geb").value() == "goodness"
 

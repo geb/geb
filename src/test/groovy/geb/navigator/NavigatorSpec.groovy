@@ -7,6 +7,7 @@ import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
+import org.openqa.selenium.WebElement
 
 class NavigatorSpec extends Specification {
 
@@ -21,28 +22,6 @@ class NavigatorSpec extends Specification {
 
 	def cleanupSpec() {
 		driver.close()
-	}
-
-	def cleanup() {
-		driver.findElement(By.name("keywords")).clear()
-		driver.findElement(By.name("keywords")).sendKeys("Enter keywords here")
-
-		driver.findElements(By.name("site")).find { it.value == "google"}.setSelected()
-
-		if (driver.findElement(By.name("checker1")).isSelected()) driver.findElement(By.name("checker1")).toggle()
-		driver.findElement(By.name("checker2")).setSelected()
-
-		driver.findElement(By.name("plain_select")).findElements(By.tagName("option"))[3].setSelected()
-
-		def multiSelectOptions = driver.findElement(By.name("multiple_select")).findElements(By.tagName("option"))
-		if (multiSelectOptions[0].isSelected()) multiSelectOptions[0].toggle()
-		multiSelectOptions[1].setSelected()
-		if (multiSelectOptions[2].isSelected()) multiSelectOptions[2].toggle()
-		multiSelectOptions[3].setSelected()
-		if (multiSelectOptions[4].isSelected()) multiSelectOptions[4].toggle()
-		
-		driver.findElement(By.name("textext")).clear()
-		driver.findElement(By.name("textext")).sendKeys(" The textarea content. ")
 	}
 
 	def "getElement by index"() {
@@ -72,15 +51,18 @@ class NavigatorSpec extends Specification {
 		page.find("li").find("bdo") | 0     | 1          | 0
 	}
 
-	@Unroll("find('#selector') should return elements with #property of '#expectedValue'")
+	@Unroll("find('#selector') should return elements with #property of '#expected'")
 	def "find by CSS selector"() {
 		given: def navigator = page.find(selector)
-		expect: navigator*."$property" == expectedValue
+		expect: navigator*."$property" == expected
 
 		where:
-		selector                  | property | expectedValue
-		"#content div li"         | "text"   | ["Item #1", "Item #2", "Item #3", "Item #4"] * 5
-		"div.article h2 a"        | "text"   | ["Article title 1", "Article title 2", "Article title 3"]
+		selector                  | property | expected
+		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
 		"#header"                 | "@id"    | ["header"]
 		".col-3.module"           | "@id"    | ["navigation"]
 		".module.col-3"           | "@id"    | ["navigation"]
@@ -307,7 +289,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling children() on #selector should return #expected")
 	def "children selects immediate child elements of each element"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.children()*.tag == expected
+		expect: navigator.children()*.tag() == expected
 
 		where:
 		selector        | expected
@@ -322,7 +304,7 @@ class NavigatorSpec extends Specification {
 	@Unroll("calling children(#childSelector) on #selector should return #expected")
 	def "children with tag argument"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.children(childSelector)*.tag == expected
+		expect: navigator.children(childSelector)*.tag() == expected
 
 		where:
 		selector     | childSelector | expected
@@ -381,11 +363,11 @@ class NavigatorSpec extends Specification {
 		expectedSize = 5
 	}
 
-	@Unroll("the .text property of #selector should be '#expectedText'")
+	@Unroll("the value of text() on #selector should be '#expectedText'")
 	def "text of the first element can be accessed as a property"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.text == expectedText
-		
+		expect: navigator.text() == expectedText
+
 		where:
 		selector | expectedText
 		"p"      | "First paragraph of article 1."
@@ -393,11 +375,11 @@ class NavigatorSpec extends Specification {
 		"bdo"    | null
 	}
 
-	@Unroll("the .tag property of #selector should be '#expectedTag'")
+	@Unroll("the value of tag() on #selector should be '#expectedTag'")
 	def "tagName of the first element can be accessed as a property"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.tag == expectedTag
-		
+		expect: navigator.tag() == expectedTag
+
 		where:
 		selector        | expectedTag
 		"p"             | "p"
@@ -431,15 +413,15 @@ class NavigatorSpec extends Specification {
 	}
 
 	@Unroll("the class names on #selector are #expected")
-	def getClassNames() {
+	def "getClassNames returns the classes of the first matched element"() {
 		given: def navigator = page.find(selector)
-		expect: navigator.classNames == expected
+		expect: navigator.classes() == expected
 
 		where:
 		selector      | expected
 		"#article-1"  | ["article"] as Set
 		"#navigation" | ["col-3", "module"] as Set
-		"ol"          | ["ol", "simple", "ol-simple", "dummy"] as Set
+		"ol"          | [] as Set
 		"bdo"         | [] as Set
 	}
 
@@ -471,7 +453,7 @@ class NavigatorSpec extends Specification {
 
 	def text() {
 		expect:
-		navigator.text.contains(expectedText) == expectedResult
+		navigator.text().contains(expectedText) == expectedResult
 
 		where:
 		navigator               | expectedText      | expectedResult
@@ -502,6 +484,31 @@ class NavigatorSpec extends Specification {
 		navigator                           | key       | expectedValues
 		page.find("input").withName("site") | "value"   | ["google", "thisone"]
 		page.find("input").withName("site") | "checked" | ["checked", ""]
+	}
+
+	@Unroll("the dynamic method #fieldName() should return elements with the ids #expected")
+	def "can find named inputs using a dynamic method call"() {
+		when: def navigator = context."$fieldName"()
+		then: navigator*.@id == expected
+
+		where:
+		context            | fieldName     | expected
+		page               | "keywords"    | ["keywords"]
+		page.find("form")  | "keywords"    | ["keywords"]
+		page               | "site"        | ["site-1", "site-2"]
+		page.find("#main") | "keywords"    | []
+		page               | "nosuchfield" | []
+		page.find("bdo")   | "keywords"    | []
+	}
+
+	def "dynamic methods for finding fields do not accept arguments"() {
+		when: context."$fieldName"(*arguments)
+		then: thrown(MissingMethodException)
+
+		where:
+		context          | fieldName  | arguments
+		page             | "keywords" | ["foo", "bar"]
+		page.find("bdo") | "keywords" | ["foo"]
 	}
 
 	@Unroll("the value of '#fieldName' retrieved via property access should be '#expectedValue'")
@@ -553,9 +560,13 @@ class NavigatorSpec extends Specification {
 
 	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
 	def "form field values can be set using property access"() {
-		given: def form = page.find("form")
+		given:
+		def form = page.find("form")
+		def initialValue = form."$fieldName"
+
 		when: form."$fieldName" = newValue
 		then: form."$fieldName" == newValue
+		cleanup: form."$fieldName" = initialValue
 
 		where:
 		fieldName         | newValue
@@ -576,58 +587,131 @@ class NavigatorSpec extends Specification {
 		then:
 		driver.findElements(By.name("site")).find { it.value == value }.isSelected()
 
+		cleanup:
+		driver.findElement(By.id("site-1")).setSelected()
+
 		where:
 		value << ["google", "thisone"]
 	}
 
-	@Unroll("input value should be '#expectedValue'")
-	def "get value"() {
-		expect:
-		navigator.value() == expectedValue
+	@Unroll("input value should be '#expected'")
+	def "value() returns value of first element"() {
+		expect: navigator.value() == expected
 
 		where:
-		navigator                                                | expectedValue
-		page.find("select", name: "plain_select")                | "4"
-		page.find("select", name: "multiple_select")             | ["2", "4"]
-		page.find("select", name: "plain_select").find("option") | ["1", "2", "3", "4", "5"]
-		page.find("textarea")                                    | " The textarea content. "
-		page.find("#keywords")                                   | "Enter keywords here"
-		page.find("#checker1")                                   | null
-		page.find("#checker2")                                   | "123"
-		page.find("input", name: "site")                         | "google"
+		navigator                             | expected
+		page.find("#the_plain_select")        | "4"
+		page.find("#the_multiple_select")     | ["2", "4"]
+		page.find("#the_plain_select option") | "1"
+		page.find("textarea")                 | " The textarea content. "
+		page.find("#keywords")                | "Enter keywords here"
+		page.find("#checker1")                | null
+		page.find("#checker2")                | "123"
+		page.find("#keywords, textarea")      | "Enter keywords here"
 	}
 
-	@Unroll("input value can be changed from '#expectedValue' to '#newValue'")
+	@Unroll("input values should be '#expected'")
+	def "get value on all elements"() {
+		expect: navigator*.value() == expected
+
+		where:
+		navigator                             | expected
+		page.find("select")                   | ["4", ["2", "4"]]
+		page.find("#the_plain_select option") | ["1", "2", "3", "4", "5"]
+		page.find("#keywords, textarea")      | ["Enter keywords here", " The textarea content. "]
+	}
+
+	@Unroll("input value can be changed to '#newValue'")
 	def "set value"() {
+		given: def initialValue = navigator.value()
+		when: navigator.value(newValue)
+		then: navigator.value() == newValue
+		cleanup: navigator.value(initialValue)
+
+		where:
+		navigator                         | newValue
+		page.find("#the_plain_select")    | "2"
+		page.find("#the_multiple_select") | ["1", "3", "5"]
+		page.find("#keywords")            | "bar"
+		page.find("textarea")             | "This is the new content of the textarea. Yeah!"
+		page.find("#checker1")            | "123"
+		page.find("#checker2")            | null
+	}
+
+	@Ignore
+	@Unroll("value() on '#selector' should return '#expected'")
+	def "get value handles radio buttons as groups"() {
+		given:
+		def navigator = page.find(selector)
+
 		expect:
-		navigator.value() == expectedValue
-		navigator.value(newValue).value() == newValue
-		navigator.value(expectedValue).value() == expectedValue
+		navigator.value() == expected
+		navigator*.value() == [expected]
 
 		where:
-		navigator                         | expectedValue             | newValue
-		page.find("#the_plain_select")    | "4"                       | "2"
-		page.find("#the_multiple_select") | ["2", "4"]                | ["1", "3", "5"]
-		page.find("#keywords")            | "Enter keywords here"     | "bar"
-		page.find("textarea")             | " The textarea content. " | "This is the new content of the textarea. Yeah!"
-		page.find("#checker1")            | null                      | "123"
-		page.find("#checker2")            | "123"                     | null
-		page.find("input", name: "site")  | "google"                  | "thisone"
+		selector           | expected
+		"#site-1"          | "google"
+		"#site-2"          | null
+		"#site-1, #site-2" | "google"
 	}
 
-	@Unroll
-	def values() {
-		expect: navigator.values() == expectedValues
+	@Ignore
+	@Unroll("value('#newValue') on '#selector' should select the matching radio button")
+	def "set value handles radio buttons as groups"() {
+		given: def navigator = page.find(selector)
+		when: navigator.value(newValue)
+		then: navigator.value() == newValue
+		cleanup: driver.findElement(By.id("site-1")).setSelected()
 
 		where:
-		navigator                         | expectedValues
-		page.find("#the_multiple_select") | ["2", "4"]
-		page.find("input", name: "site")  | ["google", "thisone"]
-		page.find("#that_does_not_exist") | []
+		selector           | newValue
+		"#site-1"          | "google"
+		"#site-2"          | "thisone"
+		"#site-1, #site-2" | "thisone"
 	}
 
-	def click() {
-		// TODO: need to test this
+	@Unroll("find('#selector') << '#keystrokes' should append '#keystrokes' to the input's value")
+	def "can use leftShift to enter text in inputs"() {
+		given:
+		def navigator = page.find(selector)
+		def initialValue = navigator.value()
+
+		when: navigator << keystrokes
+		then: navigator.value() == old(navigator.value()) + keystrokes
+
+		cleanup: navigator.value(initialValue)
+
+		where:
+		selector    | keystrokes
+		"#keywords" | "abc"
+		"textarea"  | "abc"
+	}
+
+	@Unroll("using leftShift on '#selector' will append text to all fields")
+	def "can use leftShift to append text to multiple inputs"() {
+		given:
+		def navigator = page.find(selector)
+		def initialValue = navigator.value()
+
+		when: navigator << keystrokes
+		then: navigator.every { it.value().endsWith(keystrokes) }
+
+		cleanup: navigator.value(initialValue)
+
+		where:
+		selector              | keystrokes
+		"#keywords, textarea" | "abc"
+	}
+
+	def "leftShift returns the navigator so appends can be chained"() {
+		given:
+		def navigator = page.keywords()
+		def initialValue = navigator.value()
+
+		when: navigator << "a" << "b" << "c"
+		then: navigator.value().endsWith("abc")
+
+		cleanup: navigator.value(initialValue)
 	}
 
 	def first() {
@@ -682,6 +766,20 @@ class NavigatorSpec extends Specification {
 
 		where:
 		navigator = page.find("#does_not_exist")
+	}
+
+	def click() {
+		given:
+		def element1 = Mock(WebElement)
+		def element2 = Mock(WebElement)
+		def navigator = new NonEmptyNavigator(element1, element2)
+
+		when: navigator.click()
+
+		then:
+		1 * element1.click()
+		1 * element2.click()
+		0 * _
 	}
 
 }

@@ -80,17 +80,17 @@ class EmptyNavigator extends Navigator {
 
 	int size() { 0 }
 
-	String getTag() { null }
+	String tag() { null }
 
-	String getText() { null }
+	String text() { null }
 
 	String getAttribute(String name) { null }
 
-	Collection<String> getClassNames() { EMPTY_SET }
+	Collection<String> classes() { EMPTY_SET }
 
 	def value() { null }
 
-	String[] values() { EMPTY_STRING_ARRAY }
+	Navigator leftShift(value) { this }
 
 	Navigator getAt(int index) { this }
 
@@ -103,6 +103,11 @@ class EmptyNavigator extends Navigator {
 	Navigator value(value) { this }
 
 	String toString() { "[]" }
+
+	def methodMissing(String name, arguments) {
+		if (!arguments) this
+		else throw new MissingMethodException(name, getClass(), arguments)
+	}
 
 	def propertyMissing(String name) {
 		if (name.startsWith("@")) {

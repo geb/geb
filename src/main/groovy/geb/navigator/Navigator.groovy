@@ -15,7 +15,6 @@
  */
 package geb.navigator
 
-import com.gargoylesoftware.htmlunit.html.HtmlElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -28,52 +27,74 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
-	 * (simple) CSS selector.
-	 * <p>
-	 * Following selectors are allowed:
-	 * </p>
+	 * CSS selector. Any CSS capabilities supported by the underlying WebDriver instance are supported.
+	 * If the underlying WebDriver instance does not natively support finding elements by CSS selectors then tag, id
+	 * and class name selectors may be applied (in any combination).
+	 * <p>Examples:</p>
 	 * <dl>
-	 * <dt>type selectors</dt>
-	 * <dd>HTML element tag names, e.g. "h1" will only match h1 elements</dd>
-	 * <dt>class selectors</dt>
-	 * <dd>passing ".something" will only match the elements with the class "something"</dd>
-	 * <dt>id selectors</dt>
-	 * <dd>pass "#theid" to math the element with id "theid"</dd>
-	 * <dt>a combination of the above selectors</dt>
-	 * <dd>passing "div.article" wil only match the div elements with class "article"</dd>
-	 * <dt>selectors with descendant combinators</dt>
-	 * <dd>passing "div.article a.more" will only match the anchors with class "more"
-	 * that are descendants of a div with class "article". But when using a
-	 * selector such as "div.article p#someid", remember that HtmlUnit will
-	 * look for the element with the given id anywhere on the page, not
-	 * just within divs with class "article".</dd>
-	 * <dt>grouped selectors</dt>
-	 * <dd>pass "p, div, a.someClass" to matches all paragraphs, divs and anchors
-	 * (with class "someClass")</dd>
+	 * <dt>h1</dt>
+	 * <dd>selects all 'h1' elements</dd>
+	 * <dt>.article</dt>
+	 * <dd>selects all elements with the class 'article'</dd>
+	 * <dt>#header</dt>
+	 * <dd>selects the element with the id 'header'</dd>
+	 * <dt>div.article p</dt>
+	 * <dd>selects all p elements that are descendants of a div with class 'article'</dd>
+	 * <dt>h1, h2</dt>
+	 * <dd>selects all h1 and h2 elements</dd>
+	 * <dt>li:odd</dt>
+	 * <dd>selects odd-numbered li elements (CSS3 selectors like this are only supported when supported by the
+	 * underlying WebDriver instance)</dd>
 	 * </dl>
-	 * @param selector selector to use to match elements
-	 * @return new Navigator instance
+	 * @param selector a CSS selector
+	 * @return new Navigator instance containing the matched elements
 	 */
 	abstract Navigator find(String selector)
 
 	/**
-	 * Shorthand for <code>get(selector)[indexOfElement]</code>.
-	 * @param selector selector to use
-	 * @param index index of the element matching the selector to return
-	 * @return new Navigator instance
+	 * Shorthand for <code>find(selector)[indexOfElement]</code>.
+	 * @param selector a CSS selector
+	 * @param index index of the required element in the selection
+	 * @return new Navigator instance containing a single element
 	 */
 	Navigator find(String selector, int index) {
 		find(selector)[index]
 	}
 
+	/**
+	 * Creates a new Navigator instance containing the elements whose attributes match the specified values or patterns.
+	 * The key 'text' can be used to match the text contained in elements. Regular expression Pattern objects may be
+	 * used as values. Note that for selecting by class it is better to use a CSS selector.
+	 * <p>Examples:</p>
+	 * <dl>
+	 * <dt>find(name: "firstName")</dt>
+	 * <dd>selects all elements with the name "firstName"</dd>
+	 * <dt>find(name: "firstName", readonly: "readonly")</dt>
+	 * <dd>selects all elements with the name "firstName" that are read-only</dd>
+	 * <dt>find(text: "I can has cheezburger")</dt>
+	 * <dd>selects all elements containing the exact text</dd>
+	 * <dt>find(text: ~/I can has.+/)</dt>
+	 * <dd>selects all elements whose text matches a regular expression</dd>
+	 * </dl>
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
 	abstract Navigator find(Map<String, Object> predicates)
 
+	/**
+	 * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
+	 * all input elements with the name "firstName".
+	 * @param selector a CSS selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
 	abstract Navigator find(Map<String, Object> predicates, String selector)
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only those that match
-	 * the selector.
-	 * @param selector a CSS selector, note only tag, id and class based selectors are supported for this method
+	 * the selector. Note that unlike find only tag, id and class based selectors are supported for this method
+	 * regardless of the capabilities of the underlying WebDriver instance.
+	 * @param selector a CSS selector
 	 * @return a new Navigator instance
 	 */
 	abstract Navigator filter(String selector)
@@ -168,7 +189,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the next sibling elements of the
 	 * current context elements, matching the given tag.
 	 * <p>
-	 * Unlike       {@link #next()}      , this method will keep looking for the first
+	 * Unlike         {@link #next()}        , this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
 	 * @param selector tag to match
@@ -187,7 +208,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the previous sibling elements of the
 	 * current context elements, matching the given tag.
 	 * <p>
-	 * Unlike       {@link #previous()}      , this method will keep looking for the first
+	 * Unlike         {@link #previous()}        , this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
 	 * @param selector tag to match
@@ -206,7 +227,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the parent elements of the current
 	 * context elements that match the given tag.
 	 * <p>
-	 * Unlike       {@link #parent()}      , this method will keep traversing up the DOM
+	 * Unlike         {@link #parent()}        , this method will keep traversing up the DOM
 	 * until a match is found or the top of the DOM has been found
 	 * </p>
 	 * @param selector tag to match
@@ -222,19 +243,6 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	abstract Navigator siblings(String selector)
 
-	/**
-	 * Creates a new Navigator instance without the duplicate elements from the original.
-	 * <p>
-	 * Calling this method should not be necessary since Navigator tries to use it
-	 * where possible.
-	 * </p>
-	 * <p>
-	 * Note that in order to function correctly, this method will need to set
-	 * some data on the element to serve as a hash code - which is missing in
-	 * HtmlUnit's       {@link HtmlElement}       - but only if there's no id to use.
-	 * </p>
-	 * @return new Navigator instance
-	 */
 	abstract Navigator unique()
 
 	/**
@@ -256,7 +264,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return true when the first element is disabled
 	 */
 	boolean isDisabled() {
-		return hasAttribute("disabled")
+		getAttribute("disabled") == "disabled"
 	}
 
 	/**
@@ -264,20 +272,20 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return true when the first element is readonly
 	 */
 	boolean isReadOnly() {
-		return hasAttribute("readonly")
+		getAttribute("readonly") == "readonly"
 	}
 
 	/**
 	 * Returns the tag name of the first context element.
 	 * @return the tag name of the first context element
 	 */
-	abstract String getTag()
+	abstract String tag()
 
 	/**
 	 * Returns the text content of the first context element.
 	 * @return the text content of the first context element
 	 */
-	abstract String getText()
+	abstract String text()
 
 	/**
 	 * Returns the value of the given attribute of the first context element.
@@ -290,18 +298,13 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Returns the class names present on all elements. The result is a unique set in no guaranteed order.
 	 * @return the class names present on all elements.
 	 */
-	abstract Collection<String> getClassNames()
+	abstract Collection<String> classes()
 
 	/**
 	 * Returns the value of the first context element for input elements
 	 * (including textarea, select and button).
 	 * <p>
 	 * In the case of a select, the value of the first selected option is returned.
-	 * </p>
-	 * <p>
-	 * <strong>Note:</strong> use       {@link #values()}       if you want all selected
-	 * options of a multiple select or if you want the values of all context
-	 * elements.
 	 * </p>
 	 * @return value of the first context element
 	 */
@@ -315,14 +318,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	abstract Navigator value(value)
 
-	/**
-	 * Returns the values of all form input context elements.
-	 * <p>
-	 * In the case of a select, the values of all selected options are returned.
-	 * </p>
-	 * @return the values of all form input context elements
-	 */
-	abstract String[] values()
+	abstract Navigator leftShift(value)
 
 	/**
 	 * Clicks on the first context element.
