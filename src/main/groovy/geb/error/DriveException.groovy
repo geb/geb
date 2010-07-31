@@ -14,18 +14,18 @@
  */
 package geb.error
 
-import geb.Driver
+import geb.Browser
 
 /**
  * @todo need better error messages here incorporating the response
  */
 class DriveException extends GebException {
 
-	final Driver driver
+	final Browser browser
 	
-	DriveException(Driver driver, Throwable cause) {
+	DriveException(Browser browser, Throwable cause) {
 		super(null, cause)
-		this.driver = driver
+		this.browser = browser
 	}
 	
 }

@@ -6,9 +6,9 @@ Geb is a library for headless web browsing on the JVM, suitable for automation a
 
 The following is a simple example using Geb without defining page objects.
 
-    import geb.Driver
+    import geb.Browser
 
-    Driver.drive("http://google.com") {
+    Browser.drive("http://google.com") {
         assert pageTitle == "Google"
         find("input").withName("q").value("wikipedia")
         find("input").withValue("Google Search").click()
@@ -21,11 +21,11 @@ This example navigates to Google, searches for "_wikipedia_", and verifies that 
 
 The following example is the same, except that it utilises page objects.
 
-    import geb.Driver
+    import geb.Browser
     import geb.Page
     import geb.Module
     
-    Driver.drive(GoogleHomePage) {
+    Browser.drive(GoogleHomePage) {
         search.field.value("wikipedia")
         search.button.click()
         assert at(GoogleResultsPage)

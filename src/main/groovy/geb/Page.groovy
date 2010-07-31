@@ -26,7 +26,7 @@ class Page implements Content {
 	static at = null
 	static url = ""
 	
-	Driver driver
+	Browser browser
 	
 	protected _contentTemplates
 	
@@ -34,12 +34,12 @@ class Page implements Content {
 		_contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
 	}
 	
-	void setDriver(Driver driver) {
-		this.driver = driver
+	void setBrowser(Browser browser) {
+		this.browser = browser
 	}
 	
 	Doj getNavigator() {
-		Doj.on(driver.client.currentWindow?.enclosedPage)
+		Doj.on(browser.client.currentWindow?.enclosedPage)
 	}
 	
 	String toString() {
@@ -99,8 +99,8 @@ class Page implements Content {
 		if (path == null) {
 			path = ""
 		}
-		driver.go(params, getPageUrl(path))
-		driver.page(this)
+		browser.go(params, getPageUrl(path))
+		browser.page(this)
 	}
 	
 	def getPageUrl() {
@@ -117,6 +117,6 @@ class Page implements Content {
 	}	
 	
 	def getTitle() {
-		driver.client.currentWindow?.enclosedPage?.titleText
+		browser.client.currentWindow?.enclosedPage?.titleText
 	}
 }

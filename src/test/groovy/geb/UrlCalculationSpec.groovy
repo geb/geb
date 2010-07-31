@@ -66,7 +66,7 @@ class UrlCalculationSpec extends GebSpecWithServer {
 	@Unroll("go: baseUrl = #baseUrl, params = #params, path = #path, expectedRequestPath = #expectedRequestPath")
 	def "t2"() {
 		when:
-		driver.baseUrl = baseUrl
+		browser.baseUrl = baseUrl
 		go(path, *:params)
 		then:
 		requestUrl == expectedRequestURL

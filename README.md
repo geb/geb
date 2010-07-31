@@ -4,11 +4,11 @@ It is best explained by example…
 
     package geb.example
 
-    import geb.Driver
+    import geb.Browser
     import geb.example.pages.*
 
     // Without page objects
-    Driver.drive("http://google.com") {
+    Browser.drive("http://google.com") {
         assert pageTitle == "Google"
         find("input").withName("q").value("wikipedia")
         find("input").withValue("Google Search").click()
@@ -17,7 +17,7 @@ It is best explained by example…
     }
 
     // With page objects
-    Driver.drive(GoogleHomePage) {
+    Browser.drive(GoogleHomePage) {
         search.field.value("wikipedia")
         search.button.click()
         assert at(GoogleResultsPage)

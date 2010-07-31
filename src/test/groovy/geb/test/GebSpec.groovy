@@ -26,11 +26,11 @@ abstract class GebSpec extends Specification {
 	@Rule _testName = new TestName()
 	@Shared _testCounter = 0
 	
-	@Shared driver
+	@Shared browser
 	
 	def setup() {
-		if (driver == null) {
-			driver = new Driver(createClient(), getBaseUrl())
+		if (browser == null) {
+			browser = new Browser(createClient(), getBaseUrl())
 		}
 		def reportDir = getClassReportDir()
 		if (reportDir?.exists() && _testCounter == 0) {
@@ -41,15 +41,15 @@ abstract class GebSpec extends Specification {
 	}
 	
 	def methodMissing(String name, args) {
-		driver."$name"(*args)
+		browser."$name"(*args)
 	}
 
 	def propertyMissing(String name) {
-		driver."$name"
+		browser."$name"
 	}
 
 	def propertyMissing(String name, value) {
-		driver."$name" = value
+		browser."$name" = value
 	}
 	
 	def createClient() {
@@ -85,7 +85,7 @@ abstract class GebSpec extends Specification {
 	}
 	
 	private _getLastResponse() {
-		driver.client.currentWindow?.enclosedPage?.webResponse
+		browser.client.currentWindow?.enclosedPage?.webResponse
 	}
 	
 	private getClassReportDir() {

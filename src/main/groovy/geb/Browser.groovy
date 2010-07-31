@@ -18,22 +18,22 @@ import geb.error.DriveException
 import com.gargoylesoftware.htmlunit.WebClient
 import be.roam.hue.doj.Doj
 
-class Driver {
+class Browser {
 
 	Page page
 	final WebClient client
 	
 	String baseUrl
 	
-	Driver(Class pageClass, Map params = null) {
+	Browser(Class pageClass, Map params = null) {
 		this(null, null, pageClass, params)
 	}
 	
-	Driver(String baseUrl, Class pageClass = null, Map params = null) {
+	Browser(String baseUrl, Class pageClass = null, Map params = null) {
 		this(null, baseUrl, pageClass)
 	}
 	
-	Driver(WebClient client = null, String baseUrl = null, Class pageClass = null, Map params = null) {
+	Browser(WebClient client = null, String baseUrl = null, Class pageClass = null, Map params = null) {
 		this.client = client ?: new WebClient()
 		this.baseUrl = baseUrl
 		
@@ -64,7 +64,7 @@ class Driver {
 
 	void page(Page page) {
 		this.page = page
-		page.driver = this
+		page.browser = this
 	}
 	
 	boolean at(Class pageClass) {
@@ -126,7 +126,7 @@ class Driver {
 		if (!Page.isAssignableFrom(pageClass)) {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
-		pageClass.newInstance(driver: this)
+		pageClass.newInstance(browser: this)
 	}
 	
 	protected _toQueryString(Map params) {
@@ -143,37 +143,37 @@ class Driver {
 	}
 	
 	static drive(Closure script) {
-		doDrive(new Driver(), script)
+		doDrive(new Browser(), script)
 	}
 	
 	static drive(Class pageClass, Closure script) {
-		doDrive(new Driver(pageClass), script)
+		doDrive(new Browser(pageClass), script)
 	}
 	
 	static drive(String baseUrl, Closure script) {
-		def driver = new Driver(baseUrl)
-		driver.go("")
-		doDrive(driver, script)
+		def browser = new Browser(baseUrl)
+		browser.go("")
+		doDrive(browser, script)
 	}
 	
 	static drive(String baseUrl, Class pageClass, Closure script) {
-		doDrive(new Driver(baseUrl, pageClass), script)
+		doDrive(new Browser(baseUrl, pageClass), script)
 	}
 	
 	static drive(WebClient client, Closure script) {
-		doDrive(new Driver(client), script)
+		doDrive(new Browser(client), script)
 	}
 	
 	static drive(WebClient client, Class pageClass, Closure script) {
-		doDrive(new Driver(client, pageClass), script)
+		doDrive(new Browser(client, pageClass), script)
 	}
 	
-	private static doDrive(Driver driver, Closure script) {
-		script.delegate = driver
+	private static doDrive(Browser browser, Closure script) {
+		script.delegate = browser
 		try {
 			script()
 		} catch (Throwable e) {
-			throw new DriveException(driver, e)
+			throw new DriveException(browser, e)
 		}
 	}
 }

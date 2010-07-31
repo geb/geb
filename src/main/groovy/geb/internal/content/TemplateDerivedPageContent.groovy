@@ -75,7 +75,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	void click(Class pageClass) {
 		_navigator.click()
 		if (pageClass) {
-			_template.page.driver.page(pageClass)
+			_template.page.browser.page(pageClass)
 		}
 	}
 
@@ -85,7 +85,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		def potentialPageClassesClone = potentialPageClasses.clone()
 		def match = null
 		while (match == null && !potentialPageClassesClone.empty) {
-			def potential = page.driver.createPage(potentialPageClassesClone.remove(0))
+			def potential = page.browser.createPage(potentialPageClassesClone.remove(0))
 			def isAt = false
 			try {
 				isAt = potential.verifyAt()
@@ -98,7 +98,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		}
 		
 		if (match) {
-			page.driver.page(match)
+			page.browser.page(match)
 		} else {
 			throw new UnexpectedPageException(this, potentialPageClasses)
 		}

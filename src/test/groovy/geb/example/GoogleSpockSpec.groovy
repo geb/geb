@@ -18,7 +18,7 @@ import geb.test.*
 import geb.example.pages.*
 import spock.lang.*
 
-//@Ignore // ignored because it requires a network connection
+@Ignore // ignored because it requires a network connection
 @Stepwise
 class GoogleSpockSpec extends GebSpec {
 	
