@@ -9,7 +9,7 @@ It is best explained by example…
 
     // Without page objects
     Browser.drive("http://google.com") {
-        assert pageTitle == "Google"
+        assert title == "Google"
         $("input", name: "q").value("wikipedia")
         $("input", value: "Google Search").click()
         assert title.endsWith("Google Search")
