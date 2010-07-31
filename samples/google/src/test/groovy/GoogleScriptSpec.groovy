@@ -12,9 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.example.pages
+import spock.lang.*
+import groovy.util.GroovyScriptEngine
 
-class SpockGoogleCodePage extends GoogleCodePage {
-	// Pages can subclass, inheriting all defined content and overriding where necessary 
-	static at = { projectSummary.text() == "the enterprise ready specification framework" }
+class GoogleScriptSpec extends Specification {
+
+	def "run the script"() {
+		given:
+		def shell = new GroovyShell(this.class.classLoader)
+		def script = this.class.classLoader.findResource('GoogleScript.groovy')
+		when:
+		shell.evaluate(script.newInputStream(), 'GoogleScript.groovy')
+		then:
+		notThrown(Exception)
+	}
+
 }

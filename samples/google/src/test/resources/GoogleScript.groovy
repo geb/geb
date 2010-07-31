@@ -1,7 +1,5 @@
-package geb.example
-
 import geb.Browser
-import geb.example.pages.*
+import pages.*
 
 // Without page objects
 Browser.drive("http://google.com") {

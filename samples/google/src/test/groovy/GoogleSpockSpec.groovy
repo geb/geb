@@ -12,13 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.example
-
-import geb.test.util.*
-import geb.example.pages.*
+import geb.spock.*
+import pages.*
 import spock.lang.*
 
-//@Ignore // ignored because it requires a network connection
 @Stepwise
 class GoogleSpockSpec extends GebSpec {
 	

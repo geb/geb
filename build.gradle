@@ -7,8 +7,16 @@ buildscript {
 	}
 }
 
+def spockDependency = "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
+def seleniumDependency = "org.seleniumhq.selenium:selenium:2.0a5"
+def jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
+def groovyDependency = "org.codehaus.groovy:groovy-all:1.6.7"
+
 def groovyModules = ["core", "spock", "test-utils"]
 def publishedModules = ["core", "spock"]
+if (hasProperty("withSamples")) {
+	groovyModules << "google"
+}
 
 subprojects {
 	apply plugin: "org.gradle.idea"
@@ -22,7 +30,7 @@ subprojects {
 		apply from: "file:${rootDir}/clover.gradle"
 		
 		dependencies {
-			groovy "org.codehaus.groovy:groovy-all:1.6.7"
+			groovy groovyDependency
 		}
 		
 		compileGroovy.options.fork = false
@@ -81,16 +89,12 @@ subprojects {
 	}
 }
 
-def spock = "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
-def selenium = "org.seleniumhq.selenium:selenium:2.0a5"
-def jetty = "org.mortbay.jetty:jetty:6.1.21"
-
 project(':core') {
 	dependencies {
 		compile "org.seleniumhq.selenium:selenium:2.0a5" // this pulls in all the drivers, need to stop that
-		testCompile spock
-		testCompile selenium
-		testCompile jetty
+		testCompile spockDependency
+		testCompile seleniumDependency
+		testCompile jettyDependency
 		testCompile files("${rootDir}/test-utils/build/classes/main") {
 			builtBy ':test-utils:compileGroovy'
 		}
@@ -98,21 +102,14 @@ project(':core') {
 			builtBy ':test-runners:spock:compileGroovy'
 		}
 	}
-	sourceSets {
-		test {
-			resources {
-				fileTree('src/test/resources').include('**/*.groovy')
-			}
-		}
-	}
 }
 
 project(':test-runners:spock') {
 	dependencies {
-		compile spock
-		compile selenium
+		compile spockDependency
+		compile seleniumDependency
 		compile project(':core')
-		testCompile jetty
+		testCompile jettyDependency
 		testCompile files("${rootDir}/test-utils/build/classes/main") {
 			builtBy ':test-utils:compileGroovy'
 		}
@@ -121,8 +118,23 @@ project(':test-runners:spock') {
 
 project(':test-utils') {
 	dependencies {
-		compile jetty
+		compile jettyDependency
 		compile project(':test-runners:spock')
+	}
+}
+
+if (hasProperty('withSamples')) {
+	project(':samples:google') {
+		dependencies {
+			compile project(':test-runners:spock')
+		}
+		sourceSets {
+			test {
+				resources {
+					fileTree('src/test/resources').include('**/*.groovy')
+				}
+			}
+		}
 	}
 }
 

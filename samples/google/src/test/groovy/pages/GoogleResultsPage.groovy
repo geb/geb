@@ -12,21 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.example.pages
+package pages
 
 import geb.*
 
-// Pages contain content and modules
-class GoogleHomePage extends Page {
-
-	// can define a URL for going straight to the page
-	static url = "http://google.com"
-
-	// can define a custom check to verify the page content matches expectations
-	static at = { page.titleText == "Google" }
+class GoogleResultsPage extends Page {
+	static url = "http://www.google.com/search"
+	static at = { resultStats }
 	
-	// can include parameterised modules
+	// Pages can define individual content and/or modules
 	static content = {
-		search { module GoogleSearchModule, buttonValue: "Google Search" }
+		// Reuse the module, with different params
+		search { module GoogleSearchModule, buttonValue: "Search" }
+		
+		resultStats { $("div#resultStats") }
+		
+		results { $("li.g") }
+		// Content can be paramterised
+		result { results[it] }
+		// Content can be defined relative to other content
+		resultLink { result(it).find("a.l") }
 	}
 }
