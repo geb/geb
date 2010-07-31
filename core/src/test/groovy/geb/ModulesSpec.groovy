@@ -15,6 +15,7 @@
 package geb
 
 import geb.test.util.*
+import geb.error.InvalidPageContent
 
 class ModulesSpec extends GebSpecWithServer {
 
@@ -50,6 +51,14 @@ class ModulesSpec extends GebSpecWithServer {
 		then:
 		"abc" ==~ divA.contains("b")
 	}
+	
+	def "module base must return a navigator"() {
+		when:
+		to ModulesSpecPage
+		badBase
+		then:
+		thrown(InvalidPageContent)
+	}
 }
 
 class ModulesSpecPage extends Page {
@@ -71,6 +80,8 @@ class ModulesSpecPage extends Page {
 		
 		// A module whose inner module is defined by the owner module's base
 		divCWithRelativeInner { module ModulesSpecDivModuleWithNestedDivRelativeToModuleBase }
+		
+		badBase { module ModulesSpecBadBase }
 	}
 }
 
@@ -107,4 +118,8 @@ class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, $(), className: "d" }
 	}
+}
+
+class ModulesSpecBadBase extends Module {
+	static base = { 1 }
 }
