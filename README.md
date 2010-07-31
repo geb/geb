@@ -2,10 +2,7 @@ Geb is a Groovy DSL for [Selenium 2 (i.e. WebDriver)](http://code.google.com/p/s
 
 It is best explained by example…
 
-    package geb.example
-
     import geb.Browser
-    import geb.example.pages.*
     import org.openqa.selenium.firefox.FirefoxDriver
 
     // Without page objects
@@ -27,8 +24,6 @@ It is best explained by example…
 
 Page objects look like…
 
-    package geb.example.pages
-
     import geb.*
 
     // Pages contain content and modules
@@ -47,8 +42,6 @@ Page objects look like…
     }
     
 And modules look like…
-
-    package geb.example.pages
 
     import geb.*
 
