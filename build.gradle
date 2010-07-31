@@ -27,6 +27,12 @@ subprojects {
 		
 		compileGroovy.options.fork = false
 		compileTestGroovy.options.fork = false
+		
+		if (project.hasProperty('t')) {
+			test.doFirst {
+				test.include "**/${t}*.class"
+			}
+		}
 	}
 	
 	version = '0.4-SNAPSHOT'
