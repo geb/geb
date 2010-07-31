@@ -14,7 +14,7 @@
  */
 package geb
 
-import geb.test.*
+import geb.test.util.*
 
 class ModulesSpec extends GebSpecWithServer {
 

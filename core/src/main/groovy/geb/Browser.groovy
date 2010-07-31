@@ -115,7 +115,7 @@ class Browser {
 		page.to(params, *args)
 	}
 	
-	protected _calculateUri(String path, Map params) {
+	protected String _calculateUri(String path, Map params) {
 		def uri = new URI(path)
 		if (!uri.absolute) {
 			uri = new URI(baseUrl).resolve(uri)
@@ -124,9 +124,9 @@ class Browser {
 		def queryString = _toQueryString(params)
 		if (queryString) {
 			def joiner = uri.query ? '&' : '?'
-			new URL(uri.toString() + joiner + queryString)
+			new URL(uri.toString() + joiner + queryString).toString()
 		} else {
-			uri.toURL()
+			uri.toString()
 		}
 	}
 	

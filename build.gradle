@@ -1,74 +1,111 @@
 buildscript {
-    repositories {
-        mavenRepo urls: "http://gradle.artifactoryonline.com/gradle/plugins"
-    }
-    dependencies {
-        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
-    }
-}
-
-group = 'org.codehaus.geb'
-version = '0.4-SNAPSHOT'
-archivesBaseName = 'geb'
-
-apply plugin: "org.gradle.idea"
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply from: "file:${projectDir}/clover.gradle"
-
-configurations {
-	compile.transitive = true
-	testCompile.transitive = true
-	deployerJars
-}
-
-sourceCompatibility = 1.5
-targetCompatibility = 1.5
-
-compileGroovy.options.fork = false
-compileTestGroovy.options.fork = false
-
-repositories {
-	mavenCentral()
-	mavenRepo name: "spock-snapshots", urls: ["http://m2repo.spockframework.org/snapshots"]
-}
-
-dependencies {
-	groovy "org.codehaus.groovy:groovy-all:1.6.7"
-	groovy "org.seleniumhq.selenium:selenium:2.0a5" // this pulls in all the drivers, need to stop that
-	testCompile "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
-	testCompile "junit:junit:4.8.1"
-	testCompile "org.mortbay.jetty:jetty:6.1.21"
-	deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
-}
-
-sourceSets {
-	test {
-		resources {
-			fileTree('src/test/resources').include('**/*.groovy')
-		}
+	repositories {
+		mavenRepo urls: "http://gradle.artifactoryonline.com/gradle/plugins"
+	}
+	dependencies {
+		classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
 	}
 }
 
-if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
-	uploadArchives {
-		repositories.mavenDeployer {
-			configuration = configurations.deployerJars
-			repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
-				authentication(userName: codehausUsername, password: codehausPassword)
-			}
-			snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
-				authentication(userName: codehausUsername, password: codehausPassword)
-			}
-			pom.project {
-				licenses {
-					license {
-						name 'The Apache Software License, Version 2.0'
-						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-						distribution 'repo'
+subprojects {
+	apply plugin: 'maven'
+	apply plugin: "org.gradle.idea"
+	
+	if (project.name in ["core", "spock", "test-utils"]) {
+		apply plugin: "groovy"
+		apply from: "file:${rootDir}/clover.gradle"
+		
+		dependencies {
+			groovy "org.codehaus.groovy:groovy-all:1.6.7"
+		}
+		
+		compileGroovy.options.fork = false
+		compileTestGroovy.options.fork = false
+	}
+	
+	version = '0.4-SNAPSHOT'
+	group = 'org.codehaus.geb'
+/*	project.archivesBaseName = "geb-${project.name}"*/
+	
+	sourceCompatibility = 1.5
+	targetCompatibility = 1.5
+	
+	repositories {
+		mavenCentral()
+		mavenRepo name: "spock-snapshots", urls: ["http://m2repo.spockframework.org/snapshots"]
+	}
+	
+	configurations {
+		compile.transitive = true
+		testCompile.transitive = true
+		deployerJars
+	}
+	
+	dependencies {
+		deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
+	}
+	
+	if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
+		uploadArchives {
+			repositories.mavenDeployer {
+				configuration = configurations.deployerJars
+				repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
+					authentication(userName: codehausUsername, password: codehausPassword)
+				}
+				snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
+					authentication(userName: codehausUsername, password: codehausPassword)
+				}
+				pom.project {
+					licenses {
+						license {
+							name 'The Apache Software License, Version 2.0'
+							url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+							distribution 'repo'
+						}
 					}
 				}
 			}
 		}
+	}
+}
+
+def spock = "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
+def selenium = "org.seleniumhq.selenium:selenium:2.0a5"
+def jetty = "org.mortbay.jetty:jetty:6.1.21"
+
+project(':core') {
+	dependencies {
+		compile "org.seleniumhq.selenium:selenium:2.0a5" // this pulls in all the drivers, need to stop that
+		testCompile spock
+		testCompile selenium
+		testCompile jetty
+		testCompile files("${rootDir}/test-utils/build/classes/main") {
+			builtBy ':test-utils:compileGroovy'
+		}
+		testCompile files("${rootDir}/test-runners/spock/build/classes/main") {
+			builtBy ':test-runners:spock:compileGroovy'
+		}
+	}
+	sourceSets {
+		test {
+			resources {
+				fileTree('src/test/resources').include('**/*.groovy')
+			}
+		}
+	}
+}
+
+project(':test-runners:spock') {
+	dependencies {
+		compile spock
+		compile selenium
+		compile project(':core')
+	}
+}
+
+project(':test-utils') {
+	dependencies {
+		compile jetty
+		compile project(':test-runners:spock')
 	}
 }

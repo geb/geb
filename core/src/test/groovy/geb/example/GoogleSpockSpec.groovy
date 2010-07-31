@@ -14,7 +14,7 @@
  */
 package geb.example
 
-import geb.test.*
+import geb.test.util.*
 import geb.example.pages.*
 import spock.lang.*
 

@@ -14,7 +14,7 @@
  */
 package geb.internal.mixins
 
-import geb.test.GebSpec
+import geb.test.util.GebSpec
 import spock.lang.*
 
 class TextMatchingSupportSpec extends Specification {

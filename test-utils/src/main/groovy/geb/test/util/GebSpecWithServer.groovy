@@ -13,12 +13,11 @@
  * limitations under the License.
  */
 
-package geb.test
+package geb.test.util
 
-import geb.*
 import spock.lang.*
 
-abstract class GebSpecWithServer extends GebSpec {
+class GebSpecWithServer extends GebSpec {
 
 	@Shared server
 	
@@ -27,7 +26,7 @@ abstract class GebSpecWithServer extends GebSpec {
 		server.start()
 	}
 	
-	def getBaseUrl() {
+	String getBaseUrl() {
 		server.baseUrl
 	}
 	
