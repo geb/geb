@@ -4,3 +4,4 @@ target
 build
 .gradle
 *.iws
+build.sh
