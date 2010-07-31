@@ -6,9 +6,10 @@ It is best explained by example…
 
     import geb.Browser
     import geb.example.pages.*
+    import org.openqa.selenium.firefox.FirefoxDriver
 
     // Without page objects
-    Browser.drive("http://google.com") {
+    Browser.drive(new FirefoxDriver(), "http://google.com") {
         assert title == "Google"
         $("input", name: "q").value("wikipedia")
         $("input", value: "Google Search").click()
@@ -17,7 +18,7 @@ It is best explained by example…
     }
 
     // With page objects
-    Browser.drive(GoogleHomePage) {
+    Browser.drive(new FirefoxDriver(), GoogleHomePage) {
         search.field.value("wikipedia")
         search.button.click()
         assert at(GoogleResultsPage)
