@@ -16,15 +16,11 @@ package geb.spock
 
 import geb.Page
 import spock.lang.*
-import geb.spock.test.TestHttpServer
+import geb.test.util.GebSpecWithServer
 
-class GebSpecSpec extends GebSpec {
-
-	@Shared server
+class GebSpecSpec extends GebSpecWithServer {
 	
 	def setupSpec() {
-		server = new TestHttpServer()
-		server.start()
 		server.get = { req, res ->
 			res.outputStream << """
 			<html>
@@ -33,11 +29,6 @@ class GebSpecSpec extends GebSpec {
 			</body>
 			</html>"""
 		}
-		
-	}
-
-	def getBaseUrl() {
-		server.baseUrl
 	}
 	
 	def "missing methods are invoked on the driver instance"() {

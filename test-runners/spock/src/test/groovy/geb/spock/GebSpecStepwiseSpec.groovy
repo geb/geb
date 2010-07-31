@@ -16,16 +16,13 @@ package geb.spock
 
 import geb.Page
 import spock.lang.*
-import geb.spock.test.TestHttpServer
+import geb.test.util.GebSpecWithServer
 
 @Stepwise
-class GebSpecStepwiseSpec extends GebSpec {
+class GebSpecStepwiseSpec extends GebSpecWithServer {
 
-	@Shared server
 	
 	def setupSpec() {
-		server = new TestHttpServer()
-		server.start()
 		server.get = { req, res ->
 			res.outputStream << """
 			<html>
@@ -33,14 +30,9 @@ class GebSpecStepwiseSpec extends GebSpec {
 				<p>stuff</p>
 			</body>
 			</html>"""
-		}
-		
+		}		
 	}
 
-	def getBaseUrl() {
-		server.baseUrl
-	}
-	
 	def "go to the page"() {
 		when:
 		to FirstPage

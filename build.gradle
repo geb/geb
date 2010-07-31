@@ -100,6 +100,10 @@ project(':test-runners:spock') {
 		compile spock
 		compile selenium
 		compile project(':core')
+		testCompile jetty
+		testCompile files("${rootDir}/test-utils/build/classes/main") {
+			builtBy ':test-utils:compileGroovy'
+		}
 	}
 }
 

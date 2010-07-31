@@ -15,12 +15,10 @@
 package geb.spock
 
 import spock.lang.*
-import geb.spock.test.TestHttpServer
+import geb.test.util.GebSpecWithServer
 
 @Stepwise
-class GebReportingSpecSpec extends GebReportingSpec {
-
-	@Shared server
+class GebReportingSpecSpec extends GebSpecWithServer {
 	
 	static responseText = """
 		<html>
@@ -31,8 +29,6 @@ class GebReportingSpecSpec extends GebReportingSpec {
 	"""
 	
 	def setupSpec() {
-		server = new TestHttpServer()
-		server.start()
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
@@ -53,15 +49,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 		// setup() method.
 		firstOutputFile << "asdfajsdifoamsdfoiawdncwonc"
 	}
-
-	def getBaseUrl() {
-		server.baseUrl
-	}
 	
-	def getReportDir() {
-		new File("target/spock-geb-reports")
-	}
-
 	def getClassReportDir() {
 		new File(getReportDir(), this.class.name.replace('.', '/'))
 	}
@@ -85,15 +73,4 @@ class GebReportingSpecSpec extends GebReportingSpec {
 		report.text = responseText
 	}
 	
-	def "extension is based on content type"() {
-		given:
-		server.get = { req, res ->
-			res.setHeader('Content-Type', 'text/htmlx')
-			res.outputStream << responseText
-		}
-		when:
-		go('/')
-		then:
-		def outputFile = new File(getClassReportDir(), "3-extension is based on content type.htmlx")
-	}
 }
