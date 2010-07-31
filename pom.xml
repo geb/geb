@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.geb</groupId>
   <artifactId>geb</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.4-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>geb</name>
 
