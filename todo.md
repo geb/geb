@@ -16,6 +16,7 @@
 	* is() should accept selector not just tag name
 	* FirefoxWebElement has no toString, so Navigator should fully implement it
 * Browser driver methods should accept param maps
+* DriveExceptions aren't very informative
 
 ## Input Handling/Shortcuts:
 
