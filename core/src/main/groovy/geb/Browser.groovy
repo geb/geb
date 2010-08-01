@@ -116,9 +116,14 @@ class Browser {
 	}
 	
 	protected String _calculateUri(String path, Map params) {
-		def uri = new URI(path)
-		if (!uri.absolute) {
-			uri = new URI(baseUrl).resolve(uri)
+		def uri
+		if (path) {
+			uri = new URI(path)
+			if (!uri.absolute) {
+				uri = new URI(baseUrl).resolve(uri)
+			}
+		} else {
+			uri = new URI(baseUrl)
 		}
 		
 		def queryString = _toQueryString(params)

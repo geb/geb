@@ -33,8 +33,7 @@ class NavigableSupportSpec extends GebSpecWithServer {
 	}
 	
 	def setup() {
-		// go() -- causes problems, need to investigate
-		go("")
+		go()
 	}
 	
 	def "no args"() {
