@@ -98,7 +98,7 @@ class DriveSpec extends Specification {
 	def driveWithDriverAndBaseUrl() {
 		when:
 		Browser.drive(new HtmlUnitDriver(), server.baseUrl) {
-			go ""
+			go()
 			assert $(".url").text() == server.baseUrl
 		}
 		then:
