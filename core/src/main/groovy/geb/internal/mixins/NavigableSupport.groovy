@@ -23,7 +23,7 @@ class NavigableSupport {
 	}
 	
 	Navigator $(int index) {
-		_getNavigator().find(index)
+		_getNavigator()[index]
 	}
 	
 	Navigator $(String selector) {
@@ -42,13 +42,16 @@ class NavigableSupport {
 		_getNavigator().find(attributes, selector)
 	}
 	
+	/*
+	-- Not implemented by Navigator
 	Navigator $(Map attributes, int index) {
 		_getNavigator().find(attributes, index)
 	}
-	
+
+	-- Not implemented by Navigator	
 	Navigator $(Map attributes, String selector, int index) {
 		_getNavigator().find(attributes, selector, index)
 	}
-	
+	*/
 
 }
