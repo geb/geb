@@ -17,6 +17,7 @@
 	* FirefoxWebElement has no toString, so Navigator should fully implement it
 * Browser driver methods should accept param maps
 * DriveExceptions aren't very informative
+* Work out what extra methods NavigableSupport needs (e.g. $(0..2))
 
 ## Input Handling/Shortcuts:
 
