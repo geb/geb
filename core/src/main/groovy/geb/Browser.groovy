@@ -171,9 +171,13 @@ class Browser {
 	static drive(WebDriver driver, Closure script) {
 		doDrive(new Browser(driver), script)
 	}
-	
+
+	static drive(WebDriver driver, String baseUrl, Closure script) {
+		doDrive(new Browser(driver, baseUrl), script)
+	}
+
 	static drive(WebDriver driver, Class pageClass, Closure script) {
-		doDrive(new Browser(driver, pageClass), script)
+		doDrive(new Browser(driver, null, pageClass), script)
 	}
 	
 	private static doDrive(Browser browser, Closure script) {
