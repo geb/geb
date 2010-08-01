@@ -40,6 +40,20 @@ class BadContentDefinitionsSpec extends GebSpecWithServer {
 		then:
 		thrown(InvalidPageContent)
 	}
+
+	def "non map & non closure factory"() {
+		when:
+		page BadContentDefinitionsSpecNonMapNonClosureFactory
+		then:
+		thrown(InvalidPageContent)
+	}
+	
+	def "more than two args"() {
+		when:
+		page BadContentDefinitionsSpecThreeArgs
+		then:
+		thrown(InvalidPageContent)
+	}
 	
 }
 
@@ -55,3 +69,11 @@ class BadContentDefinitionsSpecNonClosureFactory extends Page {
 	static content = { foo([:], 1)  }
 }
 
+
+class BadContentDefinitionsSpecNonMapNonClosureFactory extends Page {
+	static content = { foo(1, 1)  }
+}
+
+class BadContentDefinitionsSpecThreeArgs extends Page {
+	static content = { foo(1, 1, 2)  }
+}
