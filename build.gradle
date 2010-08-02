@@ -41,6 +41,8 @@ subprojects {
 				test.include "**/${t}*.class"
 			}
 		}
+		
+		test.ignoreFailures = true
 	}
 	
 	version = '0.4-SNAPSHOT'
