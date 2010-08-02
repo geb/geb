@@ -27,7 +27,9 @@ subprojects {
 	
 	if (project.name in groovyModules) {
 		apply plugin: "groovy"
-		apply from: "file:${rootDir}/clover.gradle"
+		if (project.name != "test-utils") {
+			apply from: "file:${rootDir}/clover.gradle"
+		}
 		
 		dependencies {
 			groovy groovyDependency
@@ -192,8 +194,9 @@ task test(dependsOn: getTasksByName("test", true)) << {
 		ant.taskdef(resource: "cloverlib.xml", classpath: configurations.build.asPath)
 		ant."clover-merge"(initstring: mergedDb) {
 			subprojects.each {
-				if (it.getTasksByName("test", false)) {
-					cloverdb(initstring: "${it.buildDir}/${db}")
+				def projectCloverDb = "${it.buildDir}/${db}"
+				if (new File(projectCloverDb).exists()) {
+					cloverdb(initstring: projectCloverDb)
 				}
 			}
 		}
