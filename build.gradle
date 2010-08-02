@@ -137,7 +137,3 @@ if (hasProperty('withSamples')) {
 		}
 	}
 }
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '0.9-preview-3'
-}
