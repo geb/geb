@@ -98,13 +98,13 @@ project(':core') {
 		testCompile files("${rootDir}/test-utils/build/classes/main") {
 			builtBy ':test-utils:compileGroovy'
 		}
-		testCompile files("${rootDir}/test-runners/spock/build/classes/main") {
-			builtBy ':test-runners:spock:compileGroovy'
+		testCompile files("${rootDir}/runners/spock/build/classes/main") {
+			builtBy ':runners:spock:compileGroovy'
 		}
 	}
 }
 
-project(':test-runners:spock') {
+project(':runners:spock') {
 	dependencies {
 		compile spockDependency
 		compile seleniumDependency
@@ -119,14 +119,14 @@ project(':test-runners:spock') {
 project(':test-utils') {
 	dependencies {
 		compile jettyDependency
-		compile project(':test-runners:spock')
+		compile project(':runners:spock')
 	}
 }
 
 if (hasProperty('withSamples')) {
 	project(':samples:google') {
 		dependencies {
-			compile project(':test-runners:spock')
+			compile project(':runners:spock')
 		}
 		sourceSets {
 			test {

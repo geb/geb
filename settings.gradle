@@ -1,4 +1,4 @@
-include "core", "test-utils", "test-runners:spock"
+include "core", "test-utils", "runners:spock"
 
 if (hasProperty("withSamples")) {
 	include "samples:google"
