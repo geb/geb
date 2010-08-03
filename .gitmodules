@@ -1,0 +1,3 @@
+[submodule "buildSrc/grails-plugin"]
+	path = buildSrc/grails-plugin
+	url = git://github.com/alkemist/grails-gradle-plugin.git
