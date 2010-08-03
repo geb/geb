@@ -1,4 +1,4 @@
-include "core", "test-utils", "runners:spock"
+include "core", "test-utils", "runners:spock", "grails:jar", "grails:plugin"
 
 if (hasProperty("withSamples")) {
 	include "samples:google"

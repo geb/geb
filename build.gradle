@@ -7,10 +7,20 @@ buildscript {
 	}
 }
 
-def spockDependency = "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
-def seleniumDependency = "org.seleniumhq.selenium:selenium:2.0a5"
-def jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
-def groovyDependency = "org.codehaus.groovy:groovy-all:1.6.7"
+dependsOnChildren()
+
+allprojects {
+	grailsVersion = "1.2.3"
+	spockDependency = "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
+	seleniumDependency = "org.seleniumhq.selenium:selenium:2.0a5"
+	jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
+	groovyDependency = "org.codehaus.groovy:groovy-all:1.6.7"
+	
+	repositories {
+		mavenCentral()
+		mavenRepo name: "spock-snapshots", urls: ["http://m2repo.spockframework.org/snapshots"]
+	}
+}
 
 def groovyModules = ["core", "spock", "test-utils"]
 def publishedModules = ["core", "spock"]
@@ -19,12 +29,12 @@ if (hasProperty("withSamples")) {
 }
 
 subprojects {
+	version = '0.4-SNAPSHOT'
+	group = 'org.codehaus.geb'
+	archivesBaseName = "geb-${project.name}"
+	
 	apply plugin: "org.gradle.idea"
-	
-	if (project.name in publishedModules) {
-		apply plugin: 'maven'
-	}
-	
+		
 	if (project.name in groovyModules) {
 		apply plugin: "groovy"
 		if (project.name != "test-utils") {
@@ -45,46 +55,45 @@ subprojects {
 		}
 		
 		test.ignoreFailures = true
+
+		sourceCompatibility = 1.5
+		targetCompatibility = 1.5
+		
+		configurations {
+			compile.transitive = true
+			testCompile.transitive = true
+		}
+		
 	}
 	
-	version = '0.4-SNAPSHOT'
-	group = 'org.codehaus.geb'
-	project.archivesBaseName = "geb-${project.name}"
-	
-	sourceCompatibility = 1.5
-	targetCompatibility = 1.5
-	
-	repositories {
-		mavenCentral()
-		mavenRepo name: "spock-snapshots", urls: ["http://m2repo.spockframework.org/snapshots"]
-	}
-	
-	configurations {
-		compile.transitive = true
-		testCompile.transitive = true
-		deployerJars
-	}
-	
-	dependencies {
-		deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
-	}
-	
-	if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
-		uploadArchives {
-			repositories.mavenDeployer {
-				configuration = configurations.deployerJars
-				repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
-					authentication(userName: codehausUsername, password: codehausPassword)
-				}
-				snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
-					authentication(userName: codehausUsername, password: codehausPassword)
-				}
-				pom.project {
-					licenses {
-						license {
-							name 'The Apache Software License, Version 2.0'
-							url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-							distribution 'repo'
+	if (project.name in publishedModules) {
+		apply plugin: 'maven'
+		
+		configurations {
+			deployerJars
+		}
+		
+		dependencies {
+			deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
+		}
+		
+		if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
+			uploadArchives {
+				repositories.mavenDeployer {
+					configuration = configurations.deployerJars
+					repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
+						authentication(userName: codehausUsername, password: codehausPassword)
+					}
+					snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
+						authentication(userName: codehausUsername, password: codehausPassword)
+					}
+					pom.project {
+						licenses {
+							license {
+								name 'The Apache Software License, Version 2.0'
+								url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+								distribution 'repo'
+							}
 						}
 					}
 				}
@@ -142,11 +151,54 @@ if (hasProperty('withSamples')) {
 	}
 }
 
-// Root Project 
+project(":grails:jar") {
+	apply plugin: "groovy"
 
-repositories {
-	mavenCentral()
+	archivesBaseName = "geb-grails"
+
+	dependencies {
+		groovy groovyDependency
+		compile project(':runners:spock'),
+		        "org.grails:grails-core:${grailsVersion}",
+		        "org.grails:grails-test:${grailsVersion}",
+		        "org.grails:grails-web:${grailsVersion}",
+		        "org.slf4j:slf4j-log4j12:1.5.5"
+	}
 }
+
+project(":grails:plugin") {
+	buildscript {
+		repositories {
+			mavenCentral()
+			mavenRepo name: "codehaus-snapshots", urls: 'http://snapshots.repository.codehaus.org'
+			mavenRepo name: "java.net", urls: 'http://download.java.net/maven/2'
+		}
+	}
+
+	apply plugin: "grails"
+
+	repositories {
+		flatDir dirs: "lib"
+	}
+
+	configurations {
+		compile.exclude module: "commons-logging"
+		compile.exclude module: 'xml-apis'
+	}
+
+	dependencies {
+		compile project(':grails:jar'),
+		        "org.grails:grails-crud:${grailsVersion}",
+		        "org.grails:grails-gorm:${grailsVersion}"
+
+		runtime "org.slf4j:slf4j-log4j12:1.5.5",
+		        "hsqldb:hsqldb:1.8.0.5",
+		        "net.sf.ehcache:ehcache-core:1.7.1",
+		        "org.aspectj:aspectjrt:1.6.6"
+	}
+}
+
+// Root Project 
 
 configurations {
 	build
