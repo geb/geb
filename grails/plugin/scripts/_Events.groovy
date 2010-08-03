@@ -59,6 +59,12 @@ eventTestPhaseStart = { phaseName ->
 				throw new IllegalStateException("failed to load geb spec class even though spock is in the house")
 			}
 			
+			// Needed when being driven by a different build engine
+			if (!binding.hasProperty('serverContextPath')) {
+				includeTargets << grailsScript("_GrailsPackage") 
+				configureServerContextPath()
+			}
+			
 			gebSpecClass.classBaseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort$serverContextPath/"
 			gebSpecClass.classReportDir = new File(grailsSettings.testReportsDir, 'geb-spock')
 		}
