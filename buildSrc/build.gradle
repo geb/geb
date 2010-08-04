@@ -1,2 +1,8 @@
 apply plugin: "java"
+
+repositories {
+    mavenCentral()
+    mavenRepo urls: ['http://download.java.net/maven/2/']
+}
+
 dependencies { runtime subprojects }
