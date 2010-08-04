@@ -14,10 +14,8 @@
  */
 package geb
 
-import geb.internal.content.PageContentTemplateBuilder
+import geb.internal.*
 import geb.navigator.Navigator
-import geb.internal.content.TextMatchingSupport
-import geb.internal.content.NavigableSupport
 
 class Page {
 

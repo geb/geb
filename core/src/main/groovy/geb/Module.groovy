@@ -15,8 +15,7 @@
 package geb
 
 import geb.navigator.Navigator
-import geb.internal.content.*
-import geb.internal.mixins.*
+import geb.internal.*
 
 class Module extends TemplateDerivedPageContent {
 

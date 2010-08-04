@@ -12,11 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.content
+package geb.internal
 
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
-import geb.internal.content.module.*
 
 class PageContentTemplateFactoryDelegate {
 

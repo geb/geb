@@ -12,18 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.content
+package geb.internal
 
-import geb.Page
+import geb.navigator.Navigator
 
-/**
- * Content which is encapsulated in a page
- */
-interface PageContent {
+class SimplePageContent extends TemplateDerivedPageContent {
+
+	@Delegate private NavigableSupport navigableSupport
 	
-	/**
-	 * The page that this content is part of
-	 */
-	Page getPage()
+	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
+		navigableSupport = new NavigableSupport(this, null) { navigator }
+		super.init(template, navigator, *args)
+	}
 
 }
