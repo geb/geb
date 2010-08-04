@@ -5,3 +5,4 @@ build
 .gradle
 *.iws
 build.sh
+stacktrace.log
