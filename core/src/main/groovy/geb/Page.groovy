@@ -14,34 +14,30 @@
  */
 package geb
 
-import geb.error.UndefinedPageContentException
 import geb.internal.content.PageContentTemplateBuilder
-import geb.internal.content.Navigable
 import geb.navigator.Navigator
-import geb.internal.mixins.*
+import geb.internal.content.TextMatchingSupport
+import geb.internal.content.NavigableSupport
 
-@Mixin([TextMatchingSupport, NavigableSupport])
-class Page implements Navigable {
+class Page {
 
 	static at = null
 	static url = ""
 	
 	Browser browser
 	
-	protected _contentTemplates
+	@Delegate private NavigableSupport navigableSupport
+	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	
 	Page() {
-		_contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
+		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
+		navigableSupport = new NavigableSupport(this, contentTemplates) { Navigator.on(browser.driver) }
 	}
 	
 	void setBrowser(Browser browser) {
 		this.browser = browser
 	}
-	
-	private _getNavigator() {
-		Navigator.on(browser.driver)
-	}
-	
+
 	String toString() {
 		this.class.simpleName
 	}
@@ -58,23 +54,6 @@ class Page implements Navigable {
 			verifier()
 		} else {
 			true
-		}
-	}
-	
-	def methodMissing(String name, args) {
-		_getContent(name, *args)
-	}
-
-	def propertyMissing(String name) {
-		_getContent(name)
-	}
-	
-	private _getContent(String name, Object[] args) {
-		def contentTemplate = _contentTemplates[name]
-		if (contentTemplate) {
-			contentTemplate.get(*args)
-		} else {
-			throw new UndefinedPageContentException(this, name)
 		}
 	}
 	

@@ -14,36 +14,22 @@
  */
 package geb
 
+import geb.navigator.Navigator
 import geb.internal.content.*
-import geb.error.*
-import geb.internal.mixins.TextMatchingSupport
+import geb.internal.mixins.*
 
-@Mixin(TextMatchingSupport)
 class Module extends TemplateDerivedPageContent {
 
 	static base = null
 	
-	private _contentTemplates
+	@Delegate private NavigableSupport navigableSupport
+	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	
-	Module() {
-		_contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
+	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
+		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
+		navigableSupport = new NavigableSupport(this, contentTemplates) { navigator }
+		super.init(template, navigator, *args)
 	}
 
-	def methodMissing(String name, args) {
-		_getContent(name, *args)
-	}
-	
-	def propertyMissing(String name) {
-		_getContent(name)
-	}
-
-	private _getContent(String name, Object[] args) {
-		def contentTemplate = _contentTemplates[name]
-		if (contentTemplate) {
-			contentTemplate.get(*args)
-		} else {
-			throw new UndefinedPageContentException(this, name)
-		}
-	}
 }
 

@@ -15,18 +15,19 @@
 package geb.internal.content.module
 
 import geb.navigator.Navigator
-import geb.internal.mixins.*
-import geb.internal.content.Navigable
+import geb.internal.content.NavigableSupport
 
-@Mixin([NavigableSupport])
-class ModuleBaseDefinitionDelegate implements Navigable {
+class ModuleBaseDefinitionDelegate {
 
 	private startingBase
 	private params
 	
+	@Delegate private NavigableSupport navigableSupport
+	
 	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
 		this.startingBase = startingBase
 		this.params = params
+		navigableSupport = new NavigableSupport(this, null) { startingBase }
 	}
 	
 	def methodMissing(String name, args) {
@@ -37,12 +38,8 @@ class ModuleBaseDefinitionDelegate implements Navigable {
 		if (params.containsKey(name)) {
 			params[name]
 		} else {
-			startingBase."$name"
+			navigableSupport."$name"
 		}
-	}
-	
-	private _getNavigator() {
-		startingBase
 	}
 
 }

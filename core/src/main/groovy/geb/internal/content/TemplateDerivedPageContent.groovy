@@ -20,8 +20,7 @@ import geb.error.UnexpectedPageException
 import geb.navigator.Navigator
 import geb.internal.mixins.*
 
-@Mixin([NavigableSupport])
-abstract class TemplateDerivedPageContent implements PageContent, Navigable {
+abstract class TemplateDerivedPageContent implements PageContent {
 
 	private PageContentTemplate _template
 	private Object[] _args
@@ -39,14 +38,9 @@ abstract class TemplateDerivedPageContent implements PageContent, Navigable {
 	}
 	
 	String toString() {
-		"$_template.name - ${this.class.simpleName} (owner: $_template.owner, args: $_args)"
+		"${_template?.name} - ${this.class.simpleName} (owner: ${_template?.owner}, args: $_args)"
 	}
-	
-	// Hook for NavigableSupport
-	private _getNavigator() {
-		_navigator
-	}
-	
+		
 	Page getPage() {
 		_template.page
 	}

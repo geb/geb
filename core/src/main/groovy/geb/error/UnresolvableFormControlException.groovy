@@ -12,17 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.content
+package geb.error
 
-import geb.navigator.Navigator
+import geb.internal.content.Navigable
 
-class SimplePageContent extends TemplateDerivedPageContent {
+class UnresolvablePropertyException extends GebException {
 
-	@Delegate private NavigableSupport navigableSupport
+	final Navigable container
+	final String name
 	
-	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		navigableSupport = new NavigableSupport(this, null) { navigator }
-		super.init(template, navigator, *args)
+	UnresolvablePropertyException(Navigable container, String name, String message) {
+		super(message)
 	}
 
 }

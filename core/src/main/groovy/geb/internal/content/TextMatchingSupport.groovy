@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal.mixins
+package geb.internal.content
 
 import java.util.regex.Pattern
 

@@ -16,6 +16,7 @@ package geb
 
 import geb.test.util.*
 import spock.lang.*
+import geb.error.UnresolvablePropertyException
 
 class NavigableSupportSpec extends GebSpecWithServer {
 
@@ -27,6 +28,7 @@ class NavigableSupportSpec extends GebSpecWithServer {
 				<p class="a">a</p>
 				<p class="b">b</p>
 				<p class="c">c</p>
+				<input type="text" name="e" value="val"/>
 			</body>
 			</html>"""
 		}
@@ -81,6 +83,39 @@ class NavigableSupportSpec extends GebSpecWithServer {
 	def "selector, attributes and index"() {
 		expect:
 		$("p", 1, class: ~/\w/).text() == "b"
+	}
+	
+	def "delegating missing properties to the navigator"() {
+		expect:
+		e == "val"
+		when:
+		e = "changed"
+		then:
+		e == "changed"
+	}
+	
+	def "delegating missing methods to the navigator"() {
+		expect:
+		e().tag() == "input"
+	}
+	
+	def "invalid property access throws unresolvable exception"() {
+		when:
+		z
+		then:
+		thrown(UnresolvablePropertyException)
+	}
+
+	def "invalid property assignment throws unresolvable exception"() {
+		when:
+		z = 3
+		then:
+		thrown(UnresolvablePropertyException)
+	}
+
+	def "dynamic method call returns empty navigator"() {
+		expect:
+		z().empty
 	}
 	
 }
