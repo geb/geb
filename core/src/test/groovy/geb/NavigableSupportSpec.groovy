@@ -118,4 +118,10 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		z().empty
 	}
 	
+	def "attribute access notation"() {
+		expect:
+		$("p").@class == 'a'
+		$("p")*.@class == ['a', 'b', 'c']
+	}
+	
 }
