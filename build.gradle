@@ -196,6 +196,8 @@ project(":grails:plugin") {
 		        "net.sf.ehcache:ehcache-core:1.7.1",
 		        "org.aspectj:aspectjrt:1.6.6"
 	}
+	
+	System.setProperty("server.port", "8010")
 }
 
 // Root Project 
