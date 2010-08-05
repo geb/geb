@@ -51,10 +51,10 @@ test.doFirst {
 		//compile instrumented classes
 		sourceSets.main.classesDir.mkdirs()
 		ant.groovyc(
-				destdir:sourceSets.main.classesDir,
-				fork: true,
-				verbose: true
-			) {
+			destdir:sourceSets.main.classesDir,
+			fork: true,
+			verbose: true
+		) {
 			classpath {
 				pathElement path:configurations.testCompile.asPath
 			}
