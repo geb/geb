@@ -10,20 +10,20 @@ class ListPage extends ScaffoldPage {
 	}
 	
 	static content = {
-		newPersonButton(to: CreatePage) { $("a").withTextMatching("New Person") }
+		newPersonButton(to: CreatePage) { $("a", text: "New Person") }
 		peopleTable { $("div.list table", 0) }
-		personRow { module PersonRow, personRows.get(it) }
-		personRows(required: false) { peopleTable.get("tbody").get("tr") }
+		personRow { module PersonRow, personRows[it] }
+		personRows(required: false) { peopleTable.find("tbody").find("tr") }
 	}
 }
 
 class PersonRow extends Module {
 	static content = {
-		cell { $("td").get(it) }
+		cell { $("td", it) }
 		id { cell(0) }
 		enabled { cell(1) }
 		firstName { cell(2) }
 		lastName { cell(3) }
-		showLink(to: ShowPage) { id.get("a") }
+		showLink(to: ShowPage) { id.find("a") }
 	}
 }

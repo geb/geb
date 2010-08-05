@@ -1,4 +1,4 @@
-import grails.plugin.gebspock.GebSpec
+import grails.plugin.geb.GebSpec
 
 import spock.lang.*
 
@@ -23,9 +23,9 @@ class PersonCRUDSpec extends GebSpec {
 	
 	def "enter the details"() {
 		when:
-		form.enabled.check()
-		form.firstName.value("Luke")
-		form.lastName.value("Daley")
+		form.enabled = true
+		form.firstName = "Luke"
+		form.lastName = "Daley"
 		createButton.click()
 		then:
 		at ShowPage
@@ -33,9 +33,9 @@ class PersonCRUDSpec extends GebSpec {
 	
 	def "check the entered details"() {
 		expect:
-		enabled.text() == "True"
 		firstName.text() == "Luke"
 		lastName.text() == "Daley"
+		enabled.text() == "True"
 		id.text() ==~ /\d+/
 	}
 
@@ -45,7 +45,7 @@ class PersonCRUDSpec extends GebSpec {
 		then:
 		at EditPage
 		when:
-		form.enabled.uncheck()
+		form.enabled = false
 		updateButton.click()
 		then:
 		at ShowPage

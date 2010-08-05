@@ -10,8 +10,8 @@ class EditPage extends ScaffoldPage {
 	
 	static content = {
 		form { module PersonFormModule }
-		updateButton(to: ShowPage) { $("input").withValue("Update") }
-		deleteButton(to: ListPage) { $("input").withValue("Delete") }
+		updateButton(to: ShowPage) { $("input", value: "Update") }
+		deleteButton(to: ListPage) { $("input", value: "Delete") }
 	}
 
 }

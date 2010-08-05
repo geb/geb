@@ -10,7 +10,7 @@ class CreatePage extends ScaffoldPage {
 	
 	static content = {
 		form { module PersonFormModule }
-		createButton(to: ShowPage) { $("input").withName("create") }
+		createButton(to: ShowPage) { create() }
 	}
 
 }

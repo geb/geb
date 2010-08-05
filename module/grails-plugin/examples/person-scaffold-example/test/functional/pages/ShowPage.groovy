@@ -7,10 +7,10 @@ class ShowPage extends ScaffoldPage {
 	}
 	
 	static content = {
-		editButton(to: EditPage) { $("input").withValue("Edit") }
-		deleteButton(to: ListPage) { $("input").withValue("Delete") }
-		row { $("td.name").withTextMatching(it).parent() }
-		value { row(it).get("td.value") }
+		editButton(to: EditPage) { $("input", value: "Edit") }
+		deleteButton(to: ListPage) { $("input", value: "Delete") }
+		row { $("td.name", text: it).parent() }
+		value { row(it).find("td.value") }
 		id { value("Id") }
 		enabled { value("Enabled") }
 		firstName { value("First Name") }
