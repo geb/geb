@@ -28,7 +28,7 @@ def groovyModules = [
 ]
 
 def publishedModules = [
-	":module:core", ":grails-support", ":module:spock", 
+	":module:core", ":module:grails-support", ":module:spock", 
 	":module:junit3", ":module:junit4"
 ]
 
