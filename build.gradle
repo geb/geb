@@ -22,8 +22,15 @@ allprojects {
 	}
 }
 
-def groovyModules = [":module:core", ":module:test-utils", ":module:grails-support", ":module:spock", ":module:junit3", ":module:junit4"]
-def publishedModules = [":module:core", ":grails-support", ":module:spock", ":module:junit3", ":module:junit4"]
+def groovyModules = [
+	":module:core", ":module:test-utils", ":module:grails-support", 
+	":module:spock", ":module:junit3", ":module:junit4"
+]
+
+def publishedModules = [
+	":module:core", ":grails-support", ":module:spock", 
+	":module:junit3", ":module:junit4"
+]
 
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
