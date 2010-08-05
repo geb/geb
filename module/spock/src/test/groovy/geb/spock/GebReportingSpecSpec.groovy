@@ -72,5 +72,10 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		report.exists()
 		!report.text.contains(garbage)
 	}
+
+	def "there should be a second report"() {
+		expect:
+		getClassReportDir().listFiles().any { it.name.startsWith("2") }
+	}
 	
 }

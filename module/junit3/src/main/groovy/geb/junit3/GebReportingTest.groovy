@@ -20,15 +20,11 @@ import org.openqa.selenium.WebDriver
 
 class GebReportingTest extends GebTest {
 
-	// Ridiculous name to avoid name clashes
-	private _gebReportingTestCounter = 0
-	private _getReportingTestReporter = null
-	
+	static private GEB_REPORTING_TEST_COUNTERS = [:]
+	static private GEB_REPORTING_TEST_REPORTERS = [:]
+		
  	void tearDown() {
-		if (_gebReportingTestCounter++ == 0) {
-			_getReportingTestReporter = createReporter()
-		}
-		_getReportingTestReporter?.writeReport("${_gebReportingTestCounter}", getBrowser())
+		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}", getBrowser())
 	}
 
 	/**
@@ -46,4 +42,18 @@ class GebReportingTest extends GebTest {
 		null
 	}
 	
+	static private getTestReporter(test) {
+		def key = test.class.name
+		if (!GEB_REPORTING_TEST_REPORTERS.containsKey(key)) {
+			GEB_REPORTING_TEST_REPORTERS[key] = test.createReporter()
+		}
+		GEB_REPORTING_TEST_REPORTERS[key]
+	}
+	
+	static private getNextTestCounterValue(test) {
+		def key = test.class.name
+		def value = GEB_REPORTING_TEST_COUNTERS[key] ?: 0
+		GEB_REPORTING_TEST_COUNTERS[key] = ++value
+		value
+	}
 }

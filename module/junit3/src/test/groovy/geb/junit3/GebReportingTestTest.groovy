@@ -38,6 +38,7 @@ class GebReportingTestTest extends GebReportingTest {
 			res.outputStream << responseText
 		}
 		super.setUp()
+		go()
 	}
 	
 	String getBaseUrl() {
@@ -56,28 +57,24 @@ class GebReportingTestTest extends GebReportingTest {
 		new File(getClassReportDir(), "1.html")
 	}
 	
-	void testAaa() {
-		go("/")
-		if (++counter == 2) {
-			doTestReport()
-		} else {
-			"$counter not 2"
-		}
+	void testA() {
+		doTestReport()
 	}
 	
-	void testBbb() {
-		go("/")
-		if (++counter == 2) {
-			doTestReport()
-		} else {
-			"$counter not 2"
-		}
+	void testB() {
+		doTestReport()
+	}
+
+	void testC() {
+		doTestReport()
 	}
 	
 	def doTestReport() {
-		def report = getFirstOutputFile()
-		assert report.exists()
-		assert report.text.contains('<div class="d1" id="d1">')
+		if (++counter > 1) {
+			def report = classReportDir.listFiles().find { it.name.startsWith((counter - 1).toString()) }
+			assert report.exists()
+			assert report.text.contains('<div class="d1" id="d1">')
+		}
 	}
 	
 	void tearDown() {

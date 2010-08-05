@@ -26,7 +26,7 @@ class GebReportingTestTest extends GebReportingTest {
 
 	def server = new TestHttpServer()
 	
-	static counter = 0
+	static private counter = 0
 	
 	static responseText = """
 		<html>
@@ -43,7 +43,7 @@ class GebReportingTestTest extends GebReportingTest {
 			res.outputStream << responseText
 		}
 		super.setUp()
-		go("/")
+		go()
 	}
 	
 	String getBaseUrl() {
@@ -58,29 +58,27 @@ class GebReportingTestTest extends GebReportingTest {
 		new File(getReportDir(), this.class.name.replace('.', '/'))
 	}
 	
-	def getFirstOutputFile() {
-		getClassReportDir().listFiles().find { it.name.startsWith("1") }
-	}
-	
 	@Test 
 	void a() {
-		if (++counter == 2) {
-			doTestReport()
-		}
+		doTestReport()
 	}
 	
 	@Test
 	void b() {
-		if (++counter == 2) {
-			doTestReport()
-		}
+		doTestReport()
+	}
+
+	@Test
+	void c() {
+		doTestReport()
 	}
 	
 	def doTestReport() {
-		def report = getFirstOutputFile()
-		assert report.exists()
-		assert report.name in ["1-a.html", "1-b.html"] // can't guarantee execution order
-		assert report.text.contains('<div class="d1" id="d1">')
+		if (++counter > 1) {
+			def report = classReportDir.listFiles().find { it.name.startsWith((counter - 1).toString()) }
+			assert report.exists()
+			assert report.text.contains('<div class="d1" id="d1">')
+		}
 	}
 	
 	@After

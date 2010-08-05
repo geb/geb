@@ -24,7 +24,7 @@ class GebReportingSpec extends GebSpec {
 	// Ridiculous name to avoid name clashes
 	@Rule _gebReportingSpecTestName = new TestName()
 	@Shared _gebReportingSpecTestCounter = 0
-	private _getReportingSpecReporter = null
+	@Shared _getReportingSpecReporter = null
 	
 	def cleanup() {
 		// We have to do this lazily here so the subclass gets a chance to run _some_ code to setup the reporter if need be.

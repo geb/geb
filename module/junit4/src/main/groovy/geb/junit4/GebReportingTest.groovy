@@ -21,18 +21,14 @@ import org.junit.rules.TestName
 
 class GebReportingTest extends GebTest {
 
-	// Ridiculous name to avoid name clashes
-	private _gebReportingTestCounter = 0
-	private _getReportingTestReporter = null
-	@Rule
-	public TestName _gebReportingTestTestName = new TestName()
+	static private GEB_REPORTING_TEST_COUNTERS = [:]
+	static private GEB_REPORTING_TEST_REPORTERS = [:]
+
+	@Rule public TestName _gebReportingTestTestName = new TestName()
 	
 	@After
  	void writeGebReport() {
-		if (_gebReportingTestCounter++ == 0) {
-			_getReportingTestReporter = createReporter()
-		}
-		_getReportingTestReporter?.writeReport("${_gebReportingTestCounter}-${_gebReportingTestTestName.methodName}", getBrowser())
+		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}-${_gebReportingTestTestName.methodName}", getBrowser())
 	}
 
 	/**
@@ -48,6 +44,21 @@ class GebReportingTest extends GebTest {
 	 */
 	File getReportDir() {
 		null
+	}
+	
+	static private getTestReporter(test) {
+		def key = test.class.name
+		if (!GEB_REPORTING_TEST_REPORTERS.containsKey(key)) {
+			GEB_REPORTING_TEST_REPORTERS[key] = test.createReporter()
+		}
+		GEB_REPORTING_TEST_REPORTERS[key]
+	}
+	
+	static private getNextTestCounterValue(test) {
+		def key = test.class.name
+		def value = GEB_REPORTING_TEST_COUNTERS[key] ?: 0
+		GEB_REPORTING_TEST_COUNTERS[key] = ++value
+		value
 	}
 
 }
