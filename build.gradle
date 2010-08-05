@@ -84,7 +84,7 @@ subprojects {
 			deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
 		}
 		
-		if (hasProperty('codehausUsername') && hasProperty('codehausPassword')) {
+		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 			uploadArchives {
 				repositories.mavenDeployer {
 					configuration = configurations.deployerJars
