@@ -26,7 +26,7 @@ class GebSpec extends GebReportingSpec {
 	static classBaseUrl
 	static classReportDir
 	
-	def getReportDir() {
+	File getReportDir() {
 		GebSpec.classReportDir
 	}
 	

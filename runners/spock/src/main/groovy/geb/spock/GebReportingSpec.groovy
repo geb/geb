@@ -14,6 +14,7 @@
  */
 package geb.spock
 
+import geb.report.*
 import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
@@ -23,46 +24,33 @@ class GebReportingSpec extends GebSpec {
 	// Ridiculous name to avoid name clashes
 	@Rule _gebReportingSpecTestName = new TestName()
 	@Shared _gebReportingSpecTestCounter = 0
+	private _getReportingSpecReporter = null
 	
 	def setup() {
-		def reportDir = getClassReportDir()
-		if (reportDir?.exists() && _gebReportingSpecTestCounter == 0) {
-			if (!reportDir.deleteDir()) {
-				throw new IllegalStateException("Could not clean class report dir '${reportDir}'")
-			}
+		// We have to do this lazily here so the subclass gets a chance to run _some_ code to setup the reporter if need be.
+		// If we used setupSpec() that would run before the subclasses setupSpec() and limit the users options.
+		if (_gebReportingSpecTestCounter++ == 0) {
+			_getReportingSpecReporter = createReporter()
 		}
 	}
 	
 	def cleanup() {
-		def testCount = ++_gebReportingSpecTestCounter
-		def reportDir = getClassReportDir()
-		
-		if (reportDir) {
-			if (!reportDir.exists() && !reportDir.mkdirs()) {
-				throw new IllegalStateException("Could not create class report dir '${reportDir}'")
-			}
-			
-			def extension = getPageSourceFileExtension()
-			def fileName = "${testCount}-${_gebReportingSpecTestName.methodName}.$extension"
-			writePageSource(new File(reportDir, fileName))
-		}
+		_getReportingSpecReporter?.writeReport("${_gebReportingSpecTestCounter}-${_gebReportingSpecTestName.methodName}", getBrowser())
 	}
 
-	def getReportDir() {
-		null
-	}
-	
-	protected writePageSource(File file) {
-		file << (getBrowser().driver.pageSource ?: " -- no page source --")
-	}
-	
-	protected getPageSourceFileExtension() {
-		"html"
-	}
-	
-	protected getClassReportDir() {
+	/**
+	 * Subclasses can override this to use a different reporter
+	 */
+	Reporter createReporter() {
 		def reportDir = getReportDir()
-		reportDir ? new File(reportDir, this.class.name.replace('.', '/')) : null
+		reportDir ? new PageSourceReporter(reportDir, this.class, true) : null
+	}
+	
+	/**
+	 * Subclasses override this to determine where the reports are written
+	 */
+	File getReportDir() {
+		null
 	}
 
 }
