@@ -31,7 +31,6 @@ if (hasProperty("withSamples")) {
 subprojects {
 	version = '0.4-SNAPSHOT'
 	group = 'org.codehaus.geb'
-	archivesBaseName = "geb-${project.name}"
 	
 	apply plugin: "org.gradle.idea"
 		
@@ -100,6 +99,9 @@ subprojects {
 			}
 		}
 	}
+	
+	// Must be set after applying groovy/maven plugins
+	archivesBaseName = "geb-${project.name}"
 }
 
 project(':core') {
