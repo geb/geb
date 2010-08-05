@@ -23,7 +23,9 @@ grails.project.dependency.resolution = {
 		mavenRepo "http://snapshots.repository.codehaus.org"
 	}
 	dependencies {
-/*		test("org.codehaus.geb:geb-grails:0.4-SNAPSHOT")*/
+		test("org.codehaus.geb:grails-support:0.4-SNAPSHOT") {
+			exclude 'xml-apis'
+		}
 	}
 }
 
