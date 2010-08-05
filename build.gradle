@@ -22,8 +22,8 @@ allprojects {
 	}
 }
 
-def groovyModules = [":core", ":test-utils", ":grails:jar", ":runners:spock", ":runners:junit3"]
-def publishedModules = [":core", ":grails:jar", ":runners:spock", ":runners:junit3"]
+def groovyModules = [":core", ":test-utils", ":grails-support", ":spock", ":junit3"]
+def publishedModules = [":core", ":grails-support", ":spock", ":junit3"]
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
 }
@@ -99,30 +99,25 @@ subprojects {
 			}
 		}
 	}
-	
-	// Must be set after applying groovy/maven plugins
-	archivesBaseName = "geb-${project.name}"
 }
 
 project(':core') {
 	dependencies {
-		compile "org.seleniumhq.selenium:selenium:2.0a5" // this pulls in all the drivers, need to stop that
-		testCompile spockDependency
-		testCompile seleniumDependency
+		compile seleniumDependency
 		testCompile jettyDependency
+		testCompile spockDependency
 		testCompile files("${rootDir}/test-utils/build/classes/main") {
 			builtBy ':test-utils:compileGroovy'
 		}
-		testCompile files("${rootDir}/runners/spock/build/classes/main") {
-			builtBy ':runners:spock:compileGroovy'
+		testCompile files("${rootDir}/spock/build/classes/main") {
+			builtBy ':spock:compileGroovy'
 		}
 	}
 }
 
-project(':runners:spock') {
+project(':spock') {
 	dependencies {
 		compile spockDependency
-		compile seleniumDependency
 		compile project(':core')
 		testCompile jettyDependency
 		testCompile files("${rootDir}/test-utils/build/classes/main") {
@@ -131,9 +126,8 @@ project(':runners:spock') {
 	}
 }
 
-project(':runners:junit3') {
+project(':junit3') {
 	dependencies {
-		compile seleniumDependency
 		compile project(':core')
 		compile "junit:junit:3.8.2"
 		testCompile jettyDependency
@@ -146,14 +140,14 @@ project(':runners:junit3') {
 project(':test-utils') {
 	dependencies {
 		compile jettyDependency
-		compile project(':runners:spock')
+		compile project(':spock')
 	}
 }
 
 if (hasProperty('withSamples')) {
 	project(':samples:google') {
 		dependencies {
-			compile project(':runners:spock')
+			compile project(':spock')
 		}
 		sourceSets {
 			test {
@@ -165,13 +159,11 @@ if (hasProperty('withSamples')) {
 	}
 }
 
-project(":grails:jar") {
-	archivesBaseName = "geb-grails"
-
+project(":grails-support") {
 	dependencies {
 		groovy groovyDependency
-		compile project(':runners:spock'),
-		        project(":runners:junit3"),
+		compile project(':spock'),
+		        project(":junit3"),
 		        "org.grails:grails-core:${grailsVersion}",
 		        "org.grails:grails-test:${grailsVersion}",
 		        "org.grails:grails-web:${grailsVersion}",
@@ -179,7 +171,7 @@ project(":grails:jar") {
 	}
 }
 
-project(":grails:plugin") {
+project(":grails-plugin") {
 	buildscript {
 		repositories {
 			mavenCentral()
@@ -200,7 +192,7 @@ project(":grails:plugin") {
 	}
 
 	dependencies {
-		compile project(':grails:jar'),
+		compile project(':grails-support'),
 		        "org.grails:grails-crud:${grailsVersion}",
 		        "org.grails:grails-gorm:${grailsVersion}"
 
