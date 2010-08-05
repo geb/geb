@@ -22,8 +22,8 @@ allprojects {
 	}
 }
 
-def groovyModules = ["core", "spock", "test-utils", "junit3"]
-def publishedModules = ["core", "spock", "junit3"]
+def groovyModules = [":core", ":test-utils", ":runners:spock", ":runners:junit3"]
+def publishedModules = [":core", ":runners:spock", "runners:junit3"]
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
 }
@@ -35,9 +35,9 @@ subprojects {
 	
 	apply plugin: "org.gradle.idea"
 		
-	if (project.name in groovyModules) {
+	if (project.path in groovyModules) {
 		apply plugin: "groovy"
-		if (project.name != "test-utils") {
+		if (project.path != ":test-utils") {
 			apply from: "file:${rootDir}/clover.gradle"
 		}
 		
@@ -66,7 +66,7 @@ subprojects {
 		
 	}
 	
-	if (project.name in publishedModules) {
+	if (project.path in publishedModules) {
 		apply plugin: 'maven'
 		
 		configurations {
