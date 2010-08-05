@@ -1,10 +1,10 @@
-include "core", 
-        "test-utils", 
-        "spock", 
-        "junit3", 
-        "junit4",
-        "grails-support", 
-        "grails-plugin"
+include "module:core", 
+        "module:test-utils", 
+        "module:spock", 
+        "module:junit3", 
+        "module:junit4",
+        "module:grails-support", 
+        "module:grails-plugin"
 
 if (hasProperty("withSamples")) {
 	include "samples:google"

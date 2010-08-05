@@ -22,8 +22,8 @@ allprojects {
 	}
 }
 
-def groovyModules = [":core", ":test-utils", ":grails-support", ":spock", ":junit3", ":junit4"]
-def publishedModules = [":core", ":grails-support", ":spock", ":junit3", ":junit4"]
+def groovyModules = [":module:core", ":module:test-utils", ":module:grails-support", ":module:spock", ":module:junit3", ":module:junit4"]
+def publishedModules = [":module:core", ":grails-support", ":module:spock", ":module:junit3", ":module:junit4"]
 
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
@@ -102,65 +102,65 @@ subprojects {
 	}
 }
 
-project(':core') {
+project(':module:core') {
 	dependencies {
 		compile seleniumDependency
 		testCompile jettyDependency
 		testCompile spockDependency
-		testCompile files("${rootDir}/test-utils/build/classes/main") {
-			builtBy ':test-utils:compileGroovy'
+		testCompile files("${rootDir}/module/test-utils/build/classes/main") {
+			builtBy ':module:test-utils:compileGroovy'
 		}
-		testCompile files("${rootDir}/spock/build/classes/main") {
-			builtBy ':spock:compileGroovy'
+		testCompile files("${rootDir}/module/spock/build/classes/main") {
+			builtBy ':module:spock:compileGroovy'
 		}
 	}
 }
 
-project(':spock') {
+project(':module:spock') {
 	dependencies {
 		compile spockDependency
-		compile project(':core')
+		compile project(':module:core')
 		testCompile jettyDependency
-		testCompile files("${rootDir}/test-utils/build/classes/main") {
-			builtBy ':test-utils:compileGroovy'
+		testCompile files("${rootDir}/module/test-utils/build/classes/main") {
+			builtBy ':module:test-utils:compileGroovy'
 		}
 	}
 }
 
-project(':junit3') {
+project(':module:junit3') {
 	dependencies {
-		compile project(':core')
+		compile project(':module:core')
 		compile "junit:junit:3.8.2"
 		testCompile jettyDependency
-		testCompile files("${rootDir}/test-utils/build/classes/main") {
-			builtBy ':test-utils:compileGroovy'
+		testCompile files("${rootDir}/module/test-utils/build/classes/main") {
+			builtBy ':module:test-utils:compileGroovy'
 		}
 	}
 }
 
-project(':junit4') {
+project(':module:junit4') {
 	dependencies {
 		compile seleniumDependency
-		compile project(':core')
+		compile project(':module:core')
 		compile "junit:junit:4.8.1"
 		testCompile jettyDependency
-		testCompile files("${rootDir}/test-utils/build/classes/main") {
-			builtBy ':test-utils:compileGroovy'
+		testCompile files("${rootDir}/module/test-utils/build/classes/main") {
+			builtBy ':module:test-utils:compileGroovy'
 		}
 	}
 }
 
-project(':test-utils') {
+project(':module:test-utils') {
 	dependencies {
 		compile jettyDependency
-		compile project(':spock')
+		compile project(':module:spock')
 	}
 }
 
 if (hasProperty('withSamples')) {
 	project(':samples:google') {
 		dependencies {
-			compile project(':spock')
+			compile project(':module:spock')
 		}
 		sourceSets {
 			test {
@@ -172,11 +172,11 @@ if (hasProperty('withSamples')) {
 	}
 }
 
-project(":grails-support") {
+project(":module:grails-support") {
 	dependencies {
-		compile project(':spock'),
-		        project(":junit3"),
-		        project(":junit4")
+		compile project(':module:spock'),
+		        project(":module:junit3"),
+		        project(":module:junit4"),
 		        "org.grails:grails-core:${grailsVersion}",
 		        "org.grails:grails-test:${grailsVersion}",
 		        "org.grails:grails-web:${grailsVersion}",
@@ -184,7 +184,7 @@ project(":grails-support") {
 	}
 }
 
-project(":grails-plugin") {
+project(":module:grails-plugin") {
 	buildscript {
 		repositories {
 			mavenCentral()
@@ -205,7 +205,7 @@ project(":grails-plugin") {
 	}
 
 	dependencies {
-		compile project(':grails-support'),
+		compile project(':module:grails-support'),
 		        "org.grails:grails-crud:${grailsVersion}",
 		        "org.grails:grails-gorm:${grailsVersion}"
 
