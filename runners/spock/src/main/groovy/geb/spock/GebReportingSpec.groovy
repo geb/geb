@@ -26,15 +26,13 @@ class GebReportingSpec extends GebSpec {
 	@Shared _gebReportingSpecTestCounter = 0
 	private _getReportingSpecReporter = null
 	
-	def setup() {
+	def cleanup() {
 		// We have to do this lazily here so the subclass gets a chance to run _some_ code to setup the reporter if need be.
 		// If we used setupSpec() that would run before the subclasses setupSpec() and limit the users options.
 		if (_gebReportingSpecTestCounter++ == 0) {
 			_getReportingSpecReporter = createReporter()
 		}
-	}
-	
-	def cleanup() {
+		
 		_getReportingSpecReporter?.writeReport("${_gebReportingSpecTestCounter}-${_gebReportingSpecTestName.methodName}", getBrowser())
 	}
 

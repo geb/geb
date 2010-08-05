@@ -28,6 +28,8 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		</html>
 	"""
 	
+	static garbage = "asdfajsdifoamsdfoiawdncwonc"
+	
 	def setupSpec() {
 		server.get = { req, res ->
 			res.outputStream << responseText
@@ -47,7 +49,7 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		// Put some jibberish in this file, so we can test
 		// that it was actually removed by the reporting spec
 		// setup() method.
-		firstOutputFile << "asdfajsdifoamsdfoiawdncwonc"
+		firstOutputFile << garbage
 	}
 	
 	def getClassReportDir() {
@@ -68,9 +70,7 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		def report = getFirstOutputFile()
 		expect:
 		report.exists()
-		// If the text equals the response text, the jibberish we put in in setupSpec()
-		// was removed, which is what we expect to happen.
-		report.text = responseText
+		!report.text.contains(garbage)
 	}
 	
 }
