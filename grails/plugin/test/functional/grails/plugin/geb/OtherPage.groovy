@@ -15,24 +15,12 @@
  */
 package grails.plugin.geb
 
-import grails.plugin.geb.internal.RuntimeAdapter
-import geb.spock.GebReportingSpec
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
+import geb.*
 
-import spock.lang.*
-
-class GebSpec extends GebReportingSpec {
-
-	File getReportDir() {
-		RuntimeAdapter.reportDir
-	}
-	
-	String getBaseUrl() {
-		RuntimeAdapter.baseUrl
-	}
-	
-	def setupSpec() {
-		new GrailsTestAutowirer(ApplicationHolder.application.mainContext).autowire(this)
+class OtherPage extends Page {
+	static url = "the/page"
+	static at = { div.text() == "page" }
+	static content = {
+		div { $('div') }
 	}
 }

@@ -22,8 +22,8 @@ allprojects {
 	}
 }
 
-def groovyModules = ["core", "spock", "test-utils"]
-def publishedModules = ["core", "spock"]
+def groovyModules = ["core", "spock", "test-utils", "junit3"]
+def publishedModules = ["core", "spock", "junit3"]
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
 }
@@ -129,6 +129,18 @@ project(':runners:spock') {
 	}
 }
 
+project(':runners:junit3') {
+	dependencies {
+		compile seleniumDependency
+		compile project(':core')
+		compile "junit:junit:3.8.2"
+		testCompile jettyDependency
+		testCompile files("${rootDir}/test-utils/build/classes/main") {
+			builtBy ':test-utils:compileGroovy'
+		}
+	}
+}
+
 project(':test-utils') {
 	dependencies {
 		compile jettyDependency
@@ -159,6 +171,7 @@ project(":grails:jar") {
 	dependencies {
 		groovy groovyDependency
 		compile project(':runners:spock'),
+		        project(":runners:junit3"),
 		        "org.grails:grails-core:${grailsVersion}",
 		        "org.grails:grails-test:${grailsVersion}",
 		        "org.grails:grails-web:${grailsVersion}",

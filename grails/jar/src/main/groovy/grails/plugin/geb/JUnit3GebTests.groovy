@@ -15,14 +15,10 @@
  */
 package grails.plugin.geb
 
+import geb.junit3.GebReportingTest
 import grails.plugin.geb.internal.RuntimeAdapter
-import geb.spock.GebReportingSpec
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
 
-import spock.lang.*
-
-class GebSpec extends GebReportingSpec {
+class JUnit3GebTests extends GebReportingTest {
 
 	File getReportDir() {
 		RuntimeAdapter.reportDir
@@ -31,8 +27,5 @@ class GebSpec extends GebReportingSpec {
 	String getBaseUrl() {
 		RuntimeAdapter.baseUrl
 	}
-	
-	def setupSpec() {
-		new GrailsTestAutowirer(ApplicationHolder.application.mainContext).autowire(this)
-	}
+
 }

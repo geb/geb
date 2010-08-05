@@ -15,24 +15,16 @@
  */
 package grails.plugin.geb
 
-import grails.plugin.geb.internal.RuntimeAdapter
-import geb.spock.GebReportingSpec
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
+class JUnit3SmokeTest extends JUnit3GebTests {
 
-import spock.lang.*
+	void testDefaultLocationIsApplicatioRoot() {
+		to IndexPage
+		assert at(IndexPage)
+	}
 
-class GebSpec extends GebReportingSpec {
-
-	File getReportDir() {
-		RuntimeAdapter.reportDir
+	void testPageUrlsAreRelativeToApp() {
+		to OtherPage
+		assert at(OtherPage)
 	}
 	
-	String getBaseUrl() {
-		RuntimeAdapter.baseUrl
-	}
-	
-	def setupSpec() {
-		new GrailsTestAutowirer(ApplicationHolder.application.mainContext).autowire(this)
-	}
 }

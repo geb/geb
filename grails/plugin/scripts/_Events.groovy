@@ -15,7 +15,8 @@
  */
 
 def specTestTypeClassName = "grails.plugin.spock.test.GrailsSpecTestType"
-def gebSpecClassName = "grails.plugin.geb.GebSpec"
+def junit3TestTypeClassName = "org.codehaus.groovy.grails.test.junit3.JUnit3GrailsTestType"
+def runtimeAdapterClassName = "grails.plugin.geb.internal.RuntimeAdapter"
 
 def loadedSpock = false
 def runningTests = false
@@ -44,6 +45,13 @@ softLoadClass = { className ->
 eventAllTestsStart = {
 	runningTests = true
 	tryToLoadSpock()
+	
+	def junit3TestTypeClass = softLoadClass(junit3TestTypeClassName)
+	if (junit3TestTypeClass) {
+		if (!functionalTests.any { it.class == junit3TestTypeClass }) {
+			functionalTests << junit3TestTypeClass.newInstance('functional', 'functional')
+		}
+	}
 }
 
 eventPackagePluginsEnd = {
@@ -52,21 +60,17 @@ eventPackagePluginsEnd = {
 
 eventTestPhaseStart = { phaseName ->
 	if (phaseName == 'functional') {
-		def specTestTypeClass = softLoadClass(specTestTypeClassName)
-		if (specTestTypeClass) {
-			def gebSpecClass = softLoadClass(gebSpecClassName)
-			if (!gebSpecClass) {
-				throw new IllegalStateException("failed to load geb spec class even though spock is in the house")
-			}
-			
-			// Needed when being driven by a different build engine
-			if (!binding.hasProperty('serverContextPath')) {
-				includeTargets << grailsScript("_GrailsPackage") 
-				configureServerContextPath()
-			}
-			
-			gebSpecClass.classBaseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort$serverContextPath/"
-			gebSpecClass.classReportDir = new File(grailsSettings.testReportsDir, 'geb-spock')
+		// Needed when being driven by a different build engine
+		if (!binding.hasProperty('serverContextPath')) {
+			includeTargets << grailsScript("_GrailsPackage") 
+			configureServerContextPath()
 		}
+			
+		def runtimeAdapter = softLoadClass(runtimeAdapterClassName)
+		if (!runtimeAdapter) {
+			throw new IllegalStateException("failed to load runtime adapter")
+		}
+		runtimeAdapter.baseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort$serverContextPath/"
+		runtimeAdapter.reportDir = new File(grailsSettings.testReportsDir, 'geb')
 	}
 }

@@ -13,26 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.geb
+package grails.plugin.geb.internal
 
-import grails.plugin.geb.internal.RuntimeAdapter
-import geb.spock.GebReportingSpec
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
+class RuntimeAdapter {
 
-import spock.lang.*
+	static baseUrl
+	static reportDir
 
-class GebSpec extends GebReportingSpec {
-
-	File getReportDir() {
-		RuntimeAdapter.reportDir
-	}
-	
-	String getBaseUrl() {
-		RuntimeAdapter.baseUrl
-	}
-	
-	def setupSpec() {
-		new GrailsTestAutowirer(ApplicationHolder.application.mainContext).autowire(this)
-	}
 }
