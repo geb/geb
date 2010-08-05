@@ -29,6 +29,7 @@ class PersonCRUDTests extends GebTests {
 		updateButton.click()
 		
 		assert at(ShowPage)
+		
 		to ListPage
 		assert personRows.size() == 1
 		def row = personRow(0)
