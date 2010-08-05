@@ -579,6 +579,37 @@ class NavigatorSpec extends Specification {
 		"multiple_select" | ["1", "3", "5"]
 	}
 
+	def "when the value of a checkbox is set using a boolean then the checked-ness is set accordingly"() {
+		given:
+		def form = page.find("form")
+		def initialChecker1 = form.checker1
+		def initialChecker2 = form.checker2
+		
+		expect:
+		form.checker1 == null
+		form.checker2 == "123"
+		
+		when:
+		form.checker1 = true
+		form.checker2 = false
+		
+		then:
+		form.checker1 == "123"
+		form.checker2 == null
+
+		when:
+		form.checker1 = false
+		form.checker2 = true
+		
+		then:
+		form.checker1 == null
+		form.checker2 == "123"
+		
+		cleanup:
+		form.checker1 = initialChecker1
+		form.checker2 = initialChecker2
+	}
+	
 	@Unroll("when the radio button group's value is set to '#value' then the corresponding radio button is selected")
 	def "set property access works on radio button groups"() {
 		when:

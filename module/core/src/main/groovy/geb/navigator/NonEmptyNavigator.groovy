@@ -350,7 +350,7 @@ class NonEmptyNavigator extends Navigator {
 				input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
 			}
 		} else if (input.getAttribute("type") == "checkbox") {
-			if (input.value == value) {
+			if (input.value == value || value == true) {
 				input.setSelected()
 			} else if (input.isSelected()) {
 				input.toggle()
