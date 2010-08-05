@@ -22,6 +22,8 @@ class GebReportingTestTest extends GebReportingTest {
 
 	def server = new TestHttpServer()
 	
+	static counter = 0
+	
 	static responseText = """
 		<html>
 		<body>
@@ -56,12 +58,26 @@ class GebReportingTestTest extends GebReportingTest {
 	
 	void testAaa() {
 		go("/")
+		if (++counter == 2) {
+			doTestReport()
+		} else {
+			"$counter not 2"
+		}
 	}
 	
 	void testBbb() {
+		go("/")
+		if (++counter == 2) {
+			doTestReport()
+		} else {
+			"$counter not 2"
+		}
+	}
+	
+	def doTestReport() {
 		def report = getFirstOutputFile()
 		assert report.exists()
-		assert report.text == responseText
+		assert report.text.contains('<div class="d1" id="d1">')
 	}
 	
 	void tearDown() {
