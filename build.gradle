@@ -22,8 +22,8 @@ allprojects {
 	}
 }
 
-def groovyModules = [":core", ":test-utils", ":runners:spock", ":runners:junit3"]
-def publishedModules = [":core", ":runners:spock", "runners:junit3"]
+def groovyModules = [":core", ":test-utils", ":grails:jar", ":runners:spock", ":runners:junit3"]
+def publishedModules = [":core", ":grails:jar", ":runners:spock", "runners:junit3"]
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
 }
@@ -166,8 +166,6 @@ if (hasProperty('withSamples')) {
 }
 
 project(":grails:jar") {
-	apply plugin: "groovy"
-
 	archivesBaseName = "geb-grails"
 
 	dependencies {
