@@ -23,7 +23,7 @@ allprojects {
 }
 
 def groovyModules = [":core", ":test-utils", ":grails:jar", ":runners:spock", ":runners:junit3"]
-def publishedModules = [":core", ":grails:jar", ":runners:spock", "runners:junit3"]
+def publishedModules = [":core", ":grails:jar", ":runners:spock", ":runners:junit3"]
 if (hasProperty("withSamples")) {
 	groovyModules << "google"
 }
