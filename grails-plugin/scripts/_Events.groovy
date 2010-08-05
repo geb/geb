@@ -16,6 +16,7 @@
 
 def specTestTypeClassName = "grails.plugin.spock.test.GrailsSpecTestType"
 def junit3TestTypeClassName = "org.codehaus.groovy.grails.test.junit3.JUnit3GrailsTestType"
+def junit4TestTypeClassName = "org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType"
 def runtimeAdapterClassName = "grails.plugin.geb.internal.RuntimeAdapter"
 
 def loadedSpock = false
@@ -46,10 +47,12 @@ eventAllTestsStart = {
 	runningTests = true
 	tryToLoadSpock()
 	
-	def junit3TestTypeClass = softLoadClass(junit3TestTypeClassName)
-	if (junit3TestTypeClass) {
-		if (!functionalTests.any { it.class == junit3TestTypeClass }) {
-			functionalTests << junit3TestTypeClass.newInstance('functional', 'functional')
+	[junit3TestTypeClassName, junit4TestTypeClassName].each { testTypeClassName ->
+		def testTypeClass = softLoadClass(testTypeClassName)
+		if (testTypeClass) {
+			if (!functionalTests.any { it.class == testTypeClass }) {
+				functionalTests << testTypeClass.newInstance('functional', 'functional')
+			}
 		}
 	}
 }

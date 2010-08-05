@@ -2,6 +2,7 @@ include "core",
         "test-utils", 
         "spock", 
         "junit3", 
+        "junit4",
         "grails-support", 
         "grails-plugin"
 
