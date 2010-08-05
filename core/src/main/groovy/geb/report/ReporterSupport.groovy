@@ -34,7 +34,7 @@ abstract class ReporterSupport implements Reporter {
 	}
 	
 	protected getFile(String name, String extension) {
-		new File(getReportDir(), "${name}.$extension ")
+		new File(getReportDir(), "${name}.$extension")
 	}
 	
 	protected getReportDir() {
@@ -42,6 +42,6 @@ abstract class ReporterSupport implements Reporter {
 	}
 
 	static getDirForClass(File dir, Class clazz) {
-		new File(dir, this.class.name.replace('.', '/'))
+		new File(dir, clazz.name.replace('.', '/'))
 	}
 }
