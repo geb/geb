@@ -124,6 +124,8 @@ project(':module:core') {
 }
 
 project(':module:spock') {
+	dependsOn ":module:core"
+	
 	dependencies {
 		compile spockDependency
 		compile project(':module:core')
@@ -135,6 +137,8 @@ project(':module:spock') {
 }
 
 project(':module:junit3') {
+	dependsOn ":module:core"
+	
 	dependencies {
 		compile project(':module:core')
 		compile "junit:junit:3.8.2"
@@ -146,6 +150,8 @@ project(':module:junit3') {
 }
 
 project(':module:junit4') {
+	dependsOn ":module:core"
+	
 	dependencies {
 		compile seleniumDependency
 		compile project(':module:core')
@@ -158,6 +164,8 @@ project(':module:junit4') {
 }
 
 project(':module:test-utils') {
+	dependsOn ":module:spock"
+	
 	dependencies {
 		compile jettyDependency
 		compile project(':module:spock')
@@ -180,6 +188,10 @@ if (hasProperty('withSamples')) {
 }
 
 project(":module:grails-support") {
+	dependsOn ":module:spock"
+	dependsOn ":module:junit3"
+	dependsOn ":module:junit4"
+	
 	dependencies {
 		compile project(':module:spock'),
 		        project(":module:junit3"),
@@ -192,6 +204,8 @@ project(":module:grails-support") {
 }
 
 project(":module:grails-plugin") {
+	dependsOn ":module:grails-support"
+	
 	buildscript {
 		repositories {
 			mavenCentral()
