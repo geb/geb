@@ -23,8 +23,13 @@ grails.project.dependency.resolution = {
 		mavenRepo "http://snapshots.repository.codehaus.org"
 	}
 	dependencies {
-		test("org.codehaus.geb:grails-support:0.4-SNAPSHOT") {
-			exclude 'xml-apis'
+		// If we are building as part of geb, don't try and pull in
+		// as gradle sets up the deps for us. This prop is set in the
+		// gradle build.
+		if (System.getProperty("geb.building") == null) {
+			test("org.codehaus.geb:grails-support:0.4-SNAPSHOT") {
+				exclude 'xml-apis'
+			}
 		}
 	}
 }

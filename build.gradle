@@ -221,6 +221,7 @@ project(":module:grails-plugin") {
 	}
 	
 	System.setProperty("server.port", "8010")
+	System.setProperty("geb.building", "true") // disables geb deps in plugins build config
 }
 
 // Root Project 
