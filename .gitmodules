@@ -1,3 +1,6 @@
 [submodule "buildSrc/grails-plugin"]
 	path = buildSrc/grails-plugin
 	url = git://github.com/alkemist/grails-gradle-plugin.git
+[submodule "buildSrc/markdown2book"]
+	path = buildSrc/markdown2book
+	url = git://github.com/alkemist/markdown2book.git
