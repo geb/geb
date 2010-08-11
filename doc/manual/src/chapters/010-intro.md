@@ -9,13 +9,12 @@ The following is a simple example using Geb without defining page objects.
     import geb.Browser
 
     Browser.drive("http://google.com") {
-        assert pageTitle == "Google"
-        find("input").withName("q").value("wikipedia")
-        find("input").withValue("Google Search").click()
-        assert pageTitle.endsWith("Google Search")
-        assert find("li.g").get(0).get("a.l").text() == "Wikipedia, the free encyclopedia"
+        assert title == "Google"
+        $("input", name: "q").value("wikipedia")
+        $("input", value: "Google Search").click()
+        assert title.endsWith("Google Search")
+        assert $("li.g", 0).find("a.l").text() == "Wikipedia, the free encyclopedia"
     }
-    
 
 This example navigates to Google, searches for "_wikipedia_", and verifies that the first result is indeed for Wikipedia.
 
@@ -35,16 +34,16 @@ The following example is the same, except that it utilises page objects.
     class GoogleSearchModule extends Module {
         def buttonValue
         static content = {
-            field { find("input").withName("q") }
+            field { $("input", name: "q") }
             button(to: GoogleResultsPage) { 
-                find("input").withValue(buttonValue)
+                $("input", value: buttonValue)
             }
         }
     }
     
     class GoogleHomePage extends Page {
         static url = "http://google.com"
-        static at = { page.titleText == "Google" }
+        static at = { title == "Google" }
         static content = {
             search { module GoogleSearchModule, buttonValue: "Google Search" }
         }
@@ -52,19 +51,75 @@ The following example is the same, except that it utilises page objects.
     
     class GoogleResultsPage extends Page {
         static url = "http://www.google.com/search"
-        static at = { page.titleText.endsWith("Google Search") }
+        static at = { title.endsWith("Google Search") }
         static content = {
             search { module GoogleSearchModule, buttonValue: "Search" }
-            results { find("li.g") }
-            result { results.get(it) }
-            resultLink { result(it).get("a.l") }
+            results { $("li.g") }
+            result { i -> results[i] }
+            resultLink { i -> result(i).find("a.l") }
         }
     }
-    
+
+This example hopefully illustrates the kind of code that you write with Geb. Each of the constructs will be discussed in detail in this manual.
+
 ## Philosophy & Motivation
 
-TODO: talk about the guiding principles of Geb
+Geb was born out of a desire to make writing web tests easier and less verbose. It aims to be a developer tool over a designated tester tool in that it allows and encourages the using of programming and language constructs over a restricted environment. It also uses the flexibility and dynamism of the Groovy programming language to minimise the noise and boiler plate code.
 
-## The Browser Technology
+It combines the browser automation technology of [WebDriver][webdriver] with two well known concepts; the content selection/navigation API from [jQuery][jquery] and the Page Object Pattern. 
 
-TODO: talk about WebDriver and why WebDriver etc.
+### The Page Object Pattern
+
+The Page Object Pattern gives us a common sense way to structure web tests in a reusable and maintainable way. From the [Selenium/WebDriver wiki page on the Page Object Pattern](http://code.google.com/p/selenium/wiki/PageObjects):
+
+> Within your web app's UI there are areas that your tests interact with. A Page Object simply models these as objects within the test code. This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
+
+Furthermore (from the same document):
+
+> PageObjects can be thought of as facing in two directions simultaneously. Facing towards the developer of a test, they represent the services offered by a particular page. Facing away from the developer, they should be the only thing that has a deep knowledge of the structure of the HTML of a page (or part of a page) It's simplest to think of the methods on a Page Object as offering the "services" that a page offers rather than exposing the details and mechanics of the page. As an example, think of the inbox of any web-based email system. Amongst the services that it offers are typically the ability to compose a new email, to choose to read a single email, and to list the subject lines of the emails in the inbox. How these are implemented shouldn't matter to the test.
+
+The Page Object Pattern is an important technique, and Geb provides first class support for modelling pages via it's `Page` class and Content DSL. It also supports the concept of _modules_ which are user interface or behavioural components that can be used across many different pages. 
+
+### The jQuery-ish Navigator API
+
+The [jQuery][jquery] JavaScript library provides an excellent API for (among other things) selecting or targeting content on a page and traversing through and around content. Geb gets inspiration from this API. 
+
+In Geb, content is selected through the `$` function, which returns a `Navigator` object. A `Navigator` object is in someways analogous to the `jQuery` data type in jQuery. It represents one or more targeted elements on the page.
+
+Let's see some examples:
+
+    // match all 'div' elements on the page
+    $("div")
+    
+    // match the first 'div' element on the page
+    $("div", 0)
+    
+    // match all 'div' elements with a title attribute value of 'section'
+    $("div", title: "section")
+    
+    // match the first 'div' element with a title attribute value of 'section'
+    $("div", 0, title: "section")
+    
+    // match all 'div' elements who have the class 'main'
+    $("div.main") 
+
+    // match the first 'div' element with the class 'main'
+    $("div.main", 0) 
+
+These methods return `Navigator` objects that can be used to further refine the content.
+
+    // The parent of the first paragraph
+    $("p", 0).parent()
+    
+    // All tables with a cellspacing attribute value of 0 that are nested in a paragraph
+    $("p").find("table", cellspacing: '0')
+
+This is just the beginning of what is possible with the Navigator API. See the [dedicated manual section][navigator] for more details.
+
+### The Browser Automation Technology
+
+Geb is built on top of [WebDriver][webdriver], which means Geb can be used to drive any [browser that is supported by WebDriver](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Which_browsers_does_support?).
+
+It is intended that access to the underlying WebDriver classes is not needed when using Geb. However, you always have full access to the underlying driver instance should you need to delve that deep.
+
+For more information see the manual section on the [browser interface][browser].

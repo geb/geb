@@ -4,3 +4,4 @@
 [hue]: http://code.google.com/p/hue/ "hue - Project Hosting on Google Code"
 [jquery]: http://jquery.com/ "jQuery: The Write Less, Do More, JavaScript Library"
 [webclient]: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
+[webdriver]: http://code.google.com/p/selenium/
