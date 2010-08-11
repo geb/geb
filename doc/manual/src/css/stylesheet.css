@@ -128,3 +128,10 @@ blockquote {
 	padding: 1ex 1em 1ex 1em;
 	background-color: #FEF3EE;
 }
+
+pre code {
+	background-color: #FAFBFF;
+	border: 1px dashed #E8E9F7;
+	padding: 8px;
+	display: block;
+}
