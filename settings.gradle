@@ -4,7 +4,8 @@ include "module:core",
         "module:junit3", 
         "module:junit4",
         "module:grails-support", 
-        "module:grails-plugin"
+        "module:grails-plugin",
+        "doc:manual"
 
 if (hasProperty("withSamples")) {
 	include "samples:google"

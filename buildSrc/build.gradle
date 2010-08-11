@@ -1,8 +1,15 @@
 apply plugin: "java"
 
 repositories {
-    mavenCentral()
-    mavenRepo urls: ['http://download.java.net/maven/2/']
+	mavenCentral()
+	mavenRepo urls: ['http://download.java.net/maven/2/']
+	mavenRepo name: 'markdownj', urls: ["http://scala-tools.org/repo-releases/"]
 }
 
-dependencies { runtime subprojects }
+dependsOn(":grails-plugin", true)
+dependsOn(":markdown2book:markdown2book", true)
+
+dependencies { 
+	runtime \
+		subprojects.findAll { it.getTasksByName("jar", false) } 
+}

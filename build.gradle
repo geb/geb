@@ -224,6 +224,16 @@ project(":module:grails-plugin") {
 	System.setProperty("geb.building", "true") // disables geb deps in plugins build config
 }
 
+
+project(":doc:manual") {
+	def src = new File(projectDir, "src")
+	def output = new File(projectDir, "build/manual")
+	
+	task compile << {
+		new markdown2book.Generator(src, output).generate()
+	}
+}
+
 // Root Project 
 
 configurations {

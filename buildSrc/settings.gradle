@@ -1,1 +1,3 @@
-include "grails-plugin"
+include \
+	"grails-plugin",
+	"markdown2book:markdown2book"
