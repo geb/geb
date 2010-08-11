@@ -1,5 +1,7 @@
 Geb is a Groovy DSL for [Selenium 2 (i.e. WebDriver)](http://code.google.com/p/selenium/).
 
+You can view the current work-in-progress manual [here](http://bamboo.ci.codehaus.org/browse/GEB-MASTERDEFAULTS/latest/artifact/Manual/index.html "The Book Of Geb - Table of Contents").
+
 It is best explained by example…
 
     import geb.Browser
