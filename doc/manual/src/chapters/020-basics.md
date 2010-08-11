@@ -9,15 +9,16 @@ v
 Here are some examples of `browser` construction…
 
     import geb.Browser
+    import org.openqa.selenium.firefox.FirefoxDriver
     
-    new Browser(new WebDriver(), "http://google.com")
-    new Browser(new WebDriver())
+    new Browser(new FirefoxDriver(), "http://google.com")
+    new Browser(new FirefoxDriver())
     new Browser("http://google.com")
     new Browser()
 
-If a `WebClient` instance is not provided at construction, an instance will be created using the no-arg constructor of `WebClient`.
+If a `WebClient` instance is not provided at construction, the browser will attempt to create an instance of `org.openqa.selenium.htmlunit.HtmlUnitDriver`.
 
-If a _base url_ is not provided, `null` will be used.
+If a _base url_ is not provided, all page urls must be absolute.
  
 ### The driver
 
