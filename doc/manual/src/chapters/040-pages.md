@@ -58,7 +58,7 @@ Consider the following HTML…
 
 We could define this content as so…
 
-    class ExamplePage {
+    class ExamplePage extends Page {
         static content = {
             theDiv { $('div', id: 'a') }
         }
@@ -96,7 +96,7 @@ Secondly, defined content becomes available as properties and methods on instanc
 
 The Content DSL actually defines content _templates_. This is best illustrated by example…
 
-    class ExamplePage {
+    class ExamplePage extends Page {
         static content = {
             theDiv { id -> $('div', id: id) }
         }
@@ -111,7 +111,7 @@ There are no restrictions on what arguments can be passed to content templates.
 
 A content template can return _anything_. Typically they will return a `Navigator` object through the use of the $ function, but it can be anything.
 
-    class ExamplePage {
+    class ExamplePage extends Page {
         static content = {
             theDivText { $('div', id: a).text() }
         }
@@ -122,3 +122,142 @@ A content template can return _anything_. Typically they will return a `Navigato
         assert theDivText == "a"
     }
 
+It's important to realise that `«definition»` code is evaluated against the page instance. This allows code like the following…
+
+    class ExamplePage extends Page {
+        static content = {
+            theDiv { $('div', id: a) }
+            theDivText { theDiv.text() }
+        }
+    }
+
+And this is not restricted to other content…
+
+    class ExamplePage extends Page {
+        def divId = a
+        static content = {
+            theDiv { $('div', id: divId) }
+            theDivText { theDiv.text() }
+        }
+    }
+
+Or…
+
+    class ExamplePage extends Page {
+        static content = {
+            theDiv { $('div', id: getDivId()) }
+            theDivText { theDiv.text() }
+        }
+        def getDivId() {
+            "a"
+        }
+    }
+
+### Template Options
+
+Template definitions can take different options. The syntax is…
+
+    «name»(«options map») { «definition» }
+
+For example…
+
+    theDiv(cache: false, required: false) { $("div", id: "a") }
+
+The following are the available options.
+
+#### required 
+
+Default value: `true`
+
+The `required` option controls whether or not the content returned by the definition has to exist or not. This is only relevant when the definition returns a `Navigator` object (via the $ function), it is ignored if the definition returns anything else.
+
+If the `required` option is set to `true` and the returned content does not exist, a `geb.error.RequiredPageContentNotPresent` exception will be thrown.
+
+    class ExamplePage extends Page {
+        static content = {
+            theDiv { $('div', id: "b") }
+        }
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        def thrown = false
+        try {
+            theDiv
+        } catch (RequiredPageContentNotPresent e) {
+            thrown = true
+        }
+        assert thrown
+    }
+
+#### cache
+
+Default value: `true`
+
+The `cache` option controls whether or not the definition is evaluated each time the content is requested (the content is cached for each unique set of parameters). 
+
+    class ExamplePage extends Page {
+        def value = 1
+        static content = {
+            theValue(cache: true) { value }
+        }
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        assert theValue == 1
+        value = 2
+        assert theValue == 1
+    }
+
+With caching disabled…
+
+    class ExamplePage extends Page {
+        def value = 1
+        static content = {
+            theValue(cache: false) { value }
+        }
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        assert theValue == 1
+        value = 2
+        assert theValue == 2
+    }
+
+Caching is a performance optimisation and is enabled by default. You may want to disable it when dealing with dynamic content.
+
+#### to
+
+Default value: `null`
+
+The `to` option allows the definition of which page the browser will be sent to if the content is clicked.
+
+    class ExamplePage extends Page {
+        static content = {
+            helpLink(to: HelpPage) { $("a", text: "Help") }
+        }
+    }
+
+    class HelpPage extends Page {
+        
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        helpLink.click()
+        assert at(HelpPage)
+    }
+
+Which is equivalent to calling the browser `page(Class)` method after the `click()` call.
+
+The value can also be a list of potential pages…
+
+    class ExamplePage extends Page {
+        static content = {
+            helpLink(to: [HelpPage, SomeOtherPage]) { $("a", text: "Help") }
+        }
+    }
+
+When the value is a list, each page will be tried in turn via it's `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page.
