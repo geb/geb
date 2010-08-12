@@ -5,3 +5,5 @@
 [jquery]: http://jquery.com/ "jQuery: The Write Less, Do More, JavaScript Library"
 [webclient]: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 [webdriver]: http://code.google.com/p/selenium/
+[webdriver-api]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/WebDriver.html
+[htmlunitdriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
