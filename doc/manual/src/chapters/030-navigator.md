@@ -118,7 +118,7 @@ As would…
 
 These methods do not take indexes as they automatically select the first matching content.
 
-## Accessing tag name, attributes, text and classes.
+## Accessing tag name, attributes, text and classes
 
 The `name()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.
 
