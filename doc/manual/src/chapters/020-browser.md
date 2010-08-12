@@ -30,11 +30,11 @@ There are also variants that allow using defaults for any parameter…
     new Browser("http://myapp.com")
     new Browser(new FirefoxDriver(), HomePage)
 
-## The driver
+## The Driver
 
 The browser instance drives the actual browser via an instance of [WebDriver][webdriver-api], which is given at construction time. The browser's driver can always be retrieved via the `getDriver()` method.
 
-### The default driver
+### The Default Driver
 
 If no driver is given at construction, an attempt will be made to create an instance of [HtmlUnitDriver][htmlunitdriver] by loading the class by name. If the HtmlUnitDriver class cannot be found, a `geb.driver.HtmlUnitUnavailableException` will be thrown.
 
@@ -59,4 +59,23 @@ An alternative is to override the `getDefaultDriverFactory()` method which retur
     }
 
 The default implementation of the `getDefaultDriver()` method calls `getDefaultDriverFactory()` and calls `getDriver()` on it's return value.
-    
+
+## The Base URL
+
+Browser instances maintain a `String baseUrl` property that is used to complete all non absolute page URLs. This can be set either at construction time or anytime after.
+
+Consider the following page class…
+
+    class HomePage extends Page {
+        static url = "/home"
+    }
+
+And the following browser…
+
+    def browser = new Browser("http://myapp.com")
+
+The following code will result in a request being sent to: `http://myapp.com/home`…
+
+    browser.to(HomePage)
+
+See [making requests][#making_requests] for more information on the to() method.
