@@ -261,3 +261,40 @@ The value can also be a list of potential pages…
     }
 
 When the value is a list, each page will be tried in turn via it's `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page.
+
+## “At” Verification
+
+Each page can define a way to check whether the underling browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
+
+    class ExamplePage extends Page {
+        static at = { $("h1").text() == "Example" }
+    }
+
+This closure can either return a `false` value or throw an `AssertionError` (e.g. via the `assert` method).
+
+    Browser.drive {
+        to ExamplePage
+        assert verifyAt()
+    }
+
+The `verifyAt()` method is used by the browser `at()` method…
+
+    Browser.drive {
+        to ExamplePage
+        assert at(ExamplePage)
+    }
+
+> If using Groovy 1.7, the use of `assert` in “at” checkers is recommended because you get the benefit of Groovy's expressive assert output.
+
+As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`'s thrown by at checkers are supressed.
+
+The “at” checker is evaluated against the page instance, and can access defined content or any other variables or methods…
+
+    class ExamplePage extends Page {
+        static at = { heading == "Example" }
+        static content = {
+            heading { $("h1").text() }
+        }
+    }
+
+If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
