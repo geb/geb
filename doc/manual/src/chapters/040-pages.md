@@ -315,6 +315,30 @@ The url is used when using the browser `to()` method.
 
 See the section on [Advanced Page Navigation][page-navigation] for more information.
 
+## Inheritance
+
+Pages can be arranged in an inheritance hierarchy. The content definitions are merged…
+
+    class ExamplePage extends Page {
+        static content = {
+            heading { $("h1") }
+        }
+    }
+    
+    class SpecialExamplePage extends ExamplePage {
+        static content = {
+            footer { $("div.footer") }
+        }
+    }
+    
+    Browser.drive {
+        to SpecialExamplePage
+        assert heading.text() == "Special Example"
+        assert footer.text() == "This is the footer"
+    }
+
+If a subclass defines a content template with the same name as a content template defined in a superclass, the subclass version replaces the version from the superclass.
+
 ## This and That
 
 * The browser that the page is connected to is available via the `browser` property.
