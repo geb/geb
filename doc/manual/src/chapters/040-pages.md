@@ -299,6 +299,22 @@ The “at” checker is evaluated against the page instance, and can access defi
 
 If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
 
+## Page URLs
+
+Pages can define URLs via the `static` `url` property.
+
+    class ExamplePage extends Page {
+        static url = "/examples"
+    }
+
+The url is used when using the browser `to()` method.
+
+    Browser.drive("http://myapp.com") {
+        to ExamplePage
+    }
+
+See the section on [Advanced Page Navigation][page-navigation] for more information.
+
 ## This and That
 
 * The browser that the page is connected to is available via the `browser` property.
