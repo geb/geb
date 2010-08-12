@@ -99,7 +99,9 @@ Unless otherwise specified, the page is an instance of the `geb.Page` base class
 
 This method creates a new instance of the given class (page classes can only have no-arg constructors) and assigns it to the page property.
 
-### Navigating to pages
+## Making Requests
+
+### Using Pages
 
 The `page(Class<? extends Page>)` method only sets the current page instance to be of a new type. To do this and make a request to the url that the page specifies, you use the `to(Class<? extends Page>)` method(s).
 
@@ -113,3 +115,21 @@ The `page(Class<? extends Page>)` method only sets the current page instance to 
     assert browser.page instanceof SignupPage
 
 > See the section on [Advanced Page Navigation][page-navigation] for more information on this topic.
+
+### Direct
+
+To make a request without changing the current page type you can use the `go()` method…
+
+    def browser = new Browser("http://myapp.com")
+    
+    // Go to the Base URL
+    browser.go()
+    
+    // Go to a URL relative to Base URL
+    browser.go("/signup")
+    
+    // Go to a URL with request params, i.e http://myapp.com/signup?param1=value1&param2=value2
+    browser.go("/signup", param1: "value1", param2: "value2")
+    
+    // Go to the Base URL with request params, i.e http://myapp.com?param1=value1&param2=value2
+    browser.go("/signup", param1: "value1", param2: "value2")
