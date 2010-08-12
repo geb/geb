@@ -66,7 +66,7 @@ Modules can also include other modules…
     }
     
     Browser.drive {
-        theModule.innerModule.click()
+        theModule.innerModule.button.click()
     }
 
 ## The Content DSL
