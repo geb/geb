@@ -177,7 +177,3 @@ There is also a shortcut for obtaining a navigator based on a control name
 Which is literally a shortcut for…
 
     $("form").find("input", name: "geb")
-
-Which can be used like so…
-
-    $("form").geb().@disabled == "disabled"
