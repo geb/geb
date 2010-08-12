@@ -79,3 +79,37 @@ The following code will result in a request being sent to: `http://myapp.com/hom
     browser.to(HomePage)
 
 See [making requests][#making_requests] for more information on the to() method.
+
+## The Page
+
+Browser instances always maintain a _page_ (an object of type `geb.Page`) which is retrievable via the read only property `page`. The browser uses Groovy's dynamism to delegate any method calls or property accesses that it can't handle to the current page…
+
+    def browser = new Browser("http://myapp.com")
+    browser.go("/signup")
+    
+    // The following two lines are equivalent
+    assert browser.$("h1").text() == "Signup Page"
+    assert browser.page.$("h1").text() == "Signup Page"
+
+> for more information on the $ function and other methods seen here, see the section on [navigation][navigation]
+
+Unless otherwise specified, the page is an instance of the `geb.Page` base class which provides the basic navigation functions. The initial page class can be specified at construction time or changed later using the `page(Class<? extends Page>)` method…
+
+    browser.page(SignupPage)
+
+This method creates a new instance of the given class (page classes can only have no-arg constructors) and assigns it to the page property.
+
+### Navigating to pages
+
+The `page(Class<? extends Page>)` method only sets the current page instance to be of a new type. To do this and make a request to the url that the page specifies, you use the `to(Class<? extends Page>)` method(s).
+
+    class SignupPage extends Page {
+        static url = "/signup"
+    }
+    
+    def browser = new Browser("http://myapp.com")
+    browser.to(SignupPage)
+    assert browser.$("h1").text() == "Signup Page"
+    assert browser.page instanceof SignupPage
+
+> See the section on [Advanced Page Navigation][page-navigation] for more information on this topic.
