@@ -11,4 +11,4 @@
 [navigator]: navigator.html
 [page-navigation]: page-navigation.html
 [page-at]: pages.html#at_verification
-[drive]: browser.html#the_drive()_method
+[drive]: browser.html#the_drive_method
