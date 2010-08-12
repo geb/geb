@@ -78,7 +78,7 @@ The following code will result in a request being sent to: `http://myapp.com/hom
 
     browser.to(HomePage)
 
-See [making requests][#making_requests] for more information on the to() method.
+See [making requests](#making_requests) for more information on the to() method.
 
 ## The Page
 

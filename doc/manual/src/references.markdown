@@ -7,3 +7,6 @@
 [webdriver]: http://code.google.com/p/selenium/
 [webdriver-api]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/WebDriver.html
 [htmlunitdriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
+[browser]: browser.html
+[navigator]: navigator.html
+[page-navigation]: page-navigation.html
