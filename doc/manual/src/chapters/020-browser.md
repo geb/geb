@@ -114,7 +114,7 @@ The `page(Class<? extends Page>)` method only sets the current page instance to 
     assert browser.$("h1").text() == "Signup Page"
     assert browser.page instanceof SignupPage
 
-> See the section on [Advanced Page Navigation][page-navigation] for more information on this topic.
+> see the section on [Advanced Page Navigation][page-navigation] for more information on this topic.
 
 ### Direct
 
@@ -133,3 +133,28 @@ To make a request without changing the current page type you can use the `go()` 
     
     // Go to the Base URL with request params, i.e http://myapp.com?param1=value1&param2=value2
     browser.go("/signup", param1: "value1", param2: "value2")
+
+## Checking the current page
+
+Browser objects have an `at(Class<? extends Page>)` method that returns `true` or `false` whether or not it is actually at the given type. This includes two checks; whether or not the current page is of *exactly* the given type and whether or not the current page content is what the current page type expects it to be.
+
+This is typically used in conjuction with the `assert` keyword.
+
+    def browser = new Browser("http://myapp.com")
+    browser.to(SignupPage)
+    assert browser.at(SignupPage)
+
+> see the section on [page at-verification][page-at] for more information
+
+## The drive() method
+
+The Browser class features a static method that makes Geb scripting a little more convenient.
+
+Here is an example:
+
+    Browser.drive("http://myapp.com") {
+        go "/signup"
+        $("h1").text() == "Signup Page"
+    }
+
+The static `drive()` method takes all of the arguments that the `Browser` constructor takes, and a `Closure`. The closure is evaluated against created browser instance (i.e. it is the *delegate* of the closure). This enables a very convenient scripting environment.
