@@ -298,3 +298,8 @@ The “at” checker is evaluated against the page instance, and can access defi
     }
 
 If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
+
+## This and That
+
+* The browser that the page is connected to is available via the `browser` property.
+* The title of the page is available via the `title` property.
