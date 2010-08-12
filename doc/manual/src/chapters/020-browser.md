@@ -91,7 +91,7 @@ Browser instances always maintain a _page_ (an object of type `geb.Page`) which 
     assert browser.$("h1").text() == "Signup Page"
     assert browser.page.$("h1").text() == "Signup Page"
 
-> for more information on the $ function and other methods seen here, see the section on [navigation][navigation]
+> for more information on the $ function and other methods seen here, see the section on [navigation][navigator]
 
 Unless otherwise specified, the page is an instance of the `geb.Page` base class which provides the basic navigation functions. The initial page class can be specified at construction time or changed later using the `page(Class<? extends Page>)` method…
 
