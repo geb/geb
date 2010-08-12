@@ -250,7 +250,7 @@ The `to` option allows the definition of which page the browser will be sent to 
         assert at(HelpPage)
     }
 
-Which is equivalent to calling the browser `page(Class)` method after the `click()` call.
+Which is equivalent to calling the browser's `page(Class)` method to change the type of the page instance, after the `click()` call on the content.
 
 The value can also be a list of potential pages…
 
@@ -260,7 +260,7 @@ The value can also be a list of potential pages…
         }
     }
 
-When the value is a list, each page will be tried in turn via its `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page.
+When the value is a list, each page will be tried in turn via its `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page. This is useful for when a link or button (or any content really) could send the browser to a number of different pages when it is clicked.
 
 ## “At” Verification
 
