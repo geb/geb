@@ -23,7 +23,7 @@ class GoogleCodePage extends Page {
 		projectSummary { $("a#project_summary_link") }
 		
 		// If content might not exist, it can be marked non required
-		// If content is required and it's not present when requested, an assertion error is thrown
+		// If content is required and its not present when requested, an assertion error is thrown
 		signInLink(required: false) { topToolbarLink("Sign in") }
 		signOutLink(required: false) { topToolbarLink("Sign out") }
 		topToolbar { $("#gaia") }

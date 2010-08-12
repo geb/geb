@@ -24,7 +24,7 @@ Simply write specs that extend `grails.plugin.gebspock.GebSpec`. This will confi
 
 There is an [example app available for download](http://github.com/downloads/alkemist/grails-geb-spock/person-scaffold-example.zip "") that demonstrates testing some Grails scaffolding.
 
-Here is the spec in it's entirety:
+Here is the spec in its entirety:
 
     import grails.plugin.gebspock.GebSpec
 

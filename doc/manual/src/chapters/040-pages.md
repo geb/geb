@@ -46,7 +46,7 @@ Here is the same script, utilising page objects…
         assert resultLink(0).text() ==~ /Chuck/
     }
 
-You have now encapsulated, in a reusable fashion, information about each page and how to interact with it. As anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can become an expensive and frustrating process. A core philosophy of Geb is to address this issue through it's content definition DSL.
+You have now encapsulated, in a reusable fashion, information about each page and how to interact with it. As anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can become an expensive and frustrating process. A core philosophy of Geb is to address this issue through its content definition DSL.
 
 ## The Content DSL
 
@@ -260,7 +260,7 @@ The value can also be a list of potential pages…
         }
     }
 
-When the value is a list, each page will be tried in turn via it's `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page.
+When the value is a list, each page will be tried in turn via its `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page.
 
 ## “At” Verification
 
