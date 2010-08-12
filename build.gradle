@@ -230,7 +230,7 @@ project(":doc:manual") {
 	def output = new File(projectDir, "build/manual")
 	
 	task compile << {
-		new markdown2book.Generator(src, output).generate()
+		new markdown2book.Generator(src, output, "UTF-8").generate()
 	}
 }
 
