@@ -93,6 +93,8 @@ subprojects {
 			deployerJars "org.apache.maven.wagon:wagon-http-lightweight:1.0-beta-6"
 		}
 		
+		project.poms = [install.repositories.mavenInstaller.pom]
+		
 		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 			uploadArchives {
 				project.deployer = repositories.mavenDeployer {
@@ -114,13 +116,17 @@ subprojects {
 						}
 					}
 				}
+				project.poms << project.deployer.pom 
 			}
 		}
 		
-		installer = install.repositories.mavenInstaller
+		// Method that subprojects can use to mod the poms
+		project.modifyPom = { 
+			project.poms*.whenConfigured(it) 
+		}
 		
-		[deployer, installer]*.pom*.whenConfigured { pom ->
-			// remove test dependencies
+		// Remove test deps from all poms
+		modifyPom { pom ->
 			pom.dependencies.removeAll(pom.dependencies.findAll { it.scope == "test" })
 		}
 	}
@@ -142,7 +148,7 @@ project(':module:spock') {
 		testCompile project(":module:test-utils")
 	}
 	
-	[deployer, installer]*.pom*.whenConfigured { pom ->
+	modifyPom { pom ->
 		// User provides their own spock
 		pom.dependencies.findAll { it.groupId == "org.spockframework" }*.scope = "provided"
 	}
@@ -157,7 +163,7 @@ project(':module:junit3') {
 		testCompile project(":module:test-utils")
 	}
 	
-	[deployer, installer]*.pom*.whenConfigured { pom ->
+	modifyPom { pom ->
 		// User provides their own junit
 		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
 	}
@@ -172,7 +178,7 @@ project(':module:junit4') {
 		testCompile project(":module:test-utils")
 	}
 	
-	[deployer, installer]*.pom*.whenConfigured { pom ->
+	modifyPom { pom ->
 		// User provides their own junit
 		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
 	}
@@ -219,7 +225,7 @@ project(":module:grails-support") {
 		        "org.slf4j:slf4j-log4j12:1.5.5"
 	}
 	
-	[deployer, installer]*.pom*.whenConfigured { pom ->
+	modifyPom { pom ->
 		// set the grails deps to provided
 		pom.dependencies.findAll { it.groupId in ["org.grails", "org.slf4j"] }*.scope = "provided"
 	}
