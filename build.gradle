@@ -16,8 +16,13 @@ allprojects {
 	spockVersion = "0.5-groovy-1.6-SNAPSHOT"
 	
 	spockDependency = "org.spockframework:spock-core:$spockVersion"
-	seleniumDependency = "org.seleniumhq.selenium:selenium:$seleniumVersion"
+
+	seleniumDependency = "org.seleniumhq.selenium:selenium-common:$seleniumVersion"
+	firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+	htmlUnitDriverDependency = "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion"
+
 	jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
+
 	groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 	
 	repositories {
@@ -90,7 +95,7 @@ subprojects {
 		
 		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 			uploadArchives {
-				repositories.mavenDeployer {
+				project.deployer = repositories.mavenDeployer {
 					uniqueVersion = false
 					configuration = configurations.deployerJars
 					repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
@@ -111,6 +116,13 @@ subprojects {
 				}
 			}
 		}
+		
+		installer = install.repositories.mavenInstaller
+		
+		[deployer, installer]*.pom*.whenConfigured { pom ->
+			// remove test dependencies
+			pom.dependencies.removeAll(pom.dependencies.findAll { it.scope == "test" })
+		}
 	}
 }
 
@@ -129,6 +141,11 @@ project(':module:spock') {
 		compile project(':module:core')
 		testCompile project(":module:test-utils")
 	}
+	
+	[deployer, installer]*.pom*.whenConfigured { pom ->
+		// User provides their own spock
+		pom.dependencies.findAll { it.groupId == "org.spockframework" }*.scope = "provided"
+	}
 }
 
 project(':module:junit3') {
@@ -139,16 +156,25 @@ project(':module:junit3') {
 		compile "junit:junit:3.8.2"
 		testCompile project(":module:test-utils")
 	}
+	
+	[deployer, installer]*.pom*.whenConfigured { pom ->
+		// User provides their own junit
+		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
+	}
 }
 
 project(':module:junit4') {
 	dependsOn ":module:core"
 	
 	dependencies {
-		compile seleniumDependency
 		compile project(':module:core')
 		compile "junit:junit:4.8.1"
 		testCompile project(":module:test-utils")
+	}
+	
+	[deployer, installer]*.pom*.whenConfigured { pom ->
+		// User provides their own junit
+		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
 	}
 }
 
@@ -156,8 +182,10 @@ project(':module:test-utils') {
 	dependsOn ":module:spock"
 	
 	dependencies {
-		compile jettyDependency
-		compile project(':module:spock')
+		compile project(':module:spock'),
+		        jettyDependency,
+		        firefoxDriverDependency,
+		        htmlUnitDriverDependency
 	}
 }
 
@@ -189,6 +217,11 @@ project(":module:grails-support") {
 		        "org.grails:grails-test:${grailsVersion}",
 		        "org.grails:grails-web:${grailsVersion}",
 		        "org.slf4j:slf4j-log4j12:1.5.5"
+	}
+	
+	[deployer, installer]*.pom*.whenConfigured { pom ->
+		// set the grails deps to provided
+		pom.dependencies.findAll { it.groupId in ["org.grails", "org.slf4j"] }*.scope = "provided"
 	}
 }
 
