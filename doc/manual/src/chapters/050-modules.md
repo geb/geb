@@ -1,6 +1,8 @@
 # Modules
 
-Modules are re-usable definitions of content that can be used across multiple pages. They are defined in a manner similar to pages, but extend `geb.Module`…
+Modules are re-usable definitions of content that can be used across multiple pages. They are useful for modelling things like UI widgets that are used across multiple pages, or even for defining more complex UI elements in the one page.
+
+They are defined in a manner similar to pages, but extend `geb.Module`…
 
     class ExampleModule extends Module {
         static content = {
@@ -68,6 +70,38 @@ Modules can also include other modules…
     Browser.drive {
         theModule.innerModule.button.click()
     }
+
+## Base And Context
+
+Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition.
+
+## Use Cases
+
+As previously stated, modules can be used to model page fragments that are reused across multiple pages. For example, many different types of pages in your application may show information about the user's shopping cart. You could handle this with modules…
+
+    class CartInfoModule extends Module {
+        static content = {
+            section { $("div.cart-info") }
+            itemCount { section.find("span.item-count").toInteger() }
+            totalCost { section.find("span.total-cost").toDouble() }
+        }
+    }
+    
+    class HomePage extends Page {
+        static content = {
+            cartInfo { module CartInfoModule }
+        }
+    }
+    
+    class OtherPage extends Page {
+        static content = {
+            cartInfo { module CartInfoModule }
+        }
+    }
+
+Modules work well for this.
+
+Another not so obvious use case is using modules to deal with complex and/or repeating sections that are only present in one page.
 
 ## The Content DSL
 
