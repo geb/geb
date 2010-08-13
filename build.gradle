@@ -87,6 +87,7 @@ subprojects {
 		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 			uploadArchives {
 				repositories.mavenDeployer {
+					uniqueVersion = false
 					configuration = configurations.deployerJars
 					repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
 						authentication(userName: codehausUsername, password: codehausPassword)
