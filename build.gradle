@@ -11,10 +11,14 @@ dependsOnChildren()
 
 allprojects {
 	grailsVersion = "1.2.3"
-	spockDependency = "org.spockframework:spock-core:0.5-groovy-1.6-SNAPSHOT"
-	seleniumDependency = "org.seleniumhq.selenium:selenium:2.0a5"
+	seleniumVersion = "2.0a5"
+	groovyVersion = "1.6.7"
+	spockVersion = "0.5-groovy-1.6-SNAPSHOT"
+	
+	spockDependency = "org.spockframework:spock-core:$spockVersion"
+	seleniumDependency = "org.seleniumhq.selenium:selenium:$seleniumVersion"
 	jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
-	groovyDependency = "org.codehaus.groovy:groovy-all:1.6.7"
+	groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 	
 	repositories {
 		mavenCentral()
