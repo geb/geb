@@ -90,7 +90,7 @@ subprojects {
 		}
 		
 		dependencies {
-			deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
+			deployerJars "org.apache.maven.wagon:wagon-http-lightweight:1.0-beta-6"
 		}
 		
 		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
@@ -98,10 +98,10 @@ subprojects {
 				project.deployer = repositories.mavenDeployer {
 					uniqueVersion = false
 					configuration = configurations.deployerJars
-					repository(url: "dav:https://dav.codehaus.org/repository/geb/") {
+					repository(url: "https://dav.codehaus.org/repository/geb/") {
 						authentication(userName: codehausUsername, password: codehausPassword)
 					}
-					snapshotRepository(url: "dav:https://dav.codehaus.org/snapshots.repository/geb/") {
+					snapshotRepository(url: "https://dav.codehaus.org/snapshots.repository/geb/") {
 						authentication(userName: codehausUsername, password: codehausPassword)
 					}
 					pom.project {
