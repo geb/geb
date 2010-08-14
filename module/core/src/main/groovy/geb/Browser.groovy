@@ -51,7 +51,7 @@ class Browser {
 	}
 	
 	protected DriverFactory getDefaultDriverFactory() {
-		new SoftLoadingHtmlUnitDriverFactory(this.class.classLoader)
+		new PropertyBasedDriverFactory(this.class.classLoader)
 	}
 	
 	def methodMissing(String name, args) {

@@ -32,33 +32,33 @@ There are also variants that allow using defaults for any parameter…
 
 ## The Driver
 
-The browser instance drives the actual browser via an instance of [WebDriver][webdriver-api], which is given at construction time. The browser's driver can always be retrieved via the `getDriver()` method.
+The browser instance drives the actual browser via an instance of [WebDriver][webdriver-api], which can be specified at browser construction. The browser's driver can always be retrieved via the `getDriver()` method.
 
 ### The Default Driver
 
-If no driver is given at construction, an attempt will be made to create an instance of [HtmlUnitDriver][htmlunitdriver] by loading the class by name. If the HtmlUnitDriver class cannot be found, a `geb.driver.HtmlUnitUnavailableException` will be thrown.
+If a driver is not given at construction time, one will attempted to be loaded via the “`geb.driver`” system property. The value can be either the full class name of a [WebDriver][webdriver-api] implementation, or one of the following short names:
 
-To override the default driver, you can subclass and override one of either two methods…
+<table class="graybox" border="0" cellspacing="0" cellpadding="5">
+    <tr><th>Short Name</th><th>Driver</th></tr>
+    <tr>
+        <td><code>htmlunit</code></td>
+        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html">org.openqa.selenium.htmlunit.HtmlUnitDriver</a></td>
+    </tr>
+    <tr>
+        <td><code>firefox</code></td>
+        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/firefox/FirefoxDriver.html">org.openqa.selenium.firefox.FirefoxDriver</a></td>
+    </tr>
+    <tr>
+        <td><code>ie</code></td>
+        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/ie/InternetExplorerDriver.html">org.openqa.selenium.ie.InternetExplorerDriver</a></td>
+    </tr>
+    <tr>
+        <td><code>chrome</code></td>
+        <td><a href="http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html">org.openqa.selenium.chrome.ChromeDriver</a></td>
+    </tr>
+</table>
 
-    protected WebDriver getDefaultDriver()
-    
-    protected DriverFactory getDefaultDriverFactory()
-
-The `getDefaultDriver()` method simply returns an instance of [`WebDriver`][webdriver-api] to use.
-
-An example implementation:
-
-    protected WebDriver getDefaultDriver() {
-        new FirefoxDriver()
-    }
-
-An alternative is to override the `getDefaultDriverFactory()` method which returns an instance of `geb.driver.DriverFactory`…
-
-    interface DriverFactory {
-        WebDriver getDriver()
-    }
-
-The default implementation of the `getDefaultDriver()` method calls `getDefaultDriverFactory()` and calls `getDriver()` on it's return value.
+If the “`geb.driver`” system property is not set, each of the above drivers will be tried in the order listed.
 
 ## The Base URL
 
