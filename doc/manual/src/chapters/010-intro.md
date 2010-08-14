@@ -123,3 +123,32 @@ Geb is built on top of [WebDriver][webdriver], which means Geb can be used to dr
 It is intended that access to the underlying WebDriver classes is not needed when using Geb. However, you always have full access to the underlying driver instance should you need to delve that deep.
 
 For more information see the manual section on the [browser interface][browser].
+
+## Installation & Usage
+
+To get up and running you simply need to get the geb `core` jar (available from Maven central) and a [WebDriver][webdriver-api] implementation.
+
+Via `@Grab`…
+    
+    @Grapes([
+        @Grab("org.codehaus.geb:core:latest.release"),
+        @Grab("org.seleniumhq.selenium:selenium-firefox-driver:latest.release")
+    ])
+    import geb.Browser
+
+Via Maven…
+
+    <dependency>
+      <groupId>org.codehaus.geb</groupId>
+      <artifactId>core</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-firefox-driver</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    
+Via Gradle…
+
+    compile "org.codehaus.geb:core:latest.release", "org.seleniumhq.selenium:selenium-firefox-driver:latest.release"
