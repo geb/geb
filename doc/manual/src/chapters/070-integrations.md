@@ -250,6 +250,8 @@ At the end of each test method a file will be written called «n»-«test method
 
 Grails support is provided by the `grails-geb` plugin, and provides support for both Spock and JUnit (3 and 4) tests. Working with Spock requires installing the spock plugin separately.
 
+> See the JUnit and Spock sections above for more info on how to write Geb tests with these tools
+
 ### Writing Tests
 
 Geb tests go into the `test/functional` directory. The tests are configured to have a base url of the root of the Grails application under test. This can be overridden by either overriding the `getBaseUrl()` method in your test/spec on a per test basis, or globally by specifying the `baseUrl` command line option…
