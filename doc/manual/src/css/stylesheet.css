@@ -112,8 +112,16 @@ span.center {
    vertical-align: top;
 }
 
-h1 {
-	text-shadow: 3px 3px 5px #999;
+h1.title {
+	text-shadow: 2px 2px 2px #999;
+	font-size: 6em;
+	color: #333;
+	margin-bottom: 16px;
+	font-family: fantasy;
+}
+
+p.tag {
+	margin-left: 1em;
 }
 
 h2 {
