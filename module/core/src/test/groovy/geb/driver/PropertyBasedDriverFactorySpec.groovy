@@ -16,7 +16,6 @@ package geb.driver
 
 import spock.lang.*
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import org.openqa.selenium.firefox.FirefoxDriver
 import geb.error.UnknownDriverShortNameException
 import geb.error.UnableToLoadAnyDriversException
 
@@ -33,9 +32,9 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	
 	def "specific short name"() {
 		given:
-		def d = factory(props("geb.driver": "firefox")).driver
+		def d = factory(props("geb.driver": "htmlunit")).driver
 		expect:
-		d instanceof FirefoxDriver
+		d instanceof HtmlUnitDriver
 		cleanup:
 		d?.quit()
 	}
@@ -56,9 +55,9 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	
 	def "specific list of drivers"() {
 		given:
-		def d = factory(props("geb.driver": "ie:firefox")).driver
+		def d = factory(props("geb.driver": "ie:htmlunit")).driver
 		expect:
-		d instanceof FirefoxDriver
+		d instanceof HtmlUnitDriver
 		cleanup:
 		d?.quit()
 	}
