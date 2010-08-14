@@ -80,6 +80,11 @@ subprojects {
 			testCompile.transitive = true
 		}
 		
+		if (project.hasProperty("driver")) {
+			test {
+				systemProperties['geb.driver'] = project.driver
+			}
+		}
 	}
 	
 	if (project.path in publishedModules) {
