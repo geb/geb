@@ -60,6 +60,24 @@ If a driver is not given at construction time, one will attempted to be loaded v
 
 If the “`geb.driver`” system property is not set, each of the above drivers will be tried in the order listed.
 
+
+#### Lifecycle
+
+Geb internally reuses the default driver per thread. This avoids the overhead of creating a new driver each time which can be significant when working with a real browser.
+
+This means that you may need to call the `clearCookies()` method on the browser in order to not get strange results due to cookies from previous executions.
+
+The shared driver will be closed and quitted when the JVM shuts down.
+
+A new driver can be forced at anytime by calling either of the following `static` methods on the `CachingDriverFactory` class…
+
+    import geb.driver.CachingDriverFactory
+    
+    def cachedDriver = CachingDriverFactory.clearCache()
+    def cachedDriver = CachingDriverFactory.clearCacheAndQuitDriver()
+
+After calling either of this methods, the next request for a default driver will result in a new driver instance being created.
+
 ## The Base URL
 
 Browser instances maintain a `String baseUrl` property that is used to complete all non absolute page URLs. This can be set either at construction time or anytime after.

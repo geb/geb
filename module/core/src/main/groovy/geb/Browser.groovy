@@ -51,7 +51,7 @@ class Browser {
 	}
 	
 	protected DriverFactory getDefaultDriverFactory() {
-		new PropertyBasedDriverFactory(this.class.classLoader)
+		new CachingDriverFactory(new PropertyBasedDriverFactory(this.class.classLoader))
 	}
 	
 	def methodMissing(String name, args) {
@@ -113,6 +113,10 @@ class Browser {
 	def to(Map params, Class pageClass, Object[] args) {
 		page(pageClass)
 		page.to(params, *args)
+	}
+	
+	void clearCookies() {
+		driver?.manage()?.deleteAllCookies()
 	}
 	
 	protected String _calculateUri(String path, Map params) {
