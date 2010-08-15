@@ -275,8 +275,8 @@ project(":module:grails-plugin") {
 
 
 project(":doc:manual") {
-	def src = new File(projectDir, "src")
-	def output = new File(projectDir, "build/manual")
+	src = file("src")
+	output = file("build/manual")
 	
 	task compile << {
 		new markdown2book.Generator(src, output, "UTF-8").generate()
