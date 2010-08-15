@@ -157,7 +157,44 @@ As previously stated, modules can be used to model page fragments that are reuse
 
 Modules work well for this.
 
-Another not so obvious use case is using modules to deal with complex and/or repeating sections that are only present in one page.
+Another not so obvious use case is using modules to deal with complex and/or repeating sections that are only present in one page, such as table rows. Consider the following HTML…
+
+    <table>
+        <tr>
+            <th>First Name</th><th>Last Name</th>
+        </tr>
+        <tr>
+            <td>Bruce</td><td>Lee</td>
+        </tr>
+        <tr>
+            <td>John</td><td>Wayne</td>
+        </tr>
+    </table>
+    
+We can model this with the following…
+
+    import geb.*
+    
+    class PeoplePage extends Page {
+        static content = {
+            row { index ->
+                module PeopleTableRow, $("table tr", index + 1) // +1 to adjust for header row
+            }
+        }
+    }
+    
+    class PeopleTableRow extends Module {
+        static content = {
+            cell { $("td", it) }
+            firstName { cell(0).text() }
+            lastName { cell(1).text() }
+        }
+    }
+    
+We can now write code like…
+
+    assert row(0).firstName == "Bruce"
+    assert row(1).lastName == "Wayne"
 
 ## The Content DSL
 
