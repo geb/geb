@@ -20,7 +20,7 @@ class PageContentTemplateBuilder {
 
 	static PARAM_DEFAULTS = [
 		required: true,
-		dynamic: false,
+		cache: false,
 		to: null
 	]
 

@@ -192,7 +192,7 @@ If the `required` option is set to `true` and the returned content does not exis
 
 #### cache
 
-Default value: `true`
+Default value: `false`
 
 The `cache` option controls whether or not the definition is evaluated each time the content is requested (the content is cached for each unique set of parameters). 
 
@@ -226,7 +226,7 @@ With caching disabled…
         assert theValue == 2
     }
 
-Caching is a performance optimisation and is enabled by default. You may want to disable it when dealing with dynamic content.
+Caching is a performance optimisation and is disabled by default. You may want to enable if you notice that the a particular content definition is taking a long time to resolve.
 
 #### to
 

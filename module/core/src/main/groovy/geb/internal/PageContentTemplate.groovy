@@ -45,8 +45,8 @@ class PageContentTemplate {
 		params.required
 	}
 	
-	boolean isDynamic() {
-		params.dynamic
+	boolean isCaching() {
+		params.cache
 	}
 	
 	/**
@@ -61,7 +61,7 @@ class PageContentTemplate {
 	}
 	
 	def get(Object[] args) {
-		dynamic ? create(*args) : fromCache(*args)
+		caching ? fromCache(*args) : create(*args)
 	}
 
 	private create(Object[] args) {
