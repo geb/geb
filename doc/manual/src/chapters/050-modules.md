@@ -73,7 +73,63 @@ Modules can also include other modules…
 
 ## Base And Context
 
-Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition.
+Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition. There two ways that a modules base/context can be defined.
+
+It can be defined at inclusion time…
+
+    static content = {
+        form { module FormModule, $("form") }
+    }
+
+We can define a `Navigator` context when including the module using the above syntax. This now means that _all_ $ function calls that occur within the module are against the given context (in this case, the `form` element).
+
+However, module classes can also define their own base…
+
+    import geb.Module
+    
+    class FormModule extends {
+        static base = { $("form") }
+    }
+
+This has the same effect as the code above.
+
+They can also be combined. Consider the following HTML…
+
+    <div class="a">
+        <form>
+            <input name="thing" value="a"/>
+        </form>
+    </div>
+    <div class="b">
+        <form>
+            <input name="thing" value="b"/>
+        </form>
+    </div>
+
+And the following content definitions…
+
+    import geb.*
+    
+    class ExamplePage extends Page {
+        static content = {
+            formA { module FormModule, $("div.a") }
+            formB { module FormModule, $("div.b") }
+        }
+    }
+    
+    class FormModule extends Module {
+        static base = { $("form") }
+        static content = {
+            thingValue { thing().value() }
+        }
+    }
+
+When working with a browser at a `ExamplePage` page…
+
+    assert formA.thingValue == "a"
+    assert formB.thingValue == "b"
+
+If the module declares a base, it is always calculated _relative_ to the base given by the including statement. If the including statement does not specify a base, then the base is effectively the entire page.
 
 ## Use Cases
 
