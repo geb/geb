@@ -199,4 +199,7 @@ We can now write code like…
 ## The Content DSL
 
 The Content DSL used for modules is _exactly_ the same as the [one used for pages][content-dsl], so all of the same options and techniques can be used.
-    
+
+## Inheritance
+
+Modules can use inheritance in the same way that pages can. That is, their content definitions are merged with any content redefined in the subclass taking precedence of the superclass.
