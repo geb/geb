@@ -126,12 +126,12 @@ For more information see the manual section on the [browser interface][browser].
 
 ## Installation & Usage
 
-To get up and running you simply need to get the geb `core` jar (available from Maven central) and a [WebDriver][webdriver-api] implementation.
+To get up and running you simply need to get the `geb-core` jar (available from Maven central) and a [WebDriver][webdriver-api] implementation.
 
 Via `@Grab`…
     
     @Grapes([
-        @Grab("org.codehaus.geb:core:latest.release"),
+        @Grab("org.codehaus.geb:geb-core:latest.release"),
         @Grab("org.seleniumhq.selenium:selenium-firefox-driver:latest.release")
     ])
     import geb.Browser
@@ -140,7 +140,7 @@ Via Maven…
 
     <dependency>
       <groupId>org.codehaus.geb</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>geb-core</artifactId>
       <version>RELEASE</version>
     </dependency>
     <dependency>
@@ -151,6 +151,6 @@ Via Maven…
     
 Via Gradle…
 
-    compile "org.codehaus.geb:core:latest.release", "org.seleniumhq.selenium:selenium-firefox-driver:latest.release"
+    compile "org.codehaus.geb:geb-core:latest.release", "org.seleniumhq.selenium:selenium-firefox-driver:latest.release"
 
 > Development snapshots are available via the [Codehaus snapshot repository](http://snapshots.repository.codehaus.org/)

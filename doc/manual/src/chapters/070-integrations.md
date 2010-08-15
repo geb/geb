@@ -4,7 +4,15 @@ Geb provides support for using it via different frameworks and testing mechanism
 
 ## JUnit 3
 
-The JUnit 3 support is in the `junit3` jar.
+The JUnit 3 support is in the `geb-junit3` jar.
+
+    <dependency>
+      <groupId>org.codehaus.geb</groupId>
+      <artifactId>geb-junit3</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+
+> Note that this jar does not depend on JUnit, so you need to provide this yourself.
 
 ### geb.junit3.GebTest
 
@@ -88,6 +96,14 @@ At the end of each test method a file will be written called «n».html, where �
 
 The JUnit 4 support is in the `junit4` jar.
 
+    <dependency>
+      <groupId>org.codehaus.geb</groupId>
+      <artifactId>geb-junit4</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+
+> Note that this jar does not depend on JUnit, so you need to provide this yourself.
+
 ### geb.junit.GebTest
 
 The `GebTest` class extends `GroovyTestCase` and provides a `Browser` instance to work with. In a `GebTest`, method calls and property accesses/assignments are automatically forwarded to the browser instance, just like in the [`drive()` method][drive].
@@ -167,6 +183,14 @@ At the end of each test method a file will be written called «n»-«test method
 ## Spock
 
 The [Spock][spock] support is in the `spock` jar.
+
+    <dependency>
+      <groupId>org.codehaus.geb</groupId>
+      <artifactId>geb-spock</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+
+> Note that this jar does not depend on Spock, so you need to provide this yourself.
 
 ### geb.spock.GebSpec
 

@@ -32,13 +32,13 @@ allprojects {
 }
 
 def groovyModules = [
-	":module:core", ":module:test-utils", ":module:grails-support", 
-	":module:spock", ":module:junit3", ":module:junit4"
+	":module:geb-core", ":module:test-utils", ":module:geb-grails", 
+	":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4"
 ]
 
 def publishedModules = [
-	":module:core", ":module:grails-support", ":module:spock", 
-	":module:junit3", ":module:junit4"
+	":module:geb-core", ":module:geb-grails", ":module:geb-spock", 
+	":module:geb-junit3", ":module:geb-junit4"
 ]
 
 if (hasProperty("withSamples")) {
@@ -137,19 +137,19 @@ subprojects {
 	}
 }
 
-project(':module:core') {
+project(':module:geb-core') {
 	dependencies {
 		compile seleniumDependency
 		testCompile project(":module:test-utils")
 	}
 }
 
-project(':module:spock') {
-	dependsOn ":module:core"
+project(':module:geb-spock') {
+	dependsOn ":module:geb-core"
 	
 	dependencies {
 		compile spockDependency
-		compile project(':module:core')
+		compile project(':module:geb-core')
 		testCompile project(":module:test-utils")
 	}
 	
@@ -159,11 +159,11 @@ project(':module:spock') {
 	}
 }
 
-project(':module:junit3') {
-	dependsOn ":module:core"
+project(':module:geb-junit3') {
+	dependsOn ":module:geb-core"
 	
 	dependencies {
-		compile project(':module:core')
+		compile project(':module:geb-core')
 		compile "junit:junit:3.8.2"
 		testCompile project(":module:test-utils")
 	}
@@ -174,11 +174,11 @@ project(':module:junit3') {
 	}
 }
 
-project(':module:junit4') {
-	dependsOn ":module:core"
+project(':module:geb-junit4') {
+	dependsOn ":module:geb-core"
 	
 	dependencies {
-		compile project(':module:core')
+		compile project(':module:geb-core')
 		compile "junit:junit:4.8.1"
 		testCompile project(":module:test-utils")
 	}
@@ -190,10 +190,10 @@ project(':module:junit4') {
 }
 
 project(':module:test-utils') {
-	dependsOn ":module:spock"
+	dependsOn ":module:geb-spock"
 	
 	dependencies {
-		compile project(':module:spock'),
+		compile project(':module:geb-spock'),
 		        jettyDependency,
 		        firefoxDriverDependency,
 		        htmlUnitDriverDependency
@@ -203,7 +203,7 @@ project(':module:test-utils') {
 if (hasProperty('withSamples')) {
 	project(':samples:google') {
 		dependencies {
-			compile project(':module:spock')
+			compile project(':module:geb-spock')
 		}
 		sourceSets {
 			test {
@@ -215,15 +215,15 @@ if (hasProperty('withSamples')) {
 	}
 }
 
-project(":module:grails-support") {
-	dependsOn ":module:spock"
-	dependsOn ":module:junit3"
-	dependsOn ":module:junit4"
+project(":module:geb-grails") {
+	dependsOn ":module:geb-spock"
+	dependsOn ":module:geb-junit3"
+	dependsOn ":module:geb-junit4"
 	
 	dependencies {
-		compile project(':module:spock'),
-		        project(":module:junit3"),
-		        project(":module:junit4"),
+		compile project(':module:geb-spock'),
+		        project(":module:geb-junit3"),
+		        project(":module:geb-junit4"),
 		        "org.grails:grails-core:${grailsVersion}",
 		        "org.grails:grails-test:${grailsVersion}",
 		        "org.grails:grails-web:${grailsVersion}",
@@ -237,7 +237,7 @@ project(":module:grails-support") {
 }
 
 project(":module:grails-plugin") {
-	dependsOn ":module:grails-support"
+	dependsOn ":module:geb-grails"
 	
 	buildscript {
 		repositories {
@@ -259,7 +259,7 @@ project(":module:grails-plugin") {
 	}
 
 	dependencies {
-		compile project(':module:grails-support'),
+		compile project(':module:geb-grails'),
 		        "org.grails:grails-crud:${grailsVersion}",
 		        "org.grails:grails-gorm:${grailsVersion}"
 
