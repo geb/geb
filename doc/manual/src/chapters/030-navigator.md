@@ -261,3 +261,25 @@ There is also a shortcut for obtaining a navigator based on a control name
 Which is literally a shortcut for…
 
     $("form").find("input", name: "geb")
+
+### Setting Values
+
+#### select
+
+If the select is multiple select enabled, it is set with an array of strings which is to be the values which are to be selected.
+
+#### checkbox
+
+Checkboxes are checked/unchecked by setting their value to `true` or `false`.
+
+#### radio
+
+Radio values are set by assigning the value of the radio button that is to be selected
+
+#### input
+
+The value assigned to a text input becomes the new value of it's `value` attribute.
+
+#### textarea
+
+The value assigned to a text input becomes the textarea's value.
