@@ -338,7 +338,7 @@ class NonEmptyNavigator extends Navigator {
 
 	private void setInputValue(WebElement input, value) {
 		if (input.tagName == "select") {
-			if (input.getAttribute("multiple")) {
+			if (!isAttributeEffectivelyFalse(input, "multiple")) {
 				input.findElements(By.tagName("option")).each { WebElement option ->
 					if (option.value in value) {
 						option.setSelected()
@@ -364,7 +364,15 @@ class NonEmptyNavigator extends Navigator {
 			input.sendKeys value
 		}
 	}
-
+	
+	// The Firefox driver at least will return a literal false when checking for certain
+	// attributes. This goes against the spec of WebElement#getAttribute() but it happens
+	// none the less.
+	private boolean isAttributeEffectivelyFalse(WebElement input, String attribute) {
+		def value = input.getAttribute(attribute)
+		value == null || value == "" || value == "false" || value == false
+	}
+	
 	private WebElement firstElementInContext(Closure closure) {
 		def result = null
 		for (int i = 0; !result && i < contextElements.size(); i++) {
