@@ -48,7 +48,7 @@ if (hasProperty("withSamples")) {
 }
 
 subprojects {
-	version = '0.4'
+	version = '0.5-SNAPSHOT'
 	group = 'org.codehaus.geb'
 	
 	apply plugin: "org.gradle.idea"
