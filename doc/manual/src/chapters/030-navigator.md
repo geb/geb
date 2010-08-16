@@ -202,6 +202,10 @@ As would…
 
 These methods do not take indexes as they automatically select the first matching content.
 
+## Clicking
+
+Navigator objects implement the `click()` method, which will send a click event to the first matched item.
+
 ## Accessing tag name, attributes, text and classes
 
 The `name()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.
@@ -226,13 +230,9 @@ To obtain information about all matched content, you use the Groovy _spread oper
     $("p")*.@title == ["a", "b", "c"]
     $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
 
-## Form Controls
+## Form Control Shortcuts
 
 Interacting with form controls (`input`, `select` etc.) is such a common task in web functional testing that Geb provides convenient shortcuts for common functions.
-
-TODO: section on using value() (with info on what it means for different inputs)
-    
-### Shortcuts
 
 Geb supports the following shortcuts for dealing with form controls.
 
