@@ -148,6 +148,12 @@ class PageOrientedSpec extends GebSpecWithServer {
 		"abc" ==~ contains("b")
 	}
 	
+	def "can use attribute notation on page content"() {
+		when:
+		to PageA
+		then:
+		link.@id == "a"
+	}
 }
 
 class PageA extends Page {

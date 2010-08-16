@@ -15,11 +15,18 @@
 package geb
 
 import geb.navigator.Navigator
+import geb.navigator.AttributeAccessingMetaClass
 import geb.internal.*
 
 class Module extends TemplateDerivedPageContent {
 
 	static base = null
+	
+	static {
+		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(Module))
+		mc.initialize()
+		Module.metaClass = mc
+	}
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
