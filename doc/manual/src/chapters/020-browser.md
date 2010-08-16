@@ -60,7 +60,6 @@ If a driver is not given at construction time, one will attempted to be loaded v
 
 If the “`geb.driver`” system property is not set, each of the above drivers will be tried in the order listed.
 
-
 #### Lifecycle
 
 Geb internally reuses the default driver per thread. This avoids the overhead of creating a new driver each time which can be significant when working with a real browser.
