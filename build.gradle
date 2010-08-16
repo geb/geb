@@ -1,9 +1,11 @@
 buildscript {
 	repositories {
 		mavenRepo urls: "http://gradle.artifactoryonline.com/gradle/plugins"
+		mavenCentral()
 	}
 	dependencies {
-		classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
+		classpath "org.gradle.plugins:gradle-idea-plugin:0.2",
+		          "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
 	}
 }
 
@@ -84,6 +86,14 @@ subprojects {
 			test {
 				systemProperties['geb.driver'] = project.driver
 			}
+		}
+		
+		task listCompile(dependsOn: configurations.compile) << {
+			println "compile classpath = ${configurations.compile.resolve().collect {File file -> file.name}.sort()}"
+		}
+
+		task listRuntime(dependsOn: configurations.runtime) << {
+			println "runtime classpath = ${configurations.runtime.resolve().collect {File file -> file.name}.sort()}"
 		}
 	}
 	
@@ -281,6 +291,58 @@ project(":doc:manual") {
 	task compile << {
 		new markdown2book.Generator(src, output, "UTF-8").generate()
 	}
+}
+
+project(":doc:site") {
+	src = file("src")
+	output = file("build/site")
+
+	manualDir = file("$output/manual")
+	thisManual = file("$manualDir/$project.version")
+	
+	task clean(overwrite: true) << {
+		if (output.exists()) {
+			assert output.deleteDir()
+		}
+	}
+	
+	task includeManual(dependsOn: project(":doc:manual").compile, type: Sync) {
+		from project(":doc:manual").output
+		into project.thisManual
+		
+		doLast {
+			ant.symlink link: "${manualDir.path}/latest", resource: thisManual.path, overwrite: true
+		}
+	}
+	
+	task copySrc(type: Copy) {
+		from src
+		into output
+	}
+	
+	task compile(dependsOn: [copySrc, includeManual]) {}
+	
+	task upload(dependsOn: compile) << {
+		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+			def rep = new org.apache.maven.wagon.repository.Repository("codehaus", "https://dav.codehaus.org/geb")
+			def auth = new org.apache.maven.wagon.authentication.AuthenticationInfo()
+			auth.userName = codehausUsername
+			auth.password = codehausPassword
+			def wagon = new org.apache.maven.wagon.providers.webdav.WebDavWagon()
+			wagon.connect(rep, auth)
+		
+			output.eachFile {
+				if (it.directory) {
+					wagon.putDirectory(it, it.name)
+				} else {
+					wagon.put(it, it.name)
+				}
+			}
+		} else {
+			println "Can't upload site as credentials aren't set"
+		}
+	}
+
 }
 
 // Root Project 

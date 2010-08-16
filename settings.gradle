@@ -5,7 +5,8 @@ include "module:geb-core",
         "module:geb-junit4",
         "module:geb-grails", 
         "module:grails-plugin",
-        "doc:manual"
+        "doc:manual",
+        "doc:site"
 
 if (hasProperty("withSamples")) {
 	include "samples:google"
