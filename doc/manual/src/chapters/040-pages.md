@@ -304,7 +304,7 @@ If a page does not verify an “at” checker, the `verifyAt()` method will alwa
 Pages can define URLs via the `static` `url` property.
 
     class ExamplePage extends Page {
-        static url = "/examples"
+        static url = "examples"
     }
 
 The url is used when using the browser `to()` method.
@@ -313,7 +313,9 @@ The url is used when using the browser `to()` method.
         to ExamplePage
     }
 
-See the section on [Advanced Page Navigation][page-navigation] for more information.
+When URLs are resolved against base URLs, it is done in the same manner as web browsers resolve URLs. Given a base of “`http://myapp.com/path`” and a another URL to resolve against it of “`/examples`”, the resultant URL will be “`http://myapp.com/example`”. The leading “`/`” on the non base URL causes it to be treated as an absolute path from the server base. This means that in almost all cases your page URLs **should not** start with a leading “`/`”.
+
+See the section on [Advanced Page Navigation][page-navigation] for more information on the `to()` method.
 
 ## Inheritance
 
