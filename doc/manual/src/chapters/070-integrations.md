@@ -14,6 +14,8 @@ The JUnit 3 support is in the `geb-junit3` jar.
 
 > Note that this jar does not depend on JUnit, so you need to provide this yourself.
 
+A new browser instance is created for *each test method* (read below for how to configure the browser/driver created). However, since the [default behaviour is to re-use the default driver across browser instances][defaultdriver-lifecycle] the driver's cookies are cleared in the special JUnit `tearDown()` method. Because of this, be sure to call `super.tearDown()` if you implement `tearDown()` in your test.
+
 ### geb.junit3.GebTest
 
 The `GebTest` class extends `GroovyTestCase` and provides a `Browser` instance to work with. In a `GebTest`, method calls and property accesses/assignments are automatically forwarded to the browser instance, just like in the [`drive()` method][drive].
@@ -92,6 +94,8 @@ At the end of each test method a file will be written called «n».html, where �
 
 > JUnit 3 does not provide a mechanism for accessing the name of the executing test method, hence the number only report file naming. This is not the case for JUnit 4.
 
+The report generation occurs in the special JUnit `tearDown()` method, so be sure to call `super.tearDown()` in your `tearDown()` implementation if you have one.
+
 ## JUnit 4
 
 The JUnit 4 support is in the `junit4` jar.
@@ -103,6 +107,8 @@ The JUnit 4 support is in the `junit4` jar.
     </dependency>
 
 > Note that this jar does not depend on JUnit, so you need to provide this yourself.
+
+A new browser instance is created for *each test method* (read below for how to configure the browser/driver created). However, since the [default behaviour is to re-use the default driver across browser instances][defaultdriver-lifecycle] the driver's cookies are cleared in a JUnit `@After` method.
 
 ### geb.junit.GebTest
 
@@ -191,6 +197,8 @@ The [Spock][spock] support is in the `spock` jar.
     </dependency>
 
 > Note that this jar does not depend on Spock, so you need to provide this yourself.
+
+A new browser instance is created for *each test method* (read below for how to configure the browser/driver created). However, since the [default behaviour is to re-use the default driver across browser instances][defaultdriver-lifecycle] the driver's cookies are cleared in the Spock `cleanup()` method. However, if your spec is _stepwise_ (i.e. is annotated with @spock.lang.Stepwise - see Spock docs for details) the cookies are **NOT** cleared in `cleanup()` but are cleared in `cleanupSpec()` which means browser state is not reset between test methods (which makes sense for a stepwise spec).
 
 ### geb.spock.GebSpec
 

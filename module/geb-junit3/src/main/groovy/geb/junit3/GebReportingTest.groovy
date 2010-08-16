@@ -25,6 +25,7 @@ class GebReportingTest extends GebTest {
 		
  	void tearDown() {
 		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}", getBrowser())
+		super.tearDown()
 	}
 
 	/**

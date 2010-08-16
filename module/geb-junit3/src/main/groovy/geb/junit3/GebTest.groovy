@@ -59,4 +59,7 @@ class GebTest extends GroovyTestCase {
 		null
 	}
 
+	void tearDown() {
+		browser.clearCookies()
+	}
 }

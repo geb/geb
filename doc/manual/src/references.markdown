@@ -17,4 +17,5 @@
 [drive]: browser.html#the_drive_method
 [content-dsl]: pages.html#the_content_dsl
 [defaultdriver]: browser.html#the_default_driver
+[defaultdriver-lifecycle]: browser.html#lifecycle
 [spock]: http://spockframework.org/

@@ -16,6 +16,7 @@ package geb.junit4
 
 import geb.Browser
 import org.openqa.selenium.WebDriver
+import org.junit.After
 
 class GebTest extends GroovyTestCase {
 
@@ -57,6 +58,11 @@ class GebTest extends GroovyTestCase {
 
 	String getBaseUrl() {
 		null
+	}
+	
+	@After
+	void clearBrowserCookies() {
+		browser.clearCookies()
 	}
 
 }

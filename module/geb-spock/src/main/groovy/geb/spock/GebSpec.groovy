@@ -59,5 +59,20 @@ class GebSpec extends Specification {
 	String getBaseUrl() {
 		null
 	}
-
+	
+	private isSpecStepwise() {
+		this.class.getAnnotation(Stepwise) != null
+	}
+	
+	def cleanup() {
+		if (!isSpecStepwise()) {
+			browser.clearCookies()
+		}
+	}
+	
+	def cleanupSpec() {
+		if (isSpecStepwise()) {
+			browser.clearCookies()
+		}
+	}
 }
