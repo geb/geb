@@ -15,6 +15,16 @@
   <meta name="mssmarttagspreventparsing" content="true" />
   <meta name="robots" content="index, follow, noarchive" />
   <meta name="revisit-after" content="7 days" />
+  <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeEclipse.css" rel="stylesheet" type="text/css" />
+  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushGroovy.js" type="text/javascript"></script>
+  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+  <script type="text/javascript" charset="utf-8">
+    SyntaxHighlighter.defaults['toolbar'] = false;
+    SyntaxHighlighter.defaults['gutter'] = false;
+    SyntaxHighlighter.all();
+  </script>
+  
 </head>
 
 <body>
@@ -28,7 +38,7 @@
       <li><a href="manual/latest/index.html">Manual</a></li>
       <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing Lists</a></li>
       <li><a href="http://github.com/geb/geb">Source Code</a></li>
-      <li><a href="http://mvnrepository.com/artifact/org.codehaus.geb">Artifacts</a></li>
+      <li><a href="http://mvnrepository.com/artifact/org.codehaus.geb">Downloads</a></li>
       <li><a href="http://github.com/geb/geb/issues">Issues</a></li>
       
     </ul>
@@ -36,7 +46,7 @@
   <div id="content">
     <h1>What is Geb?</h1>
       
-      <p>Geb (pronounced with a soft “G” like “Jeb”) is a browser automation solution for the <a href="http://groovy.codehaus.org/" title="Groovy - Home">Groovy</a> programming language. It combines the browser driving features of <a href="http://code.google.com/p/selenium/">WebDriver</a> (and therefore can work with Internet Explorer, FireFox, Chrome and HTMLUnit) with a <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> inspired content navigation/inspection API and the expressiveness of Groovy.</p>
+      <p>Geb <em>(pronounced with a soft “G” like “Jeb”)</em> is a browser automation solution for the <a href="http://groovy.codehaus.org/" title="Groovy - Home">Groovy</a> programming language. It combines the browser driving features of <a href="http://code.google.com/p/selenium/">WebDriver</a> (and therefore can work with Internet Explorer, FireFox, Chrome and HTMLUnit) with a <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> inspired content navigation/inspection API and the expressiveness of Groovy.</p>
       
       <h1>What is it good for?</h1>
       
@@ -45,7 +55,7 @@
       <h1>What does it look like?</h1>
       
       <p>Here is some sample Geb…</p>
-<code><pre>import geb.*
+<pre class="brush: groovy">import geb.*
   
 Browser.drive("http://www.google.com") {
   assert title == "Google"
@@ -57,9 +67,7 @@ Browser.drive("http://www.google.com") {
 
   def firstResultLink = $("li.g", 0).find("a.l")
   assert firstResultLink.text() == "Wikipedia, the free encyclopedia"
-}
-</pre></code>
-      
+}</pre>
       <p>This is very basic sample and does not illustrate many of Geb's most powerful features such as page objects, modules, the Content DSL and more. Please see the <a href="manual/latest/index.html">manual</a> for more examples.</p>
 
       <h1>How can I use it?</h1>
