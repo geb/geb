@@ -262,6 +262,8 @@ The value can also be a list of potential pages…
 
 When the value is a list, each page will be tried in turn via its `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page. This is useful for when a link or button (or any content really) could send the browser to a number of different pages when it is clicked.
 
+> See the section below on [clicking content][#clicking_content] for more on this.
+
 ## “At” Verification
 
 Each page can define a way to check whether the underling browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
@@ -298,6 +300,25 @@ The “at” checker is evaluated against the page instance, and can access defi
     }
 
 If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
+
+## Clicking Content
+
+All content defined as part of the page gets decorated with a special version of the `click()` method that can take one or more `Page` classes.
+
+    class ExamplePage extends Page {
+        static content = {
+            aLink { $("a") }
+        }
+    }
+
+    Browser.drive {
+        to ExamplePage
+        aLink.click AnotherPage
+    }
+
+If the click method receives a single `Page` class, it is set as the new page type and overrides any `to` option value for the content. 
+
+If the click method receives more than one `Page` class, the behaviour is the same as when the `to` option defines a list of page classes. That is, each is cycled through in turn and it's at checker is executed against the actual page content. The first page whose at checker matches is set as the new page. Any page classes defined in the `to` option are ignored.
 
 ## Page URLs
 
