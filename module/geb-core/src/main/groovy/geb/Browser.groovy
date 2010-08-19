@@ -16,6 +16,7 @@ package geb
 
 import geb.driver.*
 import geb.error.DriveException
+import geb.error.PageChangeListenerAlreadyRegisteredException
 import org.openqa.selenium.WebDriver
 
 class Browser {
@@ -24,6 +25,8 @@ class Browser {
 	final WebDriver driver
 	
 	String baseUrl
+	
+	private final pageChangeListeners = new LinkedHashSet()
 	
 	Browser(Class pageClass, Map params = null) {
 		this(null, null, pageClass, params)
@@ -54,6 +57,18 @@ class Browser {
 		new CachingDriverFactory(new PropertyBasedDriverFactory(this.class.classLoader))
 	}
 	
+	void registerPageChangeListener(PageChangeListener listener) {
+		if (pageChangeListeners.add(listener)) {
+			listener.pageWillChange(this, null, page)
+		} else {
+			throw new PageChangeListenerAlreadyRegisteredException(this, listener)
+		}
+	}
+	
+	boolean removePageChangeListener(PageChangeListener listener) {
+		pageChangeListeners.remove(listener)
+	}
+	
 	def methodMissing(String name, args) {
 		page."$name"(*args)
 	}
@@ -71,6 +86,7 @@ class Browser {
 	}
 
 	void page(Page page) {
+		informPageChangeListeners(this.page, page)
 		this.page = page
 		page.browser = this
 	}
@@ -144,6 +160,10 @@ class Browser {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
 		pageClass.newInstance(browser: this)
+	}
+	
+	protected informPageChangeListeners(Page oldPage, Page newPage) {
+		pageChangeListeners*.pageWillChange(this, oldPage, newPage)
 	}
 	
 	protected _toQueryString(Map params) {
