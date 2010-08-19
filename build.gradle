@@ -35,12 +35,13 @@ allprojects {
 
 def groovyModules = [
 	":module:geb-core", ":module:test-utils", ":module:geb-grails", 
-	":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4"
+	":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
+	":module:geb-easyb"
 ]
 
 def publishedModules = [
 	":module:geb-core", ":module:geb-grails", ":module:geb-spock", 
-	":module:geb-junit3", ":module:geb-junit4"
+	":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb"
 ]
 
 if (hasProperty("withSamples")) {
@@ -196,6 +197,45 @@ project(':module:geb-junit4') {
 	modifyPom { pom ->
 		// User provides their own junit
 		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
+	}
+}
+
+project(':module:geb-easyb') {
+/*	dependsOn ":module:geb-core"*/
+	
+	dependencies {
+		compile project(':module:geb-core'),
+		        "org.easyb:easyb:0.9.7"
+		
+		testCompile(project(":module:test-utils")) {
+			exclude module: "spock-core" // only need the test server
+		}
+	}
+	
+	test.doLast {
+		assert testReportDir.exists() || testReportDir.mkdirs()
+		ant.java(
+			classname: 'org.easyb.BehaviorRunner', 
+			fork: true,
+			classpath: sourceSets.test.runtimeClasspath.asPath,
+			output: "$testReportDir.absolutePath/easyb-output.txt",
+			failonerror: false,
+			dir: projectDir,
+			resultproperty: 'easybresult'
+		) {
+			fileTree(dir: "${projectDir}/src/test/stories").matching { include "*" }.each { 
+				arg(value: it.absolutePath) 
+			}
+			arg(value: "-txtstory")
+			arg(value: "$testReportDir.absolutePath/easyb.txt")
+		}
+		
+		if (ant.easybresult != "0") System.err.println ">> Easyb Failed ($ant.easybresult)"
+	}
+	
+	modifyPom { pom ->
+		// User provides their own easyb
+		pom.dependencies.findAll { it.groupId == "easyb" }*.scope = "provided"
 	}
 }
 
