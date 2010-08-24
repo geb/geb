@@ -19,19 +19,23 @@ def junit3TestTypeClassName = "org.codehaus.groovy.grails.test.junit3.JUnit3Grai
 def junit4TestTypeClassName = "org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType"
 def runtimeAdapterClassName = "grails.plugin.geb.internal.RuntimeAdapter"
 
-def loadedSpock = false
+def loadedTestTypes = []
 def runningTests = false
 
-tryToLoadSpock = {
-	if (loadedSpock) return
+tryToLoadTestTypes = {
+	tryToLoadTestType("spock", specTestTypeClassName)
+}
+
+tryToLoadTestType = { name, typeClassName ->
+	if (name in loadedTestTypes) return
 	if (!binding.variables.containsKey("functionalTests")) return
 	
-	def specTestTypeClass = softLoadClass(specTestTypeClassName)
-	if (specTestTypeClass) {
-		if (!functionalTests.any { it.class == specTestTypeClass }) {
-			functionalTests << specTestTypeClass.newInstance('spock', 'functional')
+	def typeClass = softLoadClass(typeClassName)
+	if (typeClass) {
+		if (!functionalTests.any { it.class == typeClass }) {
+			functionalTests << typeClass.newInstance(name, 'functional')
 		}
-		loadedSpock = true
+		loadedTestTypes << name
 	}
 }
 
@@ -45,7 +49,8 @@ softLoadClass = { className ->
 
 eventAllTestsStart = {
 	runningTests = true
-	tryToLoadSpock()
+
+	tryToLoadTestTypes()
 	
 	[junit3TestTypeClassName, junit4TestTypeClassName].each { testTypeClassName ->
 		def testTypeClass = softLoadClass(testTypeClassName)
@@ -58,7 +63,7 @@ eventAllTestsStart = {
 }
 
 eventPackagePluginsEnd = {
-	tryToLoadSpock()
+	tryToLoadTestTypes()
 }
 
 eventTestPhaseStart = { phaseName ->

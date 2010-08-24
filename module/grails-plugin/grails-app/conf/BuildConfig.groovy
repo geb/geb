@@ -35,6 +35,9 @@ grails.project.dependency.resolution = {
 			exclude 'xml-apis'
 			export = false
 		}
+		test("org.seleniumhq.selenium:selenium-firefox-driver:latest.release") {
+			export = false
+		}
 	}
 }
 

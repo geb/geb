@@ -204,8 +204,10 @@ project(':module:geb-easyb') {
 /*	dependsOn ":module:geb-core"*/
 	
 	dependencies {
-		compile project(':module:geb-core'),
-		        "org.easyb:easyb:0.9.7"
+		compile project(':module:geb-core')
+		compile ("org.easyb:easyb:0.9.7") {
+			exclude module: "groovy-all"
+		}
 		
 		testCompile(project(":module:test-utils")) {
 			exclude module: "spock-core" // only need the test server
@@ -269,11 +271,13 @@ project(":module:geb-grails") {
 	dependsOn ":module:geb-spock"
 	dependsOn ":module:geb-junit3"
 	dependsOn ":module:geb-junit4"
+	dependsOn ":module:geb-easyb"
 	
 	dependencies {
 		compile project(':module:geb-spock'),
 		        project(":module:geb-junit3"),
 		        project(":module:geb-junit4"),
+		        project(":module:geb-easyb"),
 		        "org.grails:grails-core:${grailsVersion}",
 		        "org.grails:grails-test:${grailsVersion}",
 		        "org.grails:grails-web:${grailsVersion}",
