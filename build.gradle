@@ -313,12 +313,13 @@ project(":module:grails-plugin") {
 	}
 
 	dependencies {
+	    logging "org.slf4j:slf4j-log4j12:1.5.5"
+	    
 		compile project(':module:geb-grails'),
 		        "org.grails:grails-crud:${grailsVersion}",
 		        "org.grails:grails-gorm:${grailsVersion}"
 
-		runtime "org.slf4j:slf4j-log4j12:1.5.5",
-		        "hsqldb:hsqldb:1.8.0.5",
+		runtime "hsqldb:hsqldb:1.8.0.5",
 		        "net.sf.ehcache:ehcache-core:1.7.1",
 		        "org.aspectj:aspectjrt:1.6.6"
 	}
