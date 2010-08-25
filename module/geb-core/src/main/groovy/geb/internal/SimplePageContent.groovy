@@ -31,5 +31,9 @@ class SimplePageContent extends TemplateDerivedPageContent {
 		navigableSupport = new NavigableSupport(this, null) { navigator }
 		super.init(template, navigator, *args)
 	}
+	
+	boolean asBoolean() {
+		navigator.asBoolean()
+	}
 
 }

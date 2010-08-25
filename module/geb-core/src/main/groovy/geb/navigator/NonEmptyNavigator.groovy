@@ -229,7 +229,9 @@ class NonEmptyNavigator extends Navigator {
 		size() == 0
 	}
 
-	boolean asBoolean() { !isEmpty() }
+	boolean asBoolean() { 
+		!isEmpty() 
+	}
 
 	Navigator head() {
 		first()
