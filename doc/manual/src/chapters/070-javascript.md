@@ -2,7 +2,7 @@
 
 Geb provides some support over and above what WebDriver provides. It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`](javascriptexecutor)'s [`executeScript()`](execscript) method. 
 
-> Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](execscript)
+> Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](execscript) in order to understand how type conversion works between the two worlds.
 
 Remember that you can get access to the driver instance via the browser…
 
