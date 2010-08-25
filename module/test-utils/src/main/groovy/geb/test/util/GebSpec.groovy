@@ -15,12 +15,23 @@
 
 package geb.test.util
 
+import geb.Browser
 import geb.spock.GebReportingSpec
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
 
 class GebSpec extends GebReportingSpec {
 
 	File getReportDir() {
 		new File("build/geb-output")
+	}
+	
+	Browser createBrowser() {
+		def browser = super.createBrowser()
+		if (browser.driver instanceof HtmlUnitDriver) {
+			println "ENABLING JAVASCRIPT"
+			browser.driver.javascriptEnabled = true
+		}
+		browser
 	}
 
 }

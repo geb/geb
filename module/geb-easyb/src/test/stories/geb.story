@@ -12,6 +12,11 @@ scenario "using geb", {
 		server.get = { req, res ->
 			res.outputStream << """
 			<html>
+			<head>
+				<script type="text/javascript">
+					var v = 1;
+				</script>
+			</head>
 			<body>
 				<div class="d1" id="d1">d1</div>
 			</body>
@@ -20,6 +25,7 @@ scenario "using geb", {
 	}
 
 	when "to", {
+		browser.driver.javascriptEnabled = true
 		to SomePage
 	}
 
@@ -27,6 +33,10 @@ scenario "using geb", {
 		at SomePage
 	}
 
+	and "can get js object", {
+		js.v.shouldBe 1
+	}
+	
 	and "page stuff", {
 		page.div.text().shouldBe "d1"
 	}

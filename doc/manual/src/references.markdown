@@ -19,3 +19,5 @@
 [defaultdriver]: browser.html#the_default_driver
 [defaultdriver-lifecycle]: browser.html#lifecycle
 [spock]: http://spockframework.org/
+[javascriptexecutor]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/JavascriptExecutor.html
+[execscript]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...)

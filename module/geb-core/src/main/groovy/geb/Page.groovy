@@ -16,6 +16,7 @@ package geb
 
 import geb.internal.*
 import geb.navigator.Navigator
+import geb.js.JavascriptInterface
 
 class Page {
 
@@ -79,5 +80,9 @@ class Page {
 	
 	def getTitle() {
 		browser.driver.title
+	}
+	
+	JavascriptInterface getJs() {
+		browser.js
 	}
 }

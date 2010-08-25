@@ -43,6 +43,7 @@ class GebPlugin extends BasePlugin {
 		binding.to = { Object[] args -> binding.browser.to(*args) }
 		binding.$ = { Object[] args -> binding.browser.page.$(*args) }
 		binding.setPageType = { Class pageType -> binding.browser.page(pageType) }
+		binding.js = binding.browser.js
 
 		binding.at = { Class pageClass ->
 			try {

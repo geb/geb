@@ -16,6 +16,7 @@ package geb
 
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
+import geb.js.JavascriptInterface
 import geb.internal.*
 
 class Module extends TemplateDerivedPageContent {
@@ -37,5 +38,8 @@ class Module extends TemplateDerivedPageContent {
 		super.init(template, navigator, *args)
 	}
 
-}
+	JavascriptInterface getJs() {
+		page.js
+	}
 
+}

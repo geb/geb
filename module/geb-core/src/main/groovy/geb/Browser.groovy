@@ -15,6 +15,7 @@
 package geb
 
 import geb.driver.*
+import geb.js.JavascriptInterface
 import geb.error.DriveException
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import org.openqa.selenium.WebDriver
@@ -27,6 +28,7 @@ class Browser {
 	String baseUrl
 	
 	private final pageChangeListeners = new LinkedHashSet()
+	private _js
 	
 	Browser(Class pageClass, Map params = null) {
 		this(null, null, pageClass, params)
@@ -160,6 +162,10 @@ class Browser {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
 		pageClass.newInstance(browser: this)
+	}
+	
+	JavascriptInterface getJs() {
+		new JavascriptInterface(this)
 	}
 	
 	protected informPageChangeListeners(Page oldPage, Page newPage) {
