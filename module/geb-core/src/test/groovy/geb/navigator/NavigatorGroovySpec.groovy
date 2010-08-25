@@ -215,4 +215,14 @@ class NavigatorGroovySpec extends Specification {
 		onPage.find("#article-1") | onPage.find("bdo")        | 1            | ["article-1"]
 		onPage.find("bdo")        | onPage.find("bdo")        | 0            | []
 	}
+
+	def "can use Groovy Truth on Navigator"() {
+		expect: navigator.asBoolean() == expectedResult
+		where:
+		navigator                 | expectedResult
+		onPage.find("div")        | true
+		onPage.find(".article")   | true
+		onPage.find("ol.article") | false
+		onPage.find("bdo")        | false
+	}
 }
