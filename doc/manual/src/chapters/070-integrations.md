@@ -25,7 +25,7 @@ The `GebTest` class extends `GroovyTestCase` and provides a `Browser` instance t
     class MyTests extends GebTest {
         
         void testSomething() {
-            to "/help"
+            go "/help"
             assert $("h1").text() == "Help"
         }
     
@@ -119,7 +119,7 @@ The `GebTest` class extends `GroovyTestCase` and provides a `Browser` instance t
     class MyTests extends GebTest {
         
         void testSomething() {
-            to "/help"
+            go "/help"
             assert $("h1").text() == "Help"
         }
     
@@ -210,7 +210,7 @@ The `GebSpec` class extends `spock.lang.Specification` and provides a `Browser` 
         
         def "test something"() {
             when:
-            to "/help"
+            go "/help"
             then:
             $("h1").text() == "Help"
         }
