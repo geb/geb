@@ -278,11 +278,64 @@ The `GebReportingSpec` class extends from `GebSpec` (so has the same customisati
 
 At the end of each test method a file will be written called «n»-«test method name».html, where «n» is the number of the test execution (e.g first test to run gets “1”, second gets “2” etc) and «test method name» is the name of the test method, in a directory inside the given report directory that matches the full class name. Given the class above, the reports would be written to `reports/MyTests`. If the class was in the package `my.app`, the reports would be written in the `reports/my/app/MyTests` directory.
 
+## Easyb
+
+The [Easyb][easyb] support is in the `easyb` jar.
+
+    <dependency>
+      <groupId>org.codehaus.geb</groupId>
+      <artifactId>geb-easyb</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+
+> Note that this jar does not depend on Easyb, so you need to provide this yourself.
+
+A new browser instance is created for *each story or scenario file* (read below for how to configure the browser/driver created).
+
+To use Geb with easyb, you simply bring in the `geb-easyb` jar and use it in your stories or scenarios by the easyb `using "geb"` directive.
+
+    using "geb"
+
+    scenario "scripting style", {
+
+        when "we go to google", {
+            go "http://google.com"
+        }
+
+        then "we are at google", {
+            page.title.shouldBe "Google"
+        }
+
+        when "we search for chuck", {
+            $("input", name: "q").value("chuck norris")
+            $("input", value: "Google Search").click()
+        }
+
+        then "we are now at the results page", {
+            page.title.shouldEndWith "Google Search"
+        }
+
+        and "we get straight up norris", {
+            $("li.g", 0).find("a.l").text().shouldStartWith "Chuck Norris"
+        }
+
+    }
+
+The nature of easyb means that the Geb API becomes very slightly different. To access the page object, you **must** reference it via that `page` property. Also, when manually changing the page class you would usually use the browser's `page(OtherPage)` method. With easyb, you must _set_ the `pageClass` property…
+
+    when "we change the page class", {
+        pageClass = OtherPage
+    }
+
+All other browser methods/properties such as `go()`, `to()`, `js`, `$()` etc. are available directly.
+
+> The easyb plugin does not currently support “reporting” like the JUnit and Spock plugins due to limitations in the currently available version of easyb. This will be addressed in the future.
+
 ## Grails
 
-Grails support is provided by the `grails-geb` plugin, and provides support for both Spock and JUnit (3 and 4) tests. Working with Spock requires installing the spock plugin separately.
+Grails support is provided by the `grails-geb` plugin, and provides support for both Spock, JUnit (3 and 4) tests and Easyb. Working with Spock requires installing the spock plugin separately, as does working with Easyb.
 
-> See the JUnit and Spock sections above for more info on how to write Geb tests with these tools
+> See the JUnit, Spock and Easyb sections above for more info on how to write Geb tests with these tools
 
 ### Writing Tests
 
@@ -297,6 +350,12 @@ If you are using Grails 1.2 and want to write JUnit tests, you subclass the `gra
 #### Spock
 
 To write Spock specs, you subclass `grails.plugin.geb.GebSpec`.
+
+#### Easyb
+
+To use Easyb, you use the `geb-grails` plugin in your Easyb stories or scenarios (instead of the normal `geb` plugin).
+
+> There is currently a classloader issue with the Grails Easyb plugin that makes it impossible to use page object classes that are defined outside of the current story or scenario. This limits the usefulness of the grails+geb+easyb for the time being. This will be addressed in future Easyb releases.
 
 ### Reports
 
