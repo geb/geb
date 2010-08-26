@@ -17,6 +17,7 @@ package geb
 import geb.internal.*
 import geb.navigator.Navigator
 import geb.js.JavascriptInterface
+import org.openqa.selenium.WebDriver
 
 class Page {
 
@@ -38,6 +39,10 @@ class Page {
 		this.browser = browser
 	}
 
+	WebDriver getDriver() {
+		browser.driver
+	}
+	
 	String toString() {
 		this.class.simpleName
 	}
