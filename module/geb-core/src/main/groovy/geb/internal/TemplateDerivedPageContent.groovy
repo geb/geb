@@ -14,11 +14,12 @@
  */
 package geb.internal
 
-import geb.Page
+import geb.*
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UnexpectedPageException
 import geb.navigator.Navigator
 import geb.internal.mixins.*
+import org.openqa.selenium.WebDriver
 
 abstract class TemplateDerivedPageContent implements PageContent {
 
@@ -43,6 +44,14 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		
 	Page getPage() {
 		_template.page
+	}
+	
+	Browser getBrowser() {
+		getPage().browser
+	}
+	
+	WebDriver getDriver() {
+		getBrowser().driver
 	}
 	
 	boolean isPresent() {
