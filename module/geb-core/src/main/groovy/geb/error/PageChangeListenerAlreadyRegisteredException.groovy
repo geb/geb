@@ -19,7 +19,7 @@ import geb.*
 class PageChangeListenerAlreadyRegisteredException extends GebException {
 
 	PageChangeListenerAlreadyRegisteredException(Browser browser, PageChangeListener listener) {
-		super("Attempt to register duplicate page change listener '$listener' for browser '$browser'".toString())
+		super("Attempt to register duplicate page change listener '${listener.toString()}' for browser '${browser.toString()}'")
 	}
 	
 }

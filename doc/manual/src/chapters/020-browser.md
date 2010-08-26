@@ -175,3 +175,30 @@ Here is an example:
     }
 
 The static `drive()` method takes all of the arguments that the `Browser` constructor takes, and a `Closure`. The closure is evaluated against created browser instance (i.e. it is the *delegate* of the closure). This enables a very convenient scripting environment.
+
+## Page Change Listening
+
+It is possible to be notified when a browser's page _instance_ changes (note that this is not necessarily when the browser makes a request to a new URL) using the `geb.PageChangeListener` interface.
+
+    import geb.PageChangeListener
+    
+    class EchoingPageChangeListener implements PageChangeListener {
+        void pageWillChange(Browser browser, Page oldPage, Page newPage) {
+            println "browser '$browser' changing page from '$oldPage' to '$newPage'"
+        }
+    }
+    
+    def browser = new Browser()
+    def listener = new EchoingPageChangeListener()
+    
+    browser.registerPageChangeListener(listener)
+
+As soon as a listener is registered, it's `pageWillChange()` method will be called with `newPage` as the current page and `oldPage` as `null`. Subsequently, each time the page changes `oldPage` will be the page that the browser currently has, and `newPage` will be the page that will soon be the browser's page.
+
+You can remove remove a listener at any time…
+
+    browser.removePageChangeListener(listener)
+
+The `removePageChangeListener()` returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
+
+Listener's cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a `geb.error.PageChangeListenerAlreadyRegisteredException` will be raised.

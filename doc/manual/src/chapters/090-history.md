@@ -7,6 +7,7 @@ This page lists the high level changes between versions of Geb.
 * Navigator objects now implement the Groovy truth (empty == false, non empty == true)
 * Introduced “js” short notation
 * Added “[easyb](easyb)” support (`geb-easyb` and Grails support)
+* Page change listening support through `geb.PageChangeListener`
 
 ## 0.4
 

@@ -129,8 +129,7 @@ class Browser {
 	}
 
 	def to(Map params, Class pageClass, Object[] args) {
-		page(pageClass)
-		page.to(params, *args)
+		createPage(pageClass).to(params, *args)
 	}
 	
 	void clearCookies() {
