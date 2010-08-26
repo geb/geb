@@ -26,7 +26,8 @@ class Page {
 	Browser browser
 	
 	@Delegate private NavigableSupport navigableSupport
-	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	
 	Page() {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)

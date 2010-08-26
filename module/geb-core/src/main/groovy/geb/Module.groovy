@@ -31,6 +31,7 @@ class Module extends TemplateDerivedPageContent {
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)

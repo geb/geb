@@ -1,18 +1,20 @@
-# Javascript
+# Javascript, AJAX and Dynamic Pages
 
-Geb provides some support over and above what WebDriver provides. It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`](javascriptexecutor)'s [`executeScript()`](execscript) method. 
+This section discusses how to deal with some of the challenges in testing and/or automating modern web applications.
+
+## The “js” object
+
+The browser instance exposes a “`js`” object that provides support for working with Javascript over and above what WebDriver provides. It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`](javascriptexecutor)'s [`executeScript()`](execscript) method. 
 
 > Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](execscript) in order to understand how type conversion works between the two worlds.
 
-Remember that you can get access to the driver instance via the browser…
+You can execute Javascript like you would with straight WebDriver using the driver instance via the browser…
 
     assert browser.driver.executeScript("return arguments[0];", 1) == 1
 
 This is a bit long winded, and as you would expect Geb uses the dynamism of Groovy to make life easier.
 
-## The “js” object
-
-The browser instance exposes a “`js`” object that provides the syntax sweetness. It is available implicitly in pages and modules.
+> The [JavascriptExecutor](javascriptexecutor) interface does not define any contract in regards to the driver's responsibility when there is some issue executing Javascript. All drivers however throw _some kind_ of exception when this happens.
 
 ### Accessing Variables
 
@@ -95,6 +97,56 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
         return true;
     """
 
-## Script Errors
+## Waiting
 
-The [JavascriptExecutor](javascriptexecutor) interface does not define any contract in regards to the driver's responsibility when there is some issue executing Javascript. All drivers however throw _some kind_ of exception when this happens.    
+Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX or Timers.
+
+There are three methods:
+
+    def waitFor(Closure condition)
+    def waitFor(Double timeoutSeconds, Closure condition)
+    def waitFor(Double timeoutSeconds, Double intervalSeconds, Closure condition)
+
+These methods all do the same thing, except that they used default values for parameters that are not part of their signature. **They are all available on browsers, pages and modules**.
+
+The `condition` parameter is a closure that is periodically (executed until it either **returns a true value** (according to the Groovy Truth) or a timeout is reached.
+
+The `timeoutSeconds` (default is `5`) parameter defines the number of seconds to wait for the condition to become true. Note that this value is an approximation, it's used in conjuction with the `intervalSeconds` value to determine how many times the condition should be tested rather than doing any actual timing. Non whole numbers can be used for this value (e.g. `2.5`)
+
+The `intervalSeconds` (default is `0.5`) parameter defines the number of seconds to wait after testing the condition to test it again if it did not pass. Non whole numbers can be used for this value (e.g. `2.5`). If this value is higher than the given `timeoutSeconds`, the condition will be tested once initially, then once again just before the timeout would occur.
+
+### Examples
+
+Here is an example showing one way of using `waitFor()` to deal with the situation where clicking a button invokes an AJAX request that creates a new `div` on it's completion.
+
+    import geb.*
+    
+    class DynamicPage extends Page {
+        static content = {
+            theButton { $("input", value: "Make Request") }
+            theResultDiv(required: false) { $("div#result") }
+        }
+        
+        def makeRequest() {
+            theButton.click()
+            waitFor { theResultDiv.present }
+        }
+    }
+
+    Browser.drive {
+        to DynamicPage
+        makeRequest()
+        assert theResultDiv.text() == "The Result"
+    }
+
+> Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: [section on required](required))
+
+Because the browser instance also implements the `waitFor()` method, the above could have been written as…
+
+    Browser.drive {
+        $("input", value: "Make Request")
+        waitFor { $("div#result").present }
+        assert $("div#result").text() == "The Result"
+    }
+
+It's generally preferable to put the waiting behind a method on the page or module so that it's reusable across tests.

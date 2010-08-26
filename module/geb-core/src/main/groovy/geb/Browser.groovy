@@ -16,6 +16,7 @@ package geb
 
 import geb.driver.*
 import geb.js.JavascriptInterface
+import geb.internal.WaitingSupport
 import geb.error.DriveException
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import org.openqa.selenium.WebDriver
@@ -27,6 +28,7 @@ class Browser {
 	
 	String baseUrl
 	
+	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	private final pageChangeListeners = new LinkedHashSet()
 	private _js
 	

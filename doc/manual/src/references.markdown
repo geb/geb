@@ -14,6 +14,7 @@
 [navigator]: navigator.html
 [page-navigation]: page-navigation.html
 [page-at]: pages.html#at_verification
+[required]: pages.html#required
 [drive]: browser.html#the_drive_method
 [content-dsl]: pages.html#the_content_dsl
 [defaultdriver]: browser.html#the_default_driver
