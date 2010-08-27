@@ -14,9 +14,9 @@
  */
 package geb
 
+import geb.js.*
 import geb.internal.*
 import geb.navigator.Navigator
-import geb.js.JavascriptInterface
 import org.openqa.selenium.WebDriver
 
 class Page {
@@ -29,6 +29,7 @@ class Page {
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
+	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport() { this.getJs() }
 	
 	Page() {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)

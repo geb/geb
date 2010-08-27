@@ -15,7 +15,7 @@
 package geb
 
 import geb.driver.*
-import geb.js.JavascriptInterface
+import geb.js.*
 import geb.internal.WaitingSupport
 import geb.error.DriveException
 import geb.error.PageChangeListenerAlreadyRegisteredException
@@ -29,6 +29,8 @@ class Browser {
 	String baseUrl
 	
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
+	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport() { this.getJs() }
+	
 	private final pageChangeListeners = new LinkedHashSet()
 	private _js
 	

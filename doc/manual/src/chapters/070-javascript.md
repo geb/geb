@@ -150,3 +150,78 @@ Because the browser instance also implements the `waitFor()` method, the above c
     }
 
 It's generally preferable to put the waiting behind a method on the page or module so that it's reusable across tests.
+
+## Alert and Confirm Dialogs
+
+WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust.
+
+The Geb methods **prevent** the browser from actually displaying the dialog, which is a good thing. This prevents the browser blocking while the dialog is displayed and causing your test to hang indefinitely.
+
+> Unexpected `alert()` and `confirm()` calls can have strange results. This is due to the nature of how Geb handles this internally. If you are seeing strange results, you may want to run your tests/scripts against a real browser and watch what happens to make sure there aren't `alert()`'s or `confirm()`'s being called that you aren't expecting. To do this, you need to disable Geb's handling by changing your code to not use the methods below.
+
+### alert()
+
+There are two methods that deal with `alert()` dialogs:
+
+    String withAlert(Closure actions)
+    void withNoAlert(Closure actions)
+
+The first method, `withAlert()`, is used to verify actions that will produce an `alert()` dialog. This method returns the alert message.
+
+Given the following HTML…
+
+    <input type="button" name="showAlert" onclick="alert('Bang!');" />
+
+The `withAlert()` method is used like so…
+
+    assert withAlert { $("input", name: "showAlert").click() } == "Bang!"
+
+If an alert dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
+
+The second method, `withNoAlert()`, is used to verify actions that will not produce an `alert()` dialog. If an alert dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
+
+Given the following HTML…
+
+    <input type="button" name="dontShowAlert" />
+
+The `withNoAlert()` method is used like so…
+
+    withNoAlert { $("input", name: "dontShowAlert").click() }
+
+> It's a good idea to use `withNoAlert()` when doing something that _might_ raise an alert. If you don't, the browser is going to raise a real alert dialog and sit there waiting for someone to click it which means your test is going to hang. Using `withNoAlert()` prevents this.
+
+### confirm()
+
+There are three methods that deal with `confirm()` dialogs:
+
+    String withConfirm(boolean ok, Closure actions)
+    String withConfirm(Closure actions) // defaults 'ok' to true
+    void withNoConfirm(Closure actions)
+
+The first method, `withConfirm()` (and it's ‘`ok`’ defaulted relative), is used to verify actions that will produce an `confirm()` dialog. This method returns the confirmation message. The `ok` parameter controls whether the `confirm()` call should return `true` or `false` (i.e. the user has clicked the “OK” or “Cancel” buttons).
+
+Given the following HTML…
+
+    <input type="button" name="showConfirm" onclick="confirm('Do you like Geb?');" />
+
+The `withConfirm()` method is used like so…
+
+    assert withConfirm(true) { $("input", name: "showConfirm").click() } == "Do you like Geb?"
+
+If a confirmation dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
+
+The second method, `withNoConfirm()`, is used to verify actions that will not produce an `confirm()` dialog. If a confirmation dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
+
+Given the following HTML…
+
+    <input type="button" name="dontShowConfirm" />
+
+The `withNoConfirm()` method is used like so…
+
+    withNoConfirm { $("input", name: "dontShowConfirm").click() }
+
+> It's a good idea to use `withNoConfirm()` when doing something that _might_ raise a a confirmation. If you don't, the browser is going to raise a real confirmation dialog and sit there waiting for someone to click it which means your test is going to hang. Using `withNoConfirm()` prevents this.
+
+### About prompt()
+
+Geb does not provide any support for prompt() due to it's infrequent and generally discouraged use.

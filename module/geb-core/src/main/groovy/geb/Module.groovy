@@ -14,10 +14,10 @@
  */
 package geb
 
+import geb.js.*
+import geb.internal.*
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
-import geb.js.JavascriptInterface
-import geb.internal.*
 
 class Module extends TemplateDerivedPageContent {
 
@@ -32,6 +32,7 @@ class Module extends TemplateDerivedPageContent {
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
+	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport() { this.getJs() }
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
