@@ -15,6 +15,7 @@
  */
 package geb.navigator
 
+import geb.Browser
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -25,6 +26,8 @@ import org.openqa.selenium.WebElement
  */
 abstract class Navigator implements Iterable<Navigator> {
 
+	abstract Browser getBrowser()
+	
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
 	 * CSS selector. Any CSS capabilities supported by the underlying WebDriver instance are supported.
@@ -175,7 +178,7 @@ abstract class Navigator implements Iterable<Navigator> {
 		List<WebElement> result = []
 		result.addAll allElements()
 		result.addAll navigator.allElements()
-		on(result)
+		on(getBrowser(), result)
 	}
 
 	/**
@@ -395,7 +398,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	Navigator findAll(Closure predicate) {
 		Collection<Navigator> results = super.findAll(predicate)
-		on results*.allElements().flatten()
+		on getBrowser(), results*.allElements().flatten()
 	}
 
 	/**
@@ -411,11 +414,12 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * the scenes: one for working with an empty context that keeps the code
 	 * for the other one, with most of the logic, simple.
 	 * </p>
+	 * @param browser the browser the content is attached to
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
-	static Navigator on(WebElement... contextElements) {
-		contextElements ? new NonEmptyNavigator(contextElements).unique() : EmptyNavigator.instance
+	static Navigator on(Browser browser, WebElement... contextElements) {
+		contextElements ? new NonEmptyNavigator(browser, contextElements).unique() : EmptyNavigator.instance
 	}
 
 	/**
@@ -425,11 +429,12 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * the scenes: one for working with an empty context that keeps the code
 	 * for the other one, with most of the logic, simple.
 	 * </p>
+	 * @param browser the browser the content is attached to
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Collection<? extends WebElement> contextElements) {
-		return contextElements ? new NonEmptyNavigator(contextElements).unique() : EmptyNavigator.instance
+	static Navigator on(Browser browser, Collection<? extends WebElement> contextElements) {
+		contextElements ? new NonEmptyNavigator(browser, contextElements).unique() : EmptyNavigator.instance
 	}
 
 	/**
@@ -439,12 +444,12 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * the scenes: one for working with an empty context that keeps the code
 	 * for the other one, with most of the logic, simple.
 	 * </p>
-	 * @param driver the page supplying the document element
+	 * @param browser the browser for which to create a navigator of it's entire content
 	 * @return new Navigator instance
 	 */
-	static Navigator on(WebDriver driver) {
-		def rootElement = driver?.findElement(By.tagName("html"))
-		rootElement ? new NonEmptyNavigator(rootElement) : EmptyNavigator.instance
+	static Navigator on(Browser browser) {
+		def rootElement = browser.driver.findElement(By.tagName("html"))
+		rootElement ? new NonEmptyNavigator(browser, rootElement) : EmptyNavigator.instance
 	}
 }
 

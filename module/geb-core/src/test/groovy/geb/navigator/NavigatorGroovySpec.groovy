@@ -4,20 +4,17 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import spock.lang.Shared
 import spock.lang.Specification
+import geb.Browser
 
 class NavigatorGroovySpec extends Specification {
 
-	@Shared WebDriver driver
+	@Shared Browser browser
 	@Shared geb.navigator.Navigator onPage
 
 	def setupSpec() {
-		driver = new HtmlUnitDriver()
-		driver.get(getClass().getResource("/test.html") as String)
-		onPage = Navigator.on(driver)
-	}
-
-	def cleanupSpec() {
-		driver.close()
+		browser = new Browser()
+		browser.go(getClass().getResource("/test.html") as String)
+		onPage = Navigator.on(browser)
 	}
 
 	def "can use any(Closure) on Navigator"() {

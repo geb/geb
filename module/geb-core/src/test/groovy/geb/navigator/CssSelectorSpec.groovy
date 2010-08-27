@@ -8,20 +8,18 @@ import spock.lang.Unroll
 import static geb.navigator.SelectorType.*
 import geb.navigator.Navigator
 import geb.navigator.CssSelector
+import geb.Browser
 
 class CssSelectorSpec extends Specification {
 
+	@Shared Browser browser
 	@Shared WebDriver driver
 	@Shared Navigator onPage
 
 	def setupSpec() {
-		driver = new HtmlUnitDriver()
-		driver.get(getClass().getResource("/test.html") as String)
-		onPage = Navigator.on(driver)
-	}
-
-	def cleanupSpec() {
-		driver.close()
+		browser = new Browser()
+		browser.go(getClass().getResource("/test.html") as String)
+		onPage = Navigator.on(browser)
 	}
 	
 	def "selector type matching rules"() {

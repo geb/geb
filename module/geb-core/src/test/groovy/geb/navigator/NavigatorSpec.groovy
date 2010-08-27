@@ -1,5 +1,6 @@
 package geb.navigator
 
+import geb.Browser
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
@@ -11,17 +12,15 @@ import org.openqa.selenium.WebElement
 
 class NavigatorSpec extends Specification {
 
+	@Shared Browser browser
 	@Shared WebDriver driver
 	@Shared Navigator page
 
 	def setupSpec() {
-		driver = new HtmlUnitDriver()
-		driver.get(getClass().getResource("/test.html") as String)
-		page = Navigator.on(driver)
-	}
-
-	def cleanupSpec() {
-		driver.close()
+		browser = new Browser()
+		driver = browser.driver
+		browser.go(getClass().getResource("/test.html") as String)
+		page = Navigator.on(browser)
 	}
 
 	def "getElement by index"() {
@@ -803,7 +802,7 @@ class NavigatorSpec extends Specification {
 		given:
 		def element1 = Mock(WebElement)
 		def element2 = Mock(WebElement)
-		def navigator = new NonEmptyNavigator(element1, element2)
+		def navigator = new NonEmptyNavigator(browser, element1, element2)
 
 		when: navigator.click()
 
@@ -812,5 +811,4 @@ class NavigatorSpec extends Specification {
 		1 * element2.click()
 		0 * _
 	}
-
 }

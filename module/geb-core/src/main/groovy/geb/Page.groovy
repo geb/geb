@@ -33,7 +33,7 @@ class Page {
 	
 	Page() {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
-		navigableSupport = new NavigableSupport(this, contentTemplates) { Navigator.on(browser.driver) }
+		navigableSupport = new NavigableSupport(this, contentTemplates) { Navigator.on(browser) }
 	}
 	
 	void setBrowser(Browser browser) {

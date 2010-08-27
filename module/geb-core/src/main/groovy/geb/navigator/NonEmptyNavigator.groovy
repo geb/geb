@@ -1,5 +1,6 @@
 package geb.navigator
 
+import geb.Browser
 import java.util.regex.Pattern
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -16,24 +17,35 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	private final List<WebElement> contextElements
+	final Browser browser
 
-	NonEmptyNavigator(WebElement... contextElements) {
+	NonEmptyNavigator(Browser browser, WebElement... contextElements) {
+		this.browser = browser
 		this.contextElements = contextElements as List
 	}
 
-	NonEmptyNavigator(Collection<? extends WebElement> contextElements) {
+	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
+		this.browser = browser
 		this.contextElements = contextElements as List
 	}
 
+	protected Navigator navigatorFor(Collection<? extends WebElement> contextElements) {
+		on(browser, contextElements)
+	}
+
+	protected Navigator navigatorFor(WebElement... contextElements) {
+		on(browser, contextElements)
+	}
+	
 	Navigator find(String selectorString) {
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
 			contextElements.each {
 				list.addAll it.findElements(By.cssSelector(selectorString))
 			}
-			on(list)
+			navigatorFor(list)
 		} else {
-			on CssSelector.findByCssSelector(allElements(), selectorString)
+			navigatorFor CssSelector.findByCssSelector(allElements(), selectorString)
 		}
 	}
 
@@ -44,7 +56,7 @@ class NonEmptyNavigator extends Navigator {
 				list << element
 			}
 		}
-		on list
+		navigatorFor list
 	}
 
 	Navigator find(Map<String, Object> predicates, String selector) {
@@ -52,13 +64,13 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator filter(String selectorString) {
-		on contextElements.findAll { element ->
+		navigatorFor contextElements.findAll { element ->
 			CssSelector.matches(element, selectorString)
 		}
 	}
 
 	Navigator filter(Map<String, Object> predicates) {
-		on contextElements.findAll { matches(it, predicates) }
+		navigatorFor contextElements.findAll { matches(it, predicates) }
 	}
 
 	Navigator filter(Map<String, Object> predicates, String selector) {
@@ -66,11 +78,11 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator getAt(int index) {
-		on getElement(index)
+		navigatorFor getElement(index)
 	}
 
 	Navigator getAt(Range range) {
-		on getElements(range)
+		navigatorFor getElements(range)
 	}
 
 	Navigator getAt(EmptyRange range) {
@@ -78,7 +90,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator getAt(Collection indexes) {
-		on getElements(indexes)
+		navigatorFor getElements(indexes)
 	}
 
 	Collection<WebElement> allElements() {
@@ -108,52 +120,52 @@ class NonEmptyNavigator extends Navigator {
 		} else if (size == 1) {
 			EmptyNavigator.instance
 		} else {
-			on(contextElements - contextElements[index])
+			navigatorFor(contextElements - contextElements[index])
 		}
 	}
 
 	Navigator next() {
-		on collectElements {
+		navigatorFor collectElements {
 			it.findElement By.xpath("following-sibling::*")
 		}
 	}
 
 	Navigator next(String selectorString) {
-		on collectElements {
+		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("following-sibling::*"))
 			siblings.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator previous() {
-		on collectElements {
+		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*"))
 			siblings ? siblings.last() : EMPTY_LIST
 		}
 	}
 
 	Navigator previous(String selectorString) {
-		on collectElements {
+		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
 			siblings.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator parent() {
-		on collectElements {
+		navigatorFor collectElements {
 			it.findElement By.xpath("parent::*")
 		}
 	}
 
 	Navigator parent(String selectorString) {
-		on collectElements {
+		navigatorFor collectElements {
 			def parents = it.findElements(By.xpath("ancestor::*")).reverse()
 			parents.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator children() {
-		on collectElements {
+		navigatorFor collectElements {
 			it.findElements By.xpath("child::*")
 		}
 	}
@@ -163,7 +175,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator siblings() {
-		on collectElements {
+		navigatorFor collectElements {
 			it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
 		}
 	}
@@ -173,7 +185,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator unique() {
-		new NonEmptyNavigator(contextElements.unique())
+		new NonEmptyNavigator(this.browser, contextElements.unique())
 	}
 
 	boolean hasClass(String valueToContain) {
@@ -238,15 +250,15 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator first() {
-		on firstElement()
+		navigatorFor firstElement()
 	}
 
 	Navigator last() {
-		on lastElement()
+		navigatorFor lastElement()
 	}
 
 	Navigator tail() {
-		on contextElements.tail()
+		navigatorFor contextElements.tail()
 	}
 
 	Navigator verifyNotEmpty() {
@@ -259,7 +271,7 @@ class NonEmptyNavigator extends Navigator {
 
 	def methodMissing(String name, arguments) {
 		if (!arguments) {
-			on collectElements {
+			navigatorFor collectElements {
 				it.findElements By.name(name)
 			}
 		} else {

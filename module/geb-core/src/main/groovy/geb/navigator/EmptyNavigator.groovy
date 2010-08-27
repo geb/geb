@@ -3,6 +3,7 @@ package geb.navigator
 import org.openqa.selenium.WebElement
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
+import geb.Browser
 
 /**
  * Implementation of an empty Navigator object - helps keep the other code simple.
@@ -16,6 +17,8 @@ class EmptyNavigator extends Navigator {
 		EmptyNavigator.metaClass = mc
 	}
 
+	Browser getBrowser() { null }
+	
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
 	Navigator find(String selector) { this }
