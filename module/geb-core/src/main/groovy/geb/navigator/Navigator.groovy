@@ -19,6 +19,7 @@ import geb.Browser
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
+import geb.js.JQueryAdapter
 
 /**
  * Navigator is a jQuery-style DOM traversal tool that wraps a set of WebDriver WebElements.
@@ -407,6 +408,13 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	abstract Navigator verifyNotEmpty()
 
+	/**
+	 * Returns an adapter for calling jQuery methods on the elements in this navigator.
+	 */
+	JQueryAdapter getJquery() {
+		new JQueryAdapter(this)
+	}
+	
 	/**
 	 * Factory method to create an initial Navigator instance.
 	 * <p>

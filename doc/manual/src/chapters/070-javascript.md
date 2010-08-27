@@ -225,3 +225,78 @@ The `withNoConfirm()` method is used like so…
 ### About prompt()
 
 Geb does not provide any support for prompt() due to it's infrequent and generally discouraged use.
+
+## jQuery Integration
+
+Geb has special support for the [jQuery javascript library](jquery). Navigator objects have a special adapter that makes calling jQuery methods against the underlying DOM elements simple. This is best explained by example.
+
+> The jQuery integration only works when the pages you are working with include jQuery, Geb does not install it in the page for you.
+
+Consider the following page:
+
+    <html>
+    <head>
+        <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $("#a").mouseover(function() {
+                   $("b").show(); 
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="a"></div>
+        <div id="b" style="display:none;"><a href="http://geb.codehaus.org">Geb!</a></div>
+    </body>
+    </html>
+
+We want to click the Geb link, but can't because it's hidden (WebDriver does not let you interact with hidden elements). The div containing the link (div “a”) is only displayed when the mouse moves over div “a”.
+
+The jQuery library provides convenient methods for triggering browser events. We can use this to simulate the mouse being moved over the div “a”.
+
+In straight jQuery JavaScript we would do…
+
+    jQuery("div#a").mouseover();
+
+Which we could invoke via Geb easy enough…
+
+    js.exec 'jQuery("div#a").mouseover();'
+
+That will work, but can be inconvenient as it duplicates content definitions in our Geb pages. Geb's jQuery integration allows you to use your defined content in Geb with jQuery. Here is how we could call the `mouseover` jQuery function on an element from Geb…
+
+    $("div#a").jquery.mouseover();
+
+To be clear, that is Groovy (not JavaScript code). It can be used with pages…
+
+    import geb.*
+    
+    class ExamplePage extends Page {
+        static content = {
+            divA { $("#a") }
+            divB { $("#b") }
+            gebLink { divB.find("a") }
+        }
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        // div b is not showing
+        divA.jquery.mouseover()
+        // div b is showing now
+        gebLink.click()
+    }
+
+The `jquery` property of a navigator is conceptually equivalent to a jQuery object for _all_ of the navigator's matched page elements. 
+
+The methods can also take arguments…
+
+    $("#a").jquery.trigger('mouseover')
+
+The same set of restricted types as allowed by WebDriver's [`executeScript()`](execscript) method are permitted here.
+
+All methods called on the `jquery` property _always_ return the navigator instance that the `jquery` property is attached to.
+
+### Why?
+
+This functionality was developed to make triggering mouse related events easier. Some applications are very sensitive to mouse events and triggering these events in an automated environment is a challenge. jQuery provides a good API for faking these events which makes for a good solution.

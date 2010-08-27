@@ -10,6 +10,7 @@ This page lists the high level changes between versions of Geb.
 * Page change listening support through `geb.PageChangeListener`
 * `waitFor()` methods added, making dealing with dynamic pages easier
 * Support for `alert()` and `confirm()` dialogs
+* Added jQuery integration
 
 ## 0.4
 
