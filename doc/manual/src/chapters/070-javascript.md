@@ -257,7 +257,7 @@ The jQuery library provides convenient methods for triggering browser events. We
 
 In straight jQuery JavaScript we would do…
 
-    jQuery("div#a").mouseover();
+    jQuery("div#a").mouseover()
 
 Which we could invoke via Geb easy enough…
 
@@ -265,7 +265,7 @@ Which we could invoke via Geb easy enough…
 
 That will work, but can be inconvenient as it duplicates content definitions in our Geb pages. Geb's jQuery integration allows you to use your defined content in Geb with jQuery. Here is how we could call the `mouseover` jQuery function on an element from Geb…
 
-    $("div#a").jquery.mouseover();
+    $("div#a").jquery.mouseover()
 
 To be clear, that is Groovy (not JavaScript code). It can be used with pages…
 
