@@ -331,6 +331,10 @@ All other browser methods/properties such as `go()`, `to()`, `js`, `$()` etc. ar
 
 > The easyb plugin does not currently support “reporting” like the JUnit and Spock plugins due to limitations in the currently available version of easyb. This will be addressed in the future.
 
+## Cucumber (Cuke4Duke)
+
+Geb doesn't offer any explicit integration with [Cucumber](http://cukes.info/ "Cucumber - Making BDD fun") (through [Cuke4Duke](http://wiki.github.com/aslakhellesoy/cuke4duke/ "Home - cuke4duke - GitHub")). It does however work with it and there is an [example project available](http://github.com/geb/geb-example-cuke4duke "geb's geb-example-cuke4duke at master - GitHub") to show you how to put it together.
+
 ## Grails
 
 Grails support is provided by the `grails-geb` plugin, and provides support for both Spock, JUnit (3 and 4) tests and Easyb. Working with Spock requires installing the spock plugin separately, as does working with Easyb.
