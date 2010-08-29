@@ -109,5 +109,8 @@ abstract class TemplateDerivedPageContent implements PageContent {
 			throw new UnexpectedPageException(this, potentialPageClasses)
 		}
 	}
-	
+
+	boolean asBoolean() {
+		_navigator.asBoolean()
+	}
 }
