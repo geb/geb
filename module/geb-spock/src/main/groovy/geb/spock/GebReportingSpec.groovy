@@ -41,7 +41,7 @@ class GebReportingSpec extends GebSpec {
 	 */
 	Reporter createReporter() {
 		def reportDir = getReportDir()
-		reportDir ? new PageSourceReporter(reportDir, this.class, true) : null
+		reportDir ? new ScreenshotAndPageSourceReporter(reportDir, this.class, true) : null
 	}
 	
 	/**

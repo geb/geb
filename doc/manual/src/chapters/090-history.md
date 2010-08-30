@@ -11,6 +11,7 @@ This page lists the high level changes between versions of Geb.
 * `waitFor()` methods added, making dealing with dynamic pages easier
 * Support for `alert()` and `confirm()` dialogs
 * Added jQuery integration
+* Reporting integration classes (e.g. GebReportingSpec) now save a screenshot if using the FirefoxDriver
 
 ## 0.4
 
