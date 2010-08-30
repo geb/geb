@@ -33,6 +33,12 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 					<input type="button" name="noAlert" />
 					<input type="button" name="hasConfirm" onclick="confirmResult = confirm(++i);" />
 					<input type="button" name="noConfirm" />
+					
+					<input type="button" name="hasAlertReload" onclick="alert(++i); window.location.reload();" />
+					<input type="button" name="noAlertReload" onclick="window.location.reload();"/>
+					<input type="button" name="hasConfirmReload" onclick="confirmResult = confirm(++i); window.location.reload();" />
+					<input type="button" name="noConfirmReload" onclick="window.location.reload();" />
+					
 				</body>
 				</html>
 			"""
@@ -54,11 +60,22 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		rationalise(withAlert { hasAlert().click() }) == 1
 	}
 	
+	def "expect alert with page change"() {
+		expect:
+		withAlert { hasAlertReload().click() } == true
+	}
+	
 	def "expect alert but don't get it"() {
 		when:
 		withAlert { noAlert().click() }
 		then:
 		thrown(AssertionError)
+	}
+
+	def "expect alert but don't get it with page change"() {
+		expect:
+		// no way of knowing if alert happened or not
+		withAlert { noAlertReload().click() } == true
 	}
 	
 	def "no alert and don't get one"() {
@@ -68,11 +85,25 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		notThrown(AssertionError)
 	}
 
+	def "no alert and don't get one with page change"() {
+		when:
+		withNoAlert { noAlertReload().click() }
+		then:
+		notThrown(AssertionError)
+	}
+
 	def "no alert and do get one"() {
 		when:
 		withNoAlert { hasAlert().click() }
 		then:
 		thrown(AssertionError)
+	}
+
+	def "no alert and do get one with page change"() {
+		when:
+		withNoAlert { hasAlertReload().click() }
+		then:
+		notThrown(AssertionError)
 	}
 	
 	def "nested alerts"() {
@@ -100,6 +131,11 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		rationalise(withConfirm { hasConfirm().click() }) == 3
 		confirmResult == true
 	}
+
+	def "handle confirm with page change"() {
+		expect:
+		withConfirm(true) { hasConfirmReload().click() } == true
+	}
 	
 	def "expect confirm but don't get it"() {
 		when:
@@ -107,19 +143,31 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		then:
 		thrown(AssertionError)
 	}
+
+	def "expect confirm but don't get it with page change"() {
+		expect:
+		withConfirm { noConfirmReload().click() } == true
+	}
 	
 	def "no confirm and don't get one"() {
 		when:
-		withNoAlert { noConfirm().click() }
+		withNoConfirm { noConfirm().click() }
 		then:
 		notThrown(AssertionError)
 	}
 
-	def "no confirm and do get one"() {
+	def "no confirm and don't get one with page change"() {
 		when:
-		withNoConfirm { hasConfirm().click() }
+		withNoConfirm { noConfirmReload().click() }
 		then:
-		thrown(AssertionError)
+		notThrown(AssertionError)
+	}
+
+	def "no confirm and do get one with page change"() {
+		when:
+		withNoConfirm { hasConfirmReload().click() }
+		then:
+		notThrown(AssertionError)
 	}
 	
 	def "nested confirms"() {

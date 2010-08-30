@@ -190,6 +190,8 @@ The `withNoAlert()` method is used like so…
 
 > It's a good idea to use `withNoAlert()` when doing something that _might_ raise an alert. If you don't, the browser is going to raise a real alert dialog and sit there waiting for someone to click it which means your test is going to hang. Using `withNoAlert()` prevents this.
 
+A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withAlert()`/`withNoAlert()`). We can detect that the browser page did change, but we can't know if `alert()` did or did not get called before the page change. If a page change was detected the `withAlert()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoAlert()` will succeed.
+
 ### confirm()
 
 There are three methods that deal with `confirm()` dialogs:
@@ -221,6 +223,8 @@ The `withNoConfirm()` method is used like so…
     withNoConfirm { $("input", name: "dontShowConfirm").click() }
 
 > It's a good idea to use `withNoConfirm()` when doing something that _might_ raise a a confirmation. If you don't, the browser is going to raise a real confirmation dialog and sit there waiting for someone to click it which means your test is going to hang. Using `withNoConfirm()` prevents this.
+
+A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withConfirm()`/`withNoConfirm()`). We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change. If a page change was detected the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
 
 ### About prompt()
 

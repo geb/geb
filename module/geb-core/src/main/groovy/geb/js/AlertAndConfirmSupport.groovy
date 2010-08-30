@@ -16,6 +16,7 @@ package geb.js
 
 class AlertAndConfirmSupport {
 
+	private final static UNKNOWN = -1
 	private final Closure javascriptInterfaceFactory
 	
 	AlertAndConfirmSupport(Closure javascriptInterfaceFactory) {
@@ -55,11 +56,21 @@ class AlertAndConfirmSupport {
 	}
 	
 	private popLastDialogMessage(JavascriptInterface js) {
-		js.exec "return window.geb.dialogMessages.pop();"
+		js.exec """
+			if (window.geb) {
+				return window.geb.dialogMessages.pop();
+			} else {
+				return $UNKNOWN;
+			}
+		"""
 	}
 
 	private popLastDialogFunctionOnto(JavascriptInterface js, String onto) {
-		js.exec "window.$onto = window.geb.dialogFunctions.pop();"
+		js.exec """
+			if (window.geb) {
+				window.$onto = window.geb.dialogFunctions.pop();
+			}
+		"""
 	}
 	
 	private installAlert(JavascriptInterface js) {
@@ -123,38 +134,42 @@ class AlertAndConfirmSupport {
 		captureDialog(this.&installConfirm.curry(ok), 'confirm', actions)
 	}
 
-	String withAlert(Closure actions) {
+	def withAlert(Closure actions) {
 		def message = captureAlert(actions)
 		if (message == null) {
 			throw new AssertionError("no browser alert() was raised")
+		} else if (message == UNKNOWN) {
+			true
 		} else {
-			message
+			message.toString()
 		}
 	}
 
 	void withNoAlert(Closure actions) {
 		def message = captureAlert(actions)
-		if (message != null) {
+		if (message != null && message != UNKNOWN) {
 			throw new AssertionError("an unexpected browser alert() was raised (message: $message)")
 		}
 	}
 
-	String withConfirm(Closure actions) {
+	def withConfirm(Closure actions) {
 		withConfirm(true, actions)
 	}
 	
-	String withConfirm(boolean ok, Closure actions) {
+	def withConfirm(boolean ok, Closure actions) {
 		def message = captureConfirm(ok, actions)
 		if (message == null) {
 			throw new AssertionError("no browser confirm() was raised")
+		} else if (message == UNKNOWN) {
+			true
 		} else {
-			message
+			message.toString()
 		}
 	}
 
 	void withNoConfirm(Closure actions) {
 		def message = captureConfirm(false, actions)
-		if (message != null) {
+		if (message != null && message != UNKNOWN) {
 			throw new AssertionError("an unexpected browser confirm() was raised (message: $message)")
 		}
 	}
