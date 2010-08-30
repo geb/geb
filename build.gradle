@@ -237,7 +237,7 @@ project(':module:geb-easyb') {
 	
 	modifyPom { pom ->
 		// User provides their own easyb
-		pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "easyb" })
+		pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.easyb" })
 	}
 }
 
