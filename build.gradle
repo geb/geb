@@ -166,7 +166,7 @@ project(':module:geb-spock') {
 	
 	modifyPom { pom ->
 		// User provides their own spock
-		pom.dependencies.findAll { it.groupId == "org.spockframework" }*.scope = "provided"
+		pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.spockframework" })
 	}
 }
 
@@ -181,7 +181,7 @@ project(':module:geb-junit3') {
 	
 	modifyPom { pom ->
 		// User provides their own junit
-		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
+		pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
 	}
 }
 
@@ -196,7 +196,7 @@ project(':module:geb-junit4') {
 	
 	modifyPom { pom ->
 		// User provides their own junit
-		pom.dependencies.findAll { it.groupId == "junit" }*.scope = "provided"
+		pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
 	}
 }
 
@@ -237,7 +237,7 @@ project(':module:geb-easyb') {
 	
 	modifyPom { pom ->
 		// User provides their own easyb
-		pom.dependencies.findAll { it.groupId == "easyb" }*.scope = "provided"
+		pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "easyb" })
 	}
 }
 
