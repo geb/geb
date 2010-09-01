@@ -206,6 +206,10 @@ These methods do not take indexes as they automatically select the first matchin
 
 Navigator objects implement the `click()` method, which will send a click event to the first matched item.
 
+## Determining Visibility
+
+Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not. The `displayed` property of a navigator object that doesn't match anything is always `false`
+
 ## Accessing tag name, attributes, text and classes
 
 The `name()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.

@@ -1,6 +1,7 @@
 package geb.navigator
 
 import geb.Browser
+import geb.test.util.*
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
@@ -10,14 +11,12 @@ import spock.lang.Specification
 import spock.lang.Unroll
 import org.openqa.selenium.WebElement
 
-class NavigatorSpec extends Specification {
+class NavigatorSpec extends GebSpec {
 
-	@Shared Browser browser
 	@Shared WebDriver driver
 	@Shared Navigator page
 
 	def setupSpec() {
-		browser = new Browser()
 		driver = browser.driver
 		browser.go(getClass().getResource("/test.html") as String)
 		page = Navigator.on(browser)
@@ -796,6 +795,13 @@ class NavigatorSpec extends Specification {
 
 		where:
 		navigator = page.find("#does_not_exist")
+	}
+	
+	def "displayed property"() {
+		expect:
+		page.find("p").displayed // first p in page is displayed
+		page.find("#hidden-paragraph").displayed == false
+		page.find(".non-existant").displayed == false
 	}
 
 	def click() {

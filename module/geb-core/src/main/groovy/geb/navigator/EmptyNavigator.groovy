@@ -85,6 +85,8 @@ class EmptyNavigator extends Navigator {
 
 	int size() { 0 }
 
+	boolean isDisplayed() { false }
+	
 	String tag() { null }
 
 	String text() { null }

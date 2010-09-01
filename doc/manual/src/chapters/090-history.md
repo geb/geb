@@ -12,6 +12,7 @@ This page lists the high level changes between versions of Geb.
 * Support for `alert()` and `confirm()` dialogs
 * Added jQuery integration
 * Reporting integration classes (e.g. GebReportingSpec) now save a screenshot if using the FirefoxDriver
+* Added `displayed` property to navigator objects for determining visibility
 
 ## 0.4
 

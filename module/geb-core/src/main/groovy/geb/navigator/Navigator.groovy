@@ -264,6 +264,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract boolean is(String tag)
 
 	/**
+	 * Uses the isDisplayed() of RenderedWebElement to determine if the first element in the context is displayed.
+	 * If the context is empty, or the first element is not a RenderedWebElement, false will be returned.
+	 * 
+	 * @return true if the first element is displayed
+	 */
+	abstract boolean isDisplayed()
+	
+	/**
 	 * Shorthand for <code>hasAttribute("disabled")</code>.
 	 * @return true when the first element is disabled
 	 */

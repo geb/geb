@@ -4,6 +4,7 @@ import geb.Browser
 import java.util.regex.Pattern
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.RenderedWebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
@@ -196,6 +197,11 @@ class NonEmptyNavigator extends Navigator {
 		contextElements.any { tag.equalsIgnoreCase(it.tagName) }
 	}
 
+	boolean isDisplayed() {
+		def element = firstElement()
+		element instanceof RenderedWebElement ? element.displayed : false
+	}
+	
 	String tag() {
 		firstElement().tagName
 	}
