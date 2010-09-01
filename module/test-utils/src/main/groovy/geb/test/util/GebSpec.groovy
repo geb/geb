@@ -28,7 +28,6 @@ class GebSpec extends GebReportingSpec {
 	Browser createBrowser() {
 		def browser = super.createBrowser()
 		if (browser.driver instanceof HtmlUnitDriver) {
-			println "ENABLING JAVASCRIPT"
 			browser.driver.javascriptEnabled = true
 		}
 		browser
