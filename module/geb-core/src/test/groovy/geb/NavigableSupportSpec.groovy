@@ -41,48 +41,57 @@ class NavigableSupportSpec extends GebSpecWithServer {
 	def "no args"() {
 		expect:
 		$().tag() == "html"
+		// find().tag() == "html" // doesn't work due to Groovy not dispatching to our method
 	}
 
 	def "just index"() {
 		expect:
 		$(0).tag() == "html"
+		find(0).tag() == "html"
 	}
 
 	def "just selector"() {
 		expect:
 		$("p").size() == 3
+		find("p").size() == 3
 	}
 	
 	def "just attributes"() {
 		expect:
 		$(class: "a").text() == "a"
+		find(class: "a").text() == "a"
 	}
 
 	def "just attributes - but text"() {
 		expect:
 		$(text: "a").text() == "a"
+		find(text: "a").text() == "a"
 	}
 
 	def "selector and index"() {
 		expect:
 		$("p", 1).text() == "b"
+		find("p", 1).text() == "b"
 	}
 
 	def "selector and attributes"() {
 		expect:
 		$("p", class: "c").text() == "c"
+		find("p", class: "c").text() == "c"
 	}
 	
 	@Ignore // See NavigableSupport
 	def "attributes and index"() {
 		expect:
 		$(1, class: ~/\w/).text() == "b"
+		find(1, class: ~/\w/).text() == "b"
 	}
 
 	@Ignore // See NavigableSupport
 	def "selector, attributes and index"() {
 		expect:
 		$("p", 1, class: ~/\w/).text() == "b"
+		find("p", 1, class: ~/\w/).text() == "b"
 	}
 	
 	def "delegating missing properties to the navigator"() {

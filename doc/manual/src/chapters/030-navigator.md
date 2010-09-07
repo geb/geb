@@ -23,6 +23,8 @@ All arguments are optional, meaning the following calls are all valid:
     $(0)
     $(title: "something")
 
+> There is an alias for the dollar function named “find” if a method named “$” is not to your test (a current limitation of Groovy prevents us supporting a `find()` method like `$()` though, this will be fixed in later versions).
+
 ### CSS Selectors
 
 You can use any CSS selector that the underlying `WebDriver` supports…

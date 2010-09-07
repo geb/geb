@@ -13,6 +13,7 @@ This page lists the high level changes between versions of Geb.
 * Added jQuery integration
 * Reporting integration classes (e.g. GebReportingSpec) now save a screenshot if using the FirefoxDriver
 * Added `displayed` property to navigator objects for determining visibility
+* Added `find` as an alias for `$` (e.g. `find("div.section")`)
 
 ## 0.4
 

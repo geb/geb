@@ -45,25 +45,49 @@ class NavigableSupport implements Navigable {
 			throw new UndefinedPageContentException(this, name)
 		}
 	}
+
+	Navigator find() {
+		getNavigator()
+	}
 	
 	Navigator $() {
 		getNavigator()
+	}
+
+	Navigator find(int index) {
+		getNavigator()[index]
 	}
 	
 	Navigator $(int index) {
 		getNavigator()[index]
 	}
+
+	Navigator find(String selector) {
+		getNavigator().find(selector)
+	}
 	
 	Navigator $(String selector) {
 		getNavigator().find(selector)
+	}
+
+	Navigator find(Map attributes) {
+		getNavigator().find(attributes)
 	}
 	
 	Navigator $(Map attributes) {
 		getNavigator().find(attributes)
 	}
+
+	Navigator find(String selector, int index) {
+		getNavigator().find(selector, index)
+	}
 	
 	Navigator $(String selector, int index) {
 		getNavigator().find(selector, index)
+	}
+
+	Navigator find(Map attributes, String selector) {
+		getNavigator().find(attributes, selector)
 	}
 	
 	Navigator $(Map attributes, String selector) {
