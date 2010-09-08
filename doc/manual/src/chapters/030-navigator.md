@@ -208,6 +208,14 @@ These methods do not take indexes as they automatically select the first matchin
 
 Navigator objects implement the `click()` method, which will send a click event to the first matched item.
 
+There are also `click(Class)` and `click(List<Class>)` methods that are analogous to the browser object's [`page(Class)` and `page(List<Class>)` methods respectively][changing-pages]. This allow page changes to be specified at the same time as click actions.
+    
+For example…
+
+    $("input.loginButton").click(LoginPage)
+
+Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)`.
+
 ## Determining Visibility
 
 Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not. The `displayed` property of a navigator object that doesn't match anything is always `false`

@@ -1,6 +1,7 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Page
 import java.util.regex.Pattern
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -237,6 +238,16 @@ class NonEmptyNavigator extends Navigator {
 
 	void click() {
 		contextElements*.click()
+	}
+
+	void click(Class<? extends Page> pageClass) {
+		click()
+		browser.page(pageClass)
+	}
+
+	void click(List<Class<? extends Page>> potentialPageClasses) {
+		click()
+		browser.page(potentialPageClasses)
 	}
 
 	int size() {

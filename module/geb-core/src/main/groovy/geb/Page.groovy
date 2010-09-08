@@ -48,10 +48,6 @@ class Page {
 		this.class.simpleName
 	}
 	
-	/**
-	 * To be implemented by page subclasses to check that the current
-	 * actual page is the page for this page object.
-	 */
 	boolean verifyAt() {
 		def verifier = this.class.at?.clone()
 		if (verifier) {
@@ -60,6 +56,14 @@ class Page {
 			verifier()
 		} else {
 			true
+		}
+	}
+	
+	boolean verifyAtSafely() {
+		try {
+			verifyAt()
+		} catch (AssertionError e) {
+			false
 		}
 	}
 	

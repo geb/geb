@@ -16,8 +16,8 @@ package geb.error
 
 class UnexpectedPageException extends GebException {
 
-	UnexpectedPageException(container, List<Class> potentials) {
-		super("Clicking $container resulted in unexpected page (given potentials: $potentials)")
+	UnexpectedPageException(List<Class> potentials) {
+		super("unable to find page match (given potentials: $potentials)")
 	}
 
 }

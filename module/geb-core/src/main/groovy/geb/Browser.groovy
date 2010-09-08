@@ -19,6 +19,7 @@ import geb.js.*
 import geb.internal.WaitingSupport
 import geb.error.DriveException
 import geb.error.PageChangeListenerAlreadyRegisteredException
+import geb.error.UnexpectedPageException
 import org.openqa.selenium.WebDriver
 
 class Browser {
@@ -90,7 +91,24 @@ class Browser {
 	void page(Class pageClass) {
 		page(createPage(pageClass))
 	}
-
+	
+	void page(List<Class<? extends Page>> potentialPageClasses) {
+		def potentialPageClassesClone = potentialPageClasses.clone()
+		def match = null
+		while (match == null && !potentialPageClassesClone.empty) {
+			def potential = createPage(potentialPageClassesClone.remove(0))
+			if (potential.verifyAtSafely()) {
+				match = potential
+			}
+		}
+		
+		if (match) {
+			page(match)
+		} else {
+			throw new UnexpectedPageException(potentialPageClasses)
+		}
+	}
+	
 	void page(Page page) {
 		informPageChangeListeners(this.page, page)
 		this.page = page

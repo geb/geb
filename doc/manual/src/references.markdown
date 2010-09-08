@@ -12,10 +12,12 @@
 [chromedriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html
 [browser]: browser.html
 [navigator]: navigator.html
+[clicking]: navigator.html#clicking
 [page-navigation]: page-navigation.html
 [page-at]: pages.html#at_verification
 [required]: pages.html#required
 [drive]: browser.html#the_drive_method
+[changing-pages]: browser.html#changing_pages
 [content-dsl]: pages.html#the_content_dsl
 [defaultdriver]: browser.html#the_default_driver
 [defaultdriver-lifecycle]: browser.html#lifecycle

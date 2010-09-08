@@ -99,7 +99,9 @@ See [making requests](#making_requests) for more information on the to() method.
 
 ## The Page
 
-Browser instances always maintain a _page_ (an object of type `geb.Page`) which is retrievable via the read only property `page`. The browser uses Groovy's dynamism to delegate any method calls or property accesses that it can't handle to the current page…
+Browser instances maintain a _page_ (an object of type `geb.Page`) that represents the page the browser is at. The page instance is retrievable via the read only property `page`. 
+
+The browser uses Groovy's dynamism to delegate any method calls or property accesses that it can't handle to the current page…
 
     def browser = new Browser("http://myapp.com")
     browser.go("/signup")
@@ -110,11 +112,41 @@ Browser instances always maintain a _page_ (an object of type `geb.Page`) which 
 
 > for more information on the $ function and other methods seen here, see the section on [navigation][navigator]
 
-Unless otherwise specified, the page is an instance of the `geb.Page` base class which provides the basic navigation functions. The initial page class can be specified at construction time or changed later using the `page(Class<? extends Page>)` method…
+By default, the starting page is an instance of the `geb.Page` base class which provides the basic navigation functions. There are constructor variants for `geb.Browser` that allow the initial page to be specified.
 
-    browser.page(SignupPage)
+### Changing The Page
 
-This method creates a new instance of the given class (page classes can only have no-arg constructors) and assigns it to the page property.
+Typically, when the actual page that the real browser is at changes you want to change the browser's page instance to be of a new type. Or, your `geb.Browser` instance for one reason or another has a page instance that does not represent the actual page that the real browser is at. You can change the page instance by using the `page()` method on the browser object.
+
+> Note that clicking content can implicitly change the page type on your behalf by calling the methods below.
+
+#### page(Class newPageType)
+
+The `page()` method that takes a single `Class` object does the following:
+
+* Create a new instance of the given class and connect it to the browser object
+* Inform any registered [page change listeners][#page_change_listening] 
+* Set the browser's `page` property to the new instances
+
+Note that it **does not** instruct the real browser to make a request. It simply changes the browser object's page instance.
+
+#### page(List<Class> potentialPageTypes)
+
+The `page()` method that takes a list of `Class` objects does the following:
+
+* For each given page type:
+    * Create a new instance of the given class and connect it to the browser object
+    * Test if the page represents the new instance by running it's [at checker](page-at)
+    * If the page's at checker is successful:
+        * Inform any registered [page change listeners][#page_change_listening]
+        * Set the browser's `page` property to the match
+        * Discard the rest of the potentials
+    * If the page's at checker is not successful
+        * Try the next potential
+
+If no match can be found from the given potentials, a `geb.error.UnexpectedPageException` will be thrown. Note that this method **does not** instruct the real browser to make a request. It simply changes the browser object's page instance.
+
+This method exists to cater for situations where you are unsure what the page might be due to some action taken server side.
 
 ## Making Requests
 

@@ -4,6 +4,7 @@ import org.openqa.selenium.WebElement
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
 import geb.Browser
+import geb.Page
 
 /**
  * Implementation of an empty Navigator object - helps keep the other code simple.
@@ -36,6 +37,14 @@ class EmptyNavigator extends Navigator {
 	Navigator unique() { this }
 
 	void click() { }
+
+	void click(Class<? extends Page> pageClass) {
+		throw new UnsupportedOperationException("not supported on empty navigator objects")
+	}
+	
+	void click(List<Class<? extends Page>> pageClasses) {
+		throw new UnsupportedOperationException("not supported on empty navigator objects")
+	}
 
 	Navigator head() { this }
 

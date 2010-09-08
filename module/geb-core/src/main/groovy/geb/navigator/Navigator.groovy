@@ -16,6 +16,7 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Page
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -339,6 +340,10 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	abstract void click() throws IOException, ClassCastException
 
+	abstract void click(Class<? extends Page> pageClass)
+	
+	abstract void click(List<Class<? extends Page>> potentialPageClasses)
+	
 	/**
 	 * Returns the number of context elements.
 	 * @return the number of context elements

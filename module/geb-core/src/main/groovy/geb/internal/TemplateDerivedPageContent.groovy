@@ -16,7 +16,6 @@ package geb.internal
 
 import geb.*
 import geb.error.RequiredPageContentNotPresent
-import geb.error.UnexpectedPageException
 import geb.navigator.Navigator
 import geb.internal.mixins.*
 import org.openqa.selenium.WebDriver
@@ -69,47 +68,13 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		def to = _template.to
 		if (to == null) {
 			_navigator.click()
-		} else if (to instanceof Class) {
-			click(to)
-		} else if (to instanceof List) {
-			click(to)
+		} else if (to instanceof Class || to instanceof List) {
+			_navigator.click(to)
 		} else {
 			throw new IllegalStateException("Unhandleable 'to' value from template $_template: $to")
 		}
 	}
 	
-	void click(Class pageClass) {
-		_navigator.click()
-		if (pageClass) {
-			_template.page.browser.page(pageClass)
-		}
-	}
-
-	void click(List<Class> potentialPageClasses) {
-		_navigator.click()
-		
-		def potentialPageClassesClone = potentialPageClasses.clone()
-		def match = null
-		while (match == null && !potentialPageClassesClone.empty) {
-			def potential = page.browser.createPage(potentialPageClassesClone.remove(0))
-			def isAt = false
-			try {
-				isAt = potential.verifyAt()
-			} catch (AssertionError e) {
-				// at checker may use assertions
-			}
-			if (isAt) {
-				match = potential
-			}
-		}
-		
-		if (match) {
-			page.browser.page(match)
-		} else {
-			throw new UnexpectedPageException(this, potentialPageClasses)
-		}
-	}
-
 	boolean asBoolean() {
 		_navigator.asBoolean()
 	}

@@ -250,19 +250,15 @@ The `to` option allows the definition of which page the browser will be sent to 
         assert at(HelpPage)
     }
 
-Which is equivalent to calling the browser's `page(Class)` method to change the type of the page instance, after the `click()` call on the content.
+The `to` value will be implictly used as an argument to the content's `click()` method, effectively setting the new page type. See the section on [clicking content][clicking] for how this changes the browser's page object.
 
-The value can also be a list of potential pages…
+The list variant can also be used…
 
-    class ExamplePage extends Page {
-        static content = {
-            helpLink(to: [HelpPage, SomeOtherPage]) { $("a", text: "Help") }
-        }
+    static content = {
+        loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-When the value is a list, each page will be tried in turn via its `verifyAt()` method. The first page whose `verifyAt()` method returns true is set as the new page. This is useful for when a link or button (or any content really) could send the browser to a number of different pages when it is clicked.
-
-> See the section below on [clicking content][#clicking_content] for more on this.
+Which on click set's the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the `page(List<Class>)` method which is explained in the section on [changing pages][changing-pages].
 
 ## “At” Verification
 
@@ -300,25 +296,6 @@ The “at” checker is evaluated against the page instance, and can access defi
     }
 
 If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
-
-## Clicking Content
-
-All content defined as part of the page gets decorated with a special version of the `click()` method that can take one or more `Page` classes.
-
-    class ExamplePage extends Page {
-        static content = {
-            aLink { $("a") }
-        }
-    }
-
-    Browser.drive {
-        to ExamplePage
-        aLink.click AnotherPage
-    }
-
-If the click method receives a single `Page` class, it is set as the new page type and overrides any `to` option value for the content. 
-
-If the click method receives more than one `Page` class, the behaviour is the same as when the `to` option defines a list of page classes. That is, each is cycled through in turn and it's at checker is executed against the actual page content. The first page whose at checker matches is set as the new page. Any page classes defined in the `to` option are ignored.
 
 ## Page URLs
 
