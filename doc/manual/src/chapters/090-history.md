@@ -16,6 +16,7 @@ This page lists the high level changes between versions of Geb.
 * Added `find` as an alias for `$` (e.g. `find("div.section")`)
 * Browser objects now implement the `page(List<Class>)` method that sets the page to the first type whose at-checker matches the page
 * The click() methods that take one or more page classes are now available on `Navigator` objects
+* Added page lifecycle methods `onLoad()`/`onUnload()`
 
 ## 0.4
 

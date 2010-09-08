@@ -111,8 +111,11 @@ class Browser {
 	
 	void page(Page page) {
 		informPageChangeListeners(this.page, page)
+		this.page?.onUnload(page)
+		def previousPage = this.page
 		this.page = page
 		page.browser = this
+		this.page.onLoad(previousPage)
 	}
 	
 	boolean at(Class pageClass) {

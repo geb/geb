@@ -339,6 +339,34 @@ Pages can be arranged in an inheritance hierarchy. The content definitions are m
 
 If a subclass defines a content template with the same name as a content template defined in a superclass, the subclass version replaces the version from the superclass.
 
+## Lifecycle Hooks
+
+Page classes can optionally implement methods that are called when the page is set as the browser's current page and when it is swapped out for another page. This can be used to transfer state between pages.
+
+### onLoad(Page previousPage)
+
+The `onLoad()` method is called with previous page object instance when the page become's the new page object for a browser.
+
+    import geb.*
+    
+    class SomePage extends Page {
+        def onLoad(Page previousPage) {
+            // do some stuff with the previous page
+        }
+    }
+
+### onUnload(Page newPage)
+
+The `onUnload()` method is called with next page object instance when the page is being replaced as the page object for the browser.
+
+    import geb.*
+    
+    class SomePage extends Page {
+        def onUnload(Page newPage) {
+            // do some stuff with the new page
+        }
+    }
+
 ## This and That
 
 * The browser that the page is connected to is available via the `browser` property.

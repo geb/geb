@@ -96,4 +96,12 @@ class Page {
 	JavascriptInterface getJs() {
 		browser.js
 	}
+	
+	def onLoad(Page previousPage) {
+		
+	}
+	
+	def onUnload(Page nextPage) {
+		
+	}
 }
