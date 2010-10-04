@@ -33,6 +33,9 @@ class GebSpec extends GebReportingSpec {
 	}
 	
 	def setupSpec() {
-		new GrailsTestAutowirer(ApplicationHolder.application.mainContext).autowire(this)
+		def context = ApplicationHolder?.application?.mainContext
+		if (context) {
+			new GrailsTestAutowirer(context).autowire(this)
+		}
 	}
 }
