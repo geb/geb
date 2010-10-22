@@ -29,11 +29,11 @@ class Page {
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
-	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport() { this.getJs() }
+	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
 	
 	Page() {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
-		navigableSupport = new NavigableSupport(this, contentTemplates) { Navigator.on(browser) }
+		navigableSupport = new NavigableSupport(this, contentTemplates, { return Navigator.on(browser) }) 
 	}
 	
 	void setBrowser(Browser browser) {

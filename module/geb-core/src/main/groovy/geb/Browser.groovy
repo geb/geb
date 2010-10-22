@@ -29,8 +29,8 @@ class Browser {
 	
 	String baseUrl
 	
-	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
-	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport() { this.getJs() }
+	@Delegate final WaitingSupport _waitingSupport = new WaitingSupport()
+	@Delegate final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
 	
 	private final pageChangeListeners = new LinkedHashSet()
 	private _js

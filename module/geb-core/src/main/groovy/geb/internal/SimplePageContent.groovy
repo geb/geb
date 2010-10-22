@@ -17,7 +17,7 @@ package geb.internal
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
 
-class SimplePageContent extends TemplateDerivedPageContent {
+class SimplePageContent extends TemplateDerivedPageContent implements Iterable<Navigator> {
 
 	static {
 		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(SimplePageContent))
@@ -28,7 +28,7 @@ class SimplePageContent extends TemplateDerivedPageContent {
 	@Delegate private NavigableSupport navigableSupport
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		navigableSupport = new NavigableSupport(this, null) { navigator }
+		navigableSupport = new NavigableSupport(this, null, { return navigator }) 
 		super.init(template, navigator, *args)
 	}
 
