@@ -23,17 +23,27 @@ class GebReportingSpec extends GebSpec {
 
 	// Ridiculous name to avoid name clashes
 	@Rule _gebReportingSpecTestName = new TestName()
+	def _gebReportingPerTestCounter = 0
 	@Shared _gebReportingSpecTestCounter = 0
 	@Shared _getReportingSpecReporter = null
 	
 	def cleanup() {
+		report("end")
+	}
+
+	void report(String label) {
 		// We have to do this lazily here so the subclass gets a chance to run _some_ code to setup the reporter if need be.
 		// If we used setupSpec() that would run before the subclasses setupSpec() and limit the users options.
 		if (_gebReportingSpecTestCounter++ == 0) {
 			_getReportingSpecReporter = createReporter()
 		}
 		
-		_getReportingSpecReporter?.writeReport("${_gebReportingSpecTestCounter}-${_gebReportingSpecTestName.methodName}", getBrowser())
+		def name = "${_gebReportingSpecTestCounter}-${++_gebReportingPerTestCounter}-${_gebReportingSpecTestName.methodName}"
+		if (label) {
+			name += "-$label"
+		}
+		
+		_getReportingSpecReporter?.writeReport(name, getBrowser())
 	}
 
 	/**
