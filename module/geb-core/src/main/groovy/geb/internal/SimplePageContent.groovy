@@ -31,5 +31,9 @@ class SimplePageContent extends TemplateDerivedPageContent implements Iterable<N
 		navigableSupport = new NavigableSupport(this, null, { return navigator }) 
 		super.init(template, navigator, *args)
 	}
+	
+	Iterator<Navigator> iterator() {
+		navigableSupport.find().iterator()
+	}
 
 }
