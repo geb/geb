@@ -46,9 +46,9 @@ Consider the following html…
 We can use indexes to match content like so…
 
     $("p", 0).text() == "a"
-    $("p", 2).text() == "b"
+    $("p", 2).text() == "c"
     $("p", 0..1)*.text() = ["a", "b"]
-    $("p", 1..2)*.text() = ["c", "d"]
+    $("p", 1..2)*.text() = ["b", "c"]
 
 See below for an explanation of the `text()` method and the use of the spread operator.
 
