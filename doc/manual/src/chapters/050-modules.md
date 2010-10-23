@@ -73,7 +73,7 @@ Modules can also include other modules…
 
 ## Base And Context
 
-Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition. There two ways that a modules base/context can be defined.
+Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition. There are two ways that a modules base/context can be defined.
 
 It can be defined at inclusion time…
 
@@ -129,7 +129,7 @@ When working with a browser at a `ExamplePage` page…
     assert formA.thingValue == "a"
     assert formB.thingValue == "b"
 
-If the module declares a base, it is always calculated _relative_ to the base given by the including statement. If the including statement does not specify a base, then the base is effectively the entire page.
+If the module declares a base, it is always calculated _relative_ to the base given by the including statement. If the including statement does not specify a base, the module's base is calculated relative to the including page's base.
 
 ## Use Cases
 
