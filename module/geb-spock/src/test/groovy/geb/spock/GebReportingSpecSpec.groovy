@@ -57,7 +57,7 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 	}
 	
 	def getFirstOutputFile() {
-		new File(getClassReportDir(), "1-a request is made.html")
+		new File(getClassReportDir(), "1-1-a request is made-end.html")
 	}
 	
 	def "a request is made"() {
