@@ -277,7 +277,9 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return true when the first element is disabled
 	 */
 	boolean isDisabled() {
-		getAttribute("disabled") == "disabled"
+		def value = getAttribute("disabled")
+		// Different drivers return different values here
+		(value == "disabled" || value == "true")
 	}
 
 	/**
@@ -285,7 +287,8 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return true when the first element is readonly
 	 */
 	boolean isReadOnly() {
-		getAttribute("readonly") == "readonly"
+		def value = getAttribute("readonly")
+		(value == "readonly" || value == "true")
 	}
 
 	/**
