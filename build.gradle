@@ -13,7 +13,7 @@ dependsOnChildren()
 
 allprojects {
 	grailsVersion = "1.2.3"
-	seleniumVersion = "2.0a4"
+	seleniumVersion = "2.0a7"
 	groovyVersion = "1.6.7"
 	spockVersion = "0.5-groovy-1.6-SNAPSHOT"
 	
