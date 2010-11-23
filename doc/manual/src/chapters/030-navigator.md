@@ -222,7 +222,7 @@ Navigator objects have a `displayed` property that indicates whether the element
 
 ## Accessing tag name, attributes, text and classes
 
-The `name()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.
+The `tag()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.
 
 Consider the following HTML…
 
@@ -233,14 +233,14 @@ Consider the following HTML…
 The following assertions are valid…
 
     $("p").text() == "a"
-    $("p").name() == "p"
+    $("p").tag() == "p"
     $("p").@title == "a"
     $("p").classes() == ["a", "para"]
 
 To obtain information about all matched content, you use the Groovy _spread operator_…
 
     $("p")*.text() == ["a", "b", "c"]
-    $("p")*.name() == ["p", "p", "p"]
+    $("p")*.tag() == ["p", "p", "p"]
     $("p")*.@title == ["a", "b", "c"]
     $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
 
