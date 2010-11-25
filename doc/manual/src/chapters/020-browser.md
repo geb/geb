@@ -136,7 +136,7 @@ The `page()` method that takes a list of `Class` objects does the following:
 
 * For each given page type:
     * Create a new instance of the given class and connect it to the browser object
-    * Test if the page represents the new instance by running it's [at checker](page-at)
+    * Test if the page represents the new instance by running its [at checker](page-at)
     * If the page's at checker is successful:
         * Inform any registered [page change listeners][#page_change_listening]
         * Set the browser's `page` property to the match
@@ -225,7 +225,7 @@ It is possible to be notified when a browser's page _instance_ changes (note tha
     
     browser.registerPageChangeListener(listener)
 
-As soon as a listener is registered, it's `pageWillChange()` method will be called with `newPage` as the current page and `oldPage` as `null`. Subsequently, each time the page changes `oldPage` will be the page that the browser currently has, and `newPage` will be the page that will soon be the browser's page.
+As soon as a listener is registered, its `pageWillChange()` method will be called with `newPage` as the current page and `oldPage` as `null`. Subsequently, each time the page changes `oldPage` will be the page that the browser currently has, and `newPage` will be the page that will soon be the browser's page.
 
 You can remove remove a listener at any time…
 
@@ -233,4 +233,4 @@ You can remove remove a listener at any time…
 
 The `removePageChangeListener()` returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
 
-Listener's cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a `geb.error.PageChangeListenerAlreadyRegisteredException` will be raised.
+Listeners cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a `geb.error.PageChangeListenerAlreadyRegisteredException` will be raised.

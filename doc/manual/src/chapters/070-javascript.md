@@ -117,7 +117,7 @@ The `intervalSeconds` (default is `0.5`) parameter defines the number of seconds
 
 ### Examples
 
-Here is an example showing one way of using `waitFor()` to deal with the situation where clicking a button invokes an AJAX request that creates a new `div` on it's completion.
+Here is an example showing one way of using `waitFor()` to deal with the situation where clicking a button invokes an AJAX request that creates a new `div` on its completion.
 
     import geb.*
     
@@ -157,7 +157,7 @@ WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/Fre
 
 The Geb methods **prevent** the browser from actually displaying the dialog, which is a good thing. This prevents the browser blocking while the dialog is displayed and causing your test to hang indefinitely.
 
-> Unexpected `alert()` and `confirm()` calls can have strange results. This is due to the nature of how Geb handles this internally. If you are seeing strange results, you may want to run your tests/scripts against a real browser and watch what happens to make sure there aren't `alert()`'s or `confirm()`'s being called that you aren't expecting. To do this, you need to disable Geb's handling by changing your code to not use the methods below.
+> Unexpected `alert()` and `confirm()` calls can have strange results. This is due to the nature of how Geb handles this internally. If you are seeing strange results, you may want to run your tests/scripts against a real browser and watch what happens to make sure there aren't `alert()`s or `confirm()`s being called that you aren't expecting. To do this, you need to disable Geb's handling by changing your code to not use the methods below.
 
 ### alert()
 
@@ -200,7 +200,7 @@ There are three methods that deal with `confirm()` dialogs:
     String withConfirm(Closure actions) // defaults 'ok' to true
     void withNoConfirm(Closure actions)
 
-The first method, `withConfirm()` (and it's ‘`ok`’ defaulted relative), is used to verify actions that will produce an `confirm()` dialog. This method returns the confirmation message. The `ok` parameter controls whether the `confirm()` call should return `true` or `false` (i.e. the user has clicked the “OK” or “Cancel” buttons).
+The first method, `withConfirm()` (and its ‘`ok`’ defaulted relative), is used to verify actions that will produce an `confirm()` dialog. This method returns the confirmation message. The `ok` parameter controls whether the `confirm()` call should return `true` or `false` (i.e. the user has clicked the “OK” or “Cancel” buttons).
 
 Given the following HTML…
 

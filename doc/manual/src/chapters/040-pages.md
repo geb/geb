@@ -258,7 +258,7 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which on click set's the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the `page(List<Class>)` method which is explained in the section on [changing pages][changing-pages].
+Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the `page(List<Class>)` method which is explained in the section on [changing pages][changing-pages].
 
 ## “At” Verification
 
@@ -284,7 +284,7 @@ The `verifyAt()` method is used by the browser `at()` method…
 
 > If using Groovy 1.7, the use of `assert` in “at” checkers is recommended because you get the benefit of Groovy's expressive assert output.
 
-As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`'s thrown by at checkers are supressed.
+As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
 
 The “at” checker is evaluated against the page instance, and can access defined content or any other variables or methods…
 
@@ -345,7 +345,7 @@ Page classes can optionally implement methods that are called when the page is s
 
 ### onLoad(Page previousPage)
 
-The `onLoad()` method is called with previous page object instance when the page become's the new page object for a browser.
+The `onLoad()` method is called with previous page object instance when the page becomes the new page object for a browser.
 
     import geb.*
     

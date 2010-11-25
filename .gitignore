@@ -6,3 +6,5 @@ build
 *.iws
 build.sh
 stacktrace.log
+*.iml
+.idea

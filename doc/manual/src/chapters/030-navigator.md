@@ -145,7 +145,7 @@ These methods return a new navigator object that represents the new content.
 
 ## Traversing
 
-Navigator's also have methods for selecting content _around_ the matched content.
+Navigators also have methods for selecting content _around_ the matched content.
 
 Consider the following html…
 
@@ -292,7 +292,7 @@ Radio values are set by assigning the value of the radio button that is to be se
 
 #### input
 
-The value assigned to a text input becomes the new value of it's `value` attribute.
+The value assigned to a text input becomes the new value of its `value` attribute.
 
 #### textarea
 
