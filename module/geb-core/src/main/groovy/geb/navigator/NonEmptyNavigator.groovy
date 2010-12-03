@@ -38,7 +38,7 @@ class NonEmptyNavigator extends Navigator {
 	protected Navigator navigatorFor(WebElement... contextElements) {
 		on(browser, contextElements)
 	}
-	
+
 	Navigator find(String selectorString) {
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
@@ -52,13 +52,27 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator find(Map<String, Object> predicates) {
-		List<WebElement> list = []
-		contextElements*.findElements(By.xpath("descendant::*")).flatten().each { WebElement element ->
-			if (matches(element, predicates)) {
-				list << element
+		def selector = new StringBuilder()
+		if (predicates.containsKey("id") && predicates["id"] in String) {
+			selector << "#" << predicates.remove("id")
+		}
+		if (predicates.containsKey("class") && predicates["class"] in String) {
+			predicates.remove("class").split(/\s+/).each { className ->
+				selector << "." << className
 			}
 		}
-		navigatorFor list
+
+		if (selector.length() > 0) {
+			find predicates, selector.toString()
+		} else {
+			List<WebElement> list = []
+			contextElements*.findElements(By.xpath("descendant::*")).flatten().each { WebElement element ->
+				if (matches(element, predicates)) {
+					list << element
+				}
+			}
+			navigatorFor list
+		}
 	}
 
 	Navigator find(Map<String, Object> predicates, String selector) {
@@ -202,7 +216,7 @@ class NonEmptyNavigator extends Navigator {
 		def element = firstElement()
 		element instanceof RenderedWebElement ? element.displayed : false
 	}
-	
+
 	String tag() {
 		firstElement().tagName
 	}
@@ -212,12 +226,12 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String getAttribute(String name) {
-		firstElement().getAttribute(name) ?: ""
+			firstElement().getAttribute(name) ?: ""
 	}
 
 	Collection<String> classes() {
 		def classNames = contextElements.head().getAttribute("class")?.tokenize()
-		classNames as Set ?: EMPTY_SET
+			classNames as Set ?: EMPTY_SET
 	}
 
 	def value() {
@@ -258,8 +272,8 @@ class NonEmptyNavigator extends Navigator {
 		size() == 0
 	}
 
-	boolean asBoolean() { 
-		!isEmpty() 
+	boolean asBoolean() {
+		!isEmpty()
 	}
 
 	Navigator head() {
@@ -397,15 +411,16 @@ class NonEmptyNavigator extends Navigator {
 			input.sendKeys value
 		}
 	}
-	
+
 	// The Firefox driver at least will return a literal false when checking for certain
 	// attributes. This goes against the spec of WebElement#getAttribute() but it happens
 	// none the less.
+
 	private boolean isAttributeEffectivelyFalse(WebElement input, String attribute) {
 		def value = input.getAttribute(attribute)
 		value == null || value == "" || value == "false" || value == false
 	}
-	
+
 	private WebElement firstElementInContext(Closure closure) {
 		def result = null
 		for (int i = 0; !result && i < contextElements.size(); i++) {

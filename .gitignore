@@ -8,3 +8,4 @@ build.sh
 stacktrace.log
 *.iml
 .idea
+out

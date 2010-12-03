@@ -1,15 +1,8 @@
 package geb.navigator
 
-import geb.Browser
-import geb.test.util.*
-import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import spock.lang.Ignore
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.lang.Unroll
-import org.openqa.selenium.WebElement
+import geb.test.util.GebSpec
+import org.openqa.selenium.*
+import spock.lang.*
 
 class NavigatorSpec extends GebSpec {
 
@@ -94,11 +87,24 @@ class NavigatorSpec extends GebSpec {
 		expect: page.find(attributes)*.@id == expectedIds
 
 		where:
-		attributes                      | expectedIds
-		[name: "keywords"]              | ["keywords"]
-		[name: ~/checker\d/]            | ["checker1", "checker2"]
-		[name: "site", value: "google"] | ["site-1"]
-		[name: "DOES-NOT-EXIST"]        | []
+		attributes                          | expectedIds
+		[name: "keywords"]                  | ["keywords"]
+		[name: ~/checker\d/]                | ["checker1", "checker2"]
+		[name: "site", value: "google"]     | ["site-1"]
+		[name: "DOES-NOT-EXIST"]            | []
+		[id: "container"]                   | ["container"]
+		[class: "article"]                  | ["article-1", "article-2", "article-3"]
+		[id: "article-1", class: "article"] | ["article-1"]
+		[id: "main", class: "article"]      | []
+		[class: "col-3 module"]             | ["navigation"]
+		[class: "module col-3"]             | ["navigation"]
+		[class: ~/col-\d/]                  | ["content", "main", "sidebar"]
+	}
+
+	@Issue("http://jira.codehaus.org/browse/GEB-14")
+	@Ignore
+	def "find by attributes passing a class pattern should match any of the classes on an element"() {
+		expect: page.find(class: ~/col-\d/)*.@id == ["navigator", "content", "main", "sidebar"]
 	}
 
 	@Unroll("find(text: '#text') should find #expectedSize elements")
