@@ -145,6 +145,13 @@ class NavigatorSpec extends GebSpec {
 		"input"    | [name: ~/checker\d/]                    | ["checker1", "checker2"]
 		"bdo"      | [name: "whatever"]                      | []
 		".article" | [:]                                     | ["article-1", "article-2", "article-3"]
+		"div"      | [id: "container"]                       | ["container"]
+		"div"      | [class: "article"]                      | ["article-1", "article-2", "article-3"]
+		"div"      | [id: "article-1", class: "article"]     | ["article-1"]
+		"div"      | [id: "main", class: "article"]          | []
+		"div"      | [class: "col-3 module"]                 | ["navigation"]
+		"div"      | [class: "module col-3"]                 | ["navigation"]
+		"div"      | [class: ~/col-\d/]                      | ["content", "main", "sidebar"]
 	}
 
 	@Unroll("find('#selector', text: '#text') should find #expectedSize elements")
