@@ -4,6 +4,8 @@ This page lists the high level changes between versions of Geb.
 
 ## 0.5
 
+### New Features
+
 * Navigator objects now implement the Groovy truth (empty == false, non empty == true)
 * Introduced “js” short notation
 * Added “[easyb](easyb)” support (`geb-easyb` and Grails support)
@@ -17,6 +19,10 @@ This page lists the high level changes between versions of Geb.
 * Browser objects now implement the `page(List<Class>)` method that sets the page to the first type whose at-checker matches the page
 * The click() methods that take one or more page classes are now available on `Navigator` objects
 * Added page lifecycle methods `onLoad()`/`onUnload()`
+
+### Breaking Changes
+
+* Exceptions raised in `drive()` blocks are no longer wrapped with `DriveException`
 
 ## 0.4
 

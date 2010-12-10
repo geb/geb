@@ -16,7 +16,6 @@ package geb
 
 import geb.test.util.*
 import spock.lang.*
-import geb.error.DriveException
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 
 class DriveSpec extends Specification {
@@ -105,13 +104,13 @@ class DriveSpec extends Specification {
 		notThrown(Exception)
 	}
 	
-	def driveException() {
+	def errorsArePropagated() {
 		when:
 		Browser.drive {
 			throw new Error()
 		}
 		then:
-		thrown(DriveException)
+		thrown(Error)
 	}
 
 	def cleanupSpec() {

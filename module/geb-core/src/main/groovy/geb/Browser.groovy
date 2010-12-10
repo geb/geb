@@ -17,7 +17,6 @@ package geb
 import geb.driver.*
 import geb.js.*
 import geb.internal.WaitingSupport
-import geb.error.DriveException
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UnexpectedPageException
 import org.openqa.selenium.WebDriver
@@ -241,10 +240,6 @@ class Browser {
 	
 	private static doDrive(Browser browser, Closure script) {
 		script.delegate = browser
-		try {
-			script()
-		} catch (Throwable e) {
-			throw new DriveException(browser, e)
-		}
+		script()
 	}
 }
