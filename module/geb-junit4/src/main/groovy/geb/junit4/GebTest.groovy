@@ -62,7 +62,7 @@ class GebTest extends GroovyTestCase {
 	
 	@After
 	void clearBrowserCookies() {
-		browser.clearCookies()
+		browser.clearCookiesQuietly()
 	}
 
 }

@@ -21,6 +21,7 @@ import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UnexpectedPageException
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebDriverException
 
 class Browser {
 
@@ -168,6 +169,14 @@ class Browser {
 	
 	void clearCookies() {
 		driver?.manage()?.deleteAllCookies()
+	}
+
+	void clearCookiesQuietly() {
+		try {
+			clearCookies()
+		} catch (WebDriverException e) {
+			// ignore
+		}
 	}
 	
 	protected String _calculateUri(String path, Map params) {
