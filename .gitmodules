@@ -4,3 +4,6 @@
 [submodule "buildSrc/markdown2book"]
 	path = buildSrc/markdown2book
 	url = git://github.com/alkemist/markdown2book.git
+[submodule "buildSrc/huxi-gradle-plugins"]
+	path = buildSrc/huxi-gradle-plugins
+	url = git://github.com/geb/huxi-gradle-plugins.git
