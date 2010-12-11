@@ -492,3 +492,7 @@ task test(dependsOn: getTasksByName("test", true)) << {
 		ant."clover-html-report"(initstring: mergedDb, outdir:"${cloverReportsDir}/html")
 	}
 }
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '0.9-rc-3'
+}
