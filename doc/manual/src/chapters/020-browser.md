@@ -136,9 +136,9 @@ The `page()` method that takes a list of `Class` objects does the following:
 
 * For each given page type:
     * Create a new instance of the given class and connect it to the browser object
-    * Test if the page represents the new instance by running its [at checker](page-at)
+    * Test if the page represents the new instance by running its [at checker][page-at]
     * If the page's at checker is successful:
-        * Inform any registered [page change listeners][#page_change_listening]
+        * Inform any registered [page change listeners](#page_change_listening)
         * Set the browser's `page` property to the match
         * Discard the rest of the potentials
     * If the page's at checker is not successful
