@@ -18,6 +18,7 @@ import geb.driver.*
 import geb.js.*
 import geb.internal.WaitingSupport
 import geb.error.PageChangeListenerAlreadyRegisteredException
+import geb.error.RequiredPageContentNotPresent
 import geb.error.UnexpectedPageException
 import org.openqa.selenium.WebDriver
 
@@ -109,19 +110,28 @@ class Browser {
 	}
 	
 	void page(Page page) {
-		informPageChangeListeners(this.page, page)
-		this.page?.onUnload(page)
-		def previousPage = this.page
-		this.page = page
-		page.browser = this
-		this.page.onLoad(previousPage)
+		if (this.page == null || this.page.class != page.class) {
+			informPageChangeListeners(this.page, page)
+			this.page?.onUnload(page)
+			def previousPage = this.page
+			this.page = page
+			page.browser = this
+			this.page.onLoad(previousPage)
+		}
 	}
 	
 	boolean at(Class pageClass) {
-		if (!page) {
-			page(pageClass)
+		def targetPage = createPage(pageClass)
+		try {
+			if (targetPage.verifyAt()) {
+				page(targetPage)
+				true
+			} else {
+				false
+			}
+		} catch (RequiredPageContentNotPresent e) {
+			false
 		}
-		page.verifyAt() && page.class == pageClass
 	}
 
 	def go() {

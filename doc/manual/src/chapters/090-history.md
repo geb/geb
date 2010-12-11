@@ -23,6 +23,7 @@ This page lists the high level changes between versions of Geb.
 ### Breaking Changes
 
 * Exceptions raised in `drive()` blocks are no longer wrapped with `DriveException`
+* the `at(Class pageClass)` method no longer requires the existing page instance to be of that class (page will be updated if the given type matches)
 
 ## 0.4
 

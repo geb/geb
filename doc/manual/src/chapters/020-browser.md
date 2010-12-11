@@ -185,15 +185,13 @@ To make a request without changing the current page type you can use the `go()` 
 
 ## Checking the current page
 
-Browser objects have an `at(Class<? extends Page>)` method that returns `true` or `false` whether or not it is actually at the given type. This includes two checks; whether or not the current page is of *exactly* the given type and whether or not the current page content is what the current page type expects it to be.
+Browser objects have an `at(Class<? extends Page>)` method that returns `true` or `false` whether or not it is actually at the given type. This works by running the given page's [at verficiation][page-at].
 
 This is typically used in conjuction with the `assert` keyword.
 
     def browser = new Browser("http://myapp.com")
     browser.to(SignupPage)
     assert browser.at(SignupPage)
-
-> see the section on [page at-verification][page-at] for more information
 
 ## The drive() method
 
