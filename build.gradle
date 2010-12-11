@@ -5,7 +5,8 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.gradle.plugins:gradle-idea-plugin:0.2",
-		          "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
+		          "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6",
+		          'de.huxhorn.gradle:de.huxhorn.gradle.pgp-plugin:0.0.3'
 	}
 }
 
@@ -100,6 +101,22 @@ subprojects {
 	
 	if (project.path in publishedModules) {
 		apply plugin: 'maven'
+		apply plugin: de.huxhorn.gradle.pgp.PgpPlugin
+		
+		task sourcesJar(type: Jar, dependsOn:classes) { 
+			 classifier = 'sources' 
+			 from sourceSets.main.allSource 
+		} 
+
+		task javadocJar(type: Jar, dependsOn:javadoc) { 
+			 classifier = 'javadoc' 
+			 from javadoc.destinationDir 
+		} 
+
+		artifacts { 
+			 archives sourcesJar 
+			 archives javadocJar 
+		}
 		
 		configurations {
 			deployerJars
@@ -116,13 +133,17 @@ subprojects {
 				project.deployer = repositories.mavenDeployer {
 					uniqueVersion = false
 					configuration = configurations.deployerJars
-					repository(url: "https://dav.codehaus.org/repository/geb/") {
+					repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
 						authentication(userName: codehausUsername, password: codehausPassword)
 					}
-					snapshotRepository(url: "https://dav.codehaus.org/snapshots.repository/geb/") {
+					snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
 						authentication(userName: codehausUsername, password: codehausPassword)
 					}
 					pom.project {
+						name "Geb"
+						description "Geb (pronounced with a soft “G” like “Jeb”) is a browser automation solution for the Groovy programming language. It combines the browser driving features of WebDriver (and therefore can work with Internet Explorer, FireFox, Chrome and HTMLUnit) with a jQuery inspired content navigation/inspection API and the expressiveness of Groovy."
+						url "http://geb.codehaus.org"
+						inceptionYear "2010"
 						licenses {
 							license {
 								name 'The Apache Software License, Version 2.0'
@@ -130,6 +151,27 @@ subprojects {
 								distribution 'repo'
 							}
 						}
+						scm {
+							url "https://github.com/geb/geb/"
+						}
+						developers {
+							developer {
+								id "ldaley"
+								name "Luke Daley"
+								roles {
+									role "Lead"
+									role "Founder"
+								}
+							}
+							developer {
+								id "robfletcher"
+								name "Rob Fletcher"
+								roles {
+									role "Founder"
+								}
+							}
+						}
+						
 					}
 				}
 				project.poms << project.deployer.pom 
