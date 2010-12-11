@@ -15,7 +15,7 @@
  */
 
 class GebGrailsPlugin {
-	def version = "0.5-SNAPSHOT"
+	def version = "0.5.1"
 	def grailsVersion = "1.2.0 > *"
 	def pluginExcludes = [
 		"grails-app/**/*"

@@ -2,6 +2,10 @@
 
 This page lists the high level changes between versions of Geb.
 
+## 0.5.1
+
+* Fixed problem with incorrectly compiled specs and the geb grails module
+
 ## 0.5
 
 ### New Features

@@ -155,7 +155,7 @@ For more information see the manual section on the [browser interface][browser].
 
 ## Installation & Usage
 
-> The current version of Geb is **0.5**
+> The current version of Geb is **0.5.1**
 
 To get up and running you simply need to get the `geb-core` jar (available from Maven central) and a [WebDriver][webdriver-api] implementation.
 
