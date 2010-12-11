@@ -1,3 +1,5 @@
 include \
 	"grails-plugin",
-	"markdown2book:markdown2book"
+	"markdown2book:markdown2book",
+	"huxi-gradle-plugins",
+	"huxi-gradle-plugins:pgp-gradle-plugin"

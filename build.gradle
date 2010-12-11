@@ -5,8 +5,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.gradle.plugins:gradle-idea-plugin:0.2",
-		          "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6",
-		          'de.huxhorn.gradle:de.huxhorn.gradle.pgp-plugin:0.0.3'
+		          "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
 	}
 }
 
@@ -101,25 +100,26 @@ subprojects {
 	
 	if (project.path in publishedModules) {
 		apply plugin: 'maven'
-		apply plugin: de.huxhorn.gradle.pgp.PgpPlugin
+		apply plugin: 'sign'
 		
-		task sourcesJar(type: Jar, dependsOn:classes) { 
-			 classifier = 'sources' 
-			 from sourceSets.main.allSource 
+		task sourcesJar(type: Jar, dependsOn: classes) { 
+			classifier = 'sources' 
+			from sourceSets.main.allSource
 		} 
 
-		task javadocJar(type: Jar, dependsOn:javadoc) { 
-			 classifier = 'javadoc' 
-			 from javadoc.destinationDir 
+		task javadocJar(type: Jar, dependsOn: javadoc) { 
+			classifier = 'javadoc' 
+			from javadoc.destinationDir 
 		} 
 
-		artifacts { 
-			 archives sourcesJar 
-			 archives javadocJar 
-		}
-		
 		configurations {
+			meta
 			deployerJars
+		}
+
+		artifacts {
+			meta javadocJar
+			meta sourcesJar
 		}
 		
 		dependencies {
@@ -129,8 +129,14 @@ subprojects {
 		project.poms = [install.repositories.mavenInstaller.pom]
 		
 		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+			uploadArchives.dependsOn sourcesJar, javadocJar
 			uploadArchives {
 				project.deployer = repositories.mavenDeployer {
+					beforeDeployment { MavenDeployment deployment ->
+						["sources", "javadoc"].each { type ->
+							deployment.addArtifact configurations.meta.artifacts.find { it.classifier == type }
+						}
+					}
 					uniqueVersion = false
 					configuration = configurations.deployerJars
 					repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
