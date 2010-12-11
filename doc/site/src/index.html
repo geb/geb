@@ -69,16 +69,26 @@
       <p>Here is some sample Geb…</p>
 <pre class="brush: groovy">import geb.*
   
-Browser.drive("http://www.google.com") {
+Browser.drive("http://google.com/ncr") {
   assert title == "Google"
 
+  // enter wikipedia into the search field
   $("input", name: "q").value("wikipedia")
-  $("input", value: "Google Search").click()
 
-  assert title.endsWith("Google Search")
+  // wait for the change to results page to happen
+  // (google updates the page without a new request)
+  waitFor { title.endsWith("Google Search") }
 
-  def firstResultLink = $("li.g", 0).find("a.l")
-  assert firstResultLink.text() == "Wikipedia, the free encyclopedia"
+  // is the first link to wikipedia?
+  def firstLink = $("li.g", 0).find("a.l")
+  assert firstLink.text() == "Wikipedia"
+
+  // click the link 
+  firstLink.click()
+
+  // wait for Google's javascript to redirect 
+  // us to Wikipedia
+  waitFor { title == "Wikipedia" }
 }</pre>
       <p>This is a very basic sample and does not illustrate many of Geb's most powerful features such as page objects, modules, the Content DSL and more. Please see the <a href="manual/latest/index.html">manual</a> for more examples.</p>
 

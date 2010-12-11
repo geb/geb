@@ -8,12 +8,26 @@ The following is a simple example using Geb without defining page objects.
 
     import geb.Browser
 
-    Browser.drive("http://google.com") {
+    Browser.drive("http://google.com/ncr") {
         assert title == "Google"
+
+        // enter wikipedia into the search field
         $("input", name: "q").value("wikipedia")
-        $("input", value: "Google Search").click()
-        assert title.endsWith("Google Search")
-        assert $("li.g", 0).find("a.l").text() == "Wikipedia, the free encyclopedia"
+
+        // wait for the change to results page to happen
+        // (google updates the page without a new request)
+        waitFor { title.endsWith("Google Search") }
+
+        // is the first link to wikipedia?
+        def firstLink = $("li.g", 0).find("a.l")
+        assert firstLink.text() == "Wikipedia"
+
+        // click the link 
+        firstLink.click()
+
+        // wait for Google's javascript to redirect 
+        // us to Wikipedia
+        waitFor { title == "Wikipedia" }
     }
 
 This example navigates to Google, searches for "_wikipedia_", and verifies that the first result is indeed for Wikipedia.
@@ -25,12 +39,24 @@ The following example is the same, except that it utilises page objects.
     import geb.Module
     
     Browser.drive(GoogleHomePage) {
+        // enter wikipedia into the search field
         search.field.value("wikipedia")
-        search.button.click()
-        assert at(GoogleResultsPage)
-        assert resultLink(0).text() == "Wikipedia, the free encyclopedia"
+
+        // wait for the change to results page to happen
+        // (google updates the page without a new request)
+        waitFor { at(GoogleResultsPage) }
+
+        // is the first link to wikipedia?
+        assert resultLink(0).text() == "Wikipedia"
+
+        // click the link
+        resultLink(0).click()
+
+        // wait for Google's javascript to redirect us
+        // to wikipedia
+        waitFor { at(WikipediaPage) }
     }
-    
+
     class GoogleSearchModule extends Module {
         def buttonValue
         static content = {
@@ -40,17 +66,16 @@ The following example is the same, except that it utilises page objects.
             }
         }
     }
-    
+
     class GoogleHomePage extends Page {
-        static url = "http://google.com"
+        static url = "http://google.com/ncr"
         static at = { title == "Google" }
         static content = {
             search { module GoogleSearchModule, buttonValue: "Google Search" }
         }
     }
-    
+
     class GoogleResultsPage extends Page {
-        static url = "http://www.google.com/search"
         static at = { title.endsWith("Google Search") }
         static content = {
             search { module GoogleSearchModule, buttonValue: "Search" }
@@ -58,6 +83,10 @@ The following example is the same, except that it utilises page objects.
             result { i -> results[i] }
             resultLink { i -> result(i).find("a.l") }
         }
+    }
+
+    class WikipediaPage extends Page {
+        static at = { title == "Wikipedia" }
     }
 
 This example hopefully illustrates the kind of code that you write with Geb. Each of the constructs will be discussed in detail in this manual.
