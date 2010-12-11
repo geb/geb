@@ -15,7 +15,7 @@ allprojects {
 	grailsVersion = "1.2.3"
 	seleniumVersion = "2.0a7"
 	groovyVersion = "1.6.7"
-	spockVersion = "0.5-groovy-1.6-SNAPSHOT"
+	spockVersion = "0.5-groovy-1.6"
 	
 	spockDependency = "org.spockframework:spock-core:$spockVersion"
 
@@ -49,7 +49,7 @@ if (hasProperty("withSamples")) {
 }
 
 subprojects {
-	version = '0.5-SNAPSHOT'
+	version = '0.5'
 	group = 'org.codehaus.geb'
 	
 	apply plugin: "org.gradle.idea"
