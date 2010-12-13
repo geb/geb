@@ -27,7 +27,7 @@ grails.project.dependency.resolution = {
 		// as gradle sets up the deps for us. This prop is set in the
 		// gradle build.
 		if (System.getProperty("geb.building") == null) {
-			test("org.codehaus.geb:geb-grails:0.5.1")
+			test("org.codehaus.geb:geb-grails:0.6-SNAPSHOT")
 		}
 		
 		// used for running this plugin's tests, not in user tests
