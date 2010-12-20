@@ -9,6 +9,7 @@ import org.openqa.selenium.RenderedWebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
+import static java.util.Collections.reverse
 
 class NonEmptyNavigator extends Navigator {
 
@@ -207,12 +208,12 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String getAttribute(String name) {
-			firstElement().getAttribute(name) ?: ""
+		firstElement().getAttribute(name) ?: ""
 	}
 
 	Collection<String> classes() {
 		def classNames = contextElements.head().getAttribute("class")?.tokenize()
-			classNames as Set ?: EMPTY_SET
+		classNames as Set ?: EMPTY_SET
 	}
 
 	def value() {
@@ -339,14 +340,26 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	private boolean matches(WebElement element, Map<String, Object> predicates) {
-		return predicates.every { name, requiredValue ->
-			def actualValue = name == "text" ? element.text : element.getAttribute(name)
-			if (requiredValue instanceof Pattern) {
-				actualValue ==~ requiredValue
-			} else {
-				actualValue == requiredValue
+		def result = predicates.every { name, requiredValue ->
+			def actualValue
+			switch (name) {
+				case "text": actualValue = element.text; break
+				case "class": actualValue = element.getAttribute("class")?.tokenize(); break
+				default: actualValue = element.getAttribute(name)
 			}
+			matches(actualValue, requiredValue)
 		}
+		result
+	}
+
+	private boolean matches(String actualValue, String requiredValue) { actualValue == requiredValue }
+
+	private boolean matches(String actualValue, Pattern requiredValue) { actualValue ==~ requiredValue }
+
+	private boolean matches(Collection<String> actualValue, String requiredValue) { requiredValue in actualValue }
+
+	private boolean matches(Collection<String> actualValue, Pattern requiredValue) {
+		actualValue.any { it ==~ requiredValue }
 	}
 
 	private getInputValues(Collection<WebElement> inputs) {

@@ -98,13 +98,12 @@ class NavigatorSpec extends GebSpec {
 		[id: "main", class: "article"]      | []
 		[class: "col-3 module"]             | ["navigation"]
 		[class: "module col-3"]             | ["navigation"]
-		[class: ~/col-\d/]                  | ["content", "main", "sidebar"]
+		[class: ~/col-\d/]                  | ["navigation", "content", "main", "sidebar"]
 	}
 
 	@Issue("http://jira.codehaus.org/browse/GEB-14")
-	@Ignore
 	def "find by attributes passing a class pattern should match any of the classes on an element"() {
-		expect: page.find(class: ~/col-\d/)*.@id == ["navigator", "content", "main", "sidebar"]
+		expect: page.find(class: ~/col-\d/)*.@id == ["navigation", "content", "main", "sidebar"]
 	}
 
 	@Unroll("find(text: '#text') should find #expectedSize elements")
@@ -151,7 +150,7 @@ class NavigatorSpec extends GebSpec {
 		"div"      | [id: "main", class: "article"]          | []
 		"div"      | [class: "col-3 module"]                 | ["navigation"]
 		"div"      | [class: "module col-3"]                 | ["navigation"]
-		"div"      | [class: ~/col-\d/]                      | ["content", "main", "sidebar"]
+		"div"      | [class: ~/col-\d/]                      | ["navigation", "content", "main", "sidebar"]
 	}
 
 	@Unroll("find('#selector', text: '#text') should find #expectedSize elements")
