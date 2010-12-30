@@ -401,12 +401,16 @@ class NonEmptyNavigator extends Navigator {
 				input.findElements(By.tagName("option")).each { WebElement option ->
 					if (option.value in value) {
 						option.setSelected()
+					} else if (option.text in value) {
+						option.setSelected()
 					} else if (option.isSelected()) {
 						option.toggle()
 					}
 				}
 			} else {
-				input.findElements(By.tagName("option")).find { it.value == value }.setSelected()
+				input.findElements(By.tagName("option")).find {
+					it.value == value || it.text == value
+				}.setSelected()
 			}
 		} else if (input.getAttribute("type") == "checkbox") {
 			if (input.value == value || value == true) {

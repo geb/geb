@@ -679,6 +679,19 @@ class NavigatorSpec extends GebSpec {
 		page.find("#checker2")            | null
 	}
 
+	@Unroll("select element can be changed to #newValue using option label #optionLabel")
+	def "select elements can be set using their label text as well as option value"() {
+		given: def initialValue = navigator.value()
+		when: navigator.value(optionLabel)
+		then: navigator.value() == newValue
+		cleanup: navigator.value(initialValue)
+
+		where:
+		navigator                         | optionLabel                             | newValue
+		page.find("#the_plain_select")    | "Option #3"                             | "3"
+		page.find("#the_multiple_select") | ["Option #1", "Option #3", "Option #5"] | ["1", "3", "5"]
+	}
+
 	@Ignore
 	@Unroll("value() on '#selector' should return '#expected'")
 	def "get value handles radio buttons as groups"() {
