@@ -16,6 +16,7 @@ package geb
 
 import geb.driver.*
 import geb.js.*
+import geb.conf.*
 import geb.internal.WaitingSupport
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent
@@ -27,7 +28,7 @@ class Browser {
 
 	Page page
 	final WebDriver driver
-	
+	final Configuration config
 	String baseUrl
 	
 	@Delegate final WaitingSupport _waitingSupport = new WaitingSupport()
@@ -45,6 +46,7 @@ class Browser {
 	}
 	
 	Browser(WebDriver driver = null, String baseUrl = null, Class pageClass = null, Map params = null) {
+		this.config = createConfiguration()
 		this.driver = driver ?: defaultDriver
 		this.baseUrl = baseUrl
 		
@@ -55,6 +57,27 @@ class Browser {
 		} else {
 			page Page
 		}
+	}
+	
+	protected Configuration createConfiguration() {
+		def configurationLocation = getConfigurationLocation()
+		if (configurationLocation) {
+			createConfigurationLoader().load(configurationLocation)
+		} else {
+			new Configuration()
+		}
+	}
+	
+	protected URL getConfigurationLocation() {
+		getClass().classLoader.getResource("geb-conf.groovy")
+	}
+	
+	protected ConfigurationLoader createConfigurationLoader() {
+		new ConfigurationLoader(getConfigurationEnvironment())
+	}
+	
+	protected String getConfigurationEnvironment() {
+		System.getProperty("geb.env")
 	}
 	
 	protected WebDriver getDefaultDriver() {
