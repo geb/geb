@@ -68,6 +68,8 @@ class UrlCalculationSpec extends GebSpecWithServer {
 		when:
 		browser.baseUrl = baseUrl
 		go(path, *:params)
+		page UrlCalculationSpecPage
+		
 		then:
 		requestUrl == expectedRequestURL
 
