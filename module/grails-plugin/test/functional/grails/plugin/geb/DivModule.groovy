@@ -15,13 +15,13 @@
  */
 package grails.plugin.geb
 
+import spock.lang.*
 import geb.*
 
-class IndexPage extends Page {
-	static url = "index"
-	static at = { div.text() == "index" }
+class DivModule extends Module {
+
+	static base = { $() }
 	static content = {
-		div { $('div') }
-		divModule { module DivModule }
+		div { $("div") }
 	}
 }

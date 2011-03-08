@@ -15,13 +15,20 @@
  */
 package grails.plugin.geb
 
-import geb.*
+import spock.lang.*
 
-class IndexPage extends Page {
-	static url = "index"
-	static at = { div.text() == "index" }
-	static content = {
-		div { $('div') }
-		divModule { module DivModule }
+@Issue("http://jira.codehaus.org/browse/GEB-32")
+class GEB32Spec extends GebSpec {
+	
+	def "can resolve module base"() {
+		when:
+		to IndexPage
+
+		then:
+		divModule.div.present
 	}
+
 }
+
+
+

@@ -28,6 +28,7 @@ class ModuleBaseCalculator {
 			// via through a subclass and have a different base
 			def moduleBaseDefinitionClone = moduleBaseDefinition.clone()
 			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(startingBase, params)
+			moduleBaseDefinitionClone.resolveStrategy = Closure.DELEGATE_FIRST
 			def moduleBase = moduleBaseDefinitionClone()
 			
 			if (!(moduleBase instanceof Navigator)) {
