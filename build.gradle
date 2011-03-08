@@ -201,7 +201,7 @@ project(':module:geb-core') {
 	}
 	
 	modifyPom { pom ->
-		pom.dependencies.findAll { it.artifactId == "selenium-common" }*.scope = "provided"
+		pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
 	}
 }
 
