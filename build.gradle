@@ -9,8 +9,6 @@ buildscript {
 	}
 }
 
-dependsOnChildren()
-
 allprojects {
 	grailsVersion = "1.2.3"
 	seleniumVersion = "2.0a7"
@@ -208,8 +206,6 @@ project(':module:geb-core') {
 }
 
 project(':module:geb-spock') {
-	dependsOn ":module:geb-core"
-	
 	dependencies {
 		compile spockDependency
 		compile project(':module:geb-core')
@@ -223,8 +219,6 @@ project(':module:geb-spock') {
 }
 
 project(':module:geb-junit3') {
-	dependsOn ":module:geb-core"
-	
 	dependencies {
 		compile project(':module:geb-core')
 		compile "junit:junit:3.8.2"
@@ -238,8 +232,6 @@ project(':module:geb-junit3') {
 }
 
 project(':module:geb-junit4') {
-	dependsOn ":module:geb-core"
-	
 	dependencies {
 		compile project(':module:geb-core')
 		compile "junit:junit:4.8.1"
@@ -253,8 +245,6 @@ project(':module:geb-junit4') {
 }
 
 project(':module:geb-easyb') {
-/*	dependsOn ":module:geb-core"*/
-	
 	dependencies {
 		compile project(':module:geb-core')
 		compile ("org.easyb:easyb:0.9.7") {
@@ -294,8 +284,6 @@ project(':module:geb-easyb') {
 }
 
 project(':module:test-utils') {
-	dependsOn ":module:geb-spock"
-	
 	dependencies {
 		compile project(':module:geb-spock'),
 		        jettyDependency,
@@ -320,11 +308,6 @@ if (hasProperty('withSamples')) {
 }
 
 project(":module:geb-grails") {
-	dependsOn ":module:geb-spock"
-	dependsOn ":module:geb-junit3"
-	dependsOn ":module:geb-junit4"
-	dependsOn ":module:geb-easyb"
-	
 	dependencies {
 		compile project(':module:geb-spock'),
 		        project(":module:geb-junit3"),
@@ -343,8 +326,6 @@ project(":module:geb-grails") {
 }
 
 project(":module:grails-plugin") {
-	dependsOn ":module:geb-grails"
-	
 	buildscript {
 		repositories {
 			mavenCentral()
