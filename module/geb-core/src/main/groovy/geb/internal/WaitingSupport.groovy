@@ -14,6 +14,8 @@
  */
 package geb.internal
 
+import geb.error.WaitTimeoutException
+
 /**
  * Provides covenience methods for waiting for a condition or something to occur
  */
@@ -62,16 +64,30 @@ class WaitingSupport {
 		intervalSecs = [timeoutSecs, intervalSecs ?: DEFAULT_INTERVAL].min()
 		
 		def loops = Math.ceil(timeoutSecs / intervalSecs)
-		def pass = condition()
-		def i = 0
+		def pass
+		def thrown
 		
+		try {
+			pass = condition()
+		} catch (Throwable e) {
+			pass = false
+			thrown = e
+		}
+		
+		def i = 0
 		while (!pass && i++ < loops) {
 			Thread.sleep((intervalSecs * 1000) as long)
-			pass = condition()
+			try {
+				pass = condition()
+				thrown = null
+			} catch (Throwable e) {
+				pass = false
+				thrown = e
+			}
 		}
 		
 		if (i >= loops) {
-			throw new AssertionError("condition did not pass in $timeoutSecs seconds")
+			throw new WaitTimeoutException(timeoutSecs, intervalSecs, thrown)
 		}
 		
 		pass

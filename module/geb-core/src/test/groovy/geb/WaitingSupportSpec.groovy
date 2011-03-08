@@ -15,6 +15,7 @@
 package geb
 
 import geb.test.util.*
+import geb.error.WaitTimeoutException
 import spock.lang.*
 
 class WaitingSupportSpec extends GebSpecWithServer {
@@ -50,13 +51,29 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		$("div").empty
 		waitFor(3) { !$("div").empty }
 	}
+
+	def "basic waiting throwing exception"() {
+		when:
+		js.showIn(2)
+		then:
+		$("div").empty
+		waitFor(3) { assert !$("div").empty; true }
+	}
 	
 	def "failed waiting"() {
 		when:
 		js.showIn(3)
 		waitFor(1) { !$("div").empty }
 		then:
-		thrown(AssertionError)
+		thrown(WaitTimeoutException)
+	}
+
+	def "failed waiting throwing exception"() {
+		when:
+		waitFor(2) { throw new IllegalArgumentException("1") }
+		then:
+		WaitTimeoutException e = thrown()
+		e.cause instanceof IllegalArgumentException
 	}
 	
 	def "larger interval than timeout"() {
@@ -64,6 +81,13 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		js.showIn(4)
 		then:
 		waitFor(1, 10) { $("div").empty }
+	}
+
+	def "larger interval than timeout throwing exception"() {
+		when:
+		js.showIn(4)
+		then:
+		waitFor(1, 10) { assert $("div").empty; true }
 	}
 	
 	def "default variant"() {

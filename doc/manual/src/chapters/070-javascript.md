@@ -109,12 +109,14 @@ There are three methods:
 
 These methods all do the same thing, except that they used default values for parameters that are not part of their signature. **They are all available on browsers, pages and modules**.
 
-The `condition` parameter is a closure that is periodically (executed until it either **returns a true value** (according to the Groovy Truth) or a timeout is reached.
+The `condition` parameter is a closure that is periodically (executed until it either **returns a true value** (according to the Groovy Truth) or a timeout is reached. If a `Throwable` or `Exception` is raised during the condition invocation, it will be interpreted as a condition failure (equivalent to returning a non true value) and the condition will be tested again in `intervalSeconds`.
 
 The `timeoutSeconds` (default is `5`) parameter defines the number of seconds to wait for the condition to become true. Note that this value is an approximation, it's used in conjuction with the `intervalSeconds` value to determine how many times the condition should be tested rather than doing any actual timing. Non whole numbers can be used for this value (e.g. `2.5`)
 
 The `intervalSeconds` (default is `0.5`) parameter defines the number of seconds to wait after testing the condition to test it again if it did not pass. Non whole numbers can be used for this value (e.g. `2.5`). If this value is higher than the given `timeoutSeconds`, the condition will be tested once initially, then once again just before the timeout would occur.
 
+If a `waitFor` clause fails, an instance of `geb.error.WaitTimeoutException` will be thrown. If the last condition invocation failed due to an exception bein raised, it will be the cause of the thrown `WaitTimeoutException` instance.
+ 
 ### Examples
 
 Here is an example showing one way of using `waitFor()` to deal with the situation where clicking a button invokes an AJAX request that creates a new `div` on its completion.

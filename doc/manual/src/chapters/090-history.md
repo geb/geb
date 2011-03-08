@@ -6,6 +6,14 @@ This page lists the high level changes between versions of Geb.
 
 * selenium-common is now a 'provided' scoped dependency of Geb
 
+### New Features
+
+* All waitFor clauses now treat exceptions raised in the condition as an evaluation failure, instead of propagation the exception
+
+### Breaking Changes
+
+* All failed waitFor clauses now throw a `geb.error.WaitTimeoutException` instead of `AssertionError`
+
 ## 0.5.1
 
 * Fixed problem with incorrectly compiled specs and the geb grails module
