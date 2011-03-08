@@ -11,13 +11,13 @@ buildscript {
 
 allprojects {
 	grailsVersion = "1.2.3"
-	seleniumVersion = "2.0a7"
+	seleniumVersion = "2.0b2"
 	groovyVersion = "1.6.7"
 	spockVersion = "0.5-groovy-1.6"
 	
 	spockDependency = "org.spockframework:spock-core:$spockVersion"
 
-	seleniumDependency = "org.seleniumhq.selenium:selenium-common:$seleniumVersion"
+	seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
 	firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
 	htmlUnitDriverDependency = "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion"
 
