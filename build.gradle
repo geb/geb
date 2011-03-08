@@ -201,6 +201,10 @@ project(':module:geb-core') {
 		compile seleniumDependency
 		testCompile project(":module:test-utils")
 	}
+	
+	modifyPom { pom ->
+		pom.dependencies.findAll { it.artifactId == "selenium-common" }*.scope = "provided"
+	}
 }
 
 project(':module:geb-spock') {
