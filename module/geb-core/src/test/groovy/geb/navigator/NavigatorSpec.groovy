@@ -4,6 +4,7 @@ import geb.test.util.GebSpec
 import org.openqa.selenium.*
 import spock.lang.*
 
+@Stepwise
 class NavigatorSpec extends GebSpec {
 
 	@Shared WebDriver driver
