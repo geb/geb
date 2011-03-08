@@ -378,6 +378,19 @@ project(":module:grails-plugin") {
 	
 	System.setProperty("server.port", "8010")
 	System.setProperty("geb.building", "true") // disables geb deps in plugins build config
+	
+	task uploadArchives << {
+		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+			def args = "-zipOnly -username=${codehausUsername} -password=${codehausPassword} "
+			if (project.version.endsWith("-SNAPSHOT")) {
+				args += "-message='snapshot release for “${project.version}”' -snapshot"
+			} else {
+				args += "-message='Release “${project.version}”'"
+			}
+			
+			grailsTask("release-plugin", args)
+		}
+	}
 }
 
 
