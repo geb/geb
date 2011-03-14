@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.driver
+package geb.conf
 
+import geb.driver.*
 import spock.lang.*
+
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import geb.error.UnknownDriverShortNameException
 import geb.error.UnableToLoadAnyDriversException
 
-class PropertyBasedDriverFactorySpec extends Specification {
+class ConfigurationDriverCreationSpec extends Specification {
 
 	@Shared classLoader
+	
+	def d
 	
 	def setupSpec() {
 		// We have to remove the ie driver from the classpath
@@ -32,7 +36,7 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	
 	def "no property"() {
 		given:
-		def d = factory(props()).driver
+		d = conf().driverInstance
 		expect:
 		isInstanceOf(HtmlUnitDriver, d)
 		cleanup:
@@ -41,16 +45,14 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	
 	def "specific short name"() {
 		given:
-		def d = factory(props("geb.driver": "htmlunit")).driver
+		d = conf(p("geb.driver": "htmlunit")).driverInstance
 		expect:
 		isInstanceOf(HtmlUnitDriver, d)
-		cleanup:
-		d?.quit()
 	}
 
 	def "specific valid short name but not available"() {
 		when:
-		factory(props("geb.driver": "ie")).driver
+		conf(p("geb.driver": "ie")).driverInstance
 		then:
 		Exception e = thrown()
 		isInstanceOf(UnableToLoadAnyDriversException, e)
@@ -58,7 +60,7 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	
 	def "specific invalid shortname"() {
 		when:
-		factory(props("geb.driver": "garbage")).driver
+		conf(p("geb.driver": "garbage")).driverInstance
 		then:
 		Exception e = thrown()
 		isInstanceOf(UnknownDriverShortNameException, e)
@@ -66,41 +68,86 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	
 	def "specific list of drivers"() {
 		given:
-		def d = factory(props("geb.driver": "ie:htmlunit")).driver
+		d = conf(p("geb.driver": "ie:htmlunit")).driverInstance
 		expect:
 		isInstanceOf(HtmlUnitDriver, d)
-		cleanup:
-		d?.quit()
 	}
 	
 	def "specific valid class name"() {
 		given:
-		def d = factory(props("geb.driver": HtmlUnitDriver.name)).driver
+		d = conf(p("geb.driver": HtmlUnitDriver.name)).driverInstance
 		expect:
 		isInstanceOf(HtmlUnitDriver, d)
-		cleanup:
-		d?.quit()
 	}
 
 	def "specific invalid class name"() {
 		when:
-		def d = factory(props("geb.driver": "a.b.c")).driver
+		d = conf(p("geb.driver": "a.b.c")).driverInstance
 		then:
 		Exception e = thrown()
 		isInstanceOf(UnableToLoadAnyDriversException, e)
 	}
 	
-	def props(m = [:]) {
+	def "specify instance"() {
+		given:
+		def driver = loadClass(HtmlUnitDriver).newInstance()
+		d = conf(c(driver: driver)).driverInstance
+		expect:
+		d.is(driver)
+	}
+	
+	def "specify driver name in config"() {
+		given:
+		d = conf(c(driver: HtmlUnitDriver.name)).driverInstance
+		expect:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+
+	def "specify driver names in config"() {
+		given:
+		d = conf(c(driver: "ie:htmlunit")).driverInstance
+		expect:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+	
+	def "specify creation closure"() {
+		given:
+		def config = new ConfigObject()
+		config.cacheDriver = false
+		config.driver = { new HtmlUnitDriver() }
+		d = new Configuration(config).driverInstance
+
+		expect:
+		d instanceof HtmlUnitDriver
+	}
+	
+	def p(m = [:]) {
 		def p = new Properties()
 		p.putAll(m)
 		p
 	}
 	
-	def factory(Object[] args) {
-		classLoader.loadClass(PropertyBasedDriverFactory.name).newInstance(classLoader, *args)
+	def c(m = [:]) {
+		def c = loadClass(ConfigObject).newInstance()
+		c.putAll(m)
+		c
+	}
+	
+	def conf(Object[] args) {
+		def conf = loadClass(Configuration).newInstance(*args)
+		conf.cacheDriver = false
+		conf
 	}
 
 	boolean isInstanceOf(Class clazz, Object instance) {
-		classLoader.loadClass(clazz.name).isInstance(instance)
+		loadClass(clazz).isInstance(instance)
+	}
+	
+	def cleanup() {
+		d?.quit()
+	}
+	
+	def loadClass(Class clazz) {
+		classLoader.loadClass(clazz.name)
 	}
 }

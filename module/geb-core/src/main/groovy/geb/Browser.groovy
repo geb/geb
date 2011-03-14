@@ -82,7 +82,7 @@ class Browser {
 	}
 	
 	protected ConfigurationLoader createConfigurationLoader() {
-		new ConfigurationLoader(getConfigurationEnvironment())
+		new ConfigurationLoader(getConfigurationEnvironment(), System.properties)
 	}
 	
 	protected String getConfigurationEnvironment() {
@@ -90,13 +90,9 @@ class Browser {
 	}
 	
 	protected WebDriver getDefaultDriver() {
-		defaultDriverFactory.driver
+		config.driverInstance
 	}
-	
-	protected DriverFactory getDefaultDriverFactory() {
-		new CachingDriverFactory(new PropertyBasedDriverFactory(this.class.classLoader))
-	}
-	
+		
 	void registerPageChangeListener(PageChangeListener listener) {
 		if (pageChangeListeners.add(listener)) {
 			listener.pageWillChange(this, null, page)

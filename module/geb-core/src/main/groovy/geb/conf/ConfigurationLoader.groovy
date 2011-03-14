@@ -18,9 +18,11 @@ package geb.conf
 class ConfigurationLoader {
 	
 	final String environment
+	final Properties properties
 	
-	ConfigurationLoader(String environment = null) {
+	ConfigurationLoader(String environment = null, Properties properties = new Properties()) {
 		this.environment = environment
+		this.properties = properties
 	}
 	
 	Configuration load(URL configLocation) {
@@ -28,7 +30,7 @@ class ConfigurationLoader {
 			throw new IllegalArgumentException("configLocation cannot be null")
 		}
 		
-		new Configuration(loadRawConfig(configLocation))
+		new Configuration(loadRawConfig(configLocation), properties)
 	}
 	
 	protected ConfigObject loadRawConfig(URL configLocation) {
