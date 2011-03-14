@@ -16,6 +16,9 @@ package geb.report
 
 import geb.Browser
 
+import org.openqa.selenium.TakesScreenshot
+import org.openqa.selenium.OutputType
+
 class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 
 	ScreenshotAndPageSourceReporter(File dir) {
@@ -36,11 +39,10 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 	
 	void writeReport(String reportNameBase, Browser browser) {
 		super.writeReport(reportNameBase, browser)
-		
-		// Only the firefox driver has this functionality, and we check the
-		// name because we don't have a compile dependency on the firefox driver.
-		if (browser.driver.class.name.endsWith("FirefoxDriver")) {
-			browser.driver.saveScreenshot(getFile(reportNameBase, 'png')) 
+
+		// note - this is not covered by tests unless using a driver that can take screenshots
+		if (browser.driver instanceof TakesScreenshot) {
+			getFile(reportNameBase, 'png').withOutputStream { it << browser.driver.getScreenshotAs(OutputType.BYTES) }
 		}
 	}
 

@@ -80,7 +80,7 @@ The default implementation creates a browser instance using the return value of 
 
 ### geb.junit3.GebReportingTest
 
-The `GebReportingTest` class extends from `GebTest` (so has the same customisation options and behaviour) but writes out the page source at the end of each test method to a file on disk (if you are using the firefox driver it also saves a screenshot as a PNG file). To enable this, you **must** override the `getReportDir()` method…
+The `GebReportingTest` class extends from `GebTest` (so has the same customisation options and behaviour) but writes out the page source at the end of each test method to a file on disk (if you are using a driver [that supports it](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/TakesScreenshot.html), it also saves a screenshot as a PNG file). To enable this, you **must** override the `getReportDir()` method…
 
     import geb.junit3.GebReportingTest
     
@@ -174,7 +174,7 @@ The default implementation creates a browser instance using the return value of 
 
 ### geb.junit.GebReportingTest
 
-The `GebReportingTest` class extends from `GebTest` (so has the same customisation options and behaviour) but writes out the page source at the end of each test method to a file on disk (if you are using the firefox driver it also saves a screenshot as a PNG file). To enable this, you **must** override the `getReportDir()` method…
+The `GebReportingTest` class extends from `GebTest` (so has the same customisation options and behaviour) but writes out the page source at the end of each test method to a file on disk (if you are using a driver [that supports it](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/TakesScreenshot.html), it also saves a screenshot as a PNG file). To enable this, you **must** override the `getReportDir()` method…
 
     import geb.junit.GebReportingTest
     
@@ -266,7 +266,7 @@ The default implementation creates a browser instance using the return value of 
 
 ### geb.spock.GebReportingSpec
 
-The `GebReportingSpec` class extends from `GebSpec` (so has the same customisation options and behaviour) but writes out the page source at the end of each test method to a file on disk (if you are using the firefox driver it also saves a screenshot as a PNG file). To enable this, you **must** override the `getReportDir()` method…
+The `GebReportingSpec` class extends from `GebSpec` (so has the same customisation options and behaviour) but writes out the page source at the end of each test method to a file on disk (if you are using a driver [that supports it](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/TakesScreenshot.html), it also saves a screenshot as a PNG file). To enable this, you **must** override the `getReportDir()` method…
 
     import geb.spock.GebReportingSpec
     

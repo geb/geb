@@ -9,6 +9,7 @@ This page lists the high level changes between versions of Geb.
 ### New Features
 
 * All waitFor clauses now treat exceptions raised in the condition as an evaluation failure, instead of propagation the exception
+* Screenshots are now taken when reporting for all drivers that implement the `TakesScreenshot` interface (which is nearly all)
 
 ### Breaking Changes
 
