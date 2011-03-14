@@ -288,7 +288,8 @@ project(':module:test-utils') {
 		compile project(':module:geb-spock'),
 		        jettyDependency,
 		        firefoxDriverDependency,
-		        htmlUnitDriverDependency
+		        htmlUnitDriverDependency,
+		        "org.seleniumhq.selenium:selenium-server:$seleniumVersion"
 	}
 }
 

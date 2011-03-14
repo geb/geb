@@ -19,6 +19,8 @@ import geb.Browser
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.OutputType
 
+import org.openqa.selenium.WebDriver
+
 class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 
 	ScreenshotAndPageSourceReporter(File dir) {
@@ -41,9 +43,13 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		super.writeReport(reportNameBase, browser)
 
 		// note - this is not covered by tests unless using a driver that can take screenshots
-		if (browser.driver instanceof TakesScreenshot) {
-			getFile(reportNameBase, 'png').withOutputStream { it << browser.driver.getScreenshotAs(OutputType.BYTES) }
+		if (browser.augmentedDriver instanceof TakesScreenshot) {
+			saveScreenshotPngBytes(reportNameBase, browser.driver.getScreenshotAs(OutputType.BYTES))
 		}
+	}
+	
+	protected saveScreenshotPngBytes(String reportNameBase, byte[] bytes) {
+		getFile(reportNameBase, 'png').withOutputStream { it << bytes }
 	}
 
 }

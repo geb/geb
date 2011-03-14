@@ -23,7 +23,7 @@ class DriveSpec extends Specification {
 	@Shared server
 	
 	def setupSpec() {
-		server = new TestHttpServer()
+		server = new CallbackHttpServer()
 		server.start()
 		server.get = { req, res ->
 			res.outputStream << """

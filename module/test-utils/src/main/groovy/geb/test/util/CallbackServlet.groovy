@@ -19,10 +19,10 @@ package geb.test.util
 import javax.servlet.ServletException
 import javax.servlet.http.*
 
-class TestHttpServerServlet extends HttpServlet {
+class CallbackServlet extends HttpServlet {
 	private server
 
-	TestHttpServerServlet(server) {
+	CallbackServlet(CallbackHttpServer server) {
 		this.server = server
 	}
 

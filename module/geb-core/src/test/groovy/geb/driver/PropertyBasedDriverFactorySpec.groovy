@@ -21,11 +21,20 @@ import geb.error.UnableToLoadAnyDriversException
 
 class PropertyBasedDriverFactorySpec extends Specification {
 
+	@Shared classLoader
+	
+	def setupSpec() {
+		// We have to remove the ie driver from the classpath
+		def thisLoader = getClass().classLoader
+		def classpath = thisLoader.getURLs().findAll { !it.path.contains("selenium-ie-driver") }
+		classLoader = new URLClassLoader(classpath as URL[], thisLoader.parent)
+	}
+	
 	def "no property"() {
 		given:
 		def d = factory(props()).driver
 		expect:
-		d instanceof HtmlUnitDriver
+		isInstanceOf(HtmlUnitDriver, d)
 		cleanup:
 		d?.quit()
 	}
@@ -34,7 +43,7 @@ class PropertyBasedDriverFactorySpec extends Specification {
 		given:
 		def d = factory(props("geb.driver": "htmlunit")).driver
 		expect:
-		d instanceof HtmlUnitDriver
+		isInstanceOf(HtmlUnitDriver, d)
 		cleanup:
 		d?.quit()
 	}
@@ -43,21 +52,23 @@ class PropertyBasedDriverFactorySpec extends Specification {
 		when:
 		factory(props("geb.driver": "ie")).driver
 		then:
-		thrown(UnableToLoadAnyDriversException)
+		Exception e = thrown()
+		isInstanceOf(UnableToLoadAnyDriversException, e)
 	}
 	
 	def "specific invalid shortname"() {
 		when:
 		factory(props("geb.driver": "garbage")).driver
 		then:
-		thrown(UnknownDriverShortNameException)
+		Exception e = thrown()
+		isInstanceOf(UnknownDriverShortNameException, e)
 	}
 	
 	def "specific list of drivers"() {
 		given:
 		def d = factory(props("geb.driver": "ie:htmlunit")).driver
 		expect:
-		d instanceof HtmlUnitDriver
+		isInstanceOf(HtmlUnitDriver, d)
 		cleanup:
 		d?.quit()
 	}
@@ -66,7 +77,7 @@ class PropertyBasedDriverFactorySpec extends Specification {
 		given:
 		def d = factory(props("geb.driver": HtmlUnitDriver.name)).driver
 		expect:
-		d instanceof HtmlUnitDriver
+		isInstanceOf(HtmlUnitDriver, d)
 		cleanup:
 		d?.quit()
 	}
@@ -75,7 +86,8 @@ class PropertyBasedDriverFactorySpec extends Specification {
 		when:
 		def d = factory(props("geb.driver": "a.b.c")).driver
 		then:
-		thrown(UnableToLoadAnyDriversException)
+		Exception e = thrown()
+		isInstanceOf(UnableToLoadAnyDriversException, e)
 	}
 	
 	def props(m = [:]) {
@@ -85,7 +97,10 @@ class PropertyBasedDriverFactorySpec extends Specification {
 	}
 	
 	def factory(Object[] args) {
-		new PropertyBasedDriverFactory(*args)
+		classLoader.loadClass(PropertyBasedDriverFactory.name).newInstance(classLoader, *args)
 	}
 
+	boolean isInstanceOf(Class clazz, Object instance) {
+		classLoader.loadClass(clazz.name).isInstance(instance)
+	}
 }

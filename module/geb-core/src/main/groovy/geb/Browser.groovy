@@ -18,6 +18,7 @@ import geb.driver.*
 import geb.js.*
 import geb.conf.*
 import geb.internal.WaitingSupport
+import geb.internal.RemoteDriverOperations
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UnexpectedPageException
@@ -36,6 +37,14 @@ class Browser {
 	
 	private final pageChangeListeners = new LinkedHashSet()
 	private _js
+
+	/**
+	 * If the driver is remote, this object allows access to it's capabilities. This indirection is needed
+	 * to avoid a hard dependency on the remote driver classes which aren't part of core.
+	 * 
+	 * @see RemoteDriverOperations
+	 */
+	@Lazy WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
 	
 	Browser(Class pageClass, Map params = null) {
 		this(null, null, pageClass, params)

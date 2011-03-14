@@ -20,20 +20,15 @@ import org.mortbay.jetty.Server
 import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
 
-class TestHttpServer {
+abstract class TestHttpServer {
 	protected server
 	boolean started
-
-	Closure get
-	Closure post
-	Closure put
-	Closure delete
 
 	void start() {
 		if (!started) {
 			server = new Server(0)
 			def context = new Context(server, "/")
-			context.addServlet(new ServletHolder(new TestHttpServerServlet(this)), "/*")
+			addServlets(context)
 			server.start()
 			started = true
 		}
@@ -51,7 +46,13 @@ class TestHttpServer {
 	}
 
 	def getBaseUrl() {
-			"http://localhost:$port/"
+		"http://localhost:$port/"
+	}
+	
+	def getBaseUrlAsUrl() {
+		new URL(getBaseUrl())
 	}
 
+	abstract protected addServlets(Context context)
+	
 }
