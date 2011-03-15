@@ -15,12 +15,12 @@
 
 package geb.junit3
 
-import geb.test.util.TestHttpServer
+import geb.test.util.CallbackHttpServer
 import geb.Page
 
 class GebTestTest extends GebTest {
 
-	def server = new TestHttpServer()
+	def server = new CallbackHttpServer()
 	
 	void setUp() {
 		server.start()

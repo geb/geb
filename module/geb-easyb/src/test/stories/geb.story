@@ -1,11 +1,11 @@
 using "geb"
 
-import geb.test.util.TestHttpServer
+import geb.test.util.CallbackHttpServer
 
 scenario "using geb", {
 
 	given "geb goodness", {
-		server = new TestHttpServer()
+		server = new CallbackHttpServer()
 		server.start()
 		baseUrl = server.baseUrl
 		

@@ -15,7 +15,7 @@
 
 package geb.junit4
 
-import geb.test.util.TestHttpServer
+import geb.test.util.CallbackHttpServer
 import geb.Page
 import org.junit.*
 import org.junit.runner.RunWith
@@ -24,7 +24,7 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4)
 class GebReportingTestTest extends GebReportingTest {
 
-	def server = new TestHttpServer()
+	def server = new CallbackHttpServer()
 	
 	static private counter = 0
 	

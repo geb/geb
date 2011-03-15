@@ -15,12 +15,12 @@
 
 package geb.junit3
 
-import geb.test.util.TestHttpServer
+import geb.test.util.CallbackHttpServer
 import geb.Page
 
 class GebReportingTestTest extends GebReportingTest {
 
-	def server = new TestHttpServer()
+	def server = new CallbackHttpServer()
 	
 	static counter = 0
 	
