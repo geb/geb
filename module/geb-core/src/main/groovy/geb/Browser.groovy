@@ -78,7 +78,7 @@ class Browser {
 	}
 	
 	protected URL getConfigurationLocation() {
-		getClass().classLoader.getResource("geb-conf.groovy")
+		Thread.currentThread().contextClassLoader.getResource("geb-conf.groovy")
 	}
 	
 	protected ConfigurationLoader createConfigurationLoader() {
