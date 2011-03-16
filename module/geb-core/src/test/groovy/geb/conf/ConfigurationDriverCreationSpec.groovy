@@ -32,6 +32,7 @@ class ConfigurationDriverCreationSpec extends Specification {
 		def thisLoader = getClass().classLoader
 		def classpath = thisLoader.getURLs().findAll { !it.path.contains("selenium-ie-driver") }
 		classLoader = new URLClassLoader(classpath as URL[], thisLoader.parent)
+		Thread.currentThread().contextClassLoader = classLoader
 	}
 	
 	def "no property"() {
@@ -145,6 +146,10 @@ class ConfigurationDriverCreationSpec extends Specification {
 	
 	def cleanup() {
 		d?.quit()
+	}
+	
+	def cleanupSpec() {
+		Thread.currentThread().contextClassLoader = null
 	}
 	
 	def loadClass(Class clazz) {
