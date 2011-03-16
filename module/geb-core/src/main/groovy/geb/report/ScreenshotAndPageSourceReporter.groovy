@@ -44,7 +44,7 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 
 		// note - this is not covered by tests unless using a driver that can take screenshots
 		if (browser.augmentedDriver instanceof TakesScreenshot) {
-			saveScreenshotPngBytes(reportNameBase, browser.driver.getScreenshotAs(OutputType.BYTES))
+			saveScreenshotPngBytes(reportNameBase, browser.augmentedDriver.getScreenshotAs(OutputType.BYTES))
 		}
 	}
 	
