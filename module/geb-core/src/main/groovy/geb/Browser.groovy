@@ -46,18 +46,26 @@ class Browser {
 	 */
 	@Lazy WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
 	
-	Browser(Class pageClass, Map params = null) {
-		this(null, null, pageClass, params)
+	Browser(Configuration config) {
+		this(null, null, null, null, config)
+	}
+
+	Browser(String baseUrl, Configuration config) {
+		this(null, baseUrl, null, null, config)
 	}
 	
-	Browser(String baseUrl, Class pageClass = null, Map params = null) {
-		this(null, baseUrl, pageClass)
+	Browser(Class pageClass, Map params = null, Configuration config = null) {
+		this(null, null, pageClass, params, config)
 	}
 	
-	Browser(WebDriver driver = null, String baseUrl = null, Class pageClass = null, Map params = null) {
-		this.config = createConfiguration()
+	Browser(String baseUrl, Class pageClass = null, Map params = null, Configuration config = null) {
+		this(null, baseUrl, pageClass, params, config)
+	}
+	
+	Browser(WebDriver driver = null, String baseUrl = null, Class pageClass = null, Map params = null, Configuration config = null) {
+		this.config = config ?: createConfiguration()
 		this.driver = driver ?: defaultDriver
-		this.baseUrl = baseUrl
+		this.baseUrl = baseUrl != null ? baseUrl : this.config.baseUrl
 		
 		params = params == null ? [:] : params
 		

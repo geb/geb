@@ -60,6 +60,14 @@ class Configuration {
 		readValue("driver", null) ?: properties.getProperty("geb.driver")
 	}
 
+	String getBaseUrl() {
+		readValue("baseUrl", null)
+	}
+	
+	void setBaseUrl(baseUrl) {
+		rawConfig.baseUrl = baseUrl.toString()
+	}
+	
 	WebDriver getDriverInstance() {
 		def driverValue = getDriver()
 		
