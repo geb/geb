@@ -71,7 +71,7 @@ class Configuration {
 	}
 	
 	ClassLoader getClassLoader() {
-		this.class.classLoader
+		Thread.currentThread().contextClassLoader
 	}
 	
 	protected DriverFactory getDriverFactory(driverValue) {
