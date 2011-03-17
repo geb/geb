@@ -75,6 +75,10 @@ class NonEmptyNavigator extends Navigator {
 		filter(selector).filter(predicates)
 	}
 
+	Navigator eq(int index) {
+		this[index]
+	}
+
 	Navigator getAt(int index) {
 		navigatorFor getElement(index)
 	}
@@ -135,6 +139,19 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
+	Navigator nextAll() {
+		navigatorFor collectElements {
+			it.findElements By.xpath("following-sibling::*")
+		}
+	}
+
+	Navigator nextAll(String selectorString) {
+		navigatorFor collectElements {
+			def siblings = it.findElements(By.xpath("following-sibling::*"))
+			siblings.findAll { CssSelector.matches(it, selectorString) }
+		}
+	}
+
 	Navigator previous() {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*"))
@@ -149,6 +166,19 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
+	Navigator prevAll() {
+		navigatorFor collectElements {
+			it.findElements(By.xpath("preceding-sibling::*"))
+		}
+	}
+
+	Navigator prevAll(String selectorString) {
+		navigatorFor collectElements {
+			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
+			siblings.findAll { CssSelector.matches(it, selectorString) }
+		}
+	}
+
 	Navigator parent() {
 		navigatorFor collectElements {
 			it.findElement By.xpath("parent::*")
@@ -156,6 +186,10 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator parent(String selectorString) {
+		parent().filter(selectorString)
+	}
+
+	Navigator closest(String selectorString) {
 		navigatorFor collectElements {
 			def parents = it.findElements(By.xpath("ancestor::*")).reverse()
 			parents.find { CssSelector.matches(it, selectorString) }

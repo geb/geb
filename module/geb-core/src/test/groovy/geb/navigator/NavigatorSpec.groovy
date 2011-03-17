@@ -225,6 +225,20 @@ class NavigatorSpec extends GebSpec {
 		"#DOESNOTEXIST" | []
 	}
 
+	@Unroll("calling nextAll() on #selector should return #expectedIds")
+	def "nextAll selects all following elements"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.nextAll()*.@id == expectedIds
+
+		where:
+		selector          | expectedIds
+		"#main"           | ["sidebar"]
+		"#header"         | ["navigation", "content", "footer"]
+		".col-3"          | ["content", "footer"]
+		"#content, #main" | ["footer", "sidebar"]
+		"#DOESNOTEXIST"   | []
+	}
+
 	@Unroll("calling next(#nextSelector) on #selector should return #expectedIds")
 	def "next with selector argument"() {
 		given: def navigator = page.find(selector)
@@ -238,6 +252,20 @@ class NavigatorSpec extends GebSpec {
 		"input"      | "select"     | ["the_plain_select"]
 		"#keywords"  | "bdo"        | []
 		"#article-1" | ".article"   | ["article-2"]
+	}
+
+	@Unroll("calling nextAll(#nextSelector) on #selector should return #expectedIds")
+	def "nextAll with selector argument"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.nextAll(nextSelector)*.@id == expectedIds
+
+		where:
+		selector     | nextSelector | expectedIds
+		"#keywords"  | "input"      | ["site-1", "site-2", "checker1", "checker2"]
+		"#keywords"  | "select"     | ["the_plain_select", "the_multiple_select"]
+		"input"      | "input"      | ["site-1", "site-2", "checker1", "checker2"]
+		"#keywords"  | "bdo"        | []
+		"#article-1" | ".article"   | ["article-2", "article-3"]
 	}
 
 	@Unroll("calling previous() on #selector should return #expectedIds")
@@ -254,6 +282,20 @@ class NavigatorSpec extends GebSpec {
 		"#DOESNOTEXIST" | []
 	}
 
+	@Unroll("calling prevAll() on #selector should return #expectedIds")
+	def "prevAll selects immediately preceding elements"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.prevAll()*.@id == expectedIds
+
+		where:
+		selector        | expectedIds
+		"#footer"       | ["header", "navigation", "content"]
+		"#navigation"   | ["header"]
+		".col-3"        | ["header", "navigation"]
+		"#container"    | []
+		"#DOESNOTEXIST" | []
+	}
+
 	@Unroll("calling previous(#previousSelector) on #selector should return #expectedIds")
 	def "previous with tag argument"() {
 		given: def navigator = page.find(selector)
@@ -261,12 +303,27 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		selector               | previousSelector | expectedIds
-		"#the_multiple_select" | "input"  | ["checker2"]
-		"#the_multiple_select" | "select" | ["the_plain_select"]
-		"input"                | "input"  | ["keywords", "site-1", "site-2", "checker1"]
-		"select"               | "select" | ["the_plain_select"]
-		"#the_multiple_select" | "bdo"    | []
+		"#the_multiple_select" | "input"          | ["checker2"]
+		"#the_multiple_select" | "select"         | ["the_plain_select"]
+		"input"                | "input"          | ["keywords", "site-1", "site-2", "checker1"]
+		"select"               | "select"         | ["the_plain_select"]
+		"#the_multiple_select" | "bdo"            | []
 		"#article-3"           | ".article"       | ["article-2"]
+	}
+
+	@Unroll("calling prevAll(#previousSelector) on #selector should return #expectedIds")
+	def "prevAll with tag argument"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.prevAll(previousSelector)*.@id == expectedIds
+
+		where:
+		selector               | previousSelector | expectedIds
+		"#the_multiple_select" | "input"          | ["checker2", "checker1", "site-2", "site-1", "keywords"]
+		"#the_multiple_select" | "select"         | ["the_plain_select"]
+		"input"                | "input"          | ["keywords", "site-1", "site-2", "checker1"]
+		"select"               | "select"         | ["the_plain_select"]
+		"#the_multiple_select" | "bdo"            | []
+		"#article-3"           | ".article"       | ["article-2", "article-1"]
 	}
 
 	@Unroll("calling parent() on #selector should return #expectedIds")
@@ -289,12 +346,28 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.parent(parentSelector)*.@id == expectedIds
 
 		where:
-		selector     | parentSelector | expectedIds
-		"#keywords"  | "div"          | ["sidebar"]
-		"input"      | "div"          | ["sidebar"]
-		"ul, ol"     | "div"          | ["navigation", "sidebar"]
-		"#keywords"  | "bdo"          | []
-		"#article-1" | ".col-3"       | ["content"]
+		selector         | parentSelector | expectedIds
+		"#keywords"      | "div"          | []
+		"#article-1"     | "div"          | ["main"]
+		".article"       | "div"          | ["main"]
+		"form, .article" | "div"          | ["main", "sidebar"]
+		"form"           | ".col-1"       | ["sidebar"]
+		"form"           | ".col-3"       | []
+		"bdo"            | "div"          | []
+	}
+
+	@Unroll("calling closest(#closestSelector) on #selector should return #expectedIds")
+	def "closest with tag argument"() {
+		given: def navigator = page.find(selector)
+		expect: navigator.closest(closestSelector)*.@id == expectedIds
+
+		where:
+		selector     | closestSelector | expectedIds
+		"#keywords"  | "div"           | ["sidebar"]
+		"input"      | "div"           | ["sidebar"]
+		"ul, ol"     | "div"           | ["navigation", "sidebar"]
+		"#keywords"  | "bdo"           | []
+		"#article-1" | ".col-3"        | ["content"]
 	}
 
 	@Unroll("calling children() on #selector should return #expected")
@@ -843,4 +916,19 @@ class NavigatorSpec extends GebSpec {
 		1 * element2.click()
 		0 * _
 	}
+
+	@Unroll
+	def "can use eq(int) on Navigator"() {
+		expect: navigator.eq(index).@id == expectedId
+		where:
+		navigator             | index | expectedId
+		page.find("div")      | 0     | "container"
+		page.find("div")      | 1     | "header"
+		page.find("div")      | -1    | "footer"
+		page.find(".article") | 0     | "article-1"
+		page.find(".article") | 1     | "article-2"
+		page.find(".article") | -1    | "article-3"
+		page.find("bdo")      | 0     | null
+	}
+
 }

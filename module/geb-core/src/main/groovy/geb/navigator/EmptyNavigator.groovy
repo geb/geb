@@ -74,13 +74,23 @@ class EmptyNavigator extends Navigator {
 
 	Navigator next(String selector) { this }
 
+	Navigator nextAll() { this }
+
+	Navigator nextAll(String selector) { this }
+
 	Navigator previous() { this }
 
 	Navigator previous(String selector) { this }
 
+	Navigator prevAll() { this }
+
+	Navigator prevAll(String selector) { this }
+
 	Navigator parent() { this }
 
 	Navigator parent(String selector) { this }
+
+	Navigator closest(String selector) { this }
 
 	Navigator children() { this }
 
@@ -107,6 +117,8 @@ class EmptyNavigator extends Navigator {
 	def value() { null }
 
 	Navigator leftShift(value) { this }
+
+	Navigator eq(int index) { this }
 
 	Navigator getAt(int index) { this }
 
