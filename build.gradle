@@ -499,5 +499,5 @@ task test(dependsOn: getTasksByName("test", true)) << {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '0.9-rc-3'
+	gradleVersion = '1.0-milestone-1'
 }
