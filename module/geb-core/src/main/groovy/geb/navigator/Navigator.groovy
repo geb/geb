@@ -29,7 +29,7 @@ import geb.js.JQueryAdapter
 abstract class Navigator implements Iterable<Navigator> {
 
 	abstract Browser getBrowser()
-	
+
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
 	 * CSS selector. Any CSS capabilities supported by the underlying WebDriver instance are supported.
@@ -107,6 +107,16 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator filter(Map<String, Object> predicates)
 
 	abstract Navigator filter(Map<String, Object> predicates, String selector)
+
+	/**
+	 * Gets the wrapped element at the given index.
+	 * <p>
+	 * When no such element exists, an empty Navigator instance is returned.
+	 * </p>
+	 * @param index index of the element to retrieve - pass a negative value to start from the back
+	 * @return new Navigator instance
+	 */
+	abstract Navigator eq(int index)
 
 	/**
 	 * Gets the wrapped element at the given index.
@@ -194,13 +204,32 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the next sibling elements of the
 	 * current context elements, matching the given tag.
 	 * <p>
-	 * Unlike         {@link #next()}        , this method will keep looking for the first
+	 * Unlike {@link #next()}, this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
 	 * @param selector tag to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator next(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all following sibling elements of the
+	 * current context elements.
+	 * @return new Navigator instance
+	 */
+	abstract Navigator nextAll()
+
+	/**
+	 * Creates a new Navigator instance containing all following sibling elements of the
+	 * current context elements that match the given tag.
+	 * <p>
+	 * Unlike {@link #next()}, this method will keep looking for the first
+	 * matching sibling until it finds a match or is out of siblings.
+	 * </p>
+	 * @param selector tag to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator nextAll(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
@@ -210,16 +239,35 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator previous()
 
 	/**
+	 * Creates a new Navigator instance containing all preceding sibling elements of the
+	 * current context elements.
+	 * @return new Navigator instance
+	 */
+	abstract Navigator prevAll()
+
+	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
 	 * current context elements, matching the given tag.
 	 * <p>
-	 * Unlike         {@link #previous()}        , this method will keep looking for the first
+	 * Unlike {@link #previous()}, this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
 	 * @param selector tag to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator previous(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all preceding sibling elements of the
+	 * current context elements, matching the given tag.
+	 * <p>
+	 * Unlike {@link #previous()}, this method will keep looking for the first
+	 * matching sibling until it finds a match or is out of siblings.
+	 * </p>
+	 * @param selector tag to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator prevAll(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the direct parent elements of the
@@ -232,13 +280,25 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Creates a new Navigator instance containing the parent elements of the current
 	 * context elements that match the given tag.
 	 * <p>
-	 * Unlike         {@link #parent()}        , this method will keep traversing up the DOM
+	 * Unlike {@link #parent()}, this method will keep traversing up the DOM
 	 * until a match is found or the top of the DOM has been found
 	 * </p>
 	 * @param selector tag to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator parent(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing the parent elements of the current
+	 * context elements that match the given tag.
+	 * <p>
+	 * Unlike {@link #parent()}, this method will keep traversing up the DOM
+	 * until a match is found or the top of the DOM has been found
+	 * </p>
+	 * @param selector tag to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator closest(String selector)
 
 	abstract Navigator children()
 
@@ -267,11 +327,11 @@ abstract class Navigator implements Iterable<Navigator> {
 	/**
 	 * Uses the isDisplayed() of RenderedWebElement to determine if the first element in the context is displayed.
 	 * If the context is empty, or the first element is not a RenderedWebElement, false will be returned.
-	 * 
+	 *
 	 * @return true if the first element is displayed
 	 */
 	abstract boolean isDisplayed()
-	
+
 	/**
 	 * Shorthand for <code>hasAttribute("disabled")</code>.
 	 * @return true when the first element is disabled
@@ -344,9 +404,9 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract void click() throws IOException, ClassCastException
 
 	abstract void click(Class<? extends Page> pageClass)
-	
+
 	abstract void click(List<Class<? extends Page>> potentialPageClasses)
-	
+
 	/**
 	 * Returns the number of context elements.
 	 * @return the number of context elements
@@ -430,7 +490,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	JQueryAdapter getJquery() {
 		new JQueryAdapter(this)
 	}
-	
+
 	/**
 	 * Factory method to create an initial Navigator instance.
 	 * <p>
