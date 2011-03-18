@@ -408,10 +408,10 @@ class NonEmptyNavigator extends Navigator {
 	private getInputValue(WebElement input) {
 		def value = null
 		if (input.tagName == "select") {
-			if (input.getAttribute("multiple")) {
-				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
-			} else {
+			if (isAttributeEffectivelyFalse(input, "multiple")) {
 				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
+			} else {
+				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
 			}
 		} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
 			if (input.isSelected()) {
