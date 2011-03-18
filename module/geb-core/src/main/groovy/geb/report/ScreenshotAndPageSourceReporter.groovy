@@ -43,8 +43,9 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		super.writeReport(reportNameBase, browser)
 
 		// note - this is not covered by tests unless using a driver that can take screenshots
-		if (browser.augmentedDriver instanceof TakesScreenshot) {
-			saveScreenshotPngBytes(reportNameBase, browser.augmentedDriver.getScreenshotAs(OutputType.BYTES))
+		def screenshotDriver = determineScreenshotDriver(browser)
+		if (screenshotDriver) {
+			saveScreenshotPngBytes(reportNameBase, screenshotDriver.getScreenshotAs(OutputType.BYTES))
 		}
 	}
 	
@@ -52,4 +53,13 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		getFile(reportNameBase, 'png').withOutputStream { it << bytes }
 	}
 
+	protected determineScreenshotDriver(Browser browser) {
+		if (browser.driver instanceof TakesScreenshot) {
+			browser.driver
+		} else if (browser.augmentedDriver instanceof TakesScreenshot) {
+			browser.augmentedDriver
+		} else {
+			null
+		}
+	}
 }
