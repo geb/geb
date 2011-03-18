@@ -161,7 +161,9 @@ Consider the following html…
 You can select content _around_ `p.d` by…
 
     $("p.d").previous() // 'p.c'
+    $("p.e").prevAll() // 'p.c' & 'p.d'
     $("p.d").next() // 'p.e'
+    $("p.c").nextAll() // 'p.d' & 'p.e'
     $("p.d").parent() // 'div.b'
     $("p.c").siblings() // 'p.d' & 'p.e'
     $("div.a").children() // 'div.b' & 'div.f'
@@ -174,13 +176,11 @@ Consider the following html…
     <p class="b"></p>
     <p class="c"></p>
     
-The following code will select `p.b`…
+The following code will select `p.b` & `p.c`…
 
     $("p").next()
 
-While the initial `$("p")` matched 3 elements, the `next()` method only operates on the _first_ match.
-    
-The `previous`, `next`, `parent`, `siblings` and `children` methods can also take css selectors and attribute matchers.
+The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `closest`, `siblings` and `children` methods can also take css selectors and attribute matchers.
 
 Using the same html, the following code will select `p.c`…
 
@@ -194,15 +194,15 @@ Likewise, consider the following html…
         </div>
     </div>
 
-The following code will select `div.a`…
+The following code will select `div.b`…
 
-    $("p").parent(".a")
+    $("p").parent(".b")
 
-As would…
+The `closest` method is a special case in that it will select the first ancestors of the current elements that match a selector. There is no no-argument version of the `closest` method. For example, this will select `div.a`…
 
-    $("p").parent(class: "a")
+    $("p").closest(".a")
 
-These methods do not take indexes as they automatically select the first matching content.
+These methods do not take indexes as they automatically select the first matching content. To select multiple elements you can use `prevAll`, `nextAll` and `parents` all of which have no-argument versions and versions that filter by a selector.
 
 ## Clicking
 
