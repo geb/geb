@@ -9,7 +9,6 @@ import org.openqa.selenium.RenderedWebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
-import static java.util.Collections.reverse
 
 class NonEmptyNavigator extends Navigator {
 
@@ -73,6 +72,12 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator filter(Map<String, Object> predicates, String selector) {
 		filter(selector).filter(predicates)
+	}
+
+	Navigator not(String selectorString) {
+		navigatorFor contextElements.findAll { element ->
+			!CssSelector.matches(element, selectorString)
+		}
 	}
 
 	Navigator eq(int index) {
@@ -152,6 +157,13 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
+	Navigator nextUntil(String selectorString) {
+		navigatorFor collectElements { element ->
+			def siblings = element.findElements(By.xpath("following-sibling::*"))
+			collectUntil(siblings, selectorString)
+		}
+	}
+
 	Navigator previous() {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*"))
@@ -179,6 +191,13 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
+	Navigator prevUntil(String selectorString) {
+		navigatorFor collectElements { element ->
+			def siblings = element.findElements(By.xpath("preceding-sibling::*")).reverse()
+			collectUntil(siblings, selectorString)
+		}
+	}
+
 	Navigator parent() {
 		navigatorFor collectElements {
 			it.findElement By.xpath("parent::*")
@@ -187,6 +206,26 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator parent(String selectorString) {
 		parent().filter(selectorString)
+	}
+
+	Navigator parents() {
+		navigatorFor collectElements {
+			it.findElements(By.xpath("ancestor::*")).reverse()
+		}
+	}
+
+	Navigator parents(String selectorString) {
+		navigatorFor collectElements {
+			def ancestors = it.findElements(By.xpath("ancestor::*")).reverse()
+			ancestors.findAll { CssSelector.matches(it, selectorString) }
+		}
+	}
+
+	Navigator parentsUntil(String selectorString) {
+		navigatorFor collectElements { element ->
+			def ancestors = element.findElements(By.xpath("ancestor::*")).reverse()
+			collectUntil(ancestors, selectorString)
+		}
 	}
 
 	Navigator closest(String selectorString) {
@@ -496,6 +535,11 @@ class NonEmptyNavigator extends Navigator {
 			} catch (org.openqa.selenium.NoSuchElementException e) { }
 		}
 		list
+	}
+
+	private Collection<WebElement> collectUntil(Collection<WebElement> elements, String selectorString) {
+		int index = elements.findIndexOf { CssSelector.matches(it, selectorString) }
+		index == -1 ? elements : elements[0..<index]
 	}
 
 }

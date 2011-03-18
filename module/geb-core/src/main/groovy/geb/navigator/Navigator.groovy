@@ -109,6 +109,13 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator filter(Map<String, Object> predicates, String selector)
 
 	/**
+	 * Returns a new Navigator instance containing all elements of the current Navigator that do not match the selector.
+	 * @param selector a CSS selector
+	 * @return a new Navigator instance
+	 */
+	abstract Navigator not(String selector)
+
+	/**
 	 * Gets the wrapped element at the given index.
 	 * <p>
 	 * When no such element exists, an empty Navigator instance is returned.
@@ -202,12 +209,12 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing the next sibling elements of the
-	 * current context elements, matching the given tag.
+	 * current context elements, matching the selector.
 	 * <p>
 	 * Unlike {@link #next()}, this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
-	 * @param selector tag to match
+	 * @param selector to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator next(String selector)
@@ -221,15 +228,24 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
-	 * current context elements that match the given tag.
+	 * current context elements that match the selector.
 	 * <p>
 	 * Unlike {@link #next()}, this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
-	 * @param selector tag to match
+	 * @param selector to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator nextAll(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all following sibling elements of the
+	 * current context elements up to, but not including, the first to match the selector.
+	 * 
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator nextUntil(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
@@ -247,27 +263,33 @@ abstract class Navigator implements Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
-	 * current context elements, matching the given tag.
+	 * current context elements, matching the selector.
 	 * <p>
 	 * Unlike {@link #previous()}, this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
-	 * @param selector tag to match
+	 * @param selector to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator previous(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
-	 * current context elements, matching the given tag.
-	 * <p>
-	 * Unlike {@link #previous()}, this method will keep looking for the first
-	 * matching sibling until it finds a match or is out of siblings.
-	 * </p>
-	 * @param selector tag to match
+	 * current context elements, matching the selector.
+	 * 
+	 * @param selector to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator prevAll(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all preceding sibling elements of the
+	 * current context elements up to, but not including the first matching the selector.
+	 * 
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator prevUntil(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the direct parent elements of the
@@ -277,25 +299,47 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator parent()
 
 	/**
-	 * Creates a new Navigator instance containing the parent elements of the current
-	 * context elements that match the given tag.
-	 * <p>
-	 * Unlike {@link #parent()}, this method will keep traversing up the DOM
-	 * until a match is found or the top of the DOM has been found
-	 * </p>
-	 * @param selector tag to match
+	 * Creates a new Navigator instance containing the direct parent elements of the current
+	 * context elements that match the selector.
+	 *
+	 * @param selector to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator parent(String selector)
 
 	/**
-	 * Creates a new Navigator instance containing the parent elements of the current
-	 * context elements that match the given tag.
+	 * Creates a new Navigator instance containing all the ancestor elements of the
+	 * current context elements.
+	 * @return new Navigator instance
+	 */
+	abstract Navigator parents()
+
+	/**
+	 * Creates a new Navigator instance containing all the ancestor elements of the
+	 * current context elements that match the selector.
+	 *
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator parents(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all the ancestor elements of the
+	 * current context elements up to but not including the first that matches the selector.
+	 *
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	abstract Navigator parentsUntil(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing the first ancestor element of each of the current
+	 * context elements that match the selector.
 	 * <p>
 	 * Unlike {@link #parent()}, this method will keep traversing up the DOM
 	 * until a match is found or the top of the DOM has been found
 	 * </p>
-	 * @param selector tag to match
+	 * @param selector to match
 	 * @return new Navigator instance
 	 */
 	abstract Navigator closest(String selector)
