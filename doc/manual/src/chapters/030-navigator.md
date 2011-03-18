@@ -122,7 +122,7 @@ When treating a navigator as `Iterable`, the iterated over content is always the
 
 ## Finding & Filtering
 
-Navigator objects have a `find` method for finding descendants, and a `filter` method for reducing the matched content.
+Navigator objects have a `find` method for finding descendants, and `filter` and `not` methods for reducing the matched content.
 
 Consider the following html…
 
@@ -138,6 +138,10 @@ We can select `p.b` by…
 We can select `div.b` by…
 
     $("div").filter(".b")
+
+or…
+
+	$(".b").not("p")
 
 The `find` and `filter` methods support the **exact same options as the $ function**.
 
@@ -168,8 +172,6 @@ You can select content _around_ `p.d` by…
     $("p.c").siblings() // 'p.d' & 'p.e'
     $("div.a").children() // 'div.b' & 'div.f'
 
-These methods are different to `find` & `filter` in that they operate on the _first_ matched content in the navigator.
-
 Consider the following html…
 
     <p class="a"></p>
@@ -180,7 +182,7 @@ The following code will select `p.b` & `p.c`…
 
     $("p").next()
 
-The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `closest`, `siblings` and `children` methods can also take css selectors and attribute matchers.
+The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `parents`, `closest`, `siblings` and `children` methods can also take css selectors and attribute matchers.
 
 Using the same html, the following code will select `p.c`…
 
@@ -203,6 +205,17 @@ The `closest` method is a special case in that it will select the first ancestor
     $("p").closest(".a")
 
 These methods do not take indexes as they automatically select the first matching content. To select multiple elements you can use `prevAll`, `nextAll` and `parents` all of which have no-argument versions and versions that filter by a selector.
+
+The `nextUntil`, `prevUntil` and `parentsUntil` methods return all nodes along the relevant axis _until_ the first one that matches a selector. Consider the following markup:
+
+	<div class="a"></div>
+	<div class="b"></div>
+	<div class="c"></div>
+	<div class="d"></div>
+	
+The following code will select `div.b` and `div.c`:
+
+	$(".a").nextUntil(".d")
 
 ## Clicking
 
