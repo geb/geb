@@ -34,6 +34,8 @@ class EmptyNavigator extends Navigator {
 
 	Navigator filter(Map<String, Object> predicates, String selector) { this }
 
+	Navigator not(String selector) { this }
+
 	Navigator unique() { this }
 
 	void click() { }
@@ -78,6 +80,8 @@ class EmptyNavigator extends Navigator {
 
 	Navigator nextAll(String selector) { this }
 
+	Navigator nextUntil(String selector) { this }
+
 	Navigator previous() { this }
 
 	Navigator previous(String selector) { this }
@@ -86,9 +90,17 @@ class EmptyNavigator extends Navigator {
 
 	Navigator prevAll(String selector) { this }
 
+	Navigator prevUntil(String selector) { this }
+
 	Navigator parent() { this }
 
 	Navigator parent(String selector) { this }
+
+	Navigator parents() { this }
+
+	Navigator parents(String selector) { this }
+
+	Navigator parentsUntil(String selector) { this }
 
 	Navigator closest(String selector) { this }
 
