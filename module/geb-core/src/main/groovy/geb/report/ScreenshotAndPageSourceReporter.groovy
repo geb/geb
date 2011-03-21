@@ -22,7 +22,7 @@ import org.openqa.selenium.OutputType
 import org.openqa.selenium.WebDriver
 
 class ScreenshotAndPageSourceReporter extends PageSourceReporter {
-
+	
 	ScreenshotAndPageSourceReporter(File dir) {
 		super(dir)
 	}
@@ -45,7 +45,15 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		// note - this is not covered by tests unless using a driver that can take screenshots
 		def screenshotDriver = determineScreenshotDriver(browser)
 		if (screenshotDriver) {
-			saveScreenshotPngBytes(reportNameBase, Base64.decode(screenshotDriver.getScreenshotAs(OutputType.BASE64)))
+			def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
+			def decoded = Base64.decode(rawBase64)
+			
+			// WebDriver has a bug where sometimes the screenshot has been encoded twice
+			if (!PngUtils.isPng(decoded)) {
+				decoded = Base64.decode(decoded)
+			}
+			
+			saveScreenshotPngBytes(reportNameBase, decoded)
 		}
 	}
 	
@@ -62,4 +70,5 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 			null
 		}
 	}
+	
 }
