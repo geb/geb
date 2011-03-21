@@ -45,7 +45,7 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		// note - this is not covered by tests unless using a driver that can take screenshots
 		def screenshotDriver = determineScreenshotDriver(browser)
 		if (screenshotDriver) {
-			saveScreenshotPngBytes(reportNameBase, screenshotDriver.getScreenshotAs(OutputType.BYTES))
+			saveScreenshotPngBytes(reportNameBase, Base64.decode(screenshotDriver.getScreenshotAs(OutputType.BASE64)))
 		}
 	}
 	
