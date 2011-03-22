@@ -9,3 +9,4 @@ stacktrace.log
 *.iml
 .idea
 out
+*.ipr
