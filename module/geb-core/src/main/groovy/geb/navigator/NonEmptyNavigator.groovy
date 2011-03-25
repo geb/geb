@@ -439,7 +439,7 @@ class NonEmptyNavigator extends Navigator {
 		def values = []
 		inputs.each { WebElement input ->
 			def value = getInputValue(input)
-			if (value) values << value
+			if (value != null) values << value
 		}
 		return values.size() < 2 ? values[0] : values
 	}

@@ -703,6 +703,26 @@ class NavigatorSpec extends GebSpec {
 		"multiple_select" | ["2", "4"]
 	}
 
+	@Issue("http://jira.codehaus.org/browse/GEB-57")
+	@Unroll("the value of '#fieldName' when empty should be '#expectedValue'")
+	def "empty text inputs are handled correctly"() {
+		given: "the input has an empty value"
+		def form = page.find("form")
+		def initialValue = form."$fieldName"
+		form."$fieldName"().getElement(0).clear()
+		
+		expect: "the input value retrieved by property access to be correct"
+		form."$fieldName" == expectedValue
+		
+		cleanup:
+		form."$fieldName" = initialValue
+
+		where:
+		fieldName         | expectedValue
+		"keywords"        | ""
+		"textext"         | ""
+	}
+
 	@Unroll("when a radio button with the value '#expectedValue' is selected getting then value of the group returns '#expectedValue'")
 	def "get property access works on radio button groups"() {
 		given:
