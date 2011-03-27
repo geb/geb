@@ -299,7 +299,7 @@ The methods can also take arguments…
 
     $("#a").jquery.trigger('mouseover')
 
-The same set of restricted types as allowed by WebDriver's [`executeScript()`](execscript) method are permitted here.
+The same set of restricted types as allowed by WebDriver's [`executeScript()`][execscript] method are permitted here.
 
 All methods called on the `jquery` property _always_ return the navigator instance that the `jquery` property is attached to.
 
