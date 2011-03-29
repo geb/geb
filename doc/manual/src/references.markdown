@@ -25,3 +25,6 @@
 [javascriptexecutor]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/JavascriptExecutor.html
 [execscript]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...)
 [easyb]: http://www.easyb.org/
+[remotewebdriver]: http://code.google.com/p/selenium/wiki/RemoteWebDriver
+[remotewebdriver-server]: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer
+[configslurper]: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html
