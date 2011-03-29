@@ -14,6 +14,7 @@
  */
 package geb.js
 
+import org.openqa.selenium.WebElement
 import geb.navigator.Navigator
 
 class JQueryAdapter {
@@ -48,6 +49,7 @@ class JQueryAdapter {
 				
 				var o = jQuery(elements);
 				var r = o.${name}.apply(o, callArgs);
+				return (typeof r == "object") ? r.toArray() : r;
 			""")
 		} else {
 			null
@@ -55,8 +57,12 @@ class JQueryAdapter {
 	}
 	
 	def methodMissing(String name, args) {
-		_callJQueryMethod(name, args)
-		navigator
+		def result = _callJQueryMethod(name, args)
+		if (result in WebElement || result in List) {
+			return Navigator.on(navigator.browser, result)
+		} else {
+			return result
+		}
 	}
 
 }

@@ -40,6 +40,7 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 				</head>
 				<body>
 					<div id="a"></div>
+					<div id="b" class="x"></div>
 				</body>
 				</html>
 			"""
@@ -67,6 +68,27 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 		$("div#a").jquery.trigger('click')
 		then:
 		js.i == true
+	}
+	
+	def "String return value"() {
+		expect:
+		$("#a").jquery.attr("id") == "a"
+	}
+	
+	def "Navigator return value"() {
+		expect:
+		$("#a").jquery.next().@id == "b"
+	}
+	
+	def "boolean return value"() {
+		expect:
+		$("#a").jquery.hasClass("x") == false
+		$("#b").jquery.hasClass("x") == true
+	}
+	
+	def "int return value"() {
+		expect:
+		$("div").jquery.size() == 2
 	}
 	
 }

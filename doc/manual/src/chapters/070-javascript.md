@@ -301,7 +301,7 @@ The methods can also take arguments…
 
 The same set of restricted types as allowed by WebDriver's [`executeScript()`](execscript) method are permitted here.
 
-All methods called on the `jquery` property _always_ return the navigator instance that the `jquery` property is attached to.
+The return value of methods called on the `jquery` property depends on what the corresponding jQuery method returns. A jQuery object will be converted to a Navigator representing the same set of elements, other values such as strings and numbers are returned as per WebDriver's [`executeScript()`](execscript) method.
 
 ### Why?
 
