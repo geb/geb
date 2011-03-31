@@ -59,6 +59,15 @@ class ModulesSpec extends GebSpecWithServer {
 		then:
 		thrown(InvalidPageContent)
 	}
+	
+	@Issue("http://jira.codehaus.org/browse/GEB-2")
+	def "can access module instance methods from content"() {
+		when:
+		to ModulesSpecPage
+		then:
+		instanceMethod.val == 3
+	}
+	
 }
 
 class ModulesSpecPage extends Page {
@@ -82,6 +91,8 @@ class ModulesSpecPage extends Page {
 		divCWithRelativeInner { module ModulesSpecDivModuleWithNestedDivRelativeToModuleBase }
 		
 		badBase { module ModulesSpecBadBase }
+		
+		instanceMethod { module InstanceMethodModule }
 	}
 }
 
@@ -122,4 +133,12 @@ class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
 
 class ModulesSpecBadBase extends Module {
 	static base = { 1 }
+}
+
+class InstanceMethodModule extends Module {
+	static content = {
+		val { getValue() }
+	}
+	
+	def getValue() { 3 }
 }

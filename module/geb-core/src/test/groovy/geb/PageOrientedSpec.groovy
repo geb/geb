@@ -154,6 +154,15 @@ class PageOrientedSpec extends GebSpecWithServer {
 		then:
 		link.@id == "a"
 	}
+	
+	@Issue("http://jira.codehaus.org/browse/GEB-2")
+	def "can call instance methods from content definition blocks"() {
+		when:
+		to InstanceMethodPage
+		then:
+		val == 3
+	}
+	
 }
 
 class PageA extends Page {
@@ -183,4 +192,12 @@ class PageC extends Page {
 
 class PageD extends Page {
 	static at = { assert 1 == 2 }
+}
+
+class InstanceMethodPage extends Page {
+	static content = {
+		val { getValue() }
+	}
+	
+	def getValue() { 3 }
 }
