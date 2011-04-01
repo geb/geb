@@ -145,7 +145,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 		when:
 		to PageA
 		then:
-		"abc" ==~ contains("b")
+		contains("b").matches("abc")
 	}
 	
 	def "can use attribute notation on page content"() {

@@ -18,6 +18,7 @@ import geb.js.*
 import geb.internal.*
 import geb.navigator.Navigator
 import org.openqa.selenium.WebDriver
+import geb.textmatching.TextMatchingSupport
 
 class Page {
 

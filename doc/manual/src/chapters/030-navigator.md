@@ -97,6 +97,11 @@ The following is the complete listing:
     <tr><td><code>contains</code></td><td><code>iContains</code></td><td>Matches values that contain the given value anywhere</td>
     <tr><td><code>endsWith</code></td><td><code>iEndsWith</code></td><td>Matches values that end with the given value</td>
     <tr><td><code>containsWord</code></td><td><code>iContainsWord</code></td><td>Matches values that contain the given value surrounded by either whitespace or the beginning or end of the value</td>
+    <tr><td><code>notStartsWith</code></td><td><code>iNotStartsWith</code></td><td>Matches values that DO NOT start with the given value</td>
+    <tr><td><code>notContains</code></td><td><code>iNotContains</code></td><td>Matches values that DO NOT contain the given value anywhere</td>
+    <tr><td><code>notEndsWith</code></td><td><code>iNotEndsWith</code></td><td>Matches values that DO NOT end with the given value</td>
+    <tr><td><code>notContainsWord</code></td><td><code>iNotContainsWord</code></td><td>Matches values that DO NOT contain the given value surrounded by either whitespace or the beginning or end of the value</td>
+        
 </table>
 
 All of these methods themselves can take a `String` or a `Pattern`…

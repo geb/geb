@@ -50,7 +50,7 @@ class ModulesSpec extends GebSpecWithServer {
 		when:
 		to ModulesSpecPage
 		then:
-		"abc" ==~ divA.contains("b")
+		divA.contains("b").matches("abc")
 	}
 	
 	def "module base must return a navigator"() {

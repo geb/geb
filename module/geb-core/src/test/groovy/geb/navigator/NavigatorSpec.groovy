@@ -4,11 +4,15 @@ import geb.test.util.GebSpec
 import org.openqa.selenium.*
 import spock.lang.*
 
+import geb.textmatching.*
+
 @Stepwise
 class NavigatorSpec extends GebSpec {
 
 	@Shared WebDriver driver
 	@Shared Navigator page
+
+	@Shared textmatching = new TextMatchingSupport()
 
 	def setupSpec() {
 		driver = browser.driver
@@ -159,10 +163,12 @@ class NavigatorSpec extends GebSpec {
 		expect: page.find(selector, text: text).size() == expectedSize
 
 		where:
-		selector   | text                            | expectedSize
-		"p"        | "First paragraph of article 2." | 1
-		"p"        | ~/.*article 1\./                | 2
-		"p"        | "DOES NOT EXIST"                | 0
+		selector   | text                                   | expectedSize
+		"p"        | "First paragraph of article 2."        | 1
+		"p"        | ~/.*article 1\./                       | 2
+		"p"        | "DOES NOT EXIST"                       | 0
+		"p"        | textmatching.iContains("copyright")    | 1
+		"p"        | textmatching.iNotContains("copyright") | 9
 	}
 
 	@Unroll("filter('#filter') should select elements with the ids #expectedIds")

@@ -12,21 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal
+package geb.textmatching
 
 import geb.test.util.GebSpec
 import spock.lang.*
 
 class TextMatchingSupportSpec extends Specification {
 
+	def matchers = new TextMatchingSupport()
+	
 	// Can't have expected in name due to
 	// http://code.google.com/p/spock/issues/detail?id=115
-	@Unroll("#method - #input")
+	@Unroll("pattern methods: #method - #input")
 	def "t"() {
-		given:
-		def matchers = new TextMatchingSupport()
 		expect:
-		matchers."$method"(input).toString() == expected
+		matchers."$method"(input).pattern.toString() == expected
 		where:
 		method           | input | expected
 		"contains"       | "."   | ".*\\Q.\\E.*"
@@ -45,6 +45,40 @@ class TextMatchingSupportSpec extends Specification {
 		"iEndsWith"      | ~"."  | "(?i).*."
 		"containsWord"   | ~"."  | "(\$|\\s).(^|\\s)"
 		"iContainsWord"  | ~"."  | "(?i)(\$|\\s).(^|\\s)"
+	}
+
+	@Unroll("negated pattern methods: #method - #input")
+	def "negated"() {
+		when:
+		def matcher = matchers."$method"(input)
+		
+		then:
+		matcher instanceof NegatedTextMatcher
+		
+		and:
+		matcher.matcher instanceof PatternTextMatcher
+		
+		and:
+		matcher.matcher.pattern.toString() == expected
+		
+		where:
+		method              | input | expected
+		"notContains"       | "."   | ".*\\Q.\\E.*"
+		"iNotContains"      | "."   | "(?i).*\\Q.\\E.*"
+		"notStartsWith"     | "."   | "\\Q.\\E.*"
+		"iNotStartsWith"    | "."   | "(?i)\\Q.\\E.*"
+		"notEndsWith"       | "."   | ".*\\Q.\\E"
+		"iNotEndsWith"      | "."   | "(?i).*\\Q.\\E"
+		"notContainsWord"   | "."   | "(\$|\\s)\\Q.\\E(^|\\s)"
+		"iNotContainsWord"  | "."   | "(?i)(\$|\\s)\\Q.\\E(^|\\s)"
+		"notContains"       | ~"."  | ".*..*"
+		"iNotContains"      | ~"."  | "(?i).*..*"
+		"notStartsWith"     | ~"."  | "..*"
+		"iNotStartsWith"    | ~"."  | "(?i)..*"
+		"notEndsWith"       | ~"."  | ".*."
+		"iNotEndsWith"      | ~"."  | "(?i).*."
+		"notContainsWord"   | ~"."  | "(\$|\\s).(^|\\s)"
+		"iNotContainsWord"  | ~"."  | "(?i)(\$|\\s).(^|\\s)"
 	}
 
 }

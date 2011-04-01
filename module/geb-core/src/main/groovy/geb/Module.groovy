@@ -18,6 +18,7 @@ import geb.js.*
 import geb.internal.*
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
+import geb.textmatching.TextMatchingSupport
 
 class Module extends TemplateDerivedPageContent {
 

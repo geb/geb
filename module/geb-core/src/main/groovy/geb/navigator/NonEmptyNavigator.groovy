@@ -10,6 +10,8 @@ import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
 
+import geb.textmatching.TextMatcher
+
 class NonEmptyNavigator extends Navigator {
 
 	static {
@@ -428,6 +430,8 @@ class NonEmptyNavigator extends Navigator {
 	private boolean matches(String actualValue, String requiredValue) { actualValue == requiredValue }
 
 	private boolean matches(String actualValue, Pattern requiredValue) { actualValue ==~ requiredValue }
+	
+	private boolean matches(String actualValue, TextMatcher matcher) { matcher.matches(actualValue) }
 
 	private boolean matches(Collection<String> actualValue, String requiredValue) { requiredValue in actualValue }
 
@@ -435,6 +439,10 @@ class NonEmptyNavigator extends Navigator {
 		actualValue.any { it ==~ requiredValue }
 	}
 
+	private boolean matches(Collection<String> actualValue, TextMatcher matcher) { 
+		actualValue.any { matcher.matches(it) }
+	}
+	
 	private getInputValues(Collection<WebElement> inputs) {
 		def values = []
 		inputs.each { WebElement input ->
