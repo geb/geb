@@ -14,6 +14,7 @@
  */
 package geb
 
+import spock.lang.*
 import geb.test.util.*
 import geb.error.InvalidPageContent
 
