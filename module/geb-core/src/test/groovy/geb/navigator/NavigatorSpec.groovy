@@ -57,11 +57,11 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		selector                  | property | expected
-		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
 		"#header"                 | "@id"    | ["header"]
 		".col-3.module"           | "@id"    | ["navigation"]
 		".module.col-3"           | "@id"    | ["navigation"]
@@ -147,7 +147,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		selector   | attributes                              | expectedIds
 		"input"    | [type: "checkbox"]                      | ["checker1", "checker2"]
-		"input"    | [name: "site"]                          | ["site-1", "site-2"]
+		"input"    | [name: "site"]                          | ["site-1", "site-2", "site-3"]
 		"input"    | [name: "site", value: "google"]         | ["site-1"]
 		"input"    | [name: ~/checker\d/]                    | ["checker1", "checker2"]
 		"bdo"      | [name: "whatever"]                      | []
@@ -191,7 +191,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		navigator               | filter                          | expectedIds
 		page.find("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
-		page.find("input")      | [name: "site"]                  | ["site-1", "site-2"]
+		page.find("input")      | [name: "site"]                  | ["site-1", "site-2", "site-3"]
 		page.find("input")      | [name: "site", value: "google"] | ["site-1"]
 		page.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
 		page.find("#article-1") | [id: "article-2"]               | []
@@ -299,7 +299,7 @@ class NavigatorSpec extends GebSpec {
 		selector      | nextSelector  | expectedIds
 		"#header"     | "#navigation" | []
 		"#keywords"   | "input"       | ["br"]
-		"#site-2"     | "select"      | ["label", "br", "input#checker1", "label", "br", "input#checker2", "label", "br"]
+		"#site-2"     | "select"      | ["label", "br", "label", "br", "input#checker1", "label", "br", "input#checker2", "label", "br"]
 		"#navigation" | "bdo"         | ["div#content", "div#footer"]
 	}
 
@@ -680,7 +680,7 @@ class NavigatorSpec extends GebSpec {
 		context            | fieldName     | expected
 		page               | "keywords"    | ["keywords"]
 		page.find("form")  | "keywords"    | ["keywords"]
-		page               | "site"        | ["site-1", "site-2"]
+		page               | "site"        | ["site-1", "site-2", "site-3"]
 		page.find("#main") | "keywords"    | []
 		page               | "nosuchfield" | []
 		page.find("bdo")   | "keywords"    | []
@@ -914,6 +914,21 @@ class NavigatorSpec extends GebSpec {
 		navigator                         | optionLabel                             | newValue
 		page.find("#the_plain_select")    | "Option #3"                             | "3"
 		page.find("#the_multiple_select") | ["Option #1", "Option #3", "Option #5"] | ["1", "3", "5"]
+	}
+
+	@Issue("http://jira.codehaus.org/browse/GEB-37")
+	@Unroll("radio button can be changed to #newValue using label text '#labelText'")
+	def "radio buttons can be set using their label text"() {
+		given: def initialValue = $("form").site
+		when: $("form").site = labelText
+		then: $("form").site == newValue
+		cleanup: $("form").site = initialValue
+
+		where:
+		labelText | newValue
+		"Site #1" | "google"
+		"Site #2" | "thisone"
+		"Site #3" | "bing"
 	}
 
 	@Ignore

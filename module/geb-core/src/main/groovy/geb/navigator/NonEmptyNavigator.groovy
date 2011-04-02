@@ -494,13 +494,22 @@ class NonEmptyNavigator extends Navigator {
 				input.toggle()
 			}
 		} else if (input.getAttribute("type") == "radio") {
-			if (input.value == value.toString()) {
+			if (input.value == value.toString() || labelFor(input) == value.toString()) {
 				input.setSelected()
 			}
 		} else {
 			input.clear()
 			input.sendKeys value as String
 		}
+	}
+	
+	private String labelFor(WebElement input) {
+		def id = input.getAttribute("id")
+		def labels = browser.driver.findElements(By.xpath("//label[@for='$id']"))
+		if (!labels) {
+			labels = input.findElements(By.xpath("ancestor::label"))
+		}
+		labels ? labels[0].text : null
 	}
 
 	/**
