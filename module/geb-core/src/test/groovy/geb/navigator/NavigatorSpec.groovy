@@ -849,6 +849,15 @@ class NavigatorSpec extends GebSpec {
 		where:
 		value << ["google", "thisone"]
 	}
+	
+	@Issue("http://jira.codehaus.org/browse/GEB-47")
+	def "setting a select to a value that isn't one of its options is a no-op"() {
+		when:
+		$("form").plain_select = "KTHXBYE"
+		
+		then:
+		$("form").plain_select == "4"
+	}
 
 	@Unroll("input value should be '#expected'")
 	def "value() returns value of first element"() {

@@ -485,7 +485,7 @@ class NonEmptyNavigator extends Navigator {
 				def valueString = value.toString()
 				input.findElements(By.tagName("option")).find {
 					it.value == valueString || it.text == valueString
-				}.setSelected()
+				}?.setSelected()
 			}
 		} else if (input.getAttribute("type") == "checkbox") {
 			if (input.value == value.toString() || value == true) {
