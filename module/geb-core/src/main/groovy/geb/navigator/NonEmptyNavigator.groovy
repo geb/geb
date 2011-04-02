@@ -471,33 +471,35 @@ class NonEmptyNavigator extends Navigator {
 	private void setInputValue(WebElement input, value) {
 		if (input.tagName == "select") {
 			if (getBooleanAttribute(input, "multiple")) {
+				def valueStrings = value*.toString()
 				input.findElements(By.tagName("option")).each { WebElement option ->
-					if (option.value in value) {
+					if (option.value in valueStrings) {
 						option.setSelected()
-					} else if (option.text in value) {
+					} else if (option.text in valueStrings) {
 						option.setSelected()
 					} else if (option.isSelected()) {
 						option.toggle()
 					}
 				}
 			} else {
+				def valueString = value.toString()
 				input.findElements(By.tagName("option")).find {
-					it.value == value || it.text == value
+					it.value == valueString || it.text == valueString
 				}.setSelected()
 			}
 		} else if (input.getAttribute("type") == "checkbox") {
-			if (input.value == value || value == true) {
+			if (input.value == value.toString() || value == true) {
 				input.setSelected()
 			} else if (input.isSelected()) {
 				input.toggle()
 			}
 		} else if (input.getAttribute("type") == "radio") {
-			if (input.value == value) {
+			if (input.value == value.toString()) {
 				input.setSelected()
 			}
 		} else {
 			input.clear()
-			input.sendKeys value
+			input.sendKeys value as String
 		}
 	}
 

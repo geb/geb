@@ -784,6 +784,26 @@ class NavigatorSpec extends GebSpec {
 		"multiple_select" | ["1", "3", "5"]
 	}
 
+	@Issue("http://jira.codehaus.org/browse/GEB-29")
+	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
+	def "form field values can be set using non-string values"() {
+		given:
+		def form = page.find("form")
+		def initialValue = form."$fieldName"
+
+		when: form."$fieldName" = newValue
+		then: form."$fieldName" == expectedValue
+		cleanup: form."$fieldName" = initialValue
+
+		where:
+		fieldName         | newValue   | expectedValue
+		"keywords"        | true       | "true"
+		"keywords"        | 123        | "123"
+		"checker1"        | 123        | "123"
+		"plain_select"    | 3          | "3"
+		"multiple_select" | [1, 3, 5]  | ["1", "3", "5"]
+	}
+
 	def "when the value of a checkbox is set using a boolean then the checked-ness is set accordingly"() {
 		given:
 		def form = page.find("form")
