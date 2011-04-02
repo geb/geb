@@ -15,6 +15,13 @@ class NavigatorSpec extends GebSpec {
 		browser.go(getClass().getResource("/test.html") as String)
 		page = Navigator.on(browser)
 	}
+	
+	def "getAtttribute returns null for boolean attributes that are not present"() {
+		expect:
+		def element = page.find("#the_plain_select")
+		element.getAttribute("multiple") == null
+		element.@multiple == null
+	}
 
 	def "getElement by index"() {
 		expect:
@@ -566,6 +573,19 @@ class NavigatorSpec extends GebSpec {
 		"bdo"           | null
 	}
 
+	@Unroll("navigator.attr('#attribute') should return '#expectedValue'")
+	def "attribute access via jQuery-like method"() {
+		expect: navigator.attr("$attribute") == expectedValue
+
+		where:
+		navigator                   | attribute | expectedValue
+		page.find("div", 0)         | "id"      | "container"
+		page.find("div div", 1)     | "id"      | "navigation"
+		page.find("#article-1 div") | "id"      | null
+		page.find("#navigation a")  | "href"    | "#home"
+		page.find("bdo")            | "id"      | null
+	}
+
 	@Unroll("navigator.@#attribute should return '#expectedValue'")
 	def "attribute access via field operator"() {
 		expect: navigator.@"$attribute" == expectedValue
@@ -574,7 +594,7 @@ class NavigatorSpec extends GebSpec {
 		navigator                   | attribute | expectedValue
 		page.find("div", 0)         | "id"      | "container"
 		page.find("div div", 1)     | "id"      | "navigation"
-		page.find("#article-1 div") | "id"      | ""
+		page.find("#article-1 div") | "id"      | null
 		page.find("#navigation a")  | "href"    | "#home"
 		page.find("bdo")            | "id"      | null
 	}
@@ -638,19 +658,6 @@ class NavigatorSpec extends GebSpec {
 		page                    | "Article title 2" | true
 		page.find("#article-2") | "Article title 2" | true
 		page.find("#article-3") | "Article title 2" | false
-	}
-
-	@Unroll("the value of .@#attribute on #selector should be '#expectedValue'")
-	def "attribute access"() {
-		given: def navigator = page.find(selector)
-		expect: navigator."@$attribute" == expectedValue
-
-		where:
-		selector     | attribute | expectedValue
-		"#header"    | "id"      | "header"
-		"#article-3" | "class"   | "article"
-		"#site-1"    | "value"   | "google"
-		"#article-3" | "style"   | ""
 	}
 
 	@Ignore

@@ -281,9 +281,9 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String getAttribute(String name) {
-		firstElement().getAttribute(name) ?: ""
+		firstElement().getAttribute(name)
 	}
-
+	
 	Collection<String> classes() {
 		def classNames = contextElements.head().getAttribute("class")?.tokenize()
 		classNames as Set ?: EMPTY_SET
@@ -447,10 +447,10 @@ class NonEmptyNavigator extends Navigator {
 	private getInputValue(WebElement input) {
 		def value = null
 		if (input.tagName == "select") {
-			if (isAttributeEffectivelyFalse(input, "multiple")) {
-				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
-			} else {
+			if (getBooleanAttribute(input, "multiple")) {
 				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
+			} else {
+				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
 			}
 		} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
 			if (input.isSelected()) {
@@ -470,7 +470,7 @@ class NonEmptyNavigator extends Navigator {
 
 	private void setInputValue(WebElement input, value) {
 		if (input.tagName == "select") {
-			if (!isAttributeEffectivelyFalse(input, "multiple")) {
+			if (getBooleanAttribute(input, "multiple")) {
 				input.findElements(By.tagName("option")).each { WebElement option ->
 					if (option.value in value) {
 						option.setSelected()
@@ -501,13 +501,13 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
-	// The Firefox driver at least will return a literal false when checking for certain
-	// attributes. This goes against the spec of WebElement#getAttribute() but it happens
-	// none the less.
-
-	private boolean isAttributeEffectivelyFalse(WebElement input, String attribute) {
-		def value = input.getAttribute(attribute)
-		value == null || value == "" || value == "false" || value == false
+	/**
+	 * This works around an inconsistency in some of the WebDriver implementations.
+	 * According to the spec WebElement.getAttribute should return the Strings "true" or "false"
+	 * however ChromeDriver and HtmlUnitDriver will return "" or null.
+	 */
+	private boolean getBooleanAttribute(WebElement input, String attribute) {
+		!(input.getAttribute(attribute) in [null, false, "false"])
 	}
 
 	private WebElement firstElementInContext(Closure closure) {

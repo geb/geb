@@ -415,6 +415,15 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract String getAttribute(String name)
 
 	/**
+	 * Returns the value of the given attribute of the first context element.
+	 * @param name name of the attribute
+	 * @return the value of the given attribute of the first context element
+	 */
+	String attr(String name) {
+		getAttribute(name)
+	}
+
+	/**
 	 * Returns the class names present on all elements. The result is a unique set in no guaranteed order.
 	 * @return the class names present on all elements.
 	 */
