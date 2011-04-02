@@ -58,10 +58,10 @@ class JQueryAdapter {
 	
 	def methodMissing(String name, args) {
 		def result = _callJQueryMethod(name, args)
-		if (result in WebElement || result in List) {
-			return Navigator.on(navigator.browser, result)
+		if (result instanceof WebElement || result instanceof List) {
+			Navigator.on(navigator.browser, result)
 		} else {
-			return result
+			result
 		}
 	}
 
