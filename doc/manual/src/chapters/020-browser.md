@@ -206,6 +206,12 @@ Here is an example:
 
 The static `drive()` method takes all of the arguments that the `Browser` constructor takes, and a `Closure`. The closure is evaluated against created browser instance (i.e. it is the *delegate* of the closure). This enables a very convenient scripting environment.
 
+The `drive()` method always returns the browser object that was used, so if you need to quit the browser after the drive session you can do something like…
+
+    Browser.drive("http://myapp.com") {
+        …
+    }.quit()
+
 ## Page Change Listening
 
 It is possible to be notified when a browser's page _instance_ changes (note that this is not necessarily when the browser makes a request to a new URL) using the `geb.PageChangeListener` interface.
