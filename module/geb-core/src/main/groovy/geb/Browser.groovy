@@ -215,6 +215,14 @@ class Browser {
 		}
 	}
 	
+	void quit() {
+		driver.quit()
+	}
+	
+	void close() {
+		driver.close()
+	}
+	
 	protected String _calculateUri(String path, Map params) {
 		def uri
 		if (path) {
@@ -263,38 +271,39 @@ class Browser {
 		}
 	}
 	
-	static drive(Closure script) {
+	static Browser drive(Closure script) {
 		doDrive(new Browser(), script)
 	}
 	
-	static drive(Class pageClass, Closure script) {
+	static Browser drive(Class pageClass, Closure script) {
 		doDrive(new Browser(pageClass), script)
 	}
 	
-	static drive(String baseUrl, Closure script) {
+	static Browser drive(String baseUrl, Closure script) {
 		def browser = new Browser(baseUrl)
 		browser.go("")
 		doDrive(browser, script)
 	}
 	
-	static drive(String baseUrl, Class pageClass, Closure script) {
+	static Browser drive(String baseUrl, Class pageClass, Closure script) {
 		doDrive(new Browser(baseUrl, pageClass), script)
 	}
 	
-	static drive(WebDriver driver, Closure script) {
+	static Browser drive(WebDriver driver, Closure script) {
 		doDrive(new Browser(driver), script)
 	}
 
-	static drive(WebDriver driver, String baseUrl, Closure script) {
+	static Browser drive(WebDriver driver, String baseUrl, Closure script) {
 		doDrive(new Browser(driver, baseUrl), script)
 	}
 
-	static drive(WebDriver driver, Class pageClass, Closure script) {
+	static Browser drive(WebDriver driver, Class pageClass, Closure script) {
 		doDrive(new Browser(driver, null, pageClass), script)
 	}
 	
-	private static doDrive(Browser browser, Closure script) {
+	private static Browser doDrive(Browser browser, Closure script) {
 		script.delegate = browser
 		script()
+		browser
 	}
 }

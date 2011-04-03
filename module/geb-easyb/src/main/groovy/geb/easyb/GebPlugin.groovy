@@ -15,6 +15,7 @@
 package geb.easyb
 
 import geb.Browser
+import geb.binding.BindingUpdater
 import org.openqa.selenium.WebDriver
 import org.easyb.plugin.BasePlugin
 import org.easyb.exception.VerificationException
@@ -22,6 +23,7 @@ import org.easyb.exception.VerificationException
 class GebPlugin extends BasePlugin {
 
 	private initialised = false
+	private bindingUpdater
 	
 	String getName() {
 		"geb"
@@ -35,34 +37,28 @@ class GebPlugin extends BasePlugin {
 		def browser = fromBindingOr(binding, 'browser')
 		
 		if (!browser) {
-			binding.browser = driver ? new Browser(driver, baseUrl) : new Browser(baseUrl)
+			browser = driver ? new Browser(driver, baseUrl) : new Browser(baseUrl)
 		}
 		
-		binding.browser.registerPageChangeListener(new BindingUpdatingPageChangeListener(binding))
-		binding.go = { Object[] args -> binding.browser.go(*args) }
-		binding.to = { Object[] args -> binding.browser.to(*args) }
-		binding.$ = { Object[] args -> binding.browser.page.$(*args) }
-		binding.setPageType = { Class pageType -> binding.browser.page(pageType) }
-		binding.js = binding.browser.js
-
+		bindingUpdater = new BindingUpdater(binding, browser)
+		bindingUpdater.initialize()
+		
+		def originalAt = binding.at
 		binding.at = { Class pageClass ->
 			try {
-				def page = binding.browser.page
-
-				if (page.class != pageClass) {
-					throw new VerificationException('unexpected page type', pageClass, page.class)
-				}
-
-				if (!page.verifyAt()) {
-					throw new VerificationException("'at check' of page '$page' failed")
+				if (!originalAt(pageClass)) {
+					throw new VerificationException("not at page $pageClass")
 				}
 			} catch (Throwable e) {
-				e.printStackTrace()
-				throw e
+				throw new VerificationException("not at page $pageClass", e)
 			}
 		}
 		
 		initialised = true
+	}
+	
+	def afterStory(Binding binding) {
+		bindingUpdater?.remove()
 	}
 	
 	private fromBindingOr(Binding binding, String name, defaultValue = null) {
