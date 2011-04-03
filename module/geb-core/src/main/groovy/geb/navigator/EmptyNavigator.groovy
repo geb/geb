@@ -9,7 +9,6 @@ import geb.Page
 /**
  * Implementation of an empty Navigator object - helps keep the other code simple.
  */
-@Singleton(lazy = true)
 class EmptyNavigator extends Navigator {
 
 	static {
@@ -17,9 +16,11 @@ class EmptyNavigator extends Navigator {
 		mc.initialize()
 		EmptyNavigator.metaClass = mc
 	}
-
-	Browser getBrowser() { null }
 	
+	EmptyNavigator(Browser browser) {
+		super(browser)
+	}
+
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
 	Navigator find(String selector) { this }
@@ -35,8 +36,6 @@ class EmptyNavigator extends Navigator {
 	Navigator filter(Map<String, Object> predicates, String selector) { this }
 
 	Navigator not(String selector) { this }
-
-	Navigator unique() { this }
 
 	void click() { }
 
@@ -111,7 +110,7 @@ class EmptyNavigator extends Navigator {
 	Navigator siblings() { this }
 
 	Navigator siblings(String selector) { this }
-
+	
 	Navigator remove(int index) { this }
 
 	int size() { 0 }

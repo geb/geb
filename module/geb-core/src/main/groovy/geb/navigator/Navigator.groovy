@@ -28,7 +28,11 @@ import geb.js.JQueryAdapter
  */
 abstract class Navigator implements Iterable<Navigator> {
 
-	abstract Browser getBrowser()
+	final Browser browser
+	
+	Navigator(Browser browser) {
+		this.browser = browser
+	}
 
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
@@ -177,6 +181,21 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return the elements at the given indexes, or an empty list if no such elements exist
 	 */
 	protected abstract List<WebElement> getElements(Collection indexes)
+	
+	Navigator add(String selector) {
+		add browser.driver.findElements(By.cssSelector(selector))
+	}
+	
+	Navigator add(WebElement... elements) {
+		add Arrays.asList(elements)
+	}
+	
+	Navigator add(Collection<WebElement> elements) {
+		def result = []
+		result.addAll allElements()
+		result.addAll elements
+		on(browser, result)
+	}
 
 	/**
 	 * Creates a new Navigator instance by removing the element at the given index
@@ -196,10 +215,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	Navigator plus(Navigator navigator) {
-		List<WebElement> result = []
-		result.addAll allElements()
-		result.addAll navigator.allElements()
-		on(getBrowser(), result)
+		add navigator.allElements()
 	}
 
 	/**
@@ -353,8 +369,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator siblings()
 
 	abstract Navigator siblings(String selector)
-
-	abstract Navigator unique()
 
 	/**
 	 * Returns true if at least one of the context elements has the given class.
@@ -558,7 +572,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	static Navigator on(Browser browser, WebElement... contextElements) {
-		contextElements ? new NonEmptyNavigator(browser, contextElements).unique() : EmptyNavigator.instance
+		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
 	}
 
 	/**
@@ -573,7 +587,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	static Navigator on(Browser browser, Collection<? extends WebElement> contextElements) {
-		contextElements ? new NonEmptyNavigator(browser, contextElements).unique() : EmptyNavigator.instance
+		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
 	}
 
 	/**
@@ -588,7 +602,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	static Navigator on(Browser browser) {
 		def rootElement = browser.driver.findElement(By.tagName("html"))
-		rootElement ? new NonEmptyNavigator(browser, rootElement) : EmptyNavigator.instance
+		rootElement ? new NonEmptyNavigator(browser, rootElement) : new EmptyNavigator(browser)
 	}
 }
 

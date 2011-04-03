@@ -21,16 +21,14 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	private final List<WebElement> contextElements
-	final Browser browser
 
 	NonEmptyNavigator(Browser browser, WebElement... contextElements) {
-		this.browser = browser
-		this.contextElements = contextElements as List
+		this(browser, contextElements as List)
 	}
 
 	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
-		this.browser = browser
-		this.contextElements = contextElements as List
+		super(browser)
+		this.contextElements = contextElements.toList().unique().asImmutable()
 	}
 
 	protected Navigator navigatorFor(Collection<? extends WebElement> contextElements) {
@@ -91,7 +89,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator getAt(EmptyRange range) {
-		EmptyNavigator.instance
+		new EmptyNavigator(browser)
 	}
 
 	Navigator getAt(Collection indexes) {
@@ -123,7 +121,7 @@ class NonEmptyNavigator extends Navigator {
 		if (!(index in -size..<size)) {
 			this
 		} else if (size == 1) {
-			EmptyNavigator.instance
+			new EmptyNavigator(browser)
 		} else {
 			navigatorFor(contextElements - contextElements[index])
 		}
@@ -251,10 +249,6 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator siblings(String selectorString) {
 		siblings().filter(selectorString)
-	}
-
-	Navigator unique() {
-		new NonEmptyNavigator(this.browser, contextElements.unique())
 	}
 
 	boolean hasClass(String valueToContain) {
