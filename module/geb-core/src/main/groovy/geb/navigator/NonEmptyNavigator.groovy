@@ -80,10 +80,6 @@ class NonEmptyNavigator extends Navigator {
 		}
 	}
 
-	Navigator eq(int index) {
-		this[index]
-	}
-
 	Navigator getAt(int index) {
 		navigatorFor getElement(index)
 	}

@@ -130,8 +130,6 @@ class EmptyNavigator extends Navigator {
 
 	Navigator leftShift(value) { this }
 
-	Navigator eq(int index) { this }
-
 	Navigator getAt(int index) { this }
 
 	Navigator getAt(Range range) { this }

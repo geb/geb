@@ -123,7 +123,9 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param index index of the element to retrieve - pass a negative value to start from the back
 	 * @return new Navigator instance
 	 */
-	abstract Navigator eq(int index)
+	Navigator eq(int index) {
+		this[index]
+	}
 
 	/**
 	 * Gets the wrapped element at the given index.
