@@ -19,6 +19,13 @@ class NavigatorSpec extends GebSpec {
 		browser.go(getClass().getResource("/test.html") as String)
 		page = Navigator.on(browser)
 	}
+	
+	def "getAtttribute returns null for boolean attributes that are not present"() {
+		expect:
+		def element = page.find("#the_plain_select")
+		element.getAttribute("multiple") == null
+		element.@multiple == null
+	}
 
 	def "getElement by index"() {
 		expect:
@@ -54,11 +61,11 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		selector                  | property | expected
-		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
-		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "checker1", "checker2"]
+		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
 		"#header"                 | "@id"    | ["header"]
 		".col-3.module"           | "@id"    | ["navigation"]
 		".module.col-3"           | "@id"    | ["navigation"]
@@ -144,7 +151,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		selector   | attributes                              | expectedIds
 		"input"    | [type: "checkbox"]                      | ["checker1", "checker2"]
-		"input"    | [name: "site"]                          | ["site-1", "site-2"]
+		"input"    | [name: "site"]                          | ["site-1", "site-2", "site-3"]
 		"input"    | [name: "site", value: "google"]         | ["site-1"]
 		"input"    | [name: ~/checker\d/]                    | ["checker1", "checker2"]
 		"bdo"      | [name: "whatever"]                      | []
@@ -190,7 +197,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		navigator               | filter                          | expectedIds
 		page.find("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
-		page.find("input")      | [name: "site"]                  | ["site-1", "site-2"]
+		page.find("input")      | [name: "site"]                  | ["site-1", "site-2", "site-3"]
 		page.find("input")      | [name: "site", value: "google"] | ["site-1"]
 		page.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
 		page.find("#article-1") | [id: "article-2"]               | []
@@ -298,7 +305,7 @@ class NavigatorSpec extends GebSpec {
 		selector      | nextSelector  | expectedIds
 		"#header"     | "#navigation" | []
 		"#keywords"   | "input"       | ["br"]
-		"#site-2"     | "select"      | ["label", "br", "input#checker1", "label", "br", "input#checker2", "label", "br"]
+		"#site-2"     | "select"      | ["label", "br", "label", "br", "input#checker1", "label", "br", "input#checker2", "label", "br"]
 		"#navigation" | "bdo"         | ["div#content", "div#footer"]
 	}
 
@@ -572,6 +579,19 @@ class NavigatorSpec extends GebSpec {
 		"bdo"           | null
 	}
 
+	@Unroll("navigator.attr('#attribute') should return '#expectedValue'")
+	def "attribute access via jQuery-like method"() {
+		expect: navigator.attr("$attribute") == expectedValue
+
+		where:
+		navigator                   | attribute | expectedValue
+		page.find("div", 0)         | "id"      | "container"
+		page.find("div div", 1)     | "id"      | "navigation"
+		page.find("#article-1 div") | "id"      | null
+		page.find("#navigation a")  | "href"    | "#home"
+		page.find("bdo")            | "id"      | null
+	}
+
 	@Unroll("navigator.@#attribute should return '#expectedValue'")
 	def "attribute access via field operator"() {
 		expect: navigator.@"$attribute" == expectedValue
@@ -580,7 +600,7 @@ class NavigatorSpec extends GebSpec {
 		navigator                   | attribute | expectedValue
 		page.find("div", 0)         | "id"      | "container"
 		page.find("div div", 1)     | "id"      | "navigation"
-		page.find("#article-1 div") | "id"      | ""
+		page.find("#article-1 div") | "id"      | null
 		page.find("#navigation a")  | "href"    | "#home"
 		page.find("bdo")            | "id"      | null
 	}
@@ -646,19 +666,6 @@ class NavigatorSpec extends GebSpec {
 		page.find("#article-3") | "Article title 2" | false
 	}
 
-	@Unroll("the value of .@#attribute on #selector should be '#expectedValue'")
-	def "attribute access"() {
-		given: def navigator = page.find(selector)
-		expect: navigator."@$attribute" == expectedValue
-
-		where:
-		selector     | attribute | expectedValue
-		"#header"    | "id"      | "header"
-		"#article-3" | "class"   | "article"
-		"#site-1"    | "value"   | "google"
-		"#article-3" | "style"   | ""
-	}
-
 	@Ignore
 	def attributes() {
 		expect:
@@ -679,7 +686,7 @@ class NavigatorSpec extends GebSpec {
 		context            | fieldName     | expected
 		page               | "keywords"    | ["keywords"]
 		page.find("form")  | "keywords"    | ["keywords"]
-		page               | "site"        | ["site-1", "site-2"]
+		page               | "site"        | ["site-1", "site-2", "site-3"]
 		page.find("#main") | "keywords"    | []
 		page               | "nosuchfield" | []
 		page.find("bdo")   | "keywords"    | []
@@ -783,6 +790,26 @@ class NavigatorSpec extends GebSpec {
 		"multiple_select" | ["1", "3", "5"]
 	}
 
+	@Issue("http://jira.codehaus.org/browse/GEB-29")
+	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
+	def "form field values can be set using non-string values"() {
+		given:
+		def form = page.find("form")
+		def initialValue = form."$fieldName"
+
+		when: form."$fieldName" = newValue
+		then: form."$fieldName" == expectedValue
+		cleanup: form."$fieldName" = initialValue
+
+		where:
+		fieldName         | newValue   | expectedValue
+		"keywords"        | true       | "true"
+		"keywords"        | 123        | "123"
+		"checker1"        | 123        | "123"
+		"plain_select"    | 3          | "3"
+		"multiple_select" | [1, 3, 5]  | ["1", "3", "5"]
+	}
+
 	def "when the value of a checkbox is set using a boolean then the checked-ness is set accordingly"() {
 		given:
 		def form = page.find("form")
@@ -827,6 +854,15 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		value << ["google", "thisone"]
+	}
+	
+	@Issue("http://jira.codehaus.org/browse/GEB-47")
+	def "setting a select to a value that isn't one of its options is a no-op"() {
+		when:
+		$("form").plain_select = "KTHXBYE"
+		
+		then:
+		$("form").plain_select == "4"
 	}
 
 	@Unroll("input value should be '#expected'")
@@ -884,6 +920,21 @@ class NavigatorSpec extends GebSpec {
 		navigator                         | optionLabel                             | newValue
 		page.find("#the_plain_select")    | "Option #3"                             | "3"
 		page.find("#the_multiple_select") | ["Option #1", "Option #3", "Option #5"] | ["1", "3", "5"]
+	}
+
+	@Issue("http://jira.codehaus.org/browse/GEB-37")
+	@Unroll("radio button can be changed to #newValue using label text '#labelText'")
+	def "radio buttons can be set using their label text"() {
+		given: def initialValue = $("form").site
+		when: $("form").site = labelText
+		then: $("form").site == newValue
+		cleanup: $("form").site = initialValue
+
+		where:
+		labelText | newValue
+		"Site #1" | "google"
+		"Site #2" | "thisone"
+		"Site #3" | "bing"
 	}
 
 	@Ignore

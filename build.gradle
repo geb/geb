@@ -11,7 +11,7 @@ buildscript {
 
 allprojects {
 	grailsVersion = "1.2.3"
-	seleniumVersion = "2.0b2"
+	seleniumVersion = "2.0b3"
 	groovyVersion = "1.6.7"
 	spockVersion = "0.5-groovy-1.6"
 	
