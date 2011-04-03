@@ -215,6 +215,14 @@ class Browser {
 		}
 	}
 	
+	void quit() {
+		driver.quit()
+	}
+	
+	void close() {
+		driver.close()
+	}
+	
 	protected String _calculateUri(String path, Map params) {
 		def uri
 		if (path) {

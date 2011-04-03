@@ -232,3 +232,7 @@ You can remove remove a listener at any time…
 The `removePageChangeListener()` returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
 
 Listeners cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a `geb.error.PageChangeListenerAlreadyRegisteredException` will be raised.
+
+## Quitting the browser
+
+The browser object has `quit()` and `close()` methods that simply delegate to the underlying [driver][webdriver-api].
