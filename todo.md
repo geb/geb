@@ -8,12 +8,16 @@
     * all methods that return WebElement should be package protected
 * syntax
     * additional methods from jQuery
-        * add(selector)
-        * has(selector)
-        * not(selector)
+		* html()? (not sure if this is possible)
+		* css(propName) - delegate to RenderedRemoteElement.getValueOfCssProperty and handle separately in HtmlUnit
+		* val() and val(value)
+		* width() and height() using RenderedRemoteElement.getSize()
+		* offset() using RenderedRemoteElement.getLocation
+		* get() and toArray()
+		* .length
 * enhancements
+	* scrollTo() - no op on HtmlUnit I guess otherwise RenderedRemoteElement.getLocationOnScreenOnceScrolledIntoView
 	* next, previous, parent could possibly be optimised depending on the WebDriver implementation being used
-	* is() should accept selector not just tag name
 	* FirefoxWebElement has no toString, so Navigator should fully implement it
 * Browser driver methods should accept param maps
 * DriveExceptions aren't very informative

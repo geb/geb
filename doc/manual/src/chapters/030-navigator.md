@@ -88,7 +88,7 @@ Geb also ships with a bunch of shortcut pattern methods…
 
     $("p", text: startsWith("p")).size() == 2
     $("p", text: endsWith("2")).size() == 1
-    
+
 The following is the complete listing:
 
 <table class="graybox" border="0" cellspacing="0" cellpadding="5">
@@ -139,7 +139,7 @@ Consider the following html…
 We can select `p.b` by…
 
     $("div").find(".b")
-    
+   
 We can select `div.b` by…
 
     $("div").filter(".b")
@@ -147,6 +147,10 @@ We can select `div.b` by…
 or…
 
 	$(".b").not("p")
+
+We can select the `div` containing the `p` with…
+
+	$("div").has("p")
 
 The `find` and `filter` methods support the **exact same options as the $ function**.
 
@@ -182,7 +186,7 @@ Consider the following html…
     <p class="a"></p>
     <p class="b"></p>
     <p class="c"></p>
-    
+   
 The following code will select `p.b` & `p.c`…
 
     $("p").next()
@@ -217,7 +221,7 @@ The `nextUntil`, `prevUntil` and `parentsUntil` methods return all nodes along t
 	<div class="b"></div>
 	<div class="c"></div>
 	<div class="d"></div>
-	
+
 The following code will select `div.b` and `div.c`:
 
 	$(".a").nextUntil(".d")
@@ -262,6 +266,10 @@ To obtain information about all matched content, you use the Groovy _spread oper
     $("p")*.@title == ["a", "b", "c"]
     $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
 
+## Accessing input values
+
+The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` and when setting a multiple `select` the method expects an array or Collection of values.
+
 ## Form Control Shortcuts
 
 Interacting with form controls (`input`, `select` etc.) is such a common task in web functional testing that Geb provides convenient shortcuts for common functions.
@@ -298,7 +306,38 @@ Which is literally a shortcut for…
 
 #### select
 
-If the select is multiple select enabled, it is set with an array of strings which is to be the values which are to be selected.
+Select values are set by assigning the value or text of the required option. Assigned values are automatically coerced to String. For example…
+
+	<select name="artist">
+		<option value="1">Ima Robot</option>
+		<option value="2">Edward Sharpe and the Magnetic Zeros</option>
+		<option value="3">Alexander</option>
+	</select>
+
+We can select options with…
+
+	$("form").artist = "1"         // first option selected by its value attribute
+	$("form").artist = 2           // second option selected by its value attribute
+	$("form").artist = "Ima Robot" // first option selected by its text
+
+#### multiple select
+
+If the select has the `multiple` attribute it is set with a array or `Collection` of values. Any options not in the values are un-selected. For example…
+
+	<select name="genres" multiple>
+		<option value="1">Alt folk</option>
+		<option value="2">Chiptunes</option>
+		<option value="3">Electroclash</option>
+		<option value="4">G-Funk</option>
+		<option value="5">Hair metal</option>
+	</select>
+
+We can select options with…
+
+	$("form").genres = ["2", "3"]                 // second and third options selected by their value attributes
+	$("form").genres = [1, 4, 5]                  // first, fourth and fifth options selected by their value attributes
+	$("form").genres = ["Alt folk", "Hair metal"] // first and last options selected by their text
+	$("form").genres = []                         // all options un-selected
 
 #### checkbox
 
@@ -306,15 +345,35 @@ Checkboxes are checked/unchecked by setting their value to `true` or `false`.
 
 #### radio
 
-Radio values are set by assigning the value of the radio button that is to be selected
+Radio values are set by assigning the value of the radio button that is to be selected or the label text associated with a radio button.
 
-#### input
+For example, with the following radio buttons…
 
-The value assigned to a text input becomes the new value of its `value` attribute.
+	<label for="site-current">Search this site</label>
+	<input type="radio" id="site-current" name="site" value="current">
+	
+	<label>Search Google
+		<input type="radio" name="site" value="google">
+	</label>
 
-#### textarea
+We can select the radios with…
 
-The value assigned to a text input becomes the textarea's value.
+	$("form").site = "current"          // selects the first radio by its value
+	$("form").site = "Search this site" // selects the first radio by its label
+	$("form").site = "Search Google"    // selects the second radio by its label
+
+#### text inputs and textareas
+
+The value assigned to a text input becomes the new value of its `value` attribute. Any text currently in the input is cleared.
+
+#### appending text
+
+Text can be appended to the current value of an text input or `textarea` using the left-shift operator. For example…
+
+	<input name="query" value="I can has">
+
+	$("form").query << " cheezburger?"
+	assert $("form").query == "I can has cheezburger?"
 
 ## Accessing the underlying `WebElement`s
 

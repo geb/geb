@@ -100,6 +100,18 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Navigator find(Map<String, Object> predicates, String selector)
 
 	/**
+	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
+	 * that match the selector.
+	 * @param selector a CSS selector
+	 * @return a new Navigator instance
+	 */
+	Navigator has(String selector) {
+		findAll {
+			!it.find(selector).empty
+		}
+	}
+
+	/**
 	 * Filters the set of elements represented by this Navigator to include only those that match
 	 * the selector. Note that unlike find only tag, id and class based selectors are supported for this method
 	 * regardless of the capabilities of the underlying WebDriver instance.
@@ -456,8 +468,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract value()
 
 	/**
-	 * Sets the value of the form input elements to the given value. In the
-	 * case of a multiple select, this will select an extra option.
+	 * Sets the value of the form input elements to the given value.
 	 * @param value value to use
 	 * @return current Navigator instance
 	 */

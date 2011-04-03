@@ -69,23 +69,38 @@ class NavigatorSpec extends GebSpec {
 		page.find("li")             | 0     | 2          | 21
 		page.find("li").find("bdo") | 0     | 1          | 0
 	}
+	
+	@Unroll("\$('#selector1').has('#selector2') should return #expected")
+	def "has with selector"() {
+		given: def navigator = page.find(selector1)
+		expect:
+		navigator.has(selector2).collect {
+			it.@id ? "${it.tag()}#${it.@id}" : it.tag()
+		} == expected
+		
+		where:
+		selector1 | selector2  | expected
+		"div"     | "h1"       | ["div#container", "div#header"]
+//		"div"     | ".article" | ["div#container", "div#content", "div#main"] // TODO: this fails due to http://code.google.com/p/selenium/issues/detail?id=1498
+		"div"     | "h3"       | []
+	}
 
 	@Unroll("find('#selector') should return elements with #property of '#expected'")
 	def "find by CSS selector"() {
 		given: def navigator = page.find(selector)
-		expect: navigator*."$property" == expected
+		expect: navigator*.@id == expected
 
 		where:
-		selector                  | property | expected
-		"#sidebar form input"     | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"div#sidebar form input"  | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		".col-1 form input"       | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"div.col-1 form input"    | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"div#sidebar.col-1 input" | "@id"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"#header"                 | "@id"    | ["header"]
-		".col-3.module"           | "@id"    | ["navigation"]
-		".module.col-3"           | "@id"    | ["navigation"]
-		"#THIS_ID_DOES_NOT_EXIST" | "@id"    | []
+		selector                  | expected
+		"#sidebar form input"     | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div#sidebar form input"  | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		".col-1 form input"       | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div.col-1 form input"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"div#sidebar.col-1 input" | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
+		"#header"                 | ["header"]
+		".col-3.module"           | ["navigation"]
+		".module.col-3"           | ["navigation"]
+		"#THIS_ID_DOES_NOT_EXIST" | []
 	}
 
 	@Unroll("find('#selector1').find('#selector2') should find #expectedSize elements")
