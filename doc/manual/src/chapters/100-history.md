@@ -5,6 +5,10 @@ This page lists the high level changes between versions of Geb.
 ## 0.6
 
 * selenium-common is now a 'provided' scoped dependency of Geb
+* Radio buttons can be selected with their label text as well as their value attribute.
+* Select options can be selected with their text as well as their value attribute.
+* `Navigator.getAttribute` returns `null` rather than the empty string when an attribute is not found.
+* The `jquery` property on `Navigator` now returns whatever the jQuery method called on it returns.
 
 ### New Features
 
