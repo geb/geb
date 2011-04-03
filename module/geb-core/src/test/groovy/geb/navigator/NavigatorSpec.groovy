@@ -32,6 +32,22 @@ class NavigatorSpec extends GebSpec {
 		page.find("div").getElement(1).getAttribute("id") == "header"
 		page.find("bdo").getElement(0) == null
 	}
+	
+	@Unroll("\$('#selector1').add('#selector2') should result in the elements #expectedContent")
+	def "add"() {
+		when:
+		def navigator = page.find(selector1).add(selector2)
+		
+		then:
+		navigator*.@id == expectedIds
+		
+		where:
+		selector1    | selector2  | expectedIds
+		"#header"    | ".article" | ["header", "article-1", "article-2", "article-3"]
+		"#header"    | "bdo"      | ["header"]
+		"bdo"        | "#header"  | ["header"]
+		"#article-1" | ".article" | ["article-1", "article-2", "article-3"]
+	}
 
 	@Unroll("calling remove(#index) on the navigator should leave #expectedSize elements")
 	def "remove"() {
@@ -533,14 +549,14 @@ class NavigatorSpec extends GebSpec {
 		"#header"           | ".col-2"        | []
 	}
 
-	def unique() {
-		when: def navigator = (navigator1 + navigator2).unique()
+	def "adding two navigators results in a new navigator with the unique set of elements"() {
+		when: def navigator = (navigator1 + navigator2)
 
-		then: navigator.size() == expectedSize
+		then: navigator*.@id == expectedIds
 
 		where:
-		navigator1              | navigator2            | expectedSize
-		page.find("#article-1") | page.find(".article") | 3
+		navigator1              | navigator2            | expectedIds
+		page.find("#article-1") | page.find(".article") | ["article-1", "article-2", "article-3"]
 	}
 
 	def "unique is applied by default"() {
