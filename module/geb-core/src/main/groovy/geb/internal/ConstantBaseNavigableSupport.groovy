@@ -1,4 +1,5 @@
-/* Copyright 2009 the original author or authors.
+/* 
+ * Copyright 2010 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +17,17 @@ package geb.internal
 
 import geb.navigator.Navigator
 
-class ModuleBaseDefinitionDelegate {
-
-	private startingBase
-	private params
+class ConstantBaseNavigableSupport extends NavigableSupport {
 	
-	@Delegate private NavigableSupport navigableSupport
+	private Navigator navigator
 	
-	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
-		this.startingBase = startingBase
-		this.params = params
-		navigableSupport = new ConstantBaseNavigableSupport(this, null, startingBase)
+	ConstantBaseNavigableSupport(owner, Map contentTemplates, Navigator navigator) {
+		super(owner, contentTemplates, navigator.browser)
+		this.navigator = navigator
 	}
 	
-	def methodMissing(String name, args) {
-		startingBase."$name"(*args)
+	protected getNavigator() {
+		navigator
 	}
 	
-	def propertyMissing(String name) {
-		if (params.containsKey(name)) {
-			params[name]
-		} else {
-			navigableSupport."$name"
-		}
-	}
-
 }

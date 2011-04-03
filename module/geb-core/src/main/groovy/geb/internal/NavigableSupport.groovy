@@ -14,6 +14,7 @@
  */
 package geb.internal
 
+import geb.Browser
 import geb.navigator.Navigator
 import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
@@ -21,21 +22,19 @@ import geb.error.UnresolvablePropertyException
 /**
  * Classes who mix this in must implement the following methods:
  */
-class NavigableSupport implements Navigable {
+abstract class NavigableSupport implements Navigable {
 
 	private owner
-	private contentTemplates
-	private navigatoryFactory
+	private Map contentTemplates
+	private Browser browser
 	
-	NavigableSupport(owner, contentTemplates, navigatoryFactory) {
+	NavigableSupport(owner, Map contentTemplates, Browser browser) {
 		this.owner = owner
 		this.contentTemplates = contentTemplates ?: [:]
-		this.navigatoryFactory = navigatoryFactory
+		this.browser = browser
 	}
 	
-	private getNavigator() {
-		navigatoryFactory()
-	}
+	abstract protected getNavigator()
 	
 	private getContent(String name, Object[] args) {
 		def contentTemplate = contentTemplates[name]

@@ -37,7 +37,7 @@ class Module extends TemplateDerivedPageContent {
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
-		navigableSupport = new NavigableSupport(this, contentTemplates, { return navigator }) 
+		navigableSupport = new ConstantBaseNavigableSupport(this, contentTemplates, navigator) 
 		super.init(template, navigator, *args)
 	}
 
