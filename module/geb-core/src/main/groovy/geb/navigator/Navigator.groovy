@@ -468,8 +468,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract value()
 
 	/**
-	 * Sets the value of the form input elements to the given value. In the
-	 * case of a multiple select, this will select an extra option.
+	 * Sets the value of the form input elements to the given value.
 	 * @param value value to use
 	 * @return current Navigator instance
 	 */
