@@ -20,7 +20,7 @@ import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
 
 /**
- * Classes who mix this in must implement the following methods:
+ * Designed to be used with the “Delegate” transform to gain all the dollar methods etc.
  */
 abstract class NavigableSupport implements Navigable {
 
