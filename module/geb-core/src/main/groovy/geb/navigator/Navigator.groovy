@@ -529,7 +529,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Returns the first context element (not wrapped).
 	 * @return the first context element (not wrapped)
 	 */
-	protected WebElement firstElement() {
+	WebElement firstElement() {
 		return getElement(0)
 	}
 
@@ -537,7 +537,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Returns the last context element (not wrapped).
 	 * @return the last context element (not wrapped)
 	 */
-	protected WebElement lastElement() {
+	WebElement lastElement() {
 		return getElement(-1)
 	}
 
@@ -545,7 +545,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Returns all context elements.
 	 * @return all context elements
 	 */
-	protected abstract Collection<WebElement> allElements()
+	abstract Collection<WebElement> allElements()
 
 	Iterator<Navigator> iterator() {
 		return new NavigatorIterator(this)

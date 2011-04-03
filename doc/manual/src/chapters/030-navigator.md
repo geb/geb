@@ -370,3 +370,17 @@ Text can be appended to the current value of an text input or `textarea` using t
 
 	$("form").query << " cheezburger?"
 	assert $("form").query == "I can has cheezburger?"
+
+## Accessing the underlying `WebElement`s
+
+A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the raw web elements via the following methods on navigator objects…
+
+    WebElement firstElement()
+    WebElement lastElement()
+    Collection<WebElement> allElements()
+
+## Drag and Drop
+
+Geb does not currently offer any direct drag and drop support, but you can dig into WebDriver's drag and drop API by working with the underlying [WebElement][webelement-api] objects that underpin the Geb navigator objects. Future versions of Geb will offer a more convenient API wrapper.
+
+The WebDriver API for this revolves around the [DefaultActionChainsGenerator](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/DefaultActionChainsGenerator.html) class. Unfortunately there is not a lot of documentation available on this class currently.

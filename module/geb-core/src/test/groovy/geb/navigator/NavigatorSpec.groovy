@@ -1119,6 +1119,17 @@ class NavigatorSpec extends GebSpec {
 		0 * _
 	}
 
+	def accessingWebElements() {
+		when:
+		def articles = page.find("div.article")
+		
+		then:
+		articles.size() == 3
+		articles.firstElement().getAttribute("id") == "article-1"
+		articles.allElements()*.getAttribute("id") == ["article-1", "article-2", "article-3"]
+		articles.lastElement().getAttribute("id") == "article-3"
+	}
+	
 	@Unroll
 	def "can use eq(int) on Navigator"() {
 		expect: navigator.eq(index).@id == expectedId
