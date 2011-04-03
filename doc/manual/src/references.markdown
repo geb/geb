@@ -6,6 +6,7 @@
 [webclient]: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 [webdriver]: http://code.google.com/p/selenium/
 [webdriver-api]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/WebDriver.html
+[webelement-api]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html
 [htmlunitdriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
 [iedriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/ie/InternetExplorerDriver.html
 [firefoxdriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/firefox/FirefoxDriver.html

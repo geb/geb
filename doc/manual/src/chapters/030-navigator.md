@@ -315,3 +315,11 @@ The value assigned to a text input becomes the new value of its `value` attribut
 #### textarea
 
 The value assigned to a text input becomes the textarea's value.
+
+## Accessing the underlying `WebElement`s
+
+A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the raw web elements via the following methods on navigator objects…
+
+    WebElement firstElement()
+    WebElement lastElement()
+    Collection<WebElement> allElements()
