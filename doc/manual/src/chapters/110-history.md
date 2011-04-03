@@ -17,6 +17,7 @@ This page lists the high level changes between versions of Geb.
 * Added `BindingUpdater` class that can manage a groovy script binding for use with Geb
 * Added `quit()` and `close()` methods to browser that delegate to the underlying driver instance
 * `geb.Browser.drive()` methods now return the used `Browser` instance
+* The underlying WebElements of a Navigator are now retrievable
 
 ### Breaking Changes
 
