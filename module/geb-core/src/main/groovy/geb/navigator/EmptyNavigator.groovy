@@ -65,8 +65,6 @@ class EmptyNavigator extends Navigator {
 
 	boolean isEmpty() { true }
 
- 	boolean asBoolean() { false }
-
 	Navigator last() { this }
 
 	Navigator tail() { this }

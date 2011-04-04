@@ -33,6 +33,10 @@ abstract class Navigator implements Iterable<Navigator> {
 	Navigator(Browser browser) {
 		this.browser = browser
 	}
+	
+	boolean asBoolean() {
+		!empty
+	}
 
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given

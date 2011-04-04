@@ -20,6 +20,20 @@ class NavigatorSpec extends GebSpec {
 		page = Navigator.on(browser)
 	}
 	
+	@Unroll("\$(#selector) as boolean should be #expected")
+	def "Navigator can be coerced to boolean"() {
+		given:
+		def navigator = $(selector)
+		
+		expect:
+		navigator ? true : false == expected
+		
+		where:
+		selector | expected
+		"div"    | true
+		"bdo"    | false
+	}
+	
 	def "getAtttribute returns null for boolean attributes that are not present"() {
 		expect:
 		def element = page.find("#the_plain_select")
