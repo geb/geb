@@ -587,6 +587,21 @@ abstract class Navigator implements Iterable<Navigator> {
 	}
 
 	/**
+	 * Factory method to create a Navigator instance that is composed of other instances.
+	 * 
+	 * @param browser the browser the content is attached to
+	 * @param navigators the navigators to compose of
+	 * @return new Navigator instance
+	 */
+	static Navigator on(Browser browser, Navigator[] navigators) {
+		if (navigators) {
+			on(browser, navigators*.allElements().flatten())
+		} else {
+			new EmptyNavigator(browser)
+		}
+	}
+
+	/**
 	 * Factory method to create an initial Navigator instance.
 	 * <p>
 	 * Hides the fact that there are two implementations of Navigator at work behind

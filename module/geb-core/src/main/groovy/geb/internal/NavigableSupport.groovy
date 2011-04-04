@@ -18,6 +18,7 @@ import geb.Browser
 import geb.navigator.Navigator
 import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
+import org.openqa.selenium.WebElement
 
 /**
  * Designed to be used with the “Delegate” transform to gain all the dollar methods etc.
@@ -91,6 +92,14 @@ abstract class NavigableSupport implements Navigable {
 	
 	Navigator $(Map attributes, String selector) {
 		getNavigator().find(attributes, selector)
+	}
+	
+	Navigator $(Navigator[] navigators) {
+		Navigator.on(browser, *navigators)
+	}
+
+	Navigator $(WebElement[] elements) {
+		Navigator.on(browser, *elements)
 	}
 	
 	/*

@@ -226,6 +226,14 @@ The following code will select `div.b` and `div.c`:
 
 	$(".a").nextUntil(".d")
 
+## Composition
+
+It is also to compose navigator objects from other navigator objects, for situations where you can't express a content set in one query. To do this, simply call the $ function with the navigators to use…
+
+    $($("div.a"), $("div.d"))
+
+This will return a new navigator object that represents only the `a` and `d` divs.
+
 ## Clicking
 
 Navigator objects implement the `click()` method, which will send a click event to the first matched item.
