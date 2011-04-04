@@ -69,6 +69,16 @@ class ModulesSpec extends GebSpecWithServer {
 		instanceMethod.val == 3
 	}
 	
+	@Issue("http://jira.codehaus.org/browse/GEB-38")
+	def "can coerce module to boolean"() {
+		when:
+		to ModulesSpecPage
+		then:
+		optional("a") ? true : false == true
+		optional("e") ? true : false == false
+		optional("e").p ? true : false == false
+	}
+	
 }
 
 class ModulesSpecPage extends Page {
@@ -94,6 +104,8 @@ class ModulesSpecPage extends Page {
 		badBase { module ModulesSpecBadBase }
 		
 		instanceMethod { module InstanceMethodModule }
+		
+		optional(required: false) { module OptionalModule, $("div.$it") }
 	}
 }
 
@@ -142,4 +154,10 @@ class InstanceMethodModule extends Module {
 	}
 	
 	def getValue() { 3 }
+}
+
+class OptionalModule extends Module {
+	static content = {
+		p(required: false) { $("p") }
+	}
 }
