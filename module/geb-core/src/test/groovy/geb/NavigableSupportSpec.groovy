@@ -127,6 +127,20 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		z().empty
 	}
 	
+	def "composition with navigators"() {
+		expect:
+		$($(".a")).size() == 1
+		$($(".a"), $(".c")).size() == 2
+		$($("p"), $("input")).size() == 4
+	}
+
+	def "composition with web elements"() {
+		expect:
+		$($(".a").firstElement()).size() == 1
+		$($(".a").firstElement(), $(".c").firstElement()).size() == 2
+		$(*($("p").allElements()), $("input").firstElement()).size() == 4
+	}
+	
 	def "attribute access notation"() {
 		expect:
 		$("p").@class == 'a'

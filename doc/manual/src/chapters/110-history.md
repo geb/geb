@@ -18,6 +18,7 @@ This page lists the high level changes between versions of Geb.
 * Added `quit()` and `close()` methods to browser that delegate to the underlying driver instance
 * `geb.Browser.drive()` methods now return the used `Browser` instance
 * The underlying WebElements of a Navigator are now retrievable
+* Added $() methods that take one or more Navigator or WebElement objects and returns a new Navigator composed of these objects
 
 ### Breaking Changes
 

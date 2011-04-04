@@ -25,20 +25,22 @@ class Page {
 	static at = null
 	static url = ""
 	
-	Browser browser
+	private Browser browser
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
 	
-	Page() {
+	Page init(Browser browser) {
+		this.browser = browser
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
-		navigableSupport = new NavigableSupport(this, contentTemplates, { return Navigator.on(browser) }) 
+		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser, { return Navigator.on(browser) })
+		this
 	}
 	
-	void setBrowser(Browser browser) {
-		this.browser = browser
+	Browser getBrowser() {
+		browser
 	}
 
 	WebDriver getDriver() {

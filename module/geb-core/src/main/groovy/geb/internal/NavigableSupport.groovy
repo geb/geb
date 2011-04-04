@@ -14,28 +14,28 @@
  */
 package geb.internal
 
+import geb.Browser
 import geb.navigator.Navigator
 import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
+import org.openqa.selenium.WebElement
 
 /**
- * Classes who mix this in must implement the following methods:
+ * Designed to be used with the “Delegate” transform to gain all the dollar methods etc.
  */
-class NavigableSupport implements Navigable {
+abstract class NavigableSupport implements Navigable {
 
 	private owner
-	private contentTemplates
-	private navigatoryFactory
+	private Map contentTemplates
+	private Browser browser
 	
-	NavigableSupport(owner, contentTemplates, navigatoryFactory) {
+	NavigableSupport(owner, Map contentTemplates, Browser browser) {
 		this.owner = owner
 		this.contentTemplates = contentTemplates ?: [:]
-		this.navigatoryFactory = navigatoryFactory
+		this.browser = browser
 	}
 	
-	private getNavigator() {
-		navigatoryFactory()
-	}
+	abstract protected getNavigator()
 	
 	private getContent(String name, Object[] args) {
 		def contentTemplate = contentTemplates[name]
@@ -92,6 +92,14 @@ class NavigableSupport implements Navigable {
 	
 	Navigator $(Map attributes, String selector) {
 		getNavigator().find(attributes, selector)
+	}
+	
+	Navigator $(Navigator[] navigators) {
+		Navigator.on(browser, *navigators)
+	}
+
+	Navigator $(WebElement[] elements) {
+		Navigator.on(browser, *elements)
 	}
 	
 	/*

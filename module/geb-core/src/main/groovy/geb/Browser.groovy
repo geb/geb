@@ -152,7 +152,6 @@ class Browser {
 			this.page?.onUnload(page)
 			def previousPage = this.page
 			this.page = page
-			page.browser = this
 			this.page.onLoad(previousPage)
 		}
 	}
@@ -247,7 +246,7 @@ class Browser {
 		if (!Page.isAssignableFrom(pageClass)) {
 			throw new IllegalArgumentException("$pageClass is not a subclass of ${Page}")
 		}
-		pageClass.newInstance(browser: this)
+		pageClass.newInstance().init(this)
 	}
 	
 	JavascriptInterface getJs() {
