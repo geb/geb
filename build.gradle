@@ -50,6 +50,8 @@ subprojects {
 	version = '0.6-SNAPSHOT'
 	group = 'org.codehaus.geb'
 	
+	isSnapshot = version.endsWith("-SNAPSHOT")
+	
 	apply plugin: "org.gradle.idea"
 		
 	if (project.path in groovyModules) {
@@ -380,9 +382,34 @@ project(":doc:manual") {
 	src = file("src")
 	output = file("build/manual")
 	
+	task clean(type: Delete) {
+		delete file("build")
+	}
+	
 	task compile << {
 		new markdown2book.Generator(src, output, "UTF-8").generate()
 	}
+	
+	
+	def docTasks = []
+	rootProject.subprojects.findAll { project -> project.path in publishedModules }.each { project ->
+		def taskName = "groovydoc-$project.name"
+		task "$taskName" (type: Groovydoc) {
+			source project.sourceSets.main.allGroovy
+			destinationDir = new File(output, "api/$project.name") 
+			classpath = project.sourceSets.main.compileClasspath
+			groovyClasspath = project.sourceSets.main.compileClasspath
+			exclude "**/internal/**"
+			
+			docTitle = "Groovy API Documentation for $project.name"
+			footer = "<p style='text-align: center'>Groovy API Documentation for $project.name - Licensed under the Apache License, Version 2.0 - <a href='http://geb.codehaus.org'>http://geb.codehaus.org</a></p>"
+			windowTitle = "Groovy API for $project.name"
+		}
+		docTasks << delegate."$taskName"
+	}
+	
+	task api(dependsOn: docTasks) << {}
+	task build(dependsOn: [compile, api]) << {}
 }
 
 project(":doc:site") {
@@ -392,18 +419,18 @@ project(":doc:site") {
 	manualDir = file("$output/manual")
 	thisManual = file("$manualDir/$project.version")
 	
-	task clean(overwrite: true) << {
-		if (output.exists()) {
-			assert output.deleteDir()
-		}
+	task clean(type: Delete) {
+		delete file("build")
 	}
 	
-	task includeManual(dependsOn: project(":doc:manual").compile, type: Sync) {
+	task includeManual(dependsOn: project(":doc:manual").build, type: Sync) {
 		from project(":doc:manual").output
 		into project.thisManual
 		
-		doLast {
-			ant.symlink link: "${manualDir.path}/latest", resource: thisManual.path, overwrite: true
+		if (!isSnapshot) {
+			doLast {
+				ant.symlink link: "${manualDir.path}/latest", resource: thisManual.path, overwrite: true
+			}
 		}
 	}
 	
