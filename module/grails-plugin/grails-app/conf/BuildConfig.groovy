@@ -39,6 +39,11 @@ grails.project.dependency.resolution = {
 			export = false
 		}
 	}
+	plugins {
+		compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.5-groovy-1.7", ":easyb:2.02") {
+			export = false
+		}
+	}
 }
 
 /* -- disabled due to clover grails breaking clover in gradle

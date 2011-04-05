@@ -82,3 +82,23 @@ eventTestPhaseStart = { phaseName ->
 		runtimeAdapter.reportDir = new File(grailsSettings.testReportsDir, 'geb')
 	}
 }
+
+// Just upgrade plugins without user input when building this plugin
+// Has no effect for clients of this plugin
+if (grailsAppName == 'geb') {
+	
+	// Override to workaround GRAILS-7296
+	org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport.metaClass.getSourceDir = { ->
+		new File(delegate.buildBinding.grailsSettings.testSourceDir, delegate.relativeSourcePath)
+	}
+	
+	def resolveDependenciesWasInteractive = false
+	eventResolveDependenciesStart = {
+		resolveDependenciesWasInteractive = isInteractive
+		isInteractive = false
+	}
+
+	eventResolveDependenciesEnd = {
+		isInteractive = resolveDependenciesWasInteractive
+	}
+}

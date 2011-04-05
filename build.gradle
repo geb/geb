@@ -10,10 +10,10 @@ buildscript {
 }
 
 allprojects {
-	grailsVersion = "1.2.3"
+	grailsVersion = "1.3.7"
 	seleniumVersion = "2.0b3"
-	groovyVersion = "1.6.7"
-	spockVersion = "0.5-groovy-1.6"
+	groovyVersion = "1.7.10"
+	spockVersion = "0.6-groovy-1.7-SNAPSHOT"
 	
 	spockDependency = "org.spockframework:spock-core:$spockVersion"
 
