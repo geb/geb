@@ -74,9 +74,9 @@ class ModulesSpec extends GebSpecWithServer {
 		when:
 		to ModulesSpecPage
 		then:
-		optional("a") ? true : false == true
-		optional("e") ? true : false == false
-		optional("e").p ? true : false == false
+		optional("a")
+		!optional("e")
+		!optional("e").p
 	}
 	
 }

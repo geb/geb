@@ -20,37 +20,33 @@ class NavigatorSpec extends GebSpec {
 		page = Navigator.on(browser)
 	}
 	
-	@Unroll("\$(#selector) as boolean should be #expected")
-	def "Navigator can be coerced to boolean"() {
-		given:
-		def navigator = $(selector)
-		
-		expect:
-		navigator ? true : false == expected
-		
-		where:
-		selector | expected
-		"div"    | true
-		"bdo"    | false
+	def "navigator with content coerces to true"() {
+		given: def navigator = $("div")
+		expect: navigator
+	}
+	
+	def "empty navigator coerces to false"() {
+		given: def navigator = $("bdo")
+		expect: !navigator
 	}
 	
 	def "getAtttribute returns null for boolean attributes that are not present"() {
 		expect:
-		def element = page.find("#the_plain_select")
+		def element = $("#the_plain_select")
 		element.getAttribute("multiple") == null
 		element.@multiple == null
 	}
 
 	def "getElement by index"() {
 		expect:
-		page.find("div").getElement(1).getAttribute("id") == "header"
-		page.find("bdo").getElement(0) == null
+		$("div").getElement(1).getAttribute("id") == "header"
+		$("bdo").getElement(0) == null
 	}
 	
 	@Unroll("\$('#selector1').add('#selector2') should result in the elements #expectedContent")
 	def "add"() {
 		when:
-		def navigator = page.find(selector1).add(selector2)
+		def navigator = $(selector1).add(selector2)
 		
 		then:
 		navigator*.@id == expectedIds
@@ -74,19 +70,19 @@ class NavigatorSpec extends GebSpec {
 		navigator.size() == expectedSize
 
 		where:
-		navigator                   | index | iterations | expectedSize
-		page.find("li")             | 5     | 1          | 22
-		page.find("li")             | 0     | 1          | 22
-		page.find("li")             | -1    | 1          | 22
-		page.find("li")             | 1     | 1          | 22
-		page.find("li")             | 23    | 1          | 23
-		page.find("li")             | 0     | 2          | 21
-		page.find("li").find("bdo") | 0     | 1          | 0
+		navigator           | index | iterations | expectedSize
+		$("li")             | 5     | 1          | 22
+		$("li")             | 0     | 1          | 22
+		$("li")             | -1    | 1          | 22
+		$("li")             | 1     | 1          | 22
+		$("li")             | 23    | 1          | 23
+		$("li")             | 0     | 2          | 21
+		$("li").find("bdo") | 0     | 1          | 0
 	}
 	
 	@Unroll("\$('#selector1').has('#selector2') should return #expected")
 	def "has with selector"() {
-		given: def navigator = page.find(selector1)
+		given: def navigator = $(selector1)
 		expect:
 		navigator.has(selector2).collect {
 			it.@id ? "${it.tag()}#${it.@id}" : it.tag()
@@ -101,7 +97,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("find('#selector') should return elements with #property of '#expected'")
 	def "find by CSS selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator*.@id == expected
 
 		where:
@@ -120,7 +116,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("find('#selector1').find('#selector2') should find #expectedSize elements")
 	def "find by id in element context"() {
 		expect:
-		page.find(selector1).find(selector2).size() == expectedSize
+		$(selector1).find(selector2).size() == expectedSize
 
 		where:
 		selector1    | selector2 | expectedSize
@@ -131,7 +127,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("find('#selector') should find #expectedSize elements")
 	def "find with grouped selectors"() {
 		expect:
-		page.find(selector).size() == expectedSize
+		$(selector).size() == expectedSize
 
 		where:
 		selector                                | expectedSize
@@ -141,7 +137,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("find(#attributes) should find elements with the ids #expectedIds")
 	def "find by attributes"() {
-		expect: page.find(attributes)*.@id == expectedIds
+		expect: $(attributes)*.@id == expectedIds
 
 		where:
 		attributes                          | expectedIds
@@ -160,12 +156,12 @@ class NavigatorSpec extends GebSpec {
 
 	@Issue("http://jira.codehaus.org/browse/GEB-14")
 	def "find by attributes passing a class pattern should match any of the classes on an element"() {
-		expect: page.find(class: ~/col-\d/)*.@id == ["navigation", "content", "main", "sidebar"]
+		expect: $(class: ~/col-\d/)*.@id == ["navigation", "content", "main", "sidebar"]
 	}
 
 	@Unroll("find(text: '#text') should find #expectedSize elements")
 	def "find by text"() {
-		expect: page.find(text: text).size() == expectedSize
+		expect: $(text: text).size() == expectedSize
 
 		where:
 		text                            | expectedSize
@@ -176,7 +172,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("find('#selector', #index) should find the element with the id '#expectedId'")
 	def "find by selector and index"() {
-		when: def navigator = page.find(selector, index)
+		when: def navigator = $(selector, index)
 		then:
 		navigator.size() == 1
 		navigator.@id == expectedId
@@ -191,7 +187,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("find('#selector', #attributes) should find elements with the ids #expectedIds")
 	def "find by selector and attributes"() {
-		expect: page.find(attributes, selector)*.@id == expectedIds
+		expect: $(attributes, selector)*.@id == expectedIds
 
 		where:
 		selector   | attributes                              | expectedIds
@@ -212,7 +208,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("find('#selector', text: '#text') should find #expectedSize elements")
 	def "find by selector and text predicate"() {
-		expect: page.find(selector, text: text).size() == expectedSize
+		expect: $(selector, text: text).size() == expectedSize
 
 		where:
 		selector   | text                                   | expectedSize
@@ -228,10 +224,10 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.filter(filter)*.@id == expectedIds
 
 		where:
-		navigator             | filter        | expectedIds
-		page.find(".article") | "#article-2"  | ["article-2"]
-		page.find(".article") | "#no-such-id" | []
-		page.find("div")      | ".article"    | ["article-1", "article-2", "article-3"]
+		navigator     | filter        | expectedIds
+		$(".article") | "#article-2"  | ["article-2"]
+		$(".article") | "#no-such-id" | []
+		$("div")      | ".article"    | ["article-1", "article-2", "article-3"]
 		// TODO: case for filter by tag
 	}
 
@@ -240,12 +236,12 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.filter(filter)*.@id == expectedIds
 
 		where:
-		navigator               | filter                          | expectedIds
-		page.find("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
-		page.find("input")      | [name: "site"]                  | ["site-1", "site-2", "site-3"]
-		page.find("input")      | [name: "site", value: "google"] | ["site-1"]
-		page.find(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
-		page.find("#article-1") | [id: "article-2"]               | []
+		navigator       | filter                          | expectedIds
+		$("input")      | [type: "checkbox"]              | ["checker1", "checker2"]
+		$("input")      | [name: "site"]                  | ["site-1", "site-2", "site-3"]
+		$("input")      | [name: "site", value: "google"] | ["site-1"]
+		$(".article")   | [id: ~/article-[1-2]/]          | ["article-1", "article-2"]
+		$("#article-1") | [id: "article-2"]               | []
 	}
 
 	@Unroll("filter(text: '#text') should select #expectedSize elements")
@@ -253,10 +249,10 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.filter(text: text).size() == expectedSize
 
 		where:
-		navigator      | text                            | expectedSize
-		page.find("p") | "First paragraph of article 2." | 1
-		page.find("p") | ~/.*article 1\./                | 2
-		page.find("p") | "DOES NOT EXIST"                | 0
+		navigator | text                            | expectedSize
+		$("p")    | "First paragraph of article 2." | 1
+		$("p")    | ~/.*article 1\./                | 2
+		$("p")    | "DOES NOT EXIST"                | 0
 	}
 
 	@Unroll("filter('#selector', #attributes should select elements with the ids #expectedIds")
@@ -264,9 +260,9 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.filter(attributes, selector)*.@id == expectedIds
 
 		where:
-		navigator                     | selector | attributes         | expectedIds
-		page.find("a, input, select") | "input"  | [type: "checkbox"] | ["checker1", "checker2"]
-		page.find("a, input, select") | "select" | [type: "checkbox"] | []
+		navigator             | selector | attributes         | expectedIds
+		$("a, input, select") | "input"  | [type: "checkbox"] | ["checker1", "checker2"]
+		$("a, input, select") | "select" | [type: "checkbox"] | []
 	}
 
 	@Unroll("not('#selector') should select elements with the ids #expectedIds")
@@ -274,14 +270,14 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.not(selector)*.@id == expectedIds
 
 		where:
-		navigator             | selector      | expectedIds
-		page.find(".article") | "#article-2"  | ["article-1", "article-3"]
-		page.find(".article") | "#no-such-id" | ["article-1", "article-2", "article-3"]
+		navigator     | selector      | expectedIds
+		$(".article") | "#article-2"  | ["article-1", "article-3"]
+		$(".article") | "#no-such-id" | ["article-1", "article-2", "article-3"]
 	}
 
 	@Unroll("calling next() on #selector should return #expectedIds")
 	def "next selects immediately following elements"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.next()*.@id == expectedIds
 
 		where:
@@ -295,7 +291,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling nextAll() on #selector should return #expectedIds")
 	def "nextAll selects all following elements"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.nextAll()*.@id == expectedIds
 
 		where:
@@ -309,7 +305,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling next(#nextSelector) on #selector should return #expectedIds")
 	def "next with selector argument"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.next(nextSelector)*.@id == expectedIds
 
 		where:
@@ -324,7 +320,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling nextAll(#nextSelector) on #selector should return #expectedIds")
 	def "nextAll with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.nextAll(nextSelector)*.@id == expectedIds
 
 		where:
@@ -338,7 +334,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling nextUntil(#nextSelector) on #selector should return #expectedIds")
 	def "nextUntil with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 
 		expect:
 		def nextElements = navigator.nextUntil(nextSelector).collect {
@@ -356,7 +352,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling previous() on #selector should return #expectedIds")
 	def "previous selects immediately preceding elements"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.previous()*.@id == expectedIds
 
 		where:
@@ -370,7 +366,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling prevAll() on #selector should return #expectedIds")
 	def "prevAll selects immediately preceding elements"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.prevAll()*.@id == expectedIds
 
 		where:
@@ -384,7 +380,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling previous(#previousSelector) on #selector should return #expectedIds")
 	def "previous with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.previous(previousSelector)*.@id == expectedIds
 
 		where:
@@ -399,7 +395,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling prevAll(#previousSelector) on #selector should return #expectedIds")
 	def "prevAll with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.prevAll(previousSelector)*.@id == expectedIds
 
 		where:
@@ -414,7 +410,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling prevUntil(#previousSelector) on #selector should return #expectedIds")
 	def "prevUntil with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 
 		expect:
 		def previous = navigator.prevUntil(previousSelector).collect {
@@ -432,7 +428,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling parent() on #selector should return #expectedIds")
 	def "parent selects immediate parent of each element"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.parent()*.@id == expectedIds
 
 		where:
@@ -446,7 +442,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling parents() on #selector should return #expectedTags")
 	def "parents selects all parents of each element"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.parents()*.tag() == expectedTags
 
 		where:
@@ -459,7 +455,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling parents(#parentSelector) on #selector should return #expectedIds")
 	def "parents selects all parents of each element filtered by a selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.parents(parentSelector)*.@id == expectedIds
 
 		where:
@@ -473,7 +469,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling parentsUntil(#parentSelector) on #selector should return #expectedTags")
 	def "parentsUntil selects all parents of each element filtered by a selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 
 		expect:
 		def parents = navigator.parentsUntil(parentSelector).collect {
@@ -494,7 +490,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling parent(#parentSelector) on #selector should return #expectedIds")
 	def "parent with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.parent(parentSelector)*.@id == expectedIds
 
 		where:
@@ -510,7 +506,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling closest(#closestSelector) on #selector should return #expectedIds")
 	def "closest with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.closest(closestSelector)*.@id == expectedIds
 
 		where:
@@ -524,7 +520,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling children() on #selector should return #expected")
 	def "children selects immediate child elements of each element"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.children()*.tag() == expected
 
 		where:
@@ -539,7 +535,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling children(#childSelector) on #selector should return #expected")
 	def "children with selector"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.children(childSelector)*.tag() == expected
 
 		where:
@@ -551,7 +547,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling siblings() on #selector should return #expectedIds")
 	def "siblings selects immediately following elements"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.siblings()*.@id == expectedIds
 
 		where:
@@ -566,7 +562,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("calling siblings(#siblingSelector) on #selector should return #expectedIds")
 	def "siblings with selector argument"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.siblings(siblingSelector)*.@id == expectedIds
 
 		where:
@@ -584,13 +580,13 @@ class NavigatorSpec extends GebSpec {
 		then: navigator*.@id == expectedIds
 
 		where:
-		navigator1              | navigator2            | expectedIds
-		page.find("#article-1") | page.find(".article") | ["article-1", "article-2", "article-3"]
+		navigator1      | navigator2    | expectedIds
+		$("#article-1") | $(".article") | ["article-1", "article-2", "article-3"]
 	}
 
 	def "unique is applied by default"() {
 		when:
-		def navigator = page.find("div").find("ol")
+		def navigator = $("div").find("ol")
 
 		then:
 		navigator.size() == expectedSize
@@ -601,7 +597,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("the value of text() on #selector should be '#expectedText'")
 	def "text of the first element can be accessed as a property"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.text() == expectedText
 
 		where:
@@ -613,7 +609,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("the value of tag() on #selector should be '#expectedTag'")
 	def "tagName of the first element can be accessed as a property"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.tag() == expectedTag
 
 		where:
@@ -629,12 +625,12 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.attr("$attribute") == expectedValue
 
 		where:
-		navigator                   | attribute | expectedValue
-		page.find("div", 0)         | "id"      | "container"
-		page.find("div div", 1)     | "id"      | "navigation"
-		page.find("#article-1 div") | "id"      | null
-		page.find("#navigation a")  | "href"    | "#home"
-		page.find("bdo")            | "id"      | null
+		navigator           | attribute | expectedValue
+		$("div", 0)         | "id"      | "container"
+		$("div div", 1)     | "id"      | "navigation"
+		$("#article-1 div") | "id"      | null
+		$("#navigation a")  | "href"    | "#home"
+		$("bdo")            | "id"      | null
 	}
 
 	@Unroll("navigator.@#attribute should return '#expectedValue'")
@@ -642,12 +638,12 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.@"$attribute" == expectedValue
 
 		where:
-		navigator                   | attribute | expectedValue
-		page.find("div", 0)         | "id"      | "container"
-		page.find("div div", 1)     | "id"      | "navigation"
-		page.find("#article-1 div") | "id"      | null
-		page.find("#navigation a")  | "href"    | "#home"
-		page.find("bdo")            | "id"      | null
+		navigator           | attribute | expectedValue
+		$("div", 0)         | "id"      | "container"
+		$("div div", 1)     | "id"      | "navigation"
+		$("#article-1 div") | "id"      | null
+		$("#navigation a")  | "href"    | "#home"
+		$("bdo")            | "id"      | null
 	}
 
 	@Unroll("navigator*.@#attribute should return #expectedValue")
@@ -655,15 +651,15 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator*.@"$attribute" == expectedIds
 
 		where:
-		navigator                  | attribute | expectedIds
-		page.find("div")[0..<5]    | "id"      | ["container", "header", "navigation", "content", "main"]
-		page.find("#navigation a") | "href"    | ["#home", "#about", "#contact"]
-		page.find("bdo")           | "id"      | []
+		navigator          | attribute | expectedIds
+		$("div")[0..<5]    | "id"      | ["container", "header", "navigation", "content", "main"]
+		$("#navigation a") | "href"    | ["#home", "#about", "#contact"]
+		$("bdo")           | "id"      | []
 	}
 
 	@Unroll("the class names on #selector are #expected")
 	def "getClassNames returns the classes of the first matched element"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.classes() == expected
 
 		where:
@@ -676,7 +672,7 @@ class NavigatorSpec extends GebSpec {
 
 	@Unroll("the result of findClass('#className') on #selector should be #expectedResult")
 	def hasClass() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		expect: navigator.hasClass(className) == expectedResult
 
 		where:
@@ -693,11 +689,11 @@ class NavigatorSpec extends GebSpec {
 		navigator.is(expectedTag) == expectedResult
 
 		where:
-		navigator                             | expectedTag  | expectedResult
-		page.find("div")                      | "div"        | true
-		page.find("#article-1 p").parent()    | "div"        | true
-		page.find("#article-1 p").parent()    | "blockquote" | true
-		page.find("#article-1 p").parent()[0] | "blockquote" | false
+		navigator                     | expectedTag  | expectedResult
+		$("div")                      | "div"        | true
+		$("#article-1 p").parent()    | "div"        | true
+		$("#article-1 p").parent()    | "blockquote" | true
+		$("#article-1 p").parent()[0] | "blockquote" | false
 	}
 
 	def text() {
@@ -705,10 +701,10 @@ class NavigatorSpec extends GebSpec {
 		navigator.text().contains(expectedText) == expectedResult
 
 		where:
-		navigator               | expectedText      | expectedResult
-		page                    | "Article title 2" | true
-		page.find("#article-2") | "Article title 2" | true
-		page.find("#article-3") | "Article title 2" | false
+		navigator       | expectedText      | expectedResult
+		page            | "Article title 2" | true
+		$("#article-2") | "Article title 2" | true
+		$("#article-3") | "Article title 2" | false
 	}
 
 	@Ignore
@@ -717,9 +713,9 @@ class NavigatorSpec extends GebSpec {
 		navigator*.@"$key" == expectedValues
 
 		where:
-		navigator                           | key       | expectedValues
-		page.find("input").withName("site") | "value"   | ["google", "thisone"]
-		page.find("input").withName("site") | "checked" | ["checked", ""]
+		navigator                   | key       | expectedValues
+		$("input").withName("site") | "value"   | ["google", "thisone"]
+		$("input").withName("site") | "checked" | ["checked", ""]
 	}
 
 	@Unroll("the dynamic method #fieldName() should return elements with the ids #expected")
@@ -728,13 +724,13 @@ class NavigatorSpec extends GebSpec {
 		then: navigator*.@id == expected
 
 		where:
-		context            | fieldName     | expected
-		page               | "keywords"    | ["keywords"]
-		page.find("form")  | "keywords"    | ["keywords"]
-		page               | "site"        | ["site-1", "site-2", "site-3"]
-		page.find("#main") | "keywords"    | []
-		page               | "nosuchfield" | []
-		page.find("bdo")   | "keywords"    | []
+		context    | fieldName     | expected
+		page       | "keywords"    | ["keywords"]
+		$("form")  | "keywords"    | ["keywords"]
+		page       | "site"        | ["site-1", "site-2", "site-3"]
+		$("#main") | "keywords"    | []
+		page       | "nosuchfield" | []
+		$("bdo")   | "keywords"    | []
 	}
 
 	def "dynamic methods for finding fields do not accept arguments"() {
@@ -742,14 +738,14 @@ class NavigatorSpec extends GebSpec {
 		then: thrown(MissingMethodException)
 
 		where:
-		context          | fieldName  | arguments
-		page             | "keywords" | ["foo", "bar"]
-		page.find("bdo") | "keywords" | ["foo"]
+		context  | fieldName  | arguments
+		page     | "keywords" | ["foo", "bar"]
+		$("bdo") | "keywords" | ["foo"]
 	}
 
 	@Unroll("the value of '#fieldName' retrieved via property access should be '#expectedValue'")
 	def "form field values can be retrieved using property access"() {
-		expect: page.find("form")."$fieldName" == expectedValue
+		expect: $("form")."$fieldName" == expectedValue
 
 		where:
 		fieldName         | expectedValue
@@ -765,7 +761,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("the value of '#fieldName' when empty should be '#expectedValue'")
 	def "empty text inputs are handled correctly"() {
 		given: "the input has an empty value"
-		def form = page.find("form")
+		def form = $("form")
 		def initialValue = form."$fieldName"
 		form."$fieldName"().getElement(0).clear()
 		
@@ -790,7 +786,7 @@ class NavigatorSpec extends GebSpec {
 		radios.find { it.value == expectedValue }.setSelected()
 
 		then:
-		page.find("form").site == expectedValue
+		$("form").site == expectedValue
 
 		where:
 		index | expectedValue
@@ -800,7 +796,7 @@ class NavigatorSpec extends GebSpec {
 
 	def "form field property access works on any node in the Navigator"() {
 		when:
-		def navigator = page.find(".article, form")
+		def navigator = $(".article, form")
 
 		then:
 		navigator.keywords == "Enter keywords here"
@@ -808,7 +804,7 @@ class NavigatorSpec extends GebSpec {
 
 	def "invalid form field names raise the correct exception type"() {
 		when:
-		page.find("form").someFieldThatDoesNotExist
+		$("form").someFieldThatDoesNotExist
 
 		then:
 		thrown(MissingPropertyException)
@@ -817,7 +813,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
 	def "form field values can be set using property access"() {
 		given:
-		def form = page.find("form")
+		def form = $("form")
 		def initialValue = form."$fieldName"
 
 		when: form."$fieldName" = newValue
@@ -839,7 +835,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element")
 	def "form field values can be set using non-string values"() {
 		given:
-		def form = page.find("form")
+		def form = $("form")
 		def initialValue = form."$fieldName"
 
 		when: form."$fieldName" = newValue
@@ -857,7 +853,7 @@ class NavigatorSpec extends GebSpec {
 
 	def "when the value of a checkbox is set using a boolean then the checked-ness is set accordingly"() {
 		given:
-		def form = page.find("form")
+		def form = $("form")
 		def initialChecker1 = form.checker1
 		def initialChecker2 = form.checker2
 		
@@ -889,7 +885,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("when the radio button group's value is set to '#value' then the corresponding radio button is selected")
 	def "set property access works on radio button groups"() {
 		when:
-		page.find("form").site = value
+		$("form").site = value
 
 		then:
 		driver.findElements(By.name("site")).find { it.value == value }.isSelected()
@@ -915,15 +911,15 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator.value() == expected
 
 		where:
-		navigator                             | expected
-		page.find("#the_plain_select")        | "4"
-		page.find("#the_multiple_select")     | ["2", "4"]
-		page.find("#the_plain_select option") | "1"
-		page.find("textarea")                 | " The textarea content. "
-		page.find("#keywords")                | "Enter keywords here"
-		page.find("#checker1")                | null
-		page.find("#checker2")                | "123"
-		page.find("#keywords, textarea")      | "Enter keywords here"
+		navigator                     | expected
+		$("#the_plain_select")        | "4"
+		$("#the_multiple_select")     | ["2", "4"]
+		$("#the_plain_select option") | "1"
+		$("textarea")                 | " The textarea content. "
+		$("#keywords")                | "Enter keywords here"
+		$("#checker1")                | null
+		$("#checker2")                | "123"
+		$("#keywords, textarea")      | "Enter keywords here"
 	}
 
 	@Unroll("input values should be '#expected'")
@@ -931,10 +927,10 @@ class NavigatorSpec extends GebSpec {
 		expect: navigator*.value() == expected
 
 		where:
-		navigator                             | expected
-		page.find("select")                   | ["4", ["2", "4"]]
-		page.find("#the_plain_select option") | ["1", "2", "3", "4", "5"]
-		page.find("#keywords, textarea")      | ["Enter keywords here", " The textarea content. "]
+		navigator                     | expected
+		$("select")                   | ["4", ["2", "4"]]
+		$("#the_plain_select option") | ["1", "2", "3", "4", "5"]
+		$("#keywords, textarea")      | ["Enter keywords here", " The textarea content. "]
 	}
 
 	@Unroll("input value can be changed to '#newValue'")
@@ -945,13 +941,13 @@ class NavigatorSpec extends GebSpec {
 		cleanup: navigator.value(initialValue)
 
 		where:
-		navigator                         | newValue
-		page.find("#the_plain_select")    | "2"
-		page.find("#the_multiple_select") | ["1", "3", "5"]
-		page.find("#keywords")            | "bar"
-		page.find("textarea")             | "This is the new content of the textarea. Yeah!"
-		page.find("#checker1")            | "123"
-		page.find("#checker2")            | null
+		navigator                 | newValue
+		$("#the_plain_select")    | "2"
+		$("#the_multiple_select") | ["1", "3", "5"]
+		$("#keywords")            | "bar"
+		$("textarea")             | "This is the new content of the textarea. Yeah!"
+		$("#checker1")            | "123"
+		$("#checker2")            | null
 	}
 
 	@Unroll("select element can be changed to #newValue using option label #optionLabel")
@@ -962,9 +958,9 @@ class NavigatorSpec extends GebSpec {
 		cleanup: navigator.value(initialValue)
 
 		where:
-		navigator                         | optionLabel                             | newValue
-		page.find("#the_plain_select")    | "Option #3"                             | "3"
-		page.find("#the_multiple_select") | ["Option #1", "Option #3", "Option #5"] | ["1", "3", "5"]
+		navigator                 | optionLabel                             | newValue
+		$("#the_plain_select")    | "Option #3"                             | "3"
+		$("#the_multiple_select") | ["Option #1", "Option #3", "Option #5"] | ["1", "3", "5"]
 	}
 
 	@Issue("http://jira.codehaus.org/browse/GEB-37")
@@ -986,7 +982,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("value() on '#selector' should return '#expected'")
 	def "get value handles radio buttons as groups"() {
 		given:
-		def navigator = page.find(selector)
+		def navigator = $(selector)
 
 		expect:
 		navigator.value() == expected
@@ -1002,7 +998,7 @@ class NavigatorSpec extends GebSpec {
 	@Ignore
 	@Unroll("value('#newValue') on '#selector' should select the matching radio button")
 	def "set value handles radio buttons as groups"() {
-		given: def navigator = page.find(selector)
+		given: def navigator = $(selector)
 		when: navigator.value(newValue)
 		then: navigator.value() == newValue
 		cleanup: driver.findElement(By.id("site-1")).setSelected()
@@ -1017,7 +1013,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("find('#selector') << '#keystrokes' should append '#keystrokes' to the input's value")
 	def "can use leftShift to enter text in inputs"() {
 		given:
-		def navigator = page.find(selector)
+		def navigator = $(selector)
 		def initialValue = navigator.value()
 
 		when: navigator << keystrokes
@@ -1034,7 +1030,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("using leftShift on '#selector' will append text to all fields")
 	def "can use leftShift to append text to multiple inputs"() {
 		given:
-		def navigator = page.find(selector)
+		def navigator = $(selector)
 		def initialValue = navigator.value()
 
 		when: navigator << keystrokes
@@ -1064,8 +1060,8 @@ class NavigatorSpec extends GebSpec {
 		navigator.first().@id == expectedId
 
 		where:
-		navigator             | expectedId
-		page.find(".article") | "article-1"
+		navigator     | expectedId
+		$(".article") | "article-1"
 	}
 
 	def firstElement() {
@@ -1073,8 +1069,8 @@ class NavigatorSpec extends GebSpec {
 		navigator.firstElement().getAttribute("id") == expectedId
 
 		where:
-		navigator             | expectedId
-		page.find(".article") | "article-1"
+		navigator     | expectedId
+		$(".article") | "article-1"
 	}
 
 	def last() {
@@ -1083,8 +1079,8 @@ class NavigatorSpec extends GebSpec {
 		navigator.last().@id == expectedId
 
 		where:
-		navigator             | expectedId
-		page.find(".article") | "article-3"
+		navigator     | expectedId
+		$(".article") | "article-3"
 	}
 
 	def lastElement() {
@@ -1092,8 +1088,8 @@ class NavigatorSpec extends GebSpec {
 		navigator.lastElement().getAttribute("id") == expectedId
 
 		where:
-		navigator             | expectedId
-		page.find(".article") | "article-3"
+		navigator     | expectedId
+		$(".article") | "article-3"
 	}
 
 	def verifyNotEmpty() {
@@ -1101,7 +1097,7 @@ class NavigatorSpec extends GebSpec {
 		navigator.verifyNotEmpty()
 
 		where:
-		navigator << [page.find("#container"), page.find("#container").find("div")]
+		navigator << [$("#container"), $("#container").find("div")]
 	}
 
 	def "verifyNotEmtpy on empty Navigator"() {
@@ -1109,14 +1105,14 @@ class NavigatorSpec extends GebSpec {
 		then: thrown(EmptyNavigatorException)
 
 		where:
-		navigator = page.find("#does_not_exist")
+		navigator = $("#does_not_exist")
 	}
 	
 	def "displayed property"() {
 		expect:
-		page.find("p").displayed // first p in page is displayed
-		page.find("#hidden-paragraph").displayed == false
-		page.find(".non-existant").displayed == false
+		$("p").displayed // first p in page is displayed
+		$("#hidden-paragraph").displayed == false
+		$(".non-existant").displayed == false
 	}
 
 	def click() {
@@ -1135,7 +1131,7 @@ class NavigatorSpec extends GebSpec {
 
 	def accessingWebElements() {
 		when:
-		def articles = page.find("div.article")
+		def articles = $("div.article")
 		
 		then:
 		articles.size() == 3
@@ -1148,14 +1144,14 @@ class NavigatorSpec extends GebSpec {
 	def "can use eq(int) on Navigator"() {
 		expect: navigator.eq(index).@id == expectedId
 		where:
-		navigator             | index | expectedId
-		page.find("div")      | 0     | "container"
-		page.find("div")      | 1     | "header"
-		page.find("div")      | -1    | "footer"
-		page.find(".article") | 0     | "article-1"
-		page.find(".article") | 1     | "article-2"
-		page.find(".article") | -1    | "article-3"
-		page.find("bdo")      | 0     | null
+		navigator     | index | expectedId
+		$("div")      | 0     | "container"
+		$("div")      | 1     | "header"
+		$("div")      | -1    | "footer"
+		$(".article") | 0     | "article-1"
+		$(".article") | 1     | "article-2"
+		$(".article") | -1    | "article-3"
+		$("bdo")      | 0     | null
 	}
 
 }
