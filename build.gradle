@@ -429,7 +429,8 @@ project(":doc:site") {
 		
 		if (!isSnapshot) {
 			doLast {
-				ant.symlink link: "${manualDir.path}/latest", resource: thisManual.path, overwrite: true
+				def label = isSnapshot ? "snapshot" : "latest"
+				ant.symlink link: "${manualDir.path}/$label", resource: thisManual.path, overwrite: true
 			}
 		}
 	}
