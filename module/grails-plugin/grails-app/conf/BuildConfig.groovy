@@ -16,7 +16,7 @@
 grails.project.dependency.resolution = {
 	inherits( "global" )
 	repositories {
-		grailsPlugins()
+		grailsCentral()
 		grailsHome()
 		mavenLocal()
 		mavenCentral()
