@@ -193,28 +193,28 @@ subprojects {
 		modifyPom { pom ->
 			pom.dependencies.removeAll(pom.dependencies.findAll { it.scope == "test" })
 		}
-		
-		if (project.path.startsWith(":doc:")) {
-			upload = { source, path = "" ->
-				return {
-					if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-						def rep = new org.apache.maven.wagon.repository.Repository("codehaus", "https://dav.codehaus.org/geb/$path")
-						def auth = new org.apache.maven.wagon.authentication.AuthenticationInfo()
-						auth.userName = codehausUsername
-						auth.password = codehausPassword
-						def wagon = new org.apache.maven.wagon.providers.webdav.WebDavWagon()
-						wagon.connect(rep, auth)
+	}
+	
+	if (project.path.startsWith(":doc:")) {
+		project.upload = { source, path = "" ->
+			return {
+				if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+					def rep = new org.apache.maven.wagon.repository.Repository("codehaus", "https://dav.codehaus.org/geb/$path")
+					def auth = new org.apache.maven.wagon.authentication.AuthenticationInfo()
+					auth.userName = codehausUsername
+					auth.password = codehausPassword
+					def wagon = new org.apache.maven.wagon.providers.webdav.WebDavWagon()
+					wagon.connect(rep, auth)
 
-						source.eachFile {
-							if (it.directory) {
-								wagon.putDirectory(it, it.name)
-							} else {
-								wagon.put(it, it.name)
-							}
+					source.eachFile {
+						if (it.directory) {
+							wagon.putDirectory(it, it.name)
+						} else {
+							wagon.put(it, it.name)
 						}
-					} else {
-						println "Can't upload site as credentials aren't set"
 					}
+				} else {
+					println "Can't upload site as credentials aren't set"
 				}
 			}
 		}
@@ -440,31 +440,29 @@ project(":doc:manual") {
 project(":doc:site") {
 	src = file("src")
 	output = file("build/site")
-
-	manualDir = file("$output/manual")
-	thisManual = file("$manualDir/$project.version")
+	versionDir = file("$output/$project.version")
+	manualDir = file("$versionDir/manual")
 	
 	task clean(type: Delete) {
 		delete file("build")
 	}
-	
-	task includeManual(dependsOn: project(":doc:manual").build, type: Sync) {
-		from project(":doc:manual").output
-		into project.thisManual
-		
-		if (!isSnapshot) {
-			doLast {
-				def label = isSnapshot ? "snapshot" : "latest"
-				ant.symlink link: "${manualDir.path}/$label", resource: thisManual.path, overwrite: true
-			}
-		}
-	}
-	
+
 	task copySrc(type: Copy) {
 		from src
 		into output
+		
+		doLast {
+			assert file("$output/version").renameTo(versionDir)
+			def label = isSnapshot ? "snapshot" : "latest"
+			ant.symlink link: "$output.path/$label", resource: versionDir.path, overwrite: true
+		}
 	}
 	
+	task includeManual(dependsOn: [project(":doc:manual").build, copySrc], type: Sync) {
+		from project(":doc:manual").output
+		into project.manualDir
+	}
+
 	task compile(dependsOn: [copySrc, includeManual]) {}
 	
 	task upload(dependsOn: compile) << upload(output)
