@@ -30,52 +30,7 @@ There are also variants that allow using defaults for any parameter…
     new Browser("http://myapp.com")
     new Browser(new FirefoxDriver(), HomePage)
 
-## The Driver
-
-The browser instance drives the actual browser via an instance of [WebDriver][webdriver-api], which can be specified at browser construction. The browser's driver can always be retrieved via the `getDriver()` method.
-
-### The Default Driver
-
-If a driver is not given at construction time, one will attempted to be loaded via the “`geb.driver`” system property. The value can be either the full class name of a [WebDriver][webdriver-api] implementation, or one of the following short names:
-
-<table class="graybox" border="0" cellspacing="0" cellpadding="5">
-    <tr><th>Short Name</th><th>Driver</th></tr>
-    <tr>
-        <td><code>htmlunit</code></td>
-        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html">org.openqa.selenium.htmlunit.HtmlUnitDriver</a></td>
-    </tr>
-    <tr>
-        <td><code>firefox</code></td>
-        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/firefox/FirefoxDriver.html">org.openqa.selenium.firefox.FirefoxDriver</a></td>
-    </tr>
-    <tr>
-        <td><code>ie</code></td>
-        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/ie/InternetExplorerDriver.html">org.openqa.selenium.ie.InternetExplorerDriver</a></td>
-    </tr>
-    <tr>
-        <td><code>chrome</code></td>
-        <td><a href="http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html">org.openqa.selenium.chrome.ChromeDriver</a></td>
-    </tr>
-</table>
-
-If the “`geb.driver`” system property is not set, each of the above drivers will be tried in the order listed.
-
-#### Lifecycle
-
-Geb internally reuses the default driver per thread. This avoids the overhead of creating a new driver each time which can be significant when working with a real browser.
-
-This means that you may need to call the `clearCookies()` method on the browser in order to not get strange results due to cookies from previous executions.
-
-The shared driver will be closed and quitted when the JVM shuts down.
-
-A new driver can be forced at anytime by calling either of the following `static` methods on the `CachingDriverFactory` class…
-
-    import geb.driver.CachingDriverFactory
-    
-    def cachedDriver = CachingDriverFactory.clearCache()
-    def cachedDriver = CachingDriverFactory.clearCacheAndQuitDriver()
-
-After calling either of this methods, the next request for a default driver will result in a new driver instance being created.
+> For information on the mangaging the driver implemenation (i.e. the thing that talks to the actual web browser) see the [next chapter](driver.html).
 
 ## The Base URL
 
