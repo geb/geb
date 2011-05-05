@@ -124,7 +124,7 @@ class DownloadSupport {
 	 * 
 	 * If connectionConfig is given, it is called with the HttpURLConnection before the request is made.
 	 */	
-	String downloadBytes(String uri, Closure connectionConfig = null) {
+	byte[] downloadBytes(String uri, Closure connectionConfig = null) {
 		downloadBytes(uri: uri, connectionConfig)
 	}
 	
