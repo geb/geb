@@ -426,6 +426,18 @@ project(":doc:manual") {
 			groovyClasspath = project.sourceSets.main.compileClasspath
 			exclude "**/internal/**"
 			
+			link "http://download.oracle.com/javase/6/docs/api/",
+				"java.net",
+				"java.util",
+				"java.lang",
+				"java.io"
+			
+			link "http://selenium.googlecode.com/svn/trunk/docs/api/java/",
+				"org.openqa.selenium"
+			
+			link "http://groovy.codehaus.org/api/",
+				"groovy.lang"
+			
 			docTitle = "Groovy API Documentation for $project.name"
 			footer = "<p style='text-align: center'>Groovy API Documentation for $project.name - Licensed under the Apache License, Version 2.0 - <a href='http://geb.codehaus.org'>http://geb.codehaus.org</a></p>"
 			windowTitle = "Groovy API for $project.name"
