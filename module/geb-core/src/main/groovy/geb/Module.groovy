@@ -19,6 +19,7 @@ import geb.internal.*
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
 import geb.textmatching.TextMatchingSupport
+import geb.download.DownloadSupport
 
 class Module extends TemplateDerivedPageContent {
 
@@ -31,6 +32,8 @@ class Module extends TemplateDerivedPageContent {
 	}
 	
 	@Delegate private NavigableSupport navigableSupport
+	@Delegate private DownloadSupport _downloadSupport
+	
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() })
@@ -39,6 +42,7 @@ class Module extends TemplateDerivedPageContent {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Module)
 		navigableSupport = new ConstantBaseNavigableSupport(this, contentTemplates, navigator) 
 		super.init(template, navigator, *args)
+		_downloadSupport = new DownloadSupport(browser)
 	}
 
 	JavascriptInterface getJs() {

@@ -19,6 +19,7 @@ import geb.internal.*
 import geb.navigator.Navigator
 import org.openqa.selenium.WebDriver
 import geb.textmatching.TextMatchingSupport
+import geb.download.DownloadSupport
 
 class Page {
 
@@ -28,6 +29,8 @@ class Page {
 	private Browser browser
 	
 	@Delegate private NavigableSupport navigableSupport
+	@Delegate private DownloadSupport _downloadSupport 
+	
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
@@ -36,6 +39,7 @@ class Page {
 		this.browser = browser
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
 		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser, { return Navigator.on(browser) })
+		_downloadSupport = new DownloadSupport(browser)
 		this
 	}
 	

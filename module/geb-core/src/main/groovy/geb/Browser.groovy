@@ -18,6 +18,7 @@ import geb.driver.*
 import geb.js.*
 import geb.conf.*
 import geb.internal.WaitingSupport
+import geb.download.DownloadSupport
 import geb.internal.RemoteDriverOperations
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent
@@ -34,6 +35,7 @@ class Browser {
 	
 	@Delegate final WaitingSupport _waitingSupport = new WaitingSupport()
 	@Delegate final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
+	@Delegate final DownloadSupport _downloadSupport = new DownloadSupport(this)
 	
 	private final pageChangeListeners = new LinkedHashSet()
 	private _js

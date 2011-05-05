@@ -48,6 +48,12 @@ class BindingUpdater {
 		binding.$ = { Object[] args -> browser.page.$(*args) }
 		binding.js = binding.browser.js
 		
+		binding.download = { Object[] args -> browser.download(*args) }
+		binding.downloadStream = { Object[] args -> browser.downloadStream(*args) }
+		binding.downloadText = { Object[] args -> browser.downloadText(*args) }
+		binding.downloadBytes = { Object[] args -> browser.downloadBytes(*args) }
+		binding.downloadContent = { Object[] args -> browser.downloadContent(*args) }
+		
 		browser.registerPageChangeListener(pageChangeListener)
 		
 		this
@@ -66,6 +72,12 @@ class BindingUpdater {
 		binding.variables.remove('at')
 		binding.variables.remove('$')
 		binding.variables.remove('js')
+		
+		binding.variables.remove('download')
+		binding.variables.remove('downloadStream')
+		binding.variables.remove('downloadText')
+		binding.variables.remove('downloadBytes')
+		binding.variables.remove('downloadContent')
 		
 		this
 	}

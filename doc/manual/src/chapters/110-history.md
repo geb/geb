@@ -19,6 +19,7 @@ This page lists the high level changes between versions of Geb.
 * `geb.Browser.drive()` methods now return the used `Browser` instance
 * The underlying WebElements of a Navigator are now retrievable
 * Added $() methods that take one or more Navigator or WebElement objects and returns a new Navigator composed of these objects
+* Added Direct Download API which can be used for directly downloading content (PDFs, CSVs etc.) into your Geb program (not via the browser)
 
 ### Breaking Changes
 

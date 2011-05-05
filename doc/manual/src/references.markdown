@@ -30,3 +30,4 @@
 [remotewebdriver-server]: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer
 [configslurper]: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html
 [groovy-binding]: http://groovy.codehaus.org/api/groovy/lang/Binding.html
+[httpurlconnection]: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
