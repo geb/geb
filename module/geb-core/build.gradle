@@ -1,0 +1,8 @@
+dependencies {
+	compile seleniumDependency
+	testCompile project(":module:test-utils")
+}
+
+modifyPom { pom ->
+	pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
+}

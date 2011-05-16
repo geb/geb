@@ -1,0 +1,10 @@
+dependencies {
+	compile project(':module:geb-core')
+	compile "junit:junit:4.8.1"
+	testCompile project(":module:test-utils")
+}
+
+modifyPom { pom ->
+	// User provides their own junit
+	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
+}

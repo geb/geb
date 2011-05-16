@@ -1,0 +1,36 @@
+dependencies {
+	compile project(':module:geb-core')
+	compile ("org.easyb:easyb:0.9.7") {
+		exclude module: "groovy-all"
+	}
+	
+	testCompile(project(":module:test-utils")) {
+		exclude module: "spock-core" // only need the test server
+	}
+}
+
+test.doLast {
+	assert testReportDir.exists() || testReportDir.mkdirs()
+	ant.java(
+		classname: 'org.easyb.BehaviorRunner', 
+		fork: true,
+		classpath: sourceSets.test.runtimeClasspath.asPath,
+		output: "$testReportDir.absolutePath/easyb-output.txt",
+		failonerror: false,
+		dir: projectDir,
+		resultproperty: 'easybresult'
+	) {
+		fileTree(dir: "${projectDir}/src/test/stories").matching { include "*" }.each { 
+			arg(value: it.absolutePath) 
+		}
+		arg(value: "-txtstory")
+		arg(value: "$testReportDir.absolutePath/easyb.txt")
+	}
+	
+	if (ant.easybresult != "0") System.err.println ">> Easyb Failed ($ant.easybresult)"
+}
+
+modifyPom { pom ->
+	// User provides their own easyb
+	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.easyb" })
+}

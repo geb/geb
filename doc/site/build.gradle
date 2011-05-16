@@ -1,0 +1,28 @@
+src = file("src")
+output = file("build/site")
+versionDir = file("$output/$project.version")
+manualDir = file("$versionDir/manual")
+
+task clean(type: Delete) {
+	delete file("build")
+}
+
+task copySrc(type: Copy) {
+	from src
+	into output
+	
+	doLast {
+		assert file("$output/version").renameTo(versionDir)
+		def label = isSnapshot ? "snapshot" : "latest"
+		ant.symlink link: "$output.path/$label", resource: versionDir.path, overwrite: true
+	}
+}
+
+task includeManual(dependsOn: [project(":doc:manual").build, copySrc], type: Sync) {
+	from project(":doc:manual").output
+	into project.manualDir
+}
+
+task compile(dependsOn: [copySrc, includeManual]) {}
+
+task upload(dependsOn: compile) << upload(output)
