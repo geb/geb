@@ -49,7 +49,7 @@ subprojects {
 	
 	isSnapshot = version.endsWith("-SNAPSHOT")
 	
-	apply plugin: "org.gradle.idea"
+	// apply plugin: "org.gradle.idea"
 		
 	if (project.path in groovyModules) {
 		apply plugin: "groovy"
