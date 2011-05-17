@@ -20,6 +20,7 @@ import geb.navigator.Navigator
 import org.openqa.selenium.WebDriver
 import geb.textmatching.TextMatchingSupport
 import geb.download.DownloadSupport
+import geb.waiting.WaitingSupport
 
 class Page {
 

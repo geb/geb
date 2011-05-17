@@ -17,7 +17,7 @@ package geb
 import geb.driver.*
 import geb.js.*
 import geb.conf.*
-import geb.internal.WaitingSupport
+import geb.waiting.WaitingSupport
 import geb.download.DownloadSupport
 import geb.internal.RemoteDriverOperations
 import geb.error.PageChangeListenerAlreadyRegisteredException

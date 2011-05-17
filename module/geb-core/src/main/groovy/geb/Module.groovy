@@ -20,6 +20,7 @@ import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
 import geb.textmatching.TextMatchingSupport
 import geb.download.DownloadSupport
+import geb.waiting.WaitingSupport
 
 class Module extends TemplateDerivedPageContent {
 
