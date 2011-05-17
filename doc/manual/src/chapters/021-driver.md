@@ -12,7 +12,7 @@ However, where possible prefer implicit driver management which is discussed lat
 
 > Note that some of the integrations (e.g. Spock) provide hook methods like `WebDriver createDriver()` that you can override in specs to return a constructed driver implementation. Consult the section on [integrations](integrations.html) for specific info.
 
-### Lifecycle
+### Explicit Lifecycle
 
 When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time. This can be done via the methods on the webdriver instance (obtainable via `geb.Browser#getDriver()`) or by calling the [delegating methods on the browser object](browser.html#quitting_the_browser).
 
@@ -68,6 +68,8 @@ If none of these classes can be found, a `geb.error.UnableToLoadAnyDriversExcept
 Geb internally caches and reuses the first implicit driver created per thread, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver. This avoids the overhead of creating a new driver each time which can be significant when working with a real browser.
 
 This means that you may need to call the `clearCookies()` method on the browser in order to not get strange results due to cookies from previous executions.
+
+> Note that some of the integrations (e.g. Spock, JUnit) automatically clear the browser cookies at appropriate times such as after each test. Consult the section on [integrations](integrations.html) for specifics.
 
 The shared driver will be closed and quitted when the JVM shuts down.
 

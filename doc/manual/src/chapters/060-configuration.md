@@ -58,6 +58,4 @@ You can use the environment sensitivity to configure different drivers per envir
 
 #### Driver Caching
 
-Geb's ability to cache a driver and re-use it for the lifetime of the JVM can be changed by setting the `cacheDriver` config option to `false`. However, if you do this you become responsible for [quitting] every driver that is created at the appropriate time.
-
->> WIP
+Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. [the implicit driver lifecycle](driver.html#implicit_lifecycle)) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become [responsible for quitting](driver.html#explicit_lifecycle) every driver that is created at the appropriate time.
