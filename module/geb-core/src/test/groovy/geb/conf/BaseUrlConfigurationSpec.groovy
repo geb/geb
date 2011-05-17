@@ -62,6 +62,4 @@ class BaseUrlConfigurationSpec extends Specification {
 		b.baseUrl == "abc"
 	}
 	
-	
-	
 }
