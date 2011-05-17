@@ -84,7 +84,6 @@ class DownloadingSpec extends GebSpecWithServer {
 		thrown(DownloadException)
 	}
 	
-	@IgnoreRest
 	@Unroll("download variants - method: #method")
 	def "download variants - method: #method"() {
 		given:
@@ -134,7 +133,6 @@ class DownloadingSpec extends GebSpecWithServer {
 		
 		where:
 		method            | resultProcessor         | compareTo
-		"download"        | { it.inputStream.text } | "123"
 		"downloadBytes"   | null                    | "123" as byte[]
 		"downloadContent" | { it.text }             | "123"
 		"downloadText"    | null                    | "123"

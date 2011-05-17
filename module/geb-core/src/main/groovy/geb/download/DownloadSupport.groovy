@@ -85,6 +85,15 @@ class DownloadSupport {
 	}
 
 	/**
+	 * Opens a url connection via {@link #download()} and returns the response input stream.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	InputStream downloadStream(Closure connectionConfig) {
+		downloadStream([:], connectionConfig)
+	}
+
+	/**
 	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
 	 * <p>
 	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
@@ -111,12 +120,30 @@ class DownloadSupport {
 	}
 
 	/**
+	 * Opens a url connection via {@link #download()} and returns the response text, if the content type was textual.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	String downloadText(Closure connectionConfig) {
+		downloadText([:], connectionConfig)
+	}
+
+	/**
 	 * Opens a url connection via {@link #download(Map)} and returns the raw bytes.
 	 * <p>
 	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
 	 */
 	byte[] downloadBytes(Map options = [:], Closure connectionConfig = null) {
 		downloadStream(options, connectionConfig).bytes
+	}
+
+	/**
+	 * Opens a url connection via {@link #download()} and returns the raw bytes.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	byte[] downloadBytes(Closure connectionConfig) {
+		downloadStream(connectionConfig).bytes
 	}
 
 	/**
@@ -148,6 +175,17 @@ class DownloadSupport {
 	 */
 	Object downloadContent(String uri, Closure connectionConfig = null) {
 		downloadContent(uri: uri, connectionConfig)
+	}
+
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the content object.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 * 
+	 * @see URLConnection#getContent()
+	 */
+	Object downloadContent(Closure connectionConfig) {
+		downloadContent([:], connectionConfig)
 	}
 	
 	private HttpURLConnection downloadWithConfig(Map options, Closure config) {
