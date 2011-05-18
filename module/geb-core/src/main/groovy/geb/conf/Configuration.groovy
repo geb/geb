@@ -16,6 +16,7 @@
 package geb.conf
 
 import geb.driver.*
+import geb.waiting.Wait
 
 import org.openqa.selenium.WebDriver
 
@@ -24,8 +25,12 @@ import org.openqa.selenium.WebDriver
  */
 class Configuration {
 	
+	static private final DEFAULT_WAIT_RETRY_SECS = 0.1
+	
 	final ConfigObject rawConfig
 	final Properties properties
+	
+	private final Map<String, Wait> waits = null
 	
 	Configuration() {
 		this(new ConfigObject(), new Properties())
@@ -48,6 +53,40 @@ class Configuration {
 		rawConfig.cacheDriver = cache
 	}
 	
+	Wait getWaitPreset(String name) {
+		def preset = rawConfig.waiting.presets[name]
+		def timeout = readValue(preset, 'timeout', getDefaultWaitTimeout())
+		def retryInterval = readValue(preset, 'retryInterval', getDefaultWaitRetryInterval())
+		
+		new Wait(timeout, retryInterval)
+	}
+	
+	Wait getDefaultWait() {
+		new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval())
+	}
+	
+	Wait getWait(Double timeout) {
+		new Wait(timeout, getDefaultWaitRetryInterval())
+	}
+
+	/**
+	 * The default {@code timeout} value to use for waiting (i.e. if unspecified).
+	 * <p>
+	 * Either the value at config path {@code waiting.timeout} or {@link geb.waiting.Wait#DEFAULT_TIMEOUT 5}.
+	 */
+	Double getDefaultWaitTimeout() {
+		readValue(rawConfig.waiting, 'timeout', Wait.DEFAULT_TIMEOUT)
+	}
+	
+	/**
+	 * The default {@code retryInterval} value to use for waiting (i.e. if unspecified).
+	 * <p>
+	 * Either the value at config path {@code waiting.retryInterval} or {@link geb.waiting.Wait#DEFAULT_RETRY_INTERVAL 0.1}.
+	 */
+	Double getDefaultWaitRetryInterval() {
+		readValue(rawConfig.waiting, 'retryInterval', Wait.DEFAULT_RETRY_INTERVAL)
+	}
+	
 	boolean isCacheDriver() {
 		readValue('cacheDriver', true)
 	}
@@ -67,6 +106,7 @@ class Configuration {
 	void setBaseUrl(baseUrl) {
 		rawConfig.baseUrl = baseUrl.toString()
 	}
+	
 	
 	WebDriver getDriverInstance() {
 		def driverValue = getDriver()
@@ -101,12 +141,17 @@ class Configuration {
 			factory
 		}
 	}
-	
+
 	protected readValue(String name, defaultValue) {
-		if (rawConfig.containsKey(name)) {
-			rawConfig[name]
+		readValue(rawConfig, name, defaultValue)
+	}
+
+	protected readValue(ConfigObject config, String name, defaultValue) {
+		if (config.containsKey(name)) {
+			config[name]
 		} else {
 			defaultValue
 		}
 	}
+	
 }

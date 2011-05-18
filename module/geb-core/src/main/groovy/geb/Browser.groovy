@@ -33,7 +33,7 @@ class Browser {
 	final Configuration config
 	String baseUrl
 	
-	@Delegate final WaitingSupport _waitingSupport = new WaitingSupport()
+	@Delegate final WaitingSupport _waitingSupport
 	@Delegate final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
 	@Delegate final DownloadSupport _downloadSupport = new DownloadSupport(this)
 	
@@ -68,6 +68,8 @@ class Browser {
 		this.config = config ?: createConfiguration()
 		this.driver = driver ?: defaultDriver
 		this.baseUrl = baseUrl != null ? baseUrl : this.config.baseUrl
+		
+		this._waitingSupport = new WaitingSupport(this.config)
 		
 		params = params == null ? [:] : params
 		

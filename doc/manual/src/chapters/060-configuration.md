@@ -63,3 +63,36 @@ Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. 
 #### Base URL
 
 The [base URL](browser.html#the_base_url) to be used can be specified by setting the `baseUrl` config property (with a `String`) value.
+
+#### Waiting
+
+The [`waitFor()`](javascript.html#waiting) methods available on browser, page and module objects can be affected by configuration. It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
+
+##### Defaults
+
+Defaults can be specified via:
+
+    waiting {
+        timeout = 10
+        retryInterval = 0.5
+    }
+
+Both values are optional and in seconds. If unspecified, the values of `5` for `timeout` and `0.1` for `retryInterval`.
+
+##### Presets
+
+Presets can be specified via:
+
+    waiting {
+        presets {
+            slow {
+                timeout = 20
+                retryInterval = 1
+            }
+            quick {
+                timeout = 1
+            }
+        }
+    }
+
+Here we have defined two presets, `slow` and `quick`. Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of `0.1`).

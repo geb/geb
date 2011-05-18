@@ -99,24 +99,17 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
 
 ## Waiting
 
-Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX or Timers.
+Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX or timers.
 
-There are three methods:
+The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/download/WaitingSupport.html) mixin. These methods take various parameters that determine how long to wait for the given closure to return a true object according to the Groovy True, and how long to wait in between invoking the closure again.
 
-    def waitFor(Closure condition)
-    def waitFor(Double timeoutSeconds, Closure condition)
-    def waitFor(Double timeoutSeconds, Double intervalSeconds, Closure condition)
+    waitFor {} // use default configuration
+    waitFor(10) {} // wait for up to 10 seconds, using the default retry interval
+    waitFor(10, 0.5) {} // wait for up to 10 seconds, waiting half a second in between retries
+    waitFor("quick") {} // use the preset “quick” as the wait settings
 
-These methods all do the same thing, except that they used default values for parameters that are not part of their signature. **They are all available on browsers, pages and modules**.
+See the section on [wait configuration](configuration.html#waiting) for how to change the default values and define presets. 
 
-The `condition` parameter is a closure that is periodically (executed until it either **returns a true value** (according to the Groovy Truth) or a timeout is reached. If a `Throwable` or `Exception` is raised during the condition invocation, it will be interpreted as a condition failure (equivalent to returning a non true value) and the condition will be tested again in `intervalSeconds`.
-
-The `timeoutSeconds` (default is `5`) parameter defines the number of seconds to wait for the condition to become true. Note that this value is an approximation, it's used in conjuction with the `intervalSeconds` value to determine how many times the condition should be tested rather than doing any actual timing. Non whole numbers can be used for this value (e.g. `2.5`)
-
-The `intervalSeconds` (default is `0.5`) parameter defines the number of seconds to wait after testing the condition to test it again if it did not pass. Non whole numbers can be used for this value (e.g. `2.5`). If this value is higher than the given `timeoutSeconds`, the condition will be tested once initially, then once again just before the timeout would occur.
-
-If a `waitFor` clause fails, an instance of `geb.error.WaitTimeoutException` will be thrown. If the last condition invocation failed due to an exception bein raised, it will be the cause of the thrown `WaitTimeoutException` instance.
- 
 ### Examples
 
 Here is an example showing one way of using `waitFor()` to deal with the situation where clicking a button invokes an AJAX request that creates a new `div` on its completion.
@@ -141,7 +134,7 @@ Here is an example showing one way of using `waitFor()` to deal with the situati
         assert theResultDiv.text() == "The Result"
     }
 
-> Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: [section on required](required))
+> Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: [section on required](pages.html#required))
 
 Because the browser instance also implements the `waitFor()` method, the above could have been written as…
 

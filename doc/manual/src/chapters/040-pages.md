@@ -165,7 +165,7 @@ For example…
 
 The following are the available options.
 
-#### required 
+#### required
 
 Default value: `true`
 

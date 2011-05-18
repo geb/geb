@@ -17,6 +17,13 @@ package geb.waiting
 
 import geb.error.GebException
 
+/**
+ * Thrown when a wait operation exceeds its timeout.
+ * <p>
+ * The {@code cause} of the exception will be the exception thrown while waiting.
+ * 
+ * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
+ */
 class WaitTimeoutException extends GebException {
 
 	WaitTimeoutException(Wait wait, Throwable cause = null) {

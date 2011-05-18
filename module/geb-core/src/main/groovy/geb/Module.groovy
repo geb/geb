@@ -34,9 +34,9 @@ class Module extends TemplateDerivedPageContent {
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport
+	@Delegate private WaitingSupport _waitingSupport
 	
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() })
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
@@ -44,6 +44,7 @@ class Module extends TemplateDerivedPageContent {
 		navigableSupport = new ConstantBaseNavigableSupport(this, contentTemplates, navigator) 
 		super.init(template, navigator, *args)
 		_downloadSupport = new DownloadSupport(browser)
+		_waitingSupport  = new WaitingSupport(browser.config)
 	}
 
 	JavascriptInterface getJs() {

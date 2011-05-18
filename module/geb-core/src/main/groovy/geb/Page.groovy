@@ -31,9 +31,9 @@ class Page {
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport 
+	@Delegate private WaitingSupport _waitingSupport
 	
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	@Delegate private final WaitingSupport _waitingSupport = new WaitingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
 	
 	Page init(Browser browser) {
@@ -41,6 +41,7 @@ class Page {
 		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
 		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser, { return Navigator.on(browser) })
 		_downloadSupport = new DownloadSupport(browser)
+		_waitingSupport = new WaitingSupport(browser.config)
 		this
 	}
 	
