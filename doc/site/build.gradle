@@ -3,17 +3,21 @@ apply plugin: "maven"
 
 archivesBaseName = "geb-site"
 
+output = file("build/site")
+
 task compileSite(type: Copy) {
 	from "src"
-	into "build/site"
+	into output
 }
 
 task includeManual(dependsOn: project(":doc:manual").build, type: Sync) {
 	from project(":doc:manual").output
-	into "build/site/manual"
+	into "$output/manual"
 }
 
-task compile(dependsOn: [compileSite, includeManual]) {}
+task compile(dependsOn: [compileSite, includeManual]) {
+	
+}
 
 task zip(type: Zip, dependsOn: compile) {
 	from "build/site"

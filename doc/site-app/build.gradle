@@ -1,0 +1,47 @@
+import org.apache.ivy.plugins.resolver.URLResolver
+import org.apache.tools.ant.filters.*
+
+apply plugin: "groovy"
+apply plugin: "gae"
+
+buildscript {
+	repositories {
+		add(new URLResolver()) {
+			name = "Gaelyk Gradle Plugin"
+			addArtifactPattern "http://cloud.github.com/downloads/bmuschko/gradle-gae-plugin/[module]-[revision].[ext]"
+		}
+		add(new URLResolver()) {
+			name = "Gaelyk"
+			addArtifactPattern "http://cloud.github.com/downloads/glaforge/gaelyk/[module]-[revision].[ext]"
+		}
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath "com.google.appengine:appengine-tools-sdk:1.5.0"
+		classpath ":gradle-gae-plugin:0.4"
+	}
+}
+
+dependencies {
+	groovy "org.codehaus.groovy:groovy-all:1.8.0"
+	
+	compile "com.google.appengine:appengine-api-1.0-sdk:1.5.0",
+	        "com.google.appengine:appengine-api-labs:1.5.0",
+	        ":gaelyk:0.7"
+}
+
+war {
+	dependsOn project(":doc:site").compile
+	from project(":doc:site").output
+	
+	filter(ReplaceTokens, tokens: [version: version - "-SNAPSHOT"])
+}
+
+gae {
+	appcfg {
+		if (project.hasProperty('gaeEmail')) {
+			email = gaeEmail
+		}
+	}
+}
