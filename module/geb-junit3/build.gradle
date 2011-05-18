@@ -4,7 +4,7 @@ dependencies {
 	testCompile project(":module:test-utils")
 }
 
-modifyPom { pom ->
+modifyPom = { pom ->
 	// User provides their own junit
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
 }

@@ -39,7 +39,8 @@ allprojects {
 
 	publishedModules = [
 		":module:geb-core", ":module:geb-grails", ":module:geb-spock", 
-		":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb"
+		":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
+		":doc:site"
 	]
 }
 
@@ -53,12 +54,36 @@ subprojects {
 		
 	if (project.path in groovyModules) {
 		apply plugin: "groovy"
+		
+		if (project.path in publishedModules) {
+			project.apply plugin: 'maven'
+		}
+		
 		if (project.path != ":test-utils") {
 			apply from: "file:${rootDir}/clover.gradle"
 		}
 		
+		configurations {
+			meta
+		}
+		
 		dependencies {
 			groovy groovyDependency
+		}
+		
+		task sourcesJar(type: Jar, dependsOn: classes) { 
+			classifier = 'sources' 
+			from sourceSets.main.allSource
+		} 
+
+		task javadocJar(type: Jar, dependsOn: javadoc) { 
+			classifier = 'javadoc' 
+			from javadoc.destinationDir 
+		} 
+
+		artifacts {
+			meta javadocJar
+			meta sourcesJar
 		}
 		
 		compileGroovy.options.fork = false
@@ -95,100 +120,89 @@ subprojects {
 		}
 	}
 	
-	if (project.path in publishedModules) {
-		apply plugin: 'maven'
-		apply plugin: 'sign'
-		
-		task sourcesJar(type: Jar, dependsOn: classes) { 
-			classifier = 'sources' 
-			from sourceSets.main.allSource
-		} 
+	afterEvaluate { project ->
+		if (project.path in publishedModules) {
+			project.apply plugin: 'sign'
 
-		task javadocJar(type: Jar, dependsOn: javadoc) { 
-			classifier = 'javadoc' 
-			from javadoc.destinationDir 
-		} 
-
-		configurations {
-			meta
-			deployerJars
-		}
-
-		artifacts {
-			meta javadocJar
-			meta sourcesJar
-		}
-		
-		dependencies {
-			deployerJars "org.apache.maven.wagon:wagon-http-lightweight:1.0-beta-6"
-		}
-		
-		project.poms = [install.repositories.mavenInstaller.pom]
-		
-		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-			uploadArchives.dependsOn sourcesJar, javadocJar
-			uploadArchives {
-				project.deployer = repositories.mavenDeployer {
-					beforeDeployment { MavenDeployment deployment ->
-						["sources", "javadoc"].each { type ->
-							deployment.addArtifact configurations.meta.artifacts.find { it.classifier == type }
-						}
-					}
-					uniqueVersion = false
-					configuration = configurations.deployerJars
-					repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
-						authentication(userName: codehausUsername, password: codehausPassword)
-					}
-					snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
-						authentication(userName: codehausUsername, password: codehausPassword)
-					}
-					pom.project {
-						name "Geb"
-						description "Geb (pronounced with a soft “G” like “Jeb”) is a browser automation solution for the Groovy programming language. It combines the browser driving features of WebDriver (and therefore can work with Internet Explorer, FireFox, Chrome and HTMLUnit) with a jQuery inspired content navigation/inspection API and the expressiveness of Groovy."
-						url "http://geb.codehaus.org"
-						inceptionYear "2010"
-						licenses {
-							license {
-								name 'The Apache Software License, Version 2.0'
-								url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-								distribution 'repo'
-							}
-						}
-						scm {
-							url "https://github.com/geb/geb/"
-						}
-						developers {
-							developer {
-								id "ldaley"
-								name "Luke Daley"
-								roles {
-									role "Lead"
-									role "Founder"
-								}
-							}
-							developer {
-								id "robfletcher"
-								name "Rob Fletcher"
-								roles {
-									role "Founder"
-								}
-							}
-						}
-						
-					}
-				}
-				project.poms << project.deployer.pom 
+			if (project.path in groovyModules) {
+				project.uploadArchives.dependsOn sourcesJar, javadocJar
 			}
-		}
-		
-		// Method that subprojects can use to mod the poms
-		project.modifyPom = { 
-			project.poms*.whenConfigured(it) 
-		}
-		
-		// Remove test deps from all poms
-		modifyPom { pom ->
-			pom.dependencies.removeAll(pom.dependencies.findAll { it.scope == "test" })
+			
+			project.configurations {
+				deployerJars
+			}
+
+			project.dependencies {
+				deployerJars "org.apache.maven.wagon:wagon-http-lightweight:1.0-beta-6"
+			}
+
+			project.poms = [project.install.repositories.mavenInstaller.pom]
+
+			if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+				uploadArchives {
+					project.deployer = repositories.mavenDeployer {
+						beforeDeployment { MavenDeployment deployment ->
+							if (project.path in groovyModules) {
+								["sources", "javadoc"].each { type ->
+									deployment.addArtifact configurations.meta.artifacts.find { it.classifier == type }
+								}
+							}
+						}
+						uniqueVersion = false
+						configuration = configurations.deployerJars
+						repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
+							authentication(userName: codehausUsername, password: codehausPassword)
+						}
+						snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
+							authentication(userName: codehausUsername, password: codehausPassword)
+						}
+						pom.project {
+							name "Geb"
+							description "Geb (pronounced with a soft “G” like “Jeb”) is a browser automation solution for the Groovy programming language. It combines the browser driving features of WebDriver (and therefore can work with Internet Explorer, FireFox, Chrome and HTMLUnit) with a jQuery inspired content navigation/inspection API and the expressiveness of Groovy."
+							url "http://geb.codehaus.org"
+							inceptionYear "2010"
+							licenses {
+								license {
+									name 'The Apache Software License, Version 2.0'
+									url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+									distribution 'repo'
+								}
+							}
+							scm {
+								url "https://github.com/geb/geb/"
+							}
+							developers {
+								developer {
+									id "ldaley"
+									name "Luke Daley"
+									roles {
+										role "Lead"
+										role "Founder"
+									}
+								}
+								developer {
+									id "robfletcher"
+									name "Rob Fletcher"
+									roles {
+										role "Founder"
+									}
+								}
+							}
+
+						}
+					}
+					project.poms << project.deployer.pom 
+				}
+			}
+			
+			if (project.hasProperty('modifyPom')) {
+				project.poms*.whenConfigured(project.modifyPom) 
+			}
+
+			// Remove test deps from all poms
+			project.poms*.whenConfigured { pom ->
+				pom.dependencies.removeAll(pom.dependencies.findAll { it.scope == "test" })
+			}
 		}
 	}
 	

@@ -30,7 +30,7 @@ test.doLast {
 	if (ant.easybresult != "0") System.err.println ">> Easyb Failed ($ant.easybresult)"
 }
 
-modifyPom { pom ->
+modifyPom = { pom ->
 	// User provides their own easyb
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.easyb" })
 }

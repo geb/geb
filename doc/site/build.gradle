@@ -1,28 +1,37 @@
-src = file("src")
-output = file("build/site")
-versionDir = file("$output/$project.version")
-manualDir = file("$versionDir/manual")
+apply plugin: "base"
+apply plugin: "maven"
 
-task clean(type: Delete) {
-	delete file("build")
+archivesBaseName = "geb-site"
+
+task compileSite(type: Copy) {
+	from "src"
+	into "build/site"
 }
 
-task copySrc(type: Copy) {
-	from src
-	into output
-	
-	doLast {
-		assert file("$output/version").renameTo(versionDir)
-		def label = isSnapshot ? "snapshot" : "latest"
-		ant.symlink link: "$output.path/$label", resource: versionDir.path, overwrite: true
+task includeManual(dependsOn: project(":doc:manual").build, type: Sync) {
+	from project(":doc:manual").output
+	into "build/site/manual"
+}
+
+task compile(dependsOn: [compileSite, includeManual]) {}
+
+task zip(type: Zip, dependsOn: compile) {
+	from "build/site"
+}
+
+configurations {
+	archives
+	meta
+}
+
+artifacts {
+	archives zip
+}
+
+task install(type: Upload, dependsOn: buildArchives) {
+	description = "Does a maven install of the archives artifacts into the local .m2 cache."
+	configuration = configurations.archives
+	repositories {
+		mavenInstaller name: "mavenInstaller"
 	}
 }
-
-task includeManual(dependsOn: [project(":doc:manual").build, copySrc], type: Sync) {
-	from project(":doc:manual").output
-	into project.manualDir
-}
-
-task compile(dependsOn: [copySrc, includeManual]) {}
-
-task upload(dependsOn: compile) << upload(output)

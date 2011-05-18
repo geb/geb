@@ -3,6 +3,6 @@ dependencies {
 	testCompile project(":module:test-utils")
 }
 
-modifyPom { pom ->
+modifyPom = { pom ->
 	pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
 }

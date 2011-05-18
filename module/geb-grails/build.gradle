@@ -9,7 +9,7 @@ dependencies {
 	        "org.slf4j:slf4j-log4j12:1.5.5"
 }
 
-modifyPom { pom ->
+modifyPom = { pom ->
 	// set the grails deps to provided
 	pom.dependencies.findAll { it.groupId in ["org.grails", "org.slf4j"] }*.scope = "provided"
 }

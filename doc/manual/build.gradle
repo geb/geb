@@ -1,17 +1,13 @@
 src = file("src")
 output = file("build/manual")
 
-task clean(type: Delete) {
-	delete file("build")
-}
-
 task compile << {
 	new markdown2book.Generator(src, output, "UTF-8").generate()
 }
 
 
 def docTasks = []
-rootProject.subprojects.findAll { project -> project.path in publishedModules }.each { project ->
+rootProject.subprojects.findAll { project -> project.path in publishedModules && project.path in groovyModules }.each { project ->
 	def taskName = "groovydoc-$project.name"
 	task "$taskName" (type: Groovydoc) {
 		source project.sourceSets.main.allGroovy
