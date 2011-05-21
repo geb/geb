@@ -31,11 +31,22 @@ dependencies {
 	        ":gaelyk:0.7"
 }
 
+task copyManual(type: Sync) {
+	dependsOn project(":doc:manual").compile
+	from project(":doc:manual").output
+	into "build/manual/manual"
+}
+
+task filter(type: Copy) {
+	filter(ReplaceTokens, tokens: [version: version.endsWith("SNAPSHOT") ? 'snapshot' : 'release'])
+	from "src/main/webapp-filtered"
+	into "build/exploded-war-filtered"
+}
+
 war {
-	dependsOn project(":doc:site").compile
-	from project(":doc:site").output
-	
-	filter(ReplaceTokens, tokens: [version: version - "-SNAPSHOT"])
+	dependsOn filter, copyManual
+	from filter.destinationDir
+	from "build/manual"
 }
 
 gae {
