@@ -61,14 +61,18 @@ span.center {
 	background-color: #000;
 }
 .toc ul {
-	font: 18px "Lucida Grande", sans-serif;
+	font: 16px "Lucida Grande", sans-serif;
 	padding: 0 0 0 3ex;
 	list-style-type: none;
 	list-style-image: none;
 	line-height: 135%;
 }
 .toc ul ul {
-	font-size: 80%;
+	font-size: 12px;
+}
+
+.toc_number {
+	text-decoration: underline;
 }
 
 .page_toc a {
@@ -115,17 +119,17 @@ span.center {
 h1.title {
 	text-shadow: 2px 2px 2px #999;
 	font-size: 6em;
-	color: #333;
+	color: #E6E6E6;
 	margin-top: 30px;
-	margin-bottom: 16px;
+	margin-bottom: 28px;
 	letter-spacing: -6px;
 	font-family: Arial, Helvetica, "bitstream vera sans", sans-serif;
 }
 
 p.tag {
-/*	margin-left: 10px;*/
-	font-family: cursive;
-	font-size: 160%;
+	font-size: 120%;
+	font-style: italic;
+	margin-left: 15px;
 }
 
 h2 {
