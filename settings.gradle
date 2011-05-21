@@ -7,7 +7,6 @@ include "module:geb-core",
         "module:grails-plugin",
         "module:geb-easyb",
         "doc:manual",
-        "doc:site",
         "doc:site-app"
 
 if (hasProperty("withSamples")) {
