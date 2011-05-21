@@ -57,10 +57,6 @@ img.float-left {
 	margin: 5px 15px 5px 0px;
 }
 
-code {
-	font: 1em/1.5em 'Lucida Console', 'courier new', monospace;
-}
-
 acronym {
 	cursor: help;
 	border-bottom: 1px solid #777;
@@ -75,73 +71,6 @@ blockquote {
 	color: #6C6E3A;
 }
 
-form {
-	margin: 15px;
-	padding: 15px 5px;
-	border: 1px solid #EFEFEF;
-	background: #F8F8F8;
-}
-
-label {
-	display:block;
-	font-weight:bold;
-	margin:5px 0;
-}
-
-input {
-	padding: 2px;
-	border: 1px solid #EFEFEF;
-	font: normal 1em Verdana, 'Trebuchet MS', Tahoma, sans-serif;
-	color: #666666;
-}
-
-textarea {
-	width: 280px;
-	padding:2px;
-	border: 1px solid #EFEFEF;
-	font: normal 1em Verdana, 'Trebuchet MS', Tahoma, sans-serif;
-	height:100px;
-	display:block;
-	color: #666666;
-}
-
-input.button {
-	margin: 0;
-	font: bold 1em Arial, Sans-serif;
-	border: 1px solid #EFEFEF;
-	padding: 2px 3px;
-	background: #F1F0E4;
-}
-
-.searchform {
-	background-color: transparent;
-	border: none;
-	margin: 0; padding: 5px 0 15px 0;
-	width: 190px;
-}
-
-.searchform p { 
-	margin: 0; 
-	padding: 0; 
-}
-
-.searchform input.textbox {
-	width: 120px;
-	color: #333;
-	height: 18px;
-	padding: 2px;
-	vertical-align: top;
-}
-.searchform input.button {
-	font: bold 12px Arial, Sans-serif;
-	color: #333;
-	width: 60px;
-	height: 26px;
-	border: none;
-	padding: 3px 5px;
-	vertical-align: top;
-}
-
 #header-content, #footer-content, #content {
 	width: 810px;
 }
@@ -152,7 +81,21 @@ input.button {
 #header-wrap {
 	height: 160px;
 	text-align: left;
-	background: #FFF url(../images/headerbg.jpg) repeat-x 0 0;
+	background-image: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.47, rgb(1,11,33)),
+	    color-stop(0.74, rgb(27,38,60)),
+	    color-stop(0.87, rgb(54,65,90))
+	);
+	background-image: -moz-linear-gradient(
+	    center bottom,
+	    rgb(1,11,33) 47%,
+	    rgb(27,38,60) 74%,
+	    rgb(54,65,90) 87%
+	);
+
 }
 
 #header-content {
@@ -166,8 +109,6 @@ input.button {
 	font: normal 40px/65px Georgia, "Times New Roman", Times, serif;
 	letter-spacing: -1px;
 	color: #FFF;
-	background: #3F1204 url(../images/logobg.jpg) repeat-x left top;
-	border: 1px solid #4E460F;
 	height: 65px;
 	padding: 0 10px;
 	margin: 0;
@@ -343,15 +284,9 @@ input.button {
 }
 
 #footer-wrap p {
-	margin-left: 0;
-}
-
-#footer-wrap h2 {
-	font: bold 1.6em 'Trebuchet MS', Tahoma, sans-serif;
-	text-transform: uppercase;
-	letter-spacing: 0px;
-	color: #CC9933;
-	margin-left: 5px;
+	margin: 20 0;
+	text-align: center;
+	font-style: italic;
 }
 
 #footer-content {
@@ -365,45 +300,6 @@ input.button {
 #footer-content a:hover {
 	color: #FFF;
 	text-decoration: none;
-}
-
-#footer-content ul {
-	list-style: none;
-	margin: 0; padding: 0;
-	width: 98%;
-}
-#footer-content ul.columns li {
-	border-bottom: 1px dashed #272727;
-}
-#footer-content ul.columns li.top {
-	border-top: 1px dashed #272727;
-}
-#footer-content ul.columns li a {
-	display: block;
-	font-weight: normal;
-	padding: 5px;
-	width: 98%;
-	color: #BDBDBD;
-}
-#footer-content ul.columns li a:hover {
-	background: #202020;
-	color: #FFF;
-	text-decoration: none;
-}
-
-#footer-content .col {
-	width: 260px;
-	padding: 0 0 30px 0;
-}
-
-#footer-content .space-sep {
-	margin-right: 20px;
-}
-
-#footer-content .col2 {
-	width: 245px;
-	padding: 0 0 30px 0;
-	display: inline;
 }
 
 /* alignment classes */

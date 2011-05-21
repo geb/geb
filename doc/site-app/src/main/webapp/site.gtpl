@@ -3,7 +3,6 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="Robots" content="index,follow" />
-  <link rel="stylesheet" href="css/main.css" type="text/css" />
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-15031038-2']);
@@ -25,6 +24,7 @@
     SyntaxHighlighter.defaults['gutter'] = false;
     SyntaxHighlighter.all();
   </script>
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
   <title>Geb - Very Groovy Browser Automation</title>
 </head>
 
@@ -37,7 +37,7 @@
       <h2 id="slogan">very groovy browser automation… web testing, screen scraping and more</h2>
       
       <ul>
-        <li><a href="manual/">Manual</a></li>
+        <li><a href="manual">Manual</a></li>
         <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
         <li><a href="http://jira.codehaus.org/browse/GEB">Issues</a></li>
         <li><a href="http://github.com/geb/geb">Source</a></li>      
@@ -62,55 +62,13 @@
     </div>
   </div>
 
-  <!-- footer starts here --> 
-  <div id="footer-wrap"><div id="footer-content">
   
-    <div class="col float-left space-sep">
-      <h2>Site Partners</h2>
-      <ul class="columns">
-                <li class="top"><a href="http://www.dreamtemplate.com" title="Website Templates">DreamTemplate</a></li>
-                <li><a href="http://www.themelayouts.com" title="WordPress Themes">ThemeLayouts</a></li>
-                <li><a href="http://www.imhosted.com" title="Website Hosting">ImHosted.com</a></li>
-                <li><a href="http://www.dreamstock.com" title="Stock Photos">DreamStock</a></li>
-                <li><a href="http://www.evrsoft.com" title="Website Builder">Evrsoft</a></li>
-                <li><a href="http://www.webhostingwp.com" title="Web Hosting">Web Hosting</a></li>
-      </ul>     
+  <div id="footer-wrap">
+    <div id="footer-content">
+      <p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
     </div>
-    
-    <div class="col float-left">
-      <h2>Links</h2>
-      <ul class="columns">        
-        <li class="top"><a href="index.html">Link One</a></li>
-        <li><a href="index.html">Link Two</a></li>
-        <li><a href="index.html">Link Three</a></li>
-        <li><a href="index.html">Link Four</a></li>
-        <li><a href="index.html">Link Five</a></li>
-                <li><a href="index.html">Link Six</a></li>
-      </ul>
-    </div>    
+  </div>
   
-    <div class="col2 float-right">
-            <h2>Site Links</h2>
-      <ul class="columns">
-        <li class="top"><a href="index.html">Home</a></li>
-                <li><a href="index.html">About</a></li>
-        <li><a href="index.html">Sitemap</a></li>
-        <li><a href="index.html">RSS Feed</a></li>                
-      </ul>
-
-            <p>
-      &copy; copyright 2010 <strong>Your Company Name</strong><br />
-      <a href="http://www.bluewebtemplates.com/" title="Website Templates">website templates</a> by <a href="http://www.styleshout.com/">styleshout</a> <br />
-
-      Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> |
-              <a href="http://validator.w3.org/check/referer">XHTML</a>
-      </p>
-    </div>
-    
-    <br class="clear" />
-  
-  </div></div>
-  <!-- footer ends here -->
 
 </body>
 </html>
