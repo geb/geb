@@ -1,3 +1,5 @@
+apply plugin: "base"
+
 src = file("src")
 output = file("build/manual")
 
