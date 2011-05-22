@@ -37,7 +37,7 @@
       <h2 id="slogan">very groovy browser automation… web testing, screen scraping and more</h2>
       
       <ul>
-        <li><a href="manual">Manual</a></li>
+        <li><a href="manual/">Manual</a></li>
         <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
         <li><a href="http://jira.codehaus.org/browse/GEB">Issues</a></li>
         <li><a href="http://github.com/geb/geb">Source</a></li>      
