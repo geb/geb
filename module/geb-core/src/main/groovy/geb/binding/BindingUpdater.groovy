@@ -33,8 +33,14 @@ class BindingUpdater {
 		this.pageChangeListener = createPageChangeListener(binding, browser)
 	}
 
+	private class BindingUpdatingPageChangeListener implements PageChangeListener {
+		void pageWillChange(Browser browser, Page oldPage, Page newPage) {
+			binding.setVariable("page", newPage)
+		}
+	}
+	
 	protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
-		new BindingUpdatingPageChangeListener(this)
+		new BindingUpdatingPageChangeListener()
 	}
 	
 	/**
@@ -92,26 +98,4 @@ class BindingUpdater {
 		}
 	}
 
-	/**
-	 * This method is only public for BindingUpdatingPageChangeListener and will be made protected
-	 * in future versions that require Groovy 1.7+
-	 */
-	void changePage(Page page) {
-		binding.setVariable("page", page)
-	}
-	
-}
-
-// TODO - make inner class in Groovy 1.7
-class BindingUpdatingPageChangeListener implements PageChangeListener {
-	
-	final BindingUpdater updater
-	
-	BindingUpdatingPageChangeListener(BindingUpdater updater) {
-		this.updater = updater
-	}
-	
-	void pageWillChange(Browser browser, Page oldPage, Page newPage) {
-		updater.changePage(newPage)
-	}
 }
