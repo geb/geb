@@ -10,16 +10,19 @@ buildscript {
 			name = "Gaelyk Gradle Plugin"
 			addArtifactPattern "http://cloud.github.com/downloads/bmuschko/gradle-gae-plugin/[module]-[revision].[ext]"
 		}
-		add(new URLResolver()) {
-			name = "Gaelyk"
-			addArtifactPattern "http://cloud.github.com/downloads/glaforge/gaelyk/[module]-[revision].[ext]"
-		}
 		mavenCentral()
 	}
 
 	dependencies {
 		classpath "com.google.appengine:appengine-tools-sdk:1.5.0"
 		classpath ":gradle-gae-plugin:0.4"
+	}
+}
+
+repositories {
+	add(new URLResolver()) {
+		name = "Gaelyk"
+		addArtifactPattern "http://cloud.github.com/downloads/glaforge/gaelyk/[module]-[revision].[ext]"
 	}
 }
 
