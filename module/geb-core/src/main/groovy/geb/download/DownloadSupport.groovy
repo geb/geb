@@ -221,8 +221,8 @@ class DownloadSupport {
 		connection.setRequestProperty("Cookie", cookieHeader)
 	}
 	
-	private isTextContentType(String contentType) {
-		contentType.startsWith("text/")
+	private boolean isTextContentType(String contentType) {
+		contentType?.startsWith("text/")
 	}
 	
 	private determineCharset(String contentType) {
