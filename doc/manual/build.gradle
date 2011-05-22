@@ -3,10 +3,9 @@ apply plugin: "base"
 src = file("src")
 output = file("build/manual")
 
-task compile << {
+task compileManual << {
 	new markdown2book.Generator(src, output, "UTF-8").generate()
 }
-
 
 def docTasks = []
 rootProject.subprojects.findAll { project -> project.path in publishedModules && project.path in groovyModules }.each { project ->
@@ -38,4 +37,4 @@ rootProject.subprojects.findAll { project -> project.path in publishedModules &&
 }
 
 task api(dependsOn: docTasks) << {}
-task build(dependsOn: [compile, api]) << {}
+task compile(dependsOn: [compileManual, api]) << {}
