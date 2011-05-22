@@ -27,6 +27,11 @@ class BindingUpdater {
 	
 	protected final PageChangeListener pageChangeListener
 	
+	static public final FORWARDED_BROWSER_METHODS = [
+		"go", "to", "at", 
+		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent"
+	].asImmutable()
+	
 	protected BindingUpdater(Binding binding, Browser browser) {
 		this.binding = binding
 		this.browser = browser
@@ -36,6 +41,12 @@ class BindingUpdater {
 	private class BindingUpdatingPageChangeListener implements PageChangeListener {
 		void pageWillChange(Browser browser, Page oldPage, Page newPage) {
 			binding.setVariable("page", newPage)
+			binding.setVariable("\$", new InvocationForwarding("\$", newPage))
+		}
+		
+		void clearBinding() {
+			binding.variables.remove("page")
+			binding.variables.remove("\$")
 		}
 	}
 	
@@ -43,22 +54,36 @@ class BindingUpdater {
 		new BindingUpdatingPageChangeListener()
 	}
 	
+	private static class InvocationForwarding extends Closure {
+		private final String methodName
+		private final Object target
+		
+		InvocationForwarding(String theMethodName, Object theTarget) {
+			super(theTarget)
+			
+			methodName = theMethodName
+			target = theTarget
+		}
+		
+		protected doCall(Object[] args) {
+			if (target.metaClass.respondsTo(target, methodName, args)) {
+				target."$methodName"(*args)
+			} else {
+				throw new MissingMethodException(methodName, target.getClass(), args)
+			}
+		}
+	}
+	
 	/**
 	 * Populates the binding and starts the updater updating the binding as necessary.
 	 */
 	BindingUpdater initialize() {
 		binding.browser = browser
-		binding.go = { Object[] args -> browser.go(*args) }
-		binding.to = { Object[] args -> browser.to(*args) }
-		binding.at = { Class pageClass -> browser.at(pageClass) }
-		binding.$ = { Object[] args -> browser.page.$(*args) }
-		binding.js = binding.browser.js
+		binding.js = browser.js
 		
-		binding.download = { Object[] args -> browser.download(*args) }
-		binding.downloadStream = { Object[] args -> browser.downloadStream(*args) }
-		binding.downloadText = { Object[] args -> browser.downloadText(*args) }
-		binding.downloadBytes = { Object[] args -> browser.downloadBytes(*args) }
-		binding.downloadContent = { Object[] args -> browser.downloadContent(*args) }
+		FORWARDED_BROWSER_METHODS.each {
+			binding.setVariable(it, new InvocationForwarding(it, browser))
+		}
 		
 		browser.registerPageChangeListener(pageChangeListener)
 		
@@ -70,32 +95,16 @@ class BindingUpdater {
 	 */
 	BindingUpdater remove() {
 		browser.removePageChangeListener(pageChangeListener)
-		binding.variables.remove('page')
+		pageChangeListener.clearBinding()
 		
 		binding.variables.remove('browser')
-		binding.variables.remove('go')
-		binding.variables.remove('to')
-		binding.variables.remove('at')
-		binding.variables.remove('$')
 		binding.variables.remove('js')
 		
-		binding.variables.remove('download')
-		binding.variables.remove('downloadStream')
-		binding.variables.remove('downloadText')
-		binding.variables.remove('downloadBytes')
-		binding.variables.remove('downloadContent')
-		
+		FORWARDED_BROWSER_METHODS.each {
+			binding.variables.remove(it)
+		}
+
 		this
 	}
 	
-	protected Closure createDollarFunctionDispatcher() {
-		return { Object[] args ->
-			if (browser.page.metaClass.respondsTo(browser.page, "\$", args)) {
-				browser.page.$(*args)
-			} else {
-				throw new IllegalArgumentException("No variant of dollar function: \$(${args*.getClass()*.name.join(', ')})")
-			}
-		}
-	}
-
 }

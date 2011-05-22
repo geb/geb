@@ -99,6 +99,17 @@ class BindingUpdaterSpec extends GebSpecWithServer {
 		binding.page instanceof BindingUpdaterSpecPage2
 	}
 	
+	def "dispatching with wrong args produces MME"() {
+		when:
+		updater.initialize()
+		
+		and:
+		binding.go(123)
+		
+		then:
+		thrown MissingMethodException
+	}
+	
 }
 
 class BindingUpdaterSpecPage1 extends Page {
