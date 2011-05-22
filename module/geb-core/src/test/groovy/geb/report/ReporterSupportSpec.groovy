@@ -18,17 +18,13 @@ package geb.report
 import spock.lang.*
 
 import geb.Browser
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class ReporterSupportSpec extends Specification {
-
-	@Rule TemporaryFolder testFolder = new TemporaryFolder()
 	
-	def reportDir
+	def reportDir = new File("build/tmp/ReporterSupportSpec")
 	
 	def setup() {
-		reportDir = testFolder.newFolder("reports")
+		reportDir.deleteDir()
 	}
 	
 	def "report filename escaping"() {
@@ -44,6 +40,10 @@ class ReporterSupportSpec extends Specification {
 		
 		then:
 		new File(reportDir, "12___34.12___34").exists()
+	}
+	
+	def cleanup() {
+		reportDir.deleteDir()
 	}
 	
 	
