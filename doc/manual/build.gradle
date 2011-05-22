@@ -29,9 +29,9 @@ rootProject.subprojects.findAll { project -> project.path in publishedModules &&
 		link "http://groovy.codehaus.org/api/",
 			"groovy.lang"
 		
-		docTitle = "Groovy API Documentation for $project.name"
-		footer = "<p style='text-align: center'>Groovy API Documentation for $project.name - Licensed under the Apache License, Version 2.0 - <a href='http://geb.codehaus.org'>http://geb.codehaus.org</a></p>"
-		windowTitle = "Groovy API for $project.name"
+		docTitle = "Groovy API Documentation for $project.name $project.version"
+		footer = "<p style='text-align: center'>Groovy API Documentation for $project.name $project.version - Licensed under the Apache License, Version 2.0 - <a href='http://geb.codehaus.org'>http://geb.codehaus.org</a></p>"
+		windowTitle = "Groovy API for $project.name $project.version"
 	}
 	docTasks << delegate."$taskName"
 }
