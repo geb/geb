@@ -34,7 +34,11 @@ abstract class ReporterSupport implements Reporter {
 	}
 	
 	protected getFile(String name, String extension) {
-		new File(getReportDir(), "${name}.$extension")
+		new File(getReportDir(), "${escapeFileName(name)}.${escapeFileName(extension)}")
+	}
+	
+	protected escapeFileName(String name) {
+		name.replaceAll("\\W", "_")
 	}
 	
 	protected getReportDir() {
