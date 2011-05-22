@@ -26,9 +26,13 @@ class GebReportingTest extends GebTest {
 
 	@Rule public TestName _gebReportingTestTestName = new TestName()
 	
+	void report(String label) {
+		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}-${_gebReportingTestTestName.methodName}-$label", getBrowser())
+	}
+	
 	@After
  	void writeGebReport() {
-		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}-${_gebReportingTestTestName.methodName}", getBrowser())
+		report("end")
 	}
 
 	/**

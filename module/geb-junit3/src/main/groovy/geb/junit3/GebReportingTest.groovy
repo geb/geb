@@ -22,9 +22,13 @@ class GebReportingTest extends GebTest {
 
 	static private GEB_REPORTING_TEST_COUNTERS = [:]
 	static private GEB_REPORTING_TEST_REPORTERS = [:]
-		
- 	void tearDown() {
-		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}", getBrowser())
+
+	void report(String label) {
+		getTestReporter(this)?.writeReport(label, getBrowser())
+	}
+	
+	void tearDown() {
+		report(getNextTestCounterValue(this).toString())
 		super.tearDown()
 	}
 
