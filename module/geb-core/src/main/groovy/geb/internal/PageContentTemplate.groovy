@@ -17,12 +17,14 @@ package geb.internal
 import geb.navigator.Navigator
 import geb.Page
 import geb.Module
+import geb.conf.Configuration
 
 import geb.error.InvalidPageContent
 import geb.error.RequiredPageValueNotPresent
 
 class PageContentTemplate {
 
+	final Configuration config
 	final Navigable owner
 	final String name
 	final Map params
@@ -30,7 +32,8 @@ class PageContentTemplate {
 	
 	private cache = [:]
 	
-	PageContentTemplate(Navigable owner, String name, Map params, Closure factory) {
+	PageContentTemplate(Configuration config, Navigable owner, String name, Map params, Closure factory) {
+		this.config = config
 		this.owner = owner
 		this.name = name
 		this.params = params

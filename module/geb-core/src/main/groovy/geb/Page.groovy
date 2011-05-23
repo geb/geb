@@ -38,7 +38,7 @@ class Page {
 	
 	Page init(Browser browser) {
 		this.browser = browser
-		def contentTemplates = PageContentTemplateBuilder.build(this, 'content', this.class, Page)
+		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, 'content', this.class, Page)
 		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser, { return Navigator.on(browser) })
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport = new WaitingSupport(browser.config)

@@ -15,6 +15,7 @@
 package geb.internal
 
 import geb.error.InvalidPageContent
+import geb.conf.Configuration
 
 class PageContentTemplateBuilder {
 
@@ -24,7 +25,9 @@ class PageContentTemplateBuilder {
 		to: null
 	]
 
+	Configuration config
 	Navigable container
+	
 	final templates = [:]
 	
 	def methodMissing(String name, args) {
@@ -59,15 +62,15 @@ class PageContentTemplateBuilder {
 	}
 	
 	private create(name, params, definition) {
-		new PageContentTemplate(container, name, mergeWithDefaultParams(params), definition)
+		new PageContentTemplate(config, container, name, mergeWithDefaultParams(params), definition)
 	}
 
 	protected mergeWithDefaultParams(Map params) {
 		params ? PARAM_DEFAULTS + params : PARAM_DEFAULTS.clone()
 	}
 
-	static build(Navigable container, List<Closure> templatesDefinitions) {
-		def builder = newInstance(container: container)
+	static build(Configuration config, Navigable container, List<Closure> templatesDefinitions) {
+		def builder = newInstance(config: config, container: container)
 		for (templatesDefinition in templatesDefinitions) {
 			templatesDefinition.delegate = builder
 			templatesDefinition()
@@ -75,7 +78,7 @@ class PageContentTemplateBuilder {
 		builder.templates
 	}
 	
-	static build(Navigable container, String property, Class startAt, Class stopAt = Object) {
+	static build(Configuration config, Navigable container, String property, Class startAt, Class stopAt = Object) {
 		if (!stopAt.isAssignableFrom(startAt)) {
 			throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
 		}
@@ -101,6 +104,6 @@ class PageContentTemplateBuilder {
 			clazz = clazz.superclass
 		}
 		
-		PageContentTemplateBuilder.build(container, templatesDefinitions.reverse())
+		PageContentTemplateBuilder.build(config, container, templatesDefinitions.reverse())
 	}
 }
