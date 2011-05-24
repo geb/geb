@@ -1,18 +1,15 @@
 apply plugin: "base"
+apply plugin: "maven"
 
-src = file("src")
+archivesBaseName = "geb-manual"
 output = file("build/manual")
-
-task compileManual << {
-	new markdown2book.Generator(src, output, "UTF-8").generate()
-}
 
 def docTasks = []
 rootProject.subprojects.findAll { project -> project.path in publishedModules && project.path in groovyModules }.each { project ->
 	def taskName = "groovydoc-$project.name"
 	task "$taskName" (type: Groovydoc) {
 		source project.sourceSets.main.allGroovy
-		destinationDir = new File(output, "api/$project.name") 
+		destinationDir = file("build/manual-api/api/$project.name") 
 		classpath = project.sourceSets.main.compileClasspath
 		groovyClasspath = project.sourceSets.main.compileClasspath
 		exclude "**/internal/**"
@@ -36,5 +33,49 @@ rootProject.subprojects.findAll { project -> project.path in publishedModules &&
 	docTasks << delegate."$taskName"
 }
 
-task api(dependsOn: docTasks) << {}
-task compile(dependsOn: [compileManual, api]) << {}
+task compileApi(dependsOn: docTasks) {
+	inputs.dir "build/manual-api"
+	outputs.dir "build/manual-api"
+}
+
+task compileManual {
+	inputs.dir "src"
+	outputs.dir "build/manual-manual"
+	
+	doLast {
+		new markdown2book.Generator(file("src"), file("build/manual-manual"), "UTF-8").generate()
+	}
+}
+	
+task compile(type: Sync, dependsOn: [compileManual, compileApi]) {
+	from "build/manual-api"
+	from "build/manual-manual"
+	into output
+	
+	inputs.dir "build/manual-api"
+	inputs.dir "build/manual-manual"
+	outputs.dir output
+}
+
+task zip(type: Zip) {
+	inputs.dir output
+	outputs.file archivePath
+	from output
+}
+
+configurations {
+	archives
+	meta
+}
+
+artifacts {
+	archives zip
+}
+
+task install(type: Upload, dependsOn: buildArchives) {
+	description = "Does a maven install of the archives artifacts into the local .m2 cache."
+	configuration = configurations.archives
+	repositories {
+		mavenInstaller name: "mavenInstaller"
+	}
+}
