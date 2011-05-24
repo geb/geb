@@ -27,7 +27,7 @@ This page lists the high level changes between versions of Geb.
 ### Breaking Changes
 
 * Raised minimum Groovy version to 1.7
-* All failed waitFor clauses now throw a `geb.error.WaitTimeoutException` instead of `AssertionError`
+* All failed waitFor clauses now throw a `geb.waiting.WaitTimeoutException` instead of `AssertionError`
 * Upgraded minimum version requirement of WebDriver to 2.0b2
 
 ## 0.5.1
