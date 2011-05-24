@@ -93,3 +93,6 @@ gae {
 		}
 	}
 }
+
+// alias
+task uploadArchives(dependsOn: gaeUpload) {}
