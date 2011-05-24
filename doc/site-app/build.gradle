@@ -26,12 +26,43 @@ repositories {
 	}
 }
 
+configurations {
+	gaeSdk
+}
+
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.8.0"
 	
 	compile "com.google.appengine:appengine-api-1.0-sdk:1.5.0",
 	        "com.google.appengine:appengine-api-labs:1.5.0",
 	        ":gaelyk:0.7"
+	
+	gaeSdk "com.google.appengine:appengine-java-sdk:1.5.0.1"
+}
+
+task downloadGaeSdk {
+	inputs.file configurations.gaeSdk.singleFile
+	outputs.dir "build/gaeSdk"
+	
+	dir = file("build/gaeSdk/${configurations.gaeSdk.singleFile.name[0..-5]}")
+	
+	doLast {
+		mkdir "$buildDir/gaeSdk"
+		copy {
+			into "$buildDir/gaeSdk"
+			from zipTree(configurations.gaeSdk.singleFile)
+		}
+	}
+}
+
+task configureGaeSdk(dependsOn: downloadGaeSdk) << {
+	System.setProperty("appengine.sdk.root", downloadGaeSdk.dir.absolutePath)
+}
+
+tasks.each {
+	if (it.name.startsWith("gae")) {
+		it.dependsOn configureGaeSdk
+	}
 }
 
 task copyManual(type: Sync) {
