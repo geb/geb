@@ -260,6 +260,63 @@ The list variant can also be used…
 
 Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the `page(List<Class>)` method which is explained in the section on [changing pages][changing-pages].
 
+#### wait
+
+Default value: `false`
+
+The `wait` option allows Geb to wait an amount of time for content to appear on the page, instead of throwing a `RequiredPageContentNotPresent` exception if the content is not present when requested.
+
+    class DynamicPage extends Page {
+        static content = {
+            dynamicallyAdded(wait: true) { $("p.dynamic") }
+        }
+    }
+    
+    Browser.drive {
+        to DynamicPage
+        assert dynamicallyAdded.text() == "I'm here now"
+    }
+
+This is equivalent to:
+
+    class DynamicPage extends Page {
+        static content = {
+            dynamicallyAdded(required: false) { $("p.dynamic") }
+        }
+    }
+    
+    Browser.drive {
+        to DynamicPage
+        assert waitFor { dynamicallyAdded }.text() == "I'm here now"
+    }
+
+See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a `geb.waiting.WaitTimeoutException` will be thrown if the wait timeout expires.
+
+The value for the `wait` option can be one of the following:
+
+* **`true`** - wait for the content using the _default wait_ configuration
+* **a string** - wait for the content using the _wait preset_ with this name from the configuration
+* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
+* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+
+Any other value will be interpreted as `false`.
+
+It is also possible to use `wait` when defining non element content, such as a string or number. Geb will wait until the content definition returns a value that conforms to the Groovy Truth.
+
+    class DynamicPage extends Page {
+        static content = {
+            status { $("p.status") }
+            successStatus(wait: true) { status.text().contains("Success") }
+        }
+    }
+    
+    Browser.drive {
+        to DynamicPage
+        assert successStatus
+    }
+
+In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the `RequiredPageContentNotPresent` exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
+
 ## “At” Verification
 
 Each page can define a way to check whether the underling browser is at the page that the page class actually represents. This is done via a `static` `at` closure…

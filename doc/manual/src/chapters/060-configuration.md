@@ -66,7 +66,7 @@ The [base URL](browser.html#the_base_url) to be used can be specified by setting
 
 #### Waiting
 
-The [`waitFor()`](javascript.html#waiting) methods available on browser, page and module objects can be affected by configuration. It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
+The [`waitFor()`](javascript.html#waiting) methods available on browser, page and module objects can be affected by configuration (this is also true for [implicitly waiting content](pages.html#wait)). It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
 
 ##### Defaults
 

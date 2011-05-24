@@ -13,6 +13,7 @@ This page lists the high level changes between versions of Geb.
 ### New Features
 
 * All waitFor clauses now treat exceptions raised in the condition as an evaluation failure, instead of propagation the exception
+* Content can be defined with `wait: true` to make Geb implicitly wait for it when it is requested
 * Screenshots are now taken when reporting for all drivers that implement the `TakesScreenshot` interface (which is nearly all)
 * Added `BindingUpdater` class that can manage a groovy script binding for use with Geb
 * Added `quit()` and `close()` methods to browser that delegate to the underlying driver instance

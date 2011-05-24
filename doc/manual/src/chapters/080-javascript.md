@@ -108,7 +108,9 @@ The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/do
     waitFor(10, 0.5) {} // wait for up to 10 seconds, waiting half a second in between retries
     waitFor("quick") {} // use the preset “quick” as the wait settings
 
-See the section on [wait configuration](configuration.html#waiting) for how to change the default values and define presets. 
+See the section on [wait configuration](configuration.html#waiting) for how to change the default values and define presets.
+
+> It is also possible to declare that content should be implicitly waited on, see [the `wait` option for content definition](pages.html#wait). 
 
 ### Examples
 
@@ -134,7 +136,7 @@ Here is an example showing one way of using `waitFor()` to deal with the situati
         assert theResultDiv.text() == "The Result"
     }
 
-> Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: [section on required](pages.html#required))
+> Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: [section on `required`](pages.html#required))
 
 Because the browser instance also implements the `waitFor()` method, the above could have been written as…
 
