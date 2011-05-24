@@ -40,7 +40,7 @@ allprojects {
 	publishedModules = [
 		":module:geb-core", ":module:geb-grails", ":module:geb-spock", 
 		":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
-		":doc:site"
+		":doc:manual"
 	]
 }
 
