@@ -41,24 +41,27 @@ dependencies {
 }
 
 task downloadGaeSdk {
-	inputs.file configurations.gaeSdk.singleFile
+	sdkZip = configurations.gaeSdk.singleFile
+	sdk = file("build/gaeSdk/${sdkZip.name[0..-5]}")
+	
+	inputs.file sdkZip
 	outputs.dir "build/gaeSdk"
-	
-	dir = file("build/gaeSdk/${configurations.gaeSdk.singleFile.name[0..-5]}")
-	
+		
 	doLast {
-		mkdir "$buildDir/gaeSdk"
+		mkdir "build/gaeSdk"
 		copy {
-			into "$buildDir/gaeSdk"
-			from zipTree(configurations.gaeSdk.singleFile)
+			into "build/gaeSdk"
+			from zipTree(sdkZip)
 		}
 	}
 }
 
 task configureGaeSdk(dependsOn: downloadGaeSdk) << {
-	System.setProperty("appengine.sdk.root", downloadGaeSdk.dir.absolutePath)
+	System.setProperty("appengine.sdk.root", downloadGaeSdk.sdk.absolutePath)
 }
 
+// modify all the gae* tasks provided by the gae plugin to not run until
+// we install the gae sdk and set the appropriate system property
 tasks.each {
 	if (it.name.startsWith("gae")) {
 		it.dependsOn configureGaeSdk
