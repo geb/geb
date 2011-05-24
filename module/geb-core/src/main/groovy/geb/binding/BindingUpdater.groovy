@@ -66,11 +66,7 @@ class BindingUpdater {
 		}
 		
 		protected doCall(Object[] args) {
-			if (target.metaClass.respondsTo(target, methodName, args)) {
-				target."$methodName"(*args)
-			} else {
-				throw new MissingMethodException(methodName, target.getClass(), args)
-			}
+			target."$methodName"(*args)
 		}
 	}
 	
