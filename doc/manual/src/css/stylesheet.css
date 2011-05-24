@@ -17,8 +17,9 @@ hr {
 	border: 0;
 }
 
-a {
+a, a:visited {
 	text-decoration: none;
+	color: #0080FF;
 }
 
 a:hover {
