@@ -68,18 +68,19 @@ eventPackagePluginsEnd = {
 
 eventTestPhaseStart = { phaseName ->
 	if (phaseName == 'functional') {
-		// Needed when being driven by a different build engine
+		// GRAILS-7563
 		if (!binding.hasProperty('serverContextPath')) {
 			includeTargets << grailsScript("_GrailsPackage") 
+			createConfig() // GRAILS-7562
 			configureServerContextPath()
 		}
-			
+		
 		def buildAdapterClass = softLoadClass(buildAdapterClassName)
 		if (!buildAdapterClass) {
 			throw new IllegalStateException("failed to load build adapter")
 		}
 		
-		def baseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort$serverContextPath/"
+		def baseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort${serverContextPath == "/" ? "" : serverContextPath}/"
 		System.setProperty(buildAdapterClass.BASE_URL_PROPERTY_NAME, baseUrl)
 		
 		def reportsDir = new File(grailsSettings.testReportsDir, 'geb')
