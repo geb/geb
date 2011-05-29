@@ -35,11 +35,11 @@ class Configuration {
 	private final Map<String, Wait> waits = null
 	
 	Configuration() {
-		this(new ConfigObject(), new Properties())
+		this(new ConfigObject(), System.properties)
 	}
 	
 	Configuration(ConfigObject rawConfig) {
-		this(rawConfig, new Properties())
+		this(rawConfig, System.properties)
 	}
 	
 	Configuration(Properties properties) {
