@@ -99,7 +99,7 @@ class Configuration {
 	}
 	
 	def getDriver() {
-		readValue("driver", null) ?: properties.getProperty("geb.driver")
+		properties.getProperty("geb.driver") ?: readValue("driver", null)
 	}
 
 	/**
