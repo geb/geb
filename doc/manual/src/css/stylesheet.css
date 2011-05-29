@@ -1,7 +1,10 @@
 ﻿body {
 	font: 12px "Lucida Grande", sans-serif;
-	line-height: 125%;
 	background-color: #EEEEEE;
+}
+
+p {
+	line-height: 135%;
 }
 
 #wrapper {
