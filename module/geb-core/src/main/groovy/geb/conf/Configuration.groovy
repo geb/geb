@@ -17,6 +17,7 @@ package geb.conf
 
 import geb.driver.*
 import geb.waiting.Wait
+import geb.buildadapter.*
 
 import org.openqa.selenium.WebDriver
 
@@ -29,6 +30,7 @@ class Configuration {
 	
 	final ConfigObject rawConfig
 	final Properties properties
+	final BuildAdapter buildAdapter
 	
 	private final Map<String, Wait> waits = null
 	
@@ -47,6 +49,7 @@ class Configuration {
 	Configuration(ConfigObject rawConfig, Properties properties) {
 		this.rawConfig = rawConfig
 		this.properties = properties
+		this.buildAdapter = createBuildAdapter()
 	}
 
 	void setCacheDriver(boolean cache) {
@@ -99,14 +102,23 @@ class Configuration {
 		readValue("driver", null) ?: properties.getProperty("geb.driver")
 	}
 
+	/**
+	 * Returns the config value {@code baseUrl}, or {@link geb.buildadapter.BuildAdapter#getBaseUrl()}.
+	 */
 	String getBaseUrl() {
-		readValue("baseUrl", null)
+		readValue("baseUrl", buildAdapter.baseUrl)
 	}
 	
 	void setBaseUrl(baseUrl) {
 		rawConfig.baseUrl = baseUrl.toString()
 	}
 	
+	/**
+	 * Returns the config value {@code reportsDir}, or {@link geb.buildadapter.BuildAdapter#getReportsDir()}.
+	 */
+	File getReportsDir() {
+		readValue("reportsDir", buildAdapter.reportsDir)
+	}
 	
 	WebDriver getDriverInstance() {
 		def driverValue = getDriver()
@@ -154,4 +166,7 @@ class Configuration {
 		}
 	}
 	
+	protected BuildAdapter createBuildAdapter() {
+		BuildAdapterFactory.getBuildAdapter(getClassLoader())
+	}
 }

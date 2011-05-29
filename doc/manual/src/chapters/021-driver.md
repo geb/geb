@@ -18,50 +18,7 @@ When the driver is constructed by the user, the user is responsible for quitting
 
 ## Implicit Driver Management
 
-If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by one of the following mechanisms.
-
-### Specifying the driver
-
-#### Config
-
-The preferred way to control the driver is via the [configuration](configuration.html#driver_implementation) mechanism. This mechanism is preferred as it gives you full control over how the driver instance is created while still leveraging Geb's automatic driver lifecycle management (which is just a fancy way of saying “sharing one driver instance across tests/scripts”).
-
-#### System Property
-
-In versions of Geb prior to 0.6, the preferred way to specify the driver to use while leveraging implicit driver management was to specify the driver class to use via the `geb.driver` system property. This mechanism is still available and **will override** the driver specified by the config mechanism.
-
-The value of the system property can be either the full class name of a [WebDriver][webdriver-api] implementation, or one of the following short names:
-
-<table class="graybox" border="0" cellspacing="0" cellpadding="5">
-    <tr><th>Short Name</th><th>Driver</th></tr>
-    <tr>
-        <td><code>htmlunit</code></td>
-        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html">org.openqa.selenium.htmlunit.HtmlUnitDriver</a></td>
-    </tr>
-    <tr>
-        <td><code>firefox</code></td>
-        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/firefox/FirefoxDriver.html">org.openqa.selenium.firefox.FirefoxDriver</a></td>
-    </tr>
-    <tr>
-        <td><code>ie</code></td>
-        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/ie/InternetExplorerDriver.html">org.openqa.selenium.ie.InternetExplorerDriver</a></td>
-    </tr>
-    <tr>
-        <td><code>chrome</code></td>
-        <td><a href="http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html">org.openqa.selenium.chrome.ChromeDriver</a></td>
-    </tr>
-</table>
-
-#### Default
-
-If no explicit driver was specified at `Browser` construction and neither the geb config nor `geb.driver` system property are set, then Geb will look for the following drivers on the classpath in the given order:
-
-* `org.openqa.selenium.htmlunit.HtmlUnitDriver`
-* `org.openqa.selenium.firefox.FirefoxDriver`
-* `org.openqa.selenium.ie.InternetExplorerDriver`
-* `org.openqa.selenium.chrome.ChromeDriver`
-
-If none of these classes can be found, a `geb.error.UnableToLoadAnyDriversException` will be thrown.
+If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the [configuration mechanism](configuration.html#driver_implementation).
 
 ### Implicit Lifecycle
 

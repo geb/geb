@@ -44,7 +44,7 @@ class GebReportingTest extends GebTest {
 	 * Subclasses override this to determine where the reports are written
 	 */
 	File getReportDir() {
-		null
+		browser.config.reportsDir
 	}
 	
 	static private getTestReporter(test) {

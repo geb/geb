@@ -16,16 +16,11 @@
 package grails.plugin.geb
 
 import geb.easyb.GebPlugin
-import grails.plugin.geb.internal.RuntimeAdapter
 
 class GebEasybPlugin extends GebPlugin {
 
 	String getName() {
 		"geb-grails"
-	}
-	
-	def beforeGiven(Binding binding) {
-		binding.baseUrl = RuntimeAdapter.baseUrl
 	}
 
 }

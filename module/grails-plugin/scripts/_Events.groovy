@@ -17,7 +17,7 @@
 def specTestTypeClassName = "grails.plugin.spock.test.GrailsSpecTestType"
 def junit3TestTypeClassName = "org.codehaus.groovy.grails.test.junit3.JUnit3GrailsTestType"
 def junit4TestTypeClassName = "org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType"
-def runtimeAdapterClassName = "grails.plugin.geb.internal.RuntimeAdapter"
+def buildAdapterClassName = "geb.buildadapter.SystemPropertiesBuildAdapter"
 
 def loadedTestTypes = []
 def runningTests = false
@@ -74,12 +74,16 @@ eventTestPhaseStart = { phaseName ->
 			configureServerContextPath()
 		}
 			
-		def runtimeAdapter = softLoadClass(runtimeAdapterClassName)
-		if (!runtimeAdapter) {
-			throw new IllegalStateException("failed to load runtime adapter")
+		def buildAdapterClass = softLoadClass(buildAdapterClassName)
+		if (!buildAdapterClass) {
+			throw new IllegalStateException("failed to load build adapter")
 		}
-		runtimeAdapter.baseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort$serverContextPath/"
-		runtimeAdapter.reportDir = new File(grailsSettings.testReportsDir, 'geb')
+		
+		def baseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort$serverContextPath/"
+		System.setProperty(buildAdapterClass.BASE_URL_PROPERTY_NAME, baseUrl)
+		
+		def reportsDir = new File(grailsSettings.testReportsDir, 'geb')
+		System.setProperty(buildAdapterClass.REPORTS_DIR_PROPERTY_NAME, reportsDir.absolutePath)
 	}
 }
 

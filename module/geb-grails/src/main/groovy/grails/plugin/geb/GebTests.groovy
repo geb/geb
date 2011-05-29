@@ -16,16 +16,5 @@
 package grails.plugin.geb
 
 import geb.junit4.GebReportingTest
-import grails.plugin.geb.internal.RuntimeAdapter
 
-class GebTests extends GebReportingTest {
-
-	File getReportDir() {
-		RuntimeAdapter.reportDir
-	}
-	
-	String getBaseUrl() {
-		RuntimeAdapter.baseUrl
-	}
-
-}
+class GebTests extends GebReportingTest {}

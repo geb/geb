@@ -58,7 +58,7 @@ class GebReportingSpec extends GebSpec {
 	 * Subclasses override this to determine where the reports are written
 	 */
 	File getReportDir() {
-		null
+		browser.config.reportsDir
 	}
 
 }

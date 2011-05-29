@@ -15,7 +15,6 @@
  */
 package grails.plugin.geb
 
-import grails.plugin.geb.internal.RuntimeAdapter
 import geb.spock.GebReportingSpec
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
@@ -23,14 +22,6 @@ import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
 import spock.lang.*
 
 class GebSpec extends GebReportingSpec {
-
-	File getReportDir() {
-		RuntimeAdapter.reportDir
-	}
-	
-	String getBaseUrl() {
-		RuntimeAdapter.baseUrl
-	}
 	
 	def setupSpec() {
 		def context = ApplicationHolder?.application?.mainContext
@@ -38,4 +29,5 @@ class GebSpec extends GebReportingSpec {
 			new GrailsTestAutowirer(context).autowire(this)
 		}
 	}
+	
 }

@@ -1,42 +1,58 @@
 # Configuration
 
-Geb provides a configuration mechanism that allows you to control various aspects of Geb in a flexible way.
+Geb provides a configuration mechanism that allows you to control various aspects of Geb in a flexible way. At the heart of this is the [Configuration][configuration-api] object, which the [Browser][browser-api] and other objects query at runtime.
 
-## The Config Script
+There are three general mechanisms for influencing configuration; *system properties*, *config script* and the *build adapter*.
 
-Geb's default behaviour is to load a ConfigSlurper script named `geb-conf.groovy` from the *default package* of the **executing thread's context class loader** as the source of the configuration values. In a Grails project, the `test/functional` directory is a good place for this. If you are using a build tool such as Gradle or Maven that has the concept of test “resources”, then that directory is a suitable place.
+## Mechanisms 
 
-### Environment Sensitivity
+### The Config Script
 
-The Groovy [ConfigSlurper][configslurper] mechanism has built in support for environment sensitive configuration, and Geb leverages this by using the `geb.env` system property to determine the environment to load the configuration file with. You can potentially use this mechanism to configure different drivers (i.e. actual browsers) based on the designated “Geb environment”.
+Geb attempts to load a [ConfigSlurper][configslurper] script named `geb-conf.groovy` from the *default package* of the **executing thread's context class loader** as the source of the configuration values. In other words, in the root of a directory that is on the classpath.
 
-How you set the environment system property is going to be dependent on the build system you are using. 
+> In a Grails project, the `test/functional` directory is a good place for this. If you are using a build tool such as [Gradle](http://gradle.org/) or [Maven](http://maven.apache.org/) that has the concept of test “resources”, then that directory is a suitable place.
 
-For example, when using Grails you could control the Geb environment by specifying it on the command line…
+#### Environment Sensitivity
+
+The Groovy [ConfigSlurper][configslurper] mechanism has built in support for environment sensitive configuration, and Geb leverages this by using the `geb.env` system property to determine the environment to use. An effective use of this mechanism is to configure different drivers (i.e. actual browsers) based on the designated Geb “environment” (concrete details on how to do this further down).
+
+How you set the environment system property is going to be dependent on the build system you are using. For example, when using Grails you could control the Geb environment by specifying it on the command line…
 
     grails -Dgeb.env=windows test-app functional:
 
-### Config Options
+Other build environments will allow you to do this in different ways.
 
-#### Driver Implementation
+### System Properties
 
-The driver to use is specified by the key `driver`. 
+Some config options can be specified by system properties. In general, config options specified by system properties will _override_ values set in the config script. See the config options below for which options are controllable via system properties.
 
-It can be a closure that when invoked, with no arguments, returns an instance of [WebDriver][webdriver-api] …
+### Build Adapter
+
+The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options. For example, Grails dictates what the base url and directory for reports should be set to and the Geb plugin for Grails uses the build adapter mechanism to set this up.
+
+This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb-core/geb/buildadapter/BuildAdapter.html) interface. Currently, the build adapter can only influence the base url to use, and the location of the reports directory.
+
+If the `geb.build.adapter` system property is not explicitly set, it defaults to [`geb.buildadapter.SystemPropertiesBuildAdapter`](api/geb-core/geb/buildadapter/SystemPropertiesBuildAdapter.html). As you can probably deduce, this default implementation uses system properties to specify values, so is usable in most circumstances. See the linked API doc for the details of the specific system properties it looks for.
+
+> Note that while the default build adapter uses system properties, it should not be considered to be the same as system property configuration due to values in the config script taking precedence over the build adapter which is not true for system properties.
+
+## Config Options
+
+### Driver Implementation
+
+The driver to use is specified by the config key `driver`, or the system property `geb.driver`.
+
+#### Factory Closure
+
+In the config script it can be a closure that when invoked with no arguments returns an instance of [WebDriver][webdriver-api] …
 
     import org.openqa.selenium.firefox.FirefoxDriver
     
     driver = { new FireFoxDriver() }
 
-Or can be the fully qualified name of a class that implements [WebDriver][webdriver-api] (it will be constructed with no arguments) …
+This is the preferred mechanism, as it allows the most control over the drivers creation and configuration.
 
-    driver = "org.openqa.selenium.firefox.FirefoxDriver"
-
-Or it can be one of the following short names; `ie`, `htmlunit`, `firefox` or `chrome`. These will be implicitly expanded to their fully qualified class names …
-
-    driver = "firefox"
-
-You can use the environment sensitivity to configure different drivers per environment …
+You can use the [ConfigSlurper][configslurper] mechanism's environment sensitivity to configure different drivers per environment …
 
     import org.openqa.selenium.firefox.FirefoxDriver
     
@@ -47,6 +63,7 @@ You can use the environment sensitivity to configure different drivers per envir
     driver = { new FirefoxDriver() }
     
     environments {
+        // when system property 'geb.env' is set to 'win-ie' use a remote IE driver
         'win-ie' {
             driver = {
                 new RemoteWebDriver(new URL("http://windows.ci-server.local"), DesiredCapabilities.internetExplorer())
@@ -56,19 +73,53 @@ You can use the environment sensitivity to configure different drivers per envir
     
 > WebDriver has the ability to drive browsers on a remote host, which is what we are using above. For more information consult the WebDriver documentation on [remote clients][remotewebdriver] and [remote servers][remotewebdriver-server].
 
-#### Driver Caching
+#### Driver Class Name
+
+The name of the driver class to use (it will be constructed with no arguments) can be specified as a string with the key `driver` in the config script or via the `geb.driver` system property (the class must implement the [WebDriver API][webdriver-api]).
+
+    driver = "org.openqa.selenium.firefox.FirefoxDriver"
+
+Or it can be one of the following short names; `ie`, `htmlunit`, `firefox` or `chrome`. These will be implicitly expanded to their fully qualified class names …
+
+    driver = "firefox"
+
+The following table gives the possible short names that can be used:
+
+<table class="graybox" border="0" cellspacing="0" cellpadding="5">
+    <tr><th>Short Name</th><th>Driver</th></tr>
+    <tr>
+        <td><code>htmlunit</code></td>
+        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html">org.openqa.selenium.htmlunit.HtmlUnitDriver</a></td>
+    </tr>
+    <tr>
+        <td><code>firefox</code></td>
+        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/firefox/FirefoxDriver.html">org.openqa.selenium.firefox.FirefoxDriver</a></td>
+    </tr>
+    <tr>
+        <td><code>ie</code></td>
+        <td><a href="http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/ie/InternetExplorerDriver.html">org.openqa.selenium.ie.InternetExplorerDriver</a></td>
+    </tr>
+    <tr>
+        <td><code>chrome</code></td>
+        <td><a href="http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html">org.openqa.selenium.chrome.ChromeDriver</a></td>
+    </tr>
+</table>
+
+If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a `geb.error.UnableToLoadAnyDriversException` will be thrown.
+
+### Driver Caching
 
 Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. [the implicit driver lifecycle](driver.html#implicit_lifecycle)) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become [responsible for quitting](driver.html#explicit_lifecycle) every driver that is created at the appropriate time.
 
-#### Base URL
+### Base URL
 
-The [base URL](browser.html#the_base_url) to be used can be specified by setting the `baseUrl` config property (with a `String`) value.
+The [base URL](browser.html#the_base_url) to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the `geb.build.baseUrl` system property). Any value set in the config script will take precedence over the value provided by the build adapter.
 
-#### Waiting
+### Waiting
 
 The [`waitFor()`](javascript.html#waiting) methods available on browser, page and module objects can be affected by configuration (this is also true for [implicitly waiting content](pages.html#wait)). It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
 
-##### Defaults
+#### Defaults
 
 Defaults can be specified via:
 
@@ -79,7 +130,7 @@ Defaults can be specified via:
 
 Both values are optional and in seconds. If unspecified, the values of `5` for `timeout` and `0.1` for `retryInterval`.
 
-##### Presets
+#### Presets
 
 Presets can be specified via:
 
@@ -96,3 +147,15 @@ Presets can be specified via:
     }
 
 Here we have defined two presets, `slow` and `quick`. Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of `0.1`).
+
+### Reports Dir
+
+The reports dir configuration is used by testing integrations (e.g [Spock](api/geb-spock/geb/spock/GebReportingSpec.html), [Grails](api/geb-grails/grails/plugin/geb/GebSpec.html) and [JUnit](api/geb-junit4/geb/junit4/GebReportingTest.html)) that integrate reporters.
+
+In the config script, you can set the path to the directory to use for reports via the `reportsDir` key…
+
+    reportsDir = "target/geb-reports"
+
+> The value is interpreted as a path, and if not absolute will be relative to the JVM's working directory.
+
+The reports dir can also be specified by the build adapter (the default implementation of which looks at the `geb.build.reportsDir` system property). Any value set in the config script will take precedence over the value provided by the build adapter.

@@ -23,6 +23,7 @@ This page lists the high level changes between versions of Geb.
 * Added Direct Download API which can be used for directly downloading content (PDFs, CSVs etc.) into your Geb program (not via the browser)
 * Introduced new configuration mechanism for more flexible and environment sensitive configuration of Geb (e.g. driver implementation, base url)
 * Default wait timeout and retry interval is now configurable, and can now also use user configuration presets (e.g. quick, slow)
+* Added a “build adapter” mechanism, making it easier for build systems to take control of relevant configuration
 
 ### Breaking Changes
 
