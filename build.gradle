@@ -205,31 +205,6 @@ subprojects {
 			}
 		}
 	}
-	
-	if (project.path.startsWith(":doc:")) {
-		project.upload = { source, path = "" ->
-			return {
-				if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-					def rep = new org.apache.maven.wagon.repository.Repository("codehaus", "https://dav.codehaus.org/geb/$path")
-					def auth = new org.apache.maven.wagon.authentication.AuthenticationInfo()
-					auth.userName = codehausUsername
-					auth.password = codehausPassword
-					def wagon = new org.apache.maven.wagon.providers.webdav.WebDavWagon()
-					wagon.connect(rep, auth)
-
-					source.eachFile {
-						if (it.directory) {
-							wagon.putDirectory(it, it.name)
-						} else {
-							wagon.put(it, it.name)
-						}
-					}
-				} else {
-					println "Can't upload site as credentials aren't set"
-				}
-			}
-		}
-	}
 }
 
 configurations {
