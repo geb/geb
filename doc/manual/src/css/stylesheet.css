@@ -61,8 +61,7 @@ span.center {
 	margin-left: 1ex;
 }
 .toc a:hover {
-	color: #FFF;
-	background-color: #000;
+	color: #0080FF;
 }
 .toc ul {
 	font: 16px "Lucida Grande", sans-serif;
@@ -85,8 +84,7 @@ span.center {
 	margin-left: 1ex;
 }
 .page_toc a:hover {
-	color: #FFF;
-	background-color: #000;
+	color: #0080FF;
 }
 .page_toc ul {
 	padding: 0px 0px 0px 3ex;
@@ -123,17 +121,20 @@ span.center {
 h1.title {
 	text-shadow: 2px 2px 2px #999;
 	font-size: 6em;
-	color: #4C4C4C;
-	margin-top: 30px;
-	margin-bottom: 28px;
+	color: #004080;
+	margin: 0px;
+	padding: 0;
 	letter-spacing: -6px;
 	font-family: Arial, Helvetica, "bitstream vera sans", sans-serif;
+
 }
 
 p.tag {
-	color: #666;
 	font-style: italic;
 	margin-left: 15px;
+	line-height: 10%;
+	margin-top: 0;
+	color: #B3B3B3;
 }
 
 h2 {
