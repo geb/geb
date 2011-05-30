@@ -310,6 +310,8 @@ Which is literally a shortcut for…
 
     $("form").find("input", name: "geb")
 
+> In the above and below examples with form controls we are using code like `$("form").someInput` where we could be using just `someInput` as long as there is only one control with the *name* `someInput` on the page. In the examples we are using `$("form").someInput` to hopefully be clearer.
+
 ### Setting Values
 
 #### select
@@ -374,6 +376,14 @@ We can select the radios with…
 
 The value assigned to a text input becomes the new value of its `value` attribute. Any text currently in the input is cleared.
 
+#### file upload
+
+It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the *absolute path* of a file on the system where the driver is running and on form submission that file will be uploaded.
+
+	<input type="file" name="csvFile">
+	
+	$("form").csvFile = "/path/to/my/file.csv"
+
 #### appending text
 
 Text can be appended to the current value of an text input or `textarea` using the left-shift operator. For example…
@@ -391,9 +401,9 @@ It is possible to send non textual characters to content by using the WebDriver 
 
 	import org.openqa.selenium.Keys
 	
-	postcode() = "12345"
-	postcode() << Keys.BACK_SPACE
-	assert postcode == "1234"
+	$("form").postcode = "12345"
+	$("form").postcode() << Keys.BACK_SPACE
+	assert $("form").postcode == "1234"
 
 See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") for more information on the possible keys.
 
