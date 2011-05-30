@@ -3,10 +3,14 @@
 body {
 	margin: 0;
 	padding: 0;
-	font: normal .70em/1.7em Verdana, 'Trebuchet MS', Tahoma, sans-serif;
+	font: normal 12px Verdana, 'Trebuchet MS', Tahoma, sans-serif;
 	color: #555;
 	text-align: center;
 	background: #180700;
+}
+
+p {
+	line-height: 180%;
 }
 
 a {

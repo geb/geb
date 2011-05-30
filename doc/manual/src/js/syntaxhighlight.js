@@ -3,8 +3,8 @@ SyntaxHighlighter.all();
 
 function anchor_highlight(elemId){
 	var elem = $(elemId).parent();
-	var off = {color: "#000000", backgroundColor: "#FFFFFF"};
-	var on = {color: "#666", backgroundColor: "#C6DFF4"};;
+	var off = {backgroundColor: "#FFFFFF"};
+	var on = {backgroundColor: "#C6DFF4"};;
 	var speed = 400;
 	
 	elem.css(off);
