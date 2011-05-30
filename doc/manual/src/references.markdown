@@ -23,6 +23,8 @@
 [defaultdriver]: browser.html#the_default_driver
 [defaultdriver-lifecycle]: browser.html#lifecycle
 [spock]: http://spockframework.org/
+[junit]: http://www.junit.org/
+[cuke4duke]: https://github.com/cucumber/cuke4duke/wiki
 [javascriptexecutor]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html
 [easyb]: http://www.easyb.org/
 [remotewebdriver]: http://code.google.com/p/selenium/wiki/RemoteWebDriver
