@@ -165,3 +165,18 @@ The reports dir can also be specified by the build adapter (the default implemen
 Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an [implicit driver](driver.html#implicit_lifecycle). This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
 
 	autoClearCookies = false
+
+## Runtime Overrides
+
+The [Configuration][configuration-api] object also has setters for all of the config properties it exposes, allowing you to override config properties at runtime in particular circumstances if you need to.
+
+For example, you may have one Spock spec that requires the `autoClearCookies` property to be disabled. You could disable it for just this spec by doing something like…
+
+	import geb.spock.GebReportingSpec
+	
+	class FunctionalSpec extends GebReportingSpec {
+		def setup() {
+			browser.config.autoClearCookies = false
+		}
+	}
+	
