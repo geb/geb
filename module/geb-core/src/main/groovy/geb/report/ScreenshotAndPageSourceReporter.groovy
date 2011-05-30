@@ -21,6 +21,10 @@ import org.openqa.selenium.OutputType
 
 import org.openqa.selenium.WebDriver
 
+/**
+ * Writes the source of the browser's current page as html and takes a PNG screenshot
+ * if the underlying driver implementation supports it.
+ */
 class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 	
 	ScreenshotAndPageSourceReporter(File dir) {

@@ -14,13 +14,20 @@
  */
 package geb.report
 
+/**
+ * Common support for reporter implemenations.
+ */
 abstract class ReporterSupport implements Reporter {
-
-	static public final DEFAULT_DO_CLEAN_VALUE = false
 	
 	private dir
 	
-	ReporterSupport(File dir, boolean doClean = DEFAULT_DO_CLEAN_VALUE) {
+	/**
+	 * Configures the dir for the reporter, optionally emptying it.
+	 * 
+	 * @param dir the directory to write reports to
+	 * @param doClean whether or not to empty the directory
+	 */
+	ReporterSupport(File dir, boolean doClean = false) {
 		this.dir = dir
 		if (doClean && dir.exists()) {
 			if (!dir.deleteDir()) {
@@ -33,18 +40,31 @@ abstract class ReporterSupport implements Reporter {
 		}
 	}
 	
+	/**
+	 * Gets a file reference for the object with the given name and extension within the dir.
+	 */
 	protected getFile(String name, String extension) {
 		new File(getReportDir(), "${escapeFileName(name)}.${escapeFileName(extension)}")
 	}
 	
+	/**
+	 * Replaces all non word chars with underscores to avoid using reserved characters in file paths
+	 */
 	protected escapeFileName(String name) {
 		name.replaceAll("\\W", "_")
 	}
 	
+	/**
+	 * The directory that this reporter writes to
+	 */
 	protected getReportDir() {
 		dir
 	}
 
+	/**
+	 * Given a file at path {@code /some/dir} and class {@code java.lang.String} will return
+	 * a file for path {@code /some/dir/java/lang/String}.
+	 */
 	static getDirForClass(File dir, Class clazz) {
 		new File(dir, clazz.name.replace('.', '/'))
 	}

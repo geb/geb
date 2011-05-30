@@ -16,11 +16,12 @@ package geb.report
 
 import geb.Browser
 
+/**
+ * Writes the source content of the browser's current page as a html file.
+ */
 class PageSourceReporter extends ReporterSupport {
 
 	static public final NO_PAGE_SOURCE_SUBSTITUTE = "-- no page source --"
-	
-	final dir
 	
 	// Can't use optional args for doClean as it causes a VerifierError (Groovy bug)
 	
@@ -32,10 +33,18 @@ class PageSourceReporter extends ReporterSupport {
 		super(dir, doClean)
 	}
 	
+	/**
+	 * Uses {@link geb.report.ReporterSupport#getDirForClass()} with the given args to
+	 * determine the true report dir to use.
+	 */
 	PageSourceReporter(File dir, Class clazz) {
 		super(getDirForClass(dir, clazz))
 	}
 
+	/**
+	 * Uses {@link geb.report.ReporterSupport#getDirForClass()} with the given args to
+	 * determine the true report dir to use.
+	 */
 	PageSourceReporter(File dir, Class clazz, boolean doClean) {
 		super(getDirForClass(dir, clazz), doClean)
 	}
