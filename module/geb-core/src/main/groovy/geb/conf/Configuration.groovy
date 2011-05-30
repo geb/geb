@@ -130,6 +130,24 @@ class Configuration {
 		}
 	}
 	
+	/**
+	 * Whether or not to automatically clear the browser's cookies automatically.
+	 * <p>
+	 * Different integrations inspect this property at different times.
+	 * <p>
+	 * @return the config value for {@code autoClearCookies}, defaulting to {@code true} if not set.
+	 */
+	boolean isAutoClearCookies() {
+		readValue('autoClearCookies', true)
+	}
+
+	/**
+	 * Sets the auto clear cookies flag explicitly, overwriting any value from the config script.
+	 */
+	void setAutoClearCookies(boolean flag) {
+		rawConfig.autoClearCookies = flag
+	}
+	
 	ClassLoader getClassLoader() {
 		Thread.currentThread().contextClassLoader
 	}

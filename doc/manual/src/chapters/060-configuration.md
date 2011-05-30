@@ -159,3 +159,9 @@ In the config script, you can set the path to the directory to use for reports v
 > The value is interpreted as a path, and if not absolute will be relative to the JVM's working directory.
 
 The reports dir can also be specified by the build adapter (the default implementation of which looks at the `geb.build.reportsDir` system property). Any value set in the config script will take precedence over the value provided by the build adapter.
+
+### Auto Clearing Cookies
+
+Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an [implicit driver](driver.html#implicit_lifecycle). This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
+
+	autoClearCookies = false

@@ -62,7 +62,9 @@ class GebTest {
 	
 	@After
 	void clearBrowserCookies() {
-		browser.clearCookiesQuietly()
+		if (browser.config.autoClearCookies) {
+			browser.clearCookiesQuietly()
+		}
 	}
 
 }

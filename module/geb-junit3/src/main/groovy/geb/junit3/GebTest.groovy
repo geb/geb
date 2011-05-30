@@ -60,6 +60,8 @@ class GebTest extends GroovyTestCase {
 	}
 
 	void tearDown() {
-		browser.clearCookiesQuietly()
+		if (browser.config.autoClearCookies) {
+			browser.clearCookiesQuietly()
+		}
 	}
 }

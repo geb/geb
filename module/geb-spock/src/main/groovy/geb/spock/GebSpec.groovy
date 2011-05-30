@@ -65,13 +65,13 @@ class GebSpec extends Specification {
 	}
 	
 	def cleanup() {
-		if (!isSpecStepwise()) {
+		if (!isSpecStepwise() && browser.config.autoClearCookies) {
 			browser.clearCookiesQuietly()
 		}
 	}
 	
 	def cleanupSpec() {
-		if (isSpecStepwise()) {
+		if (isSpecStepwise() && browser.config.autoClearCookies) {
 			browser.clearCookiesQuietly()
 		}
 	}
