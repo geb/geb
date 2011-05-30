@@ -383,6 +383,20 @@ Text can be appended to the current value of an text input or `textarea` using t
 	$("form").query << " cheezburger?"
 	assert $("form").query == "I can has cheezburger?"
 
+#### Non Characters (e.g. delete key) 
+
+It is possible to send non textual characters to content by using the WebDriver [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") enumeration with the append text (i.e. `<<`) syntax…
+
+	<input name="postcode" />
+
+	import org.openqa.selenium.Keys
+	
+	postcode() = "12345"
+	postcode() << Keys.BACK_SPACE
+	assert postcode == "1234"
+
+See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") for more information on the possible keys.
+
 ## Accessing the underlying `WebElement`s
 
 A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the raw web elements via the following methods on navigator objects…
