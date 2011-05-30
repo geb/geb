@@ -274,6 +274,26 @@ To obtain information about all matched content, you use the Groovy _spread oper
     $("p")*.@title == ["a", "b", "c"]
     $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
 
+## Sending keystrokes
+
+Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence...)) method of WebDriver.
+
+	$("div") << "abc"
+
+How content responds to the keystrokes depends on what the content is.
+
+### Non characters (e.g. delete key)
+
+It is possible to send non textual characters to content by using the WebDriver [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") enumeration…
+
+	import org.openqa.selenium.Keys
+	
+	$("input", name: "firstName") << Keys.chord(Keys.CONTROL, "c")
+
+Here we are sending a “control-c” to an input.
+
+See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") for more information on the possible keys.
+
 ## Accessing input values
 
 The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` and when setting a multiple `select` the method expects an array or Collection of values.
@@ -374,28 +394,16 @@ We can select the radios with…
 
 #### text inputs and textareas
 
-The value assigned to a text input becomes the new value of its `value` attribute. Any text currently in the input is cleared.
+In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` because the text.
 
-#### file upload
+It is also possible to append text by using the send keys shorthand…
 
-It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the *absolute path* of a file on the system where the driver is running and on form submission that file will be uploaded.
-
-	<input type="file" name="csvFile">
+	<input name="language" value="gro" />
 	
-	$("form").csvFile = "/path/to/my/file.csv"
+	$("form").language() << "ovy"
+	assert $("form").language == "groovy"
 
-#### appending text
-
-Text can be appended to the current value of an text input or `textarea` using the left-shift operator. For example…
-
-	<input name="query" value="I can has">
-
-	$("form").query << " cheezburger?"
-	assert $("form").query == "I can has cheezburger?"
-
-#### Non Characters (e.g. delete key) 
-
-It is possible to send non textual characters to content by using the WebDriver [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") enumeration with the append text (i.e. `<<`) syntax…
+Which an also be used for non character keys…
 
 	<input name="postcode" />
 
@@ -405,9 +413,15 @@ It is possible to send non textual characters to content by using the WebDriver 
 	$("form").postcode() << Keys.BACK_SPACE
 	assert $("form").postcode == "1234"
 
-See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") for more information on the possible keys.
+#### file upload
 
-## Accessing the underlying `WebElement`s
+It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the *absolute path* of a file on the system where the driver is running and on form submission that file will be uploaded.
+
+	<input type="file" name="csvFile">
+	
+	$("form").csvFile = "/path/to/my/file.csv"
+
+## Accessing the underlying WebElement objects
 
 A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the raw web elements via the following methods on navigator objects…
 
