@@ -4,9 +4,9 @@ This section discusses how to deal with some of the challenges in testing and/or
 
 ## The “js” object
 
-The browser instance exposes a “`js`” object that provides support for working with Javascript over and above what WebDriver provides. It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`](javascriptexecutor)'s [`executeScript()`](execscript) method. 
+The browser instance exposes a “`js`” object that provides support for working with Javascript over and above what WebDriver provides. It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`][javascriptexecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...\)) method. 
 
-> Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](execscript) in order to understand how type conversion works between the two worlds.
+> Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...\)) in order to understand how type conversion works between the two worlds.
 
 You can execute Javascript like you would with straight WebDriver using the driver instance via the browser…
 
@@ -14,7 +14,7 @@ You can execute Javascript like you would with straight WebDriver using the driv
 
 This is a bit long winded, and as you would expect Geb uses the dynamism of Groovy to make life easier.
 
-> The [JavascriptExecutor](javascriptexecutor) interface does not define any contract in regards to the driver's responsibility when there is some issue executing Javascript. All drivers however throw _some kind_ of exception when this happens.
+> The [JavascriptExecutor][javascriptexecutor] interface does not define any contract in regards to the driver's responsibility when there is some issue executing Javascript. All drivers however throw _some kind_ of exception when this happens.
 
 ### Accessing Variables
 

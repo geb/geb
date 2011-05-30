@@ -5,11 +5,11 @@
 [jquery]: http://jquery.com/ "jQuery: The Write Less, Do More, JavaScript Library"
 [webclient]: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 [webdriver]: http://code.google.com/p/selenium/
-[webdriver-api]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/WebDriver.html
+[webdriver-api]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebDriver.html
 [webelement-api]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html
-[htmlunitdriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
-[iedriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/ie/InternetExplorerDriver.html
-[firefoxdriver]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/firefox/FirefoxDriver.html
+[htmlunitdriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
+[iedriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/ie/InternetExplorerDriver.html
+[firefoxdriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/firefox/FirefoxDriver.html
 [chromedriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html
 [browser]: browser.html
 [navigator]: navigator.html
@@ -23,8 +23,7 @@
 [defaultdriver]: browser.html#the_default_driver
 [defaultdriver-lifecycle]: browser.html#lifecycle
 [spock]: http://spockframework.org/
-[javascriptexecutor]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/JavascriptExecutor.html
-[execscript]: http://webdriver.googlecode.com/svn/javadoc/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...)
+[javascriptexecutor]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html
 [easyb]: http://www.easyb.org/
 [remotewebdriver]: http://code.google.com/p/selenium/wiki/RemoteWebDriver
 [remotewebdriver-server]: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer
