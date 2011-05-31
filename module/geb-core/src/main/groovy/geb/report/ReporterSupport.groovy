@@ -51,7 +51,7 @@ abstract class ReporterSupport implements Reporter {
 	 * Replaces all non word chars with underscores to avoid using reserved characters in file paths
 	 */
 	protected escapeFileName(String name) {
-		name.replaceAll("\\W", "_")
+		name.replaceAll("[^\\w\\s-]", "_")
 	}
 	
 	/**
