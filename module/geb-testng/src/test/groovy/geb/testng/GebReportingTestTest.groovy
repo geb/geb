@@ -40,7 +40,6 @@ class GebReportingTestTest extends GebReportingTest {
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
-		super.setUp()
 		go()
 	}
 	
@@ -82,6 +81,5 @@ class GebReportingTestTest extends GebReportingTest {
 	@AfterMethod
 	void tearDown() {
 		server.stop()
-		super.tearDown()
 	}
 }
