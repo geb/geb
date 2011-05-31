@@ -1,5 +1,5 @@
 <h1>What is it?</h1>
-<p>Geb <em>(pronounced with a soft “G” like “Jeb”)</em> is a browser automation solution for the <a href="http://groovy.codehaus.org/" title="Groovy - Home">Groovy</a> programming language. It combines the browser driving features of <a href="http://code.google.com/p/selenium/">WebDriver</a>with a <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> inspired content navigation/inspection API and the expressiveness and conciseness of Groovy.</p>
+<p>Geb <em>(pronounced with a soft “G” like “Jeb”)</em> is a browser automation solution for the <a href="http://groovy.codehaus.org/" title="Groovy - Home">Groovy</a> programming language. It combines the browser driving features of <a href="http://code.google.com/p/selenium/">WebDriver</a> with a <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> inspired content navigation/inspection API and the expressiveness and conciseness of Groovy.</p>
 
 <p>It can be used for scripting, scraping and general automation — or equally as a functional/web testing solution via its support for testing frameworks like <a href="spock">Spock</a> &amp; <a href="junit">JUnit</a>.</p>
 <h1>What does it look like?</h1>
