@@ -29,6 +29,8 @@ class BindingUpdater {
 	
 	static public final FORWARDED_BROWSER_METHODS = [
 		"go", "to", "at", 
+		"waitFor",
+		"withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
 		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent"
 	].asImmutable()
 	
