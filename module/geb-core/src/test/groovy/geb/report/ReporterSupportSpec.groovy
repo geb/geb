@@ -39,7 +39,7 @@ class ReporterSupportSpec extends Specification {
 		reporter.writeReport("12 | 34", null)
 		
 		then:
-		new File(reportDir, "12___34.12___34").exists()
+		new File(reportDir, "12 _ 34.12 _ 34").exists()
 	}
 	
 	def cleanup() {

@@ -100,6 +100,7 @@ class DownloadSupport {
 	 */	
 	String downloadText(Map options = [:], Closure connectionConfig = null) {
 		def connection = downloadWithConfig(options, connectionConfig)
+		connection.connect()
 		def contentType = connection.contentType
 		
 		if (isTextContentType(contentType)) {

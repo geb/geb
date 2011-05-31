@@ -22,6 +22,13 @@ import javax.servlet.http.Cookie
 
 class DownloadingSpec extends GebSpecWithServer {
 
+	def setup() {
+		server.get = { req, res ->
+			res.contentType = "text/plain"
+			res.outputStream << "initial"
+		}
+	}
+	
 	def "cookies are copied"() {
 		given:
 		server.get = { req, res ->
@@ -53,6 +60,7 @@ class DownloadingSpec extends GebSpecWithServer {
 	
 	def "links are resolved relative to current page"() {
 		given:
+		go()
 		server.get = { req, res ->
 			res.contentType = "text/plain"
 			res.outputStream << "${req.requestURI}"
@@ -73,12 +81,13 @@ class DownloadingSpec extends GebSpecWithServer {
 
 	def "http 500 causes DownloadException"() {
 		given:
+		go()
 		server.get = { req, res ->
 			res.sendError(500, "bang!")
 		}
 		
 		when:
-		downloadText()
+		downloadText("123")
 		
 		then:
 		thrown(DownloadException)
