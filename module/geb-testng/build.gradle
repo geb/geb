@@ -4,6 +4,10 @@ dependencies {
 	testCompile project(":module:test-utils")
 }
 
+test {
+	useTestNG()
+}
+
 modifyPom = { pom ->
 	// User provides their own testng
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.testng" })
