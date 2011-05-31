@@ -34,3 +34,4 @@
 [httpurlconnection]: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
 [configuration-api]: api/geb-core/geb/conf/Configuration.html
 [browser-api]: api/geb-core/geb/Browser.html
+[bindingupdater-api]: api/geb-core/geb/binding/BindingUpdater.html

@@ -1,6 +1,6 @@
 # Testing
 
-Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [EasyB][junit] and [Cuke4Duke][cuke4duke].
+Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [EasyB][easyb] and [Cuke4Duke][cuke4duke].
 
 ## Spock & JUnit
 
@@ -89,10 +89,66 @@ The following projects can be used as starting references:
 
 * [https://github.com/geb/geb-example-gradle](https://github.com/geb/geb-example-gradle)
 
-## Easyb
+## EasyB
 
-TBD
+Geb's [EasyB][easyb] support is based around the [binding management features](binding.html) discussed earlier. 
+[EasyB stories](TBD) are implemented as Groovy scripts with a binding, 
+and the Geb plugin simply integrates Geb's [BindingUpdater][bindingupdater-api] into the EasyB lifecycle.
+
+> The Geb EasyB plugin is currently under-developed and is in need of some attention. If you'd like to see better EasyB integration consider getting involved in its development.
+
+Here's a quick example…
+
+	using "geb" // EasyB syntax for using plugins
+	
+	scenario "using geb", {
+		given "our base url", {
+			baseUrl = "http://my.app"
+		}
+
+		when "we go to the page", {
+			to SomePage
+		}
+
+		then "we arrive at the page", {
+			at SomePage
+		}
+
+		and "can use the javascript interface", {
+			js.someJsVariable.shouldBe 1
+		}
+
+		and "can do some waiting", {
+			waitFor { $("p").text() == "done" }
+		}
+		
+		and "can work with the page", {
+			page.div.text().shouldBe "d1"
+		}
+	}
+	
+	class SomePage extends geb.Page {
+		static content = {
+			div { $("#d1") }
+		}
+	}
+
+### Configuration
+
+Configuration is done in the `given` block of a scenario or story. Here you can optionally set 3 properties; `driver`, `baseUrl` and `browser`.
+
+You can set the `driver` property to the driver instance that you want to implicitly created browser instance to use. However, using the [configuration mechanism for driver implementation](configuration.html#driver_implementation) is preferred.
+
+You can set the `baseUrl` property to the base url that you want to implicitly created browser instance to use. However, using the [configuration mechanism for base url](configuration.html#base_url) is preferred.
+
+For fine grained control, you can create your own [browser](browser-api) instance and assign it to the `browser` property. Otherwise, an implicit browser object is created using `driver` and/or `baseUrl` if they were explicitly set (otherwise the configuration mechanism is used.)
 
 ## Cucumber (Cuke4Duke)
 
-Geb doesn't offer any explicit integration with [Cucumber](http://cukes.info/ "Cucumber - Making BDD fun") (through [Cuke4Duke](http://wiki.github.com/aslakhellesoy/cuke4duke/ "Home - cuke4duke - GitHub")). It does however work with it and there is an [example project available](http://github.com/geb/geb-example-cuke4duke "geb's geb-example-cuke4duke at master - GitHub") to show you how to put it together.
+Geb doesn't offer any explicit integration with [Cuke4Duke][cuke4duke] but due to Cuke4Duke's use of Groovy scripts, Geb's [binding management features](binding.html) can be used to great effect.
+
+### Example Projects
+
+The following projects can be used as starting references:
+
+* [https://github.com/geb/geb-example-cuke4duke](https://github.com/geb/geb-example-cuke4duke)
