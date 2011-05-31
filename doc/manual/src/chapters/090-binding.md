@@ -1,14 +1,15 @@
 # Scripts and Binding
 
-Geb supports being used in scripting environments via both the `Browser.drive()` method, and by using the `geb.binding.BindingUpdater` class that populates and updates a [`groovy.lang.Binding`][groovy-binding] that can be used with scripts. This is also the same mechanism that is used by the EasyB Geb plugin and can be used with Cuke4Duke (Cucumber for the JVM).
+Geb supports being used in scripting environments via both the `Browser.drive()` method, and by using the [`geb.binding.BindingUpdater`][bindingupdater-api] class that populates and updates a [`groovy.lang.Binding`][groovy-binding] that can be used with scripts. This is also the same mechanism that is used by the EasyB Geb plugin and can be used with Cuke4Duke (Cucumber for the JVM).
 
-## Configuration
+## Setup
 
-To use the binding support, you simply create a `geb.binding.BindingUpdater` object with a binding and `geb.Browser`…
+To use the binding support, you simply create a [`BindingUpdater`][bindingupdater-api] object with a [`Binding`][groovy-binding] and [`Browser`][browser-api]…
 
     import geb.Browser
     import geb.binding.BindingUpdater
-
+    import groovy.lang.Binding
+    
     def binding = new Binding()
     def browser = new Browser()
     def updater = new BindingUpdater(binding, browser)
@@ -24,32 +25,52 @@ To use the binding support, you simply create a `geb.binding.BindingUpdater` obj
     
 ## The binding environment
 
-A binding that is managed by a `BindingUpdater` has the following properties & methods …
+### Browser methods & properties
 
-### browser - property
+The [`BindingUpdater`][bindingupdater-api] installs shortcuts into the binding for most of the [browser][browser-api] object's public methods. 
 
-The instance of `geb.Browser` that the binding updater was created with.
+For example…
 
-### go(…)
+	go "some/page"
+	assert at(SomePage)
+	waitFor { $("p.status").text() == "ready" }
+	js.someJavaScriptFunction()
+	downloadText($("a.csvFile"))
 
-A shortcut for `browser.go(…)`
+In a managed binding, all of the methods/properties that you can usually call in the [`Browser.drive()`](#the_drive_method) method are available. This includes the `$()` function.
 
-### to(…)
+The following methods are available:
 
-A shortcut for `browser.to(…)`
+* $
+* go
+* to
+* at
+* waitFor
+* withAlert
+* withNoAlert
+* withConfirm
+* withNoConfirm
+* download
+* downloadStream
+* downloadText
+* downloadBytes
+* downloadContent
 
-### at(…)
+The javascript interface property [`js`](javascript.html#the_js_object) is also available. The browser object itself is available as the `browser` property.
 
-A shortcut for `browser.at(…)`
+### The current page
 
-### js
+The binding updater also updates the `page` property of the binding to be the browser's current page…
 
-A shortcut for `browser.js` (i.e. the JavaScript interface)
-
-### page
-
-A shortcut for `browser.page` (i.e. the current `geb.Page` instance)
-
-### $(…)
-
-A shortcut for `browser.page.$(…)` (i.e. content lookups)
+	import geb.Page
+	
+	class SomePage extends Page {
+		static content = {
+			button(to: OtherPage) { $("input.do-stuff") }
+		}
+	}
+	
+	to SomePage
+	assert page instanceof SomePage
+	page.button.click()
+	assert page instanceof OtherPage
