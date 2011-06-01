@@ -50,34 +50,18 @@ class DriveSpec extends Specification {
 
 	def driveWithBaseUrl() {
 		when:
-		Browser.drive(server.baseUrl) {
+		Browser.drive(baseUrl: server.baseUrl) {
+			go()
 			assert $(".url").text() == server.baseUrl
 		}
 		then:
 		notThrown(Exception)
 	}
 
-	def driveWithAbsoluteUrlPage() {
-		when:
-		Browser.drive(DriveSpecPageAbsoluteUrl) {
-			assert $(".url").text() == server.baseUrl
-		}
-		then:
-		notThrown(Exception)
-	}
-
-	def driveWithRelativeUrlPage() {
-		when:
-		Browser.drive(server.baseUrl, DriveSpecPageRelativeUrl) {
-			assert $(".url").text() == server.baseUrl + DriveSpecPageRelativeUrl.url
-		}
-		then:
-		notThrown(Exception)
-	}
 
 	def driveWithDriver() {
 		when:
-		Browser.drive(new HtmlUnitDriver()) {
+		Browser.drive(driver: new HtmlUnitDriver()) {
 			go(server.baseUrl)
 			assert $(".url").text() == server.baseUrl
 		}
@@ -87,7 +71,8 @@ class DriveSpec extends Specification {
 
 	def driveWithDriverAndPage() {
 		when:
-		Browser.drive(new HtmlUnitDriver(), DriveSpecPageAbsoluteUrl) {
+		Browser.drive(driver: new HtmlUnitDriver()) {
+			to DriveSpecPageAbsoluteUrl
 			assert $(".url").text() == server.baseUrl
 		}
 		then:
@@ -96,7 +81,7 @@ class DriveSpec extends Specification {
 
 	def driveWithDriverAndBaseUrl() {
 		when:
-		Browser.drive(new HtmlUnitDriver(), server.baseUrl) {
+		Browser.drive(driver: new HtmlUnitDriver(), baseUrl: server.baseUrl) {
 			go()
 			assert $(".url").text() == server.baseUrl
 		}

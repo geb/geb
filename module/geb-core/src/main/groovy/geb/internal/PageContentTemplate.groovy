@@ -18,7 +18,7 @@ import geb.navigator.Navigator
 import geb.Page
 import geb.Module
 
-import geb.conf.Configuration
+import geb.Configuration
 import geb.waiting.Wait
 
 import geb.error.InvalidPageContent

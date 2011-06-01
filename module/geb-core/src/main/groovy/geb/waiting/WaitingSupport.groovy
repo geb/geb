@@ -14,7 +14,7 @@
  */
 package geb.waiting
 
-import geb.conf.Configuration
+import geb.Configuration
 
 /**
  * A mixin style class that adds support for waiting for different things.

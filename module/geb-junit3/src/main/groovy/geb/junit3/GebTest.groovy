@@ -14,13 +14,24 @@
  */
 package geb.junit3
 
-import geb.Browser
+import geb.*
 import org.openqa.selenium.WebDriver
 
 class GebTest extends GroovyTestCase {
 
-	private _browser
+	String gebConfEnv = null
+	String gebConfScript = null
 	
+	private Browser _browser
+
+	Configuration createConf() {
+		new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
+	}
+	
+	Browser createBrowser() {
+		new Browser(createConf())
+	}
+
 	Browser getBrowser() {
 		if (_browser == null) {
 			_browser = createBrowser()
@@ -29,6 +40,9 @@ class GebTest extends GroovyTestCase {
 	}
 
 	void resetBrowser() {
+		if (_browser?.config.autoClearCookies) {
+			_browser.clearCookiesQuietly()
+		}
 		_browser = null
 	}
 
@@ -44,24 +58,7 @@ class GebTest extends GroovyTestCase {
 		getBrowser()."$name" = value
 	}
 
-	Browser createBrowser() {
-		def driver = createDriver()
-		def baseUrl = getBaseUrl()
-		
-		driver ? new Browser(driver, baseUrl) : new Browser(baseUrl)
-	}
-	
-	WebDriver createDriver() {
-		null // use Browser default
-	}
-
-	String getBaseUrl() {
-		null
-	}
-
 	void tearDown() {
-		if (browser.config.autoClearCookies) {
-			browser.clearCookiesQuietly()
-		}
+		resetBrowser()
 	}
 }

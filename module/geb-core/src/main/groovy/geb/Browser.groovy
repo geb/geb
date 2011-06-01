@@ -28,10 +28,15 @@ import org.openqa.selenium.WebDriverException
 
 class Browser {
 
+	/**
+	 * The 
+	 */
 	Page page
-	final WebDriver driver
+	
+	/**
+	 * 
+	 */
 	final Configuration config
-	String baseUrl
 	
 	@Delegate final WaitingSupport _waitingSupport
 	@Delegate final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
@@ -48,63 +53,72 @@ class Browser {
 	 */
 	@Lazy WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
 	
+	/**
+	 * Create a new browser with a default configuration loader, loading the default configuration file.
+	 * 
+	 * @see geb.ConfigurationLoader
+	 */
+	Browser() {
+		this(new ConfigurationLoader().conf)
+	}
+	
+	/**
+	 * Create a new browser backed by the given configuration.
+	 * 
+	 * @see geb.Configuration
+	 */
 	Browser(Configuration config) {
-		this(null, null, null, null, config)
+		this.config = config
+		this._waitingSupport = new WaitingSupport(config)
+		
+		page(Page)
 	}
 
-	Browser(String baseUrl, Configuration config) {
-		this(null, baseUrl, null, null, config)
+	Browser(Map props, Configuration config) {
+		this(config)
+		this.metaClass.setProperties(this, props)
+	}
+
+	/**
+	 * The driver implementation used to automate the actual browser.
+	 * <p>
+	 * The driver implementation to use is determined by the configuration.
+	 * 
+	 * @see geb.Configuration#getDriverInstance()
+	 */
+	WebDriver getDriver() {
+		config.driver
 	}
 	
-	Browser(Class pageClass, Map params = null, Configuration config = null) {
-		this(null, null, pageClass, params, config)
+	/**
+	 * Set (or change) the webdriver underneath this browser.
+	 * <p>
+	 * If you change the driver, you probably want to also change the page.
+	 */
+	void setDriver(WebDriver driver) {
+		config.driver = driver
 	}
 	
-	Browser(String baseUrl, Class pageClass = null, Map params = null, Configuration config = null) {
-		this(null, baseUrl, pageClass, params, config)
+	/**
+	 * The url to resolve all relative urls to navigate to against.
+	 * <p>
+	 * The base url is determined by the configuration.
+	 * 
+	 * @see geb.Configuration#getBaseUrl()
+	 */
+	String getBaseUrl() {
+		config.baseUrl
 	}
 	
-	Browser(WebDriver driver = null, String baseUrl = null, Class pageClass = null, Map params = null, Configuration config = null) {
-		this.config = config ?: createConfiguration()
-		this.driver = driver ?: defaultDriver
-		this.baseUrl = baseUrl != null ? baseUrl : this.config.baseUrl
-		
-		this._waitingSupport = new WaitingSupport(this.config)
-		
-		params = params == null ? [:] : params
-		
-		if (pageClass) {
-			to(pageClass, *:params)
-		} else {
-			page Page
-		}
+	/**
+	 * Change the base url used for resolving relative urls.
+	 * 
+	 * @see geb.Configuration#setBaseUrl(String)
+	 */
+	void setBaseUrl(String baseUrl) {
+		config.baseUrl = baseUrl
 	}
 	
-	protected Configuration createConfiguration() {
-		def configurationLocation = getConfigurationLocation()
-		if (configurationLocation) {
-			createConfigurationLoader().load(configurationLocation)
-		} else {
-			new Configuration()
-		}
-	}
-	
-	protected URL getConfigurationLocation() {
-		Thread.currentThread().contextClassLoader.getResource("geb-conf.groovy")
-	}
-	
-	protected ConfigurationLoader createConfigurationLoader() {
-		new ConfigurationLoader(getConfigurationEnvironment(), System.properties)
-	}
-	
-	protected String getConfigurationEnvironment() {
-		System.getProperty("geb.env")
-	}
-	
-	protected WebDriver getDefaultDriver() {
-		config.driverInstance
-	}
-		
 	void registerPageChangeListener(PageChangeListener listener) {
 		if (pageChangeListeners.add(listener)) {
 			listener.pageWillChange(this, null, page)
@@ -272,34 +286,16 @@ class Browser {
 		}
 	}
 	
+	static Browser drive(Configuration conf, Closure script) {
+		doDrive(new Browser(conf), script)
+	}
+	
+	static Browser drive(Map params, Closure script) {
+		doDrive(new Browser(params), script)
+	}
+	
 	static Browser drive(Closure script) {
 		doDrive(new Browser(), script)
-	}
-	
-	static Browser drive(Class pageClass, Closure script) {
-		doDrive(new Browser(pageClass), script)
-	}
-	
-	static Browser drive(String baseUrl, Closure script) {
-		def browser = new Browser(baseUrl)
-		browser.go("")
-		doDrive(browser, script)
-	}
-	
-	static Browser drive(String baseUrl, Class pageClass, Closure script) {
-		doDrive(new Browser(baseUrl, pageClass), script)
-	}
-	
-	static Browser drive(WebDriver driver, Closure script) {
-		doDrive(new Browser(driver), script)
-	}
-
-	static Browser drive(WebDriver driver, String baseUrl, Closure script) {
-		doDrive(new Browser(driver, baseUrl), script)
-	}
-
-	static Browser drive(WebDriver driver, Class pageClass, Closure script) {
-		doDrive(new Browser(driver, null, pageClass), script)
 	}
 	
 	private static Browser doDrive(Browser browser, Closure script) {

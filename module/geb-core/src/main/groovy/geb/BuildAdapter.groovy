@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package geb.buildadapter
+package geb
 
 /**
  * Used to supply default configuration type values to allow a build system (or anything else) 

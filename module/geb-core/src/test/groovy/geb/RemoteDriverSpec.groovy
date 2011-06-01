@@ -33,7 +33,8 @@ class RemoteDriverSpec extends Specification {
 		server.start()
 		
 		and:
-		def browser = new Browser(new RemoteWebDriver(new URL(server.baseUrl[0..-2]), DesiredCapabilities.htmlUnit()))
+		def driver = new RemoteWebDriver(new URL(server.baseUrl[0..-2]), DesiredCapabilities.htmlUnit())
+		def browser = new Browser(driver: driver)
 		
 		then:
 		!browser.driver.is(browser.augmentedDriver)

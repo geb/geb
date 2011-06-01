@@ -27,13 +27,12 @@ class BaseUrlConfigurationSpec extends Specification {
 			c.baseUrl = configBaseUrl
 		}
 		
-		def args = []
+		def args = [:]
 		if (constructorBaseUrl) {
-			args << constructorBaseUrl
+			args.baseUrl = constructorBaseUrl
 		}
-		args << new Configuration(c)
 		
-		new Browser(*args).baseUrl
+		new Browser(args, new Configuration(c)).baseUrl
 	}
 	
 	@Unroll("expectedBaseUrl = #expectedBaseUrl with (#constructor, #config)")

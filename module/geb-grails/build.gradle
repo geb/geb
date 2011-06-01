@@ -27,6 +27,10 @@ dependencies {
 	runtime "hsqldb:hsqldb:1.8.0.5",
 	        "net.sf.ehcache:ehcache-core:1.7.1",
 	        "org.aspectj:aspectjrt:1.6.6"
+	
+	test project(':module:geb-junit4'),
+	     project(':module:geb-spock'),
+	     project(':module:geb-easyb')
 }
 
 System.setProperty("server.port", "8010")
@@ -44,3 +48,5 @@ task uploadArchives << {
 		grailsTask("release-plugin", args)
 	}
 }
+
+task build(dependsOn: [test, assemble])

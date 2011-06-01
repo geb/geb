@@ -31,32 +31,4 @@ class BrowserSpec extends GebSpec {
 		browser.config.rawConfig.testValue == true
 	}
 	
-	def "bad config location throws exception"() {
-		when:
-		new BadConfigLocationBrowser()
-		
-		then:
-		thrown UnableToLoadConfigurationException
-	}
-
-	def "no config location yields default config"() {
-		when:
-		def browser = new NoConfigLocationBrowser()
-		
-		then:
-		browser.config.rawConfig.size() == 0
-	}
-	
-}
-
-class BadConfigLocationBrowser extends Browser {
-	protected URL getConfigurationLocation() {
-		new URL("file:///idontexist")
-	}
-}
-
-class NoConfigLocationBrowser extends Browser {
-	protected URL getConfigurationLocation() {
-		null
-	}
 }

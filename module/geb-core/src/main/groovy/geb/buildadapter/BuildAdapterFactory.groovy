@@ -16,6 +16,8 @@
 
 package geb.buildadapter
 
+import geb.BuildAdapter
+
 /**
  * Loads the {@link BuildAdapter} implementation class to be used.
  */
@@ -33,10 +35,10 @@ class BuildAdapterFactory {
 	 * Otherwise, an instance of {@link geb.buildadapter.SystemPropertiesBuildAdapter} will be returned.
 	 * <p>
 	 * 
-	 * @param classLoader The class loader to attempt to load the class with (defaults to {@code Thread.currentThread().contextClassLoader})
+	 * @param classLoader The class loader to attempt to load the class with
 	 * @throws {@link java.lang.ClassNotFoundException} If the system property specifies a non existent class
 	 */
-	static BuildAdapter getBuildAdapter(ClassLoader classLoader = Thread.currentThread().contextClassLoader) throws ClassNotFoundException {
+	static BuildAdapter getBuildAdapter(ClassLoader classLoader) throws ClassNotFoundException {
 		def className = System.getProperty(ADAPTER_PROPERTY_NAME)
 		if (className) {
 			classLoader.loadClass(className).newInstance()

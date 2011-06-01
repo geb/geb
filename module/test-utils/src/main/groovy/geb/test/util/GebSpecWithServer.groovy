@@ -15,6 +15,7 @@
 
 package geb.test.util
 
+import geb.Browser
 import spock.lang.*
 
 class GebSpecWithServer extends GebSpec {
@@ -26,8 +27,10 @@ class GebSpecWithServer extends GebSpec {
 		server.start()
 	}
 	
-	String getBaseUrl() {
-		server.baseUrl
+	Browser createBrowser() {
+		def browser = super.createBrowser()
+		browser.baseUrl = server.baseUrl
+		browser
 	}
 	
 	def cleanupSpec() {

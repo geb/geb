@@ -13,14 +13,7 @@
  * limitations under the License.
  */
 
-package geb.conf
+package geb.error
 
-import geb.error.GebException
+import geb.ConfigurationLoader
 
-class UnableToLoadConfigurationException extends GebException {
-	
-	UnableToLoadConfigurationException(ConfigurationLoader loader, URL configLocation, Throwable cause) {
-		super("Unable to load configuration @ '$configLocation' (with environment: $loader.environment)", cause)
-	}
-	
-}

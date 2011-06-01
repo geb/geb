@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-package geb.conf
+package geb
 
 import geb.driver.*
 import geb.waiting.Wait
-import geb.buildadapter.*
+import geb.buildadapter.SystemPropertiesBuildAdapter
 
 import org.openqa.selenium.WebDriver
 
@@ -28,30 +28,32 @@ class Configuration {
 	
 	static private final DEFAULT_WAIT_RETRY_SECS = 0.1
 	
+	final ClassLoader classLoader
 	final ConfigObject rawConfig
 	final Properties properties
 	final BuildAdapter buildAdapter
 	
 	private final Map<String, Wait> waits = null
 	
-	Configuration() {
-		this(new ConfigObject(), System.properties)
-	}
+	private WebDriver driver
 	
-	Configuration(ConfigObject rawConfig) {
-		this(rawConfig, System.properties)
+	Configuration(Map rawConfig) {
+		this(toConfigObject(rawConfig), null, null, null)
 	}
-	
-	Configuration(Properties properties) {
-		this(new ConfigObject(), properties)
-	}
-	
-	Configuration(ConfigObject rawConfig, Properties properties) {
-		this.rawConfig = rawConfig
-		this.properties = properties
-		this.buildAdapter = createBuildAdapter()
+		
+	Configuration(ConfigObject rawConfig = null, Properties properties = null, BuildAdapter buildAdapter = null, ClassLoader classLoader = null) {
+		this.classLoader = classLoader ?: new GroovyClassLoader()
+		this.properties = properties ?: System.properties
+		this.buildAdapter = buildAdapter ?: new SystemPropertiesBuildAdapter()
+		this.rawConfig = rawConfig ?: new ConfigObject()
 	}
 
+	private static toConfigObject(Map rawConfig) {
+		def configObject = new ConfigObject()
+		configObject.putAll(rawConfig)
+		configObject
+	}
+	
 	void setCacheDriver(boolean cache) {
 		rawConfig.cacheDriver = cache
 	}
@@ -94,12 +96,19 @@ class Configuration {
 		readValue('cacheDriver', true)
 	}
 
-	void setDriver(value) {
+	void setDriverConf(value) {
 		rawConfig.driver = value
 	}
 	
-	def getDriver() {
-		properties.getProperty("geb.driver") ?: readValue("driver", null)
+	def getDriverConf() {
+		def value = properties.getProperty("geb.driver") ?: readValue("driver", null)
+		if (value instanceof WebDriver) {
+			throw new IllegalStateException(
+				"The 'driver' config value is an instance of WebDriver. " +
+				"You need to wrap the driver instance in a closure."
+			)
+		}
+		value
 	}
 
 	/**
@@ -120,14 +129,23 @@ class Configuration {
 		readValue("reportsDir", buildAdapter.reportsDir)
 	}
 	
-	WebDriver getDriverInstance() {
-		def driverValue = getDriver()
-		
-		if (driverValue instanceof WebDriver) {
-			driverValue
-		} else {
-			wrapDriverFactoryInCachingIfNeeded(getDriverFactory(driverValue)).driver
+	/**
+	 * 
+	 */
+	WebDriver getDriver() {
+		if (driver == null) {
+			driver = createDriver()
 		}
+		
+		driver
+	}
+	
+	void setDriver(WebDriver driver) {
+		this.driver = driver
+	}
+	
+	protected WebDriver createDriver() {
+		wrapDriverFactoryInCachingIfNeeded(getDriverFactory(getDriverConf())).driver
 	}
 	
 	/**
@@ -184,7 +202,4 @@ class Configuration {
 		}
 	}
 	
-	protected BuildAdapter createBuildAdapter() {
-		BuildAdapterFactory.getBuildAdapter(getClassLoader())
-	}
 }

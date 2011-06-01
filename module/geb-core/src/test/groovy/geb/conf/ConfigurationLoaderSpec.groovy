@@ -15,23 +15,20 @@
 
 package geb.conf
 
+import geb.*
 import spock.lang.*
 
 class ConfigurationLoaderSpec extends Specification {
 	
-	def loader
+	def env
 	def config
 	
-	protected loaderWithEnv(String env) {
-		loader = new ConfigurationLoader(env)
+	protected getLoader() {
+		new ConfigurationLoader(env)
 	}
-
-	protected loaderWithNoEnv() {
-		loader = new ConfigurationLoader()
-	}
-	 
+	
 	protected load(URL location) {
-		config = loader.load(location)
+		config = loader.getConf(location)
 	}
 	
 	protected getGoodScript() {
@@ -39,9 +36,6 @@ class ConfigurationLoaderSpec extends Specification {
 	}
 	
 	def "load file from classpath with no env"() {
-		given:
-		loaderWithNoEnv()
-		
 		when:
 		load goodScript
 		
@@ -51,7 +45,7 @@ class ConfigurationLoaderSpec extends Specification {
 	
 	def "load file from classpath with env"() {
 		given:
-		loaderWithEnv env
+		env = theEnv
 		
 		when:
 		load goodScript
@@ -60,20 +54,17 @@ class ConfigurationLoaderSpec extends Specification {
 		config.rawConfig.a == value
 		
 		where:
-		env  | value
-		"e1" | 2
-		"e2" | 3
+		theEnv | value
+		"e1"   | 2
+		"e2"   | 3
 	}
 
 	def "load non-existent bad url"() {
-		given:
-		loaderWithNoEnv()
-		
 		when:
 		load new URL("file:///idontexist")
 		
 		then:
-		thrown UnableToLoadConfigurationException
+		thrown ConfigurationLoader.UnableToLoadException
 	}
 	
 }

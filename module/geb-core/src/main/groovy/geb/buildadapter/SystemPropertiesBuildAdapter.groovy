@@ -16,6 +16,8 @@
 
 package geb.buildadapter
 
+import geb.BuildAdapter
+
 /**
  * Loads values via system properties.
  */

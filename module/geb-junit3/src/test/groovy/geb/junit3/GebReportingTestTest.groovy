@@ -38,11 +38,8 @@ class GebReportingTestTest extends GebReportingTest {
 			res.outputStream << responseText
 		}
 		super.setUp()
+		browser.baseUrl = server.baseUrl
 		go()
-	}
-	
-	String getBaseUrl() {
-		server.baseUrl
 	}
 	
 	File getReportDir() {

@@ -14,7 +14,7 @@
  */
 package geb.easyb
 
-import geb.Browser
+import geb.*
 import geb.binding.BindingUpdater
 import org.openqa.selenium.WebDriver
 import org.easyb.plugin.BasePlugin
@@ -32,12 +32,22 @@ class GebPlugin extends BasePlugin {
 	def beforeWhen(Binding binding) {
 		if (initialised) return
 		
-		def driver = fromBindingOr(binding, 'driver')
-		def baseUrl = fromBindingOr(binding, 'baseUrl')
 		def browser = fromBindingOr(binding, 'browser')
-		
 		if (!browser) {
-			browser = driver ? new Browser(driver, baseUrl) : new Browser(baseUrl)
+			def conf = fromBindingOr(binding, 'conf')
+			if (!conf) {
+				def confEnv = fromBindingOr(binding, 'gebConfEnv')
+				def confScript = fromBindingOr(binding, 'gebConfScript')
+				conf = new ConfigurationLoader(confEnv).getConf(confScript)
+			} 
+			
+			def args = [:]
+			def baseUrl = fromBindingOr(binding, 'baseUrl')
+			if (baseUrl) {
+				args.baseUrl = baseUrl
+			}
+			
+			browser = new Browser(args, conf)
 		}
 		
 		bindingUpdater = new BindingUpdater(binding, browser)

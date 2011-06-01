@@ -15,7 +15,7 @@
 package geb.internal
 
 import geb.error.InvalidPageContent
-import geb.conf.Configuration
+import geb.Configuration
 
 class PageContentTemplateBuilder {
 

@@ -14,6 +14,7 @@
  */
 package geb.conf
 
+import geb.*
 import geb.driver.*
 import spock.lang.*
 
@@ -35,93 +36,6 @@ class ConfigurationDriverCreationSpec extends Specification {
 		Thread.currentThread().contextClassLoader = classLoader
 	}
 	
-	def "no property"() {
-		given:
-		d = conf().driverInstance
-		expect:
-		isInstanceOf(HtmlUnitDriver, d)
-		cleanup:
-		d?.quit()
-	}
-	
-	def "specific short name"() {
-		given:
-		d = conf(p("geb.driver": "htmlunit")).driverInstance
-		expect:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
-
-	def "specific valid short name but not available"() {
-		when:
-		conf(p("geb.driver": "ie")).driverInstance
-		then:
-		Exception e = thrown()
-		isInstanceOf(UnableToLoadAnyDriversException, e)
-	}
-	
-	def "specific invalid shortname"() {
-		when:
-		conf(p("geb.driver": "garbage")).driverInstance
-		then:
-		Exception e = thrown()
-		isInstanceOf(UnknownDriverShortNameException, e)
-	}
-	
-	def "specific list of drivers"() {
-		given:
-		d = conf(p("geb.driver": "ie:htmlunit")).driverInstance
-		expect:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
-	
-	def "specific valid class name"() {
-		given:
-		d = conf(p("geb.driver": HtmlUnitDriver.name)).driverInstance
-		expect:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
-
-	def "specific invalid class name"() {
-		when:
-		d = conf(p("geb.driver": "a.b.c")).driverInstance
-		then:
-		Exception e = thrown()
-		isInstanceOf(UnableToLoadAnyDriversException, e)
-	}
-	
-	def "specify instance"() {
-		given:
-		def driver = loadClass(HtmlUnitDriver).newInstance()
-		d = conf(c(driver: driver)).driverInstance
-		expect:
-		d.is(driver)
-	}
-	
-	def "specify driver name in config"() {
-		given:
-		d = conf(c(driver: HtmlUnitDriver.name)).driverInstance
-		expect:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
-
-	def "specify driver names in config"() {
-		given:
-		d = conf(c(driver: "ie:htmlunit")).driverInstance
-		expect:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
-	
-	def "specify creation closure"() {
-		given:
-		def config = new ConfigObject()
-		config.cacheDriver = false
-		config.driver = { new HtmlUnitDriver() }
-		d = new Configuration(config).driverInstance
-
-		expect:
-		d instanceof HtmlUnitDriver
-	}
-	
 	def p(m = [:]) {
 		def p = new Properties()
 		p.putAll(m)
@@ -140,6 +54,10 @@ class ConfigurationDriverCreationSpec extends Specification {
 		conf
 	}
 
+	def loadClass(Class clazz) {
+		classLoader.loadClass(clazz.name)
+	}
+
 	boolean isInstanceOf(Class clazz, Object instance) {
 		loadClass(clazz).isInstance(instance)
 	}
@@ -152,7 +70,90 @@ class ConfigurationDriverCreationSpec extends Specification {
 		Thread.currentThread().contextClassLoader = null
 	}
 	
-	def loadClass(Class clazz) {
-		classLoader.loadClass(clazz.name)
+	def "no property"() {
+		when:
+		d = conf().driver
+		then:
+		isInstanceOf(HtmlUnitDriver, d)
 	}
+	
+	def "specific short name"() {
+		when:
+		d = conf(c(), p("geb.driver": "htmlunit")).driver
+		then:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+
+	def "specific valid short name but not available"() {
+		when:
+		conf(c(), p("geb.driver": "ie")).driver
+		then:
+		Exception e = thrown()
+		isInstanceOf(UnableToLoadAnyDriversException, e)
+	}
+	
+	def "specific invalid shortname"() {
+		when:
+		conf(c(), p("geb.driver": "garbage")).driver
+		then:
+		Exception e = thrown()
+		isInstanceOf(UnknownDriverShortNameException, e)
+	}
+	
+	def "specific list of drivers"() {
+		when:
+		d = conf(c(), p("geb.driver": "ie:htmlunit")).driver
+		then:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+	
+	def "specific valid class name"() {
+		when:
+		d = conf(c(), p("geb.driver": HtmlUnitDriver.name)).driver
+		then:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+
+	def "specific invalid class name"() {
+		when:
+		d = conf(c(), p("geb.driver": "a.b.c")).driver
+		then:
+		Exception e = thrown()
+		isInstanceOf(UnableToLoadAnyDriversException, e)
+	}
+	
+	def "specify instance"() {
+		when:
+		def driver = loadClass(HtmlUnitDriver).newInstance()
+		d = conf(c(driver: driver)).driver
+		then:
+		Exception e = thrown()
+		isInstanceOf(IllegalStateException, e)
+	}
+	
+	def "specify driver name in config"() {
+		when:
+		d = conf(c(driver: HtmlUnitDriver.name)).driver
+		then:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+
+	def "specify driver names in config"() {
+		when:
+		d = conf(c(driver: "ie:htmlunit")).driver
+		then:
+		isInstanceOf(HtmlUnitDriver, d)
+	}
+	
+	def "specify creation closure"() {
+		when:
+		def config = new ConfigObject()
+		config.cacheDriver = false
+		config.driver = { new HtmlUnitDriver() }
+		d = new Configuration(config).driver
+
+		then:
+		d instanceof HtmlUnitDriver
+	}
+	
 }

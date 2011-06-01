@@ -16,6 +16,7 @@
 
 package geb.conf
 
+import geb.*
 import spock.lang.*
 import geb.waiting.Wait
 

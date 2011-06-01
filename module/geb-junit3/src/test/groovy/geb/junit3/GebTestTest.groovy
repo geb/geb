@@ -33,10 +33,7 @@ class GebTestTest extends GebTest {
 			</html>"""
 		}
 		super.setUp()
-	}
-	
-	String getBaseUrl() {
-		server.baseUrl
+		browser.baseUrl = server.baseUrl
 	}
 	
 	void testMissingMethodsAreInvokedOnTheDriverInstance() {

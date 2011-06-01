@@ -37,11 +37,7 @@ class GebTestTest extends GebTest {
 			</body>
 			</html>"""
 		}
-		super.setUp()
-	}
-	
-	String getBaseUrl() {
-		server.baseUrl
+		browser.baseUrl = server.baseUrl
 	}
 	
 	@Test

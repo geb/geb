@@ -15,12 +15,25 @@
 package geb.spock
 
 import spock.lang.*
-import geb.Browser
+import geb.*
 import org.openqa.selenium.WebDriver
 
 class GebSpec extends Specification {
 
+	String gebConfEnv = null
+	String gebConfScript = null
+	
 	@Shared Browser _browser
+
+	Configuration createConf() {
+		def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
+		println "conf: $conf"
+		conf
+	}
+	
+	Browser createBrowser() {
+		new Browser(createConf())
+	}
 
 	Browser getBrowser() {
 		if (_browser == null) {
@@ -30,6 +43,9 @@ class GebSpec extends Specification {
 	}
 
 	void resetBrowser() {
+		if (_browser?.config.autoClearCookies) {
+			_browser.clearCookiesQuietly()
+		}
 		_browser = null
 	}
 
@@ -45,34 +61,15 @@ class GebSpec extends Specification {
 		getBrowser()."$name" = value
 	}
 
-	Browser createBrowser() {
-		def driver = createDriver()
-		def baseUrl = getBaseUrl()
-		
-		driver ? new Browser(driver, baseUrl) : new Browser(baseUrl)
-	}
-	
-	WebDriver createDriver() {
-		null // use Browser default
-	}
-
-	String getBaseUrl() {
-		null
-	}
-	
 	private isSpecStepwise() {
 		this.class.getAnnotation(Stepwise) != null
 	}
 	
 	def cleanup() {
-		if (!isSpecStepwise() && browser.config.autoClearCookies) {
-			browser.clearCookiesQuietly()
-		}
+		if (!isSpecStepwise()) resetBrowser()
 	}
 	
 	def cleanupSpec() {
-		if (isSpecStepwise() && browser.config.autoClearCookies) {
-			browser.clearCookiesQuietly()
-		}
+		if (isSpecStepwise()) resetBrowser()
 	}
 }
