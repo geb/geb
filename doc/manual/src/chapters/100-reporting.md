@@ -30,7 +30,7 @@ If you plan on taking multiple reports, it can be handy to use Groovy's support 
 
 ## Testing
 
-The testing integrations such as [Spock](testing.html#spock__junit), [JUnit](testing.html#spock__junit) and (by extension) [Grails](build-integrations.html#grails) include support for reporting and use the [`ScreenshotAndPageSourceReporter`](api/geb-core/geb/report/ScreenshotAndPageSourceReporter.html) by default. Reports are taken implicitly by the testing framework that is driving Geb at the beginning and end of each test method. 
+The testing integrations such as [Spock](testing.html#spock__junit), [JUnit](testing.html#spock__junit), [TestNG](testing.html#testng) and (by extension) [Grails](build-integrations.html#grails) include support for reporting and use the [`ScreenshotAndPageSourceReporter`](api/geb-core/geb/report/ScreenshotAndPageSourceReporter.html) by default. Reports are taken implicitly by the testing framework that is driving Geb at the beginning and end of each test method.
 
 All of these testing subclasses have a method `File getReportDir()` which by default calls through to the browser configuration's [`getReportsDir()`](configuration.html#reports_dir) method. If this method returns `null`, no reports will be taken. The dir that will actually be used will be the dir returned by this method plus the fully qualified class name of the test class. For example, if the reports dir is `/reports` and the test class is `my.app.FunctionalSpec` then the directory that will be used is `/reports/my/app/FunctionalSpec`.
 
@@ -39,7 +39,7 @@ All of these integrations also provide the method `void report(String label)` wh
 	import geb
 	import geb.spock.GebReportingSpec
 	
-	class FunctionalSpec extends GebReporting {
+	class FunctionalSpec extends GebReportingSpec {
 		
 		def "login"() {
 			when:
@@ -50,5 +50,34 @@ All of these integrations also provide the method `void report(String label)` wh
 			
 			then:
 			title == "Logged in!"
+		}
+	}
+
+### TestNG
+Class `geb.testng.GebReportingTest` uses [TestNG Listeners](http://testng.org/doc/documentation-main.html#testng-listeners), so if you are using TestNG version less than 6.0 you should add listener `geb.testng.GebTestListener`.
+
+For Maven2:
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.8.1</version>
+		<configuration>
+			<properties>
+				<property>
+					<name>listener</name>
+					<value>geb.testng.GebTestListener</value>
+				</property>
+			</properties>
+		</configuration>
+	</plugin>
+
+For Gradle:
+
+	test {
+		useTestNG()
+
+		options {
+			listeners << 'geb.testng.GebTestListener'
 		}
 	}
