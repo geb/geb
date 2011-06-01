@@ -27,7 +27,6 @@ class GebSpec extends Specification {
 
 	Configuration createConf() {
 		def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-		println "conf: $conf"
 		conf
 	}
 	
