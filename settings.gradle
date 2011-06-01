@@ -3,8 +3,7 @@ include "module:geb-core",
         "module:geb-spock", 
         "module:geb-junit3", 
         "module:geb-junit4",
-        "module:geb-grails", 
-        "module:grails-plugin",
+        "module:geb-grails",
         "module:geb-easyb",
         "doc:manual",
         "doc:site-app"
@@ -12,4 +11,3 @@ include "module:geb-core",
 if (hasProperty("withSamples")) {
 	include "samples:google"
 }
-

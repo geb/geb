@@ -2,7 +2,7 @@ package grails.plugin.geb
 
 import geb.*
 
-using "geb-grails"
+using "geb"
 
 scenario "using geb", {
 

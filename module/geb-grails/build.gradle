@@ -1,15 +1,46 @@
-dependencies {
-	compile project(':module:geb-spock'),
-	        project(":module:geb-junit3"),
-	        project(":module:geb-junit4"),
-	        project(":module:geb-easyb"),
-	        "org.grails:grails-core:${grailsVersion}",
-	        "org.grails:grails-test:${grailsVersion}",
-	        "org.grails:grails-web:${grailsVersion}",
-	        "org.slf4j:slf4j-log4j12:1.5.5"
+buildscript {
+	repositories {
+		mavenCentral()
+		mavenRepo name: "codehaus-snapshots", urls: 'http://snapshots.repository.codehaus.org'
+		mavenRepo name: "java.net", urls: 'http://download.java.net/maven/2'
+	}
 }
 
-modifyPom = { pom ->
-	// set the grails deps to provided
-	pom.dependencies.findAll { it.groupId in ["org.grails", "org.slf4j"] }*.scope = "provided"
+apply plugin: "grails"
+
+repositories {
+	flatDir dirs: "lib"
+}
+
+configurations {
+	compile.exclude module: "commons-logging"
+	compile.exclude module: 'xml-apis'
+}
+
+dependencies {
+    logging "org.slf4j:slf4j-log4j12:1.5.5"
+    
+	compile project(':module:geb-core'),
+	        "org.grails:grails-crud:${grailsVersion}",
+	        "org.grails:grails-gorm:${grailsVersion}"
+
+	runtime "hsqldb:hsqldb:1.8.0.5",
+	        "net.sf.ehcache:ehcache-core:1.7.1",
+	        "org.aspectj:aspectjrt:1.6.6"
+}
+
+System.setProperty("server.port", "8010")
+System.setProperty("geb.building", "true") // disables geb deps in plugins build config
+
+task uploadArchives << {
+	if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+		def args = "-zipOnly -username=${codehausUsername} -password=${codehausPassword} "
+		if (project.version.endsWith("-SNAPSHOT")) {
+			args += "-message='snapshot release for “${project.version}”' -snapshot"
+		} else {
+			args += "-message='Release “${project.version}”'"
+		}
+		
+		grailsTask("release-plugin", args)
+	}
 }

@@ -15,16 +15,23 @@
  */
 package grails.plugin.geb
 
-class JUnit3SmokeTest extends JUnit3GebTests {
+import geb.spock.GebReportingSpec
+import spock.lang.*
 
-	void testDefaultLocationIsApplicatioRoot() {
+class SmokeSpec extends GebReportingSpec {
+	
+	def "default location is application root"() {
+		when:
 		to IndexPage
-		assert at(IndexPage)
+		then:
+		at IndexPage
 	}
 
-	void testPageUrlsAreRelativeToApp() {
+	def "page urls are relative to app"() {
+		when:
 		to OtherPage
-		assert at(OtherPage)
+		then:
+		at OtherPage
 	}
 	
 }

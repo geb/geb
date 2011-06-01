@@ -23,11 +23,11 @@ grails.project.dependency.resolution = {
 		mavenRepo "http://snapshots.repository.codehaus.org"
 	}
 	dependencies {
-		// If we are building as part of geb, don't try and pull in
-		// as gradle sets up the deps for us. This prop is set in the
-		// gradle build.
-		if (System.getProperty("geb.building") == null) {
-			test("org.codehaus.geb:geb-grails:0.6-SNAPSHOT")
+		def gebVesion = "0.6-SNAPSHOT"
+		["junit4", "spock", "easyb"].each {
+			test("org.codehaus.geb:geb-$it:0.6-SNAPSHOT") {
+				export = false
+			}
 		}
 		
 		// used for running this plugin's tests, not in user tests

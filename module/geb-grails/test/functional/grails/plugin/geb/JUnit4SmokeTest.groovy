@@ -15,12 +15,18 @@
  */
 package grails.plugin.geb
 
-import geb.easyb.GebPlugin
+import geb.junit4.GebReportingTest
 
-class GebEasybPlugin extends GebPlugin {
+class JUnit4SmokeTest extends GebReportingTest {
 
-	String getName() {
-		"geb-grails"
+	void testDefaultLocationIsApplicatioRoot() {
+		to IndexPage
+		assert at(IndexPage)
 	}
 
+	void testPageUrlsAreRelativeToApp() {
+		to OtherPage
+		assert at(OtherPage)
+	}
+	
 }
