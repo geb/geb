@@ -80,7 +80,7 @@ eventTestPhaseStart = { phaseName ->
 			throw new IllegalStateException("failed to load build adapter")
 		}
 		
-		def baseUrl = argsMap["baseUrl"] ?: "http://localhost:$serverPort${serverContextPath == "/" ? "" : serverContextPath}/"
+		def baseUrl = argsMap["baseUrl"] ?: "http://$serverHost:$serverPort${serverContextPath == "/" ? "" : serverContextPath}/"
 		System.setProperty(buildAdapterClass.BASE_URL_PROPERTY_NAME, baseUrl)
 		
 		def reportsDir = new File(grailsSettings.testReportsDir, 'geb')
