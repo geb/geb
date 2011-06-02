@@ -1,3 +1,9 @@
+buildscript {
+	dependencies {
+		classpath "markdown2book:markdown2book:1.0-SNAPSHOT"
+	}
+}
+
 apply plugin: "base"
 apply plugin: "maven"
 
