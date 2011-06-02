@@ -6,7 +6,6 @@ repositories {
 	mavenRepo name: 'markdownj', urls: ["http://scala-tools.org/repo-releases/"]
 }
 
-dependsOn(":grails-plugin", true)
 dependsOn(":markdown2book:markdown2book", true)
 dependsOn(":huxi-gradle-plugins", true)
 

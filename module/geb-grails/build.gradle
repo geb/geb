@@ -1,8 +1,13 @@
+import org.grails.gradle.plugin.GrailsTask
+
 buildscript {
 	repositories {
 		mavenCentral()
 		mavenRepo name: "codehaus-snapshots", urls: 'http://snapshots.repository.codehaus.org'
 		mavenRepo name: "java.net", urls: 'http://download.java.net/maven/2'
+	}
+	dependencies {
+	    classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
 	}
 }
 
@@ -18,9 +23,7 @@ configurations {
 }
 
 dependencies {
-    logging "org.slf4j:slf4j-log4j12:1.5.5"
-    
-	compile project(':module:geb-core'),
+	compile "org.slf4j:slf4j-log4j12:1.5.5",
 	        "org.grails:grails-crud:${grailsVersion}",
 	        "org.grails:grails-gorm:${grailsVersion}"
 
@@ -36,16 +39,18 @@ dependencies {
 System.setProperty("server.port", "8010")
 System.setProperty("geb.building", "true") // disables geb deps in plugins build config
 
-task uploadArchives << {
+task uploadArchives(type: GrailsTask) {
 	if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-		def args = "-zipOnly -username=${codehausUsername} -password=${codehausPassword} "
+		command "release-plugin"
+		configuration "compile"
+		useRuntimeClasspathForBootstrap true
+		
+		args = "-zipOnly -username=${codehausUsername} -password=${codehausPassword} "
 		if (project.version.endsWith("-SNAPSHOT")) {
 			args += "-message='snapshot release for “${project.version}”' -snapshot"
 		} else {
 			args += "-message='Release “${project.version}”'"
 		}
-		
-		grailsTask("release-plugin", args)
 	}
 }
 
