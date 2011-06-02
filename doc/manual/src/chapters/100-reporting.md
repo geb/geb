@@ -54,9 +54,34 @@ All of these integrations also provide the method `void report(String label)` wh
 	}
 
 ### TestNG
-Class `geb.testng.GebReportingTest` uses [TestNG Listeners](http://testng.org/doc/documentation-main.html#testng-listeners), so if you are using TestNG version less than 6.0 you should add listener [`geb.testng.GebTestListener`](api/geb-testng/geb/testng/GebTestListener.html).
+Class `geb.testng.GebReportingTest` uses [TestNG Listeners](http://testng.org/doc/documentation-main.html#testng-listeners),
+so you can implement your own listener, which for example will be save reports only on fail tests:
 
-For Maven2:
+	class MyCustomListener extends TestListenerAdapter {
+
+		@Override
+		void onTestFailure(ITestResult tr) {
+			createReport(tr)
+		}
+
+		private void createReport(ITestResult tr) {
+			def testInstance = tr.testClass.getInstances(true).first()
+			if (testInstance instanceof GebReportingTest) {
+				testInstance.report(tr.method.methodName)
+			}
+		}
+	}
+
+And add your listener to the tests using the annotation, maven or gradle:
+
+With annotation:
+
+	@Listeners([MyCustomListener.class])
+	class MyTest {
+
+	}
+
+With Maven2:
 
 	<plugin>
 		<groupId>org.apache.maven.plugins</groupId>
@@ -66,18 +91,18 @@ For Maven2:
 			<properties>
 				<property>
 					<name>listener</name>
-					<value>geb.testng.GebTestListener</value>
+					<value>MyCustomListener</value>
 				</property>
 			</properties>
 		</configuration>
 	</plugin>
 
-For Gradle:
+With Gradle:
 
 	test {
 		useTestNG()
 
 		options {
-			listeners << 'geb.testng.GebTestListener'
+			listeners << 'MyCustomListener'
 		}
 	}
