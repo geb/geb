@@ -1,5 +1,6 @@
 dependencies {
-	compile project(':module:geb-spock'),
+	compile project(':module:geb-core'),
+	        spockDependency,
 	        jettyDependency,
 	        firefoxDriverDependency,
 	        htmlUnitDriverDependency,
