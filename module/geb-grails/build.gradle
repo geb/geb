@@ -3,19 +3,14 @@ import org.grails.gradle.plugin.GrailsTask
 buildscript {
 	repositories {
 		mavenCentral()
-		mavenRepo name: "codehaus-snapshots", urls: 'http://snapshots.repository.codehaus.org'
-		mavenRepo name: "java.net", urls: 'http://download.java.net/maven/2'
+		mavenRepo name: "grails", urls: 'http://repo.grails.org/grails/repo'
 	}
 	dependencies {
-	    classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
+		classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
 	}
 }
 
 apply plugin: "grails"
-
-repositories {
-	flatDir dirs: "lib"
-}
 
 configurations {
 	compile.exclude module: "commons-logging"
@@ -25,11 +20,11 @@ configurations {
 dependencies {
 	compile "org.slf4j:slf4j-log4j12:1.5.5",
 	        "org.grails:grails-crud:${grailsVersion}",
-	        "org.grails:grails-gorm:${grailsVersion}"
+	        
+	compile ("org.grails:grails-gorm:${grailsVersion}")
 
 	runtime "hsqldb:hsqldb:1.8.0.5",
-	        "net.sf.ehcache:ehcache-core:1.7.1",
-	        "org.aspectj:aspectjrt:1.6.6"
+	        "net.sf.ehcache:ehcache-core:1.7.1"
 	
 	test project(':module:geb-junit4'),
 	     project(':module:geb-spock'),
