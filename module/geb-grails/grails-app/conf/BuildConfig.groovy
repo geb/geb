@@ -22,11 +22,16 @@ grails.project.dependency.resolution = {
 		mavenCentral()
 		mavenRepo "http://snapshots.repository.codehaus.org"
 	}
+	
+	def gebVersion = "0.6-SNAPSHOT"
+	def runningInGebBuild = System.getProperty("geb.building") != null
+	
 	dependencies {
-		def gebVesion = "0.6-SNAPSHOT"
-		["junit4", "spock", "easyb"].each {
-			test("org.codehaus.geb:geb-$it:0.6-SNAPSHOT") {
-				export = false
+		if (!runningInGebBuild) {
+			["junit4", "spock", "easyb"].each {
+				test("org.codehaus.geb:geb-$it:$gebVersion") {
+					export = false
+				}
 			}
 		}
 		
@@ -40,8 +45,10 @@ grails.project.dependency.resolution = {
 		}
 	}
 	plugins {
-		compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.5-groovy-1.7", ":easyb:2.02") {
-			export = false
+		if (runningInGebBuild) {
+			compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.5-groovy-1.7", ":easyb:2.02") {
+				export = false
+			}
 		}
 	}
 }
