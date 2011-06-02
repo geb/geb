@@ -3,10 +3,8 @@ apply plugin: "java"
 repositories {
 	mavenCentral()
 	mavenRepo urls: ['http://download.java.net/maven/2/']
-	mavenRepo name: 'markdownj', urls: ["http://scala-tools.org/repo-releases/"]
 }
 
-dependsOn(":markdown2book:markdown2book", true)
 dependsOn(":huxi-gradle-plugins", true)
 
 dependencies { 
