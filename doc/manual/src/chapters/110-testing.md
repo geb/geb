@@ -1,10 +1,10 @@
 # Testing
 
-Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [EasyB][easyb] and [Cuke4Duke][cuke4duke].
+Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [TestNG][testng], [EasyB][easyb] and [Cuke4Duke][cuke4duke].
 
-## Spock & JUnit
+## Spock, JUnit & TestNG
 
-The Spock and JUnit integrations both work fundamentally the same way. They provide subclasses that setup a [browser][browser-api] instance that all method calls and property accesses/references resolve against via Groovy's `methodMissing` and `propertyMissing` mechanism. 
+The Spock, JUnit and TestNG integrations work fundamentally the same way. They provide subclasses that setup a [browser][browser-api] instance that all method calls and property accesses/references resolve against via Groovy's `methodMissing` and `propertyMissing` mechanism.
 
 > Recall that the browser instance also forwards any method calls or property accesses/references that it can't handle to it's current page object, which helps to remove a lot of noise from the test.
 
@@ -46,7 +46,7 @@ The browser to use for the tests is supplied by the `createBrowser()` method whi
 
 ### Cookie management
 
-The Spock and JUnit integrations both will automatically clear the browser's cookies at the end of each test method. For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest` and for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest`.
+The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies at the end of each test method. For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method in `geb.testng.GebTest`.
 
 The `geb.spock.GebSpec` class will clear the cookies in the `cleanup()` method unless the spec is `@Stepwise`, in which case they are cleared in `cleanupSpec()` (meaning that all feature methods in a stepwise spec share the same browser state).
 
@@ -80,6 +80,12 @@ The following table illustrates the specific jars and class names for Spock and 
 		<td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit3">geb-junit3</a></td>
 		<td><a href="api/geb-junit3/geb/junit3/GebTest.html">geb.junit3.GebTest</a></td>
 		<td><a href="api/geb-junit3/geb/junit3/GebReportingTest.html">geb.junit3.GebReportingTest</a></td>
+	</tr>
+	<tr>
+		<td>TestNG</td>
+		<td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-testng">geb-testng</a></td>
+		<td><a href="api/geb-testng/geb/testng/GebTest.html">geb.testng.GebTest</a></td>
+		<td><a href="api/geb-testng/geb/testng/GebReportingTest.html">geb.testng.GebReportingTest</a></td>
 	</tr>
 </table>
 
