@@ -1,3 +1,0 @@
-[submodule "buildSrc/huxi-gradle-plugins"]
-	path = buildSrc/huxi-gradle-plugins
-	url = git://github.com/geb/huxi-gradle-plugins.git
