@@ -1,20 +1,19 @@
 # Pages
 
-All page classes **must** extend `geb.Page`.
+> Before reading this page, please make sure you have read the [section on the Browser.drive() method][drive]
 
-> before reading this page, please make sure you have read the [section on the Browser.drive() method][drive]
-
-## The Page Object Pattern - why?
+## The Page Object pattern
 
     import geb.Browser
     
-    Browser.drive("http://google.com") {
+    Browser.drive {
+        go "http://google.com"
         $("input[name=q]").value() = "Chuck Norris"
         $("input[value=Google Search]").click()
         assert $("li.g", 0).get("a.l").text() ==~ /Chuck/
     }
 
-This is valid Geb code, and it works well for a one off script but there are two big issues with this approach. Imagine that you have _many_ tests that involve searching and checking results. The implementation of how to search and how to find the results is going to have to be duplicated in _every_ test, maybe _many_ times per test. The _Page Object Pattern_ allows us to apply the same principles of modularity, reuse and encapsulation that we use in other aspects of programming.
+This is valid Geb code, and it works well for a one off script but there are two big issues with this approach. Imagine that you have _many_ tests that involve searching and checking results. The implementation of how to search and how to find the results is going to have to be duplicated in _every_ test, maybe _many times_ per test. As soon as something as trivial as the name of the search field changes you have to update a lot of code. The Page Object Pattern allows us to apply the same principles of modularity, reuse and encapsulation that we use in other aspects of programming to avoid such issues in browser automation code.
 
 Here is the same script, utilising page objects…
 
@@ -24,7 +23,7 @@ Here is the same script, utilising page objects…
         static url = "http://google.com"
         static at = { title == "Google" }
         static content = {
-            searchField { $("input[name=q]").value() }
+            searchField { $("input[name=q]") }
             searchButton(to: GoogleResultsPage) { $("input[value=Google Search]") }
         }
     }
@@ -39,14 +38,19 @@ Here is the same script, utilising page objects…
     }
     
     // Now the script
-    Browser.drive(GoogleHomePage) {
+    Browser.drive {
+        to GoogleHomePage
         searchField.value = "Chuck Norris"
         searchButton.click()
         assert at(GoogleResultsPage)
         assert resultLink(0).text() ==~ /Chuck/
     }
 
-You have now encapsulated, in a reusable fashion, information about each page and how to interact with it. As anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can become an expensive and frustrating process. A core philosophy of Geb is to address this issue through its content definition DSL.
+You have now encapsulated, in a reusable fashion, information about each page and how to interact with it. As anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can become an expensive and frustrating process. Geb's support for the Page Object pattern addresses this problem.
+
+## The Page superclass
+
+All page objects **must** inherit from [`Page`][page-api].
 
 ## The Content DSL
 
@@ -109,11 +113,11 @@ The Content DSL actually defines content _templates_. This is best illustrated b
 
 There are no restrictions on what arguments can be passed to content templates.
 
-A content template can return _anything_. Typically they will return a `Navigator` object through the use of the $ function, but it can be anything.
+A content template can return _anything_. Typically they will return a [`Navigator`][navigator-api] object through the use of the `$()` function, but it can be anything.
 
     class ExamplePage extends Page {
         static content = {
-            theDivText { $('div', id: a).text() }
+            theDivText { $('div#a').text() }
         }
     }
     
@@ -126,7 +130,7 @@ It's important to realise that `«definition»` code is evaluated against the pa
 
     class ExamplePage extends Page {
         static content = {
-            theDiv { $('div', id: a) }
+            theDiv { $('div#a') }
             theDivText { theDiv.text() }
         }
     }
@@ -169,9 +173,9 @@ The following are the available options.
 
 Default value: `true`
 
-The `required` option controls whether or not the content returned by the definition has to exist or not. This is only relevant when the definition returns a `Navigator` object (via the $ function), it is ignored if the definition returns anything else.
+The `required` option controls whether or not the content returned by the definition has to exist or not. This is only relevant when the definition returns a `Navigator` object (via the `$()` function), it is ignored if the definition returns anything else.
 
-If the `required` option is set to `true` and the returned content does not exist, a `geb.error.RequiredPageContentNotPresent` exception will be thrown.
+If the `required` option is set to `true` and the returned content does not exist, a [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception will be thrown.
 
     class ExamplePage extends Page {
         static content = {
@@ -240,9 +244,7 @@ The `to` option allows the definition of which page the browser will be sent to 
         }
     }
 
-    class HelpPage extends Page {
-        
-    }
+    class HelpPage extends Page {}
     
     Browser.drive {
         to ExamplePage
@@ -258,13 +260,14 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the `page(List<Class>)` method which is explained in the section on [changing pages][changing-pages].
+Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb-core/geb/Browser.html#page(Class[]\)) which is explained in the section on 
+[changing pages][changing-pages].
 
 #### wait
 
 Default value: `false`
 
-The `wait` option allows Geb to wait an amount of time for content to appear on the page, instead of throwing a `RequiredPageContentNotPresent` exception if the content is not present when requested.
+The `wait` option allows Geb to wait an amount of time for content to appear on the page, instead of throwing a [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception if the content is not present when requested.
 
     class DynamicPage extends Page {
         static content = {
@@ -290,7 +293,7 @@ This is equivalent to:
         assert waitFor { dynamicallyAdded }.text() == "I'm here now"
     }
 
-See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a `geb.waiting.WaitTimeoutException` will be thrown if the wait timeout expires.
+See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a [`WaitTimeoutException`](api/geb-core/geb/waiting/WaitTimeoutException.html) will be thrown if the wait timeout expires.
 
 The value for the `wait` option can be one of the following:
 
@@ -315,7 +318,7 @@ It is also possible to use `wait` when defining non element content, such as a s
         assert successStatus
     }
 
-In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the `RequiredPageContentNotPresent` exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
+In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
 
 ## “At” Verification
 
@@ -325,7 +328,7 @@ Each page can define a way to check whether the underling browser is at the page
         static at = { $("h1").text() == "Example" }
     }
 
-This closure can either return a `false` value or throw an `AssertionError` (e.g. via the `assert` method).
+This closure can either return a `false` value or throw an `AssertionError` (via the `assert` method).
 
     Browser.drive {
         to ExamplePage
@@ -364,11 +367,12 @@ Pages can define URLs via the `static` `url` property.
 
 The url is used when using the browser `to()` method.
 
-    Browser.drive("http://myapp.com") {
+    Browser.drive {
+        go "http://myapp.com/"
         to ExamplePage
     }
 
-When URLs are resolved against base URLs, it is done in the same manner as web browsers resolve URLs. Given a base of “`http://myapp.com/path`” and a another URL to resolve against it of “`/examples`”, the resultant URL will be “`http://myapp.com/example`”. The leading “`/`” on the non base URL causes it to be treated as an absolute path from the server base. This means that in almost all cases your page URLs **should not** start with a leading “`/`”.
+See the section on [the base url](browser.html#the_base_url) for notes about urls and slashes.
 
 See the section on [Advanced Page Navigation][page-navigation] for more information on the `to()` method.
 
@@ -407,7 +411,7 @@ The `onLoad()` method is called with previous page object instance when the page
     import geb.*
     
     class SomePage extends Page {
-        def onLoad(Page previousPage) {
+        void onLoad(Page previousPage) {
             // do some stuff with the previous page
         }
     }
@@ -419,12 +423,7 @@ The `onUnload()` method is called with next page object instance when the page i
     import geb.*
     
     class SomePage extends Page {
-        def onUnload(Page newPage) {
+        void onUnload(Page newPage) {
             // do some stuff with the new page
         }
     }
-
-## This and That
-
-* The browser that the page is connected to is available via the `browser` property.
-* The title of the page is available via the `title` property.

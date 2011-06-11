@@ -50,12 +50,12 @@ class PageChangeCallbacksSpecPage1 extends Page {
 	def arg
 	def method
 	
-	def onLoad(Page previousPage) {
+	void onLoad(Page previousPage) {
 		method = 'onLoad'
 		arg = previousPage
 	}
 	
-	def onUnload(Page nextPage) {
+	void onUnload(Page nextPage) {
 		method = 'onUnload'
 		arg = nextPage
 	}

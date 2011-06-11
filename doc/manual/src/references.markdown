@@ -18,7 +18,7 @@
 [page-at]: pages.html#at_verification
 [required]: pages.html#required
 [drive]: browser.html#the_drive_method
-[changing-pages]: browser.html#changing_pages
+[changing-pages]: browser.html#changing_the_page
 [content-dsl]: pages.html#the_content_dsl
 [defaultdriver]: browser.html#the_default_driver
 [defaultdriver-lifecycle]: browser.html#lifecycle
@@ -34,6 +34,7 @@
 [httpurlconnection]: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
 [configuration-api]: api/geb-core/geb/Configuration.html
 [browser-api]: api/geb-core/geb/Browser.html
+[page-api]: api/geb-core/geb/Page.html
 [navigator-api]: api/geb-core/geb/navigator/Navigator.html
 [bindingupdater-api]: api/geb-core/geb/binding/BindingUpdater.html
 [grails]: http://grails.org
