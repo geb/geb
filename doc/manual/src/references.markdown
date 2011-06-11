@@ -35,6 +35,7 @@
 [configuration-api]: api/geb-core/geb/Configuration.html
 [browser-api]: api/geb-core/geb/Browser.html
 [page-api]: api/geb-core/geb/Page.html
+[module-api]: api/geb-core/geb/Module.html
 [navigator-api]: api/geb-core/geb/navigator/Navigator.html
 [bindingupdater-api]: api/geb-core/geb/binding/BindingUpdater.html
 [grails]: http://grails.org

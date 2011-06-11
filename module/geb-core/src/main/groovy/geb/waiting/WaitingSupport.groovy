@@ -19,7 +19,7 @@ import geb.Configuration
 /**
  * A mixin style class that adds support for waiting for different things.
  * 
- * This is mixed into {@link geb.Browser}, {@link geb.Page} and {@link geb.Module}.
+ * This is mixed into {@link geb.Page} and {@link geb.Module}.
  */
 class WaitingSupport {
 
@@ -30,14 +30,14 @@ class WaitingSupport {
 	}
 	
 	/**
-	 * Uses the {@link geb.conf.Configuration#getWaitPreset(java.lang.String) wait preset} from the {@code configuration}
+	 * Uses the {@link geb.Configuration#getWaitPreset(java.lang.String) wait preset} from the {@code configuration}
 	 * with the given name to to wait for {@code block} to return a true value according to the Groovy Truth.
 	 *
 	 * @param waitPreset the name of the wait preset in {@code configuration} to use
 	 * @param block what is to be waited on to return a true-ish value
 	 * @return the true-ish return value from {@code block}
 	 * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
- 	 * @see geb.conf.Configuration#getWaitPreset(java.lang.String)
+ 	 * @see geb.Configuration#getWaitPreset(java.lang.String)
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
 	def waitFor(String waitPreset, Closure block) {
@@ -45,13 +45,13 @@ class WaitingSupport {
 	}
 	
 	/**
-	 * Uses the {@link geb.conf.Configuration#getDefaultWait() default wait} from the {@code configuration} to
+	 * Uses the {@link geb.Configuration#getDefaultWait() default wait} from the {@code configuration} to
 	 * wait for {@code block} to return a true value according to the Groovy Truth.
 	 * 
 	 * @param block what is to be waited on to return a true-ish value
 	 * @return the true-ish return value from {@code block}
 	 * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
-	 * @see geb.conf.Configuration#getDefaultWait()
+	 * @see geb.Configuration#getDefaultWait()
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
   	 */
 	def waitFor(Closure block) {
@@ -59,7 +59,7 @@ class WaitingSupport {
 	}
 
 	/**
-	 * Invokes {@code block} every {@link geb.conf.Configuration#getDefaultWaitRetryInterval()} seconds, until it returns
+	 * Invokes {@code block} every {@link geb.Configuration#getDefaultWaitRetryInterval()} seconds, until it returns
 	 * a true value according to the Groovy Truth, waiting at most {@code timeout} seconds.
 	 * 
 	 * @param timeout the number of seconds to wait for block to return (roughly)

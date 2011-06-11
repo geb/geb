@@ -4,7 +4,8 @@ This section discusses how to deal with some of the challenges in testing and/or
 
 ## The “js” object
 
-The browser instance exposes a “`js`” object that provides support for working with Javascript over and above what WebDriver provides. It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`][javascriptexecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...\)) method. 
+The browser instance exposes a “[`js`](api/geb-core/geb/Browser.html#getJs(\))” object that provides support for working with Javascript over and above what WebDriver provides. 
+It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`][javascriptexecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...\)) method. 
 
 > Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object...\)) in order to understand how type conversion works between the two worlds.
 
@@ -101,7 +102,7 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
 
 Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX or timers.
 
-The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/download/WaitingSupport.html) mixin. These methods take various parameters that determine how long to wait for the given closure to return a true object according to the Groovy True, and how long to wait in between invoking the closure again.
+The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/waiting/WaitingSupport.html) mixin. These methods take various parameters that determine how long to wait for the given closure to return a true object according to the Groovy Truth, and how long to wait in between invoking the closure again.
 
     waitFor {} // use default configuration
     waitFor(10) {} // wait for up to 10 seconds, using the default retry interval
@@ -138,7 +139,7 @@ Here is an example showing one way of using `waitFor()` to deal with the situati
 
 > Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: [section on `required`](pages.html#required))
 
-Because the browser instance also implements the `waitFor()` method, the above could have been written as…
+Because the browser delegates method calls to the page object, the above could have been written as…
 
     Browser.drive {
         $("input", value: "Make Request")
@@ -146,11 +147,11 @@ Because the browser instance also implements the `waitFor()` method, the above c
         assert $("div#result").text() == "The Result"
     }
 
-It's generally preferable to put the waiting behind a method on the page or module so that it's reusable across tests.
-
 ## Alert and Confirm Dialogs
 
-WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust.
+WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the [`AlertAndConfirmSupport`](api/geb-core/geb/js/AlertAndConfirmSupport.html) class that is mixed into 
+[`Page`][page-api] and 
+[`Module`][module-api].
 
 The Geb methods **prevent** the browser from actually displaying the dialog, which is a good thing. This prevents the browser blocking while the dialog is displayed and causing your test to hang indefinitely.
 

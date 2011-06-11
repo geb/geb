@@ -36,7 +36,7 @@ import geb.waiting.WaitingSupport
  * <li>{@link geb.download.DownloadSupport}
  * <li>{@link geb.waiting.WaitingSupport}
  * <li>{@link geb.textmatching.TextMatchingSupport}
- * <li>{@link geb.internal.AlertAndConfirmSupport}
+ * <li>{@link geb.js.AlertAndConfirmSupport}
  * </ul>
  * <p>
  * See the chapter in the Geb manual on pages for more information on writing subclasses.
