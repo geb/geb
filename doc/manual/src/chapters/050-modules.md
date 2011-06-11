@@ -2,7 +2,7 @@
 
 Modules are re-usable definitions of content that can be used across multiple pages. They are useful for modelling things like UI widgets that are used across multiple pages, or even for defining more complex UI elements in the one page.
 
-They are defined in a manner similar to pages, but extend `geb.Module`…
+They are defined in a manner similar to pages, but extend [`Module`](api/geb-core/geb/Module.html)…
 
     class ExampleModule extends Module {
         static content = {
@@ -81,7 +81,7 @@ It can be defined at inclusion time…
         form { module FormModule, $("form") }
     }
 
-We can define a `Navigator` context when including the module using the above syntax. This now means that _all_ $ function calls that occur within the module are against the given context (in this case, the `form` element).
+We can define a `Navigator` context when including the module using the above syntax. This now means that _all_ `$()` function calls that occur within the module are against the given context (in this case, the `form` element).
 
 However, module classes can also define their own base…
 
