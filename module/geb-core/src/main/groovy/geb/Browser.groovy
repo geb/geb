@@ -304,7 +304,7 @@ class Browser {
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 * 
-	 * @see page(geb.Page)
+	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
 	void to(Class<? extends Page> pageType, Object[] args) {
@@ -314,7 +314,7 @@ class Browser {
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 * 
-	 * @see page(geb.Page)
+	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
 	void to(Map params, Class<? extends Page> pageType) {
@@ -324,7 +324,7 @@ class Browser {
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 * 
-	 * @see page(geb.Page)
+	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
 	void to(Map params, Class<? extends Page> pageType, Object[] args) {

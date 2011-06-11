@@ -1,11 +1,9 @@
 # The Browser
 
 The entry point to Geb is the [`Browser`][browser-api] object. 
-A browser object marries a [`WebDriver`][webdriver-api] instance (which drives the actual web browser being automated) with the concept of a “current page” as well as other useful things such as the 
-[JavaScript interface](javascript.html) and 
-[waiting][waiting] methods (among others).
+A browser object marries a [`WebDriver`][webdriver-api] instance (which drives the actual web browser being automated) with the concept of a “current page”.
 
-Browser objects are created with a [configuration][configuration-api] object which specifies which driver implemenation to use, the base url to resolve relative links against and other bits of config. The configuration mechansism allows you to externalise how Geb should operate, which means you can use the same suite of Geb code or tests with different browsers or site instances. The [chapter on configuration](configuration.html) contains more details on how to manage the configuration parameters.
+Browser objects are created with a [configuration][configuration-api] that specifies which driver implemenation to use, the base url to resolve relative links against and other bits of config. The configuration mechansism allows you to externalise how Geb should operate, which means you can use the same suite of Geb code or tests with different browsers or site instances. The [chapter on configuration](configuration.html) contains more details on how to manage the configuration parameters and what they are.
 
 The default constructor of [`Browser`][browser-api] simply loads its settings from the config mechanism.
 
