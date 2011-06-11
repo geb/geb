@@ -4,14 +4,14 @@ Geb features an API that can be used to make direct HTTP requests from the appli
 
 The direct download API works by using [`java.net.HttpURLConnection`][httpurlconnection] to directly connect to a URL from the application executing Geb, bypassing WebDriver.
 
-The Direct Download API is provided by the [`DownloadSupport`](api/geb-core/geb/download/DownloadSupport.html) class, which is mixed in to the browser object, pages and modules (which means you can just call these instance methods directly from anywhere where you would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules). Consult the [`DownloadSupport`](api/geb-core/geb/download/DownloadSupport.html) API reference for the `download*` methods that are available.
+The Direct Download API is provided by the [`DownloadSupport`](api/geb-core/geb/download/DownloadSupport.html) class, which is mixed in to pages and modules (which means you can just call these instance methods directly from anywhere where you would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules). Consult the [`DownloadSupport`](api/geb-core/geb/download/DownloadSupport.html) API reference for the `download*` methods that are available.
  
 ## Downloading Example
 
 For example, let's say you are using Geb to exercise a web application that generates PDF documents. The WebDriver API can only deal with HTML documents. You want to hit the PDF download link and also do some tests on the downloaded PDF. The direct download API is there to fill this need.
 
-    Browser.drive("http://myapp.com") {
-        go "/login"
+    Browser.drive {
+        go "http://myapp.com/login"
         
         // login
         username = "me"
@@ -23,7 +23,7 @@ For example, let's say you are using Geb to exercise a web application that gene
         
         // now get the pdf bytes
         def bytes = downloadBytes(downloadLink.@href)
-    }.quit()
+    }
 
 Simple enough, but consider what is happening behind the scenes. Our application required us to log in, which implies some kind of session state. Geb is using [`HttpURLConnection`][httpurlconnection] behind the scenes to get the content and before doing so the cookies from the real browser will be transferred allowing this connection to assume the same session. The PDF download link href may also be relative and Geb handles this by resolving the link passed to the download function against the browser's current page URL.
 
@@ -33,16 +33,14 @@ The Direct Download API can also be used for making fine grained requests which 
 
 All of the `download*()` methods take an optional closure that can configure the [java.net.HttpURLConnection][httpurlconnection] that will be used to make the request (after the `Cookie` header has been set).
 
-For example, we could test what happens when we send a gibberish in the `Accept-Encoding` header. 
+For example, we could test what happens when we send gibberish in the `Accept-Encoding` header. 
 
-    Browser.drive("http://myapp.com") {
-        go "/somepage"
-        
+    Browser.drive {
+        go "http://myapp.com/somepage"
         downloadText { HttpURLConnection connection ->
             connection.setRequestProperty("Accept-Encoding", "gibberish")
         }
-        
-    }.quit()
+    }
 
 > Before doing something like the above, it's worth considering whether doing such testing via Geb (a browser automation tool) is the right thing to do. You may find that it's more appropriate to directly use HttpURLConnection without Geb. That said, there are scenarios where such fine grained request control can be useful.
 
