@@ -19,8 +19,6 @@ package geb
 /**
  * Used to supply default configuration type values to allow a build system (or anything else) 
  * to configure the Geb runtime from the outside.
- * 
- * @see geb.conf.Configuration#createBuildAdapter()
  */
 interface BuildAdapter {
 	
@@ -29,7 +27,7 @@ interface BuildAdapter {
 	 * <p>
 	 * This method may return {@code null}.
 	 * 
-	 * @see geb.conf.Configuration#getBaseUrl()
+	 * @see geb.Configuration#getBaseUrl()
 	 */
 	String getBaseUrl()
 	
@@ -38,7 +36,7 @@ interface BuildAdapter {
 	 * <p>
 	 * This method may return {@code null}.
 	 * 
-	 * @see geb.conf.Configuration#getReportsDir()
+	 * @see geb.Configuration#getReportsDir()
 	 */
 	File getReportsDir()
 	

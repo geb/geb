@@ -14,7 +14,7 @@ Geb attempts to load a [ConfigSlurper][configslurper] script named `geb-conf.gro
 
 #### Environment Sensitivity
 
-The Groovy [ConfigSlurper][configslurper] mechanism has built in support for environment sensitive configuration, and Geb leverages this by using the `geb.env` system property to determine the environment to use. An effective use of this mechanism is to configure different drivers (i.e. actual browsers) based on the designated Geb “environment” (concrete details on how to do this further down).
+The Groovy [ConfigSlurper][configslurper] mechanism has built in support for environment sensitive configuration, and Geb leverages this by using the **`geb.env`** system property to determine the environment to use. An effective use of this mechanism is to configure different drivers based on the designated Geb “environment” (concrete details on how to do this further down).
 
 How you set the environment system property is going to be dependent on the build system you are using. For example, when using Grails you could control the Geb environment by specifying it on the command line…
 
@@ -30,9 +30,9 @@ Some config options can be specified by system properties. In general, config op
 
 The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options. For example, Grails dictates what the base url and directory for reports should be set to and the Geb plugin for Grails uses the build adapter mechanism to set this up.
 
-This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb-core/geb/buildadapter/BuildAdapter.html) interface. Currently, the build adapter can only influence the base url to use, and the location of the reports directory.
+This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb-core/geb/BuildAdapter.html) interface. Currently, the build adapter can only influence the base url to use, and the location of the reports directory.
 
-If the `geb.build.adapter` system property is not explicitly set, it defaults to [`geb.buildadapter.SystemPropertiesBuildAdapter`](api/geb-core/geb/buildadapter/SystemPropertiesBuildAdapter.html). As you can probably deduce, this default implementation uses system properties to specify values, so is usable in most circumstances. See the linked API doc for the details of the specific system properties it looks for.
+If the `geb.build.adapter` system property is not explicitly set, it defaults to [`SystemPropertiesBuildAdapter`](api/geb-core/geb/buildadapter/SystemPropertiesBuildAdapter.html). As you can probably deduce, this default implementation uses system properties to specify values, so is usable in most circumstances. See the linked API doc for the details of the specific system properties it looks for.
 
 > Note that while the default build adapter uses system properties, it should not be considered to be the same as system property configuration due to values in the config script taking precedence over the build adapter which is not true for system properties.
 
@@ -105,7 +105,7 @@ The following table gives the possible short names that can be used:
     </tr>
 </table>
 
-If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a `geb.error.UnableToLoadAnyDriversException` will be thrown.
+If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a [`UnableToLoadAnyDriversException`](api/geb-core/geb/error/UnableToLoadAnyDriversException.html) will be thrown.
 
 ### Driver Caching
 
