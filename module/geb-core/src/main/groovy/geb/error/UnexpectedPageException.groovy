@@ -14,9 +14,11 @@
  */
 package geb.error
 
+import geb.Page
+
 class UnexpectedPageException extends GebException {
 
-	UnexpectedPageException(List<Class> potentials) {
+	UnexpectedPageException(Class<? extends Page>[] potentials) {
 		super("unable to find page match (given potentials: $potentials)")
 	}
 

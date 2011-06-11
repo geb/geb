@@ -308,7 +308,7 @@ class NonEmptyNavigator extends Navigator {
 
 	void click(List<Class<? extends Page>> potentialPageClasses) {
 		click()
-		browser.page(potentialPageClasses)
+		browser.page(*potentialPageClasses)
 	}
 
 	int size() {

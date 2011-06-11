@@ -1,165 +1,67 @@
 # The Browser
 
-The entry point to Geb is the `Browser` class. A browser object drives an underlying `WebDriver` instance which drives the real or simulated browser and maintains an instance of the current page (if using the Page Object Pattern).
+The entry point to Geb is the [`Browser`][browser-api] object. 
+A browser object marries a [`WebDriver`][webdriver-api] instance (which drives the actual web browser being automated) with the concept of a “current page” as well as other useful things such as the 
+[JavaScript interface](javascript.html) and 
+[waiting][waiting] methods (among others).
 
-The browser constructor signature is…
+Browser objects are created with a [configuration][configuration-api] object which specifies which driver implemenation to use, the base url to resolve relative links against and other bits of config. The configuration mechansism allows you to externalise how Geb should operate, which means you can use the same suite of Geb code or tests with different browsers or site instances. The [chapter on configuration](configuration.html) contains more details on how to manage the configuration parameters.
 
-    Browser(WebDriver driver = null, String baseUrl = null, Class<? extends Page> pageClass = Page)
-
-Here are some examples of how to create a browser instance…
+The default constructor of [`Browser`][browser-api] simply loads its settings from the config mechanism.
 
     import geb.Browser
-    import myapp.HomePage
+    
+    def browser = new Browser()
+
+However, if you prefer to specify the driver implementation (or any other settable property on the [browser][browser-api]) you can by using Groovy's map constructor syntax.
+
+    import geb.Browser
     import org.openqa.selenium.firefox.FirefoxDriver
     
-    // Use default driver, no base url and generic first page
-    new Browser()
+    def browser = new Browser(driver: new FirefoxDriver())
+
+Which is that same as…
+
+    def browser = new Browser()
+    browser.driver = new FirefoxDriver()
+
+Any property set this way will **override** any settings coming from the config mechanism.
+
+> Note: The behaviour is undefined if a browser's driver is changed after its first use so you should avoid setting the driver this way and prefer the configuration mechanism.
+
+For drastically custom configuration requirements, you can create your own [configuration][configuration-api] object and construct the browser with it, likely using the [configuration loader](api/geb-core/geb/conf/ConfigurationLoader.html).
+
+    import geb.Browser
+    import geb.Configuration
+    import geb.ConfigurationLoader
     
-    // Use a specific driver, no base url and generic first page
-    new Browser(new FirefoxDriver())
-    
-    // Use a specific driver, a specific base url and generic first page
-    new Browser(new FirefoxDriver(), "http://myapp.com")
+    def loader = new ConfigurationLoader("a-custom-environment")
+    def config = loader.conf
+    def browser = new Browser(config)
 
-    // Use a specific driver, a specific base url and a specific first page
-    new Browser(new FirefoxDriver(), "http://myapp.com", HomePage)
-    
-There are also variants that allow using defaults for any parameter…
+Wherever possible, you should strive to use the no-arg constructor and manage Geb through the inbuilt [configuration mechanism](configuration.html) as it offers a great deal of flexibility and separates your configuration from your code.
 
-    new Browser(HomePage)
-    new Browser("http://myapp.com")
-    new Browser(new FirefoxDriver(), HomePage)
-
-> For information on the mangaging the driver implemenation (i.e. the thing that talks to the actual web browser) see the [next chapter](driver.html).
-
-## The Base URL
-
-Browser instances maintain a `String baseUrl` property that is used to complete all non absolute page URLs. This can be set either at construction time or anytime after.
-
-Consider the following page class…
-
-    class HomePage extends Page {
-        static url = "/home"
-    }
-
-And the following browser…
-
-    def browser = new Browser("http://myapp.com")
-
-The following code will result in a request being sent to: `http://myapp.com/home`…
-
-    browser.to(HomePage)
-
-See [making requests](#making_requests) for more information on the to() method.
-
-## The Page
-
-Browser instances maintain a _page_ (an object of type `geb.Page`) that represents the page the browser is at. The page instance is retrievable via the read only property `page`. 
-
-The browser uses Groovy's dynamism to delegate any method calls or property accesses that it can't handle to the current page…
-
-    def browser = new Browser("http://myapp.com")
-    browser.go("/signup")
-    
-    // The following two lines are equivalent
-    assert browser.$("h1").text() == "Signup Page"
-    assert browser.page.$("h1").text() == "Signup Page"
-
-> for more information on the $ function and other methods seen here, see the section on [navigation][navigator]
-
-By default, the starting page is an instance of the `geb.Page` base class which provides the basic navigation functions. There are constructor variants for `geb.Browser` that allow the initial page to be specified.
-
-### Changing The Page
-
-Typically, when the actual page that the real browser is at changes you want to change the browser's page instance to be of a new type. Or, your `geb.Browser` instance for one reason or another has a page instance that does not represent the actual page that the real browser is at. You can change the page instance by using the `page()` method on the browser object.
-
-> Note that clicking content can implicitly change the page type on your behalf by calling the methods below.
-
-#### page(Class newPageType)
-
-The `page()` method that takes a single `Class` object does the following:
-
-* Create a new instance of the given class and connect it to the browser object
-* Inform any registered [page change listeners][#page_change_listening] 
-* Set the browser's `page` property to the new instances
-
-Note that it **does not** instruct the real browser to make a request. It simply changes the browser object's page instance.
-
-#### page(List<Class> potentialPageTypes)
-
-The `page()` method that takes a list of `Class` objects does the following:
-
-* For each given page type:
-    * Create a new instance of the given class and connect it to the browser object
-    * Test if the page represents the new instance by running its [at checker][page-at]
-    * If the page's at checker is successful:
-        * Inform any registered [page change listeners](#page_change_listening)
-        * Set the browser's `page` property to the match
-        * Discard the rest of the potentials
-    * If the page's at checker is not successful
-        * Try the next potential
-
-If no match can be found from the given potentials, a `geb.error.UnexpectedPageException` will be thrown. Note that this method **does not** instruct the real browser to make a request. It simply changes the browser object's page instance.
-
-This method exists to cater for situations where you are unsure what the page might be due to some action taken server side.
-
-## Making Requests
-
-### Using Pages
-
-The `page(Class<? extends Page>)` method only sets the current page instance to be of a new type. To do this and make a request to the url that the page specifies, you use the `to(Class<? extends Page>)` method(s).
-
-    class SignupPage extends Page {
-        static url = "/signup"
-    }
-    
-    def browser = new Browser("http://myapp.com")
-    browser.to(SignupPage)
-    assert browser.$("h1").text() == "Signup Page"
-    assert browser.page instanceof SignupPage
-
-> see the section on [Advanced Page Navigation][page-navigation] for more information on this topic.
-
-### Direct
-
-To make a request without changing the current page type you can use the `go()` method…
-
-    def browser = new Browser("http://myapp.com")
-    
-    // Go to the Base URL
-    browser.go()
-    
-    // Go to a URL relative to Base URL
-    browser.go("/signup")
-    
-    // Go to a URL with request params, i.e http://myapp.com/signup?param1=value1&param2=value2
-    browser.go("/signup", param1: "value1", param2: "value2")
-    
-    // Go to the Base URL with request params, i.e http://myapp.com?param1=value1&param2=value2
-    browser.go("/signup", param1: "value1", param2: "value2")
-
-## Checking the current page
-
-Browser objects have an `at(Class<? extends Page>)` method that returns `true` or `false` whether or not it is actually at the given type. This works by running the given page's [at verficiation][page-at].
-
-This is typically used in conjuction with the `assert` keyword.
-
-    def browser = new Browser("http://myapp.com")
-    browser.to(SignupPage)
-    assert browser.at(SignupPage)
+> Geb integrations typically remove the need to construct a browser object and do this for you, leaving you to just manage the configuration.
 
 ## The drive() method
 
-The Browser class features a static method that makes Geb scripting a little more convenient.
+The Browser class features a static method, [`drive()`](api/geb-core/geb/Browser.html#drive(groovy.lang.Closure\)), that makes Geb scripting a little more convenient.
 
-Here is an example:
-
-    Browser.drive("http://myapp.com") {
-        go "/signup"
+    Browser.drive {
+        go "signup"
         $("h1").text() == "Signup Page"
     }
 
-The static `drive()` method takes all of the arguments that the `Browser` constructor takes, and a `Closure`. The closure is evaluated against created browser instance (i.e. it is the *delegate* of the closure). This enables a very convenient scripting environment.
+Which is equivalent to:
+
+    def browser = new Browser()
+    browser.go "signup"
+    browser.$("h1").text() == "Signup Page"
+
+The `drive()` method takes all of the arguments that the 
+[`Browser`][browser-api] constructor takes (i.e. none, a 
+[configuration][configuration-api] and/or property overrides) or an existing browser instance, and a 
+closure. The closure is evaluated against created browser instance (i.e. the browser is made the *delegate* of the closure). The net result is that all top level method calls and property accesses are implied to be against the browser.
 
 The `drive()` method always returns the browser object that was used, so if you need to quit the browser after the drive session you can do something like…
 
@@ -167,9 +69,163 @@ The `drive()` method always returns the browser object that was used, so if you 
         …
     }.quit()
 
-## Page Change Listening
+> For more on when/why you need to manually quit the browser, see the section on the [driver](driver.html)
 
-It is possible to be notified when a browser's page _instance_ changes (note that this is not necessarily when the browser makes a request to a new URL) using the `geb.PageChangeListener` interface.
+## Making requests
+
+### The base URL
+
+Browser instances maintain a [`baseUrl`](api/geb-core/geb/Browser.html#getBaseUrl(\)) property that is used to resolve all non absolute URLs. 
+This value can come from [configuration](configuration.html#base_url) or can be 
+[explicitly set](api/geb-core/geb/Browser.html#setBaseUrl(java.lang.String\)) on the browser.
+
+Care must be taken with slashes when specifying both the base URL and the relative URL as trailing and leading slashes have significant meaning. The following table illustrates the resolution of different types of URLs.
+
+<table class="graybox" border="0" cellspacing="0" cellpadding="5">
+    <tr><th>Base</th><th>Navigating To</th><th>Result</th></tr>
+    <tr><td>http://myapp.com/</td><td>abc</td><td>http://myapp.com/abc</td></tr>
+    <tr><td>http://myapp.com</td><td>abc</td><td>http://myapp.comabc</td></tr>
+    <tr><td>http://myapp.com</td><td>/abc</td><td>http://myapp.com/abc</td></tr>
+    <tr><td>http://myapp.com/abc/</td><td>def</td><td>http://myapp.com/abc/def</td></tr>
+    <tr><td>http://myapp.com/abc</td><td>def</td><td>http://myapp.com/def</td></tr>
+    <tr><td>http://myapp.com/abc/</td><td>/def</td><td>http://myapp.com/def</td></tr>
+    <tr><td>http://myapp.com/abc/def/</td><td>jkl</td><td>http://myapp.com/abc/def/jkl</td></tr>
+    <tr><td>http://myapp.com/abc/def</td><td>jkl</td><td>http://myapp.com/abc/jkl</td></tr>
+    <tr><td>http://myapp.com/abc/def</td><td>/jkl</td><td>http://myapp.com/jkl</td></tr>
+</table>
+
+It is usually most desirable to define your base urls with trailing slashes and not to use leading slashes on relative URLs.
+
+### Using pages
+
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb-core/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
+
+    class SignupPage extends Page {
+        static url = "signup"
+    }
+    
+    Browser.drive {
+        to SignupPage
+        assert $("h1").text() == "Signup Page"
+        assert page instanceof SignupPage
+    }
+
+The `to()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` call.
+
+> See the section on [Advanced Page Navigation][page-navigation] for more information on how to use more complicated URL resolution for pages.
+
+### Direct
+
+You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb-core/geb/Browser.html#go(\)) methods. The following examples use a baseUrl of “`http://myapp.com/`”.
+
+    Browser.drive {
+        // Go to the Base URL
+        go()
+
+        // Go to a URL relative to Base URL
+        go "signup"
+
+        // Go to a URL with request params, i.e http://myapp.com/signup?param1=value1&param2=value2
+        go "signup", param1: "value1", param2: "value2"
+    }
+
+## The Page
+
+Browser instances hold a reference to a _page_. This page instance is retrievable via the [`page`](api/geb-core/geb/Browser#getPage(\)) property. Initially, all browser instances have a page of type [`Page`](api/geb-core/geb/Page.html) which provides the basic navigation functions and is the super class for all page objects. 
+
+However, the page property is rarely accessed directly. The browser object will *forward* any method calls or property read/writes that it can't handle to the current page instance. 
+
+    Browser.drive {
+        go "signup"
+        
+        // The following two lines are equivalent
+        assert $("h1").text() == "Signup Page"
+        assert page.$("h1").text() == "Signup Page"
+    }
+
+The *page* is providing the $() function, not the browser. This forwarding facilitates very concise code, void of unnecessary noise.
+
+> for more information on the $() function which is used to interact with page content, see the section on the [Navigator API][navigator].
+
+When using the Page Object pattern, you create subclasses of [`Page`](api/geb-core/geb/Page.html) that define content via a powerful DSL that allows you to refer to content by meaningful names instead of tag names or CSS expressions.
+
+    class SignupPage extends Page {
+        static url = "signup"
+        static content = {
+            heading { $("h1").text() }
+        }
+    }
+    
+    Browser.drive {
+        to SignupPage
+        assert heading == "Signup Page"
+    }
+
+Page objects are discussed in depth in the [pages](pages.html) chapter, which also explores the Content DSL.
+
+### Changing the page
+
+We have already seen that that `to()` methods change the browser's page instance. It is also possible to change the page instance without initiating a new request with the `page()` methods.
+
+The [`page(Class pageType)`](api/geb-core/geb/Browser.html#page(java.lang.Class\)) method allows you to change the page to a new instance of the given class. The class must be [Page](api/geb-core/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
+
+The [`page(Class[] potentialPageTypes)`](api/geb-core/geb/Browser.html#page(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker.
+
+These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the [`to` attribute of the Content DSL](pages.html#to) for more information about this). However, should you need to manually change the page type they are there.
+
+## At checking
+
+Browser objects have an [`at(Class pageType)`](api/geb-core/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type. 
+Pages define an [“at checker”][page-at] that the browser uses for this test.
+
+    class SignupPage extends Page {
+        static at = {
+            assert $("h1").text() == "Signup Page"
+        }
+    }
+    
+    Browser.drive {
+        to SignupPage
+        at SignupPage
+    }
+
+It's a good idea to use an at check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
+
+The `to()` method that takes a single page type **does not** verify that the the browser ends up at the given type. This is because the request may initiate a redirect and take the browser to a different page. For example…
+
+    Browser.drive {
+        to SecurePage
+        at AccessDeniedPage
+    }
+
+It's very common to see an at check directly after a `to()` call.
+
+Pages can also define content that declares what the browser's page type should change to when that content is clicked. It's advised to use an at check after clicking on such content (see the DSL reference for the [`to`](pages.html#to) parameter).
+
+    class LoginPage extends Page {
+        static content = {
+            loginButton(to: AdminPage) { $("input", type: "submit", name: "login") }
+        }
+    }
+    
+    class AdminPage extends Page {
+        static at = {
+            assert $("h1").text() == "Admin Page"
+        }
+    }
+    
+    Browser.drive {
+        to LoginPage
+        at LoginPage
+        loginButton.click()
+        at AdminPage
+    }
+
+The `at()` method will also update the browser's page instance to the given page type if it's at checker is successful and if the browser's page instance is not already of that type.
+ 
+## Page change listening
+
+It is possible to be notified when a browser's page _instance_ changes (note that this is not necessarily when the browser makes a request to a new URL) using the [`PageChangeListener`](api/geb-core/geb/PageChangeListener.html) interface.
 
     import geb.PageChangeListener
     
@@ -190,10 +246,11 @@ You can remove remove a listener at any time…
 
     browser.removePageChangeListener(listener)
 
-The `removePageChangeListener()` returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
+The [`removePageChangeListener(PageChangeListener listener)`](api/geb-core/geb/Browser.html#removePageChangeListener(geb.PageChangeListener\)) returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
 
-Listeners cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a `geb.error.PageChangeListenerAlreadyRegisteredException` will be raised.
+Listeners cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a [`PageChangeListenerAlreadyRegisteredException`](api/geb-core/geb/error/PageChangeListenerAlreadyRegisteredException.html) will be raised.
 
 ## Quitting the browser
 
-The browser object has `quit()` and `close()` methods that simply delegate to the underlying [driver][webdriver-api].
+The browser object has [`quit()`](api/geb-core/geb/Browser.html#quit(\)) 
+and [`close()`](api/geb-core/geb/Browser.html#close(\)) methods (that simply delegate to the underlying driver). See the section on [driver management](driver.html) for more information on when and why you need to quit the browser.

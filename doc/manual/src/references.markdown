@@ -32,6 +32,9 @@
 [configslurper]: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html
 [groovy-binding]: http://groovy.codehaus.org/api/groovy/lang/Binding.html
 [httpurlconnection]: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
-[configuration-api]: api/geb-core/geb/conf/Configuration.html
+[configuration-api]: api/geb-core/geb/Configuration.html
 [browser-api]: api/geb-core/geb/Browser.html
+[navigator-api]: api/geb-core/geb/navigator/Navigator.html
 [bindingupdater-api]: api/geb-core/geb/binding/BindingUpdater.html
+[grails]: http://grails.org
+[waiting]: javascript.html#waiting
