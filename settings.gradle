@@ -7,7 +7,3 @@ include "module:geb-core",
         "module:geb-easyb",
         "doc:manual",
         "doc:site-app"
-
-if (hasProperty("withSamples")) {
-	include "samples:google"
-}
