@@ -55,6 +55,9 @@ The following methods are available:
 * downloadText
 * downloadBytes
 * downloadContent
+* report
+* reportGroup
+* cleanReportGroupDir
 
 The javascript interface property [`js`](javascript.html#the_js_object) is also available. The browser object itself is available as the `browser` property.
 

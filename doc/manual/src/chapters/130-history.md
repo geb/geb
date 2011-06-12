@@ -24,6 +24,8 @@ This page lists the high level changes between versions of Geb.
 * Introduced new configuration mechanism for more flexible and environment sensitive configuration of Geb (e.g. driver implementation, base url)
 * Default wait timeout and retry interval is now configurable, and can now also use user configuration presets (e.g. quick, slow)
 * Added a “build adapter” mechanism, making it easier for build systems to take control of relevant configuration
+* The JUnit 3 integration now includes the test method name in the automatically generated reports
+* The reporting support has been rewritten, making it much friendlier to use outside of testing
 
 ### Breaking Changes
 

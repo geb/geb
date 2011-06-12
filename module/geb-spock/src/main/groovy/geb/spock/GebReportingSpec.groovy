@@ -25,40 +25,27 @@ class GebReportingSpec extends GebSpec {
 	@Rule _gebReportingSpecTestName = new TestName()
 	def _gebReportingPerTestCounter = 0
 	@Shared _gebReportingSpecTestCounter = 0
-	@Shared _getReportingSpecReporter = null
+
+	def setupSpec() {
+		reportGroup getClass()
+		cleanReportGroupDir()
+	}
+	
+	def setup() {
+		reportGroup getClass()
+	}
 	
 	def cleanup() {
-		report("end")
+		report "end" 
 	}
 
-	void report(String label) {
-		// We have to do this lazily here so the subclass gets a chance to run _some_ code to setup the reporter if need be.
-		// If we used setupSpec() that would run before the subclasses setupSpec() and limit the users options.
-		if (_gebReportingSpecTestCounter++ == 0) {
-			_getReportingSpecReporter = createReporter()
-		}
-		
-		def name = "${_gebReportingSpecTestCounter}-${++_gebReportingPerTestCounter}-${_gebReportingSpecTestName.methodName}"
+	void report(String label = null) {
+		def name = "${++_gebReportingSpecTestCounter}-${++_gebReportingPerTestCounter}-${_gebReportingSpecTestName.methodName}"
 		if (label) {
 			name += "-$label"
 		}
 		
-		_getReportingSpecReporter?.writeReport(name, getBrowser())
-	}
-
-	/**
-	 * Subclasses can override this to use a different reporter
-	 */
-	Reporter createReporter() {
-		def reportDir = getReportDir()
-		reportDir ? new ScreenshotAndPageSourceReporter(reportDir, this.class, true) : null
-	}
-	
-	/**
-	 * Subclasses override this to determine where the reports are written
-	 */
-	File getReportDir() {
-		browser.config.reportsDir
+		report name
 	}
 
 }

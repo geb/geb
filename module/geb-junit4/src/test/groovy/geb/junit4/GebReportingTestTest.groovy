@@ -46,14 +46,6 @@ class GebReportingTestTest extends GebReportingTest {
 		go()
 	}
 	
-	File getReportDir() {
-		new File("build/geb-output")
-	}
-	
-	def getClassReportDir() {
-		new File(getReportDir(), this.class.name.replace('.', '/'))
-	}
-	
 	@Test 
 	void a() {
 		doTestReport()
@@ -71,7 +63,7 @@ class GebReportingTestTest extends GebReportingTest {
 	
 	def doTestReport() {
 		if (++counter > 1) {
-			def report = classReportDir.listFiles().find { it.name.startsWith((counter - 1).toString()) }
+			def report = innerReportsDir.listFiles().find { it.name.startsWith((counter - 1).toString()) }
 			assert report.exists()
 			assert report.text.contains('<div class="d1" id="d1">')
 		}

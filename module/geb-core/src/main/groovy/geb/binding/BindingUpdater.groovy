@@ -31,7 +31,8 @@ class BindingUpdater {
 		"go", "to", "at", 
 		"waitFor",
 		"withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
-		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent"
+		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
+		"report", "reportGroup", "cleanReportGroupDir"
 	].asImmutable()
 	
 	protected BindingUpdater(Binding binding, Browser browser) {

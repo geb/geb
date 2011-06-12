@@ -18,11 +18,11 @@ Consider the following Spock spec…
 			go "/login"
 			
 			then:
-			title = "Login Screen"
+			title == "Login Screen"
 		}
 	}
 
-Which is a nicer way of saying…
+Which is equivalent to…
 
 	import geb.spock.GebSpec
 	
@@ -32,17 +32,50 @@ Which is a nicer way of saying…
 			browser.go "/login"
 			
 			then:
-			browser.title = "Login Screen"
+			browser.page.title == "Login Screen"
 		}
 	}
 
 ### Configuration
 
-The browser to use for the tests is supplied by the `createBrowser()` method which by default uses `new Browser()`, meaning that the browser is configured entirely by the [configuration mechanism](configuration.html) which is the preferred mechanism.
+The browser instance is created by the testing integration. The [configuration mechanism](configuration.html) allows you to control aspects such as the driver implementation and base url.
 
 ### Reporting
 
-> See the section [testing](reporting.html#testing) section of the [reporting](reporting.html) chapter.
+The Spock and JUnit integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports at the end of test methods with the label “end”. They also set the [report group](reporting.html#the_report_group) to the name of the test class (substituting “.” for “/”).
+
+The [`report(String label)`](api/geb-core/geb/Browser.html#report(java.lang.String\)) browser method is replaced with a specialised version. This method works the same as the browser method, but adds counters and the current test method name as prefixes to the given label.
+
+    package my.tests
+    
+    import geb.spock.GebReportingSpec
+    
+    class FunctionalSpec extends GebReporting {
+        
+        def "login"() {
+            when:
+            go "login"
+            username = "me"
+            report "login screen" // take a report of the login screen
+            login().click()
+            
+            then:
+            title == "Logged in!"
+        }
+    }
+
+Assuming a configured `reportsDir` of `reports/geb` and the default reporter (i.e. [`ScreenshotAndPageSourceReporter`](api/geb-core/geb/report/ScreenshotAndPageSourceReporter.html)), we would find the following files:
+
+* `reports/geb/my/tests/FunctionalSpec/1-1-login-login screen.html`
+* `reports/geb/my/tests/FunctionalSpec/1-1-login-login screen.png`
+* `reports/geb/my/tests/FunctionalSpec/1-2-login-end.html`
+* `reports/geb/my/tests/FunctionalSpec/1-2-login-end.png`
+
+The report file name format is:
+
+    «test method number»-«report number in test method»-«test method name»-«label».«extension»
+
+Reporting is an extremely useful feature and can help you diagnose test failures much easier. Wherever possible, favour the use of the auto reporting base classes.
 
 ### Cookie management
 

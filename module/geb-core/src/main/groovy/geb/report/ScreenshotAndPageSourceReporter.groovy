@@ -27,24 +27,8 @@ import org.openqa.selenium.WebDriver
  */
 class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 	
-	ScreenshotAndPageSourceReporter(File dir) {
-		super(dir)
-	}
-
-	ScreenshotAndPageSourceReporter(File dir, boolean doClean) {
-		super(dir, doClean)
-	}
-	
-	ScreenshotAndPageSourceReporter(File dir, Class clazz) {
-		super(dir, clazz)
-	}
-
-	ScreenshotAndPageSourceReporter(File dir, Class clazz, boolean doClean) {
-		super(dir, clazz, doClean)
-	}
-	
-	void writeReport(String reportNameBase, Browser browser) {
-		super.writeReport(reportNameBase, browser)
+	void writeReport(Browser browser, String label, File outputDir) {
+		super.writeReport(browser, label, outputDir)
 
 		// note - this is not covered by tests unless using a driver that can take screenshots
 		def screenshotDriver = determineScreenshotDriver(browser)
@@ -57,12 +41,12 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 				decoded = Base64.decode(decoded)
 			}
 			
-			saveScreenshotPngBytes(reportNameBase, decoded)
+			saveScreenshotPngBytes(outputDir, label, decoded)
 		}
 	}
 	
-	protected saveScreenshotPngBytes(String reportNameBase, byte[] bytes) {
-		getFile(reportNameBase, 'png').withOutputStream { it << bytes }
+	protected saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
+		getFile(outputDir, label, 'png').withOutputStream { it << bytes }
 	}
 
 	protected determineScreenshotDriver(Browser browser) {

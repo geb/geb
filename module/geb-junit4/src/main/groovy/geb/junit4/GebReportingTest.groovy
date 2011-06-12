@@ -14,55 +14,56 @@
  */
 package geb.junit4
 
-import geb.report.*
+import org.junit.Before
 import org.junit.After
 import org.junit.Rule
 import org.junit.rules.TestName
 
 class GebReportingTest extends GebTest {
 
-	static private GEB_REPORTING_TEST_COUNTERS = [:]
-	static private GEB_REPORTING_TEST_REPORTERS = [:]
+	static private testCounters = [:]
+	static private testCleanFlags = [:]
 
 	@Rule public TestName _gebReportingTestTestName = new TestName()
 	
 	void report(String label) {
-		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}-${_gebReportingTestTestName.methodName}-$label", getBrowser())
+		browser.report "${getTestCounterValue()}-${_gebReportingTestTestName.methodName}-$label"
+	}
+	
+	@Before
+	void setupReporting() {
+		reportGroup getClass()
+		incrementTestCounterValue()
+
+		// We need to clean the inner reports dir just once for this class so we have to
+		// use this static tracking data to see if we are about to run the first test.
+		def key = getKeyNameForTracking()
+		if (!testCleanFlags.containsKey(key)) {
+			testCleanFlags[key] = true
+			cleanReportGroupDir()
+		}
 	}
 	
 	@After
  	void writeGebReport() {
-		report("end")
+		report "end"
 	}
 
-	/**
-	 * Subclasses can override this to use a different reporter
-	 */
-	Reporter createReporter() {
-		def reportDir = getReportDir()
-		reportDir ? new ScreenshotAndPageSourceReporter(reportDir, this.class, true) : null
-	}
-	
-	/**
-	 * Subclasses override this to determine where the reports are written
-	 */
-	File getReportDir() {
-		browser.config.reportsDir
-	}
-	
-	static private getTestReporter(test) {
-		def key = test.class.name
-		if (!GEB_REPORTING_TEST_REPORTERS.containsKey(key)) {
-			GEB_REPORTING_TEST_REPORTERS[key] = test.createReporter()
+	private incrementTestCounterValue() {
+		def key = getKeyNameForTracking()
+		if (testCounters.containsKey(key)) {
+			testCounters[key] = ++testCounters[key]
+		} else {
+			testCounters[key] = 1
 		}
-		GEB_REPORTING_TEST_REPORTERS[key]
-	}
-	
-	static private getNextTestCounterValue(test) {
-		def key = test.class.name
-		def value = GEB_REPORTING_TEST_COUNTERS[key] ?: 0
-		GEB_REPORTING_TEST_COUNTERS[key] = ++value
-		value
 	}
 
+	private getTestCounterValue() {
+		testCounters[getKeyNameForTracking()] ?: 1
+	}
+	
+	private getKeyNameForTracking() {
+		getClass().name
+	}
+	
 }

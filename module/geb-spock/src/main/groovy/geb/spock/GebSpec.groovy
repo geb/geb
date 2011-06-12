@@ -26,8 +26,7 @@ class GebSpec extends Specification {
 	@Shared Browser _browser
 
 	Configuration createConf() {
-		def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-		conf
+		new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
 	}
 	
 	Browser createBrowser() {

@@ -28,36 +28,14 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		</html>
 	"""
 	
-	static garbage = "asdfajsdifoamsdfoiawdncwonc"
-	
 	def setupSpec() {
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
-		
-		def reportsDir = getClassReportDir()
-		def firstOutputFile = getFirstOutputFile()
-		
-		if (!reportsDir.exists()) {
-			assert reportsDir.mkdirs()
-		}
-		
-		if (!firstOutputFile.exists()) {
-			assert firstOutputFile.createNewFile()
-		}
-		
-		// Put some jibberish in this file, so we can test
-		// that it was actually removed by the reporting spec
-		// setup() method.
-		firstOutputFile << garbage
 	}
-	
-	def getClassReportDir() {
-		new File(getReportDir(), this.class.name.replace('.', '/'))
-	}
-	
+		
 	def getFirstOutputFile() {
-		new File(getClassReportDir(), "1-1-a request is made-end.html")
+		new File(innerReportsDir, "1-1-a request is made-end.html")
 	}
 	
 	def "a request is made"() {
@@ -70,12 +48,12 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		def report = getFirstOutputFile()
 		expect:
 		report.exists()
-		!report.text.contains(garbage)
+		report.text.startsWith("<xml")
 	}
 
 	def "there should be a second report"() {
 		expect:
-		getClassReportDir().listFiles().any { it.name.startsWith("2") }
+		innerReportsDir.listFiles().any { it.name.startsWith("2") }
 	}
 	
 }

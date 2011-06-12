@@ -24,19 +24,19 @@ class ReporterSupportSpec extends Specification {
 	def reportDir = new File("build/tmp/ReporterSupportSpec")
 	
 	def setup() {
-		reportDir.deleteDir()
+		assert (!reportDir.exists() || reportDir.deleteDir()) && reportDir.mkdirs()
 	}
 	
 	def "report filename escaping"() {
 		given:
-		def reporter = new ReporterSupport(reportDir) {
-			void writeReport(String reportNameBase, Browser browser) {
-				getFile(reportNameBase, "12 | 34") << "content"
+		def reporter = new ReporterSupport() {
+			void writeReport(Browser browser, String label, File outputDir) {
+				getFile(outputDir, label, "12 | 34") << "content"
 			}
 		}
 		
 		when:
-		reporter.writeReport("12 | 34", null)
+		reporter.writeReport(null, "12 | 34", reportDir)
 		
 		then:
 		new File(reportDir, "12 _ 34.12 _ 34").exists()

@@ -37,6 +37,8 @@ class Browser {
 	private final Configuration config
 	private final pageChangeListeners = new LinkedHashSet()
 	
+	private String reportGroup = null
+	
 	/**
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
 	 */
@@ -386,6 +388,71 @@ class Browser {
 	 */
 	JavascriptInterface getJs() {
 		new JavascriptInterface(this)
+	}
+	
+	/**
+	 * The directory that will be used for the {@link #report(java.lang.String) method}.
+	 * <p>
+	 * Uses the {@link geb.Configuration#getReportsDir()} for the base location for reports (throwing an exception if this is not set), and
+	 * appending the current report group. The returned file object is guaranteed to exist on the filesystem.
+	 * <p>
+	 * If the current report group is {@code null}, this method returns the same as {@code config.reportsDir}.
+	 * 
+	 * @see #reportGroup(java.lang.String)
+	 * @see #report(java.lang.String)
+	 */
+	File getReportGroupDir() {
+		def reportsDir = config.reportsDir
+		if (reportsDir == null) {
+			throw new IllegalStateException("No reports dir has been configured, you need to set in the config file or via the build adapter.")
+		}
+		
+		def reportGroupDir = reportGroup ? new File(reportsDir, reportGroup) : reportsDir
+		if (!reportGroupDir.exists() && !reportGroupDir.mkdirs()) {
+			throw new IllegalStateException("Could not create report group dir '${reportGroupDir}'")
+		}
+		
+		reportGroupDir
+	}
+	
+	/**
+	 * Sets the "group" for all subsequent reports, which is the relative path inside the reports dir that reports will be written to.
+	 * 
+	 * @param path a <strong>relative</strong> path, or {@code null} to have reports written to the base reports dir
+	 */
+	void reportGroup(String path) {
+		reportGroup = path
+	}
+	
+	/**
+	 * Sets the report group to be the full name of the class, replacing "." with "/".
+	 * 
+	 * @see #reportGroup(String)
+	 */
+	void reportGroup(Class clazz) {
+		reportGroup(clazz.name.replace('.', '/'))
+	}
+	
+	/**
+	 * Removes the directory returned by {@link #getReportGroupDir()} from the filesystem if it exists.
+	 */
+	void cleanReportGroupDir() {
+		def dir = getReportGroupDir()
+		if (dir != null) {
+			if (dir.exists() && !dir.deleteDir()) {
+				throw new IllegalStateException("Could not clean report dir '${dir}'")
+			}
+		}
+	}
+	
+	/**
+	 * Writes a snapshot of the browser's state to the current {@link #getReportGroupDir()} using
+	 * the {@link geb.Configuration#getReporter() config's reporter}.
+	 * 
+	 * @param label The name for the report file (should not include a file extension)
+	 */
+	void report(String label) {
+		config.reporter.writeReport(this, label, getReportGroupDir())
 	}
 	
 	private informPageChangeListeners(Page oldPage, Page newPage) {

@@ -18,7 +18,8 @@ package geb
 import geb.driver.*
 import geb.waiting.Wait
 import geb.buildadapter.SystemPropertiesBuildAdapter
-
+import geb.report.Reporter
+import geb.report.ScreenshotAndPageSourceReporter
 import org.openqa.selenium.WebDriver
 
 /**
@@ -52,10 +53,6 @@ class Configuration {
 		def configObject = new ConfigObject()
 		configObject.putAll(rawConfig)
 		configObject
-	}
-	
-	void setCacheDriver(boolean cache) {
-		rawConfig.cacheDriver = cache
 	}
 	
 	Wait getWaitPreset(String name) {
@@ -92,14 +89,45 @@ class Configuration {
 		readValue(rawConfig.waiting, 'retryInterval', Wait.DEFAULT_RETRY_INTERVAL)
 	}
 	
+	/**
+	 * Should the created driver be cached if there is no existing cached driver, of if there
+	 * is a cached driver should it be used instead of creating a new one.
+	 * <p>
+	 * The value is the config entry {@code cacheDriver}, which defaults to {@code true}.
+	 */
 	boolean isCacheDriver() {
 		readValue('cacheDriver', true)
 	}
 
+	/**
+	 * Updates the {@code cacheDriver} config entry.
+	 * 
+	 * @see #isCacheDriver()
+	 */
+	void setCacheDriver(boolean flag) {
+		rawConfig.cacheDriver = flag
+	}
+	
+	/**
+	 * Sets the driver configuration value.
+	 * <p>
+	 * This may be the class name of a driver implementation, a driver short name or a closure 
+	 * that when invoked with no arguments returns a driver implementation.
+	 * 
+	 * @see #getDriver()
+	 */
 	void setDriverConf(value) {
 		rawConfig.driver = value
 	}
 	
+	/**
+	 * Returns the configuration value for the driver.
+	 * <p>
+	 * This may be the class name of a driver implementation, a short name, or a closure
+	 * that when invoked returns an actual driver.
+	 * 
+	 * @see #getDriver()
+	 */
 	def getDriverConf() {
 		def value = properties.getProperty("geb.driver") ?: readValue("driver", null)
 		if (value instanceof WebDriver) {
@@ -126,7 +154,41 @@ class Configuration {
 	 * Returns the config value {@code reportsDir}, or {@link geb.buildadapter.BuildAdapter#getReportsDir()}.
 	 */
 	File getReportsDir() {
-		readValue("reportsDir", buildAdapter.reportsDir)
+		def reportsDir = readValue("reportsDir", buildAdapter.reportsDir)
+		if (reportsDir == null) {
+			null
+		} else if (reportsDir instanceof File) {
+			reportsDir
+		} else {
+			new File(reportsDir.toString())
+		}
+	}
+	
+	void setReportsDir(File reportsDir) {
+		rawConfig.reportsDir = reportsDir
+	}
+	
+	/**
+	 * Returns the reporter implementation to use for taking snapshots of the browser's state.
+	 * <p>
+	 * Returns the config value {@code reporter}, or an instance of {@link geb.report.ScreenshotAndPageSourceReporter} if not explicitly set.
+	 */
+	Reporter getReporter() {
+		def reporter = readValue("reporter", null)
+		if (reporter == null) {
+			reporter = new ScreenshotAndPageSourceReporter()
+			setReporter(reporter)
+		}
+		reporter
+	}
+	
+	/**
+	 * Updates the {@code reporter} config entry.
+	 * 
+	 * @see #getReporter()
+	 */
+	void setReporter(Reporter reporter) {
+		rawConfig.reporter = reporter
 	}
 	
 	/**

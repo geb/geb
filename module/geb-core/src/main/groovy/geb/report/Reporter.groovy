@@ -30,6 +30,6 @@ interface Reporter {
 	 * Takes a snapshot of the given browser's state, using the given name
 	 * as the base name for anything (e.g. file) that is produced.
 	 */
-	void writeReport(String reportNameBase, Browser browser)
+	void writeReport(Browser browser, String label, File outputDir)
 	
 } 

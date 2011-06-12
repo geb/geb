@@ -22,43 +22,17 @@ import geb.Browser
 class PageSourceReporter extends ReporterSupport {
 
 	static public final NO_PAGE_SOURCE_SUBSTITUTE = "-- no page source --"
-	
-	// Can't use optional args for doClean as it causes a VerifierError (Groovy bug)
-	
-	PageSourceReporter(File dir) {
-		this(dir)
-	}
-
-	PageSourceReporter(File dir, boolean doClean) {
-		super(dir, doClean)
+		
+	void writeReport(Browser browser, String label, File outputDir) {
+		writePageSource(getReportFile(browser, label, outputDir), browser)
 	}
 	
-	/**
-	 * Uses {@link geb.report.ReporterSupport#getDirForClass()} with the given args to
-	 * determine the true report dir to use.
-	 */
-	PageSourceReporter(File dir, Class clazz) {
-		super(getDirForClass(dir, clazz))
-	}
-
-	/**
-	 * Uses {@link geb.report.ReporterSupport#getDirForClass()} with the given args to
-	 * determine the true report dir to use.
-	 */
-	PageSourceReporter(File dir, Class clazz, boolean doClean) {
-		super(getDirForClass(dir, clazz), doClean)
-	}
-	
-	void writeReport(String reportNameBase, Browser browser) {
-		writePageSource(getReportFile(reportNameBase, browser), browser)
-	}
-	
-	protected getReportFile(String reportNameBase, Browser browser) {
-		getFile(reportNameBase, getPageSourceFileExtension(browser))
+	protected getReportFile(Browser browser, String label, File outputDir) {
+		getFile(outputDir, label, getPageSourceFileExtension(browser))
 	}
 	
 	protected writePageSource(File file, Browser browser) {
-		file << getPageSource(browser)
+		file.write(getPageSource(browser))
 	}
 	
 	protected getPageSource(Browser browser) {

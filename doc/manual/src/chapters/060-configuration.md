@@ -148,9 +148,15 @@ Presets can be specified via:
 
 Here we have defined two presets, `slow` and `quick`. Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of `0.1`).
 
+### Reporter
+
+The *reporter* is the object responsible for snapshotting the state of the browser (see the [reporting](reporting.html) chapter for details). All reporters are implemenations of the [`Reporter`](api/geb-core/geb/report/Reporter.html) interface. By default, Geb uses the [`ScreenshotAndPageSourceReporter`](api/geb-core/geb/report/ScreenshotAndPageSourceReporter.html) implementation that dumps the page source as html and attempts to take a screenshot as a png file. This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
+
+    reporter = new CustomReporter()
+
 ### Reports Dir
 
-The reports dir configuration is used by testing integrations (e.g [Spock](api/geb-spock/geb/spock/GebReportingSpec.html), [Grails](api/geb-grails/grails/plugin/geb/GebSpec.html) and [JUnit](api/geb-junit4/geb/junit4/GebReportingTest.html)) that integrate reporters.
+The reports dir configuration is used by to control where the browser should write reports (see the [reporting](reporting.html) chapter for details).
 
 In the config script, you can set the path to the directory to use for reports via the `reportsDir` key…
 
@@ -159,6 +165,12 @@ In the config script, you can set the path to the directory to use for reports v
 > The value is interpreted as a path, and if not absolute will be relative to the JVM's working directory.
 
 The reports dir can also be specified by the build adapter (the default implementation of which looks at the `geb.build.reportsDir` system property). Any value set in the config script will take precedence over the value provided by the build adapter.
+
+It is also possible to set the `reportsDir` config item to a file.
+
+    reportsDir = new File("target/geb-reports")
+
+By default this value is **not set**. The browser's [`report()`](browser.html#reporting) method requires a value for this config item so if you are using the reporting features you **must** set a reports dir.
 
 ### Auto Clearing Cookies
 
