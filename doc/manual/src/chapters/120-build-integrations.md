@@ -1,49 +1,58 @@
 # Build System & Framework Integrations
 
+This kind of integration for Geb is typically focussed on managing the base url and reports dir as build systems tend to be able to provide this configuration (via the [build adapter](configuration.html#build_adapter) mechanism).
+
 ## Grails
 
-Grails support is provided by the `grails-geb` plugin, and provides support for both Spock, JUnit (3 and 4) tests and Easyb. Working with Spock requires installing the spock plugin separately, as does working with Easyb.
+[Grails][grails] is a popular web app framework. There is a [grails-geb plugin](http://grails.org/plugin/geb) available that allows you to use Geb for your Grails functional tests. This plugin simply manages the `baseUrl` and `reportsDir` configuration items.
 
-> See the JUnit, Spock and Easyb sections above for more info on how to write Geb tests with these tools
+You still need to include the appropriate Geb module for testing (i.e. `geb-junit4`, `geb-spock` or `geb-easyb`) yourself. You may also need to depend on other plugins like the [`grails-spock`](http://grails.org/plugin/spock) plugin to enable those kinds of tests.
 
-### Writing Tests
+For example, if you plan to use Spock with Geb you would need to add the following to the `BuildConfig.groovy`…
 
-Geb tests go into the `test/functional` directory. The tests are configured to have a base url of the root of the Grails application under test. This can be overridden by either overriding the `getBaseUrl()` method in your test/spec on a per test basis, or globally by specifying the `baseUrl` command line option…
+    dependencies {
+        test "org.codehaus.geb:geb-spock:«geb version»"
+    }
+    plugins {
+        test ":spock:«spock version»"
+        test ":geb:«geb version»"
+    }
 
-    grails test-app -baseUrl=http://myapp.com
+Where `«geb version»` and `«spock version»` are the versions of Geb and Spock you wish to use.
 
-#### JUnit
+As Grails provides JUnit support out of the box, you only need to pull in the `geb-junit4` jar to use Geb with JUnit.
 
-If you are using Grails 1.2 and want to write JUnit tests, you subclass the `grails.plugin.geb.JUnit3GebTests` class. If you are using Grails 1.3 or later, you subclass `grails.plugin.geb.GebTests`.
+> Grails 1.3 and later use JUnit 4. Earlier versions of Grails than this use Groovy 1.6 which Geb no longer supports.
 
-#### Spock
+    dependencies {
+        test "org.codehaus.geb:geb-junit4:«geb version»"
+    }
+    plugins {
+        test ":geb:«geb version»"
+    }
 
-To write Spock specs, you subclass `grails.plugin.geb.GebSpec`.
+You only need the appropriate Geb test integration jar, as it will depend on `geb-core` and Grails' dependency management will take care of getting that for you.
 
-#### Easyb
+You will also of course need a driver, which you can also specify in `BuildConfig.groovy`.
 
-To use Easyb, you use the `geb-grails` plugin in your Easyb stories or scenarios (instead of the normal `geb` plugin).
-
-> There is currently a classloader issue with the Grails Easyb plugin that makes it impossible to use page object classes that are defined outside of the current story or scenario. This limits the usefulness of the grails+geb+easyb for the time being. This will be addressed in future Easyb releases.
-
-### Reports
-
-Reports are written to `${testReportsDir}/geb` (which is `target/test-reports/geb` by default).
-
-### Drivers
-
-The plugin does not bundle any WebDriver drivers. You can include one in your application using Grails' [dependency management features](http://grails.org/doc/latest/guide/3.%20Configuration.html#3.7%20Dependency%20Resolution). For example, you can use the firefox by placing the following in the `BuildConfig.groovy` file…
-
-    test("org.seleniumhq.selenium:selenium-firefox-driver:latest.release")
-
-Unless otherwise specified, the [default driver][defaultdriver] will be used when testing. This will be the first valid driver that can be found. If you want to switch between multiple drivers, you can use the system property to do so…
-
-    grails -Dgeb.driver=ie test-app
-
-#### A note on the HtmlUnitDriver
+    dependencies {
+        test "org.seleniumhq.selenium:selenium-firefox-driver:«webdriver version»"
+    }
 
 HTMLUnit depends on some XML processing libraries that cause issues with Grails. You can avoid this by excluding certain dependencies of the HTMLUnit driver…
 
-    test("org.seleniumhq.selenium:selenium-htmlunit-driver:latest.release") {
+    test("org.seleniumhq.selenium:selenium-htmlunit-driver:«webdriver version»") {
         exclude 'xml-apis'
     }
+
+Recall that Geb looks for its configuration file as `geb-conf.groovy` on the classpath. A good location for this file is in a Grails project is the `test/functional` directory is on the classpath at test time. You **do not** need to set the `baseUrl` and `reportsDir` config entries in a Grails project as the plugin takes care of those for you. The `baseUrl` is set to the root of the Grails application, and the `reportsDir` is set to `geb` inside Grails' test reports dir (which by default is `target/test-reports`).
+
+There is nothing special about writing Geb tests with Grails. You subclass the same classes as usual (e.g. `geb.spock.GebReportingSpec` for Spock tests).
+
+There is an example project available that uses `geb-junit4` and `geb-spock` to test some Grails scaffold pages.
+
+* [http://github.com/geb/geb-example-gradle](https://github.com/geb/geb-example-gradle)
+
+## Maven
+
+## Gradle
