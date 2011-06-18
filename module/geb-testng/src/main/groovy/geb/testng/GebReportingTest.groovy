@@ -1,10 +1,11 @@
-/* Copyright 2009 the original author or authors.
+/*
+ * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *			http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.testng
 
 import geb.report.Reporter
@@ -20,45 +20,47 @@ import geb.report.ScreenshotAndPageSourceReporter
 import org.testng.ITestResult
 import org.testng.TestListenerAdapter
 import org.testng.annotations.Listeners
+import org.testng.annotations.BeforeMethod
 
 @Listeners([GebTestListener.class])
 class GebReportingTest extends GebTest {
 
-	static private GEB_REPORTING_TEST_COUNTERS = [:]
-	static private GEB_REPORTING_TEST_REPORTERS = [:]
+	static private testCounters = [:]
+	static private testCleanFlags = [:]
 
-	void report(String methodName = "") {
-		getTestReporter(this)?.writeReport("${getNextTestCounterValue(this)}-${methodName}", getBrowser())
+	void report(String label = "") {
+		browser.report("${getTestCounterValue()}-${label}")
 	}
 
-	/**
-	 * Subclasses can override this to use a different reporter
-	 */
-	Reporter createReporter() {
-		def reportDir = getReportDir()
-		reportDir ? new ScreenshotAndPageSourceReporter(reportDir, this.class, true) : null
-	}
+	@BeforeMethod
+	void setupReporting() {
+		reportGroup getClass()
+		incrementTestCounterValue()
 
-	/**
-	 * Subclasses override this to determine where the reports are written
-	 */
-	File getReportDir() {
-		null
-	}
-
-	static private getTestReporter(testInstance) {
-		def key = testInstance.class.name
-		if (!GEB_REPORTING_TEST_REPORTERS.containsKey(key)) {
-			GEB_REPORTING_TEST_REPORTERS[key] = testInstance.createReporter()
+		// We need to clean the inner reports dir just once for this class so we have to
+		// use this static tracking data to see if we are about to run the first test.
+		def key = getKeyNameForTracking()
+		if (!testCleanFlags.containsKey(key)) {
+			testCleanFlags[key] = true
+			cleanReportGroupDir()
 		}
-		GEB_REPORTING_TEST_REPORTERS[key]
 	}
 
-	static private getNextTestCounterValue(testInstance) {
-		def key = testInstance.class.name
-		def value = GEB_REPORTING_TEST_COUNTERS[key] ?: 0
-		GEB_REPORTING_TEST_COUNTERS[key] = ++value
-		value
+	private incrementTestCounterValue() {
+		def key = getKeyNameForTracking()
+		if (testCounters.containsKey(key)) {
+			testCounters[key] = ++testCounters[key]
+		} else {
+			testCounters[key] = 1
+		}
+	}
+
+	private getTestCounterValue() {
+		testCounters[getKeyNameForTracking()] ?: 1
+	}
+	
+	private getKeyNameForTracking() {
+		getClass().name
 	}
 }
 
@@ -77,7 +79,7 @@ class GebTestListener extends TestListenerAdapter {
 	private void createReport(ITestResult tr) {
 		def testInstance = tr.testClass.getInstances(true).first()
 		if (testInstance instanceof GebReportingTest) {
-			testInstance.report(tr.method.methodName)
+			testInstance.report("${tr.method.methodName}-end")
 		}
 	}
 

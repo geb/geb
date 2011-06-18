@@ -77,6 +77,60 @@ The report file name format is:
 
 Reporting is an extremely useful feature and can help you diagnose test failures much easier. Wherever possible, favour the use of the auto reporting base classes.
 
+#### TestNG
+
+The `geb.testng.GebReportingTest` class uses [TestNG Listeners](http://testng.org/doc/documentation-main.html#testng-listeners), so you can implement your own listener, which for example to only save reports only on failed tests:
+
+	class MyCustomListener extends TestListenerAdapter {
+
+		@Override
+		void onTestFailure(ITestResult tr) {
+			createReport(tr)
+		}
+
+		private void createReport(ITestResult tr) {
+			def testInstance = tr.testClass.getInstances(true).first()
+			if (testInstance instanceof GebReportingTest) {
+				testInstance.report(tr.method.methodName)
+			}
+		}
+	}
+
+And add your listener to the tests using the annotation, maven or gradle:
+
+With annotation:
+
+	@Listeners([MyCustomListener.class])
+	class MyTest {
+
+	}
+
+With Maven2:
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.8.1</version>
+		<configuration>
+			<properties>
+				<property>
+					<name>listener</name>
+					<value>MyCustomListener</value>
+				</property>
+			</properties>
+		</configuration>
+	</plugin>
+
+With Gradle:
+
+	test {
+		useTestNG()
+
+		options {
+			listeners << 'MyCustomListener'
+		}
+	}
+
 ### Cookie management
 
 The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies at the end of each test method. For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method in `geb.testng.GebTest`.
