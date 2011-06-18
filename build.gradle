@@ -1,24 +1,23 @@
+import org.gradle.plugin.pgp.signing.*
+
 buildscript {
 	repositories {
-		mavenRepo urls: "http://gradle.artifactoryonline.com/gradle/plugins"
+		mavenLocal()
 		mavenCentral()
+		mavenRepo (name: "Geb's GitHub", urls: "http://cloud.github.com/downloads/geb") {
+			pattern = "[organisation]/[module]-[revision].[ext]"
+		}
+		mavenRepo (name: "Alkemists's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
+			pattern = "[organisation]/[module]-[revision].[ext]"
+		}
+		mavenRepo name: "Gradle", urls: "http://repo.gradle.org/gradle/plugins-snapshots/"
 	}
 	dependencies {
-		classpath "org.gradle.plugins:gradle-idea-plugin:0.2",
-		          "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-6"
+		classpath "org.gradle.plugins:gradle-signing-plugin:0.0.1-SNAPSHOT"
 	}
 }
 
-allprojects {
-	
-	buildscript {
-		repositories {
-			mavenRepo (name: "Alkemist's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
-				pattern = "[organisation]/[module]-[revision].[ext]"
-			}
-		}
-	}
-	
+allprojects { project ->
 	grailsVersion = "1.3.7"
 	seleniumVersion = "2.0b3"
 	groovyVersion = "1.7.10"
@@ -51,6 +50,7 @@ allprojects {
 		":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
 		":doc:manual"
 	]
+
 }
 
 subprojects {
@@ -60,7 +60,15 @@ subprojects {
 	isSnapshot = version.endsWith("-SNAPSHOT")
 	
 	// apply plugin: "org.gradle.idea"
-		
+	
+	if (project.path in publishedModules) {
+		project.apply plugin: 'signing'
+	}
+	
+	configurations {
+		meta
+	}
+	
 	if (project.path in groovyModules) {
 		apply plugin: "groovy"
 		
@@ -73,7 +81,8 @@ subprojects {
 		}
 		
 		configurations {
-			meta
+			compile.transitive = true
+			testCompile.transitive = true
 		}
 		
 		dependencies {
@@ -95,6 +104,12 @@ subprojects {
 			meta sourcesJar
 		}
 		
+		if (path in publishedModules) {
+			project.signing {
+				sign project.configurations.archives, project.configurations.meta
+			}
+		}
+		
 		compileGroovy.options.fork = false
 		compileTestGroovy.options.fork = false
 		
@@ -108,11 +123,6 @@ subprojects {
 
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
-		
-		configurations {
-			compile.transitive = true
-			testCompile.transitive = true
-		}
 		
 		if (project.hasProperty("driver")) {
 			test {
@@ -129,13 +139,14 @@ subprojects {
 		}
 	}
 	
+	
 	afterEvaluate { project ->
+		configurations {
+			published.extendsFrom archives, meta, signatures
+		}
+				
 		if (project.path in publishedModules) {
-			project.apply plugin: 'sign'
-
-			if (project.path in groovyModules) {
-				project.uploadArchives.dependsOn sourcesJar, javadocJar
-			}
+			project.install.configuration = configurations.published
 			
 			project.configurations {
 				deployerJars
@@ -148,13 +159,15 @@ subprojects {
 			project.poms = [project.install.repositories.mavenInstaller.pom]
 
 			if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-				uploadArchives {
+				uploadPublished {
 					project.deployer = repositories.mavenDeployer {
 						beforeDeployment { MavenDeployment deployment ->
-							if (project.path in groovyModules) {
-								["sources", "javadoc"].each { type ->
-									deployment.addArtifact configurations.meta.artifacts.find { it.classifier == type }
-								}
+							if (signing.signatory) {
+								def signedPomArtifact = sign(deployment.pomArtifact).singleArtifact
+								// Have to alter the “type” of the artifact to match what is published
+								// See http://issues.gradle.org/browse/GRADLE-1589
+								signedPomArtifact.type = "pom." + signing.type.extension
+								deployment.addArtifact(signedPomArtifact)
 							}
 						}
 						uniqueVersion = false

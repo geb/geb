@@ -1,4 +1,12 @@
+import org.gradle.plugin.pgp.signing.*
+
 buildscript {
+	repositories {
+		mavenRepo (name: "Alkemist's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
+			pattern = "[organisation]/[module]-[revision].[ext]"
+		}
+		mavenRepo name: "scala-tools", urls: "http://scala-tools.org/repo-releases"
+	}
 	dependencies {
 		classpath "markdown2book:markdown2book:1.0-SNAPSHOT"
 	}
@@ -39,6 +47,7 @@ rootProject.subprojects.findAll { project -> project.path in publishedModules &&
 	docTasks << delegate."$taskName"
 }
 
+
 task compileApi(dependsOn: docTasks) {
 	inputs.dir "build/manual-api"
 	outputs.dir "build/manual-api"
@@ -63,24 +72,22 @@ task compile(type: Sync, dependsOn: [compileManual, compileApi]) {
 	outputs.dir output
 }
 
-task zip(type: Zip) {
+task zip(type: Zip, dependsOn: compile) {
 	inputs.dir output
 	outputs.file archivePath
 	from output
-}
-
-configurations {
-	archives
-	meta
 }
 
 artifacts {
 	archives zip
 }
 
+signing {
+	sign configurations.archives
+}
+
 task install(type: Upload, dependsOn: buildArchives) {
 	description = "Does a maven install of the archives artifacts into the local .m2 cache."
-	configuration = configurations.archives
 	repositories {
 		mavenInstaller name: "mavenInstaller"
 	}
