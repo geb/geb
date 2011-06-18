@@ -4,14 +4,13 @@ This page lists the high level changes between versions of Geb.
 
 ## 0.6
 
+### New Features
+
 * selenium-common is now a 'provided' scoped dependency of Geb
 * Radio buttons can be selected with their label text as well as their value attribute.
 * Select options can be selected with their text as well as their value attribute.
 * `Navigator.getAttribute` returns `null` rather than the empty string when an attribute is not found.
 * The `jquery` property on `Navigator` now returns whatever the jQuery method called on it returns.
-
-### New Features
-
 * All waitFor clauses now treat exceptions raised in the condition as an evaluation failure, instead of propagation the exception
 * Content can be defined with `wait: true` to make Geb implicitly wait for it when it is requested
 * Screenshots are now taken when reporting for all drivers that implement the `TakesScreenshot` interface (which is nearly all)
