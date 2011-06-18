@@ -45,7 +45,7 @@ class GebReportingSpec extends GebSpec {
 			name += "-$label"
 		}
 		
-		report name
+		browser.report name
 	}
 
 }

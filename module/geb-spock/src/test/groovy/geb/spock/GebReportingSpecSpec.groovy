@@ -35,7 +35,7 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 	}
 		
 	def getFirstOutputFile() {
-		new File(innerReportsDir, "1-1-a request is made-end.html")
+		new File(reportGroupDir, "1-1-a request is made-end.html")
 	}
 	
 	def "a request is made"() {
@@ -48,12 +48,12 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		def report = getFirstOutputFile()
 		expect:
 		report.exists()
-		report.text.startsWith("<xml")
+		report.text.startsWith("<?xml")
 	}
 
 	def "there should be a second report"() {
 		expect:
-		innerReportsDir.listFiles().any { it.name.startsWith("2") }
+		reportGroupDir.listFiles().any { it.name.startsWith("2") }
 	}
 	
 }

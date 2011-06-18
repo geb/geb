@@ -63,7 +63,7 @@ class GebReportingTestTest extends GebReportingTest {
 	
 	def doTestReport() {
 		if (++counter > 1) {
-			def report = innerReportsDir.listFiles().find { it.name.startsWith((counter - 1).toString()) }
+			def report = reportGroupDir.listFiles().find { it.name.startsWith((counter - 1).toString()) }
 			assert report.exists()
 			assert report.text.contains('<div class="d1" id="d1">')
 		}
