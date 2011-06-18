@@ -55,4 +55,4 @@ Geb does not automatically clean the reports dir for you. It does however provid
 
 The [`cleanReportGroupDir()`](api/geb-core/geb/Browser.html#cleanReportGroupDir(\)) method will remove whatever the reports group dir is set to at the time. If it cannot do this it will throw an exception.
 
-> The Spock and JUnit test integrations **do** automatically clean the reports dir for you, see the [section in the testing chapter](testing.html#reporting) on these integrations.
+> The Spock, JUnit and TestNG test integrations **do** automatically clean the reports dir for you, see the [section in the testing chapter](testing.html#reporting) on these integrations.

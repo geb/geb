@@ -4,6 +4,7 @@ include "module:geb-core",
         "module:geb-junit3", 
         "module:geb-junit4",
         "module:geb-grails",
+        "module:geb-testng",
         "module:geb-easyb",
         "doc:manual",
         "doc:site-app"

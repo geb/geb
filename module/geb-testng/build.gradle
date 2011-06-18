@@ -1,0 +1,14 @@
+dependencies {
+	compile project(':module:geb-core')
+	compile "org.testng:testng:6.0.1"
+	testCompile project(":module:test-utils")
+}
+
+test {
+	useTestNG()
+}
+
+modifyPom = { pom ->
+	// User provides their own testng
+	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.testng" })
+}
