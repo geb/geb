@@ -58,7 +58,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 
 	def "there should be a second report"() {
 		expect:
-		reportGroupDir.listFiles().any { it.name.startsWith("2") }
+		reportGroupDir.listFiles().any { it.name.startsWith("002") }
 	}
 	
 	def cleanupSpec() {
