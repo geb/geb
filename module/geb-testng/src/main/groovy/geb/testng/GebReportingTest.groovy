@@ -16,96 +16,37 @@
 package geb.testng
 
 import geb.report.ReporterSupport
-import org.testng.ITestResult
-import org.testng.TestListenerAdapter
-import org.testng.annotations.Listeners
+import java.lang.reflect.Method
+import org.testng.annotations.AfterMethod
+import org.testng.annotations.BeforeClass
 import org.testng.annotations.BeforeMethod
 
-@Listeners([GebTestListener.class])
 class GebReportingTest extends GebTest {
 
-	static private testCounters = [:]
-	static private testCleanFlags = [:]
-	
-	private instanceTestCounter = 1
+	private testMethodNumber = 0
+	private reportNumberInTestMethod = 1
 	def testMethodName = ""
-	
+
 	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, testMethodName, label))
+		browser.report(ReporterSupport.toTestReportLabel(testMethodNumber, reportNumberInTestMethod++, testMethodName, label))
 	}
 
-	/**
-	 * Called by GebTestListener, should not be called by users.
-	 */
-	void resetGebTestCounter() {
-		instanceTestCounter = 1
-	}
-	
-	/**
-	 * Called by GebTestListener, should not be called by users.
-	 */
-	void setGebTestMethodName(String testMethodName) {
-		this.testMethodName = testMethodName
-	}
-	
-	@BeforeMethod
-	void setupReporting() {
+	@BeforeClass
+	void initReportGroupDir() {
 		reportGroup getClass()
-		incrementTestCounterValue()
-
-		// We need to clean the inner reports dir just once for this class so we have to
-		// use this static tracking data to see if we are about to run the first test.
-		def key = getKeyNameForTracking()
-		if (!testCleanFlags.containsKey(key)) {
-			testCleanFlags[key] = true
-			cleanReportGroupDir()
-		}
+		cleanReportGroupDir()
 	}
 
-	private incrementTestCounterValue() {
-		def key = getKeyNameForTracking()
-		if (testCounters.containsKey(key)) {
-			testCounters[key] = ++testCounters[key]
-		} else {
-			testCounters[key] = 1
-		}
+	@BeforeMethod
+	void setupReporting(Method method) {
+		reportNumberInTestMethod = 1
+		++testMethodNumber
+		testMethodName = method.name
 	}
 
-	private getTestCounterValue() {
-		testCounters[getKeyNameForTracking()] ?: 1
-	}
-	
-	private getKeyNameForTracking() {
-		getClass().name
-	}
-}
-
-class GebTestListener extends TestListenerAdapter {
-
-	@Override
-	void onTestStart(ITestResult tr) {
-		def testInstance = tr.instance
-		if (testInstance instanceof GebReportingTest) {
-			testInstance.resetGebTestCounter()
-			testInstance.setGebTestMethodName(tr.method.methodName)
-		}
-	}
-	
-	@Override
-	void onTestSuccess(ITestResult tr) {
-		createReport(tr)
-	}
-
-	@Override
-	void onTestFailure(ITestResult tr) {
-		createReport(tr)
-	}
-
-	private void createReport(ITestResult tr) {
-		def testInstance = tr.instance
-		if (testInstance instanceof GebReportingTest) {
-			testInstance.report("end")
-		}
+	@AfterMethod
+	void reportingAfter() {
+		report("end")
 	}
 
 }

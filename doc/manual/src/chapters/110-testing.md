@@ -42,7 +42,7 @@ The browser instance is created by the testing integration. The [configuration m
 
 ### Reporting
 
-The Spock and JUnit integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports at the end of test methods with the label “end”. They also set the [report group](reporting.html#the_report_group) to the name of the test class (substituting “.” for “/”).
+The Spock, JUnit and TestNG integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports at the end of test methods with the label “end”. They also set the [report group](reporting.html#the_report_group) to the name of the test class (substituting “.” for “/”).
 
 The [`report(String label)`](api/geb-core/geb/Browser.html#report(java.lang.String\)) browser method is replaced with a specialised version. This method works the same as the browser method, but adds counters and the current test method name as prefixes to the given label.
 
@@ -76,60 +76,6 @@ The report file name format is:
     «test method number»-«report number in test method»-«test method name»-«label».«extension»
 
 Reporting is an extremely useful feature and can help you diagnose test failures much easier. Wherever possible, favour the use of the auto reporting base classes.
-
-#### TestNG
-
-The `geb.testng.GebReportingTest` class uses [TestNG Listeners](http://testng.org/doc/documentation-main.html#testng-listeners), so you can implement your own listener, which for example to only save reports only on failed tests:
-
-	class MyCustomListener extends TestListenerAdapter {
-
-		@Override
-		void onTestFailure(ITestResult tr) {
-			createReport(tr)
-		}
-
-		private void createReport(ITestResult tr) {
-			def testInstance = tr.testClass.getInstances(true).first()
-			if (testInstance instanceof GebReportingTest) {
-				testInstance.report(tr.method.methodName)
-			}
-		}
-	}
-
-And add your listener to the tests using the annotation, maven or gradle:
-
-With annotation:
-
-	@Listeners([MyCustomListener.class])
-	class MyTest {
-
-	}
-
-With Maven2:
-
-	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-surefire-plugin</artifactId>
-		<version>2.8.1</version>
-		<configuration>
-			<properties>
-				<property>
-					<name>listener</name>
-					<value>MyCustomListener</value>
-				</property>
-			</properties>
-		</configuration>
-	</plugin>
-
-With Gradle:
-
-	test {
-		useTestNG()
-
-		options {
-			listeners << 'MyCustomListener'
-		}
-	}
 
 ### Cookie management
 
