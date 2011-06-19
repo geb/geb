@@ -8,4 +8,4 @@
 
 ## Contributors
 
-* [Alexander Zolotov](http://warmplace.ru/) - TestNG Integration
+* [Alexander Zolotov]((http://github.com/zolotov) - TestNG Integration
