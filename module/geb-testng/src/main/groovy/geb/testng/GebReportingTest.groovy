@@ -29,9 +29,10 @@ class GebReportingTest extends GebTest {
 	static private testCleanFlags = [:]
 	
 	private instanceTestCounter = 1
+	def testMethodName = ""
 	
 	void report(String label = "") {
-		browser.report("${getTestCounterValue()}-${instanceTestCounter++}-${label}")
+		browser.report("${getTestCounterValue()}-${instanceTestCounter++}-${testMethodName}-${label}")
 	}
 
 	/**
@@ -39,6 +40,13 @@ class GebReportingTest extends GebTest {
 	 */
 	void resetGebTestCounter() {
 		instanceTestCounter = 1
+	}
+	
+	/**
+	 * Called by GebTestListener, should not be called by users.
+	 */
+	void setGebTestMethodName(String testMethodName) {
+		this.testMethodName = testMethodName
 	}
 	
 	@BeforeMethod
@@ -77,7 +85,11 @@ class GebTestListener extends TestListenerAdapter {
 
 	@Override
 	void onTestStart(ITestResult tr) {
-		tr.instance.resetGebTestCounter()
+		def testInstance = tr.instance
+		if (testInstance instanceof GebReportingTest) {
+			testInstance.resetGebTestCounter()
+			testInstance.setGebTestMethodName(tr.method.methodName)
+		}
 	}
 	
 	@Override
@@ -91,9 +103,9 @@ class GebTestListener extends TestListenerAdapter {
 	}
 
 	private void createReport(ITestResult tr) {
-		def testInstance = tr.testClass.getInstances(true).first()
+		def testInstance = tr.instance
 		if (testInstance instanceof GebReportingTest) {
-			testInstance.report("${tr.method.methodName}-end")
+			testInstance.report("end")
 		}
 	}
 

@@ -52,6 +52,7 @@ class GebReportingTestTest extends GebReportingTest {
 	@Test
 	void b() {
 		doTestReport()
+		report "manual"
 	}
 
 	@Test
