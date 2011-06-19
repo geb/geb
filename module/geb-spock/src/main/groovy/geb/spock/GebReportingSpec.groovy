@@ -23,7 +23,7 @@ class GebReportingSpec extends GebSpec {
 
 	// Ridiculous name to avoid name clashes
 	@Rule _gebReportingSpecTestName = new TestName()
-	def _gebReportingPerTestCounter = 0
+	def _gebReportingPerTestCounter = 1
 	@Shared _gebReportingSpecTestCounter = 1
 
 	def setupSpec() {
@@ -40,7 +40,7 @@ class GebReportingSpec extends GebSpec {
 	}
 
 	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(++_gebReportingSpecTestCounter, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
+		browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter++, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
 	}
 
 }

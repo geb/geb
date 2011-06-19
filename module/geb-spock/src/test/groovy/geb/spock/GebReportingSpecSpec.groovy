@@ -15,10 +15,12 @@
 package geb.spock
 
 import spock.lang.*
-import geb.test.util.GebSpecWithServer
+import geb.test.util.CallbackHttpServer
 
 @Stepwise
-class GebReportingSpecSpec extends GebSpecWithServer {
+class GebReportingSpecSpec extends GebReportingSpec {
+	
+	@Shared server = new CallbackHttpServer()
 	
 	static responseText = """
 		<html>
@@ -29,13 +31,16 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 	"""
 	
 	def setupSpec() {
+		server.start()
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
+		baseUrl = server.baseUrl
+		go()
 	}
 		
 	def getFirstOutputFile() {
-		new File(reportGroupDir, "1-1-a request is made-end.html")
+		new File(reportGroupDir, "001-001-a request is made-end.html")
 	}
 	
 	def "a request is made"() {
@@ -55,5 +60,10 @@ class GebReportingSpecSpec extends GebSpecWithServer {
 		expect:
 		reportGroupDir.listFiles().any { it.name.startsWith("2") }
 	}
+	
+	def cleanupSpec() {
+		server.stop()
+	}
+	
 	
 }
