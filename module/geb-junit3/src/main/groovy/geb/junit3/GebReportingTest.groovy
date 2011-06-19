@@ -15,7 +15,7 @@
 package geb.junit3
 
 import geb.Browser
-import geb.report.*
+import geb.report.ReporterSupport
 import org.openqa.selenium.WebDriver
 
 class GebReportingTest extends GebTest {
@@ -25,7 +25,7 @@ class GebReportingTest extends GebTest {
 	private instanceTestCounter = 1
 
 	void report(String label) {
-		browser.report "${getTestCounterValue()}-${instanceTestCounter++}-${getName()}-$label"
+		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, getName(), label))
 	}
 	
 	void setUp() {

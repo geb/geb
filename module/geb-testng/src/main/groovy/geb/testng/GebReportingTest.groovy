@@ -15,8 +15,7 @@
  */
 package geb.testng
 
-import geb.report.Reporter
-import geb.report.ScreenshotAndPageSourceReporter
+import geb.report.ReporterSupport
 import org.testng.ITestResult
 import org.testng.TestListenerAdapter
 import org.testng.annotations.Listeners
@@ -32,7 +31,7 @@ class GebReportingTest extends GebTest {
 	def testMethodName = ""
 	
 	void report(String label = "") {
-		browser.report("${getTestCounterValue()}-${instanceTestCounter++}-${testMethodName}-${label}")
+		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, testMethodName, label))
 	}
 
 	/**

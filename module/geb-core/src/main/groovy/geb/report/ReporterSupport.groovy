@@ -33,4 +33,8 @@ abstract class ReporterSupport implements Reporter {
 		name.replaceAll("[^\\w\\s-]", "_")
 	}
 	
+	static String toTestReportLabel(int testCounter, int reportCounter, String methodName, String label) {
+		def numberFormat = "%03d"
+		"${String.format(numberFormat, testCounter)}-${String.format(numberFormat, reportCounter)}-$methodName-$label"
+	}
 }

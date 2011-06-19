@@ -18,6 +18,7 @@ import org.junit.Before
 import org.junit.After
 import org.junit.Rule
 import org.junit.rules.TestName
+import geb.report.ReporterSupport
 
 class GebReportingTest extends GebTest {
 
@@ -28,7 +29,7 @@ class GebReportingTest extends GebTest {
 	@Rule public TestName _gebReportingTestTestName = new TestName()
 	
 	void report(String label) {
-		browser.report "${getTestCounterValue()}-${instanceTestCounter++}-${_gebReportingTestTestName.methodName}-$label"
+		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, _gebReportingTestTestName.methodName, label))
 	}
 	
 	@Before
