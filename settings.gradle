@@ -8,3 +8,17 @@ include "module:geb-core",
         "module:geb-easyb",
         "doc:manual",
         "doc:site-app"
+
+rootProject.name = 'geb'
+
+
+def setBuildFile(project) {
+	project.buildFileName = "${project.name}.gradle"
+	project.children.each {
+		setBuildFile(it)
+	}
+}
+
+rootProject.children.each {
+	setBuildFile(it)
+}
