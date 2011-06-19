@@ -22,9 +22,10 @@ class GebReportingTest extends GebTest {
 
 	static private testCounters = [:]
 	static private testCleanFlags = [:]
+	private instanceTestCounter = 1
 
 	void report(String label) {
-		browser.report "${getTestCounterValue()}-${getName()}-$label"
+		browser.report "${getTestCounterValue()}-${instanceTestCounter++}-${getName()}-$label"
 	}
 	
 	void setUp() {

@@ -23,11 +23,12 @@ class GebReportingTest extends GebTest {
 
 	static private testCounters = [:]
 	static private testCleanFlags = [:]
-
+	private instanceTestCounter = 1
+	
 	@Rule public TestName _gebReportingTestTestName = new TestName()
 	
 	void report(String label) {
-		browser.report "${getTestCounterValue()}-${_gebReportingTestTestName.methodName}-$label"
+		browser.report "${getTestCounterValue()}-${instanceTestCounter++}-${_gebReportingTestTestName.methodName}-$label"
 	}
 	
 	@Before

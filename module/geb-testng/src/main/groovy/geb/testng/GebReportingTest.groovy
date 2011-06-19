@@ -27,11 +27,20 @@ class GebReportingTest extends GebTest {
 
 	static private testCounters = [:]
 	static private testCleanFlags = [:]
-
+	
+	private instanceTestCounter = 1
+	
 	void report(String label = "") {
-		browser.report("${getTestCounterValue()}-${label}")
+		browser.report("${getTestCounterValue()}-${instanceTestCounter++}-${label}")
 	}
 
+	/**
+	 * Called by GebTestListener, should not be called by users.
+	 */
+	void resetGebTestCounter() {
+		instanceTestCounter = 1
+	}
+	
 	@BeforeMethod
 	void setupReporting() {
 		reportGroup getClass()
@@ -66,6 +75,11 @@ class GebReportingTest extends GebTest {
 
 class GebTestListener extends TestListenerAdapter {
 
+	@Override
+	void onTestStart(ITestResult tr) {
+		tr.instance.resetGebTestCounter()
+	}
+	
 	@Override
 	void onTestSuccess(ITestResult tr) {
 		createReport(tr)
