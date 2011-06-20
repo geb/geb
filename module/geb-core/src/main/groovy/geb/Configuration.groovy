@@ -228,10 +228,6 @@ class Configuration {
 		rawConfig.autoClearCookies = flag
 	}
 	
-	ClassLoader getClassLoader() {
-		Thread.currentThread().contextClassLoader
-	}
-	
 	protected DriverFactory getDriverFactory(driverValue) {
 		if (driverValue instanceof CharSequence) {
 			new NameBasedDriverFactory(classLoader, driverValue.toString())
