@@ -142,10 +142,10 @@ class ConfigurationLoader {
 	}
 	
 	/**
-	 * This implementation returns {@code "geb-conf.groovy"}
+	 * This implementation returns {@code "GebConfig.groovy"}
 	 */
 	String getDefaultConfigScriptResourcePath() {
-		"geb-conf.groovy"
+		"GebConfig.groovy"
 	}
 	
 	static class UnableToLoadException extends geb.error.GebException {

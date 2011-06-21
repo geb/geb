@@ -45,7 +45,7 @@ HTMLUnit depends on some XML processing libraries that cause issues with Grails.
         exclude 'xml-apis'
     }
 
-Recall that Geb looks for its configuration file as `geb-conf.groovy` on the classpath. A good location for this file is in a Grails project is the `test/functional` directory is on the classpath at test time. You **do not** need to set the `baseUrl` and `reportsDir` config entries in a Grails project as the plugin takes care of those for you. The `baseUrl` is set to the root of the Grails application, and the `reportsDir` is set to `geb` inside Grails' test reports dir (which by default is `target/test-reports`).
+Recall that Geb looks for its configuration file as `GebConfig.groovy` on the classpath. A good location for this file is in a Grails project is the `test/functional` directory is on the classpath at test time. You **do not** need to set the `baseUrl` and `reportsDir` config entries in a Grails project as the plugin takes care of those for you. The `baseUrl` is set to the root of the Grails application, and the `reportsDir` is set to `geb` inside Grails' test reports dir (which by default is `target/test-reports`).
 
 There is nothing special about writing Geb tests with Grails. You subclass the same classes as usual (e.g. `geb.spock.GebReportingSpec` for Spock tests).
 

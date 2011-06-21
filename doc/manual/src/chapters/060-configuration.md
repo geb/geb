@@ -8,7 +8,7 @@ There are three general mechanisms for influencing configuration; *system proper
 
 ### The Config Script
 
-Geb attempts to load a [ConfigSlurper][configslurper] script named `geb-conf.groovy` from the *default package* of the **executing thread's context class loader** as the source of the configuration values. In other words, in the root of a directory that is on the classpath.
+Geb attempts to load a [ConfigSlurper][configslurper] script named `GebConfig.groovy` from the *default package* of the **executing thread's context class loader** as the source of the configuration values. In other words, in the root of a directory that is on the classpath.
 
 > In a Grails project, the `test/functional` directory is a good place for this. If you are using a build tool such as [Gradle](http://gradle.org/) or [Maven](http://maven.apache.org/) that has the concept of test “resources”, then that directory is a suitable place.
 
