@@ -5,7 +5,6 @@ import geb.Page
 import java.util.regex.Pattern
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.RenderedWebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
@@ -260,8 +259,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	boolean isDisplayed() {
-		def element = firstElement()
-		element instanceof RenderedWebElement ? element.displayed : false
+		firstElement()?.displayed ?: false
 	}
 
 	String tag() {
@@ -442,16 +440,16 @@ class NonEmptyNavigator extends Navigator {
 		def value = null
 		if (input.tagName == "select") {
 			if (getBooleanAttribute(input, "multiple")) {
-				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }*.value
+				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }.collect { getValue(it) }
 			} else {
-				value = input.findElements(By.tagName("option")).find { it.isSelected() }.value
+				value = getValue(input.findElements(By.tagName("option")).find { it.isSelected() })
 			}
 		} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
 			if (input.isSelected()) {
-				value = input.value
+				value = getValue(input)
 			}
 		} else {
-			value = input.value
+			value = getValue(input)
 		}
 		value
 	}
@@ -467,33 +465,46 @@ class NonEmptyNavigator extends Navigator {
 			if (getBooleanAttribute(input, "multiple")) {
 				def valueStrings = value*.toString()
 				input.findElements(By.tagName("option")).each { WebElement option ->
-					if (option.value in valueStrings) {
-						option.setSelected()
+					if (getValue(option) in valueStrings) {
+						if (!option.isSelected()) option.click()
 					} else if (option.text in valueStrings) {
-						option.setSelected()
+						if (!option.isSelected()) option.click()
 					} else if (option.isSelected()) {
+						// Can't use click() to deselect - http://code.google.com/p/selenium/issues/detail?id=1899
+						// Note that toggle() is deprecated though and will go at some point
 						option.toggle()
 					}
 				}
 			} else {
 				def valueString = value.toString()
 				input.findElements(By.tagName("option")).find {
-					it.value == valueString || it.text == valueString
-				}?.setSelected()
+					getValue(it) == valueString || it.text == valueString
+				}?.click()
 			}
 		} else if (input.getAttribute("type") == "checkbox") {
-			if (input.value == value.toString() || value == true) {
-				input.setSelected()
+			if (getValue(input) == value.toString() || value == true) {
+				if (!input.isSelected()) {
+					input.click()
+				}
 			} else if (input.isSelected()) {
-				input.toggle()
+				input.click()
 			}
 		} else if (input.getAttribute("type") == "radio") {
-			if (input.value == value.toString() || labelFor(input) == value.toString()) {
-				input.setSelected()
+			if (getValue(input) == value.toString() || labelFor(input) == value.toString()) {
+				input.click()
 			}
 		} else {
 			input.clear()
 			input.sendKeys value as String
+		}
+	}
+	
+	private getValue(WebElement input) {
+		def tag = input.tagName
+		if (tag == "textarea") {
+			input.text
+		} else {
+			input.getAttribute('value')
 		}
 	}
 	

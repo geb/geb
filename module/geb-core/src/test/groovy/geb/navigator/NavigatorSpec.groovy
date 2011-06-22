@@ -752,7 +752,7 @@ class NavigatorSpec extends GebSpec {
 		"keywords"        | "Enter keywords here"
 		"checker1"        | null
 		"checker2"        | "123"
-		"textext"         | " The textarea content. "
+		"textext"         | "The textarea content." // note whitespace has been removed
 		"plain_select"    | "4"
 		"multiple_select" | ["2", "4"]
 	}
@@ -783,7 +783,7 @@ class NavigatorSpec extends GebSpec {
 		def radios = driver.findElements(By.name("site"))
 
 		when:
-		radios.find { it.value == expectedValue }.setSelected()
+		radios.find { it.getAttribute('value') == expectedValue }.setSelected()
 
 		then:
 		$("form").site == expectedValue
@@ -888,7 +888,7 @@ class NavigatorSpec extends GebSpec {
 		$("form").site = value
 
 		then:
-		driver.findElements(By.name("site")).find { it.value == value }.isSelected()
+		driver.findElements(By.name("site")).find { it.getAttribute('value') == value }.isSelected()
 
 		cleanup:
 		driver.findElement(By.id("site-1")).setSelected()
@@ -915,7 +915,7 @@ class NavigatorSpec extends GebSpec {
 		$("#the_plain_select")        | "4"
 		$("#the_multiple_select")     | ["2", "4"]
 		$("#the_plain_select option") | "1"
-		$("textarea")                 | " The textarea content. "
+		$("textarea")                 | "The textarea content." // note no leading/trailing whitespace
 		$("#keywords")                | "Enter keywords here"
 		$("#checker1")                | null
 		$("#checker2")                | "123"
@@ -930,7 +930,7 @@ class NavigatorSpec extends GebSpec {
 		navigator                     | expected
 		$("select")                   | ["4", ["2", "4"]]
 		$("#the_plain_select option") | ["1", "2", "3", "4", "5"]
-		$("#keywords, textarea")      | ["Enter keywords here", " The textarea content. "]
+		$("#keywords, textarea")      | ["Enter keywords here", "The textarea content."] // note no leading/trailing whitespace for textarea
 	}
 
 	@Unroll("input value can be changed to '#newValue'")
