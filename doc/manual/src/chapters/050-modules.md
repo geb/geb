@@ -203,3 +203,12 @@ The Content DSL used for modules is _exactly_ the same as the [one used for page
 ## Inheritance
 
 Modules can use inheritance in the same way that pages can. That is, their content definitions are merged with any content redefined in the subclass taking precedence of the superclass.
+
+## Size and Location
+
+You can obtain the size and location of the module. All units are in pixels. The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page (or parent frame) to the top left point of the base of the module.
+
+    $("div").height == 20
+    $("div").width == 40
+    $("div").x == 60
+    $("div").y == 80

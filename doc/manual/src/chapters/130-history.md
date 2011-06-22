@@ -26,6 +26,7 @@ This page lists the high level changes between versions of Geb.
 * The JUnit 3 integration now includes the test method name in the automatically generated reports
 * The reporting support has been rewritten, making it much friendlier to use outside of testing
 * Added the TestNG support (contributed by Alexander Zolotov)
+* Added the `height`, `width`, `x` and `y` properties to navigator objects and modules
 
 ### Breaking Changes
 

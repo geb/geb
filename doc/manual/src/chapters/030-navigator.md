@@ -250,6 +250,24 @@ Would click the “`input.loginButton`” element, then effectively call `browse
 
 Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not. The `displayed` property of a navigator object that doesn't match anything is always `false`
 
+## Size and Location
+
+You can obtain the size and location of content on the page. All units are in pixels. The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page (or parent frame) to the top left point of the content.
+
+All of these properties operate on the **first** matched element only.
+
+    $("div").height == 20
+    $("div").width == 40
+    $("div").x == 60
+    $("div").y == 80
+
+To obtain any of the properties for all matched elements, you can use the Groovy spread operator.
+
+    $("div")*.height == [20, 30]
+    $("div")*.width == [40, 50]
+    $("div")*.x == [60, 70]
+    $("div")*.y == [80, 90]
+
 ## Accessing tag name, attributes, text and classes
 
 The `tag()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.

@@ -576,6 +576,42 @@ abstract class Navigator implements Iterable<Navigator> {
 	}
 
 	/**
+	 * Returns the height of the first element the navigator matches or 0 if it matches nothing.
+	 * <p>
+	 * To get the height of all matched elements you can use the spread operator {@code navigator*.height}
+	 */
+	int getHeight() {
+		firstElement()?.size?.height ?: 0
+	}
+
+	/**
+	 * Returns the width of the first element the navigator matches or 0 if it matches nothing.
+	 * <p>
+	 * To get the width of all matched elements you can use the spread operator {@code navigator*.width}
+	 */
+	int getWidth() {
+		firstElement()?.size?.width ?: 0
+	}
+
+	/**
+	 * Returns the x coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
+	 * <p>
+	 * To get the x coordinate of all matched elements you can use the spread operator {@code navigator*.x}
+	 */	
+	int getX() {
+		firstElement()?.location?.x ?: 0
+	}
+
+	/**
+	 * Returns the y coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
+	 * <p>
+	 * To get the y coordinate of all matched elements you can use the spread operator {@code navigator*.y}
+	 */
+	int getY() {
+		firstElement()?.location?.y ?: 0
+	}
+	
+	/**
 	 * Factory method to create an initial Navigator instance.
 	 * <p>
 	 * Hides the fact that there are two implementations of Navigator at work behind
