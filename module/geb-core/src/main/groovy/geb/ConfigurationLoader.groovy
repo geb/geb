@@ -124,7 +124,13 @@ class ConfigurationLoader {
 	 * @see groovy.lang.GroovyClassLoader
 	 */
 	protected GroovyClassLoader getDefaultClassLoader() {
-		new GroovyClassLoader()
+		// This is here as a get-out-of-jail strategy in case users have problems
+		// with our strategy of using the context loader, it's not publicised
+		if (Boolean.getBoolean("geb.config.dont.use.context.loader")) {
+			new GroovyClassLoader(getClass().classLoader)
+		} else {
+			new GroovyClassLoader()
+		}
 	}
 	
 	/**
