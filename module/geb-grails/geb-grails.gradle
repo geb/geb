@@ -34,7 +34,7 @@ dependencies {
 System.setProperty("server.port", "8010")
 System.setProperty("geb.building", "true") // disables geb deps in plugins build config
 
-task uploadArchives(type: GrailsTask) {
+task uploadPublished(type: GrailsTask) {
 	if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 		command "release-plugin"
 		configuration "compile"
