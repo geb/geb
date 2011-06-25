@@ -5,7 +5,7 @@ function anchor_highlight(elemId){
 	var elem = $(elemId).parent();
 	var off = {backgroundColor: "#FFFFFF"};
 	var on = {backgroundColor: "#C6DFF4"};;
-	var speed = 400;
+	var speed = 250;
 	
 	elem.css(off);
 	elem.animate(
