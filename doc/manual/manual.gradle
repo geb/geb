@@ -60,6 +60,7 @@ artifacts {
 
 // Maven plugin only adds install to java projects
 task install(type: Upload, dependsOn: configurations.archives.buildArtifacts) {
+	configuration = configurations.archives
 	description = "Does a maven install of the archives artifacts into the local .m2 cache."
 	repositories {
 		mavenInstaller name: "mavenInstaller"
