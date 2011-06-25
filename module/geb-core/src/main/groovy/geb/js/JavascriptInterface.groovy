@@ -32,9 +32,11 @@ class JavascriptInterface {
 		if (!(driver instanceof JavascriptExecutor)) {
 			throw new GebException("driver '$driver' can not execute javascript")
 		}
-		if (!driver.javascriptEnabled) {
-			throw new GebException("javascript is disabled for driver '$driver'")
-		}
+		
+		// Temporarily disabled due to issues with 2.0rc3
+		//if (!driver.javascriptEnabled) {
+		//	throw new GebException("javascript is disabled for driver '$driver'")
+		//}
 		
 		browser.driver.executeScript(script, *args)
 	}
