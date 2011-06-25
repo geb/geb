@@ -1,5 +1,4 @@
 import org.gradle.plugin.pgp.signing.*
-
 buildscript {
 	repositories {
 		mavenRepo (name: "Alkemist's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
@@ -12,61 +11,38 @@ buildscript {
 	}
 }
 
-apply plugin: "base"
-apply plugin: "maven"
-
 archivesBaseName = "geb-manual"
 output = file("build/manual")
 
-def docTasks = []
-rootProject.subprojects.findAll { project -> project.path in publishedModules && project.path in groovyModules }.each { project ->
-	def taskName = "groovydoc-$project.name"
-	task "$taskName" (type: Groovydoc) {
-		source project.sourceSets.main.allGroovy
-		destinationDir = file("build/manual-api/api/$project.name") 
-		classpath = project.sourceSets.main.compileClasspath
-		groovyClasspath = project.sourceSets.main.compileClasspath
-		exclude "**/internal/**"
-		
-		link "http://download.oracle.com/javase/6/docs/api/",
-			"java.net",
-			"java.util",
-			"java.lang",
-			"java.io"
-		
-		link "http://selenium.googlecode.com/svn/trunk/docs/api/java/",
-			"org.openqa.selenium"
-		
-		link "http://groovy.codehaus.org/api/",
-			"groovy.lang"
-		
-		docTitle = "Groovy API Documentation for $project.name $project.version"
-		footer = "<p style='text-align: center'>Groovy API Documentation for $project.name $project.version - Licensed under the Apache License, Version 2.0 - <a href='http://geb.codehaus.org'>http://geb.codehaus.org</a></p>"
-		windowTitle = "Groovy API for $project.name $project.version"
+task compileApi(dependsOn: publishedGroovyModules.collect { project(it).groovydoc }) {
+	publishedGroovyModules.collect { project(it) }.each { groovyProject ->
+		inputs.dir groovyProject.groovydoc.destinationDir
+	
+		doLast {
+			project.copy {
+				from groovyProject.groovydoc.destinationDir
+				into "build/manual-api/api/$groovyProject.name"
+			}
+		}
 	}
-	docTasks << delegate."$taskName"
-}
 
-
-task compileApi(dependsOn: docTasks) {
-	inputs.dir "build/manual-api"
 	outputs.dir "build/manual-api"
 }
 
 task compileManual {
 	inputs.dir "src"
 	outputs.dir "build/manual-manual"
-	
+
 	doLast {
 		new markdown2book.Generator(file("src"), file("build/manual-manual"), "UTF-8").generate()
 	}
 }
-	
+
 task compile(type: Sync, dependsOn: [compileManual, compileApi]) {
 	from "build/manual-api"
 	from "build/manual-manual"
 	into output
-	
+
 	inputs.dir "build/manual-api"
 	inputs.dir "build/manual-manual"
 	outputs.dir output
@@ -82,11 +58,8 @@ artifacts {
 	archives zip
 }
 
-signing {
-	sign configurations.archives
-}
-
-task install(type: Upload, dependsOn: buildArchives) {
+// Maven plugin only adds install to java projects
+task install(type: Upload, dependsOn: configurations.archives.buildArtifacts) {
 	description = "Does a maven install of the archives artifacts into the local .m2 cache."
 	repositories {
 		mavenInstaller name: "mavenInstaller"
