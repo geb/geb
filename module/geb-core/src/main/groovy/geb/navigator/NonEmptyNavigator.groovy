@@ -465,10 +465,8 @@ class NonEmptyNavigator extends Navigator {
 			if (getBooleanAttribute(input, "multiple")) {
 				def valueStrings = value*.toString()
 				input.findElements(By.tagName("option")).each { WebElement option ->
-					if (getValue(option) in valueStrings) {
-						if (!option.isSelected()) option.click()
-					} else if (option.text in valueStrings) {
-						if (!option.isSelected()) option.click()
+					if (getValue(option) in valueStrings || option.text in valueStrings) {
+						option.setSelected()
 					} else if (option.isSelected()) {
 						// Can't use click() to deselect - http://code.google.com/p/selenium/issues/detail?id=1899
 						// Note that toggle() is deprecated though and will go at some point
@@ -479,7 +477,7 @@ class NonEmptyNavigator extends Navigator {
 				def valueString = value.toString()
 				input.findElements(By.tagName("option")).find {
 					getValue(it) == valueString || it.text == valueString
-				}?.click()
+				}?.setSelected()
 			}
 		} else if (input.getAttribute("type") == "checkbox") {
 			if (getValue(input) == value.toString() || value == true) {
