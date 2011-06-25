@@ -57,4 +57,4 @@ Browser.drive(GoogleHomePage) {
 }
 </pre>
 <p>Pages can be used to model a particular page (or type of page) in your application, while modules can be used to model view fragments that are used across different pages. Page and module types in Geb can extend parent types, inheriting all content defined by the parent.</p>
-<p>See the <a href="manual/pages.html">manual section on pages</a> for more information.</p>
+<p>See the <a href="manual/current/pages.html">manual section on pages</a> for more information.</p>

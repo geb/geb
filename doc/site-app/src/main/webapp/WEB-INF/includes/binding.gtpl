@@ -34,4 +34,4 @@ login().click()
 assert \$("p.login_status").text() == "You are logged in"
 </pre>
 
-<p>See the <a href="manual/binding.html">manual section on binding management</a> for more information.</p>
+<p>See the <a href="manual/current/binding.html">manual section on binding management</a> for more information.</p>

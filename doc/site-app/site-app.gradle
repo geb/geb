@@ -68,11 +68,77 @@ tasks.each {
 	}
 }
 
-task copyManual(type: Sync) {
-	dependsOn project(":doc:manual").compile
-	from project(":doc:manual").output
-	into "build/manual/manual"
+// The old versions of Geb we are including manuals for
+oldManualVersions = ["0.6-SNAPSHOT"]
+
+configurations {
+	snapshotManual
+	currentManual
+	
+	oldManualVersions.each {
+		delegate."manual-$it"
+	}
 }
+
+repositories {
+	mavenLocal()
+	mavenRepo urls: "https://nexus.codehaus.org/content/repositories/snapshots"
+}
+
+dependencies {
+	snapshotManual project(":doc:manual")
+	currentManual project(":doc:manual")
+	
+	oldManualVersions.each {
+		delegate."manual-$it"("org.codehaus.geb:geb-manual:$it@zip")
+	}
+}
+
+def findManualArtifacts = { configuration ->
+	configuration.resolvedConfiguration.resolvedArtifacts.findAll {
+		it.name == "geb-manual" && it.type == "zip"
+	}.unique {
+		// sometimes there are two of the same artifact in the configuration
+		it.name
+	}
+}
+
+def findManualArtifact = { configuration ->
+	def artifacts = findManualArtifacts(configuration)
+	assert artifacts.size() == 1 : "$configuration should have one manual artifact"
+	artifacts.toList().first()
+}
+
+def explodeManual = { manualArtifact, label ->
+	copy {
+		from zipTree(manualArtifact.file)
+		into "build/manual/manual/$label"
+	}
+}
+
+task includeSnapshotManual(dependsOn: configurations.snapshotManual) {
+	doLast {
+		explodeManual(findManualArtifact(configurations.snapshotManual), "snapshot")
+	}
+}
+
+task includeCurrentManual(dependsOn: configurations.currentManual) {
+	doLast {
+		explodeManual(findManualArtifact(configurations.currentManual), "current")
+	}
+}
+
+def allVersionConfigurations = [configurations.currentManual] + oldManualVersions.collect { configurations["manual-$it"] } 
+task includeVersionManuals(dependsOn: allVersionConfigurations) {
+	allVersionConfigurations.each { manualConfiguration ->
+		doLast {
+			def artifact = findManualArtifact(manualConfiguration)
+			explodeManual(artifact, artifact.resolvedDependency.moduleVersion)
+		}
+	}
+}
+
+task includeManuals(dependsOn: [includeSnapshotManual, includeCurrentManual, includeVersionManuals])
 
 task filter(type: Copy) {
 	filter(ReplaceTokens, tokens: [version: version.endsWith("SNAPSHOT") ? 'snapshot' : 'release'])
@@ -81,7 +147,7 @@ task filter(type: Copy) {
 }
 
 war {
-	dependsOn filter, copyManual
+	dependsOn filter, includeManuals
 	from filter.destinationDir
 	from "build/manual"
 }
@@ -93,6 +159,3 @@ gae {
 		}
 	}
 }
-
-// alias
-task uploadArchives(dependsOn: gaeUpload) {}

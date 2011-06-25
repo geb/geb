@@ -18,4 +18,4 @@ Browser.drive("http://mysite.com") {
 }
 </pre>
 
-<p>See the <a href="manual/browser.html#the_drive_method">manual section on the drive() method</a> for more information.</p>
+<p>See the <a href="manual/current/browser.html#the_drive_method">manual section on the drive() method</a> for more information.</p>

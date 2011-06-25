@@ -31,4 +31,4 @@ assert \$("form").name == "Jeb"
 \$("form").name = "Geb"
 assert \$("form").name == "Geb"
 </pre>
-<p>See the <a href="manual/navigator.html">manual section on content navigation</a> for more information.</p>
+<p>See the <a href="manual/current/navigator.html">manual section on content navigation</a> for more information.</p>

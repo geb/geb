@@ -28,4 +28,4 @@ Browser.drive("http://google.com/ncr") {
 }</pre>
 
 <p>This is a very basic scripting style sample and does not illustrate many of Geb's most powerful features.</p>
-<p>The <a href="manual/">Book of Geb</a> contains all the information you need to get started with Geb.</p>
+<p>The <a href="manual/current/">Book of Geb</a> contains all the information you need to get started with Geb.</p>

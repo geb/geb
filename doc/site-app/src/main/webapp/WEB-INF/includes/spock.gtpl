@@ -43,4 +43,4 @@ class PersonCRUDSpec extends GebSpec {
     }
 }
 </pre>
-<p>Please see the <a href="manual/integrations.html#spock">manual section on integrating with Spock</a> for more information.</p>
+<p>Please see the <a href="manual/current/integrations.html#spock">manual section on integrating with Spock</a> for more information.</p>
