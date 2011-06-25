@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link href="css/stylesheet.css" rel="stylesheet" type="text/css">
-  <title>The Book Of Geb - <%= chapter.title %></title>
+  <title>The Book Of Geb - <%= chapter.title %> - version @geb-version@</title>
 
   <link type="text/css" rel="stylesheet" href="css/shCore.css"></link>
   <link type="text/css" rel="stylesheet" href="css/shThemeEclipse.css"></link>
@@ -48,5 +48,9 @@
       <% if (next) { %><span class="right"><a href="<%= next.filename %>"><%= next.title %></a> &#x25B6;</span><% } %>
     </div>
   </div>
+  <p style="text-align: center">
+    The Book of <a href="http://@home-page@">Geb</a> - @geb-version@ - @created-at@<br />
+    Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>
+  </p>
 </body>
 </html>

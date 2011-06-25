@@ -1,4 +1,3 @@
-import org.gradle.plugin.pgp.signing.*
 buildscript {
 	repositories {
 		mavenRepo (name: "Alkemist's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
@@ -21,32 +20,50 @@ task compileApi(dependsOn: publishedGroovyModules.collect { project(it).groovydo
 		doLast {
 			project.copy {
 				from groovyProject.groovydoc.destinationDir
-				into "build/manual-api/api/$groovyProject.name"
+				into "$buildDir/manual/api/$groovyProject.name"
 			}
 		}
 	}
 
-	outputs.dir "build/manual-api"
+	outputs.dir "build/manual/api"
 }
 
 task compileManual {
+	substitutionProperties = [
+		"geb-version": project.version,
+		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
+		"home-page": "www.gebish.org"
+	]
+	
+	inputs.properties substitutionProperties
 	inputs.dir "src"
-	outputs.dir "build/manual-manual"
+	outputs.dir "$buildDir/manual"
 
 	doLast {
-		new markdown2book.Generator(file("src"), file("build/manual-manual"), "UTF-8").generate()
+		copy {
+			from "src"
+			into "$buildDir/tmp/manual"
+			
+			// There's an issue with encoding being messed up by filter(), so do it manually for now
+			//filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: substitutionProperties)
+		}
+		
+		file("$buildDir/tmp/manual").eachFileRecurse { filterFile ->
+			if (["md", "html"].any { filterFile.name.endsWith(it) }) {
+				def text = filterFile.getText("UTF-8")
+				substitutionProperties.each { k, v ->
+					text = text.replace("@$k@", v)
+				}
+				
+				filterFile.setText(text, "UTF-8")
+			}
+		}
+		
+		new markdown2book.Generator(file("$buildDir/tmp/manual"), file("$buildDir/manual"), "UTF-8").generate()
 	}
 }
 
-task compile(type: Sync, dependsOn: [compileManual, compileApi]) {
-	from "build/manual-api"
-	from "build/manual-manual"
-	into output
-
-	inputs.dir "build/manual-api"
-	inputs.dir "build/manual-manual"
-	outputs.dir output
-}
+task compile(type: Copy, dependsOn: [compileManual, compileApi])
 
 task zip(type: Zip, dependsOn: compile) {
 	inputs.dir output
