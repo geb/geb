@@ -28,11 +28,35 @@ dependencies {
 	
 	test project(':module:geb-junit4'),
 	     project(':module:geb-spock'),
-	     project(':module:geb-easyb')
+	     project(':module:geb-easyb'),
+	     htmlUnitDriverDependency
 }
 
 System.setProperty("server.port", "8010")
 System.setProperty("geb.building", "true") // disables geb deps in plugins build config
+
+task createTemplatedFiles << {
+	def templateVariables = [
+		"grails-version": project.grailsVersion,
+		"geb-version": project.version
+	]
+	
+	projectDir.eachFileRecurse { inputFile ->
+		if (!inputFile.name.endsWith(".in")) return
+		
+		def input = inputFile.getText("UTF-8")
+		templateVariables.each { k, v ->
+			input = input.replace("@$k@", v)
+		}
+		
+		def destFile = new File(inputFile.parentFile, inputFile.name[0..-4])
+		destFile.setText(input, "UTF-8")
+	}
+}
+
+tasks.withType(GrailsTask) { task ->
+	if (task.name != "clean") task.dependsOn(createTemplatedFiles)
+}
 
 task uploadPublished(type: GrailsTask) {
 	if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {

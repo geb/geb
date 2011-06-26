@@ -5,3 +5,5 @@ target
 plugin.xml
 docs
 build
+application.properties
+GebGrailsPlugin.groovy

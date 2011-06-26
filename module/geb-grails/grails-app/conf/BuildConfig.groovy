@@ -20,30 +20,10 @@ grails.project.dependency.resolution = {
 		grailsHome()
 		mavenLocal()
 		mavenCentral()
-		mavenRepo "http://snapshots.repository.codehaus.org"
 	}
 	
-	def gebVersion = "0.6-SNAPSHOT"
 	def runningInGebBuild = System.getProperty("geb.building") != null
 	
-	dependencies {
-		if (!runningInGebBuild) {
-			["junit4", "spock", "easyb"].each {
-				test("org.codehaus.geb:geb-$it:$gebVersion") {
-					export = false
-				}
-			}
-		}
-		
-		// used for running this plugin's tests, not in user tests
-		test("org.seleniumhq.selenium:selenium-htmlunit-driver:latest.release") {
-			exclude 'xml-apis'
-			export = false
-		}
-		test("org.seleniumhq.selenium:selenium-firefox-driver:latest.release") {
-			export = false
-		}
-	}
 	plugins {
 		if (runningInGebBuild) {
 			compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.5-groovy-1.7", ":easyb:2.02") {
