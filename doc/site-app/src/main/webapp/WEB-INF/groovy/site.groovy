@@ -14,4 +14,6 @@ request['pages'] = [
 	
 ]
 
+log.info "request for $params.page"
+
 forward "site.gtpl"

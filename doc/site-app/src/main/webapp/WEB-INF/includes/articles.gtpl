@@ -42,6 +42,9 @@
                         item.text(text.substring(0, text.lastIndexOf(" - ")));
                     })
                 });
+            },
+            error: function() {
+                jQuery('#articles').children().replaceWith("<p class='error'>An error occurred loading the articles, please reload the page.</p>");
             }    
         });
     });

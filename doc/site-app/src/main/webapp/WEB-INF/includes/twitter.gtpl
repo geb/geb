@@ -37,7 +37,10 @@
                     );
                     
                 }
-            }    
+            },
+            error: function() {
+                jQuery('#tweets').children().replaceWith("<p class='error'>An error occurred loading the tweets, please reload the page.</p>");
+            }  
         });
     });
 </script>

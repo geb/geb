@@ -370,3 +370,9 @@ div.tweet-content {
 .article .title {
 	font-size: 120%;
 }
+
+p.error {
+	font-size: 120%;
+	color: #F00;
+	font-style: italic;
+}

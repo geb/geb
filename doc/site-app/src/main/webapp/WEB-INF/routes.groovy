@@ -7,7 +7,8 @@ all "/images/**", ignore: true
 all "/css/**", ignore: true
 all "/js/**", ignore: true
 
-
-get "/feed/@feed", forward: "/feedproxy.groovy?feed=@feed", cache: 1.hours
-all "/@page", forward: "site.groovy?page=@page", cache: 12.hours
+all "/clearcaches", forward: "clearcaches.groovy"
+get "/feed/@feed", forward: "/feedproxy.groovy?feed=@feed"
+all "/@page", forward: "site.groovy?page=@page", validate: { !(page in ["twitter", "articles"]) }, cache: 12.hours
+all "/@page", forward: "site.groovy?page=@page", validate: { page in ["twitter", "articles"] }, cache: 1.hours
 all "/", forward: "site.groovy?page=index", cache: 12.hours
