@@ -5,7 +5,6 @@
     <system-properties>
         <property name="file.encoding" value="UTF-8"/>
         <property name="groovy.source.encoding" value="UTF-8"/>
-        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
     <static-files>
         <exclude path="/WEB-INF/**.groovy"/>
