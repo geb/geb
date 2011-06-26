@@ -9,6 +9,11 @@ test {
 }
 
 modifyPom = { pom ->
+	pom.project {
+		name "Geb for TestNG"
+		description "Geb (pronounced \"jeb\") integration with the TestNG test framework."
+	}
+	
 	// User provides their own testng
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.testng" })
 }

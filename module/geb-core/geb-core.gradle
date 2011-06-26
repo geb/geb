@@ -4,5 +4,11 @@ dependencies {
 }
 
 modifyPom = { pom ->
+	pom.project {
+		name "Geb Core"
+		description "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
+	}
+	
 	pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
 }
+

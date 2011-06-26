@@ -5,6 +5,11 @@ dependencies {
 }
 
 modifyPom = { pom ->
+	pom.project {
+		name "Geb for JUnit 3"
+		description "Geb (pronounced \"jeb\") integration with the JUnit 3 test framework."
+	}
+	
 	// User provides their own junit
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
 }

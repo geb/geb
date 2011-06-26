@@ -204,9 +204,7 @@ subprojects {
 								authentication(userName: codehausUsername, password: codehausPassword)
 							}
 							pom.project {
-								name "Geb"
-								description "Geb (pronounced with a soft “G” like “Jeb”) is a browser automation solution for the Groovy programming language. It combines the browser driving features of WebDriver (and therefore can work with Internet Explorer, FireFox, Chrome and HTMLUnit) with a jQuery inspired content navigation/inspection API and the expressiveness of Groovy."
-								url "http://geb.codehaus.org"
+								url "http://www.gebish.org"
 								inceptionYear "2010"
 								licenses {
 									license {
