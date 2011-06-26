@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>gebframework</application>
-    <version>@version@</version>
+    <version>snapshot</version>
     <system-properties>
         <property name="file.encoding" value="UTF-8"/>
         <property name="groovy.source.encoding" value="UTF-8"/>
     </system-properties>
     <static-files>
+        <include path="**" expiration="12h" />
         <exclude path="/WEB-INF/**.groovy"/>
         <exclude path="**.gtpl"/>
     </static-files>

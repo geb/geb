@@ -46,7 +46,7 @@ ul, ol {
 
 img {
 	border: 1px solid #DADADA;
-	padding: 8px;
+	padding: 2px;
 }
 
 img.no-border {
@@ -334,3 +334,39 @@ p.back-to-home a {
 /* additional classes */
 .clear { clear: both; }
 .orange { color: #F3A251; }
+
+div.tweet {
+	clear: both;
+	float: left;
+	margin-bottom: 1em;
+}
+
+div.tweet-content {
+	margin-left: 1em;
+	width: 500px;
+	float: left;
+}
+
+.tweet-content p {
+	margin-top: 0;
+}
+
+.loading-tweets {
+	font-style: italic;
+	color: #999;
+	font-size: 180%;
+}
+
+#articles, #tweets {
+	display: block;
+	margin-top: 24px;
+	clear: both;
+}
+
+.article {
+	background: url(../images/bk_dotted.gif) repeat-x left bottom;
+	padding-bottom: .8em;
+}
+.article .title {
+	font-size: 120%;
+}

@@ -6,7 +6,12 @@ request['pages'] = [
 		async: "Asynchronous Pages",
 		testing: "Testing",
 		integration: "Build Integration"
+	],
+	"Talk": [
+		twitter: "Twitter about Geb",
+		articles: "Articles about Geb"
 	]
+	
 ]
 
 forward "site.gtpl"
