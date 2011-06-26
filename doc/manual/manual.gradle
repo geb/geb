@@ -42,15 +42,18 @@ task compileManual {
 	outputs.dir "$buildDir/manual"
 
 	doLast {
+		def tmpSpace = file("$buildDir/tmp/manual")
+		assert !tmpSpace.exists() || tmpSpace.deleteDir()
+		
 		copy {
 			from "src"
-			into "$buildDir/tmp/manual"
+			into tmpSpace
 			
 			// There's an issue with encoding being messed up by filter(), so do it manually for now
 			//filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: substitutionProperties)
 		}
 		
-		file("$buildDir/tmp/manual").eachFileRecurse { filterFile ->
+		tmpSpace.eachFileRecurse { filterFile ->
 			if (["md", "html"].any { filterFile.name.endsWith(it) }) {
 				def text = filterFile.getText("UTF-8")
 				substitutionProperties.each { k, v ->

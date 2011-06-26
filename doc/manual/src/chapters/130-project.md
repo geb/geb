@@ -1,10 +1,33 @@
-# History
+# About the Project
+
+## API Reference
+
+* [geb-core](api/geb-core/index.html)
+* [geb-spock](api/geb-spock/index.html)
+* [geb-junit4](api/geb-junit4/index.html)
+* [geb-testng](api/geb-testng/index.html)
+* [geb-easyb](api/geb-easyb/index.html)
+* [geb-junit3](api/geb-junit3/index.html)
+
+## Credits
+
+### Committers
+
+* [Luke Daley](http://ldaley.com)
+* [Robert Fletcher](http://adhockery.blogspot.com/)
+* [Peter Niederwieser](http://pniederw.wordpress.com/)
+
+### Contributors
+
+* [Alexander Zolotov](http://github.com/zolotov) - TestNG Integration
+
+## History
 
 This page lists the high level changes between versions of Geb.
 
-## 0.6
+### 0.6
 
-### New Features
+#### New Features
 
 * selenium-common is now a 'provided' scoped dependency of Geb
 * Radio buttons can be selected with their label text as well as their value attribute.
@@ -28,7 +51,7 @@ This page lists the high level changes between versions of Geb.
 * Added the TestNG support (contributed by Alexander Zolotov)
 * Added the `height`, `width`, `x` and `y` properties to navigator objects and modules
 
-### Breaking Changes
+#### Breaking Changes
 
 * Raised minimum Groovy version to 1.7
 * All failed waitFor clauses now throw a `geb.waiting.WaitTimeoutException` instead of `AssertionError`
@@ -37,13 +60,13 @@ This page lists the high level changes between versions of Geb.
 * The Grails specific testing subclasses have been REMOVED. Use the direct equivalent instead (e.g `geb.spock.GebReportingSpec` instead of `grails.plugin.geb.GebSpec`)
 * The `getBaseUrl()` method from testing subclasses has been removed, use the configuration mechanism
 
-## 0.5.1
+### 0.5.1
 
 * Fixed problem with incorrectly compiled specs and the geb grails module
 
-## 0.5
+### 0.5
 
-### New Features
+#### New Features
 
 * Navigator objects now implement the Groovy truth (empty == false, non empty == true)
 * Introduced “js” short notation
@@ -59,11 +82,11 @@ This page lists the high level changes between versions of Geb.
 * The click() methods that take one or more page classes are now available on `Navigator` objects
 * Added page lifecycle methods `onLoad()`/`onUnload()`
 
-### Breaking Changes
+#### Breaking Changes
 
 * Exceptions raised in `drive()` blocks are no longer wrapped with `DriveException`
 * the `at(Class pageClass)` method no longer requires the existing page instance to be of that class (page will be updated if the given type matches)
 
-## 0.4
+### 0.4
 
 **Initial Public Release**

@@ -58,6 +58,7 @@ subprojects {
 	version = '0.6.0-SNAPSHOT'
 	group = 'org.codehaus.geb'
 	
+	stableVersion = "0.6.0.RC1"
 	isSnapshot = version.endsWith("-SNAPSHOT")
 	
 	configurations {
