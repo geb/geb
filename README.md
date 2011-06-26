@@ -1,19 +1,46 @@
-Geb is a tool for automating web browsers for web testing, screen scraping and process automation.
+Geb (pronounced “jeb”) is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
 
-Project home: [http://www.gebish.org](http://www.gebish.org/)
+For more information about the project, see the [http://www.gebish.org](http://www.gebish.org/).
 
-## Build Instructions
+## How to contribute
 
-To build Geb, you will need Git installed. Once you have cloned Geb…
+### Build Environment
 
-    git clone git://github.com/geb/geb.git
+Geb builds with [Gradle](http://www.gradle.org/ "Home - Gradle"). You do not need to have Gradle installed to work with the Geb build as gradle provides an executable wrapper that you use to drive the build.
 
-You then need to get the submodules. To do this you need to run the following two commands:
+On UNIX type environments this is `gradlew` and is `gradlew.bat` on Windows.
 
-    git submodule init
-    git submodule update
+For example to run the Geb test suite for the entire project you would run…
 
-You can now build Geb using the gradle wrapper…
+    ./gradlew test
 
-    ./gradlew jar
+### Contributing Documentation
+
+Geb documentation comes in two forms; the manual and the api (i.e. the Groovydoc amongst the source).
+
+#### The Manual
+
+The manual project can be found at `doc/manual` within the project tree. The [Markdown](http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown") source files, HTML templates, CSS and Javascript that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [markdown2book](https://github.com/alkemist/markdown2book)).
+
+Most documentation contributions are simply modifications to these files.
+
+To compile the manual in or to see any changes made, simply run (from the root of the geb project)…
+
+    ./gradlew :doc:manual:compileManual
+
+You will then find the compiled HTML in the directory `doc/manual/build/manual`
+
+#### The API reference
+
+The API reference is made up of the Groovydoc (like Javadoc) that annotates the groovy files for the different modules in `module/`. To make a change to the reference API documentation, find the corresponding file in `module/«module»/src/main/groovy` and make the change.
+
+You can then generate the API reference HTML by running…
+
+    ./gradlew :doc:manual:compileApi
+
+You will then find the compiled HTML in the directory `doc/manual/build/manual/api`
+
+> Note that you can build the manual chapters and reference API in one go with `./gradlew doc:manual:compile`
+
+### Contributing features/patches
 
