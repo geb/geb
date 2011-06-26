@@ -11,24 +11,24 @@ You still need to include the appropriate Geb module for testing (i.e. `geb-juni
 For example, if you plan to use Spock with Geb you would need to add the following to the `BuildConfig.groovy`…
 
     dependencies {
-        test "org.codehaus.geb:geb-spock:«geb version»"
+        test "org.codehaus.geb:geb-spock:@geb-version@"
     }
     plugins {
-        test ":spock:«spock version»"
-        test ":geb:«geb version»"
+        test ":spock:@spock-version@"
+        test ":geb:@geb-version@"
     }
 
-Where `«geb version»` and `«spock version»` are the versions of Geb and Spock you wish to use.
+Where `@geb-version@` and `@spock-version@` are the versions of Geb and Spock you wish to use.
 
 As Grails provides JUnit support out of the box, you only need to pull in the `geb-junit4` jar to use Geb with JUnit.
 
 > Grails 1.3 and later use JUnit 4. Earlier versions of Grails than this use Groovy 1.6 which Geb no longer supports.
 
     dependencies {
-        test "org.codehaus.geb:geb-junit4:«geb version»"
+        test "org.codehaus.geb:geb-junit4:@geb-version@"
     }
     plugins {
-        test ":geb:«geb version»"
+        test ":geb:@geb-version@"
     }
 
 You only need the appropriate Geb test integration jar, as it will depend on `geb-core` and Grails' dependency management will take care of getting that for you.
@@ -51,8 +51,131 @@ There is nothing special about writing Geb tests with Grails. You subclass the s
 
 There is an example project available that uses `geb-junit4` and `geb-spock` to test some Grails scaffold pages.
 
+* [http://github.com/geb/geb-example-grails](https://github.com/geb/geb-example-grails)
+
+## Gradle
+
+Using Geb with Gradle simply involves pulling in the appropriate dependencies, and configuring the base URL and reports dir in the build script if they are necessary.
+
+Below is a valid Gradle `build.gradle` file for working with Geb for testing.
+
+    apply plugin: "groovy"
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        testCompile.transitive = true
+    }
+
+    dependencies {
+        groovy "org.codehaus.groovy:groovy-all:@groovy-version@"
+
+        def gebVersion = "@geb-version@"
+        def seleniumVersion = "@selenium-version@"
+
+        // If using Spock, need to depend on geb-spock
+        testCompile "org.codehaus.geb:geb-spock:$gebVersion"
+        testCompile "org.spockframework:spock-core:@spock-version@"
+
+        // If using JUnit, need to depend on geb-junit (3 or 4)
+        testCompile "org.codehaus.geb:geb-junit4:$gebVersion"
+        testCompile "junit:junit-dep:4.8.2"
+
+        // Need a driver implementation
+        testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    }
+
+    test {
+        systemProperties "geb.build.reportsDir": "$reportsDir/geb"
+    }
+
+There is a Gradle example project available.
+
 * [http://github.com/geb/geb-example-gradle](https://github.com/geb/geb-example-gradle)
 
 ## Maven
 
-## Gradle
+Using Geb with Gradle simply involves pulling in the appropriate dependencies, and configuring the base URL and reports dir in the build script if they are necessary.
+
+Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
+
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+      <modelVersion>4.0.0</modelVersion>
+      <groupId>org.codehaus.geb.example</groupId>
+      <artifactId>geb-maven-example</artifactId>
+      <packaging>jar</packaging>
+      <version>1</version>
+      <name>Geb Maven Example</name>
+      <url>http://geb.codehaus.org</url>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <version>1.7.10</version>
+        </dependency>
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.8.1</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.spockframework</groupId>
+          <artifactId>spock-core</artifactId>
+          <version>@spock-version@</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.geb</groupId>
+          <artifactId>geb-spock</artifactId>
+          <version>@geb-version@</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-firefox-driver</artifactId>
+          <version>@selenium-version@</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.9</version>
+            <configuration>
+              <includes>
+                <include>*Spec.*</include>
+              </includes>
+              <systemPropertyVariables>
+                <geb.build.baseUrl>http://google.com/ncr</geb.build.baseUrl>
+                <geb.build.reportsDir>target/test-reports/geb</geb.build.reportsDir>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
+            <version>1.3</version>
+            <configuration>
+              <providerSelection>1.7</providerSelection>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </project>
+    
+There is a Maven example project available.
+
+* [http://github.com/geb/geb-example-maven](https://github.com/geb/geb-example-maven)
