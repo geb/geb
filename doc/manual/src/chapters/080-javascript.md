@@ -249,7 +249,7 @@ Consider the following page:
     </head>
     <body>
         <div id="a"></div>
-        <div id="b" style="display:none;"><a href="http://geb.codehaus.org">Geb!</a></div>
+        <div id="b" style="display:none;"><a href="http://www.gebish.org">Geb!</a></div>
     </body>
     </html>
 

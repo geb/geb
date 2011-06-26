@@ -132,7 +132,7 @@ subprojects {
 				"geb"
 
 			docTitle = "Groovy API Documentation for $project.name $project.version"
-			footer = "<p style='text-align: center'>Groovy API Documentation for $project.name $project.version - Licensed under the Apache License, Version 2.0 - <a href='http://geb.codehaus.org'>http://geb.codehaus.org</a></p>"
+			footer = "<p style='text-align: center'>Groovy API Documentation for $project.name $project.version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
 			windowTitle = "Groovy API for $project.name $project.version"
 		}
 		

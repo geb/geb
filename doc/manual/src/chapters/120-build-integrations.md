@@ -109,7 +109,7 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
       <packaging>jar</packaging>
       <version>1</version>
       <name>Geb Maven Example</name>
-      <url>http://geb.codehaus.org</url>
+      <url>http://www.gebish.org</url>
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
