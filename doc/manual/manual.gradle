@@ -85,3 +85,5 @@ task install(type: Upload, dependsOn: configurations.archives.buildArtifacts) {
 		mavenInstaller name: "mavenInstaller"
 	}
 }
+
+task build(dependsOn: zip)
