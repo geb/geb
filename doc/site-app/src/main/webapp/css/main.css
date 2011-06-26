@@ -9,7 +9,7 @@ body {
 	background: #180700;
 }
 
-p {
+p, ul {
 	line-height: 180%;
 }
 
@@ -34,8 +34,8 @@ h1 { font-size: 3em; }
 h2 { font-size: 2.5em; color:#74743D; }
 h3 { font-size: 2em; color:#C34E23; letter-spacing: 0px;}
 
-p, h1, h2, h3 {
-	margin: 10px 15px;
+p, h1, h2, h3, ul {
+	margin: 12px 14px;
 	padding: 0;
 }
 
@@ -216,34 +216,45 @@ blockquote {
 
 #sidebar ul.sidemenu {
 	margin: 5px 0 15px 0;
-	padding: 0;
-/*	border-top: 1px dashed #E1E1E1;*/
+	list-style: none;
+	margin-left: 0;
+	padding-left: 1em;
+	text-indent: -1em;
+	border-top: 1px dashed #E1E1E1;
+	border-bottom: 1px dashed #E1E1E1;
 }
 
 #sidebar ul.sidemenu li {
 	list-style: none;
-/*	border-bottom: 1px dashed #E1E1E1;*/
+	border-bottom: 1px dashed #E1E1E1;
+}
+
+#sidebar ul.sidemenu li:last-child {
+	border-bottom: none;
+}
+
+#sidebar ul.sidemenu li a:before {
+	content: "\00BB \0020";
+	margin-left: -10px;
+	margin-right: 6px;
 }
 
 #sidebar ul.sidemenu a {
 	display: block;
+	padding: .6em 0 .6em 10px;
 	color: #666666;
 	text-decoration: none;
-	padding: .3em 0 .3em 10px;
+
 	width: 94%;
 }
 
 #sidebar ul.sidemenu li.selected a {
-/*	font-style: italic;*/
 	font-weight: bold;
 	color: #F88F26;
-/*	background: #FFF;*/
 }
 
 #sidebar ul.sidemenu a:hover {
-	padding: .3em 0 .3em 10px;
 	color: #CB4721;
-	background: #FFF;
 }
 
 #main {
@@ -275,6 +286,14 @@ blockquote {
 	margin: 15px;
 }
 
+p.back-to-home {
+	text-align: right;
+	font-style: italic;
+}
+
+p.back-to-home a {
+	color: #B3B3B3;
+}
 #footer-wrap {
 	position: relative;
 	clear: both;
@@ -315,26 +334,3 @@ blockquote {
 /* additional classes */
 .clear { clear: both; }
 .orange { color: #F3A251; }
-
-.post-footer {
-	font-size: 95%;
-	border: 1px solid #EFEFEF;
-	background: #F8F8F8;
-	padding: 8px 10px;
-	margin: 30px 15px 10px 15px;
-}
-
-.post-footer .date {
-	background: url(../images/clock.gif) no-repeat left center;
-	padding-left: 20px; margin: 0 10px 0 5px;
-}
-
-.post-footer .comments {
-	background: url('../images/comment.gif') no-repeat left center;
-	padding-left: 20px; margin: 0 10px 0 5px;
-}
-
-.post-footer .readmore {
-	background: url('../images/page.gif') no-repeat left center;
-	padding-left: 20px; margin: 0 10px 0 5px;
-}

@@ -1,6 +1,7 @@
 
 all "/manual/**", ignore: true
 all "/favicon.ico", ignore: true
+all "/robots.txt", ignore: true
 all "/images/**", ignore: true
 all "/css/**", ignore: true
 all "/js/**", ignore: true

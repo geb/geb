@@ -40,7 +40,7 @@
         <li><a href="manual/current/">Manual</a></li>
         <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
         <li><a href="http://jira.codehaus.org/browse/GEB">Issues</a></li>
-        <li><a href="http://github.com/geb/geb">Source</a></li>      
+        <li><a href="http://github.com/geb/geb">Code</a></li>
       </ul>
   
     </div>
@@ -48,10 +48,12 @@
         
   <div id="content-wrap">
     <div id="content">
-      <div id="main"><% include "/WEB-INF/includes/${params.page}.gtpl" %></div>
+      <div id="main">
+        <% include "/WEB-INF/includes/${params.page}.gtpl" %>
+      </div>
       <div id="sidebar">
           <% request.pages.each { section, pages -> %>
-            <h1>${section}…</h1>
+            <h1>${section}</h1>
             <ul class="sidemenu">
              <% pages.each { label, name -> %>
               <li class="${label} ${label == params.page ? 'selected' : ''}"><a href="$label">${name}</a></li>

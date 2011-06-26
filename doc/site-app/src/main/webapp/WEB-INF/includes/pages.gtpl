@@ -1,60 +1,40 @@
 <h1>Page Objects</h1>
 <p>Geb has first class support for the <a href="http://code.google.com/p/selenium/wiki/PageObjects">Page Object</a> pattern, leveraging Groovy's DSL capabilities to allow <strong>you the developer</strong> to easily define the interesting parts of your pages in a concise, maintanable and extensible manner.</p>
 
-<pre class="brush: groovy">import geb.Browser
-import geb.Page
-import geb.Module
-
-class GoogleSearchModule extends Module {
-    def buttonValue
+<pre class="brush: groovy">import geb.Page
+    
+class LoginPage extends Page {
+    static url = "http://myapp.com/login"
+    static at = { heading.text() == "Please Login" }
     static content = {
-        field { \$("input", name: "q") }
-        button(to: GoogleResultsPage) { 
-            \$("input", value: buttonValue)
-        }
+        heading { \$("h1") }
+        loginForm { \$("form.login") }
+        loginButton(to: AdminPage) { loginForm.login() }
     }
 }
 
-class GoogleHomePage extends Page {
-    static url = "http://google.com/ncr"
-    static at = { title == "Google" }
+class AdminPage extends Page {
+    static at = { heading.text() == "Admin Section" }
     static content = {
-        search { module GoogleSearchModule, buttonValue: "Google Search" }
+        heading { \$("h1") }
     }
-}
-
-class GoogleResultsPage extends Page {
-    static at = { title.endsWith("Google Search") }
-    static content = {
-        search { module GoogleSearchModule, buttonValue: "Search" }
-        results { \$("li.g") }
-        result { i -> results[i] }
-        resultLink { i -> result(i).find("a.l") }
-    }
-}
-
-class WikipediaPage extends Page {
-    static at = { title == "Wikipedia" }
-}
-
-Browser.drive(GoogleHomePage) {
-    // enter wikipedia into the search field
-    search.field.value("wikipedia")
-
-    // wait for the change to results page to happen
-    // (google updates the page without a new request)
-    waitFor { at(GoogleResultsPage) }
-
-    // is the first link to wikipedia?
-    assert resultLink(0).text() == "Wikipedia"
-
-    // click the link
-    resultLink(0).click()
-
-    // wait for Google's javascript to redirect us
-    // to wikipedia
-    waitFor { at(WikipediaPage) }
 }
 </pre>
-<p>Pages can be used to model a particular page (or type of page) in your application, while modules can be used to model view fragments that are used across different pages. Page and module types in Geb can extend parent types, inheriting all content defined by the parent.</p>
-<p>See the <a href="manual/current/pages.html">manual section on pages</a> for more information.</p>
+
+Pages define their location, an “at checker” and content (among other things). Defining this information as part of the page allows you to separate the implementation details from the intention.
+
+<pre class="brush: groovy">import geb.Browser
+    
+Browser.drive {
+    to LoginPage
+    assert at(LoginPage)
+    loginForm.with {
+        username = "admin"
+        password = "password"
+    }
+    loginButton.click()
+    assert at(AdminPage)
+}
+</pre>
+
+<p>See the <a href="manual/current/pages.html">manual section on pages</a> for more information on.</p>

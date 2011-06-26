@@ -1,31 +1,33 @@
 <h1>What is it?</h1>
-<p>Geb <em>(pronounced with a soft “G” like “Jeb”)</em> is a browser automation solution for the <a href="http://groovy.codehaus.org/" title="Groovy - Home">Groovy</a> programming language. It combines the browser driving features of <a href="http://code.google.com/p/selenium/">WebDriver</a> with a <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> inspired content navigation/inspection API and the expressiveness and conciseness of Groovy.</p>
 
-<p>It can be used for scripting, scraping and general automation — or equally as a functional/web testing solution via its support for testing frameworks like <a href="spock">Spock</a> &amp; <a href="junit">JUnit</a>.</p>
+<p>Geb is a browser automation solution.</p> 
+
+<p>It brings together the power of <a href="http://code.google.com/p/selenium/">WebDriver</a>,  the elegance of <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> content selection, the robustness of <a href="http://code.google.com/p/selenium/wiki/PageObjects">Page Object</a> modelling and the expressiveness of the <a href="http://example.com/">Groovy</a> language.</p>
+
+<p>It can be used for scripting, scraping and general automation — or equally as a functional/web/acceptance testing solution via integration with testing frameworks such as <a href="spock">Spock</a>, <a href="junit">JUnit</a> &amp; <a href="testng">TestNG</a>.</p>
+
+<p>The <a href="manual/current/">Book of Geb</a> contains all the information you need to get started with Geb.</p>
+
 <h1>What does it look like?</h1>
-<pre class="brush: groovy">import geb.*
 
-Browser.drive("http://google.com/ncr") {
-    assert title == "Google"
+Here's what a simple Geb script to log into an admin section of a website might look like…
 
-    // enter wikipedia into the search field
-    \$("input", name: "q").value("wikipedia")
+<pre class="brush: groovy">import geb.Browser
 
-    // wait for the change to results page to happen
-    // (google updates the page without a new request)
-    waitFor { title.endsWith("Google Search") }
-
-    // is the first link to wikipedia?
-    def firstLink = \$("li.g", 0).find("a.l")
-    assert firstLink.text() == "Wikipedia"
-
-    // click the link 
-    firstLink.click()
-
-    // wait for Google's javascript to redirect 
-    // us to Wikipedia
-    waitFor { title == "Wikipedia" }
+Browser.drive {
+    go "http://myapp.com/login"
+    
+    assert \$("h1").text() == "Please Login"
+    
+    \$("form.login").with {
+        username = "admin"
+        password = "password"
+        login().click()
+    }
+    
+    assert \$("h1").text() == "Admin Section"
 }</pre>
 
-<p>This is a very basic scripting style sample and does not illustrate many of Geb's most powerful features.</p>
-<p>The <a href="manual/current/">Book of Geb</a> contains all the information you need to get started with Geb.</p>
+<p>This is what is known as the scripting style of Geb and it's great for quick automation.</p>
+
+<p>Be sure to checkout the quick feature tour in the right navigation bar, and of course the <a href="manual/current/">Book of Geb</a> for in depth information on how to use Geb in your projects.</p>

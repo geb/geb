@@ -1,21 +1,11 @@
 request['pages'] = [
-	"Introduction": [
-		index: "Basics",
-		content: "jQuery-like",
-		pages: "Pages & Modules"
-	],
-	"Scripting": [
-		standalone: "Standalone",
-		binding: "via Binding"
-	],
-	"Testing": [
-		spock: "Spock",
-		junit: "JUnit",
-		easyb: "EasyB",
-		cucumber: "Cucumber"
-	],
-	"Using With": [
-		grails: "Grails"
+	"Highlights": [
+		crossbrowser: "Cross Browser",
+		content: "jQuery-like API",
+		pages: "Page Objects",
+		async: "Asynchronous Pages",
+		testing: "Testing",
+		integration: "Build Integration"
 	]
 ]
 
