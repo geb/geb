@@ -44,3 +44,18 @@ You will then find the compiled HTML in the directory `doc/manual/build/manual/a
 
 ### Contributing features/patches
 
+The source code for all of the modules is contained in the `module/` directory.
+
+To run the tests after making your change to a module, you can run…
+
+    ./gradlew :module:«module-name»:test
+
+There are lots of example tests in the `geb-core` module that use the classes from the `test-utils` module for running against an in memory HTTP server.
+
+To run the entire test suite, run…
+
+    ./gradlew test
+    
+## Development Mailing List
+
+If you want to do some work on Geb and want some help, you can join the `dev@geb.codehaus.org` mailing list via [Codehaus' Xircles](http://xircles.codehaus.org/projects/geb/lists "Codehaus: Geb: Lists").
