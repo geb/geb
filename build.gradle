@@ -55,7 +55,7 @@ allprojects { project ->
 }
 
 subprojects {
-	version = '0.6-SNAPSHOT'
+	version = '0.6.0.RC1'
 	group = 'org.codehaus.geb'
 	
 	isSnapshot = version.endsWith("-SNAPSHOT")
