@@ -85,7 +85,7 @@ task clean(type: Delete, overwrite: true) { task ->
 	}
 }
 
-task uploadPublished(type: GrailsTask) {
+task release(type: GrailsTask) {
 	if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 		command "release-plugin"
 		configuration "compile"

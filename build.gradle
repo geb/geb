@@ -52,6 +52,8 @@ allprojects { project ->
 	]
 
 	publishedGroovyModules = groovyModules.findAll { it in publishedModules }
+	
+	grailsPluginModule = ":module:geb-grails"
 }
 
 subprojects {
@@ -165,6 +167,8 @@ subprojects {
 		configurations {
 			published.extendsFrom archives, meta, signatures
 		}
+		
+		task release(dependsOn: uploadPublished)
 		
 		project.afterEvaluate { project, state ->
 			state.rethrowFailure()
@@ -315,3 +319,4 @@ task test(dependsOn: getTasksByName("test", true)) << {
 task wrapper(type: Wrapper) {
 	gradleVersion = '1.0-milestone-3'
 }
+
