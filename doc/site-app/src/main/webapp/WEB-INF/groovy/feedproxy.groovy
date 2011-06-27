@@ -19,24 +19,42 @@ def feed = memcache[cacheKey]
 if (feed) {
 	log.info "feed '$feedName': cached, reusing"
 } else {
-	log.info "feed '$feedName': not cached, fetching"
-	feed = [
-		text: "",
-		etag: "",
-		contentType: "",
-		createdAt: new Date()
-	]
+	def fetchFeed = {
+		feed = [
+			text: "",
+			etag: "",
+			contentType: "",
+			createdAt: new Date()
+		]
 
-	def url = new URL(feeds[feedName])
+		def url = new URL(feeds[feedName])
 
-	url.openConnection().with {
-		readTimeout = 10 * 1000
-		connectTimeout = 10 * 1000
+		url.openConnection().with {
+			readTimeout = 10 * 1000
+			connectTimeout = 10 * 1000
 
-		feed.text = getContent().getText("UTF-8")
-		feed.etag = getHeaderField("etag")
-		feed.contentType = getContentType()
+			feed.text = getContent().getText("UTF-8")
+			feed.etag = getHeaderField("etag")
+			feed.contentType = getContentType()
+		}
 	}
+	
+	fetchFeed()
+	
+	// Twitter sometimes returns this, when just making another request will make it work, so try again
+	if (feedName == "twitter" && feed.text.contains("<error>Rate limit exceeded.")) {
+		log.warning "twitter gave bogus rate limit error, trying again"
+		fetchFeed()
+		
+		if (feed.text.contains("<error>Rate limit exceeded.")) {
+			log.warning "gave the bogus rate limit error again, giving up"
+			response.sendError(500, "failed to get twitter feed")
+		}
+	}
+	
+	
+	
+	log.info "feed '$feedName': not cached, fetching"
 
 	
 	memcache.put(cacheKey, feed, Expiration.byDeltaSeconds(3600), SetPolicy.ADD_ONLY_IF_NOT_PRESENT)

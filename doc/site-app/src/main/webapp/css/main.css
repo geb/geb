@@ -351,7 +351,7 @@ div.tweet-content {
 	margin-top: 0;
 }
 
-.loading-tweets {
+.loading-tweets, .loading-articles {
 	font-style: italic;
 	color: #999;
 	font-size: 180%;

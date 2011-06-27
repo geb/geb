@@ -10,5 +10,5 @@ all "/js/**", ignore: true
 all "/clearcaches", forward: "clearcaches.groovy"
 get "/feed/@feed", forward: "/feedproxy.groovy?feed=@feed"
 all "/@page", forward: "site.groovy?page=@page", validate: { !(page in ["twitter", "articles"]) }, cache: 12.hours
-all "/@page", forward: "site.groovy?page=@page", validate: { page in ["twitter", "articles"] }, cache: 1.hours
+all "/@page", forward: "site.groovy?page=@page", validate: { page in ["twitter", "articles"] }
 all "/", forward: "site.groovy?page=index", cache: 12.hours
