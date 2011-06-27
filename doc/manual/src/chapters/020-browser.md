@@ -27,7 +27,7 @@ Any property set this way will **override** any settings coming from the config 
 
 > Note: The behaviour is undefined if a browser's driver is changed after its first use so you should avoid setting the driver this way and prefer the configuration mechanism.
 
-For drastically custom configuration requirements, you can create your own [configuration][configuration-api] object and construct the browser with it, likely using the [configuration loader](api/geb-core/geb/conf/ConfigurationLoader.html).
+For drastically custom configuration requirements, you can create your own [configuration][configuration-api] object and construct the browser with it, likely using the [configuration loader](api/geb-core/geb/ConfigurationLoader.html).
 
     import geb.Browser
     import geb.Configuration
@@ -96,7 +96,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 
 ### Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb-core/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb-core/geb/Browser.html#to(java.lang.Class, Object...\)) methods.
 
     class SignupPage extends Page {
         static url = "signup"

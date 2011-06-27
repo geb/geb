@@ -39,7 +39,7 @@ class Module extends TemplateDerivedPageContent {
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() })
 	
-	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
+	void init(PageContentTemplate template, Navigator navigator, Object... args) {
 		def contentTemplates = PageContentTemplateBuilder.build(template.config, this, 'content', this.class, Module)
 		navigableSupport = new ConstantBaseNavigableSupport(this, contentTemplates, navigator) 
 		super.init(template, navigator, *args)

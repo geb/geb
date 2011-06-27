@@ -27,7 +27,7 @@ class JavascriptInterface {
 		
 	}
 	
-	private _execjs(String script, Object[] args) {
+	private _execjs(String script, Object... args) {
 		def driver = browser.driver
 		if (!(driver instanceof JavascriptExecutor)) {
 			throw new GebException("driver '$driver' can not execute javascript")
@@ -49,7 +49,7 @@ class JavascriptInterface {
 		_execjs("return ${name}.apply(window, arguments)", *args)
 	}
 
-	def exec(Object[] args) {
+	def exec(Object... args) {
 		if (args.size() == 0) {
 			throw new IllegalArgumentException("there must be a least one argument")
 		} 

@@ -21,7 +21,7 @@ class AdminPage extends Page {
 }
 </pre>
 
-Pages define their location, an “at checker” and content (among other things). Defining this information as part of the page allows you to separate the implementation details from the intention.
+<p>Pages define their location, an “at checker” and content (among other things). Defining this information as part of the page allows you to separate the implementation details from the intention.</p>
 
 <pre class="brush: groovy">import geb.Browser
     

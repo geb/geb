@@ -24,10 +24,10 @@ The `to()` method can also take arguments…
 
 This will result in a request being made to “`http://myapp.com/example/1/2`”. This is because by default, any arguments passed to the `to()` method after the page class are converted to a URL path by calling `toString()` on each argument and joining them with “`/`”. 
 
-However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the [`convertToPath()`](api/geb-core/geb/Page.html#convertToPath(Object[]\)) method. 
+However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the [`convertToPath()`](api/geb-core/geb/Page.html#convertToPath(Object...\)) method. 
 The [`Page`][page-api] implementation of this method looks like this…
 
-    String convertToPath(Object[] args) {
+    String convertToPath(Object... args) {
         args ? args*.toString().join('/') : ""
     }
 
@@ -64,4 +64,4 @@ Any type of argument can be used with the `to()` method, **except** named parame
         to PersonPage, newPerson, flag: true
     }
 
-This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb-core/geb/Page.html#convertToPath(Object[]\)) method.
+This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb-core/geb/Page.html#convertToPath(Object...\)) method.

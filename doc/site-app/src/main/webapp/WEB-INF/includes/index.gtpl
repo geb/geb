@@ -30,4 +30,4 @@ Browser.drive {
 
 <p>This is what is known as the scripting style of Geb and it's great for quick automation.</p>
 
-<p>Be sure to checkout the quick feature tour in the right navigation bar, and of course the <a href="manual/current/">Book of Geb</a> for in depth information on how to use Geb in your projects.</p>
+<p>Be sure to checkout the highlights in the right navigation bar, and of course the <a href="manual/current/">Book of Geb</a> for in depth information on how to use Geb in your projects.</p>

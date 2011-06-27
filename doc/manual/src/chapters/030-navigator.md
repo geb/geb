@@ -451,4 +451,4 @@ A Geb navigator object is built on top of a collection of WebDriver [WebElement]
 
 Geb does not currently offer any direct drag and drop support, but you can dig into WebDriver's drag and drop API by working with the underlying [WebElement][webelement-api] objects that underpin the Geb navigator objects. Future versions of Geb will offer a more convenient API wrapper.
 
-The WebDriver API for this revolves around the [DefaultActionChainsGenerator](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/DefaultActionChainsGenerator.html) class. Unfortunately there is not a lot of documentation available on this class currently.
+The WebDriver API for this revolves around the [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class. Unfortunately there is not a lot of documentation available on this class currently.

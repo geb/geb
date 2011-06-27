@@ -131,7 +131,7 @@ The following projects can be used as starting references:
 ## EasyB
 
 Geb's [EasyB][easyb] support is based around the [binding management features](binding.html) discussed earlier. 
-[EasyB stories](TBD) are implemented as Groovy scripts with a binding, 
+EasyB stories are implemented as Groovy scripts with a binding, 
 and the Geb plugin simply integrates Geb's [BindingUpdater][bindingupdater-api] into the EasyB lifecycle.
 
 > The Geb EasyB plugin is currently under-developed and is in need of some attention. If you'd like to see better EasyB integration consider getting involved in its development.
@@ -180,7 +180,7 @@ You can set the `driver` property to the driver instance that you want to implic
 
 You can set the `baseUrl` property to the base url that you want to implicitly created browser instance to use. However, using the [configuration mechanism for base url](configuration.html#base_url) is preferred.
 
-For fine grained control, you can create your own [browser](browser-api) instance and assign it to the `browser` property. Otherwise, an implicit browser object is created using `driver` and/or `baseUrl` if they were explicitly set (otherwise the configuration mechanism is used.)
+For fine grained control, you can create your own [browser][browser-api] instance and assign it to the `browser` property. Otherwise, an implicit browser object is created using `driver` and/or `baseUrl` if they were explicitly set (otherwise the configuration mechanism is used.)
 
 ## Cucumber (Cuke4Duke)
 

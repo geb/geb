@@ -1,5 +1,5 @@
 <h1>Navigating Content</h1>
-<p>Geb takes inspiration from jQuery to provide a concise and effective way to get at content. This is called the <a href="manual/navigator.html" title="The Book Of Geb - Interacting with content">Navigator API</a>.</p>
+<p>Geb takes inspiration from jQuery to provide a concise and effective way to get at content. This is called the <a href="manual/current/navigator.html" title="The Book Of Geb - Interacting with content">Navigator API</a>.</p>
 
 <p>The dollar function can be used anywhere to select content based on CSS selectors, attribute matchers and/or indexes.</p>
 <pre class="brush: groovy">

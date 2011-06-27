@@ -37,7 +37,7 @@ abstract class NavigableSupport implements Navigable {
 	
 	abstract protected getNavigator()
 	
-	private getContent(String name, Object[] args) {
+	private getContent(String name, Object... args) {
 		def contentTemplate = contentTemplates[name]
 		if (contentTemplate) {
 			contentTemplate.get(*args)

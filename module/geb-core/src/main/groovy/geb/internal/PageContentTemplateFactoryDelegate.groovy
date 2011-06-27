@@ -24,7 +24,7 @@ class PageContentTemplateFactoryDelegate {
 	private template
 	private args
 	
-	private PageContentTemplateFactoryDelegate(PageContentTemplate template, Object[] args) {
+	private PageContentTemplateFactoryDelegate(PageContentTemplate template, Object... args) {
 		this.template = template
 		this.args = args
 	}

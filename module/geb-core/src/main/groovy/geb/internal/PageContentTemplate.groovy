@@ -94,11 +94,11 @@ class PageContentTemplate {
 		owner instanceof Page ? owner : owner.getPage()
 	}
 	
-	def get(Object[] args) {
+	def get(Object... args) {
 		caching ? fromCache(*args) : create(*args)
 	}
 
-	private create(Object[] args) {
+	private create(Object... args) {
 		def createAction = {
 			def factoryReturn = invokeFactory(*args)
 			def creation = wrapFactoryReturn(factoryReturn, *args)
@@ -120,7 +120,7 @@ class PageContentTemplate {
 		}
 	}
 	
-	private fromCache(Object[] args) {
+	private fromCache(Object... args) {
 		def argsHash = Arrays.deepHashCode(args)
 		if (!cache.containsKey(argsHash)) {
 			cache[argsHash] = create(*args)
@@ -128,17 +128,17 @@ class PageContentTemplate {
 		cache[argsHash]
 	}
 	
-	private invokeFactory(Object[] args) {
+	private invokeFactory(Object... args) {
 		factory.delegate = createFactoryDelegate(args)
 		factory.resolveStrategy = Closure.DELEGATE_FIRST
 		factory(*args)
 	}
 	
-	private createFactoryDelegate(Object[] args) {
+	private createFactoryDelegate(Object... args) {
 		new PageContentTemplateFactoryDelegate(this, args)
 	}
 
-	private wrapFactoryReturn(factoryReturn, Object[] args) {
+	private wrapFactoryReturn(factoryReturn, Object... args) {
 		def pageContent
 		if (factoryReturn instanceof Navigator) {
 			pageContent = new SimplePageContent()
