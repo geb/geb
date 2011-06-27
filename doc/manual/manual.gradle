@@ -13,6 +13,13 @@ buildscript {
 archivesBaseName = "geb-manual"
 output = file("build/manual")
 
+modifyPom = { pom ->
+	pom.project {
+		name "Geb Manual - The Book of Geb"
+		description "Geb (pronounced \"jeb\") manual, user guide and API reference."
+	}
+}
+
 task compileApi(dependsOn: publishedGroovyModules.collect { project(it).groovydoc }) {
 	publishedGroovyModules.collect { project(it) }.each { groovyProject ->
 		inputs.dir groovyProject.groovydoc.destinationDir
