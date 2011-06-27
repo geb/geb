@@ -19,7 +19,7 @@ package geb.content
  * 
  * This interface doesn't actually specify the methods to facilitate using a mixin.
  * 
- * @See geb.content.mixins.NavigableSupport
+ * @See geb.content.NavigableSupport
  */
 interface Navigable {
 

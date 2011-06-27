@@ -17,7 +17,6 @@ package geb.content
 import geb.*
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
-import geb.content.mixins.*
 import org.openqa.selenium.WebDriver
 
 abstract class TemplateDerivedPageContent implements PageContent {
