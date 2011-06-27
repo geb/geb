@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal
+package geb.content
+
+import geb.Page
 
 /**
- * Marker interface to denote something that implements the dollar function for navigation.
- * 
- * This interface doesn't actually specify the methods to facilitate using a mixin.
- * 
- * @See geb.internal.mixins.NavigableSupport
+ * Content which is encapsulated in a page
  */
-interface Navigable {
+interface PageContent {
+	
+	/**
+	 * The page that this content is part of
+	 */
+	Page getPage()
 
 }

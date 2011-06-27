@@ -15,7 +15,7 @@
 package geb
 
 import geb.js.*
-import geb.internal.*
+import geb.content.*
 import geb.navigator.Navigator
 import org.openqa.selenium.WebDriver
 import geb.textmatching.TextMatchingSupport
@@ -32,7 +32,7 @@ import geb.waiting.WaitingSupport
  * <p>
  * The following classes are also mixed in to this class:
  * <ul>
- * <li>{@link geb.internal.NavigableSupport}
+ * <li>{@link geb.content.NavigableSupport}
  * <li>{@link geb.download.DownloadSupport}
  * <li>{@link geb.waiting.WaitingSupport}
  * <li>{@link geb.textmatching.TextMatchingSupport}

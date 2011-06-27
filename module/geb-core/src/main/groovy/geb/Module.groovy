@@ -15,7 +15,7 @@
 package geb
 
 import geb.js.*
-import geb.internal.*
+import geb.content.*
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
 import geb.textmatching.TextMatchingSupport

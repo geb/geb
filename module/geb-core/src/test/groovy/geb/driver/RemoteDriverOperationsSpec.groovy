@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal
+package geb.driver
 
 import spock.lang.*
 
@@ -43,11 +43,5 @@ class RemoteDriverOperationsSpec extends Specification {
 		nonRemoteClassLoader  | false 
 		withRemoteClassLoader | true
 	}
-	
-	def "method"() {
-		
-	}
-	
-	
 	
 }

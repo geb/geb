@@ -1,5 +1,4 @@
-/* 
- * Copyright 2010 the original author or authors.
+/* Copyright 2009 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal
+package geb.content
 
-import geb.Browser
+/**
+ * Marker interface to denote something that implements the dollar function for navigation.
+ * 
+ * This interface doesn't actually specify the methods to facilitate using a mixin.
+ * 
+ * @See geb.content.mixins.NavigableSupport
+ */
+interface Navigable {
 
-class FactoryNavigableSupport extends NavigableSupport {
-	
-	private Closure factory
-	
-	FactoryNavigableSupport(owner, Map contentTemplates, Browser browser, Closure factory) {
-		super(owner, contentTemplates, browser)
-		this.factory = factory
-	}
-	
-	protected getNavigator() {
-		factory()
-	}
-	
 }

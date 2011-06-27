@@ -12,12 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.internal
+package geb.content
 
 import geb.*
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
-import geb.internal.mixins.*
+import geb.content.mixins.*
 import org.openqa.selenium.WebDriver
 
 abstract class TemplateDerivedPageContent implements PageContent {

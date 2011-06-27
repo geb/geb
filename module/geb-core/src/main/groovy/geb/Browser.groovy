@@ -15,7 +15,7 @@
 package geb
 
 import geb.js.JavascriptInterface
-import geb.internal.RemoteDriverOperations
+import geb.driver.RemoteDriverOperations
 
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent

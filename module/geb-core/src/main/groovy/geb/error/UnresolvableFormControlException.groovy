@@ -14,7 +14,7 @@
  */
 package geb.error
 
-import geb.internal.Navigable
+import geb.content.Navigable
 
 class UnresolvablePropertyException extends GebException {
 
