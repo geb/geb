@@ -208,8 +208,8 @@ Geb itself is a available as a single [`geb-core` jar from the central Maven rep
 Via `@Grab`…
     
     @Grapes([
-        @Grab("org.codehaus.geb:geb-core:latest.release"),
-        @Grab("org.seleniumhq.selenium:selenium-firefox-driver:latest.release")
+        @Grab("org.codehaus.geb:geb-core:@geb-version@"),
+        @Grab("org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@")
     ])
     import geb.Browser
 
@@ -218,17 +218,17 @@ Via Maven…
     <dependency>
       <groupId>org.codehaus.geb</groupId>
       <artifactId>geb-core</artifactId>
-      <version>RELEASE</version>
+      <version>@geb-version@</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-firefox-driver</artifactId>
-      <version>RELEASE</version>
+      <version>@selenium-version@</version>
     </dependency>
     
 Via Gradle…
 
-    compile "org.codehaus.geb:geb-core:latest.release", "org.seleniumhq.selenium:selenium-firefox-driver:latest.release"
+    compile "org.codehaus.geb:geb-core:@geb-version@", "org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@"
 
 Alternatively, if using an integration such as `geb-spock` or `geb-junit` you will need that dedicated jar.
 

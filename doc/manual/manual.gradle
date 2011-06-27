@@ -32,7 +32,7 @@ task compileManual {
 	substitutionProperties = [
 		"geb-version": project.version,
 		"spock-version": "0.5-groovy-1.7",
-		"selenium-version": "2.0rc3",
+		"selenium-version": seleniumVersion,
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
 		"home-page": "www.gebish.org"
 	]
