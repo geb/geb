@@ -70,6 +70,9 @@ tasks.each {
 	}
 }
 
+// The version of manual to put under the “current” label
+stableVersion = "0.6.0.RC1"
+
 // The old versions of Geb we are including manuals for
 oldManualVersions = ["0.6.0.RC1"]
 
