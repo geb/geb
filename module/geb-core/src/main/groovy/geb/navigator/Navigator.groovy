@@ -509,7 +509,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	abstract Navigator head()
 
-	/**
 	 /**
 	 * Creates a new Navigator instance containing only the first context element (wrapped).
 	 * @return new Navigator instance
