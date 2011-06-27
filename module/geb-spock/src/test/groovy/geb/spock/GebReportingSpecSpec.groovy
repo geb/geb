@@ -35,6 +35,9 @@ class GebReportingSpecSpec extends GebReportingSpec {
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
+	}
+	
+	def setup() {
 		baseUrl = server.baseUrl
 		go()
 	}

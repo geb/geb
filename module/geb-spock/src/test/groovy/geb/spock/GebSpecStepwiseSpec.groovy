@@ -33,6 +33,9 @@ class GebSpecStepwiseSpec extends GebReportingSpec {
 			</body>
 			</html>"""
 		}
+	}
+
+	def setup() {
 		baseUrl = server.baseUrl
 		go()
 	}

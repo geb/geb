@@ -32,6 +32,9 @@ class GebSpecSpec extends GebSpec {
 			</body>
 			</html>"""
 		}
+	}
+	
+	def setup() {
 		baseUrl = server.baseUrl
 		go()
 	}
