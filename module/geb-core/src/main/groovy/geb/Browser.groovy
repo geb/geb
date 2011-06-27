@@ -470,15 +470,23 @@ class Browser {
 		}
 	}
 	
+	private String getBaseUrlRequired() {
+		def baseUrl = getBaseUrl()
+		if (baseUrl == null) {
+			throw new geb.error.NoBaseUrlDefinedException()
+		}
+		baseUrl
+	}
+	
 	private String calculateUri(String path, Map params) {
 		def uri
 		if (path) {
 			uri = new URI(path)
 			if (!uri.absolute) {
-				uri = new URI(baseUrl).resolve(uri)
+				uri = new URI(getBaseUrlRequired()).resolve(uri)
 			}
 		} else {
-			uri = new URI(baseUrl)
+			uri = new URI(getBaseUrlRequired())
 		}
 		
 		def queryString = toQueryString(params)

@@ -61,4 +61,17 @@ class BaseUrlConfigurationSpec extends Specification {
 		b.baseUrl == "abc"
 	}
 	
+	def "null base url throws reasonable error message"() {
+		given:
+		def c = new Configuration()
+		c.baseUrl = null
+		def b = new Browser(c)
+		
+		when:
+		b.go("abc")
+		
+		then:
+		thrown(geb.error.NoBaseUrlDefinedException)
+	}
+	
 }

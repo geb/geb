@@ -147,7 +147,7 @@ class Configuration {
 	}
 	
 	void setBaseUrl(baseUrl) {
-		rawConfig.baseUrl = baseUrl.toString()
+		rawConfig.baseUrl = baseUrl == null ? null : baseUrl.toString()
 	}
 	
 	/**
