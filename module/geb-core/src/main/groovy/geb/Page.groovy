@@ -59,7 +59,7 @@ class Page {
 	 * <p>
 	 * This implementation returns an empty string.
 	 * 
-	 * @see to(Map,Object...)
+	 * @see to(Map,Object[])
 	 */
 	static url = ""
 	
@@ -146,10 +146,10 @@ class Page {
 	 * 
 	 * @param params request parameters to be appended to the url
 	 * @param args "things" that can be used to generate an extra path to append to this page's url
-	 * @see #convertToPath(Object...)
+	 * @see #convertToPath(Object[])
 	 * @see #getPageUrl(String)
 	 */
-	void to(Map params, Object... args) {
+	void to(Map params, Object[] args) {
 		def path = convertToPath(*args)
 		if (path == null) {
 			path = ""
@@ -180,11 +180,11 @@ class Page {
 	/**
 	 * Converts the arguments to a path to be appended to this page's url.
 	 * <p>
-	 * This is called by the {@link #to(Map,Object...)} method and can be used for accessing variants of the page.
+	 * This is called by the {@link #to(Map,Object[])} method and can be used for accessing variants of the page.
 	 * <p>
 	 * This implementation returns the string value of each argument, separated by "/"
 	 */
-	String convertToPath(Object... args) {
+	String convertToPath(Object[] args) {
 		args ? args*.toString().join('/') : ""
 	}
 	

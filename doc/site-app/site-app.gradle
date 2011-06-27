@@ -89,7 +89,7 @@ repositories {
 
 dependencies {
 	snapshotManual project(":doc:manual")
-	currentManual "org.codehaus.geb:geb-manual:$stableVersion@zip"
+	currentManual project(":doc:manual")//"org.codehaus.geb:geb-manual:$stableVersion@zip"
 	
 	oldManualVersions.each {
 		delegate."manual-$it"("org.codehaus.geb:geb-manual:$it@zip")

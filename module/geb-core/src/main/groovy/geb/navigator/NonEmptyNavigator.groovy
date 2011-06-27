@@ -21,7 +21,7 @@ class NonEmptyNavigator extends Navigator {
 
 	private final List<WebElement> contextElements
 
-	NonEmptyNavigator(Browser browser, WebElement... contextElements) {
+	NonEmptyNavigator(Browser browser, WebElement[] contextElements) {
 		this(browser, contextElements as List)
 	}
 
@@ -34,7 +34,7 @@ class NonEmptyNavigator extends Navigator {
 		on browser, contextElements
 	}
 
-	protected Navigator navigatorFor(WebElement... contextElements) {
+	protected Navigator navigatorFor(WebElement[] contextElements) {
 		on browser, contextElements
 	}
 

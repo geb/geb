@@ -48,7 +48,7 @@ class ConfigurationDriverCreationSpec extends Specification {
 		c
 	}
 	
-	def conf(Object... args) {
+	def conf(Object[] args) {
 		def conf = loadClass(Configuration).newInstance(*args)
 		conf.cacheDriver = false
 		conf

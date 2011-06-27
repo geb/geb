@@ -68,7 +68,7 @@ class BindingUpdater {
 			target = theTarget
 		}
 		
-		protected doCall(Object... args) {
+		protected doCall(Object[] args) {
 			target."$methodName"(*args)
 		}
 	}

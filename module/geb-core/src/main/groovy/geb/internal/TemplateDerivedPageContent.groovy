@@ -31,7 +31,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	 * 
 	 * We don't use a constructor to prevent users from having to implement them.
 	 */
-	void init(PageContentTemplate template, Navigator navigator, Object... args) {
+	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		this._template = template
 		this._navigator = navigator
 		this._args = args

@@ -140,7 +140,7 @@ class Configuration {
 	}
 
 	/**
-	 * Returns the config value {@code baseUrl}, or {@link geb.buildadapter.BuildAdapter#getBaseUrl()}.
+	 * Returns the config value {@code baseUrl}, or {@link geb.BuildAdapter#getBaseUrl()}.
 	 */
 	String getBaseUrl() {
 		readValue("baseUrl", buildAdapter.baseUrl)
@@ -151,7 +151,7 @@ class Configuration {
 	}
 	
 	/**
-	 * Returns the config value {@code reportsDir}, or {@link geb.buildadapter.BuildAdapter#getReportsDir()}.
+	 * Returns the config value {@code reportsDir}, or {@link geb.BuildAdapter#getReportsDir()}.
 	 */
 	File getReportsDir() {
 		def reportsDir = readValue("reportsDir", buildAdapter.reportsDir)

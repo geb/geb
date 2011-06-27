@@ -24,7 +24,7 @@ import geb.BuildAdapter
 class BuildAdapterFactory {
 	
 	/**
-	 * The system property used to specify the {@link geb.buildadapter.BuildAdapter} implementation ({@code geb.build.adapter}).
+	 * The system property used to specify the {@link geb.BuildAdapter} implementation ({@code geb.build.adapter}).
 	 */
 	static public final String ADAPTER_PROPERTY_NAME = "geb.build.adapter"
 	

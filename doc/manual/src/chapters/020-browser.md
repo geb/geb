@@ -96,7 +96,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 
 ### Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb-core/geb/Browser.html#to(java.lang.Class, Object...\)) methods.
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb-core/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
 
     class SignupPage extends Page {
         static url = "signup"
@@ -129,7 +129,7 @@ You can also make a new request to a URL without setting or changing the page us
 
 ## The Page
 
-Browser instances hold a reference to a _page_. This page instance is retrievable via the [`page`](api/geb-core/geb/Browser#getPage(\)) property. Initially, all browser instances have a page of type [`Page`](api/geb-core/geb/Page.html) which provides the basic navigation functions and is the super class for all page objects. 
+Browser instances hold a reference to a _page_. This page instance is retrievable via the [`page`](api/geb-core/geb/Browser.html#getPage(\)) property. Initially, all browser instances have a page of type [`Page`](api/geb-core/geb/Page.html) which provides the basic navigation functions and is the super class for all page objects. 
 
 However, the page property is rarely accessed directly. The browser object will *forward* any method calls or property read/writes that it can't handle to the current page instance. 
 

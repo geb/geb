@@ -215,7 +215,7 @@ class Browser {
 	 *   <ul>
 	 *     <li>Try the next potential
 	 */	
-	void page(Class<? extends Page>... potentialPageClasses) {
+	void page(Class<? extends Page>[] potentialPageClasses) {
 		def potentialPageClassesClone = potentialPageClasses.toList()
 		def match = null
 		while (match == null && !potentialPageClassesClone.empty) {
@@ -307,9 +307,9 @@ class Browser {
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 * 
 	 * @see #page(geb.Page)
-	 * @see geb.Page#to(Map, Object...)
+	 * @see geb.Page#to(Map, Object[])
 	 */
-	void to(Class<? extends Page> pageType, Object... args) {
+	void to(Class<? extends Page> pageType, Object[] args) {
 		to([:], pageType, *args)
 	}
 
@@ -317,7 +317,7 @@ class Browser {
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 * 
 	 * @see #page(geb.Page)
-	 * @see geb.Page#to(Map, Object...)
+	 * @see geb.Page#to(Map, Object[])
 	 */
 	void to(Map params, Class<? extends Page> pageType) {
 		to(params, pageType, null)
@@ -327,16 +327,14 @@ class Browser {
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 * 
 	 * @see #page(geb.Page)
-	 * @see geb.Page#to(Map, Object...)
+	 * @see geb.Page#to(Map, Object[])
 	 */
-	void to(Map params, Class<? extends Page> pageType, Object... args) {
+	void to(Map params, Class<? extends Page> pageType, Object[] args) {
 		createPage(pageType).to(params, *args)
 	}
 	
 	/**
 	 * Clears all cookies that the browser currently has.
-	 * 
-	 * @see org.openqa.selenium.WebDriver.Options#deleteAllCookies()
 	 */
 	void clearCookies() {
 		driver?.manage()?.deleteAllCookies()

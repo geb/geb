@@ -202,7 +202,7 @@ abstract class Navigator implements Iterable<Navigator> {
 		add browser.driver.findElements(By.cssSelector(selector))
 	}
 	
-	Navigator add(WebElement... elements) {
+	Navigator add(WebElement[] elements) {
 		add Arrays.asList(elements)
 	}
 	
@@ -621,7 +621,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Browser browser, WebElement... contextElements) {
+	static Navigator on(Browser browser, WebElement[] contextElements) {
 		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
 	}
 
@@ -632,7 +632,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param navigators the navigators to compose of
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Browser browser, Navigator... navigators) {
+	static Navigator on(Browser browser, Navigator[] navigators) {
 		if (navigators) {
 			on(browser, navigators*.allElements().flatten())
 		} else {

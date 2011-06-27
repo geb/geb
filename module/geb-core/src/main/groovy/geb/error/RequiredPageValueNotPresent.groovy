@@ -18,7 +18,7 @@ class RequiredPageValueNotPresent extends GebAssertionError {
 
 	final template
 	
-	RequiredPageValueNotPresent(template, Object... args) {
+	RequiredPageValueNotPresent(template, Object[] args) {
 		super("Template '$template' returned null for args: $args")
 		this.template = template
 	}
