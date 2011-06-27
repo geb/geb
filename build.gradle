@@ -18,7 +18,7 @@ buildscript {
 }
 
 allprojects { project ->
-	version = '0.6.0-SNAPSHOT'
+	version = '0.6.0'
 	group = 'org.codehaus.geb'
 	isSnapshot = version.endsWith("-SNAPSHOT")
     
