@@ -33,6 +33,7 @@ task compileManual {
 		"geb-version": project.version,
 		"spock-version": "0.5-groovy-1.7",
 		"selenium-version": seleniumVersion,
+		"groovy-version": groovyVersion,
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
 		"home-page": "www.gebish.org"
 	]
