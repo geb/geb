@@ -632,7 +632,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param navigators the navigators to compose of
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Browser browser, Navigator[] navigators) {
+	static Navigator on(Browser browser, Navigator... navigators) {
 		if (navigators) {
 			on(browser, navigators*.allElements().flatten())
 		} else {
