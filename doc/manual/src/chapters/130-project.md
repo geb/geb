@@ -1,5 +1,7 @@
 # About the Project
 
+The Geb home page can be found at [http://www.gebish.org](http://www.gebish.org).
+
 ## API Reference
 
 * [geb-core](api/geb-core/index.html)
@@ -8,6 +10,12 @@
 * [geb-testng](api/geb-testng/index.html)
 * [geb-easyb](api/geb-easyb/index.html)
 * [geb-junit3](api/geb-junit3/index.html)
+
+## Support & Development
+
+Support for Geb is offered on the user@geb.codehaus.org mailing list, which can be subscribed to [here](http://xircles.codehaus.org/lists/user@geb.codehaus.org).
+
+Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mailing list, which can be subscribed to [here](http://xircles.codehaus.org/lists/dev@geb.codehaus.org).
 
 ## Credits
 
@@ -58,6 +66,7 @@ This page lists the high level changes between versions of Geb.
 * Upgraded minimum version requirement of WebDriver to 2.0rc1
 * The `onLoad()` and `onUnload()` page methods both have changed their return types from `def` to `void`
 * The Grails specific testing subclasses have been REMOVED. Use the direct equivalent instead (e.g `geb.spock.GebReportingSpec` instead of `grails.plugin.geb.GebSpec`)
+* The Grails plugin no longer depends on the test integration modules, you need to depend on the one you want manually
 * The `getBaseUrl()` method from testing subclasses has been removed, use the configuration mechanism
 
 ### 0.5.1
