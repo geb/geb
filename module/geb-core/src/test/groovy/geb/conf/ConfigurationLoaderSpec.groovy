@@ -28,7 +28,7 @@ class ConfigurationLoaderSpec extends Specification {
 	}
 	
 	protected load(URL location) {
-		config = loader.getConf(location)
+		config = loader.getConf(location, new GroovyClassLoader(getClass().classLoader))
 	}
 	
 	protected getGoodScript() {
