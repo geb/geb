@@ -76,6 +76,7 @@ stableVersion = "0.6.0"
 // The old versions of Geb we are including manuals for
 oldManualVersions = ["0.6.0.RC1"]
 
+def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
 configurations {
 	snapshotManual
 	currentManual
@@ -92,10 +93,10 @@ repositories {
 
 dependencies {
 	snapshotManual project(":doc:manual")
-	currentManual project(":doc:manual")//"org.codehaus.geb:geb-manual:$stableVersion@zip"
+	currentManual manualDependency(stableVersion)
 	
 	oldManualVersions.each {
-		delegate."manual-$it"("org.codehaus.geb:geb-manual:$it@zip")
+		delegate."manual-$it" manualDependency(it)
 	}
 }
 
