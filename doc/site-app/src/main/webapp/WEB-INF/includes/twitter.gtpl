@@ -47,4 +47,4 @@
 
 <p>Here is what people are tweeting about Geb…</p>
 <span id="tweets"><p class="loading-tweets">Loading tweets…</p></span>
-<p>These are the tweets that were favourited by <a href="http://twitter.com/GroovyGeb">Geb's twitter account</a> and only shows the last 8 favorited tweets. Please see <a href="http://twitter.com/#!/GroovyGeb/favorites">here</a> for the full listing.</p>
+<p>These are the tweets that were favorited by <a href="http://twitter.com/GroovyGeb">Geb's twitter account</a> and only shows the last 8 favorited tweets. Please see <a href="http://twitter.com/#!/GroovyGeb/favorites">here</a> for the full listing.</p>

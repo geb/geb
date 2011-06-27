@@ -18,6 +18,12 @@
     <li><a href="http://code.google.com/p/selenium/wiki/IPhoneDriver">Safari on iPhone &amp; iPad</a></li>
 </ul>
 
+<h1>Remote Browsers</h1>
+
 <p>WebDriver also supports <a href="http://code.google.com/p/selenium/wiki/RemoteWebDriver"><em>remote drivers</em></a>. This allows you to automate a browser running on another machine! This means you can easily run your test suite against an IE browser easily from the comfort of your Mac or Linux machine.</p>
+
+<h1>Headless Browsers</h1>
+
+<p>For automation, you can also use the headless, in process, browser emulator <a href="http://code.google.com/p/selenium/wiki/HtmlUnitDriver">HTMLUnit with WebDriver</a>.</p>
 
 <p>See the <a href="manual/current/configuration.html#driver_implementation">driver configuration section of the manual</a> for information about setting up Geb to run with different drivers.</p>
