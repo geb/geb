@@ -1,4 +1,4 @@
-import static java.util.Calendar.HOUR
+import static java.util.Calendar.MINUTE
 import com.google.appengine.api.memcache.Expiration
 import com.google.appengine.api.memcache.MemcacheService.SetPolicy
 
@@ -19,6 +19,8 @@ def feed = memcache[cacheKey]
 if (feed) {
 	log.info "feed '$feedName': cached, reusing"
 } else {
+	log.info "feed '$feedName': not cached, fetching"
+	
 	def fetchFeed = {
 		feed = [
 			text: "",
@@ -48,20 +50,15 @@ if (feed) {
 		
 		if (feed.text.contains("<error>Rate limit exceeded.")) {
 			log.warning "gave the bogus rate limit error again, giving up"
-			response.sendError(500, "failed to get twitter feed")
+			return response.sendError(500, "failed to get twitter feed")
 		}
 	}
 	
-	
-	
-	log.info "feed '$feedName': not cached, fetching"
-
-	
-	memcache.put(cacheKey, feed, Expiration.byDeltaSeconds(3600), SetPolicy.ADD_ONLY_IF_NOT_PRESENT)
+	memcache.put(cacheKey, feed, Expiration.byDeltaSeconds(1800), SetPolicy.ADD_ONLY_IF_NOT_PRESENT)
 }
 
 def expires = feed.createdAt.toCalendar()
-expires.add(HOUR, 1)
+expires.add(MINUTE, 30)
 response.addDateHeader("Expires", expires.timeInMillis)
 
 response.setContentType(feed.contentType)

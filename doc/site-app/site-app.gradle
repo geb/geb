@@ -14,7 +14,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath "com.google.appengine:appengine-tools-sdk:1.5.0"
+		classpath "com.google.appengine:appengine-tools-sdk:1.5.1"
 		classpath ":gradle-gae-plugin:0.4"
 	}
 }
@@ -26,11 +26,12 @@ repositories {
 	}
 }
 
-appEngineVersion = "1.5.1"
-
 configurations {
 	gaeSdk
 }
+
+// Also needed to be updated in buildscript block
+appEngineVersion = "1.5.1"
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.8.0"
@@ -151,7 +152,9 @@ task includeVersionManuals(dependsOn: allVersionConfigurations + [cleanManuals])
 task includeManuals(dependsOn: [includeSnapshotManual, includeCurrentManual, includeVersionManuals])
 
 task filter(type: Copy) {
-	filter(ReplaceTokens, tokens: [version: version.endsWith("SNAPSHOT") ? 'snapshot' : 'release'])
+	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : "snapshot" 
+	inputs.property("siteVersion", siteVersion)
+	filter(ReplaceTokens, tokens: [version: siteVersion])
 	from "src/main/webapp-filtered"
 	into "build/exploded-war-filtered"
 }

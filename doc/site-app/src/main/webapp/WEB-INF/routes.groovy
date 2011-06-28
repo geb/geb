@@ -1,14 +1,15 @@
+def cacheFor = 12.hours
 
-all "/manual/**", ignore: true, cache: 12.hours
-all "/manual/snapshot/**", ignore: true, cache: 10.minutes
-all "/favicon.ico", ignore: true
-all "/robots.txt", ignore: true
-all "/images/**", ignore: true
-all "/css/**", ignore: true
-all "/js/**", ignore: true
+all "/manual/snapshot/**", ignore: true
+
+all "/manual/**", ignore: true, cache: cacheFor
+all "/favicon.ico", ignore: true, cache: cacheFor
+all "/robots.txt", ignore: true, cache: cacheFor
+all "/images/**", ignore: true, cache: cacheFor
+all "/css/**", ignore: true, cache: cacheFor
+all "/js/**", ignore: true, cache: cacheFor
 
 all "/clearcaches", forward: "clearcaches.groovy"
 get "/feed/@feed", forward: "/feedproxy.groovy?feed=@feed"
-all "/@page", forward: "site.groovy?page=@page", validate: { !(page in ["twitter", "articles"]) }, cache: 12.hours
-all "/@page", forward: "site.groovy?page=@page", validate: { page in ["twitter", "articles"] }
-all "/", forward: "site.groovy?page=index", cache: 12.hours
+all "/@page", forward: "site.groovy?page=@page", cache: cacheFor
+all "/", forward: "site.groovy?page=index", cache: cacheFor
