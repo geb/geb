@@ -2,6 +2,9 @@ import static java.util.Calendar.MINUTE
 import com.google.appengine.api.memcache.Expiration
 import com.google.appengine.api.memcache.MemcacheService.SetPolicy
 
+import oauth.signpost.basic.*
+import oauth.signpost.*
+
 def feeds = [
 	twitter: "http://twitter.com/favorites/GroovyGeb.atom",
 	articles: "http://groups.diigo.com/group/geb-resources/rss"
@@ -21,44 +24,54 @@ if (feed) {
 } else {
 	log.info "feed '$feedName': not cached, fetching"
 	
-	def fetchFeed = {
-		feed = [
-			text: "",
-			etag: "",
-			contentType: "",
-			createdAt: new Date()
-		]
+	feed = [
+		text: "",
+		etag: "",
+		contentType: "",
+		createdAt: new Date()
+	]
 
-		def url = new URL(feeds[feedName])
+	def url = new URL(feeds[feedName])
 
-		url.openConnection().with {
-			readTimeout = 10 * 1000
-			connectTimeout = 10 * 1000
-
-			feed.text = getContent().getText("UTF-8")
-			feed.etag = getHeaderField("etag")
-			feed.contentType = getContentType()
+	url.openConnection().with {
+		if (feedName == "twitter") {
+			
+			def credentialsStream = context.getResourceAsStream("/WEB-INF/twitter-credentials.properties")
+			if (credentialsStream == null) {
+				return binding.response.sendError(500, "no twitter credentials found")
+			}
+			
+			def credentials = new Properties()
+			credentials.load(credentialsStream)
+			
+			for (credential in ["consumerKey", "consumerSecret", "accessToken", "secretToken"]) {
+				if (!credentials.containsKey(credential)) {
+					return binding.response.sendError(500, "no twitter credential '$credential'")
+				}
+			}
+			
+			def consumer = new DefaultOAuthConsumer(credentials.consumerKey, credentials.consumerSecret)
+			consumer.setTokenWithSecret(credentials.accessToken, credentials.secretToken)
+			consumer.sign(delegate)
 		}
-	}
-	
-	fetchFeed()
-	
-	// Twitter sometimes returns this, when just making another request will make it work, so try again
-	if (feedName == "twitter" && feed.text.contains("<error>Rate limit exceeded.")) {
-		log.warning "twitter gave bogus rate limit error, trying again"
-		fetchFeed()
+
+		readTimeout = 10 * 1000
+		connectTimeout = 10 * 1000
+
+		if (responseCode != 200) {
+			return binding.response.sendError(responseCode, responseMessage ?: "error")
+		}
 		
-		if (feed.text.contains("<error>Rate limit exceeded.")) {
-			log.warning "gave the bogus rate limit error again, giving up"
-			return response.sendError(500, "failed to get twitter feed")
-		}
+		feed.text = getContent().getText("UTF-8")
+		feed.etag = getHeaderField("etag")
+		feed.contentType = getContentType()
 	}
 	
-	memcache.put(cacheKey, feed, Expiration.byDeltaSeconds(1800), SetPolicy.ADD_ONLY_IF_NOT_PRESENT)
+	memcache.put(cacheKey, feed, Expiration.byDeltaSeconds(600), SetPolicy.ADD_ONLY_IF_NOT_PRESENT)
 }
 
 def expires = feed.createdAt.toCalendar()
-expires.add(MINUTE, 30)
+expires.add(MINUTE, 10)
 response.addDateHeader("Expires", expires.timeInMillis)
 
 response.setContentType(feed.contentType)
@@ -68,4 +81,3 @@ if (feed.etag) {
 
 out << feed.text
 out.flush()
-out.close()

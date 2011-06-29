@@ -40,6 +40,7 @@ dependencies {
 	        "com.google.appengine:appengine-api-labs:$appEngineVersion",
 	        ":gaelyk:0.7"
 	
+	compile "oauth.signpost:signpost-core:1.2.1.1"
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
 }
 
@@ -153,8 +154,15 @@ task includeManuals(dependsOn: [includeSnapshotManual, includeCurrentManual, inc
 
 task filter(type: Copy) {
 	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : "snapshot" 
-	inputs.property("siteVersion", siteVersion)
-	filter(ReplaceTokens, tokens: [version: siteVersion])
+	def properties = [version: siteVersion]
+
+	["consumerKey", "consumerSecret", "accessToken", "secretToken"].each {
+		def propertyName = "geb.twitter.$it"
+		properties[propertyName] = project.hasProperty(propertyName) ? project.getProperty(propertyName) : ""
+	}
+
+	inputs.properties(properties)
+	filter(ReplaceTokens, tokens: properties)
 	from "src/main/webapp-filtered"
 	into "build/exploded-war-filtered"
 }
