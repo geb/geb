@@ -232,7 +232,7 @@ Geb does not provide any support for prompt() due to it's infrequent and general
 
 Geb has special support for the [jQuery javascript library][jquery]. Navigator objects have a special adapter that makes calling jQuery methods against the underlying DOM elements simple. This is best explained by example.
 
-> The jQuery integration only works when the pages you are working with include jQuery, Geb does not install it in the page for you.
+> The jQuery integration only works when the pages you are working with include jQuery, Geb does not install it in the page for you. The minimum supported version of jQuery is 1.4.
 
 Consider the following page:
 
