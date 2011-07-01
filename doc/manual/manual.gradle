@@ -4,6 +4,7 @@ buildscript {
 			pattern = "[organisation]/[module]-[revision].[ext]"
 		}
 		mavenRepo name: "scala-tools", urls: "http://scala-tools.org/repo-releases"
+		mavenCentral()
 	}
 	dependencies {
 		classpath "markdown2book:markdown2book:1.0-SNAPSHOT"
