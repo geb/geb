@@ -15,17 +15,23 @@
  */
 package geb.testng
 
+import geb.report.ReporterSupport
 import geb.test.util.CallbackHttpServer
+import org.testng.ITest
+import org.testng.annotations.AfterClass
+import org.testng.annotations.BeforeClass
 import org.testng.annotations.BeforeMethod
-import org.testng.annotations.AfterMethod
 import org.testng.annotations.Test
 
 class GebReportingTestTest extends GebReportingTest {
 
 	def server = new CallbackHttpServer()
-	
-	static private counter = 0
-	
+
+	private methodNumber = 0;
+	private reportNumberInTest = 0;
+
+	private methodNumberOfInitTest = 0;
+
 	static responseText = """
 		<html>
 		<body>
@@ -33,42 +39,60 @@ class GebReportingTestTest extends GebReportingTest {
 		</body>
 		</html>
 	"""
-	
-	@BeforeMethod
-	void setUp() {
+
+	@BeforeClass
+	void setUpClass() {
 		server.start()
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
+	}
+
+	@BeforeMethod
+	void setUp() {
+		++methodNumber
+		reportNumberInTest = 0;
+
 		browser.baseUrl = server.baseUrl
 		go()
 	}
-	
+
 	@Test
-	void a() {
-		doTestReport()
-	}
-	
-	@Test
-	void b() {
-		doTestReport()
-		report "manual"
+	void reportingTestShouldReportOnDemand(ITest test) {
+		report("ondemand")
+		doTestReport(test.testName, "ondemand");
 	}
 
 	@Test
-	void c() {
-		doTestReport()
+	void reportingTestShouldReportAfterMethodInit() {
+		// initialization method that created in order to assert report creation in next method
+		methodNumberOfInitTest = methodNumber
 	}
-	
-	def doTestReport() {
-		if (++counter > 1) {
-			def report = reportGroupDir.listFiles().find { it.name.startsWith(("00" + (counter - 1)).toString()) }
-			assert report.exists()
-			assert report.text.contains('<div class="d1" id="d1">')
-		}
+
+	@Test(dependsOnMethods = ["reportingTestShouldReportAfterMethodInit"])
+	void reportingTestShouldReportAfterMethod() {
+		// check previous method (reportingTestShouldReportAfterMethodInit)
+		report("ondemand")
+		doTestReport("reportingTestShouldReportAfterMethodInit", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 1);
+		methodNumberOfInitTest = methodNumber
 	}
-	
-	@AfterMethod
+
+	@Test(dependsOnMethods = ["reportingTestShouldReportAfterMethod"])
+	void reportingTestShouldReportAfterMethodAndOnDemand() {
+		// check previous method (reportingTestShouldReportAfterMethod)
+		doTestReport("reportingTestShouldReportAfterMethod", "ondemand", methodNumberOfInitTest, 1);
+		doTestReport("reportingTestShouldReportAfterMethod", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2);
+	}
+
+	def doTestReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = ++reportNumberInTest) {
+		def reportName = ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label) + ".html"
+		def report = reportGroupDir.listFiles().find { it.name == reportName }
+		assert report != null, "${reportName} not found. Following files are found: ${reportGroupDir.listFiles()}"
+		assert report.exists()
+		assert report.text.contains('<div class="d1" id="d1">')
+	}
+
+	@AfterClass
 	void tearDown() {
 		server.stop()
 	}
