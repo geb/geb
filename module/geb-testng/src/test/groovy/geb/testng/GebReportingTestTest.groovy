@@ -55,7 +55,7 @@ class GebReportingTestTest extends GebReportingTest {
 		++methodNumber
 		reportNumberInTest = 1
 
-		config.reportOnTestFailureOnly = true
+		config.reportOnTestFailureOnly = false
 
 		browser.baseUrl = server.baseUrl
 		go()
