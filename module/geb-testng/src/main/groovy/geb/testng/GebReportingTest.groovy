@@ -17,12 +17,14 @@ package geb.testng
 
 import geb.report.ReporterSupport
 import java.lang.reflect.Method
+import org.testng.ITestResult
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.BeforeMethod
 
 class GebReportingTest extends GebTest {
 
+	public static final END_OF_METHOD_REPORT_LABEL = "end"
 	private testMethodNumber = 0
 	private reportNumberInTestMethod = 1
 	def testMethodName = ""
@@ -45,8 +47,9 @@ class GebReportingTest extends GebTest {
 	}
 
 	@AfterMethod
-	void reportingAfter() {
-		report("end")
+	void reportingAfter(ITestResult testResult) {
+		if(!config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status)
+			report(END_OF_METHOD_REPORT_LABEL)
 	}
 
 }

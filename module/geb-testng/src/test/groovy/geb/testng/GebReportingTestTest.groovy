@@ -106,7 +106,8 @@ class GebReportingTestTest extends GebReportingTest {
 	def doTestReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
 		def report = tryToFindReport(methodName, label, methodNumber, reportCounter)
 
-		assert report.exists(), ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)
+		assert report != null, "${ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)} not found in ${reportGroupDir.listFiles()}"
+		assert report.exists()
 		reportNumberInTest++
 
 		assert report.text.contains('<div class="d1" id="d1">')
