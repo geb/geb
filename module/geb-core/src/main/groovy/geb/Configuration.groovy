@@ -15,12 +15,12 @@
 
 package geb
 
-import geb.driver.*
-import geb.waiting.Wait
 import geb.buildadapter.SystemPropertiesBuildAdapter
 import geb.report.Reporter
 import geb.report.ScreenshotAndPageSourceReporter
+import geb.waiting.Wait
 import org.openqa.selenium.WebDriver
+import geb.driver.*
 
 /**
  * Represents a particular configuration of Geb.
@@ -162,6 +162,14 @@ class Configuration {
 		} else {
 			new File(reportsDir.toString())
 		}
+	}
+
+	def setReportOnTestFailureOnly(boolean value) {
+		rawConfig.reportOnTestFailureOnly = value
+	}
+
+	boolean isReportOnTestFailureOnly() {
+		return readValue("reportOnTestFailureOnly", false);
 	}
 	
 	void setReportsDir(File reportsDir) {
