@@ -294,7 +294,7 @@ To obtain information about all matched content, you use the Groovy _spread oper
 
 ## Sending keystrokes
 
-Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence[])) method of WebDriver.
+Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence...\)) method of WebDriver.
 
     $("div") << "abc"
 
