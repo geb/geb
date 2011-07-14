@@ -146,11 +146,11 @@ We can select `div.b` by…
 
 or…
 
-	$(".b").not("p")
+    $(".b").not("p")
 
 We can select the `div` containing the `p` with…
 
-	$("div").has("p")
+    $("div").has("p")
 
 The `find` and `filter` methods support the **exact same options as the $ function**.
 
@@ -217,14 +217,14 @@ These methods do not take indexes as they automatically select the first matchin
 
 The `nextUntil`, `prevUntil` and `parentsUntil` methods return all nodes along the relevant axis _until_ the first one that matches a selector. Consider the following markup:
 
-	<div class="a"></div>
-	<div class="b"></div>
-	<div class="c"></div>
-	<div class="d"></div>
+    <div class="a"></div>
+    <div class="b"></div>
+    <div class="c"></div>
+    <div class="d"></div>
 
 The following code will select `div.b` and `div.c`:
 
-	$(".a").nextUntil(".d")
+    $(".a").nextUntil(".d")
 
 ## Composition
 
@@ -296,7 +296,7 @@ To obtain information about all matched content, you use the Groovy _spread oper
 
 Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence[])) method of WebDriver.
 
-	$("div") << "abc"
+    $("div") << "abc"
 
 How content responds to the keystrokes depends on what the content is.
 
@@ -304,9 +304,9 @@ How content responds to the keystrokes depends on what the content is.
 
 It is possible to send non textual characters to content by using the WebDriver [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") enumeration…
 
-	import org.openqa.selenium.Keys
-	
-	$("input", name: "firstName") << Keys.chord(Keys.CONTROL, "c")
+    import org.openqa.selenium.Keys
+    
+    $("input", name: "firstName") << Keys.chord(Keys.CONTROL, "c")
 
 Here we are sending a “control-c” to an input.
 
@@ -356,36 +356,36 @@ Which is literally a shortcut for…
 
 Select values are set by assigning the value or text of the required option. Assigned values are automatically coerced to String. For example…
 
-	<select name="artist">
-		<option value="1">Ima Robot</option>
-		<option value="2">Edward Sharpe and the Magnetic Zeros</option>
-		<option value="3">Alexander</option>
-	</select>
+    <select name="artist">
+        <option value="1">Ima Robot</option>
+        <option value="2">Edward Sharpe and the Magnetic Zeros</option>
+        <option value="3">Alexander</option>
+    </select>
 
 We can select options with…
 
-	$("form").artist = "1"         // first option selected by its value attribute
-	$("form").artist = 2           // second option selected by its value attribute
-	$("form").artist = "Ima Robot" // first option selected by its text
+    $("form").artist = "1"         // first option selected by its value attribute
+    $("form").artist = 2           // second option selected by its value attribute
+    $("form").artist = "Ima Robot" // first option selected by its text
 
 #### multiple select
 
 If the select has the `multiple` attribute it is set with a array or `Collection` of values. Any options not in the values are un-selected. For example…
 
-	<select name="genres" multiple>
-		<option value="1">Alt folk</option>
-		<option value="2">Chiptunes</option>
-		<option value="3">Electroclash</option>
-		<option value="4">G-Funk</option>
-		<option value="5">Hair metal</option>
-	</select>
+    <select name="genres" multiple>
+        <option value="1">Alt folk</option>
+        <option value="2">Chiptunes</option>
+        <option value="3">Electroclash</option>
+        <option value="4">G-Funk</option>
+        <option value="5">Hair metal</option>
+    </select>
 
 We can select options with…
 
-	$("form").genres = ["2", "3"]                 // second and third options selected by their value attributes
-	$("form").genres = [1, 4, 5]                  // first, fourth and fifth options selected by their value attributes
-	$("form").genres = ["Alt folk", "Hair metal"] // first and last options selected by their text
-	$("form").genres = []                         // all options un-selected
+    $("form").genres = ["2", "3"]                 // second and third options selected by their value attributes
+    $("form").genres = [1, 4, 5]                  // first, fourth and fifth options selected by their value attributes
+    $("form").genres = ["Alt folk", "Hair metal"] // first and last options selected by their text
+    $("form").genres = []                         // all options un-selected
 
 #### checkbox
 
@@ -397,18 +397,18 @@ Radio values are set by assigning the value of the radio button that is to be se
 
 For example, with the following radio buttons…
 
-	<label for="site-current">Search this site</label>
-	<input type="radio" id="site-current" name="site" value="current">
-	
-	<label>Search Google
-		<input type="radio" name="site" value="google">
-	</label>
+    <label for="site-current">Search this site</label>
+    <input type="radio" id="site-current" name="site" value="current">
+    
+    <label>Search Google
+        <input type="radio" name="site" value="google">
+    </label>
 
 We can select the radios with…
 
-	$("form").site = "current"          // selects the first radio by its value
-	$("form").site = "Search this site" // selects the first radio by its label
-	$("form").site = "Search Google"    // selects the second radio by its label
+    $("form").site = "current"          // selects the first radio by its value
+    $("form").site = "Search this site" // selects the first radio by its label
+    $("form").site = "Search Google"    // selects the second radio by its label
 
 #### text inputs and textareas
 
@@ -416,28 +416,28 @@ In the case of a text `input`, the assigned value becomes the input's *value* at
 
 It is also possible to append text by using the send keys shorthand…
 
-	<input name="language" value="gro" />
-	
-	$("form").language() << "ovy"
-	assert $("form").language == "groovy"
+    <input name="language" value="gro" />
+    
+    $("form").language() << "ovy"
+    assert $("form").language == "groovy"
 
 Which an also be used for non character keys…
 
-	<input name="postcode" />
+    <input name="postcode" />
 
-	import org.openqa.selenium.Keys
-	
-	$("form").postcode = "12345"
-	$("form").postcode() << Keys.BACK_SPACE
-	assert $("form").postcode == "1234"
+    import org.openqa.selenium.Keys
+    
+    $("form").postcode = "12345"
+    $("form").postcode() << Keys.BACK_SPACE
+    assert $("form").postcode == "1234"
 
 #### file upload
 
 It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the *absolute path* of a file on the system where the driver is running and on form submission that file will be uploaded.
 
-	<input type="file" name="csvFile">
-	
-	$("form").csvFile = "/path/to/my/file.csv"
+    <input type="file" name="csvFile">
+    
+    $("form").csvFile = "/path/to/my/file.csv"
 
 ## Accessing the underlying WebElement objects
 
