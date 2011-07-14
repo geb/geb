@@ -197,7 +197,7 @@ The following is an example of what is possible…
 
 	Given(~"I am on the Google search page") { ->
 		to GoogleHomePage
-		waitFor { at(GoogleHomePage) }
+		waitFor { at GoogleHomePage }
 	}
 
 	When(~"I search for \"(.*)\"") { String query ->
