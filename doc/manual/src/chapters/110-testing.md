@@ -10,31 +10,31 @@ The Spock, JUnit and TestNG integrations work fundamentally the same way. They p
 
 Consider the following Spock spec…
 
-	import geb.spock.GebSpec
-	
-	class FunctionalSpec extends GebSpec {
-		def "go to login"() {
-			when:
-			go "/login"
-			
-			then:
-			title == "Login Screen"
-		}
-	}
+    import geb.spock.GebSpec
+    
+    class FunctionalSpec extends GebSpec {
+        def "go to login"() {
+            when:
+            go "/login"
+            
+            then:
+            title == "Login Screen"
+        }
+    }
 
 Which is equivalent to…
 
-	import geb.spock.GebSpec
-	
-	class FunctionalSpec extends GebSpec {
-		def "go to login"() {
-			when:
-			browser.go "/login"
-			
-			then:
-			browser.page.title == "Login Screen"
-		}
-	}
+    import geb.spock.GebSpec
+    
+    class FunctionalSpec extends GebSpec {
+        def "go to login"() {
+            when:
+            browser.go "/login"
+            
+            then:
+            browser.page.title == "Login Screen"
+        }
+    }
 
 ### Configuration
 
@@ -90,36 +90,36 @@ This auto clearing of cookies can be [disabled via configuration](configuration.
 The following table illustrates the specific jars and class names for Spock and JUnit.
 
 <table class="graybox" border="0" cellspacing="0" cellpadding="5">
-	<tr>
-		<th>Framework</th>
-		<th>JAR</th>
-		<th>Base Class</th>
-		<th>Reporting Base Class</th>
-	</tr>
-	<tr>
-		<td>Spock</td>
-		<td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-spock">geb-spock</a></td>
-		<td><a href="api/geb-spock/geb/spock/GebSpec.html">geb.spock.GebSpec</a></td>
-		<td><a href="api/geb-spock/geb/spock/GebReportingSpec.html">geb.spock.GebReportingSpec</a></td>
-	</tr>
-	<tr>
-		<td>JUnit 4</td>
-		<td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit4">geb-junit4</a></td>
-		<td><a href="api/geb-junit4/geb/junit4/GebTest.html">geb.junit4.GebTest</a></td>
-		<td><a href="api/geb-junit4/geb/junit4/GebReportingTest.html">geb.junit4.GebReportingTest</a></td>
-	</tr>
-	<tr>
-		<td>JUnit 3</td>
-		<td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit3">geb-junit3</a></td>
-		<td><a href="api/geb-junit3/geb/junit3/GebTest.html">geb.junit3.GebTest</a></td>
-		<td><a href="api/geb-junit3/geb/junit3/GebReportingTest.html">geb.junit3.GebReportingTest</a></td>
-	</tr>
-	<tr>
-		<td>TestNG</td>
-		<td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-testng">geb-testng</a></td>
-		<td><a href="api/geb-testng/geb/testng/GebTest.html">geb.testng.GebTest</a></td>
-		<td><a href="api/geb-testng/geb/testng/GebReportingTest.html">geb.testng.GebReportingTest</a></td>
-	</tr>
+    <tr>
+        <th>Framework</th>
+        <th>JAR</th>
+        <th>Base Class</th>
+        <th>Reporting Base Class</th>
+    </tr>
+    <tr>
+        <td>Spock</td>
+        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-spock">geb-spock</a></td>
+        <td><a href="api/geb-spock/geb/spock/GebSpec.html">geb.spock.GebSpec</a></td>
+        <td><a href="api/geb-spock/geb/spock/GebReportingSpec.html">geb.spock.GebReportingSpec</a></td>
+    </tr>
+    <tr>
+        <td>JUnit 4</td>
+        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit4">geb-junit4</a></td>
+        <td><a href="api/geb-junit4/geb/junit4/GebTest.html">geb.junit4.GebTest</a></td>
+        <td><a href="api/geb-junit4/geb/junit4/GebReportingTest.html">geb.junit4.GebReportingTest</a></td>
+    </tr>
+    <tr>
+        <td>JUnit 3</td>
+        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit3">geb-junit3</a></td>
+        <td><a href="api/geb-junit3/geb/junit3/GebTest.html">geb.junit3.GebTest</a></td>
+        <td><a href="api/geb-junit3/geb/junit3/GebReportingTest.html">geb.junit3.GebReportingTest</a></td>
+    </tr>
+    <tr>
+        <td>TestNG</td>
+        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-testng">geb-testng</a></td>
+        <td><a href="api/geb-testng/geb/testng/GebTest.html">geb.testng.GebTest</a></td>
+        <td><a href="api/geb-testng/geb/testng/GebReportingTest.html">geb.testng.GebReportingTest</a></td>
+    </tr>
 </table>
 
 ### Example Projects
@@ -138,39 +138,39 @@ and the Geb plugin simply integrates Geb's [BindingUpdater][bindingupdater-api] 
 
 Here's a quick example…
 
-	using "geb" // EasyB syntax for using plugins
-	
-	scenario "using geb", {
-		given "our base url", {
-			baseUrl = "http://my.app"
-		}
+    using "geb" // EasyB syntax for using plugins
+    
+    scenario "using geb", {
+        given "our base url", {
+            baseUrl = "http://my.app"
+        }
 
-		when "we go to the page", {
-			to SomePage
-		}
+        when "we go to the page", {
+            to SomePage
+        }
 
-		then "we arrive at the page", {
-			at SomePage
-		}
+        then "we arrive at the page", {
+            at SomePage
+        }
 
-		and "can use the javascript interface", {
-			js.someJsVariable.shouldBe 1
-		}
+        and "can use the javascript interface", {
+            js.someJsVariable.shouldBe 1
+        }
 
-		and "can do some waiting", {
-			waitFor { $("p").text() == "done" }
-		}
-		
-		and "can work with the page", {
-			page.div.text().shouldBe "d1"
-		}
-	}
-	
-	class SomePage extends geb.Page {
-		static content = {
-			div { $("#d1") }
-		}
-	}
+        and "can do some waiting", {
+            waitFor { $("p").text() == "done" }
+        }
+        
+        and "can work with the page", {
+            page.div.text().shouldBe "d1"
+        }
+    }
+    
+    class SomePage extends geb.Page {
+        static content = {
+            div { $("#d1") }
+        }
+    }
 
 ### Configuration
 
@@ -188,32 +188,32 @@ Geb doesn't offer any explicit integration with [Cuke4Duke][cuke4duke] but due t
 
 The following is an example of what is possible…
 
-	import static org.junit.Assert.*
-	import static org.junit.matchers.JUnitMatchers.*
+    import static org.junit.Assert.*
+    import static org.junit.matchers.JUnitMatchers.*
 
-	import pages.*
+    import pages.*
 
-	this.metaClass.mixin(cuke4duke.GroovyDsl)
+    this.metaClass.mixin(cuke4duke.GroovyDsl)
 
-	Given(~"I am on the Google search page") { ->
-		to GoogleHomePage
-		waitFor { at GoogleHomePage }
-	}
+    Given(~"I am on the Google search page") { ->
+        to GoogleHomePage
+        waitFor { at GoogleHomePage }
+    }
 
-	When(~"I search for \"(.*)\"") { String query ->
-		page.searchField.value(query)
-		page.searchButton.click()
-	}
+    When(~"I search for \"(.*)\"") { String query ->
+        page.searchField.value(query)
+        page.searchButton.click()
+    }
 
-	Then(~"I am at the results page") {
-		assert at(GoogleResultsPage)
-	}
+    Then(~"I am at the results page") {
+        assert at(GoogleResultsPage)
+    }
 
-	Then(~"The first link should be \"(.*)\"") { String text ->
-		waitFor { page.results }
-		assertThat page.resultLink(0).text(), containsString(text)
-	}
-	
+    Then(~"The first link should be \"(.*)\"") { String text ->
+        waitFor { page.results }
+        assertThat page.resultLink(0).text(), containsString(text)
+    }
+    
 ### Example Projects
 
 The following projects can be used as starting references:
