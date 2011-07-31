@@ -193,7 +193,7 @@ class Browser {
 	 * <b>Note that it does not verify that the page matches the current content by running its at checker</b>
 	 */
 	void page(Class<? extends Page> pageClass) {
-		page(createPage(pageClass))
+		initializedPage(createPage(pageClass))
 	}
 
 	/**
@@ -226,26 +226,33 @@ class Browser {
 		}
 		
 		if (match) {
-			page(match)
+			initializedPage(match)
 		} else {
 			throw new UnexpectedPageException(potentialPageClasses)
 		}
 	}
-	
-	/**
-	 * Sets this browser's page to be the given page. 
+
+    /**
+	 * Sets this browser's page to be the given initialized page.
 	 * <p>
-	 * Any page change listeners are informed and {@link geb.Page#onUnload(geb.Page)} is called 
+	 * Any page change listeners are informed and {@link geb.Page#onUnload(geb.Page)} is called
 	 * on the previous page and {@link geb.Page#onLoad(geb.Page)} is called on the incoming page.
 	 * <p>
-	 * @see #page(Class)
 	 */
-	void page(Page page) {
-		informPageChangeListeners(this.page, page)
+    private void initializedPage(Page page) {
+        informPageChangeListeners(this.page, page)
 		this.page?.onUnload(page)
 		def previousPage = this.page
 		this.page = page
 		this.page.onLoad(previousPage)
+    }
+	
+	/**
+	 * Sets this browser's page to be the given page after initializing it.
+	 * @see #page(Class)
+	 */
+	void page(Page page) {
+		initializedPage(page.init(this))
 	}
 	
 	/**
@@ -259,7 +266,7 @@ class Browser {
 		try {
 			if (targetPage.verifyAt()) {
 				if (pageType != page.class) {
-					page(targetPage)
+					initializedPage(targetPage)
 				}
 				true
 			} else {
