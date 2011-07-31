@@ -254,20 +254,18 @@ class Browser {
 	void page(Page page) {
 		initializedPage(page.init(this))
 	}
-	
-	/**
-	 * Checks if the browser is at the current page by running the at checker for the given page type.
+
+
+    /**
+	 * Checks if the browser is at the current page by running the at checker for the given initialized page.
 	 * <p>
-	 * If the give page type's at checker is successful, this browser object's page instance is updated
-	 * to the given type unless it is already of the given type in which case it is not changed.
+	 * If the given page at checker is successful, this browser object's page instance is updated
+	 * to the one the method is called with.
 	 */
-	boolean at(Class<? extends Page> pageType) {
-		def targetPage = page.class == pageType ? page : createPage(pageType)
-		try {
-			if (targetPage.verifyAt()) {
-				if (pageType != page.class) {
-					initializedPage(targetPage)
-				}
+    private boolean atInitialized(Page page) {
+        try {
+			if (page.verifyAt()) {
+			    initializedPage(page)
 				true
 			} else {
 				false
@@ -275,6 +273,27 @@ class Browser {
 		} catch (RequiredPageContentNotPresent e) {
 			false
 		}
+    }
+
+    /**
+	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it.
+	 * <p>
+	 * If the given page at checker is successful, this browser object's page instance is updated
+	 * to the one the method is called with.
+	 */
+    boolean at(Page page) {
+        atInitialized(page.init(this))
+    }
+	
+	/**
+	 * Checks if the browser is at the current page by running the at checker for the given page type.
+	 * <p>
+	 * If the give page type's at checker is successful, this browser object's page instance is updated
+	 * to the given type.
+	 */
+	boolean at(Class<? extends Page> pageType) {
+		def targetPage = page.class == pageType ? page : createPage(pageType)
+		atInitialized(targetPage)
 	}
 
 	/**

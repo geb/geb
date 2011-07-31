@@ -46,6 +46,17 @@ class PageInstanceOrientedSpec extends GebSpecWithServer {
         '/someText'     | 'someText'
         '/otherText'    | 'otherText'
     }
+
+    @Issue('http://jira.codehaus.org/browse/GEB-105')
+    def "verify the instance flavour of at checking works" () {
+        when:
+        go '/someText'
+        then:
+        def expectedPage = new PageWithText(text: 'someText')
+        at expectedPage
+        and: 'calling at method sets the page instance'
+        page == expectedPage
+    }
 }
 
 class PageWithText extends Page {
