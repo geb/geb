@@ -3,6 +3,7 @@ package geb
 import geb.test.util.GebSpecWithServer
 import spock.lang.Stepwise
 import spock.lang.Unroll
+import spock.lang.Issue
 
 @Stepwise
 class PageInstanceOrientedSpec extends GebSpecWithServer {
@@ -18,18 +19,20 @@ class PageInstanceOrientedSpec extends GebSpecWithServer {
         }
     }
 
+    @Unroll("verify our server is configured correctly for url #url")
     def "verify our server is configured correctly"() {
         when:
-        go '/someText'
+        go url
         then:
-        $('span').text() == 'someText'
+        $('span').text() == text
 
-        when:
-        go '/otherText'
-        then:
-        $('span').text() == 'otherText'
+        where:
+        url             | text
+        '/someText'     | 'someText'
+        '/otherText'    | 'otherText'
     }
 
+    @Issue('http://jira.codehaus.org/browse/GEB-104')
     @Unroll("check using navigator on page after setting the page with instance for #path")
     def "check that using navigator on page after setting the page with instance works"() {
         when:
