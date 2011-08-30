@@ -89,7 +89,6 @@ configurations {
 }
 
 repositories {
-	mavenLocal()
 	mavenRepo urls: "https://nexus.codehaus.org/content/repositories/snapshots"
 }
 

@@ -2,7 +2,6 @@ import org.gradle.plugin.pgp.signing.*
 
 buildscript {
 	repositories {
-		mavenLocal()
 		mavenCentral()
 		mavenRepo (name: "Geb's GitHub", urls: "http://cloud.github.com/downloads/geb") {
 			pattern = "[organisation]/[module]-[revision].[ext]"
