@@ -174,6 +174,15 @@ It is also possible to set the `reportsDir` config item to a file.
 
 By default this value is **not set**. The browser's [`report()`](browser.html#reporting) method requires a value for this config item so if you are using the reporting features you **must** set a reports dir.
 
+
+### Report Test Failures Only
+
+By default Geb will take a report at the end of each test method, regardless of whether it ended successfully or not. The `reportOnTestFailureOnly` setting allows you to specify that a report should be taken only if a failure occurs. This might be useful as a way to speed up large test suites.
+
+    reportOnTestFailureOnly = true
+
+> Currently this flag is only supported by the TestNG adapter. Support for JUnit, Spock and other frameworks is forthcoming.
+
 ### Auto Clearing Cookies
 
 Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an [implicit driver](driver.html#implicit_lifecycle). This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
