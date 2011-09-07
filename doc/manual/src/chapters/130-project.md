@@ -28,6 +28,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 ### Contributors
 
 * [Alexander Zolotov](http://github.com/zolotov) - TestNG Integration
+* [Marcin Erdmann](https://github.com/erdi) - Various fixes and patches
 
 ## History
 
