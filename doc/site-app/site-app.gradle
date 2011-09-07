@@ -5,29 +5,29 @@ apply plugin: "groovy"
 apply plugin: "gae"
 
 buildscript {
-	repositories {
-		add(new URLResolver()) {
-			name = "Gaelyk Gradle Plugin"
-			addArtifactPattern "http://cloud.github.com/downloads/bmuschko/gradle-gae-plugin/[module]-[revision].[ext]"
+	gitHub = {
+		def resolver = new URLResolver()
+
+		resolver.with {
+			name = 'GitHub'
+			addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
 		}
-		mavenCentral()
+
+		resolver
+	}
+    
+	repositories {
+		add gitHub()
 	}
 
 	dependencies {
-		classpath "com.google.appengine:appengine-tools-sdk:1.5.1"
-		classpath ":gradle-gae-plugin:0.4"
+		classpath 'bmuschko:gradle-gae-plugin:0.5.1'
+		classpath 'bmuschko:gradle-gaelyk-plugin:0.1'
 	}
 }
 
 repositories {
-	add(new URLResolver()) {
-		name = "Gaelyk"
-		addArtifactPattern "http://cloud.github.com/downloads/glaforge/gaelyk/[module]-[revision].[ext]"
-	}
-}
-
-configurations {
-	gaeSdk
+	add gitHub()
 }
 
 // Also needed to be updated in buildscript block
@@ -38,38 +38,10 @@ dependencies {
 	
 	compile "com.google.appengine:appengine-api-1.0-sdk:$appEngineVersion",
 	        "com.google.appengine:appengine-api-labs:$appEngineVersion",
-	        ":gaelyk:0.7"
+	        "glaforge:gaelyk:0.7"
 	
 	compile "oauth.signpost:signpost-core:1.2.1.1"
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
-}
-
-task downloadGaeSdk {
-	sdkZip = configurations.gaeSdk.singleFile
-	sdk = file("build/gaeSdk/${sdkZip.name[0..-5]}")
-	
-	inputs.file sdkZip
-	outputs.dir "build/gaeSdk"
-		
-	doLast {
-		mkdir "build/gaeSdk"
-		copy {
-			into "build/gaeSdk"
-			from zipTree(sdkZip)
-		}
-	}
-}
-
-task configureGaeSdk(dependsOn: downloadGaeSdk) << {
-	System.setProperty("appengine.sdk.root", downloadGaeSdk.sdk.absolutePath)
-}
-
-// modify all the gae* tasks provided by the gae plugin to not run until
-// we install the gae sdk and set the appropriate system property
-tasks.each {
-	if (it.name.startsWith("gae")) {
-		it.dependsOn configureGaeSdk
-	}
 }
 
 // The version of manual to put under the “current” label
@@ -173,6 +145,7 @@ war {
 }
 
 gae {
+	downloadSdk = true
 	appcfg {
 		if (project.hasProperty('gaeEmail')) {
 			email = gaeEmail
