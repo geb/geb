@@ -175,7 +175,8 @@ These methods are not typically used explicitly but are used by the `to()` metho
 
 ## At checking
 
-Browser objects have an [`at(Class pageType)`](api/geb-core/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type. There is also an [`at(Page pageInstance)`](api/geb-core/geb/Browser.html#at(geb.Page\)) version of the `at()` method available if you want to use parametrized page instances.
+Browser objects have an [`at(Class pageType)`](api/geb-core/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type. There is also an [`at(Page pageInstance)`](api/geb-core/geb/Browser.html#at(geb.Page\)) version of the `at()` method available if you want to use page instances.
+
 Pages define an [“at checker”][page-at] that the browser uses for this test.
 
     class SignupPage extends Page {
@@ -221,7 +222,7 @@ Pages can also define content that declares what the browser's page type should 
         at AdminPage
     }
 
-The `at()` method will also update the browser's page instance to the given page type (or the given page instance, depending on which version of the method is used) if it's at checker is successful.
+The `at()` method will also update the browser's page instance to the given page type (or the given page instance, depending on which version of the method is used) if its at checker is successful.
  
 ## Page change listening
 
