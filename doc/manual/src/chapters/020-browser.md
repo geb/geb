@@ -169,11 +169,13 @@ The [`page(Class pageType)`](api/geb-core/geb/Browser.html#page(java.lang.Class\
 
 The [`page(Class[] potentialPageTypes)`](api/geb-core/geb/Browser.html#page(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker.
 
+The [`page(Page pageInstance)`](api/geb-core/geb/Browser.html#page(geb.Page\)) method allows you to change the page to an already created \(most probably with parameters\) page instance. It is useful when you have a lot of just slightly different pages, you don't want to create a subclass for every one of them and you can express the difference in those pages by passing different parameters to the constructor of your [`Page`](api/geb-core/geb/Page.html) subclass.
+
 These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the [`to` attribute of the Content DSL](pages.html#to) for more information about this). However, should you need to manually change the page type they are there.
 
 ## At checking
 
-Browser objects have an [`at(Class pageType)`](api/geb-core/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type. 
+Browser objects have an [`at(Class pageType)`](api/geb-core/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type. There is also an [`at(Page pageInstance)`](api/geb-core/geb/Browser.html#at(geb.Page\)) version of the `at()` method available if you want to use parametrized page instances.
 Pages define an [“at checker”][page-at] that the browser uses for this test.
 
     class SignupPage extends Page {
@@ -219,7 +221,7 @@ Pages can also define content that declares what the browser's page type should 
         at AdminPage
     }
 
-The `at()` method will also update the browser's page instance to the given page type if it's at checker is successful and if the browser's page instance is not already of that type.
+The `at()` method will also update the browser's page instance to the given page type (or the given page instance, depending on which version of the method is used) if it's at checker is successful.
  
 ## Page change listening
 
