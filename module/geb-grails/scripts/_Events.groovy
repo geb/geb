@@ -100,7 +100,7 @@ of these classes with the equivalent from the relevant testing adapter:
 Please see the Geb website for more information if required.
 """
 		event('StatusError', [msg])
-		System.exit 1
+		exit 1
 	}
 	buildAdapterClass
 }
