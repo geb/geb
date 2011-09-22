@@ -368,6 +368,8 @@ We can select options with…
     $("form").artist = 2           // second option selected by its value attribute
     $("form").artist = "Ima Robot" // first option selected by its text
 
+If you attempt to set a select to a value that does not match the value or text of any options, an `IllegalArgumentException` will be thrown.
+
 #### multiple select
 
 If the select has the `multiple` attribute it is set with a array or `Collection` of values. Any options not in the values are un-selected. For example…
@@ -386,6 +388,8 @@ We can select options with…
     $("form").genres = [1, 4, 5]                  // first, fourth and fifth options selected by their value attributes
     $("form").genres = ["Alt folk", "Hair metal"] // first and last options selected by their text
     $("form").genres = []                         // all options un-selected
+
+If the collection being assigned contains a value that does not match the value or text of any options, an `IllegalArgumentException` will be thrown.
 
 #### checkbox
 

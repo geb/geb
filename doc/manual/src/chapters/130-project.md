@@ -34,6 +34,13 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 
 This page lists the high level changes between versions of Geb.
 
+### 0.6.1
+
+#### New Features
+
+* Compatibility with Selenium 2.6.0 (version 0.6.0 of Geb did not work with Selenium 2.5.0 and up)
+* Attempting to set a select to a value that it does not contain now throws an exception
+
 ### 0.6
 
 #### New Features

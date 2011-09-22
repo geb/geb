@@ -1,5 +1,5 @@
 dependencies {
-	compile seleniumDependency
+	compile seleniumDependency, seleniumSupportDependency
 	testCompile project(":module:test-utils")
 }
 

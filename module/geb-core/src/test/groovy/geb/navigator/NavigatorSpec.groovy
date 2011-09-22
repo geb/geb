@@ -11,12 +11,12 @@ class NavigatorSpec extends GebSpec {
 
 	@Shared WebDriver driver
 	@Shared Navigator page
-
+	@Shared testPageUrlString = getClass().getResource("/test.html") as String
 	@Shared textmatching = new TextMatchingSupport()
 
 	def setupSpec() {
 		driver = browser.driver
-		browser.go(getClass().getResource("/test.html") as String)
+		browser.go(testPageUrlString)
 		page = Navigator.on(browser)
 	}
 	
@@ -30,11 +30,11 @@ class NavigatorSpec extends GebSpec {
 		expect: !navigator
 	}
 	
-	def "getAtttribute returns null for boolean attributes that are not present"() {
+	def "getAtttribute returns false for boolean attributes that are not present"() {
 		expect:
 		def element = $("#the_plain_select")
-		element.getAttribute("multiple") == null
-		element.@multiple == null
+		element.getAttribute("multiple") == "false"
+		element.@multiple == "false"
 	}
 
 	def "getElement by index"() {
@@ -629,7 +629,7 @@ class NavigatorSpec extends GebSpec {
 		$("div", 0)         | "id"      | "container"
 		$("div div", 1)     | "id"      | "navigation"
 		$("#article-1 div") | "id"      | null
-		$("#navigation a")  | "href"    | "#home"
+		$("#navigation a")  | "href"    | testPageUrlString + "#home"
 		$("bdo")            | "id"      | null
 	}
 
@@ -642,7 +642,7 @@ class NavigatorSpec extends GebSpec {
 		$("div", 0)         | "id"      | "container"
 		$("div div", 1)     | "id"      | "navigation"
 		$("#article-1 div") | "id"      | null
-		$("#navigation a")  | "href"    | "#home"
+		$("#navigation a")  | "href"    | testPageUrlString + "#home"
 		$("bdo")            | "id"      | null
 	}
 
@@ -653,7 +653,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		navigator          | attribute | expectedIds
 		$("div")[0..<5]    | "id"      | ["container", "header", "navigation", "content", "main"]
-		$("#navigation a") | "href"    | ["#home", "#about", "#contact"]
+		$("#navigation a") | "href"    | ["#home", "#about", "#contact"].collect { testPageUrlString + it }
 		$("bdo")           | "id"      | []
 	}
 
@@ -897,13 +897,30 @@ class NavigatorSpec extends GebSpec {
 		value << ["google", "thisone"]
 	}
 	
-	@Issue("http://jira.codehaus.org/browse/GEB-47")
-	def "setting a select to a value that isn't one of its options is a no-op"() {
+	@Issue("http://jira.codehaus.org/browse/GEB-118")
+	def "setting a select to a value that isn't one of its options blows up"() {
 		when:
 		$("form").plain_select = "KTHXBYE"
 		
 		then:
-		$("form").plain_select == "4"
+		IllegalArgumentException e = thrown()
+		e.message.contains "couldn't select option with text or value: KTHXBYE"
+	}
+	
+	@Issue("http://jira.codehaus.org/browse/GEB-118")
+	def "setting a multiple select to a value that isn't one of its options blows up"() {
+		setup:
+		def originalValues = $("form").multiple_select
+		
+		when:
+		$("form").multiple_select = ["KTHXBYE"]
+		
+		then:
+		IllegalArgumentException e = thrown()
+		e.message.contains "couldn't select options with text or values: [KTHXBYE]"
+		
+		cleanup:
+		$("form").multiple_select = originalValues
 	}
 
 	@Unroll("input value should be '#expected'")

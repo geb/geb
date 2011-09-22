@@ -6,6 +6,7 @@ import java.util.regex.Pattern
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
+import org.openqa.selenium.support.ui.Select
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
 
@@ -439,10 +440,11 @@ class NonEmptyNavigator extends Navigator {
 	private getInputValue(WebElement input) {
 		def value = null
 		if (input.tagName == "select") {
-			if (getBooleanAttribute(input, "multiple")) {
-				value = input.findElements(By.tagName("option")).findAll { it.isSelected() }.collect { getValue(it) }
+			Select select = new Select(input)
+			if (select.multiple) {
+				value = select.allSelectedOptions.collect { getValue(it)}
 			} else {
-				value = getValue(input.findElements(By.tagName("option")).find { it.isSelected() })
+				value = getValue(select.firstSelectedOption)
 			}
 		} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
 			if (input.isSelected()) {
@@ -462,23 +464,7 @@ class NonEmptyNavigator extends Navigator {
 
 	private void setInputValue(WebElement input, value) {
 		if (input.tagName == "select") {
-			if (getBooleanAttribute(input, "multiple")) {
-				def valueStrings = value*.toString()
-				input.findElements(By.tagName("option")).each { WebElement option ->
-					if (getValue(option) in valueStrings || option.text in valueStrings) {
-						option.setSelected()
-					} else if (option.isSelected()) {
-						// Can't use click() to deselect - http://code.google.com/p/selenium/issues/detail?id=1899
-						// Note that toggle() is deprecated though and will go at some point
-						option.toggle()
-					}
-				}
-			} else {
-				def valueString = value.toString()
-				input.findElements(By.tagName("option")).find {
-					getValue(it) == valueString || it.text == valueString
-				}?.setSelected()
-			}
+			setSelectValue(input, value)
 		} else if (input.getAttribute("type") == "checkbox") {
 			if (getValue(input) == value.toString() || value == true) {
 				if (!input.isSelected()) {
@@ -498,11 +484,52 @@ class NonEmptyNavigator extends Navigator {
 	}
 	
 	private getValue(WebElement input) {
+		if (input == null) {
+			return null
+		}
+		
 		def tag = input.tagName
 		if (tag == "textarea") {
 			input.text
 		} else {
 			input.getAttribute('value')
+		}
+	}
+	
+	private setSelectValue(WebElement element, value) {
+		Select select = new Select(element)
+		
+		if (value == null || (value instanceof Collection && value.empty)) {
+			select.deselectAll()
+			return
+		}
+		
+		def valueStrings
+		if (select.multiple) {
+			valueStrings = (value instanceof Collection ? new LinkedList(value) : [value])*.toString()
+		} else {
+			valueStrings = [value.toString()]
+		}
+		
+		select.options.each { WebElement option ->
+			def optionValue = getValue(option)
+			if (optionValue in valueStrings) {
+				valueStrings.remove(optionValue)
+				select.selectByValue(optionValue)
+			} else if (option.text in valueStrings) {
+				valueStrings.remove(option.text)
+				select.selectByVisibleText(option.text)
+			} else if (select.multiple && option.isSelected()) {
+				select.deselectByValue(optionValue)
+			}
+		}
+		
+		if (!valueStrings.empty) {
+			if (select.multiple) {
+				throw new IllegalArgumentException("couldn't select options with text or values: $valueStrings")
+			} else {
+				throw new IllegalArgumentException("couldn't select option with text or value: ${valueStrings[0]}")
+			}
 		}
 	}
 	
