@@ -61,7 +61,7 @@ configurations {
 }
 
 repositories {
-	mavenRepo urls: "https://nexus.codehaus.org/content/repositories/snapshots"
+	mavenRepo url: "https://nexus.codehaus.org/content/repositories/snapshots"
 }
 
 dependencies {

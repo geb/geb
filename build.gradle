@@ -1,18 +1,13 @@
-import org.gradle.plugin.pgp.signing.*
-
 buildscript {
 	repositories {
 		mavenCentral()
-		mavenRepo (name: "Geb's GitHub", urls: "http://cloud.github.com/downloads/geb") {
+		mavenRepo (name: "Geb's GitHub", url: "http://cloud.github.com/downloads/geb") {
 			pattern = "[organisation]/[module]-[revision].[ext]"
 		}
-		mavenRepo (name: "Alkemists's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
+		mavenRepo (name: "Alkemists's GitHub", url: "http://cloud.github.com/downloads/alkemist") {
 			pattern = "[organisation]/[module]-[revision].[ext]"
 		}
-		mavenRepo name: "Gradle", urls: "http://repo.gradle.org/gradle/plugins-snapshots/"
-	}
-	dependencies {
-		classpath "org.gradle.plugins:gradle-signing-plugin:0.0.1-SNAPSHOT"
+		mavenRepo name: "Gradle", url: "http://repo.gradle.org/gradle/plugins-snapshots/"
 	}
 }
 
@@ -39,8 +34,8 @@ allprojects { project ->
 	
 	repositories {
 		mavenCentral()
-		mavenRepo name: "spock-snapshots", urls: ["http://m2repo.spockframework.org/snapshots"]
-		mavenRepo name: "java.net", urls: ["http://download.java.net/maven/2"]
+		mavenRepo name: "spock-snapshots", url: "http://m2repo.spockframework.org/snapshots"
+		mavenRepo name: "java.net", url: "http://download.java.net/maven/2"
 	}
 	
 	groovyModules = [
@@ -190,11 +185,7 @@ subprojects {
 						project.deployer = repositories.mavenDeployer {
 							beforeDeployment { MavenDeployment deployment ->
 								if (signing.signatory) {
-									def signedPomArtifact = sign(deployment.pomArtifact).singleArtifact
-									// Have to alter the “type” of the artifact to match what is published
-									// See http://issues.gradle.org/browse/GRADLE-1589
-									signedPomArtifact.type = "pom." + signing.type.extension
-									deployment.addArtifact(signedPomArtifact)
+									signPom(deployment)
 								}
 							}
 							uniqueVersion = false

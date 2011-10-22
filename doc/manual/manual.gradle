@@ -1,9 +1,9 @@
 buildscript {
 	repositories {
-		mavenRepo (name: "Alkemist's GitHub", urls: "http://cloud.github.com/downloads/alkemist") {
+		mavenRepo (name: "Alkemist's GitHub", url: "http://cloud.github.com/downloads/alkemist") {
 			pattern = "[organisation]/[module]-[revision].[ext]"
 		}
-		mavenRepo name: "scala-tools", urls: "http://scala-tools.org/repo-releases"
+		mavenRepo name: "scala-tools", url: "http://scala-tools.org/repo-releases"
 		mavenCentral()
 	}
 	dependencies {
@@ -90,7 +90,7 @@ artifacts {
 }
 
 // Maven plugin only adds install to java projects
-task install(type: Upload, dependsOn: configurations.archives.buildArtifacts) {
+task install(type: Upload, dependsOn: configurations.archives.allArtifacts.buildDependencies) {
 	configuration = configurations.archives
 	description = "Does a maven install of the archives artifacts into the local .m2 cache."
 	repositories {

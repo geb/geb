@@ -13,7 +13,7 @@ class CloverPluginConvention {
 	}
 
 	CloverPluginConvention(Project project) {
-		classesBackupDir = "${project.sourceSets.main.classesDir}-bak"
+		classesBackupDir = "${project.sourceSets.main.output.classesDir}-bak"
 		licenseFile = "clover.license"
 	}
 }
@@ -46,12 +46,12 @@ test.doFirst {
 		}
 		
 		//move original classes
-		ant.move(file:sourceSets.main.classesDir, tofile:cloverConvention.classesBackupDir)
+		ant.move(file:sourceSets.main.output.classesDir, tofile:cloverConvention.classesBackupDir)
 
 		//compile instrumented classes
-		sourceSets.main.classesDir.mkdirs()
+		sourceSets.main.output.classesDir.mkdirs()
 		ant.groovyc(
-			destdir:sourceSets.main.classesDir,
+			destdir:sourceSets.main.output.classesDir,
 			fork: true,
 			verbose: true
 		) {
@@ -74,7 +74,7 @@ test.doFirst {
 		}
 
 		//copy resources
-		ant.copy(todir:sourceSets.main.classesDir) {
+		ant.copy(todir:sourceSets.main.output.classesDir) {
 			fileset(dir:cloverConvention.classesBackupDir, excludes:"**/*.class")
 		}
 	}
@@ -83,8 +83,8 @@ test.doFirst {
 test.doLast {
 	if (project.hasProperty("withClover") && new File(cloverConvention.classesBackupDir).exists()) {
 		// restore original classes
-		ant.delete(file: sourceSets.main.classesDir)
-		ant.move(file:cloverConvention.classesBackupDir, tofile:sourceSets.main.classesDir)
+		ant.delete(file: sourceSets.main.output.classesDir)
+		ant.move(file:cloverConvention.classesBackupDir, tofile:sourceSets.main.output.classesDir)
 
 		ant."clover-report" {
 			current(outfile:"${reportsDir}/clover/clover.xml")
