@@ -100,7 +100,7 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
 
 ## Waiting
 
-Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX or timers.
+Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX, timers or effects.
 
 The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/waiting/WaitingSupport.html) mixin. These methods take various parameters that determine how long to wait for the given closure to return a true object according to the Groovy Truth, and how long to wait in between invoking the closure again.
 
