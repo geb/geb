@@ -435,6 +435,8 @@ Which an also be used for non character keys…
     $("form").postcode() << Keys.BACK_SPACE
     assert $("form").postcode == "1234"
 
+> Note that WebDriver has some issues with textareas and surrounding whitespace. Namely, some drivers implicit trim whitespace from the beginning and end of the value. You can track this issue here: http://code.google.com/p/selenium/issues/detail?id=2131
+
 #### file upload
 
 It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the *absolute path* of a file on the system where the driver is running and on form submission that file will be uploaded.
