@@ -41,6 +41,7 @@ This page lists the high level changes between versions of Geb.
 * Compatibility with at least Selenium 2.9.0 (version 0.6.0 of Geb did not work with Selenium 2.5.0 and up)
 * Attempting to set a select to a value that it does not contain now throws an exception
 * The waiting algorithm is now time based instead of number of retries based, which is better for blocks that are not near instant
+* Better support for working with already instantiated pages
 
 #### Breaking Changes
 
