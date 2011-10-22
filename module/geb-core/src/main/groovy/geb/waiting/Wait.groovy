@@ -71,17 +71,32 @@ class Wait {
 		code
 	}
 	
+	Date calculateTimeoutFromNow() {
+		calculateTimeoutFrom(new Date())
+	}
+
+	Date calculateTimeoutFrom(Date start) {
+		def calendar = Calendar.instance
+		calendar.time = start
+		calendar.add(Calendar.MILLISECOND, Math.ceil(timeout * 1000) as int)
+		calendar.time
+	}
+
 	/**
 	 * Invokes the given {@code block} every {@code retryInterval} seconds until it returns
 	 * a true value according to the Groovy Truth. If {@code block} does not return a truish value
 	 * within {@code timeout} seconds then a {@link geb.waiting.WaitTimeoutException} will be thrown.
+	 * <p>
+	 * If the given block is executing at the time when the timeout is reached, it will not be interrupted. This means that
+	 * this method may take longer than the specified {@code timeout}. For example, if the {@code block} takes 5 seconds
+	 * to complete but the timeout is 2 seconds, the wait is always going to take at least 5 seconds.
 	 * <p>
 	 * If {@code block} throws any {@link Throwable}, it is treated as a failure and the {@code block} will be tried
 	 * again after the {@code retryInterval} has expired. If the last invocation of {@code block} throws an exception
 	 * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
 	 */
 	def waitFor(Closure block) {
-		def numTries = Math.ceil(timeout / retryInterval)
+		def stopAt = calculateTimeoutFromNow()
 		def pass
 		def thrown
 		
@@ -93,7 +108,8 @@ class Wait {
 		}
 		
 		def i = 0
-		while (!pass && i++ < numTries) {
+		def timedOut = new Date() > stopAt
+		while (!pass && !timedOut) {
 			sleepForRetryInterval()
 			try {
 				pass = block()
@@ -101,10 +117,12 @@ class Wait {
 			} catch (Throwable e) {
 				pass = false
 				thrown = e
+			} finally {
+				timedOut = new Date() > stopAt
 			}
 		}
 		
-		if (i >= numTries) {
+		if (timedOut) {
 			throw new WaitTimeoutException(this, thrown)
 		}
 		
