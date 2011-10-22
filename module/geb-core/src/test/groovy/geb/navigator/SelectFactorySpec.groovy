@@ -49,7 +49,7 @@ class SelectFactorySpec extends GebSpecWithServer {
 		factory = new SelectFactory()
 		
 		then:
-		select instanceof String
+		select instanceof Select
 	}
 	
 	def "will give nice error message when select is not available"() {
