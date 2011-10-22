@@ -55,3 +55,9 @@ The default behaviour of the HTMLUnit driver is to immediately refresh the page 
     }
 
 See [this mailing list thread](http://markmail.org/thread/bu3g56oxz2uqzq43 "[geb-user] Meta Refresh on a page causes infinite loop - Bob Brown - org.codehaus.geb.user - MarkMail") for details.
+
+#### Configuring logging
+
+HTMLUnit can be very noisy, and it's not clear how to make it not so noisy.
+
+See [this issue](http://jira.codehaus.org/browse/GEB-98) for some tips on how to tune its logging.
