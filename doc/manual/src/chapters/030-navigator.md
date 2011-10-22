@@ -236,7 +236,7 @@ This will return a new navigator object that represents only the `a` and `d` div
 
 ## Clicking
 
-Navigator objects implement the `click()` method, which will send a click event to the first matched item.
+Navigator objects implement the `click()` method, which will instruct the browser to click on each item the navigator has matched.
 
 There are also `click(Class)` and `click(List<Class>)` methods that are analogous to the browser object's [`page(Class)` and `page(List<Class>)` methods respectively][changing-pages]. This allow page changes to be specified at the same time as click actions.
     
