@@ -121,7 +121,7 @@ class EmptyNavigator extends Navigator {
 
 	String getAttribute(String name) { null }
 
-	Collection<String> classes() { EMPTY_SET }
+	List<String> classes() { EMPTY_LIST }
 
 	def value() { null }
 

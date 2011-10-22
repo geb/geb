@@ -270,7 +270,7 @@ To obtain any of the properties for all matched elements, you can use the Groovy
 
 ## Accessing tag name, attributes, text and classes
 
-The `tag()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content.
+The `tag()`, `text()`, `@attribute` and `classes()` methods return the requested content on the _first_ matched content. The `classes()` method returns a `java.util.List` of unique class names sorted alphabetically.
 
 Consider the following HTML…
 

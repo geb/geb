@@ -7,7 +7,6 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 import static java.util.Collections.EMPTY_LIST
-import static java.util.Collections.EMPTY_SET
 
 import geb.textmatching.TextMatcher
 
@@ -274,9 +273,8 @@ class NonEmptyNavigator extends Navigator {
 		firstElement().getAttribute(name)
 	}
 	
-	Collection<String> classes() {
-		def classNames = contextElements.head().getAttribute("class")?.tokenize()
-		classNames as Set ?: EMPTY_SET
+	List<String> classes() {
+		contextElements.head().getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
 	}
 
 	def value() {

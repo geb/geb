@@ -45,6 +45,7 @@ This page lists the high level changes between versions of Geb.
 #### Breaking Changes
 
 * Using `<select>` elements with Geb now requires an explicit dependency on an extra WebDriver jar (see [the section on installation for more info](intro.html#installation__usage))
+* The `Navigator` `classes()` method now returns a `List` (instead of `Set`) and guarantees that it will be sorted alphabetically
 
 ### 0.6
 

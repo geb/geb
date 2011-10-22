@@ -456,10 +456,10 @@ abstract class Navigator implements Iterable<Navigator> {
 	}
 
 	/**
-	 * Returns the class names present on all elements. The result is a unique set in no guaranteed order.
+	 * Returns the class names present on all elements. The result is a unique set and is in alphabetical order.
 	 * @return the class names present on all elements.
 	 */
-	abstract Collection<String> classes()
+	abstract List<String> classes()
 
 	/**
 	 * Returns the value of the first context element for input elements

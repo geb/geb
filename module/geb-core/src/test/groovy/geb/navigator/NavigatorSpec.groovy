@@ -664,10 +664,10 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		selector      | expected
-		"#article-1"  | ["article"] as Set
-		"#navigation" | ["col-3", "module"] as Set
-		"ol"          | [] as Set
-		"bdo"         | [] as Set
+		"#article-1"  | ["article"]
+		"#navigation" | ["col-3", "module"]
+		"ol"          | []
+		"bdo"         | []
 	}
 
 	@Unroll("the result of findClass('#className') on #selector should be #expectedResult")
