@@ -40,7 +40,7 @@ class GebTest extends GroovyTestCase {
 	}
 
 	void resetBrowser() {
-		if (_browser?.config.autoClearCookies) {
+		if (_browser?.config?.autoClearCookies) {
 			_browser.clearCookiesQuietly()
 		}
 		_browser = null
