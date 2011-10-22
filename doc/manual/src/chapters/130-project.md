@@ -76,6 +76,8 @@ This page lists the high level changes between versions of Geb.
 * The Grails specific testing subclasses have been REMOVED. Use the direct equivalent instead (e.g `geb.spock.GebReportingSpec` instead of `grails.plugin.geb.GebSpec`)
 * The Grails plugin no longer depends on the test integration modules, you need to depend on the one you want manually
 * The `getBaseUrl()` method from testing subclasses has been removed, use the configuration mechanism
+* Inputs with no value now report their value as an empty string instead of `null`
+* Select elements that are not multiple select enabled no longer report their value as a 1 element list, but now as the value of the selected element (if no selection, `null` is returned)
 
 ### 0.5.1
 
