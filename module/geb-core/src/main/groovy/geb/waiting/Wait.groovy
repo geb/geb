@@ -76,7 +76,7 @@ class Wait {
 	 * a true value according to the Groovy Truth. If {@code block} does not return a truish value
 	 * within {@code timeout} seconds then a {@link geb.waiting.WaitTimeoutException} will be thrown.
 	 * <p>
-	 * If {@code block} throws an exception, it is treated as a failure and the {@code block} will be tried
+	 * If {@code block} throws any {@link Throwable}, it is treated as a failure and the {@code block} will be tried
 	 * again after the {@code retryInterval} has expired. If the last invocation of {@code block} throws an exception
 	 * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
 	 */
