@@ -102,7 +102,7 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
 
 Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX, timers or effects.
 
-The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/waiting/WaitingSupport.html) mixin which delegates to the [`Wait` class](api/geb-core/geb/waiting/Wait.html) (see the documentation of the [`waitFor` method](api/geb-core/geb/waiting/Wait.html#waitFor(groovy.lang.Closure\)) of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the Groovy Truth, and how long to wait in between invoking the closure again.
+The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/waiting/WaitingSupport.html) mixin which delegates to the [`Wait` class](api/geb-core/geb/waiting/Wait.html) (see the documentation of the [`waitFor` method](api/geb-core/geb/waiting/Wait.html#waitFor(groovy.lang.Closure\)) of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth "Groovy - Groovy Truth"), and how long to wait in between invoking the closure again.
 
     waitFor {} // use default configuration
     waitFor(10) {} // wait for up to 10 seconds, using the default retry interval
@@ -146,6 +146,36 @@ Because the browser delegates method calls to the page object, the above could h
         waitFor { $("div#result").present }
         assert $("div#result").text() == "The Result"
     }
+
+Recall that the `return` keyword is optional in Groovy, so in the example above the `$("div#result").present` statement acts as the return value for the closure and is used as the basis on whether the closure _passed_ or not. This means that you must ensure that the last statement inside the closure returns a value that is `true` according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth) (if you're unfamiliar with the Groovy Truth **do** read that page).
+
+The closures given to the `waitFor` method(s) do not need to be single statement.
+
+    waitFor {
+        def a = 1
+        def b = 2
+        a == b
+    }
+
+That will work fine.
+
+If you wish to *test* multiple conditions as separate statement inside a `waitFor` closure, you can use the Java/Groovy `assert` keyword.
+
+    waitFor {
+        assert 1 == 1
+        2 == 2
+    }
+
+Notice that the last line does not have an `assert`. This is because we are relying on Geb checking the return value as a kind of implicit assertion.
+
+You'll notice when using `waitFor` that when something like `waitFor { 1 == 2 }` fails, the error message does not contain any information about the statement that failed. However, if you use an `assert` statement, e.g. `waitFor { assert 1 == 2 }` then you will get a better error message that explains exactly what failed. However, in Java/Groovy `assert` statements do not return a value. This means that `waitFor { assert 1 == 1 }` will fail because the closure will return `null`. Therefore, the best approach to follow to get informative error messages is to do:
+
+    waitFor {
+        assert 1 == 1
+        true
+    }
+
+This way, if the conditional fails the error message is meaningful but the block still passes. This is obviously not very convenient, and this will be addressed in a future version of Geb by using Groovy's compile time transform capability. If you are interested in tracking or helping solve this issue, you can follow the issue [GEB-123](http://jira.codehaus.org/browse/GEB-123).
 
 ## Alert and Confirm Dialogs
 
