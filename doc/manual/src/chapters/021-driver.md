@@ -36,3 +36,22 @@ A new driver can be forced at anytime by calling either of the following `static
     def cachedDriver = CachingDriverFactory.clearCacheAndQuitDriver()
 
 After calling either of this methods, the next request for a default driver will result in a new driver instance being created.
+
+## Driver Quirks
+
+This section details various quirks or issues that have been encountered with different driver implementations.
+
+### HTMLUnitDriver
+
+#### Dealing with pages that use HTML refreshes
+
+The default behaviour of the HTMLUnit driver is to immediately refresh the page as soon as it encounters a `<meta http-equiv="refresh" content="5">` regardless of the specified time. The solution is to use a refresh handler that handles the refresh asynchronously.
+
+    import com.gargoylesoftware.htmlunit.ThreadedRefreshHandler
+
+    Browser.drive {
+      driver.webClient.refreshHandler = new ThreadedRefreshHandler()
+      …
+    }
+
+See [this mailing list thread](http://markmail.org/thread/bu3g56oxz2uqzq43 "[geb-user] Meta Refresh on a page causes infinite loop - Bob Brown - org.codehaus.geb.user - MarkMail") for details.
