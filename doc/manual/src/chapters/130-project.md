@@ -41,6 +41,10 @@ This page lists the high level changes between versions of Geb.
 * Compatibility with Selenium 2.6.0 (version 0.6.0 of Geb did not work with Selenium 2.5.0 and up)
 * Attempting to set a select to a value that it does not contain now throws an exception
 
+#### Breaking Changes
+
+* Using `<select>` elements with Geb now requires an explicit dependency on an extra WebDriver jar (see [the section on installation for more info](intro.html#installation__usage))
+
 ### 0.6
 
 #### New Features

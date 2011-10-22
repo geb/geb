@@ -33,9 +33,10 @@ As Grails provides JUnit support out of the box, you only need to pull in the `g
 
 You only need the appropriate Geb test integration jar, as it will depend on `geb-core` and Grails' dependency management will take care of getting that for you.
 
-You will also of course need a driver, which you can also specify in `BuildConfig.groovy`.
+You will also of course need a driver and the `selenium-support` dependency, which you can also specify in `BuildConfig.groovy`.
 
     dependencies {
+        test "org.seleniumhq.selenium:selenium-support:«webdriver version»"
         test "org.seleniumhq.selenium:selenium-firefox-driver:«webdriver version»"
     }
 
@@ -85,6 +86,7 @@ Below is a valid Gradle `build.gradle` file for working with Geb for testing.
 
         // Need a driver implementation
         testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+        testRuntime "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
     }
 
     test {
@@ -137,6 +139,12 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
         <dependency>
           <groupId>org.seleniumhq.selenium</groupId>
           <artifactId>selenium-firefox-driver</artifactId>
+          <version>@selenium-version@</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-support</artifactId>
           <version>@selenium-version@</version>
           <scope>test</scope>
         </dependency>

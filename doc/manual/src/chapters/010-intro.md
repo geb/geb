@@ -203,13 +203,14 @@ For more information on using Geb for web and functional testing, see the [testi
 
 ## Installation & Usage
 
-Geb itself is a available as a single [`geb-core` jar from the central Maven repository](http://mvnrepository.com/artifact/org.codehaus.geb/geb-core). To get up and running you simply need this jar and a WebDriver driver implementation.
+Geb itself is a available as a single [`geb-core` jar from the central Maven repository](http://mvnrepository.com/artifact/org.codehaus.geb/geb-core). To get up and running you simply need this jar, a WebDriver driver implementation and the `selenium-support` jar.
 
 Via `@Grab`…
     
     @Grapes([
         @Grab("org.codehaus.geb:geb-core:@geb-version@"),
         @Grab("org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@")
+        @Grab("org.seleniumhq.selenium:selenium-support:@selenium-version@")
     ])
     import geb.Browser
 
@@ -225,12 +226,17 @@ Via Maven…
       <artifactId>selenium-firefox-driver</artifactId>
       <version>@selenium-version@</version>
     </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-support</artifactId>
+      <version>@selenium-version@</version>
+    </dependency>
     
 Via Gradle…
 
-    compile "org.codehaus.geb:geb-core:@geb-version@", "org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@"
+    compile "org.codehaus.geb:geb-core:@geb-version@", "org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@", "org.seleniumhq.selenium:selenium-support:@selenium-version@"
 
-Alternatively, if using an integration such as `geb-spock` or `geb-junit` you will need that dedicated jar.
+Alternatively, if using an integration such as `geb-spock` or `geb-junit` you can depend on that instead of `geb-core`.
 
 > Be sure to check the chapter on [build integrations](build-integrations.html) for information on using Geb with particular environments
 , like [Grails][grails].

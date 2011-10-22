@@ -6,7 +6,6 @@ import java.util.regex.Pattern
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
-import org.openqa.selenium.support.ui.Select
 import static java.util.Collections.EMPTY_LIST
 import static java.util.Collections.EMPTY_SET
 
@@ -440,7 +439,7 @@ class NonEmptyNavigator extends Navigator {
 	private getInputValue(WebElement input) {
 		def value = null
 		if (input.tagName == "select") {
-			Select select = new Select(input)
+			def select = new SelectFactory().createSelectFor(input)
 			if (select.multiple) {
 				value = select.allSelectedOptions.collect { getValue(it)}
 			} else {
@@ -497,7 +496,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 	
 	private setSelectValue(WebElement element, value) {
-		Select select = new Select(element)
+		def select = new SelectFactory().createSelectFor(element)
 		
 		if (value == null || (value instanceof Collection && value.empty)) {
 			select.deselectAll()
