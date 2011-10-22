@@ -783,7 +783,7 @@ class NavigatorSpec extends GebSpec {
 		def radios = driver.findElements(By.name("site"))
 
 		when:
-		radios.find { it.getAttribute('value') == expectedValue }.setSelected()
+		radios.find { it.getAttribute('value') == expectedValue }.click()
 
 		then:
 		$("form").site == expectedValue
@@ -888,10 +888,10 @@ class NavigatorSpec extends GebSpec {
 		$("form").site = value
 
 		then:
-		driver.findElements(By.name("site")).find { it.getAttribute('value') == value }.isSelected()
+		driver.findElements(By.name("site")).find { it.getAttribute('value') == value }.click()
 
 		cleanup:
-		driver.findElement(By.id("site-1")).setSelected()
+		driver.findElement(By.id("site-1")).click()
 
 		where:
 		value << ["google", "thisone"]
@@ -1018,7 +1018,7 @@ class NavigatorSpec extends GebSpec {
 		given: def navigator = $(selector)
 		when: navigator.value(newValue)
 		then: navigator.value() == newValue
-		cleanup: driver.findElement(By.id("site-1")).setSelected()
+		cleanup: driver.findElement(By.id("site-1")).click()
 
 		where:
 		selector           | newValue
