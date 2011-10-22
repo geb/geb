@@ -45,10 +45,10 @@ dependencies {
 }
 
 // The version of manual to put under the “current” label
-stableVersion = "0.6.0"
+stableVersion = "0.6.1"
 
 // The old versions of Geb we are including manuals for
-oldManualVersions = ["0.6.0.RC1"]
+oldManualVersions = ["0.6.0.RC1", "0.6.0"]
 
 def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
 configurations {
@@ -62,10 +62,14 @@ configurations {
 
 repositories {
 	mavenRepo url: "https://nexus.codehaus.org/content/repositories/snapshots"
+	mavenRepo url: "https://nexus.codehaus.org/content/repositories/releases"
 }
 
+evaluationDependsOn(":doc:manual")
+def manualProject = project(":doc:manual")
+
 dependencies {
-	snapshotManual project(":doc:manual")
+	snapshotManual manualProject.zip.outputs.files
 	currentManual manualDependency(stableVersion)
 	
 	oldManualVersions.each {
@@ -84,14 +88,26 @@ def findManualArtifacts = { configuration ->
 
 def findManualArtifact = { configuration ->
 	def artifacts = findManualArtifacts(configuration)
-	assert artifacts.size() == 1 : "$configuration should have one manual artifact"
+	def size = artifacts.size()
+	assert size == 1 : "$configuration should have one manual artifact, not $size"
 	artifacts.toList().first()
 }
 
-def explodeManual = { manualArtifact, label ->
+def explodeManual = { manualArtifactFile, label ->
 	copy {
-		from zipTree(manualArtifact.file)
+		from zipTree(manualArtifactFile)
 		into "build/manual/manual/$label"
+	}
+}
+
+gaeDownloadSdk.doLast {
+	copy {
+		def sdk = configurations.gaeSdk.singleFile
+		def dest = file("build/exploded-gae-sdk/$sdk.name" - ".zip")
+		from zipTree(sdk)
+		into dest
+		
+		System.setProperty("appengine.sdk.root", dest.canonicalPath)
 	}
 }
 
@@ -101,13 +117,13 @@ task cleanManuals(type: Delete) {
 
 task includeSnapshotManual(dependsOn: [configurations.snapshotManual, cleanManuals]) {
 	doLast {
-		explodeManual(findManualArtifact(configurations.snapshotManual), "snapshot")
+		explodeManual(configurations.snapshotManual.singleFile, "snapshot")
 	}
 }
 
 task includeCurrentManual(dependsOn: [configurations.currentManual, cleanManuals]) {
 	doLast {
-		explodeManual(findManualArtifact(configurations.currentManual), "current")
+		explodeManual(findManualArtifact(configurations.currentManual).file, "current")
 	}
 }
 
