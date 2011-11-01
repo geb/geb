@@ -65,11 +65,8 @@ repositories {
 	mavenRepo url: "https://nexus.codehaus.org/content/repositories/releases"
 }
 
-evaluationDependsOn(":doc:manual")
-def manualProject = project(":doc:manual")
-
 dependencies {
-	snapshotManual manualProject.zip.outputs.files
+	snapshotManual project(path: ":doc:manual", configuration: "archives")
 	currentManual manualDependency(stableVersion)
 	
 	oldManualVersions.each {
@@ -117,7 +114,7 @@ task cleanManuals(type: Delete) {
 
 task includeSnapshotManual(dependsOn: [configurations.snapshotManual, cleanManuals]) {
 	doLast {
-		explodeManual(configurations.snapshotManual.singleFile, "snapshot")
+		explodeManual(findManualArtifact(configurations.snapshotManual).file, "snapshot")
 	}
 }
 
