@@ -79,6 +79,30 @@ class ModulesSpec extends GebSpecWithServer {
 		!optional("e").p
 	}
 	
+    def 'a list of repeating modules can be retrieved'() {
+		when:
+		to ModulesSpecPage
+
+		then:
+		repeating.size() == 4
+		repeating.every { it.class == ModulesSpecDivModuleNoLocator }
+		repeating[0].p.text() == 'a'
+		repeating[1].p.text() == 'a'
+		repeating[2].p.text() == 'd'
+		repeating[3].p.text() == 'd'
+	}
+
+	def 'a list of repeating, parameterized modules can be retrieved'() {
+		when:
+		to ModulesSpecPage
+
+		then:
+		repeatingWithParam.size() == 4
+		repeatingWithParam.every { it.class == ModulesSpecDivModuleWithLocator }
+		repeatingWithParam[2].p.text() == 'd'
+		// (the others will lack the required content p, because they have
+		// div.{a,b,d} set as their base
+	}
 }
 
 class ModulesSpecPage extends Page {
@@ -106,6 +130,10 @@ class ModulesSpecPage extends Page {
 		instanceMethod { module InstanceMethodModule }
 		
 		optional(required: false) { module OptionalModule, $("div.$it") }
+
+		// A list of modules, with the base of each module being set to the nth given navigator
+		repeating { moduleList ModulesSpecDivModuleNoLocator, $('div') }
+		repeatingWithParam { moduleList ModulesSpecDivModuleWithLocator, $('div'), className: 'd' }
 	}
 }
 
