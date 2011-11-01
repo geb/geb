@@ -157,7 +157,7 @@ As previously stated, modules can be used to model page fragments that are reuse
 
 Modules work well for this.
 
-## Using module for repeating content on a page
+## Using modules for repeating content on a page
 
 Other than content that is repeated on different pages (like the shopping cart
 mentioned above), pages also have content that is repeated on the page itself.
