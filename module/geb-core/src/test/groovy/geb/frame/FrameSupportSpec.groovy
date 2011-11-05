@@ -4,9 +4,9 @@ import geb.test.util.GebSpecWithServer
 import geb.Page
 import geb.Module
 import spock.lang.Unroll
-import spock.lang.FailsWith
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchFrameException
+import groovy.xml.MarkupBuilder
 
 class FrameSupportSpec extends GebSpecWithServer {
 
@@ -14,27 +14,18 @@ class FrameSupportSpec extends GebSpecWithServer {
 
     def setupSpec() {
         server.get = { req, res ->
-            if (req.requestURI == MAIN_PAGE_URL) {
-                res.outputStream <<'''
-                <html>
-                    <body>
-                        <frame name="header" id="header-id" src="/header"></frame>
-                        <frame id="footer" src="/footer"></frame>
-                        <iframe id="inline" src="/inline"></iframe>
-                        <span>main</span>
-                    <body>
-                </html>
-                '''
-            } else {
-                def pageText = (~'/(.*)').matcher(req.requestURI)[0][1]
-                res.outputStream << """
-                <html>
-                <body>
-                    <span>$pageText</span>
-                </body>
-                </html>"""
+            def pageText = (~'/(.*)').matcher(req.requestURI)[0][1]
+            def writer = new OutputStreamWriter(res.outputStream)
+            new MarkupBuilder(writer).html {
+                body {
+                    if (req.requestURI == MAIN_PAGE_URL) {
+                        frame(name: 'header', id: 'header-id', src: '/header')
+                        frame(id: 'footer', src: '/footer')
+                        iframe(id: 'inline', src: '/inline')
+                    }
+                    span("$pageText")
+                }
             }
-
         }
     }
 
@@ -58,32 +49,34 @@ class FrameSupportSpec extends GebSpecWithServer {
         text << ['header', 'footer', 'inline']
     }
 
-    @FailsWith(NoSuchFrameException)
     @Unroll("expect waitFor to fail if called for a non existing frame '#frame'")
     def "expect waitFor to fail if called for a non existing frame"() {
-        expect:
+        when:
         withFrame(frame) {}
+
+        then:
+        thrown(NoSuchFrameException)
 
         where:
         frame << ['frame', 0]
     }
 
-    @FailsWith(NoSuchFrameException)
     def "expect waitFor to fail if called for a navigator that's not a frame"() {
         when:
         go MAIN_PAGE_URL
+        withFrame($('span')) {}
 
         then:
-        withFrame($('span')) {}
+        thrown(NoSuchFrameException)
     }
 
-    @FailsWith(NoSuchFrameException)
     def "expect waitFor to fail if called for an empty navigator"() {
         when:
         go MAIN_PAGE_URL
+        withFrame($('nonexistingelem')) {}
 
         then:
-        withFrame($('nonexistingelem')) {}
+        thrown(NoSuchFrameException)
     }
 
     @Unroll("expect the closure argument passed to withFrame to be executed for '#frame' as frame identifier")
