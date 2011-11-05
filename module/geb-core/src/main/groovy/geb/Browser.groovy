@@ -404,6 +404,37 @@ class Browser {
 	void close() {
 		driver.close()
 	}
+
+    /**
+     * Retrieves current window
+     *
+     * @see org.openqa.selenium.WebDriver#getWindowHandle()
+     */
+    String getCurrentWindow() {
+        driver.windowHandle
+    }
+
+    /**
+     * Retrieves all available windows
+     *
+     * @see org.openqa.selenium.WebDriver#getWindowHandles()
+     */
+    Set<String> getAvailableWindows() {
+        driver.windowHandles
+    }
+
+    /**
+     * Executes a closure within the context of a window specified by a name
+     *
+     * @param window window name to use as context
+     * @param block block to be executed in the window context
+     */
+    void withWindow(String window, Closure block) {
+        def original = currentWindow
+        driver.switchTo().window(window)
+        block.call()
+        driver.switchTo().window(original)
+    }
 	
 	/**
 	 * Creates a new instance of the given page type and initialises it.
@@ -574,5 +605,5 @@ class Browser {
 		script()
 		browser
 	}
-	
+
 }
