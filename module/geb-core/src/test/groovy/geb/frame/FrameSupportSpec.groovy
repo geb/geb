@@ -181,7 +181,7 @@ class FrameSupportSpec extends GebSpecWithServer {
         frame << ['header', 0]
     }
 
-    def "ensure pages and modules have withForm available"() {
+    def "ensure pages and modules have withFrame available"() {
         when:
         to FrameSupportSpecPage
 
