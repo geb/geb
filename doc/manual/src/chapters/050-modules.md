@@ -131,7 +131,7 @@ When working with a browser at a `ExamplePage` page…
 
 If the module declares a base, it is always calculated _relative_ to the base given by the including statement. If the including statement does not specify a base, the module's base is calculated relative to the including page's base.
 
-## Use Cases
+## Reusing modules across pages
 
 As previously stated, modules can be used to model page fragments that are reused across multiple pages. For example, many different types of pages in your application may show information about the user's shopping cart. You could handle this with modules…
 
@@ -157,44 +157,57 @@ As previously stated, modules can be used to model page fragments that are reuse
 
 Modules work well for this.
 
-Another not so obvious use case is using modules to deal with complex and/or repeating sections that are only present in one page, such as table rows. Consider the following HTML…
+## Using modules for repeating content on a page
+
+Other than content that is repeated on different pages (like the shopping cart
+mentioned above), pages also have content that is repeated on the page itself.
+On a checkout page, the contents of the shopping cart could be summarized with
+the product name, the quantity and price for each product contained. For this
+kind of page, a list of modules can be collected using the moduleList function.
+
+Consider the following HTML for our cart contents:
 
     <table>
         <tr>
-            <th>First Name</th><th>Last Name</th>
+            <th>Product</th><th>Quantity</th><th>Price</th>
         </tr>
         <tr>
-            <td>Bruce</td><td>Lee</td>
+            <td>The Book Of Geb</td><td>1</td><td>5.99</td>
         </tr>
         <tr>
-            <td>John</td><td>Wayne</td>
+            <td>Geb Single-User License</td><td>1</td><td>99.99</td>
         </tr>
     </table>
-    
-We can model this with the following…
 
-    import geb.*
-    
-    class PeoplePage extends Page {
-        static content = {
-            row { index ->
-                module PeopleTableRow, $("table tr", index + 1) // +1 to adjust for header row
-            }
-        }
-    }
-    
-    class PeopleTableRow extends Module {
+We can model one line of the table like this:
+
+    class CartRow extends Module {
         static content = {
             cell { $("td", it) }
-            firstName { cell(0).text() }
-            lastName { cell(1).text() }
+            productName { cell(0).text() }
+            quantity { cell(1).text().toInteger() }
+            price { cell(2).text().toDouble() }
         }
     }
-    
-We can now write code like…
 
-    assert row(0).firstName == "Bruce"
-    assert row(1).lastName == "Wayne"
+And define a list of CartRows in our Page:
+
+    class CheckoutPage extends Page {
+        static content = {
+            cartItems { moduleList CartRow, $("table tr").tail() } // tailing to skip the header row
+        }
+    }
+
+We can now access the cart items like this:
+
+    assert cartItems[0].productName == "The Book Of Geb"
+    assert cartItems[0].quantity == 1
+    assert cartItems[0].price == 5.99
+
+Because the return value of cartItems is a list of CartRow instances, we can
+also use any of the usual collection methods:
+
+    assert cartItems.every { it.price > 0.0 }
 
 ## The Content DSL
 
