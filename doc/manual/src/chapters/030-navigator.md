@@ -467,3 +467,21 @@ A Geb navigator object is built on top of a collection of WebDriver [WebElement]
 Geb does not currently offer any direct drag and drop support, but you can dig into WebDriver's drag and drop API by working with the underlying [WebElement][webelement-api] objects that underpin the Geb navigator objects. Future versions of Geb will offer a more convenient API wrapper.
 
 The WebDriver API for this revolves around the [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class. Unfortunately there is not a lot of documentation available on this class currently.
+
+In a pinch, a simple drag and drop operation can be executed as follows:
+
+    WebElement underlyingElement = $('#myElement').getElement(0)
+    
+    Action action = new Actions(content.browser.driver)
+        .clickAndHold(underlyingElement)
+        .moveByOffset(15,15)
+        .release()
+        .build()
+    
+    action.perform()
+    
+This will grab the element located by `#myElement`, drag it 15 pixels right and down, and then let go of it. Negative offsets can be used to move elements left and up.
+
+The actions are performed consecutively, when you use the perform() method of your new action object.
+
+There are a plethora of other operations which can be added to the Actions builder in the same way. See the Actions api link above for further information on what is available.
