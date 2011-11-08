@@ -314,7 +314,7 @@ See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/a
 
 ## Accessing input values
 
-The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` and when setting a multiple `select` the method expects an array or Collection of values.
+The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection of values.
 
 ## Form Control Shortcuts
 
@@ -402,7 +402,7 @@ You can also select a checkbox by explicitly setting its `value`. This is useful
 
 You can select dogs as your pet type, as follows:
 
-    $("checkbox", name: 'pet').value("dogs")
+    $("checkbox", name: "pet").value("dogs")
 
 #### radio
 
