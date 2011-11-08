@@ -15,19 +15,27 @@ class FrameSupport {
     }
 
     void withFrame(def frame, Closure block) {
-        if (frame == null) {
-            throw new NoSuchFrameException('')
-        }
         browser.driver.switchTo().frame(frame)
-        block.call()
-        browser.driver.switchTo().defaultContent()
+        try {
+            block.call()
+        } finally {
+            browser.driver.switchTo().defaultContent()
+        }
+    }
+
+    private withFrameForContent(content, Closure block) {
+        WebElement element = content.firstElement()
+        if (element == null) {
+            throw new NoSuchFrameException("No elements for given content: $content")
+        }
+        withFrame(element, block)
     }
 
     void withFrame(Navigator frame, Closure block) {
-        withFrame(frame.firstElement(), block)
+        withFrameForContent(frame, block)
     }
 
     void withFrame(SimplePageContent frame, Closure block) {
-        withFrame(frame.firstElement(), block)
+        withFrameForContent(frame, block)
     }
 }

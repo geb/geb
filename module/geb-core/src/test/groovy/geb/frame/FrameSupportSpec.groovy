@@ -49,8 +49,8 @@ class FrameSupportSpec extends GebSpecWithServer {
         text << ['header', 'footer', 'inline']
     }
 
-    @Unroll("expect waitFor to fail if called for a non existing frame '#frame'")
-    def "expect waitFor to fail if called for a non existing frame"() {
+    @Unroll("expect withFrame to fail if called for a non existing frame '#frame'")
+    def "expect withFrame to fail if called for a non existing frame"() {
         when:
         withFrame(frame) {}
 
@@ -61,16 +61,25 @@ class FrameSupportSpec extends GebSpecWithServer {
         frame << ['frame', 0]
     }
 
-    def "expect waitFor to fail if called for a navigator that's not a frame"() {
-        when:
+    @Unroll
+    def "expect withFrame to fail if called for a navigator that doesn't contain a frame"() {
+        given:
         go MAIN_PAGE_URL
-        withFrame($('span')) {}
+
+        when:
+        withFrame(navigatorFactory.call()) {}
 
         then:
-        thrown(NoSuchFrameException)
+        NoSuchFrameException e = thrown()
+        e.message.startsWith(message)
+
+        where:
+        message                          | navigatorFactory
+        ''                               | { $('span') }
+        'No elements for given content:' | { $('') }
     }
 
-    def "expect waitFor to fail if called for an empty navigator"() {
+    def "expect withFrame to fail if called for an empty navigator"() {
         when:
         go MAIN_PAGE_URL
         withFrame($('nonexistingelem')) {}
@@ -122,13 +131,13 @@ class FrameSupportSpec extends GebSpecWithServer {
         checkFrameTextMatches(frame, text)
 
         where:
-        frame       | text
-        'header'    | 'header'
-        'footer'    | 'footer'
-        'inline'    | 'inline'
-        0           | 'header'
-        1           | 'footer'
-        2           | 'inline'
+        frame    | text
+        'header' | 'header'
+        'footer' | 'footer'
+        'inline' | 'inline'
+        0        | 'header'
+        1        | 'footer'
+        2        | 'inline'
     }
 
     @Unroll("expect withFrame to work for navigator frame identifier with selector '#selector'")
@@ -140,19 +149,36 @@ class FrameSupportSpec extends GebSpecWithServer {
         checkFrameTextMatches($(selector), text)
 
         where:
-        selector        | text
-        '#header-id'    | 'header'
-        '#footer'       | 'footer'
-        '#inline'       | 'inline'
+        selector     | text
+        '#header-id' | 'header'
+        '#footer'    | 'footer'
+        '#inline'    | 'inline'
     }
 
+    private boolean isInMainFrameContext() {
+        $('span').text() == 'main'
+    }
+
+    @Unroll
     def "ensure original context is kept after a withFrame call"() {
-        when:
+        given:
         go MAIN_PAGE_URL
-        withFrame('header') {}
+
+        when:
+        withFrame(frame) {}
 
         then:
-        $('span').text() == 'main'
+        inMainFrameContext
+
+        when:
+        withFrame(frame) { throw new Exception() }
+
+        then:
+        thrown(Exception)
+        inMainFrameContext
+
+        where:
+        frame << ['header', 0]
     }
 
     def "ensure pages and modules have withForm available"() {
@@ -167,29 +193,28 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 class FrameSupportSpecPage extends Page {
     static url = FrameSupportSpec.MAIN_PAGE_URL
-	static content = {
+    static content = {
         footer { $('#footer') }
-		mod { module FrameSupportSpecModule }
-	}
+        mod { module FrameSupportSpecModule }
+    }
 
-	def callAllVariantsOfWithFrame() {
+    def callAllVariantsOfWithFrame() {
         def count = 0
         def block = { count++ }
-		withFrame(0, block)
+        withFrame(0, block)
         withFrame('header', block)
-        println(footer.getClass())
         withFrame(footer, block)
         count
-	}
+    }
 }
 
 class FrameSupportSpecModule extends Module {
-	def callAllVariantsOfWithFrame() {
+    def callAllVariantsOfWithFrame() {
         def count = 0
         def block = { count++ }
-		withFrame(0, block)
+        withFrame(0, block)
         withFrame('header', block)
         withFrame($('#footer'), block)
         count
-	}
+    }
 }
