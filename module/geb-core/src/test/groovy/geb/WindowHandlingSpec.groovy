@@ -11,7 +11,8 @@ class WindowHandlingSpec extends GebSpecWithServer {
 
     private final static String MAIN_PAGE_URL = '/main'
 
-    def cleanupSpec() {
+    def cleanup() {
+        resetBrowser()
         CachingDriverFactory.clearCacheAndQuitDriver()
     }
 
@@ -36,8 +37,12 @@ class WindowHandlingSpec extends GebSpecWithServer {
 
     private void allWindowsOpened() {
         go MAIN_PAGE_URL
-        $('a').each { it.click() }
+        $('a')*.click()
         assert availableWindows.size() == 3
+    }
+
+    private boolean isInContextOfMainWindow() {
+        $('title').text() == 'Window main'
     }
 
     @Unroll('check that tiltle is configured properly for page at #url')
@@ -64,14 +69,14 @@ class WindowHandlingSpec extends GebSpecWithServer {
     }
 
 
-    def "ensure withWindow closure parameter called"() {
+    def "ensure withWindow block closure parameter called for named windows"() {
         given:
         allWindowsOpened()
 
         when:
         def called = 0
         availableWindows.each {
-            withWindow(currentWindow) { called++ }
+            withWindow(it) { called++ }
         }
 
         then:
@@ -97,23 +102,127 @@ class WindowHandlingSpec extends GebSpecWithServer {
         checkWindowTitle(currentWindow, "Window main")
     }
 
+    @Unroll
     def "ensure original context is preserved after a call to withWindow"() {
         given:
         allWindowsOpened()
 
         when:
-        withWindow('window1') {}
+        withWindow(specification) {}
 
         then:
-        $('title').text() == 'Window main'
+        inContextOfMainWindow
+
+        when:
+        withWindow(specification) { throw new Exception() }
+
+        then:
+        thrown(Exception)
+        inContextOfMainWindow
+
+        where:
+        specification << ['window1', { $('title').text() == 'Window 1' }]
     }
 
-
+    @Unroll
     def "ensure exception is thrown for a non existing window passed to withWindow"() {
         when:
-        withWindow('nonexisting') {}
+        withWindow(specification) {}
 
         then:
         thrown(NoSuchWindowException)
+
+        where:
+        specification << ['nonexisting', { false }]
+    }
+
+    @Unroll
+    def "ensure withWindow block closure parameter called for all windows for which specification closure returns true"() {
+        given:
+        allWindowsOpened()
+
+        when:
+        def called = 0
+        withWindow(specification) { called++ }
+
+        then:
+        called == expecetedCalls
+
+        where:
+        expecetedCalls | specification
+        3              | { true }
+        1              | { $('title').text() == 'Window main' }
+        2              | { $('title').text() ==~ /Window [0-9]/ }
+    }
+
+    @Unroll("ensure block closure parameter called in the context of the window specified by the title: #title")
+    def "ensure block closure parameter called in the context of the window specified by the specification closure"() {
+        given:
+        allWindowsOpened()
+
+        when:
+        def titleAsExpected = false
+        withWindow({ $('title').text() == title }) {
+            titleAsExpected = ($('title').text() == title)
+        }
+
+        then:
+        titleAsExpected
+
+        where:
+        title << ['Window main', 'Window 1', 'Window 2']
+    }
+
+    @Unroll("ensure withNewWindow throws an exception when: '#message'")
+    def "ensure withNewWindow throws exception if there was none or more than one windows opened"() {
+        when:
+        withNewWindow(newWindowBlock) {}
+
+        then:
+        NoSuchWindowException e = thrown()
+        e.message.startsWith(message)
+
+        where:
+        message                                      | newWindowBlock
+        'No new window has been opened'              | {}
+        'There has been more than one window opened' | { allWindowsOpened() }
+    }
+
+    def "ensure original context is preserved after a call to withNewWindow"() {
+        given:
+        go MAIN_PAGE_URL
+
+        when:
+        withNewWindow({ $('a', 0).click() }) {}
+
+        then:
+        inContextOfMainWindow
+
+        when:
+        withNewWindow({ $('a', 1).click() }) { throw new Exception() }
+
+        then:
+        thrown(Exception)
+        inContextOfMainWindow
+    }
+
+    @Unroll
+    def "ensure withNewWindow block closure called in the context of the newly opened window"() {
+        given:
+        go MAIN_PAGE_URL
+
+        when:
+        def title
+        withNewWindow({ $('a', anchorIndex).click() }) {
+            title = $('title').text()
+        }
+
+        then:
+        title == expectedTitle
+
+        where:
+        expectedTitle | anchorIndex
+        'Window 1'    | 0
+        'Window 2'    | 1
     }
 }

@@ -23,6 +23,7 @@ import geb.error.UnexpectedPageException
 
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
+import org.openqa.selenium.NoSuchWindowException
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
@@ -423,17 +424,79 @@ class Browser {
         driver.windowHandles
     }
 
+    private switchToWindow(String window) {
+        driver.switchTo().window(window)
+    }
+
     /**
      * Executes a closure within the context of a window specified by a name
      *
-     * @param window window name to use as context
-     * @param block block to be executed in the window context
+     * @param window name of the window to use as context
+     * @param block closure to be executed in the window context
      */
     void withWindow(String window, Closure block) {
         def original = currentWindow
-        driver.switchTo().window(window)
-        block.call()
-        driver.switchTo().window(original)
+        switchToWindow(window)
+        try {
+            block.call()
+        } finally {
+            switchToWindow(original)
+        }
+    }
+
+    /**
+     * Executes a closure within the context of all windows for which the specification
+     * closure returns groovy truth.
+     *
+     * @param specification closure executed once in context of each window, if it returns groovy truth for a given
+     * window then also the block closure is executed in the context of that window
+     * @param block closure to be executed in the window context
+     */
+    void withWindow(Closure specification, Closure block) {
+        def anyMatching = false
+        def original = currentWindow
+        try {
+            availableWindows.each {
+                switchToWindow(it)
+                if (specification.call()) {
+                    block.call()
+                    anyMatching = true
+                }
+            }
+        } finally {
+            switchToWindow(original)
+        }
+        if (!anyMatching) {
+            throw new NoSuchWindowException()
+        }
+    }
+
+    /**
+     * Expects the first closure argument to open a new window and calls the second closure argument in the context
+     * of the newly opened window.
+     *
+     * @param windowOpeningBlock a closure that should open a new window
+     * @param block closure to be executed in the new window context
+     * @throws org.openqa.selenium.NoSuchWindowException if the window opening closure doesn't open one or opens more
+     * than one new window
+     */
+    void withNewWindow(Closure windowOpeningBlock, Closure block) {
+        def originalWindows = availableWindows
+        def originalWindow = currentWindow
+
+        windowOpeningBlock.call()
+        def newWindow = (availableWindows - originalWindows) as List
+
+        if (newWindow.size() != 1) {
+            def message = newWindow ? 'There has been more than one window opened' : 'No new window has been opened'
+            throw new NoSuchWindowException(message)
+        }
+        try {
+            switchToWindow(newWindow.first())
+            block.call()
+        } finally {
+            switchToWindow(originalWindow)
+        }
     }
 	
 	/**
