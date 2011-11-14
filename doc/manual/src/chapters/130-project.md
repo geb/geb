@@ -39,6 +39,10 @@ This page lists the high level changes between versions of Geb.
 
 * New `moduleList()` function for repeating content
 
+#### Breaking Changes
+
+The `Page.convertToPath()` function is now responsible for adding a prefix slash if required (i.e. it's not added implicitly in `Page.getPageUrl()`) [GEB-139].
+
 ### 0.6.1
 
 #### New Features
