@@ -28,7 +28,8 @@ class PageOrientedSpec extends GebSpecWithServer {
 			res.outputStream << """
 			<html>
 			<body>
-				<a href="/$other" id="$path">$other</div>
+				<a href="/$other" id="$path">$other</a>
+				<div id="uri">$req.requestURI</div>
 			</body>
 			</html>"""
 		}
@@ -162,7 +163,26 @@ class PageOrientedSpec extends GebSpecWithServer {
 		then:
 		val == 3
 	}
-	
+
+	@Issue("http://jira.codehaus.org/browse/GEB-139")
+	def "convertToPath should not introduce slashes were it should not"() {
+		when:'we go to the page by specifying the parameter manually'
+		to ConvertPage, theParam: "foo"
+		def manual = $('#uri').text()
+
+		and:'using the convertToPath method'
+		to ConvertPage, 'foo'
+		def converted = $('#uri').text()
+
+		then:'the results are the same'
+		converted == manual
+
+		and:'the raw page url does not contain the extra slash'
+		getPageUrl(convertToPath('foo')) == 'http://domain.tld/theview?theParam=foo'
+
+		and:'the default convertToPath still works'
+		getPageUrl(convertToPath(1, 2)) == 'http://domain.tld/theview/1/2'
+	}
 }
 
 class PageA extends Page {
@@ -192,6 +212,13 @@ class PageC extends Page {
 
 class PageD extends Page {
 	static at = { assert 1 == 2 }
+}
+
+class ConvertPage extends Page {
+	static url = 'http://domain.tld/theview'
+	String convertToPath(param) {
+		return "?theParam=$param"
+	}
 }
 
 class InstanceMethodPage extends Page {
