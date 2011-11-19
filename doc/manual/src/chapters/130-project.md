@@ -41,6 +41,7 @@ This page lists the high level changes between versions of Geb.
 #### New Features
 
 * New `moduleList()` function for repeating content
+* New `withFrame()` method for working with frames
 
 #### Breaking Changes
 
