@@ -37,6 +37,8 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### New Features
+
 * New `moduleList()` function for repeating content
 
 #### Breaking Changes
