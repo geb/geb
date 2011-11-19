@@ -174,7 +174,7 @@ class Page {
 	 */
 	String getPageUrl(String path) {
 		def pageUrl = getPageUrl()
-		path ? (pageUrl ? "$pageUrl/$path" : path) : pageUrl
+		path ? (pageUrl ? pageUrl + path : path) : pageUrl
 	}
 	
 	/**
@@ -185,7 +185,7 @@ class Page {
 	 * This implementation returns the string value of each argument, separated by "/"
 	 */
 	String convertToPath(Object[] args) {
-		args ? args*.toString().join('/') : ""
+		args ? '/' + args*.toString().join('/') : ""
 	}
 	
 	/**

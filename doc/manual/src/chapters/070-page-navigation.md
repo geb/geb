@@ -28,7 +28,7 @@ However, this is extensible. You can specify how a set of arguments is converted
 The [`Page`][page-api] implementation of this method looks like this…
 
     String convertToPath(Object[] args) {
-        args ? args*.toString().join('/') : ""
+        args ? '/' + args*.toString().join('/') : ""
     }
 
 You can either overwrite this catch all method control path conversion for all invocations, or provide an overloaded version for a specific type signature. Consider the following…
