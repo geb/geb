@@ -34,6 +34,8 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 
 This page lists the high level changes between versions of Geb.
 
+### @geb-version@
+
 ### 0.6.1
 
 #### New Features
