@@ -314,7 +314,7 @@ See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/a
 
 ## Accessing input values
 
-The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` and when setting a multiple `select` the method expects an array or Collection of values.
+The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection of values.
 
 ## Form Control Shortcuts
 
@@ -393,7 +393,16 @@ If the collection being assigned contains a value that does not match the value 
 
 #### checkbox
 
-Checkboxes are checked/unchecked by setting their value to `true` or `false`.
+Checkboxes are generally checked/unchecked by setting their value to `true` or `false`.
+
+You can also select a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.
+
+    <input type="checkbox" name="pet" value="dogs" />
+    <input type="checkbox" name="pet" value="cats" />
+
+You can select dogs as your pet type, as follows:
+
+    $("checkbox", name: "pet").value("dogs")
 
 #### radio
 
@@ -458,3 +467,21 @@ A Geb navigator object is built on top of a collection of WebDriver [WebElement]
 Geb does not currently offer any direct drag and drop support, but you can dig into WebDriver's drag and drop API by working with the underlying [WebElement][webelement-api] objects that underpin the Geb navigator objects. Future versions of Geb will offer a more convenient API wrapper.
 
 The WebDriver API for this revolves around the [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class. Unfortunately there is not a lot of documentation available on this class currently.
+
+In a pinch, a simple drag and drop operation can be executed as follows:
+
+    WebElement underlyingElement = $('#myElement').getElement(0)
+    
+    Action action = new Actions(content.browser.driver)
+        .clickAndHold(underlyingElement)
+        .moveByOffset(15,15)
+        .release()
+        .build()
+    
+    action.perform()
+    
+This will grab the element located by `#myElement`, drag it 15 pixels right and down, and then let go of it. Negative offsets can be used to move elements left and up.
+
+The actions are performed consecutively, when you use the perform() method of your new action object.
+
+There are a plethora of other operations which can be added to the Actions builder in the same way. See the Actions api link above for further information on what is available.
