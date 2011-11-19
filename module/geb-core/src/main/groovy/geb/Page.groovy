@@ -21,6 +21,7 @@ import org.openqa.selenium.WebDriver
 import geb.textmatching.TextMatchingSupport
 import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
+import geb.frame.FrameSupport
 
 /**
  * The Page type is the basis of the Page Object pattern in Geb.
@@ -68,6 +69,7 @@ class Page {
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport 
 	@Delegate private WaitingSupport _waitingSupport
+    @Delegate private FrameSupport frameSupport
 	
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
@@ -83,6 +85,7 @@ class Page {
 		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser, { return Navigator.on(browser) })
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport = new WaitingSupport(browser.config)
+        frameSupport = new FrameSupport(browser)
 		this
 	}
 	

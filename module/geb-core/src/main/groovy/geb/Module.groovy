@@ -21,6 +21,7 @@ import geb.navigator.AttributeAccessingMetaClass
 import geb.textmatching.TextMatchingSupport
 import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
+import geb.frame.FrameSupport
 
 class Module extends TemplateDerivedPageContent {
 
@@ -35,6 +36,7 @@ class Module extends TemplateDerivedPageContent {
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport
 	@Delegate private WaitingSupport _waitingSupport
+    @Delegate private FrameSupport frameSupport
 	
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() })
@@ -45,6 +47,7 @@ class Module extends TemplateDerivedPageContent {
 		super.init(template, navigator, *args)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport  = new WaitingSupport(browser.config)
+        frameSupport = new FrameSupport(browser)
 	}
 
 	JavascriptInterface getJs() {

@@ -427,3 +427,48 @@ The `onUnload()` method is called with next page object instance when the page i
             // do some stuff with the new page
         }
     }
+
+## Dealing with frames
+
+Frames might seem a thing of the past but if you're accessing or testing some legacy application with Geb you might still need to deal with them. Thankfully Geb makes working with them groovier thanks to the `withFrame()` method which is available on Browser, Page and Module. There are multiple flavours of the `withFrame()` method, but the for all of them the closure parameter is executed in the context of a frame specified by the first parameter:
+
+* `withFrame(String, Closure)` - String parameter contains the name or id of a frame element
+* `withFrame(int, Closure)` - int parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index “0”, the second at index “1” and the third at index “2”
+* `withFrame(Navigator, Closure)` - Navigator parameter should point to a frame element
+* `withFrame(SimplePageContent, Closure)` - SimplePageContent should contain a frame element
+
+Given the following html...
+
+    <html>
+        <body>
+            <frame name="header" src="frame.html"></frame>
+            <frame id="footer" src="frame.html"></frame>
+            <iframe id="inline" src="frame.html"></iframe>
+            <span>main</span>
+        <body>
+    </html>
+
+...and the code for frame.html...
+
+    <html>
+        <body>
+            <span>frame text</span>
+        </body>
+    </html>
+
+...then this code will pass...
+
+    static content = {
+        footerFrame { $('#footer') }
+    }
+
+    withFrame('header') { assert $('span') == 'frame text' }
+    withFrame('footer') { assert $('span') == 'frame text' }
+    withFrame(0) { assert $('span') == 'frame text' }
+    withFrame($('#footer')) { assert $('span') == 'frame text' }
+    withFrame(footerFrame) { assert $('span') == 'frame text' }
+
+    assert $('span') == 'main'
+    
+If a frame cannot be found for a given first argument of the `withFrame()` call then [`NoSuchFrameException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchFrameException.html) is thrown.
+
