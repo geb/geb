@@ -38,7 +38,7 @@ class Browser {
 	private final pageChangeListeners = new LinkedHashSet()
 	
 	private String reportGroup = null
-	
+
 	/**
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
 	 */
