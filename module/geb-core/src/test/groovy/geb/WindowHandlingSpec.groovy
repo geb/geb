@@ -45,7 +45,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 	}
 
 	private boolean isInContextOfMainWindow() {
-		$('title').text() == 'Window main'
+		title == windowTitle()
 	}
 
 	private String windowTitle(int[] indexes = []) {
@@ -64,6 +64,10 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		name
 	}
 
+	private void openWindow(int index) {
+		$("a", index - 1).click()
+	}
+	
 	@Unroll
 	def "withWindow changes focus to window with given name and returns closure return value"() {
 		when:
@@ -95,7 +99,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		inContextOfMainWindow
 
 		where:
-		specification << [windowName(1), { $('title').text() == windowTitle(1) }]
+		specification << [windowName(1), { title == windowTitle(1) }]
 	}
 
 	@Unroll
@@ -125,8 +129,8 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		where:
 		expecetedCalls | specification
 		3              | { true }
-		1              | { $('title').text() == windowTitle() }
-		2              | { $('title').text() in [windowTitle(1), windowTitle(2)] }
+		1              | { title == windowTitle() }
+		2              | { title in [windowTitle(1), windowTitle(2)] }
 	}
 
 	@Unroll("ensure withNewWindow throws an exception when: '#message'")
@@ -149,13 +153,13 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		go MAIN_PAGE_URL
 
 		when:
-		withNewWindow({ $('a', 0).click() }) {}
+		withNewWindow({ openWindow(1) }) {}
 
 		then:
 		inContextOfMainWindow
 
 		when:
-		withNewWindow({ $('a', 1).click() }) { throw new Exception() }
+		withNewWindow({ openWindow(2) }) { throw new Exception() }
 
 		then:
 		thrown(Exception)
@@ -168,11 +172,11 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		go MAIN_PAGE_URL
 
 		then:
-		withNewWindow({ $('a', anchorIndex).click() }) { title } == expectedTitle
+		withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
 
 		where:
-		expectedTitle  | anchorIndex
-		windowTitle(1) | 0
-		windowTitle(2) | 1
+		expectedTitle  | windowNum
+		windowTitle(1) | 1
+		windowTitle(2) | 2
 	}
 }
