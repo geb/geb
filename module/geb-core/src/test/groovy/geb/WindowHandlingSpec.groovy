@@ -202,5 +202,26 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		then:
 		true
 	}
+
+	def "withNewWindow methods can be nested"() {
+		given:
+		allWindowsOpened()
+		
+		when: // can't put this in an expect block, some spock bug
+		withWindow(windowName(1)) {
+			assert title == windowTitle(1)
+			withNewWindow({openWindow(2)}) {
+				assert title == windowTitle(1, 2)
+				withNewWindow({openWindow(1)}) {
+					assert title == windowTitle(1, 2, 1)
+				}
+				assert title == windowTitle(1, 2)
+			}
+			assert title == windowTitle(1)
+		}
+		
+		then:
+		true
+	}
 	
 }
