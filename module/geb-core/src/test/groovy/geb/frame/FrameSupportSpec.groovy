@@ -80,8 +80,8 @@ class FrameSupportSpec extends GebSpecWithServer {
 		e.message.startsWith(message)
 
 		where:
-		message							 | navigatorFactory
-		''								 | { $('span') }
+		message                          | navigatorFactory
+		''                               | { $('span') }
 		'No elements for given content:' | { $('') }
 	}
 
@@ -137,13 +137,13 @@ class FrameSupportSpec extends GebSpecWithServer {
 		checkFrameTextMatches(frame, text)
 
 		where:
-		frame	 | text
+		frame    | text
 		'header' | 'header'
 		'footer' | 'footer'
 		'inline' | 'inline'
-		0		 | 'header'
-		1		 | 'footer'
-		2		 | 'inline'
+		0        | 'header'
+		1        | 'footer'
+		2        | 'inline'
 	}
 
 	@Unroll("expect withFrame to work for navigator frame identifier with selector '#selector'")
@@ -155,10 +155,10 @@ class FrameSupportSpec extends GebSpecWithServer {
 		checkFrameTextMatches($(selector), text)
 
 		where:
-		selector	 | text
+		selector     | text
 		'#header-id' | 'header'
-		'#footer'	 | 'footer'
-		'#inline'	 | 'inline'
+		'#footer'    | 'footer'
+		'#inline'    | 'inline'
 	}
 
 	private boolean isInMainFrameContext() {
