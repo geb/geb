@@ -35,7 +35,6 @@ class GebSpec extends Specification {
 	@Rule _gebReportingSpecTestName = new TestName()
 	def _gebReportingPerTestCounter = 0
 	@Shared _gebReportingSpecTestCounter = 0
-	@Shared _getReportingSpecReporter = null
 	
 	Configuration createConf() {
 		def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
@@ -63,14 +62,18 @@ class GebSpec extends Specification {
 		}
 		_browser = null
 	}
-
-	void report(String label) {
-		def name = "${++_gebReportingSpecTestCounter}-${++_gebReportingPerTestCounter}-${_gebReportingSpecTestName.methodName}"
-		if (label) {
-			name += "-$label"
-		}
-		
-		browser.report(name)
+	
+	def setupSpec() {
+		reportGroup getClass()
+		cleanReportGroupDir()
+	}
+	
+	def setup() {
+		reportGroup getClass()
+	}
+	
+	void report(String label = "") {
+		browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter++, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
 	}
 	
 	def methodMissing(String name, args) {
@@ -90,8 +93,8 @@ class GebSpec extends Specification {
 	}
 	
 	def cleanup() {
-		if (!isSpecStepwise()) resetBrowser()
 		report("end")
+		if (!isSpecStepwise()) resetBrowser()
 	}
 	
 	def cleanupSpec() {

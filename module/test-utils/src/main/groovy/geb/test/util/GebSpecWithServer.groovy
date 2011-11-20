@@ -26,14 +26,12 @@ class GebSpecWithServer extends GebSpec {
 		server = new CallbackHttpServer()
 		server.start()
 	}
-	
-	Browser createBrowser() {
-		def browser = super.createBrowser()
+		
+	def setup() {
 		browser.baseUrl = server.baseUrl
-		browser
 	}
 	
 	def cleanupSpec() {
-		server.stop()
+		server?.stop()
 	}
 }
