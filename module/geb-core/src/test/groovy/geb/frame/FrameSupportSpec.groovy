@@ -16,16 +16,22 @@ class FrameSupportSpec extends GebSpecWithServer {
         server.get = { req, res ->
             def pageText = (~'/(.*)').matcher(req.requestURI)[0][1]
             def writer = new OutputStreamWriter(res.outputStream)
-            new MarkupBuilder(writer).html {
-                body {
-                    if (req.requestURI == MAIN_PAGE_URL) {
-                        frame(name: 'header', id: 'header-id', src: '/header')
-                        frame(id: 'footer', src: '/footer')
-                        iframe(id: 'inline', src: '/inline')
-                    }
-                    span("$pageText")
-                }
-            }
+			def markup = {
+				html {
+	                body {
+	                    if (req.requestURI == MAIN_PAGE_URL) {
+	                        frame(name: 'header', id: 'header-id', src: '/header')
+	                        frame(id: 'footer', src: '/footer')
+	                        iframe(id: 'inline', src: '/inline')
+	                    }
+	                    span("$pageText")
+	                }
+            	}
+			}
+			
+            markup.delegate = new MarkupBuilder(writer)
+			markup.resolveStrategy = Closure.DELEGATE_FIRST
+			markup()
         }
     }
 
