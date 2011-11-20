@@ -202,20 +202,20 @@ class Browser {
 	 * <p>
 	 * This method performs the following:
 	 * <ul>
-	 *   <li>For each given page type:
-	 *   <ul>
-	 *   <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
-	 *   <li>Test if the page represents the new instance by running its at checker
-	 *   <li>If the page's at checker is successful:
-	 *   <ul>
-	 *     <li>Inform any registered page change listeners
-	 *     <li>Set the browser's page property to the instance (if it is not already of this type)
-	 *     <li>Discard the rest of the potentials
-	 *   </ul>
-	 *   <li>If the page's at checker is not successful:
-	 *   <ul>
-	 *     <li>Try the next potential
-	 */	
+	 *	 <li>For each given page type:
+	 *	 <ul>
+	 *	 <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
+	 *	 <li>Test if the page represents the new instance by running its at checker
+	 *	 <li>If the page's at checker is successful:
+	 *	 <ul>
+	 *	   <li>Inform any registered page change listeners
+	 *	   <li>Set the browser's page property to the instance (if it is not already of this type)
+	 *	   <li>Discard the rest of the potentials
+	 *	 </ul>
+	 *	 <li>If the page's at checker is not successful:
+	 *	 <ul>
+	 *	   <li>Try the next potential
+	 */ 
 	void page(Class<? extends Page>[] potentialPageClasses) {
 		def potentialPageClassesClone = potentialPageClasses.toList()
 		def match = null
@@ -401,103 +401,103 @@ class Browser {
 	 * Closes the current driver window.
 	 * 
 	 * @see org.openqa.selenium.WebDriver#close()
-	 */	
+	 */ 
 	void close() {
 		driver.close()
 	}
 
-    /**
-     * Retrieves current window
-     *
-     * @see org.openqa.selenium.WebDriver#getWindowHandle()
-     */
-    String getCurrentWindow() {
-        driver.windowHandle
-    }
+	/**
+	 * Retrieves current window
+	 *
+	 * @see org.openqa.selenium.WebDriver#getWindowHandle()
+	 */
+	String getCurrentWindow() {
+		driver.windowHandle
+	}
 
-    /**
-     * Retrieves all available windows
-     *
-     * @see org.openqa.selenium.WebDriver#getWindowHandles()
-     */
-    Set<String> getAvailableWindows() {
-        driver.windowHandles
-    }
+	/**
+	 * Retrieves all available windows
+	 *
+	 * @see org.openqa.selenium.WebDriver#getWindowHandles()
+	 */
+	Set<String> getAvailableWindows() {
+		driver.windowHandles
+	}
 
-    private switchToWindow(String window) {
-        driver.switchTo().window(window)
-    }
+	private switchToWindow(String window) {
+		driver.switchTo().window(window)
+	}
 
-    /**
-     * Executes a closure within the context of a window specified by a name
-     *
-     * @param window name of the window to use as context
-     * @param block closure to be executed in the window context
-     */
-    void withWindow(String window, Closure block) {
-        def original = currentWindow
-        switchToWindow(window)
-        try {
-            block.call()
-        } finally {
-            switchToWindow(original)
-        }
-    }
+	/**
+	 * Executes a closure within the context of a window specified by a name
+	 *
+	 * @param window name of the window to use as context
+	 * @param block closure to be executed in the window context
+	 */
+	void withWindow(String window, Closure block) {
+		def original = currentWindow
+		switchToWindow(window)
+		try {
+			block.call()
+		} finally {
+			switchToWindow(original)
+		}
+	}
 
-    /**
-     * Executes a closure within the context of all windows for which the specification
-     * closure returns groovy truth.
-     *
-     * @param specification closure executed once in context of each window, if it returns groovy truth for a given
-     * window then also the block closure is executed in the context of that window
-     * @param block closure to be executed in the window context
-     */
-    void withWindow(Closure specification, Closure block) {
-        def anyMatching = false
-        def original = currentWindow
-        try {
-            availableWindows.each {
-                switchToWindow(it)
-                if (specification.call()) {
-                    block.call()
-                    anyMatching = true
-                }
-            }
-        } finally {
-            switchToWindow(original)
-        }
-        if (!anyMatching) {
-            throw new NoSuchWindowException()
-        }
-    }
+	/**
+	 * Executes a closure within the context of all windows for which the specification
+	 * closure returns groovy truth.
+	 *
+	 * @param specification closure executed once in context of each window, if it returns groovy truth for a given
+	 * window then also the block closure is executed in the context of that window
+	 * @param block closure to be executed in the window context
+	 */
+	void withWindow(Closure specification, Closure block) {
+		def anyMatching = false
+		def original = currentWindow
+		try {
+			availableWindows.each {
+				switchToWindow(it)
+				if (specification.call()) {
+					block.call()
+					anyMatching = true
+				}
+			}
+		} finally {
+			switchToWindow(original)
+		}
+		if (!anyMatching) {
+			throw new NoSuchWindowException()
+		}
+	}
 
-    /**
-     * Expects the first closure argument to open a new window and calls the second closure argument in the context
-     * of the newly opened window.
-     *
-     * @param windowOpeningBlock a closure that should open a new window
-     * @param block closure to be executed in the new window context
-     * @throws org.openqa.selenium.NoSuchWindowException if the window opening closure doesn't open one or opens more
-     * than one new window
-     */
-    void withNewWindow(Closure windowOpeningBlock, Closure block) {
-        def originalWindows = availableWindows
-        def originalWindow = currentWindow
+	/**
+	 * Expects the first closure argument to open a new window and calls the second closure argument in the context
+	 * of the newly opened window.
+	 *
+	 * @param windowOpeningBlock a closure that should open a new window
+	 * @param block closure to be executed in the new window context
+	 * @throws org.openqa.selenium.NoSuchWindowException if the window opening closure doesn't open one or opens more
+	 * than one new window
+	 */
+	void withNewWindow(Closure windowOpeningBlock, Closure block) {
+		def originalWindows = availableWindows
+		def originalWindow = currentWindow
 
-        windowOpeningBlock.call()
-        def newWindow = (availableWindows - originalWindows) as List
+		windowOpeningBlock.call()
+		def newWindow = (availableWindows - originalWindows) as List
 
-        if (newWindow.size() != 1) {
-            def message = newWindow ? 'There has been more than one window opened' : 'No new window has been opened'
-            throw new NoSuchWindowException(message)
-        }
-        try {
-            switchToWindow(newWindow.first())
-            block.call()
-        } finally {
-            switchToWindow(originalWindow)
-        }
-    }
+		if (newWindow.size() != 1) {
+			def message = newWindow ? 'There has been more than one window opened' : 'No new window has been opened'
+			throw new NoSuchWindowException(message)
+		}
+		try {
+			switchToWindow(newWindow.first())
+			block.call()
+		} finally {
+			switchToWindow(originalWindow)
+		}
+	}
 	
 	/**
 	 * Creates a new instance of the given page type and initialises it.
