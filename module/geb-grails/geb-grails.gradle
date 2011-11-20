@@ -5,6 +5,14 @@ buildscript {
 		mavenCentral()
 		mavenRepo name: "grails", url: 'http://repo.grails.org/grails/repo'
 	}
+	configurations {
+		classpath {
+			resolutionStrategy { 
+				cacheDynamicVersionsFor 24, 'hours'
+				cacheChangingModulesFor 24, 'hours'
+			}
+		}
+	}
 	dependencies {
 		classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
 	}

@@ -58,6 +58,12 @@ allprojects { project ->
 subprojects {
 	configurations {
 		meta
+		all {
+			resolutionStrategy { 
+				cacheDynamicVersionsFor 24, 'hours'
+				cacheChangingModulesFor 24, 'hours'
+			}
+		}
 	}
 
 	if (project.path in groovyModules) {
