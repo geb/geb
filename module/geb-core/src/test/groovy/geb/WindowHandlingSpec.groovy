@@ -12,7 +12,12 @@ class WindowHandlingSpec extends GebSpecWithServer {
     private final static String MAIN_PAGE_URL = '/main'
 
     def cleanup() {
+		/*
+		 * set the browser instance to null as we're going to quit the driver and otherwise parent's cleanup will
+		 * want to do some work on that closed driver which will fail
+		 */
         resetBrowser()
+		// make sure that dirver is recreated for the next test so that there is only one browser window opened
         CachingDriverFactory.clearCacheAndQuitDriver()
     }
 
