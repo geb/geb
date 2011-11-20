@@ -25,10 +25,15 @@ class GebSpecWithServer extends GebSpec {
 	def setupSpec() {
 		server = new CallbackHttpServer()
 		server.start()
-	}
-		
-	def setup() {
 		browser.baseUrl = server.baseUrl
+	}
+	
+	Browser createBrowser() {
+		def browser = super.createBrowser()
+		if (server) {
+			browser.baseUrl = server.baseUrl
+		}
+		browser
 	}
 	
 	def cleanupSpec() {
