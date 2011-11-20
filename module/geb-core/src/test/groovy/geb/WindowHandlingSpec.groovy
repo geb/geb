@@ -28,11 +28,10 @@ class WindowHandlingSpec extends GebSpecWithServer {
 				head {
 					title("Window $page")
 				}
-				if (req.requestURI == MAIN_PAGE_URL) {
-					body {
-						[1, 2].each {
-							a(target: "window$it", href: "/$it")
-						}
+				body {
+					[1, 2].each {
+						def label = "$page-$it"
+						a(target: "window-$label", href: "/$label")
 					}
 				}
 			}
@@ -49,61 +48,32 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		$('title').text() == 'Window main'
 	}
 
-	@Unroll('check that tiltle is configured properly for page at #url')
-	def "check that the page titles are configured properly"() {
+	private String windowTitle(int[] indexes = []) {
+		def name = "Window main"
+		if (indexes) {
+			name += "-" + indexes*.toString().join("-")
+		}
+		name
+	}
+
+	private String windowName(int[] indexes = []) {
+		def name = "window-main"
+		if (indexes) {
+			name += "-" + indexes*.toString().join("-")
+		}
+		name
+	}
+
+	@Unroll
+	def "withWindow changes focus to window with given name and returns closure return value"() {
 		when:
-		go url
+		allWindowsOpened()
 
 		then:
-		$('title').text() == "Window $title"
+		withWindow(windowName(index)) { title } == windowTitle(index)
 
 		where:
-		url           | title
-		MAIN_PAGE_URL | 'main'
-		'/1'          | '1'
-		'/2'          | '2'
-	}
-
-	def "check that there are links rendered for main page"() {
-		when:
-		go MAIN_PAGE_URL
-
-		then:
-		$('a').size() == 2
-	}
-
-
-	def "ensure withWindow block closure parameter called for named windows"() {
-		given:
-		allWindowsOpened()
-
-		when:
-		def called = 0
-		availableWindows.each {
-			withWindow(it) { called++ }
-		}
-
-		then:
-		called == 3
-	}
-
-	private void checkWindowTitle(String window, String title) {
-		withWindow(window) {
-			assert $('title').text() == title
-		}
-	}
-
-	def "ensure withWindow closure called in context of a named window"() {
-		given:
-		allWindowsOpened()
-
-		expect:
-		[1, 2].each { windowNumber ->
-			checkWindowTitle("window$windowNumber", "Window $windowNumber")
-		}
-
-		and:
-		checkWindowTitle(currentWindow, "Window main")
+		index << [1,2]
 	}
 
 	@Unroll
@@ -125,7 +95,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		inContextOfMainWindow
 
 		where:
-		specification << ['window1', { $('title').text() == 'Window 1' }]
+		specification << [windowName(1), { $('title').text() == windowTitle(1) }]
 	}
 
 	@Unroll
@@ -155,26 +125,8 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		where:
 		expecetedCalls | specification
 		3              | { true }
-		1              | { $('title').text() == 'Window main' }
-		2              | { $('title').text() ==~ /Window [0-9]/ }
-	}
-
-	@Unroll("ensure block closure parameter called in the context of the window specified by the title: #title")
-	def "ensure block closure parameter called in the context of the window specified by the specification closure"() {
-		given:
-		allWindowsOpened()
-
-		when:
-		def titleAsExpected = false
-		withWindow({ $('title').text() == title }) {
-			titleAsExpected = ($('title').text() == title)
-		}
-
-		then:
-		titleAsExpected
-
-		where:
-		title << ['Window main', 'Window 1', 'Window 2']
+		1              | { $('title').text() == windowTitle() }
+		2              | { $('title').text() in [windowTitle(1), windowTitle(2)] }
 	}
 
 	@Unroll("ensure withNewWindow throws an exception when: '#message'")
@@ -212,21 +164,15 @@ class WindowHandlingSpec extends GebSpecWithServer {
 
 	@Unroll
 	def "ensure withNewWindow block closure called in the context of the newly opened window"() {
-		given:
+		when:
 		go MAIN_PAGE_URL
 
-		when:
-		def title
-		withNewWindow({ $('a', anchorIndex).click() }) {
-			title = $('title').text()
-		}
-
 		then:
-		title == expectedTitle
+		withNewWindow({ $('a', anchorIndex).click() }) { title } == expectedTitle
 
 		where:
-		expectedTitle | anchorIndex
-		'Window 1'    | 0
-		'Window 2'    | 1
+		expectedTitle  | anchorIndex
+		windowTitle(1) | 0
+		windowTitle(2) | 1
 	}
 }

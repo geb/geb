@@ -433,8 +433,9 @@ class Browser {
 	 *
 	 * @param window name of the window to use as context
 	 * @param block closure to be executed in the window context
+	 * @return The return value of {@code block}
 	 */
-	void withWindow(String window, Closure block) {
+	def withWindow(String window, Closure block) {
 		def original = currentWindow
 		switchToWindow(window)
 		try {
@@ -451,8 +452,9 @@ class Browser {
 	 * @param specification closure executed once in context of each window, if it returns groovy truth for a given
 	 * window then also the block closure is executed in the context of that window
 	 * @param block closure to be executed in the window context
+	 * @return The return value of {@code block}
 	 */
-	void withWindow(Closure specification, Closure block) {
+	def withWindow(Closure specification, Closure block) {
 		def anyMatching = false
 		def original = currentWindow
 		try {
@@ -477,10 +479,11 @@ class Browser {
 	 *
 	 * @param windowOpeningBlock a closure that should open a new window
 	 * @param block closure to be executed in the new window context
+	 * @return The return value of {@code block}
 	 * @throws org.openqa.selenium.NoSuchWindowException if the window opening closure doesn't open one or opens more
 	 * than one new window
 	 */
-	void withNewWindow(Closure windowOpeningBlock, Closure block) {
+	def withNewWindow(Closure windowOpeningBlock, Closure block) {
 		def originalWindows = availableWindows
 		def originalWindow = currentWindow
 
