@@ -16,23 +16,20 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		 * want to do some work on that closed driver which will fail
 		 */
 		resetBrowser()
-		// make sure that dirver is recreated for the next test so that there is only one browser window opened
+		// make sure that driver is recreated for the next test so that there is only one browser window opened
 		CachingDriverFactory.clearCacheAndQuitDriver()
 	}
 
 	def setupSpec() {
-		server.get = { req, res ->
-			def writer = new OutputStreamWriter(res.outputStream)
-			def page = (~'/(.*)').matcher(req.requestURI)[0][1]
-			new MarkupBuilder(writer).html {
-				head {
-					title("Window $page")
-				}
-				body {
-					[1, 2].each {
-						def label = "$page-$it"
-						a(target: "window-$label", href: "/$label")
-					}
+		setupServerResponseHtml { request ->
+			def page = (~'/(.*)').matcher(request.requestURI)[0][1]
+			head {
+				title("Window $page")
+			}
+			body {
+				[1, 2].each {
+					def label = "$page-$it"
+					a(target: "window-$label", href: "/$label")
 				}
 			}
 		}

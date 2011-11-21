@@ -6,32 +6,22 @@ import geb.Module
 import spock.lang.Unroll
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchFrameException
-import groovy.xml.MarkupBuilder
 
 class FrameSupportSpec extends GebSpecWithServer {
 
 	final static String MAIN_PAGE_URL = '/main'
 
 	def setupSpec() {
-		server.get = { req, res ->
-			def pageText = (~'/(.*)').matcher(req.requestURI)[0][1]
-			def writer = new OutputStreamWriter(res.outputStream)
-			def markup = {
-				html {
-					body {
-						if (req.requestURI == MAIN_PAGE_URL) {
-							frame(name: 'header', id: 'header-id', src: '/header')
-							frame(id: 'footer', src: '/footer')
-							iframe(id: 'inline', src: '/inline')
-						}
-						span("$pageText")
-					}
+		setupServerResponseHtml { request ->
+			def pageText = (~'/(.*)').matcher(request.requestURI)[0][1]
+			body {
+				if (request.requestURI == MAIN_PAGE_URL) {
+					frame(name: 'header', id: 'header-id', src: '/header')
+					frame(id: 'footer', src: '/footer')
+					iframe(id: 'inline', src: '/inline')
 				}
+				span("$pageText")
 			}
-
-			markup.delegate = new MarkupBuilder(writer)
-			markup.resolveStrategy = Closure.DELEGATE_FIRST
-			markup()
 		}
 	}
 

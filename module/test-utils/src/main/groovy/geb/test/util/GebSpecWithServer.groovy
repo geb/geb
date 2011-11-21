@@ -17,6 +17,8 @@ package geb.test.util
 
 import geb.Browser
 import spock.lang.*
+import javax.servlet.http.HttpServletResponse
+import groovy.xml.MarkupBuilder
 
 class GebSpecWithServer extends GebSpec {
 
@@ -38,5 +40,20 @@ class GebSpecWithServer extends GebSpec {
 	
 	def cleanupSpec() {
 		server?.stop()
+	}
+
+	void setupServerResponseHtml(Closure htmlMarkup) {
+		server.get = { request, response ->
+			def writer = new OutputStreamWriter(response.outputStream)
+			def markup = {
+				html {
+					htmlMarkup.delegate = delegate
+					htmlMarkup(request)
+				}
+			}
+			markup.delegate = new MarkupBuilder(writer)
+			markup.resolveStrategy = Closure.DELEGATE_FIRST
+			markup()
+		}
 	}
 }
