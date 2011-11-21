@@ -14,7 +14,7 @@ class FrameSupport {
         this.browser = browser
     }
 
-    void withFrame(def frame, Closure block) {
+    def withFrame(def frame, Closure block) {
         browser.driver.switchTo().frame(frame)
         try {
             block.call()
@@ -23,7 +23,7 @@ class FrameSupport {
         }
     }
 
-    private withFrameForContent(content, Closure block) {
+    private def withFrameForContent(content, Closure block) {
         WebElement element = content.firstElement()
         if (element == null) {
             throw new NoSuchFrameException("No elements for given content: $content")
@@ -31,11 +31,11 @@ class FrameSupport {
         withFrame(element, block)
     }
 
-    void withFrame(Navigator frame, Closure block) {
+    def withFrame(Navigator frame, Closure block) {
         withFrameForContent(frame, block)
     }
 
-    void withFrame(SimplePageContent frame, Closure block) {
+    def withFrame(SimplePageContent frame, Closure block) {
         withFrameForContent(frame, block)
     }
 }

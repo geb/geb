@@ -112,19 +112,19 @@ class FrameSupportSpec extends GebSpecWithServer {
 		called
 	}
 
-	private void checkFrameTextMatches(frame, text) {
+	private String getFrameText(frame) {
 		withFrame(frame) {
-			assert $("span").text() == text
+			$("span").text()
 		}
 	}
 
-	@Unroll("expect withFrame to work correctly for frame identifier '#frame'")
-	def "expect withFrame to work for different frame identifiers"() {
+	@Unroll("withFrame changes focus to frame and returns closure return value for frame identifier '#frame'")
+	def "withFrame changes focus to frame with given identifier and returns closure return value"() {
 		when:
 		go MAIN_PAGE_URL
 
 		then:
-		checkFrameTextMatches(frame, text)
+		getFrameText(frame) == text
 
 		where:
 		frame    | text
@@ -136,13 +136,13 @@ class FrameSupportSpec extends GebSpecWithServer {
 		2        | 'inline'
 	}
 
-	@Unroll("expect withFrame to work for navigator frame identifier with selector '#selector'")
-	def "expect withFrame to work for navigator frame identifiers"() {
+	@Unroll("withFrame changes focus to frame and returns closure return value for selector '#selector'")
+	def "withFrame changes focus to frame with given selector and returns closure return value"() {
 		when:
 		go MAIN_PAGE_URL
 
 		then:
-		checkFrameTextMatches($(selector), text)
+		getFrameText($(selector)) == text
 
 		where:
 		selector     | text
@@ -183,6 +183,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 		then:
 		page.callAllVariantsOfWithFrame() == 3
+		page.returnValueOfWithFrameCallForPageContent == 'footer'
 		mod.callAllVariantsOfWithFrame() == 3
 	}
 }
@@ -201,6 +202,10 @@ class FrameSupportSpecPage extends Page {
 		withFrame('header', block)
 		withFrame(footer, block)
 		count
+	}
+
+	def getReturnValueOfWithFrameCallForPageContent() {
+		withFrame(footer) { $('span').text() }
 	}
 }
 
