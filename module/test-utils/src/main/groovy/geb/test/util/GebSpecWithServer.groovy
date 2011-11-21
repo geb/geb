@@ -45,15 +45,11 @@ class GebSpecWithServer extends GebSpec {
 	void setupServerResponseHtml(Closure htmlMarkup) {
 		server.get = { request, response ->
 			def writer = new OutputStreamWriter(response.outputStream)
-			def markup = {
-				html {
-					htmlMarkup.delegate = delegate
-					htmlMarkup(request)
-				}
+			new MarkupBuilder(writer).html {
+				htmlMarkup.delegate = delegate
+				htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
+				htmlMarkup(request)
 			}
-			markup.delegate = new MarkupBuilder(writer)
-			markup.resolveStrategy = Closure.DELEGATE_FIRST
-			markup()
 		}
 	}
 }
