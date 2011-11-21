@@ -8,34 +8,34 @@ import geb.content.SimplePageContent
 
 class FrameSupport {
 
-    Browser browser
+	Browser browser
 
-    FrameSupport(Browser browser) {
-        this.browser = browser
-    }
+	FrameSupport(Browser browser) {
+		this.browser = browser
+	}
 
-    def withFrame(def frame, Closure block) {
-        browser.driver.switchTo().frame(frame)
-        try {
-            block.call()
-        } finally {
-            browser.driver.switchTo().defaultContent()
-        }
-    }
+	def withFrame(def frame, Closure block) {
+		browser.driver.switchTo().frame(frame)
+		try {
+			block.call()
+		} finally {
+			browser.driver.switchTo().defaultContent()
+		}
+	}
 
-    private def withFrameForContent(content, Closure block) {
-        WebElement element = content.firstElement()
-        if (element == null) {
-            throw new NoSuchFrameException("No elements for given content: $content")
-        }
-        withFrame(element, block)
-    }
+	private def withFrameForContent(content, Closure block) {
+		WebElement element = content.firstElement()
+		if (element == null) {
+			throw new NoSuchFrameException("No elements for given content: $content")
+		}
+		withFrame(element, block)
+	}
 
-    def withFrame(Navigator frame, Closure block) {
-        withFrameForContent(frame, block)
-    }
+	def withFrame(Navigator frame, Closure block) {
+		withFrameForContent(frame, block)
+	}
 
-    def withFrame(SimplePageContent frame, Closure block) {
-        withFrameForContent(frame, block)
-    }
+	def withFrame(SimplePageContent frame, Closure block) {
+		withFrameForContent(frame, block)
+	}
 }
