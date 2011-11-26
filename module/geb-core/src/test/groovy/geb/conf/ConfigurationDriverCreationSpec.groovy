@@ -49,6 +49,10 @@ class ConfigurationDriverCreationSpec extends Specification {
 	}
 	
 	def conf(Object[] args) {
+		if (args.size() < 2) {
+			args = [args.size() == 0 ? null : args[0], p()]
+		}
+		
 		def conf = loadClass(Configuration).newInstance(*args)
 		conf.cacheDriver = false
 		conf
@@ -150,7 +154,7 @@ class ConfigurationDriverCreationSpec extends Specification {
 		def config = new ConfigObject()
 		config.cacheDriver = false
 		config.driver = { new HtmlUnitDriver() }
-		d = new Configuration(config).driver
+		d = new Configuration(config, p()).driver
 
 		then:
 		d instanceof HtmlUnitDriver

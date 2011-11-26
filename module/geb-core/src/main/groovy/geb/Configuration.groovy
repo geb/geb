@@ -44,7 +44,7 @@ class Configuration {
 		
 	Configuration(ConfigObject rawConfig = null, Properties properties = null, BuildAdapter buildAdapter = null, ClassLoader classLoader = null) {
 		this.classLoader = classLoader ?: new GroovyClassLoader()
-		this.properties = properties ?: System.properties
+		this.properties = properties == null ? System.properties : properties
 		this.buildAdapter = buildAdapter ?: new SystemPropertiesBuildAdapter()
 		this.rawConfig = rawConfig ?: new ConfigObject()
 	}
