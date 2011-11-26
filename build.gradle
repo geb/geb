@@ -96,10 +96,9 @@ subprojects {
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 		
-		if (project.hasProperty("driver")) {
-			test {
-				systemProperties['geb.driver'] = project.driver
-			}
+		driver = project.hasProperty("driver") ? project.driver : "htmlunit"
+		test {
+			systemProperties['geb.driver'] = project.driver
 		}
 		
 		task listCompile(dependsOn: configurations.compile) << {

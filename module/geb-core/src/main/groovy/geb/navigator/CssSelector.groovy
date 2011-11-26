@@ -8,6 +8,7 @@ import static geb.navigator.SelectorType.*
 class CssSelector {
 
 	private static final CssSelector DESCENDANT_SELECTOR = new CssSelector(SelectorType.DESCENDANT, " ")
+	private static final String CSS_SELECTOR_SPECIAL_CHARS_PATTERN = '[!"#$%&\'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|\\}~\\\\]'
 
 	final SelectorType type
 	final String value
@@ -44,6 +45,10 @@ class CssSelector {
 		return result
 	}
 
+	static String escape(String value) {
+		value.replaceAll("($CSS_SELECTOR_SPECIAL_CHARS_PATTERN)", '\\\\$1')
+	}
+	
 	static boolean matches(WebElement element, String selectorString) {
 		def selectors = compile(selectorString)
 		selectors.any { List<CssSelector> selectorGroup ->

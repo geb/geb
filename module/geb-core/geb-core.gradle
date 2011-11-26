@@ -12,3 +12,8 @@ modifyPom = { pom ->
 	pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
 }
 
+test {
+	if (driver == "htmlunit") {
+		exclude "**/ExoticAttributeValuesSpec.class"
+	}
+}

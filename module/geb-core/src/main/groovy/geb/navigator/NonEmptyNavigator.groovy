@@ -385,11 +385,11 @@ class NonEmptyNavigator extends Navigator {
 	private String optimizeSelector(String selector, Map<String, Object> predicates) {
 		def buffer = new StringBuilder(selector)
 		if (predicates.containsKey("id") && predicates["id"] in String) {
-			buffer << "#" << predicates.remove("id")
+			buffer << "#" << CssSelector.escape(predicates.remove("id"))
 		}
 		if (predicates.containsKey("class") && predicates["class"] in String) {
 			predicates.remove("class").split(/\s+/).each { className ->
-				buffer << "." << className
+				buffer << "." << CssSelector.escape(className)
 			}
 		}
 		if (buffer[0] == "*" && buffer.length() > 1) buffer.deleteCharAt(0)
