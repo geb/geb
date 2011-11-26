@@ -21,7 +21,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 	}
 
 	def setupSpec() {
-		setupServerResponseHtml { request ->
+		responseHtml { request ->
 			def page = (~'/(.*)').matcher(request.requestURI)[0][1]
 			head {
 				title("Window $page")

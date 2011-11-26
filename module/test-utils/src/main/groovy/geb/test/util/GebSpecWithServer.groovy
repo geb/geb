@@ -42,7 +42,7 @@ class GebSpecWithServer extends GebSpec {
 		server?.stop()
 	}
 
-	void setupServerResponseHtml(Closure htmlMarkup) {
+	void responseHtml(Closure htmlMarkup) {
 		server.get = { request, response ->
 			def writer = new OutputStreamWriter(response.outputStream)
 			new MarkupBuilder(writer).html {

@@ -12,7 +12,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 	final static String MAIN_PAGE_URL = '/main'
 
 	def setupSpec() {
-		setupServerResponseHtml { request ->
+		responseHtml { request ->
 			def pageText = (~'/(.*)').matcher(request.requestURI)[0][1]
 			body {
 				if (request.requestURI == MAIN_PAGE_URL) {
