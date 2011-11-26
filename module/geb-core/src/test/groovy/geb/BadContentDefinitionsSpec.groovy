@@ -54,6 +54,14 @@ class BadContentDefinitionsSpec extends GebSpecWithServer {
 		then:
 		thrown(InvalidPageContent)
 	}
+
+	def "unknownElementAliased"() {
+		when:
+		page BadContentDefinitionsSpecUnknownElementAliased
+		then:
+		InvalidPageContent e = thrown()
+		e.message == "Definition of page component template 'foo' of 'BadContentDefinitionsSpecUnknownElementAliased' aliases an unknown element 'bar'"
+	}
 	
 }
 
@@ -76,4 +84,8 @@ class BadContentDefinitionsSpecNonMapNonClosureFactory extends Page {
 
 class BadContentDefinitionsSpecThreeArgs extends Page {
 	static content = { foo(1, 1, 2)  }
+}
+
+class BadContentDefinitionsSpecUnknownElementAliased extends Page {
+	static content = { foo(aliases: 'bar') }
 }

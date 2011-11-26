@@ -183,6 +183,13 @@ class PageOrientedSpec extends GebSpecWithServer {
 		and:'the default convertToPath still works'
 		getPageUrl(convertToPath(1, 2)) == 'http://domain.tld/theview/1/2'
 	}
+
+	def "verify content aliasing works"() {
+		when:
+		to PageA
+		then:
+		linkTextAlias == 'b'
+	}
 }
 
 class PageA extends Page {
@@ -192,6 +199,7 @@ class PageA extends Page {
 		linkWithVariantTo(to: [PageD, PageC, PageB]) { link }
 		linkWithVariantToNoMatches(to: [PageD, PageC]) { link }
 		linkText { link.text().trim() }
+		linkTextAlias(aliases: 'linkText')
 		notPresentValueRequired { $("div#asdfasdf").text() }
 		notPresentRequired { $("div#nonexistant") }
 		notPresentNotRequired(required: false) { $("div#nonexistant") }

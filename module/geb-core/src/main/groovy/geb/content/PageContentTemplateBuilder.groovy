@@ -37,19 +37,27 @@ class PageContentTemplateBuilder {
 		if (args.size() == 0) {
 			throw new InvalidPageContent("Definition of page content template '$name' of '$container' contains no definition")
 		} else if (args.size() == 1) {
-			definition = args[0]
+			if ((args[0] instanceof Map)) {
+				params = args[0]
+			} else {
+				definition = args[0]
+			}
 		} else if (args.size() == 2) {
 			params = args[0]
 			definition = args[1]
 		}
 		
-		if (params != null) {
-			if (!(params instanceof Map)) {
+		if (params != null && !(params instanceof Map)) {
+				throwBadInvocationError(name, args)
+		}
+		if (definition != null) {
+			if (!(definition instanceof Closure)) {
 				throwBadInvocationError(name, args)
 			}
-		}
-		if (!(definition instanceof Closure)) {
-			throwBadInvocationError(name, args)
+		} else {
+			if (params?.aliases == null) {
+				throwBadInvocationError(name, args)
+			}
 		}
 		
 		def template = create(name, params, definition)
@@ -62,7 +70,15 @@ class PageContentTemplateBuilder {
 	}
 	
 	private create(name, params, definition) {
-		new PageContentTemplate(config, container, name, mergeWithDefaultParams(params), definition)
+		def aliasedName = params?.aliases
+		if (aliasedName) {
+			if (!templates[aliasedName]) {
+				throw new InvalidPageContent("Definition of page component template '$name' of '$container' aliases an unknown element '${params.aliases}'")
+			}
+			templates[aliasedName]
+		} else {
+			new PageContentTemplate(config, container, name, mergeWithDefaultParams(params), definition)
+		}
 	}
 
 	protected mergeWithDefaultParams(Map params) {

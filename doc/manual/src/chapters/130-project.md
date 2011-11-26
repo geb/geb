@@ -42,6 +42,9 @@ This page lists the high level changes between versions of Geb.
 
 * New `moduleList()` function for repeating content
 * New `withFrame()` method for working with frames
+* New `withWindow()` and `withNewWindow()` methods for working with multiple windows
+* Added `getCurrentWindow()` and `getAvailableWindows()` methods to browser that delegate to the underlying driver instance
+* Content aliasing is now possible using `aliases` parameter in content DSL
 
 #### Breaking Changes
 

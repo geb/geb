@@ -320,6 +320,24 @@ It is also possible to use `wait` when defining non element content, such as a s
 
 In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
 
+### Aliasing
+
+If you wish to have the same content definitions available under diferent names you can create a content definition that specifies `aliases` parameter:
+
+	class AliasingPage extends Page {
+		static content = {
+			someButton { $("button", text: "foo") }
+			someButtonByAnotherName(aliases: someButton)
+		}
+	}
+
+	Browser.drive {
+        to AliasingPage
+        assert someButton.text() == someButtonByAnotherName.text()
+    }
+
+Rember that the aliased content has to be defined before the aliasing content, otherwise you will get a [`InvalidPageContent`](api/geb-core/geb/error/InvalidPageContent.html) exception.
+
 ## “At” Verification
 
 Each page can define a way to check whether the underling browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
