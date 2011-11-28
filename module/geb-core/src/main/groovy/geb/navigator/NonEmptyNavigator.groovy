@@ -474,6 +474,8 @@ class NonEmptyNavigator extends Navigator {
 			if (getValue(input) == value.toString() || labelFor(input) == value.toString()) {
 				input.click()
 			}
+		} else if (input.getAttribute("type") == "file") {
+			input.sendKeys value as String
 		} else {
 			input.clear()
 			input.sendKeys value as String
