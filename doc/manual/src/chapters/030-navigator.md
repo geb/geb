@@ -425,7 +425,7 @@ We can select the radios with…
 
 #### text inputs and textareas
 
-In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` because the text.
+In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` becomes the text.
 
 It is also possible to append text by using the send keys shorthand…
 
