@@ -36,12 +36,19 @@ class SelectionContextSpec extends GebSpecWithServer {
           secondDiv.selectionContext.selector == "div#test-2"
     }
 
+    def "Verify non-matching selector has selection context selector"() {
+        when:
+            to SelectionPage
+        then:
+            nonMatchingElement.selectionContext.selector == "div#non-matching"
+    }
     
 }
 class SelectionPage extends Page {
     static content = {
         firstDiv { $("div#test-1") }
         secondDiv { $("div#test-2") }
+        nonMatchingElement(required: false) { $("div#non-matching")}
     }
 
 }
