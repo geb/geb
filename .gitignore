@@ -10,3 +10,5 @@ stacktrace.log
 .idea
 out
 *.ipr
+classes
+reports
