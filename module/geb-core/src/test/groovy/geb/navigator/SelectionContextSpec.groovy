@@ -14,7 +14,11 @@ class SelectionContextSpec extends GebSpecWithServer {
             html {
                 body {
                     [1, 2, 3].each { divId ->
-                        div(id: "test-$divId", class:"test")
+                        div(id: "test-$divId", class:"test") {
+                            if(divId == 1) {
+                                p(id: "testParagraph")
+                            }
+                        }
                     }
                 }
             }
@@ -43,12 +47,21 @@ class SelectionContextSpec extends GebSpecWithServer {
             nonMatchingElement.selectionContext.selector == "div#non-matching"
     }
     
+    def "Verify that we get child's selector string from subordinate"() {
+        when:
+            to SelectionPage
+        then:
+            firstDivParagraph.selectionContext.selector == "p#testParagraph"
+
+    }
+    
 }
 class SelectionPage extends Page {
     static content = {
         firstDiv { $("div#test-1") }
         secondDiv { $("div#test-2") }
         nonMatchingElement(required: false) { $("div#non-matching")}
+        firstDivParagraph { firstDiv.find("p#testParagraph") }
     }
 
 }
