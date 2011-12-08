@@ -14,8 +14,9 @@
  */
 package geb.js
 
-import org.openqa.selenium.WebElement
 import geb.navigator.Navigator
+import geb.navigator.SelectionContext
+import org.openqa.selenium.WebElement
 
 class JQueryAdapter {
 
@@ -59,7 +60,7 @@ class JQueryAdapter {
 	def methodMissing(String name, args) {
 		def result = _callJQueryMethod(name, args)
 		if (result instanceof WebElement || result instanceof List) {
-			Navigator.on(navigator.browser, result)
+			Navigator.on(navigator.browser, new SelectionContext(), result)
 		} else {
 			result
 		}
