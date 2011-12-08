@@ -620,6 +620,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * for the other one, with most of the logic, simple.
 	 * </p>
 	 * @param browser the browser the content is attached to
+     * @param selectionContext the selectionContext relevant to this Navigator
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
@@ -631,6 +632,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Factory method to create a Navigator instance that is composed of other instances.
 	 * 
 	 * @param browser the browser the content is attached to
+     * @param selectionContext the selectionContext relevant to this Navigator
 	 * @param navigators the navigators to compose of
 	 * @return new Navigator instance
 	 */
@@ -650,6 +652,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * for the other one, with most of the logic, simple.
 	 * </p>
 	 * @param browser the browser the content is attached to
+     * @param selectionContext the selectionContext relevant to this Navigator
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
