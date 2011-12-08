@@ -17,8 +17,8 @@ class EmptyNavigator extends Navigator {
 		EmptyNavigator.metaClass = mc
 	}
 	
-	EmptyNavigator(Browser browser) {
-		super(browser)
+	EmptyNavigator(Browser browser, SelectionContext selectionContext) {
+		super(browser, selectionContext)
 	}
 
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
