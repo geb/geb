@@ -89,7 +89,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator getAt(EmptyRange range) {
-		new EmptyNavigator(browser)
+		new EmptyNavigator(browser, new SelectionContext())
 	}
 
 	Navigator getAt(Collection indexes) {
