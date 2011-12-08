@@ -21,7 +21,7 @@ class SelectionContextSpec extends GebSpecWithServer {
         }
     }
     
-    def "Can access the passed-in selector"() {
+    def "Verify we can get the CSS selector for the firstDiv element"() {
         when:
             to SelectionPage
         then:
@@ -29,10 +29,19 @@ class SelectionContextSpec extends GebSpecWithServer {
             
     }
     
+    def "Verify we can get the CSS selector for the secondDiv element"() {
+        when:
+          to SelectionPage
+        then:
+          secondDiv.selectionContext.selector == "div#test-2"
+    }
 
     
 }
 class SelectionPage extends Page {
-    static content = { firstDiv { $("div#test-1") } }
+    static content = {
+        firstDiv { $("div#test-1") }
+        secondDiv { $("div#test-2") }
+    }
 
 }

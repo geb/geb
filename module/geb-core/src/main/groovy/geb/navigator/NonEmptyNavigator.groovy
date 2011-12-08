@@ -38,7 +38,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator find(String selectorString) {
-        SelectionContext selectionContext = new SelectionContext()
+        SelectionContext selectionContext = new SelectionContext(selectorString)
         
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
