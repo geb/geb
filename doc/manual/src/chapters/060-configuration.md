@@ -8,11 +8,11 @@ There are three general mechanisms for influencing configuration; *system proper
 
 ### The Config Script
 
-Geb attempts to load a [ConfigSlurper][configslurper] script named `GebConfig.groovy` from the *default package* (in other words, in the root of a directory that is on the classpath). If it is not found, Geb will continue using all defaults.
+Geb attempts to load a [ConfigSlurper][configslurper] script named `GebConfig.groovy` from the *default package* (in other words, in the root of a directory that is on the classpath). If it is not found, Geb will try to load a [ConfigSlurper][configslurper] class named `GebConfig` from the *default package* - this is usefull if you run tests that use Geb from an IDE because you won't have to specify `GebConfig.groovy` as a resource, Geb will simply fall back to the compiled version of the script. If both script and class are not found Geb will continue using all defaults.
 
-First, the script is looked for with the **executing thread's context class loader** and if it is not found, then it is looked for with the class loader that loaded Geb. This covers 99% of scenarios out of the box perfectly well without any intervention. If however you do need to configure the context class loader to load the config script, you **must** make sure that it is either the same as the class loader that loaded Geb or a child of it. 
+First, the script is looked for with the **executing thread's context class loader** and if it is not found, then it is looked for with the class loader that loaded Geb. This covers 99% of scenarios out of the box perfectly well without any intervention. If however you do need to configure the context class loader to load the config script, you **must** make sure that it is either the same as the class loader that loaded Geb or a child of it. If the script is not found by both of those class loaders the procedure will be repeated but this time the class will be searched for - first using **executing thread's context class loader** and then using the class loader that loaded Geb.
 
-> In a Grails project, the `test/functional` directory is a good place for this. If you are using a build tool such as [Gradle](http://gradle.org/) or [Maven](http://maven.apache.org/) that has the concept of test “resources”, then that directory is a suitable place.
+> In a Grails project, the `test/functional` directory is a good place to put your config script in. If you are using a build tool such as [Gradle](http://gradle.org/) or [Maven](http://maven.apache.org/) that has the concept of test “resources”, then that directory is a suitable place. You can also put your script together with your compilation source and then the compiled version of the script will be used.
 
 #### Environment Sensitivity
 
