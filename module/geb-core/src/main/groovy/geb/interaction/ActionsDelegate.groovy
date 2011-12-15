@@ -23,7 +23,7 @@ class ActionsDelegate {
             try {
                 argument = arg.getElement(0)
             } catch (MissingMethodException ex) {
-
+                // Empty exception block where WebDriver element has already been extracted
             }
 
             return argument
