@@ -483,3 +483,4 @@ In the example above, the element will be clicked, dragged 400 pixels towards th
 For a list of available interactions, see the documentation for the WebDriver [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class.
 
 > Note that moving to arbritary locations with the mouse is currently not supported by the HTMLUnit driver, but moving directly to elements is.
+> Extracting the WebDriver element from your selector i.e. `$('#element').getElement(0)` is not necessary, as the interactions closure will always attempt do it for you.
