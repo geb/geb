@@ -468,7 +468,7 @@ Geb provides an interactions closure for performing 'human-like interaction' wit
 
     interact {
        clickAndHold($('#element'))
-       moveByOffset(15,15)
+       moveByOffset(15, 15)
        release()
     }
 
