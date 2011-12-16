@@ -46,6 +46,7 @@ This page lists the high level changes between versions of Geb.
 * New `withWindow()` and `withNewWindow()` methods for working with multiple windows
 * Added `getCurrentWindow()` and `getAvailableWindows()` methods to browser that delegate to the underlying driver instance
 * Content aliasing is now possible using `aliases` parameter in content DSL
+* If config script is not found a config class will be used if there is any - this is usefull if you run test using Geb from IDE
 
 #### Breaking Changes
 

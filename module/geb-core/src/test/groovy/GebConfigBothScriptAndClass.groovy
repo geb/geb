@@ -1,0 +1,1 @@
+testValue = 'from class'

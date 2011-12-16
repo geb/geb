@@ -66,5 +66,52 @@ class ConfigurationLoaderSpec extends Specification {
 		then:
 		thrown ConfigurationLoader.UnableToLoadException
 	}
-	
+
+	def "verify default config class name"() {
+		expect:
+		loader.defaultConfigClassName == 'GebConfig'
+	}
+
+	def "ensure various test configuration scripts and classes are available"() {
+		given:
+		def loader = new GroovyClassLoader()
+
+		expect:
+		loader.getResource('GebConfigBothScriptAndClass.groovy')
+		loader.loadClass('GebConfigBothScriptAndClass', false, true, true)
+		!loader.getResource('GebConfigClassOnly.groovy')
+		loader.loadClass('GebConfigClassOnly', false, true, true)
+	}
+
+	def "script config has precedence over class config if both available"() {
+		given:
+		def loader = new ConfigurationLoaderWithOverriddenConfigNames('GebConfigBothScriptAndClass')
+
+		expect:
+		loader.getConf().rawConfig.testValue == 'from script'
+	}
+
+	def "class config is used when there is no script config"() {
+		given:
+		def loader = new ConfigurationLoaderWithOverriddenConfigNames('GebConfigClassOnly')
+
+		expect:
+		loader.getConf().rawConfig.testValue == 'test value'
+	}
+}
+
+class ConfigurationLoaderWithOverriddenConfigNames extends ConfigurationLoader {
+	private final String name
+
+	ConfigurationLoaderWithOverriddenConfigNames(String name) {
+		this.name = name
+	}
+
+	String getDefaultConfigScriptResourcePath() {
+		"${name}.groovy"
+	}
+
+	String getDefaultConfigClassName() {
+		name
+	}
 }
