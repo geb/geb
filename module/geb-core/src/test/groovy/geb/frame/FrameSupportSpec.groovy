@@ -9,24 +9,30 @@ import org.openqa.selenium.NoSuchFrameException
 
 class FrameSupportSpec extends GebSpecWithServer {
 
-	final static String MAIN_PAGE_URL = '/main'
-
 	def setupSpec() {
-		responseHtml { request ->
+		responseHtml { request, response ->
 			def pageText = (~'/(.*)').matcher(request.requestURI)[0][1]
-			body {
-				if (request.requestURI == MAIN_PAGE_URL) {
+			if (pageText == "frames") {
+				response.outputStream << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Frameset//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\">"
+			}
+			head {
+				title pageText
+			}
+			if (pageText == "frames") {
+				frameset(rows: "25%,75%") {
 					frame(name: 'header', id: 'header-id', src: '/header')
 					frame(id: 'footer', src: '/footer')
-					iframe(id: 'inline', src: '/inline')
 				}
-				span("$pageText")
+			} else if (pageText == "iframe") { 
+				body { iframe(id: 'inline', src: '/inline') }
+			} else {
+				body { span("$pageText") }
 			}
 		}
 	}
 
 	def setup() {
-		go MAIN_PAGE_URL
+		go "frames"
 	}
 
 	def "verify the server is configured correctly for main page"() {
@@ -37,7 +43,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 	@Unroll("verify that server is configured correctly for frame page: #text")
 	def "verify that server is configured correctly for frame pages"() {
 		when:
-		go "/$text"
+		go "$text"
 
 		then:
 		$('span').text() == text
@@ -83,9 +89,12 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	@Unroll("expect the closure argument passed to withFrame to be executed for '#frame' as frame identifier")
 	def "expect the closure argument passed to withFrame to be executed"() {
+		given:
+		go pagePath
+		
 		when:
 		boolean called = false
-		withFrame(frame) {
+		withFrame(frameid) {
 			called = true
 		}
 
@@ -93,7 +102,10 @@ class FrameSupportSpec extends GebSpecWithServer {
 		called
 
 		where:
-		frame << ['header', 'inline', 0]
+		pagePath | frameid
+		"frames" | "header"
+		"iframe" | "inline"
+		"frames" | 0
 	}
 
 	def "expect the closure argument passed to withFrame to be executed for navigator as frame identifier"() {
@@ -115,33 +127,39 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	@Unroll("withFrame changes focus to frame and returns closure return value for frame identifier '#frame'")
 	def "withFrame changes focus to frame with given identifier and returns closure return value"() {
+		given:
+		go pagePath
+
 		expect:
 		getFrameText(frame) == text
 
 		where:
-		frame    | text
-		'header' | 'header'
-		'footer' | 'footer'
-		'inline' | 'inline'
-		0        | 'header'
-		1        | 'footer'
-		2        | 'inline'
+		pagePath |frame    | text
+		"frames" | 'header' | 'header'
+		"frames" | 'footer' | 'footer'
+		"iframe" | 'inline' | 'inline'
+		"frames" | 0        | 'header'
+		"frames" | 1        | 'footer'
+		"iframe" | 0        | 'inline'
 	}
 
 	@Unroll("withFrame changes focus to frame and returns closure return value for selector '#selector'")
 	def "withFrame changes focus to frame with given selector and returns closure return value"() {
+		given:
+		go pagePath
+		
 		expect:
 		getFrameText($(selector)) == text
 
 		where:
-		selector     | text
-		'#header-id' | 'header'
-		'#footer'    | 'footer'
-		'#inline'    | 'inline'
+		pagePath | selector     | text
+		"frames" | '#header-id' | 'header'
+		"frames" | '#footer'    | 'footer'
+		"iframe" | '#inline'    | 'inline'
 	}
 
-	private boolean isInMainFrameContext() {
-		$('span').text() == 'main'
+	private boolean isInFramesContext() {
+		title == 'frames'
 	}
 
 	@Unroll
@@ -150,18 +168,19 @@ class FrameSupportSpec extends GebSpecWithServer {
 		withFrame(frame) {}
 
 		then:
-		inMainFrameContext
+		inFramesContext
 
 		when:
 		withFrame(frame) { throw new Exception() }
 
 		then:
 		thrown(Exception)
-		inMainFrameContext
+		inFramesContext
 
 		where:
 		frame << ['header', 0]
 	}
+
 
 	def "ensure pages and modules have withFrame available"() {
 		when:
@@ -175,7 +194,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 }
 
 class FrameSupportSpecPage extends Page {
-	static url = FrameSupportSpec.MAIN_PAGE_URL
+	static url = "/frames"
 	static content = {
 		footer { $('#footer') }
 		mod { module FrameSupportSpecModule }
