@@ -466,21 +466,23 @@ A Geb navigator object is built on top of a collection of WebDriver [WebElement]
 
 Geb provides an interactions closure for performing 'human-like interaction' with the browser, by using the mouse or keyboard.
 
-    interact {
-       clickAndHold($('#element'))
-       moveByOffset(15, 15)
-       release()
-    }
+	interact {
+		clickAndHold($('#element'))
+		moveByOffset(15, 15)
+		release()
+	}
 
 of course, this drag-and-drop operation could also be peformed using one of the composite 'convenience' methods the Actions api supports:
 
-    interact {
-           dragAndDropBy($('#element'), 400, -150)
-    }
+	interact {
+		dragAndDropBy($('#element'), 400, -150)
+	}
 
 In the example above, the element will be clicked, dragged 400 pixels towards the right, and then 150 pixels upwards before being released. Using a negative offset will simply move an element along the relevant axis in the opposite direction.
 
 For a list of available interactions, see the documentation for the WebDriver [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class.
 
+> Extracting the WebDriver element from your selector i.e. `$('#element').getElement(0)` is not necessary, as the interactions closure will always attempt do it for you. You can simply use navigators and content definition references as parameters for the `Actions` class methods.
+
 > Note that moving to arbritary locations with the mouse is currently not supported by the HTMLUnit driver, but moving directly to elements is.
-> Extracting the WebDriver element from your selector i.e. `$('#element').getElement(0)` is not necessary, as the interactions closure will always attempt do it for you.
+
