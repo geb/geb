@@ -14,7 +14,7 @@ class FrameSupport {
 		this.browser = browser
 	}
 
-	def withFrame(def frame, Closure block) {
+	def withFrame(frame, Closure block) {
 		browser.driver.switchTo().frame(frame)
 		try {
 			block.call()
