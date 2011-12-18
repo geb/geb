@@ -25,11 +25,12 @@ class FrameSupportSpec extends GebSpecWithServer {
 		}
 	}
 
-	def "verify the server is configured correctly for main page"() {
-		when:
+	def setup() {
 		go MAIN_PAGE_URL
+	}
 
-		then:
+	def "verify the server is configured correctly for main page"() {
+		expect:
 		$('frame').size() == 2
 	}
 
@@ -54,14 +55,11 @@ class FrameSupportSpec extends GebSpecWithServer {
 		thrown(NoSuchFrameException)
 
 		where:
-		frame << ['frame', 0]
+		frame << ['frame', 'idontexist']
 	}
 
 	@Unroll
 	def "expect withFrame to fail if called for a navigator that doesn't contain a frame"() {
-		given:
-		go MAIN_PAGE_URL
-
 		when:
 		withFrame(navigatorFactory.call()) {}
 
@@ -77,7 +75,6 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	def "expect withFrame to fail if called for an empty navigator"() {
 		when:
-		go MAIN_PAGE_URL
 		withFrame($('nonexistingelem')) {}
 
 		then:
@@ -87,7 +84,6 @@ class FrameSupportSpec extends GebSpecWithServer {
 	@Unroll("expect the closure argument passed to withFrame to be executed for '#frame' as frame identifier")
 	def "expect the closure argument passed to withFrame to be executed"() {
 		when:
-		go MAIN_PAGE_URL
 		boolean called = false
 		withFrame(frame) {
 			called = true
@@ -102,7 +98,6 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	def "expect the closure argument passed to withFrame to be executed for navigator as frame identifier"() {
 		when:
-		go MAIN_PAGE_URL
 		boolean called = false
 		withFrame($('#footer')) {
 			called = true
@@ -120,10 +115,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	@Unroll("withFrame changes focus to frame and returns closure return value for frame identifier '#frame'")
 	def "withFrame changes focus to frame with given identifier and returns closure return value"() {
-		when:
-		go MAIN_PAGE_URL
-
-		then:
+		expect:
 		getFrameText(frame) == text
 
 		where:
@@ -138,10 +130,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	@Unroll("withFrame changes focus to frame and returns closure return value for selector '#selector'")
 	def "withFrame changes focus to frame with given selector and returns closure return value"() {
-		when:
-		go MAIN_PAGE_URL
-
-		then:
+		expect:
 		getFrameText($(selector)) == text
 
 		where:
@@ -157,9 +146,6 @@ class FrameSupportSpec extends GebSpecWithServer {
 
 	@Unroll
 	def "ensure original context is kept after a withFrame call"() {
-		given:
-		go MAIN_PAGE_URL
-
 		when:
 		withFrame(frame) {}
 
