@@ -30,7 +30,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 
 * [Alexander Zolotov](http://github.com/zolotov) - TestNG Integration
 * [Christoph Neuroth](http://c089.wordpress.com/) - Various fixes and patches
-* [Antony Jones](http://www.desirableobjects.co.uk/) - Doc fixes
+* [Antony Jones](http://www.desirableobjects.co.uk/) - Various fixes and patches, doc improvements
 
 ## History
 
@@ -40,7 +40,7 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
-* New `interact()` function for mouse and keyboard actions which delegates to the WebDriver Actions() class
+* New `interact()` function for mouse and keyboard actions which delegates to the WebDriver Actions class
 * New `moduleList()` function for repeating content
 * New `withFrame()` method for working with frames
 * New `withWindow()` and `withNewWindow()` methods for working with multiple windows
