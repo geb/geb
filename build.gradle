@@ -90,8 +90,6 @@ subprojects {
 				test.include "**/${t}*.class"
 			}
 		}
-		
-		test.ignoreFailures = true
 
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
