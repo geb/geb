@@ -5,35 +5,35 @@ import org.openqa.selenium.WebDriver
 
 class ActionsDelegate {
 
-    private Actions actions
+	private Actions actions
 
-    ActionsDelegate(WebDriver driver) {
-        actions = new Actions(driver)
-    }
+	ActionsDelegate(WebDriver driver) {
+		actions = new Actions(driver)
+	}
 
-    void methodMissing(String methodName, def args) {
-        extractWebDriverElement(args, methodName)
-    }
+	void methodMissing(String methodName, def args) {
+		extractWebDriverElement(args, methodName)
+	}
 
-    private extractWebDriverElement(args, String methodName) {
-        def arguments = args.collect { def arg ->
+	private extractWebDriverElement(args, String methodName) {
+		def arguments = args.collect { def arg ->
 
-            def argument = arg
+			def argument = arg
 
-            try {
-                argument = arg.getElement(0)
-            } catch (MissingMethodException ex) {
-                // Empty exception block where WebDriver element has already been extracted
-            }
+			try {
+				argument = arg.getElement(0)
+			} catch (MissingMethodException ex) {
+				// Empty exception block where WebDriver element has already been extracted
+			}
 
-            return argument
-        }
+			return argument
+		}
 
-        actions."${methodName}"(* arguments)
-    }
+		actions."${methodName}"(* arguments)
+	}
 
-    void perform() {
-        actions.build().perform()
-    }
+	void perform() {
+		actions.build().perform()
+	}
 
 }

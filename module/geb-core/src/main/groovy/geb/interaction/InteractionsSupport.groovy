@@ -4,18 +4,18 @@ import geb.Browser
 
 class InteractionsSupport {
 
-    Browser browser
+	Browser browser
 
-    InteractionsSupport(Browser browser) {
-        this.browser = browser
-    }
+	InteractionsSupport(Browser browser) {
+		this.browser = browser
+	}
 
-    void interact(Closure interactionClosure) {
-        ActionsDelegate actions = new ActionsDelegate(browser.driver)
-        interactionClosure.delegate = actions
-        interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
-        interactionClosure.call()
-        actions.perform()
-    }
+	void interact(Closure interactionClosure) {
+		ActionsDelegate actions = new ActionsDelegate(browser.driver)
+		interactionClosure.delegate = actions
+		interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
+		interactionClosure.call()
+		actions.perform()
+	}
 
 }
