@@ -110,7 +110,11 @@ class ConfigurationLoader {
 	 * @see #getConfFromClass(String)
 	 */
 	Configuration getConf(String configFileResourcePath) throws UnableToLoadException {
-		doGetConf(configFileResourcePath) ?: getDefaultConf()
+		if (configFileResourcePath == null) {
+			getConf()
+		} else {
+			doGetConf(configFileResourcePath) ?: getDefaultConf()
+		}
 	}
 
 	/**
