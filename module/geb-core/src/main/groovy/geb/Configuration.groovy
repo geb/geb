@@ -107,6 +107,25 @@ class Configuration {
 	void setCacheDriver(boolean flag) {
 		rawConfig.cacheDriver = flag
 	}
+
+	/**
+	 * The driver is to be cached, this setting controls whether or not the driver is cached per thread,
+	 * or per
+	 * <p>
+	 * The value is the config entry {@code cacheDriverPerThread}, which defaults to {@code true}.
+	 */
+	boolean isCacheDriverPerThread() {
+		readValue('cacheDriverPerThread', false)
+	}
+
+	/**
+	 * Updates the {@code cacheDriverPerThread} config entry.
+	 * 
+	 * @see #isCacheDriverPerThread()
+	 */
+	void setCacheDriverPerThread(boolean flag) {
+		rawConfig.cacheDriverPerThread = flag
+	}
 	
 	/**
 	 * Sets the driver configuration value.
@@ -250,7 +269,7 @@ class Configuration {
 	
 	protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
 		if (isCacheDriver()) {
-			new CachingDriverFactory(factory)
+			isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory) : CachingDriverFactory.global(factory)
 		} else {
 			factory
 		}

@@ -18,38 +18,83 @@ import org.openqa.selenium.WebDriver
 
 class CachingDriverFactory implements DriverFactory {
 
-	static private CACHE = new ThreadLocal()
-	
-	final DriverFactory innerFactory
-	
-	private quittingShutdownHook = { WebDriver driver ->
-		try { driver.quit() } catch (Throwable e) {}
+	private static interface Cache<T> {
+		T get(Closure factory)
+		T clear()
 	}
-	
-	CachingDriverFactory(DriverFactory innerFactory) {
+
+	static private class SimpleCache<T> implements Cache<T> {
+		private T cached
+		synchronized T get(Closure factory) {
+			if (cached == null) {
+				cached = factory()
+			}
+			cached
+		}
+		synchronized T clear() {
+			def prev = cached
+			cached = null
+			prev
+		}
+	}
+
+	static private class ThreadLocalCache<T> implements Cache<T> {
+		private ThreadLocal<T> threadLocal = new ThreadLocal()
+		synchronized T get(Closure factory) {
+			def cached = threadLocal.get()
+			if (cached == null) {
+				cached = factory()
+				threadLocal.set(cached)
+			}
+			cached
+		}
+		synchronized T clear() {
+			def prev = threadLocal.get()
+			threadLocal.set(null)
+			prev
+		}
+	}
+
+	static private CACHE = new SimpleCache<Cache<DriverFactory>>()
+
+	private final Cache<DriverFactory> cache
+	private final DriverFactory innerFactory
+
+	private CachingDriverFactory(Cache<DriverFactory> cache, DriverFactory innerFactory) {
+		this.cache = cache
 		this.innerFactory = innerFactory
 	}
-	
-	WebDriver getDriver() {
-		def driver = CACHE.get()
-		if (!driver) {
-			driver = innerFactory.driver
-			addShutdownHook(quittingShutdownHook.curry(driver))
-			CACHE.set(driver)
-		}
-		driver
+
+	static CachingDriverFactory global(DriverFactory innerFactory) {
+		new CachingDriverFactory(CACHE.get {  new SimpleCache() }, innerFactory)
 	}
-	
+
+	static CachingDriverFactory perThread(DriverFactory innerFactory) {
+		new CachingDriverFactory(CACHE.get { new ThreadLocalCache() }, innerFactory)
+	}
+
+	WebDriver getDriver() {
+		cache.get {
+			def driver = innerFactory.driver
+			//addShutdownHook {
+			//	try { driver.quit() } catch (Throwable e) {}
+			//}
+			driver
+		}
+	}
+
 	static WebDriver clearCache() {
-		def driver = CACHE.get()
-		CACHE.set(null)
-		driver
+		CACHE.get { null }?.clear()
 	}
 
 	static WebDriver clearCacheAndQuitDriver() {
 		def driver = clearCache()
 		driver?.quit()
 		driver
+	}
+	
+	static clearCacheCache() {
+		CACHE.clear()
 	}
 
 }
