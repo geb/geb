@@ -1,1 +1,0 @@
-testValue = 'from script'

@@ -18,11 +18,16 @@ package geb.conf
 import geb.*
 import spock.lang.*
 
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
+
 class ConfigurationLoaderSpec extends Specification {
 	
 	def env
 	def config
 	
+	@Rule TemporaryFolder tmp = new TemporaryFolder()
+
 	protected getLoader() {
 		new ConfigurationLoader(env)
 	}
@@ -76,6 +81,10 @@ class ConfigurationLoaderSpec extends Specification {
 		given:
 		def loader = new GroovyClassLoader()
 
+		and:
+		tmp.newFile("GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
+		loader.addURL(tmp.root.toURL())
+
 		expect:
 		loader.getResource('GebConfigBothScriptAndClass.groovy')
 		loader.loadClass('GebConfigBothScriptAndClass', false, true, true)
@@ -86,6 +95,10 @@ class ConfigurationLoaderSpec extends Specification {
 	def "script config has precedence over class config if both available"() {
 		given:
 		def loader = new ConfigurationLoaderWithOverriddenConfigNames('GebConfigBothScriptAndClass')
+
+		and:
+		tmp.newFile("GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
+		loader.specialClassLoader.addURL(tmp.root.toURL())
 
 		expect:
 		loader.getConf().rawConfig.testValue == 'from script'
