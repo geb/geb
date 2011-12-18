@@ -23,7 +23,7 @@ class FrameSupport {
 		}
 	}
 
-	private def withFrameForContent(content, Closure block) {
+	private withFrameForContent(content, Closure block) {
 		WebElement element = content.firstElement()
 		if (element == null) {
 			throw new NoSuchFrameException("No elements for given content: $content")
