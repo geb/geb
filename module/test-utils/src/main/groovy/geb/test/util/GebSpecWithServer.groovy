@@ -42,13 +42,20 @@ class GebSpecWithServer extends GebSpec {
 		server?.stop()
 	}
 
-	void responseHtml(Closure htmlMarkup) {
+	def responseHtml(Closure htmlMarkup) {
 		server.get = { request, response ->
-			def writer = new OutputStreamWriter(response.outputStream)
-			new MarkupBuilder(writer).html {
-				htmlMarkup.delegate = delegate
-				htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
-				htmlMarkup(request)
+			synchronized(this) { // MarkupBuilder has some static state, so protect
+				def writer = new OutputStreamWriter(response.outputStream)
+				new MarkupBuilder(writer).html {
+					htmlMarkup.delegate = delegate
+					htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
+					if (htmlMarkup.maximumNumberOfParameters < 2) {
+						htmlMarkup(request)
+					} else {
+						htmlMarkup(request, response)
+					}
+				}
+				writer.flush()
 			}
 		}
 	}
