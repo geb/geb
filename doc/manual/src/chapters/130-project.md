@@ -50,7 +50,8 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking Changes
 
-The `Page.convertToPath()` function is now responsible for adding a prefix slash if required (i.e. it's not added implicitly in `Page.getPageUrl()`) [GEB-139].
+* The `Page.convertToPath()` function is now responsible for adding a prefix slash if required (i.e. it's not added implicitly in `Page.getPageUrl()`) [GEB-139].
+* Unchecked checkboxes now report their value as `false` instead of null
 
 ### 0.6.1
 

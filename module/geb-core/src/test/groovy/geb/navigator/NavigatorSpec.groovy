@@ -750,7 +750,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		fieldName         | expectedValue
 		"keywords"        | "Enter keywords here"
-		"checker1"        | null
+		"checker1"        | false
 		"checker2"        | "123"
 		"textext"         | "The textarea content." // note whitespace has been removed
 		"plain_select"    | "4"
@@ -825,7 +825,7 @@ class NavigatorSpec extends GebSpec {
 		"keywords"        | "Lorem ipsum dolor sit amet"
 		"site"            | "thisone"
 		"checker1"        | "123"
-		"checker2"        | null
+		"checker2"        | false
 		"textext"         | "Lorem ipsum dolor sit amet"
 		"plain_select"    | "3"
 		"multiple_select" | ["1", "3", "5"]
@@ -858,7 +858,7 @@ class NavigatorSpec extends GebSpec {
 		def initialChecker2 = form.checker2
 		
 		expect:
-		form.checker1 == null
+		form.checker1 == false
 		form.checker2 == "123"
 		
 		when:
@@ -867,14 +867,14 @@ class NavigatorSpec extends GebSpec {
 		
 		then:
 		form.checker1 == "123"
-		form.checker2 == null
+		form.checker2 == false
 
 		when:
 		form.checker1 = false
 		form.checker2 = true
 		
 		then:
-		form.checker1 == null
+		form.checker1 == false
 		form.checker2 == "123"
 		
 		cleanup:
@@ -934,7 +934,7 @@ class NavigatorSpec extends GebSpec {
 		$("#the_plain_select option") | "1"
 		$("textarea")                 | "The textarea content." // note no leading/trailing whitespace
 		$("#keywords")                | "Enter keywords here"
-		$("#checker1")                | null
+		$("#checker1")                | false
 		$("#checker2")                | "123"
 		$("#keywords, textarea")      | "Enter keywords here"
 	}
@@ -964,7 +964,7 @@ class NavigatorSpec extends GebSpec {
 		$("#keywords")            | "bar"
 		$("textarea")             | "This is the new content of the textarea. Yeah!"
 		$("#checker1")            | "123"
-		$("#checker2")            | null
+		$("#checker2")            | false
 	}
 
 	@Unroll("select element can be changed to #newValue using option label #optionLabel")

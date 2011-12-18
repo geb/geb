@@ -436,6 +436,7 @@ class NonEmptyNavigator extends Navigator {
 
 	private getInputValue(WebElement input) {
 		def value = null
+		def type = input.getAttribute("type")
 		if (input.tagName == "select") {
 			def select = new SelectFactory().createSelectFor(input)
 			if (select.multiple) {
@@ -443,9 +444,13 @@ class NonEmptyNavigator extends Navigator {
 			} else {
 				value = getValue(select.firstSelectedOption)
 			}
-		} else if (input.getAttribute("type") in ["checkbox", "radio"]) {
+		} else if (type in ["checkbox", "radio"]) {
 			if (input.isSelected()) {
 				value = getValue(input)
+			} else {
+				if (type == "checkbox") {
+					value = false
+				}
 			}
 		} else {
 			value = getValue(input)
