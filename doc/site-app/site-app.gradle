@@ -45,10 +45,10 @@ dependencies {
 }
 
 // The version of manual to put under the “current” label
-stableVersion = "0.6.1"
+stableVersion = "0.6.2"
 
 // The old versions of Geb we are including manuals for
-oldManualVersions = ["0.6.0.RC1", "0.6.0"]
+oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1"]
 
 def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
 configurations {
@@ -61,8 +61,8 @@ configurations {
 }
 
 repositories {
-	mavenRepo url: "https://nexus.codehaus.org/content/repositories/snapshots"
-	mavenRepo url: "https://nexus.codehaus.org/content/repositories/releases"
+	maven { url "https://nexus.codehaus.org/content/repositories/snapshots" }
+	maven { url "https://nexus.codehaus.org/content/repositories/releases" }
 }
 
 dependencies {
