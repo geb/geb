@@ -47,6 +47,7 @@ This page lists the high level changes between versions of Geb.
 * Content aliasing is now possible using `aliases` parameter in content DSL
 * If config script is not found a config class will be used if there is any - this is usefull if you run test using Geb from IDE
 * Drivers are now cached across the whole JVM, which avoids the browser startup cost in some situations
+* Added config option to disable quitting of cached browsers on JVM shutdown
 
 #### Breaking Changes
 

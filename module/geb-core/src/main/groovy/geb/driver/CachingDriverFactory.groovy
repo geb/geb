@@ -59,26 +59,30 @@ class CachingDriverFactory implements DriverFactory {
 
 	private final Cache<DriverFactory> cache
 	private final DriverFactory innerFactory
+	private final boolean quitOnShutdown
 
-	private CachingDriverFactory(Cache<DriverFactory> cache, DriverFactory innerFactory) {
+	private CachingDriverFactory(Cache<DriverFactory> cache, DriverFactory innerFactory, boolean quitOnShutdown) {
 		this.cache = cache
 		this.innerFactory = innerFactory
+		this.quitOnShutdown = quitOnShutdown
 	}
 
-	static CachingDriverFactory global(DriverFactory innerFactory) {
-		new CachingDriverFactory(CACHE.get {  new SimpleCache() }, innerFactory)
+	static CachingDriverFactory global(DriverFactory innerFactory, boolean quitOnShutdown) {
+		new CachingDriverFactory(CACHE.get {  new SimpleCache() }, innerFactory, quitOnShutdown)
 	}
 
-	static CachingDriverFactory perThread(DriverFactory innerFactory) {
-		new CachingDriverFactory(CACHE.get { new ThreadLocalCache() }, innerFactory)
+	static CachingDriverFactory perThread(DriverFactory innerFactory, boolean quitOnShutdown) {
+		new CachingDriverFactory(CACHE.get { new ThreadLocalCache() }, innerFactory, quitOnShutdown)
 	}
 
 	WebDriver getDriver() {
 		cache.get {
 			def driver = innerFactory.driver
-			//addShutdownHook {
-			//	try { driver.quit() } catch (Throwable e) {}
-			//}
+			if (quitOnShutdown) {
+				addShutdownHook {
+					try { driver.quit() } catch (Throwable e) {}
+				}
+			}
 			driver
 		}
 	}

@@ -128,6 +128,22 @@ class Configuration {
 	}
 	
 	/**
+	 * If a cached driver is being used, should it be automatically quit when the JVM exits.
+	 * <p>
+	 * The value is the config entry {@code quitCachedDriverOnShutdown}, which defaults to {@code true}.
+	 */
+	boolean isQuitCachedDriverOnShutdown() {
+		readValue('quitCachedDriverOnShutdown', true)
+	}
+	
+	/**
+	 * Sets whether or not the cached driver should be quit when the JVM shuts down.
+	 */
+	void setQuitCacheDriverOnShutdown(boolean flag) {
+		rawConfig.quitCachedDriverOnShutdown = flag
+	}
+	
+	/**
 	 * Sets the driver configuration value.
 	 * <p>
 	 * This may be the class name of a driver implementation, a driver short name or a closure 
@@ -269,7 +285,7 @@ class Configuration {
 	
 	protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
 		if (isCacheDriver()) {
-			isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory) : CachingDriverFactory.global(factory)
+			isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
 		} else {
 			factory
 		}

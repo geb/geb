@@ -115,6 +115,8 @@ Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. 
 
 The default caching behavior is to cache the driver globally across the JVM. If you are using Geb in multiple threads this may not be what you want as neither Geb `Browser` objects nor WebDriver at the core is thread safe. To remedy this, you can instruct Geb to cache the driver instance per thread by setting the config option `cacheDriverPerThread` to true.
 
+Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits. You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
+
 ### Base URL
 
 The [base URL](browser.html#the_base_url) to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the `geb.build.baseUrl` system property). Any value set in the config script will take precedence over the value provided by the build adapter.
