@@ -425,7 +425,7 @@ We can select the radios with…
 
 #### text inputs and textareas
 
-In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` because the text.
+In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` becomes the text.
 
 It is also possible to append text by using the send keys shorthand…
 
@@ -464,24 +464,25 @@ A Geb navigator object is built on top of a collection of WebDriver [WebElement]
 
 ## Drag and Drop
 
-Geb does not currently offer any direct drag and drop support, but you can dig into WebDriver's drag and drop API by working with the underlying [WebElement][webelement-api] objects that underpin the Geb navigator objects. Future versions of Geb will offer a more convenient API wrapper.
+Geb provides an interactions closure for performing 'human-like interaction' with the browser, by using the mouse or keyboard.
 
-The WebDriver API for this revolves around the [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class. Unfortunately there is not a lot of documentation available on this class currently.
+	interact {
+		clickAndHold($('#element'))
+		moveByOffset(15, 15)
+		release()
+	}
 
-In a pinch, a simple drag and drop operation can be executed as follows:
+of course, this drag-and-drop operation could also be peformed using one of the composite 'convenience' methods the Actions api supports:
 
-    WebElement underlyingElement = $('#myElement').getElement(0)
-    
-    Action action = new Actions(content.browser.driver)
-        .clickAndHold(underlyingElement)
-        .moveByOffset(15,15)
-        .release()
-        .build()
-    
-    action.perform()
-    
-This will grab the element located by `#myElement`, drag it 15 pixels right and down, and then let go of it. Negative offsets can be used to move elements left and up.
+	interact {
+		dragAndDropBy($('#element'), 400, -150)
+	}
 
-The actions are performed consecutively, when you use the perform() method of your new action object.
+In the example above, the element will be clicked, dragged 400 pixels towards the right, and then 150 pixels upwards before being released. Using a negative offset will simply move an element along the relevant axis in the opposite direction.
 
-There are a plethora of other operations which can be added to the Actions builder in the same way. See the Actions api link above for further information on what is available.
+For a list of available interactions, see the documentation for the WebDriver [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class.
+
+> Extracting the WebDriver element from your selector i.e. `$('#element').getElement(0)` is not necessary, as the interactions closure will always attempt do it for you. You can simply use navigators and content definition references as parameters for the `Actions` class methods.
+
+> Note that moving to arbritary locations with the mouse is currently not supported by the HTMLUnit driver, but moving directly to elements is.
+
