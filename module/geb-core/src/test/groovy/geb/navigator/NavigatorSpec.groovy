@@ -1132,7 +1132,7 @@ class NavigatorSpec extends GebSpec {
 		$(".non-existant").displayed == false
 	}
 
-	def click() {
+	def "click is called only on the first element of the navigator"() {
 		given:
 		def element1 = Mock(WebElement)
 		def element2 = Mock(WebElement)
@@ -1142,7 +1142,7 @@ class NavigatorSpec extends GebSpec {
 
 		then:
 		1 * element1.click()
-		1 * element2.click()
+		0 * element2.click()
 		0 * _
 	}
 

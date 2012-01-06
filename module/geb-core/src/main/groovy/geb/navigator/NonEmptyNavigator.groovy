@@ -294,7 +294,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	void click() {
-		contextElements*.click()
+		contextElements.first().click()
 	}
 
 	void click(Class<? extends Page> pageClass) {

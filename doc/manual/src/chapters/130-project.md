@@ -42,6 +42,9 @@ This page lists the high level changes between versions of Geb.
 
 * Added support for indexes and ranges in `moduleList()` method 
 
+#### Breaking Changes
+* `click()` now instructs the browser to click **only on the first** element the navigator has matched
+
 ### 0.6.2
 
 #### New Features
