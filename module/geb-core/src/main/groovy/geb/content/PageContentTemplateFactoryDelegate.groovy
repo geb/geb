@@ -87,12 +87,16 @@ class PageContentTemplateFactoryDelegate {
 	 * Returns a list of module instances, where the nth instance will use the
 	 * nth navigator as its base.
 	 */
-	def moduleList(Map params, Class moduleClass, Navigator navigator) {
-		(0..<navigator.size()).collect { module params, moduleClass, navigator[it] }
+	def moduleList(Map params, Class moduleClass, Navigator navigator, index = null) {
+		if (index != null) {
+			def modules = index.collect { module params, moduleClass, navigator[it] }
+			modules.size() > 1 ? modules : modules.first()
+		} else {
+			(0..<navigator.size()).collect { module params, moduleClass, navigator[it] }
+		}
 	}
 
-	def moduleList(Class moduleClass, Navigator navigator) {
-		moduleList null, moduleClass, navigator
+	def moduleList(Class moduleClass, Navigator navigator, index = null) {
+		moduleList(null, moduleClass, navigator, index)
 	}
-
 }

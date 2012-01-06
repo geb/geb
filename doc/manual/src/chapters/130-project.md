@@ -40,6 +40,12 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
+* Added support for indexes and ranges in `moduleList()` method 
+
+### 0.6.2
+
+#### New Features
+
 * New `interact()` function for mouse and keyboard actions which delegates to the WebDriver Actions class
 * New `moduleList()` function for repeating content
 * New `withFrame()` method for working with frames

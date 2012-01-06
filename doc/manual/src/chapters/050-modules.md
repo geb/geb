@@ -173,6 +173,9 @@ Consider the following HTML for our cart contents:
         <tr>
             <td>Geb Single-User License</td><td>1</td><td>99.99</td>
         </tr>
+        <tr>
+            <td>Geb Multi-User License</td><td>1</td><td>199.99</td>
+        </tr>
     </table>
 
 We can model one line of the table like this:
@@ -194,16 +197,33 @@ And define a list of CartRows in our Page:
         }
     }
 
-We can now access the cart items like this:
-
-    assert cartItems[0].productName == "The Book Of Geb"
-    assert cartItems[0].quantity == 1
-    assert cartItems[0].price == 5.99
-
-Because the return value of cartItems is a list of CartRow instances, we can
-also use any of the usual collection methods:
+Because the return value of cartItems is a list of CartRow instances, we can use any of the usual collection methods:
 
     assert cartItems.every { it.price > 0.0 }
+
+We can also access the cart items like this:
+
+    assert cartItems[0].productName == "The Book Of Geb"
+
+Unfortunatelly this has a perfromance penalty of creating all modules in the list. You can get around it and add support for ranges by changing your content definition to:
+
+	class CheckoutPage extends Page {
+		static content = {
+			cartItems { index -> moduleList CartRow, $("table tr").tail(), index }
+		}
+	}
+
+Now the all of the following will pass and is more efficient:
+
+	assert cartItems.every { it.price > 0.0 }
+	assert cartItems(0).productName == "The Book Of Geb"
+	assert cartItems(1..2)*.productName == ["Geb Single-User License", "Geb Multi-User License"]
+
+Keep in mind that you can also pass module parameters the same way as you would with the `module()` method:
+
+	static content = {
+		myContent { index -> moduleList MyModule, $(".myModuleClass"), index, myParam: 'param value' }
+	}
 
 ## The Content DSL
 
