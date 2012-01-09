@@ -1,5 +1,5 @@
 ﻿body {
-	font: 12px "Lucida Grande", sans-serif;
+	font: 13px "Lucida Grande", sans-serif;
 	background-color: #EEEEEE;
 	color: #4C4C4C;
 }
@@ -33,7 +33,7 @@ a:hover {
 #header, #footer {
 	position: relative;
 	color: #888888;
-	font-size: 10px;
+	font-size: 80%;
 	height: 1em;
 	padding: 0.5em;
 	margin: 0;
@@ -68,7 +68,7 @@ span.center {
 	text-decoration: underline;
 }
 .toc ul {
-	font: 16px "Lucida Grande", sans-serif;
+	font: 1.2em "Lucida Grande", sans-serif;
 	padding: 0 0 0 1em;
 	list-style-type: none;
 	list-style-image: none;
@@ -76,8 +76,9 @@ span.center {
 	font-weight: bold;
 }
 .toc ul ul {
-	font-weight: normal;
-	font-size: 13px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 140%;
 }
 
 .toc_number:after {
@@ -117,7 +118,6 @@ span.center {
    background: #E2E2E2;
    border-bottom: 1px solid #919699;
    border-right: 1px solid #919699;
-   font-size: 12px;
    font-weight: bold;
    padding: 4px 8px 4px 8px;
    text-align: left;
@@ -125,13 +125,28 @@ span.center {
 .graybox td {
    border-bottom: 1px solid #919699;
    border-right: 1px solid #919699;
-   font-size: 12px;
    padding: 8px;
    vertical-align: top;
 }
 
 h1 {
-	font-size: 26px;
+	font-size: 2em;
+}
+
+h2 {
+    font-size: 1.7em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+h4 {
+    font-size: 1.3em;
+}
+
+h5 {
+    font-size: 1.1em;
 }
 
 h1.title {
@@ -153,28 +168,21 @@ p.tag {
 	color: #B3B3B3;
 }
 
-h2 {
-	margin-top: 2ex;
-}
-
 blockquote {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #F4F1E8;
 	padding: 0 1em;
 	background-color: #FFFAEE;
-	font-size: 11px;
 }
 
 blockquote p {
 		line-height: 140%;
 }
 
-pre code {
-	background-color: #FAFBFF;
-	border: 1px dashed #E8E9F7;
-	padding: 8px;
-	display: block;
+code, td.code code {
+	font-family: "monaco", "Verdana", monospace !important;
+	font-size: 90% !important;
 }
 
 div.syntaxhighlighter {
