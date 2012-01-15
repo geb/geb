@@ -21,16 +21,13 @@ import geb.error.UnresolvablePropertyException
 class NavigableSupportSpec extends GebSpecWithServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
-			res.outputStream << """
-			<html>
-			<body>
-				<p class="a">a</p>
-				<p class="b">b</p>
-				<p class="c">c</p>
-				<input type="text" name="e" value="val"/>
-			</body>
-			</html>"""
+		responseHtml {
+			body {
+				['a', 'b', 'c'].each {
+					p(it, 'class': it)
+				}
+				input(type: "text", name: "e", value: "val")
+			}
 		}
 	}
 	
@@ -134,6 +131,16 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		$($("p"), $("input")).size() == 4
 	}
 
+	def "composition with content"() {
+		when:
+		to(NavigableSupportSpecPage)
+
+		then:
+		$(input).size() == 1
+		$(input, pElem('a')).size() == 2
+		$(input, pElems).size() == 4
+	}
+
 	def "composition with web elements"() {
 		expect:
 		$($(".a").firstElement()).size() == 1
@@ -147,4 +154,12 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		$("p")*.@class == ['a', 'b', 'c']
 	}
 	
+}
+
+class NavigableSupportSpecPage extends Page {
+	static content = {
+		pElem { elemClass -> $('p', 'class': elemClass) }
+		pElems { $('p') }
+		input { $('input') }
+	}
 }

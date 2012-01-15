@@ -98,6 +98,10 @@ abstract class NavigableSupport implements Navigable {
 		Navigator.on(browser, *navigators)
 	}
 
+	Navigator $(SimplePageContent[] contents) {
+		$(contents*.find() as Navigator[])
+	}
+
 	Navigator $(WebElement[] elements) {
 		Navigator.on(browser, *elements)
 	}

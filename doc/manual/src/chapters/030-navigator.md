@@ -234,6 +234,18 @@ It is also to compose navigator objects from other navigator objects, for situat
 
 This will return a new navigator object that represents only the `a` and `d` divs.
 
+You can compose navigator objects from content. So given a page content definition:
+
+	static content = {
+		divElement { divClass -> $('p', 'class': divClass) }
+	}
+
+And a call:
+
+	$(divElement('a'), divElement('d'))
+
+You will get a navigator that contains the same elements as the one above.
+
 ## Clicking
 
 Navigator objects implement the `click()` method, which will instruct the browser to click **only the first item** the navigator has matched.
