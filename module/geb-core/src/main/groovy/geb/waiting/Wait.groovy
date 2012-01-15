@@ -43,6 +43,8 @@ class Wait {
 	 * How many seconds to wait before trying something again while waiting.
 	 */
 	final Double retryInterval
+
+	String customMessage
 	
 	
 	Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL) {

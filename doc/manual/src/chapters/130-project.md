@@ -42,10 +42,12 @@ This page lists the high level changes between versions of Geb.
 
 * Added support for indexes and ranges in `moduleList()` method 
 * Form control shortcuts now also work on page and module content
+* Custom timeout message for `waitFor` calls
 
 #### Breaking Changes
 * `click()` now instructs the browser to click **only on the first** element the navigator has matched
-* all `click()` method variants return the reciever
+* All `click()` method variants return the reciever
+
 
 ### 0.6.2
 

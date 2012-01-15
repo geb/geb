@@ -83,6 +83,15 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		waitFor(1, 10) { $("div").empty }
 	}
 
+	def "message argument is appended to the exception message"() {
+		when:
+		waitFor(1, message: 'Some custom message') { false }
+
+		then:
+		WaitTimeoutException e = thrown()
+		e.message =~ 'Some custom message'
+	}
+
 	def "larger interval than timeout throwing exception"() {
 		when:
 		js.showIn(4)

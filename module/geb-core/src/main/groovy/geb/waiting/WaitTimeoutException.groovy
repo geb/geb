@@ -32,6 +32,9 @@ class WaitTimeoutException extends GebException {
 	
 	private static toMessage(Wait wait, Throwable cause) {
 		def message = "condition did not pass in $wait.timeout seconds"
+		if (wait.customMessage) {
+			message +=" (${wait.customMessage})"
+		}
 		if (cause) {
 			message += " (failed with exception)"
 		}
