@@ -350,6 +350,33 @@ Which is literally a shortcut for…
 
 > In the above and below examples with form controls we are using code like `$("form").someInput` where we could be using just `someInput` as long as there is only one control with the *name* `someInput` on the page. In the examples we are using `$("form").someInput` to hopefully be clearer.
 
+If your content definition (either a page or a module) describes content which is an `input`, `select` or `textarea` you can access and set its value the same way as described above for forms. Given a page and module definitions for the above mentioned html:
+
+	class ShortcutModule extends Module {
+		static content = {
+			geb { $('form').geb() }
+		}
+	}
+
+	static content = {
+		geb { $('form').geb() }
+		shortcutModule { module ShortcutModule }
+	}
+
+The following will pass:
+
+	assert geb == "testing"
+    geb = "goodness"
+    assert geb == "goodness"
+
+As well as:
+
+	assert shortcutModule.geb == "testing"
+    shortcutModule.geb = "goodness"
+    assert shortcutModule.geb == "goodness"
+
+> The following examples describe usage of form controls only using code like `$("form").someInput`. Given a content definition `myContent { $("form").someInput }` you can substitute `$("form").someInput` in the examples with `myContent`.
+
 ### Setting Values
 
 #### select

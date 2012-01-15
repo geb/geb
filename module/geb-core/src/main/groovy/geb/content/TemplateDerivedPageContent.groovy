@@ -37,7 +37,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	}
 	
 	String toString() {
-		"${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args)"
+		"${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args, value: ${_navigator.value()})"
 	}
 		
 	Page getPage() {
