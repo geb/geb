@@ -23,6 +23,7 @@ import geb.waiting.Wait
 
 import geb.error.InvalidPageContent
 import geb.error.RequiredPageValueNotPresent
+import geb.waiting.WaitTimeoutException
 
 class PageContentTemplate {
 
@@ -114,7 +115,14 @@ class PageContentTemplate {
 		
 		def wait = getWait()
 		if (wait) {
-			wait.waitFor(createAction)
+			try {
+				wait.waitFor(createAction)
+			} catch (WaitTimeoutException e) {
+				if (required) {
+					throw e
+				}
+				null
+			}
 		} else {
 			createAction()
 		}

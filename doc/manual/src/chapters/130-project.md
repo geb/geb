@@ -48,6 +48,7 @@ This page lists the high level changes between versions of Geb.
 #### Breaking Changes
 * `click()` now instructs the browser to click **only on the first** element the navigator has matched
 * All `click()` method variants return the reciever
+* Content definitions with `required: false, wait: true` return `null` and do not throw `WaitTimeoutException` if the timeout expires
 
 
 ### 0.6.2

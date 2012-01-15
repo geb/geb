@@ -320,6 +320,15 @@ It is also possible to use `wait` when defining non element content, such as a s
 
 In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
 
+You can modify the behaviour of content with `wait` option set to true if you use it together with `required` option set to false. Given a content definition:
+
+    static content = {
+        dynamicallyAdded(wait: true, required: false) { $("p.dynamic") }
+    }
+
+Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no `WaitTimeoutException` thrown and `null` value will be returned.
+
+
 ### Aliasing
 
 If you wish to have the same content definitions available under diferent names you can create a content definition that specifies `aliases` parameter:
