@@ -485,11 +485,11 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @throws java.io.IOException
 	 * @throws java.lang.ClassCastException
 	 */
-	abstract void click() throws IOException, ClassCastException
+	abstract Navigator click() throws IOException, ClassCastException
 
-	abstract void click(Class<? extends Page> pageClass)
+	abstract Navigator click(Class<? extends Page> pageClass)
 
-	abstract void click(List<Class<? extends Page>> potentialPageClasses)
+	abstract Navigator click(List<Class<? extends Page>> potentialPageClasses)
 
 	/**
 	 * Returns the number of context elements.

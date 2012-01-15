@@ -293,18 +293,21 @@ class NonEmptyNavigator extends Navigator {
 		this
 	}
 
-	void click() {
+	Navigator click() {
 		contextElements.first().click()
+		this
 	}
 
-	void click(Class<? extends Page> pageClass) {
+	Navigator click(Class<? extends Page> pageClass) {
 		click()
 		browser.page(pageClass)
+		this
 	}
 
-	void click(List<Class<? extends Page>> potentialPageClasses) {
+	Navigator click(List<Class<? extends Page>> potentialPageClasses) {
 		click()
 		browser.page(*potentialPageClasses)
+		this
 	}
 
 	int size() {

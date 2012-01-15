@@ -3,6 +3,7 @@ package geb.navigator
 import geb.test.util.GebSpec
 import org.openqa.selenium.*
 import spock.lang.*
+import geb.Page
 
 import geb.textmatching.*
 
@@ -1144,6 +1145,19 @@ class NavigatorSpec extends GebSpec {
 		1 * element1.click()
 		0 * element2.click()
 		0 * _
+	}
+
+	@Issue('GEB-160')
+	@Unroll('click call returns reciever for parameters: #clickParams')
+	def "click returns the receiver"() {
+		when:
+		def navigator = $('p')
+
+		then:
+		navigator.click(*clickParams).tag() == 'p'
+
+		where:
+		clickParams << [[], [Page], [[Page]]]
 	}
 
 	def accessingWebElements() {

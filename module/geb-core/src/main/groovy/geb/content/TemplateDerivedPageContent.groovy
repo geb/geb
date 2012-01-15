@@ -99,7 +99,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		firstElement()?.location?.y ?: 0
 	}
 	
-	void click() {
+	Navigator click() {
 		def to = _template.to
 		if (to == null) {
 			_navigator.click()

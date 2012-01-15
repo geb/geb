@@ -2,7 +2,7 @@ package geb.navigator
 
 import org.openqa.selenium.WebElement
 import static java.util.Collections.EMPTY_LIST
-import static java.util.Collections.EMPTY_SET
+
 import geb.Browser
 import geb.Page
 
@@ -37,13 +37,13 @@ class EmptyNavigator extends Navigator {
 
 	Navigator not(String selector) { this }
 
-	void click() { }
+	Navigator click() { }
 
-	void click(Class<? extends Page> pageClass) {
+	Navigator click(Class<? extends Page> pageClass) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
 	
-	void click(List<Class<? extends Page>> pageClasses) {
+	Navigator click(List<Class<? extends Page>> pageClasses) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
 
