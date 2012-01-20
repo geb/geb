@@ -21,7 +21,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'bmuschko:gradle-gae-plugin:0.5.1'
+		classpath 'bmuschko:gradle-gae-plugin:0.5.2'
 		classpath 'bmuschko:gradle-gaelyk-plugin:0.1'
 	}
 }
