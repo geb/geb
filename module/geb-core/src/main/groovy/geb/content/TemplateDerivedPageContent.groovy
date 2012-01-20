@@ -37,7 +37,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	}
 	
 	String toString() {
-		"${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args)"
+		"${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args, value: ${_navigator.value()})"
 	}
 		
 	Page getPage() {
@@ -99,7 +99,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 		firstElement()?.location?.y ?: 0
 	}
 	
-	void click() {
+	Navigator click() {
 		def to = _template.to
 		if (to == null) {
 			_navigator.click()

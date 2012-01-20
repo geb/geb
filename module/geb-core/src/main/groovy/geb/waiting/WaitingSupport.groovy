@@ -41,7 +41,11 @@ class WaitingSupport {
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
 	def waitFor(String waitPreset, Closure block) {
-		doWaitFor(config.getWaitPreset(waitPreset), block)
+		waitFor([:], waitPreset, block)
+	}
+
+	def waitFor(Map params, String waitPreset, Closure block) {
+		doWaitFor(params.message, config.getWaitPreset(waitPreset), block)
 	}
 	
 	/**
@@ -55,7 +59,11 @@ class WaitingSupport {
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
   	 */
 	def waitFor(Closure block) {
-		doWaitFor(config.defaultWait, block)	
+		waitFor([:], block)
+	}
+
+	def waitFor(Map params, Closure block) {
+		doWaitFor(params.message, config.defaultWait, block)
 	}
 
 	/**
@@ -69,7 +77,11 @@ class WaitingSupport {
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
 	def waitFor(Double timeout, Closure block) {
-		doWaitFor(config.getWait(timeout), block)
+		waitFor([:], timeout, block)
+	}
+
+	def waitFor(Map params, Double timeout, Closure block) {
+		doWaitFor(params.message, config.getWait(timeout), block)
 	}
 
 	/**
@@ -84,10 +96,15 @@ class WaitingSupport {
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
 	def waitFor(Double timeout, Double interval, Closure block) {
-		doWaitFor(new Wait(timeout, interval), block)
+		waitFor([:], timeout, interval, block)
+	}
+
+	def waitFor(Map params, Double timeout, Double interval, Closure block) {
+		doWaitFor(params.message, new Wait(timeout, interval), block)
 	}
 	
-	private doWaitFor(Wait wait, Closure block) {
+	private doWaitFor(String customMessage, Wait wait, Closure block) {
+		wait.customMessage = customMessage
 		wait.waitFor(block)
 	}
 

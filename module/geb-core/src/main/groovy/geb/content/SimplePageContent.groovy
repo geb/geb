@@ -24,16 +24,42 @@ class SimplePageContent extends TemplateDerivedPageContent implements Iterable<N
 		mc.initialize()
 		SimplePageContent.metaClass = mc
 	}
-	
+
 	@Delegate private NavigableSupport navigableSupport
-	
+
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		navigableSupport = new ConstantBaseNavigableSupport(this, null, navigator) 
+		navigableSupport = new ConstantBaseNavigableSupport(this, null, navigator)
 		super.init(template, navigator, *args)
 	}
-	
-	Iterator<Navigator> iterator() {
-		navigableSupport.find().iterator()
+
+	private Navigator getNavigator() {
+		navigableSupport.find()
 	}
+
+	Iterator<Navigator> iterator() {
+		navigator.iterator()
+	}
+
+	@Override
+	boolean equals(Object o) {
+		if (o in SimplePageContent) {
+			super.equals(o)
+		} else {
+			def values = navigator*.value().findAll() { it != null }
+			def value
+			switch (values.size()) {
+				case 0:
+					value = null
+					break
+				case 1:
+					value = values.first()
+					break
+				default:
+					value = values
+			}
+			value == o
+		}
+	}
+
 
 }

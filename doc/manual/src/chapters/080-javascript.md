@@ -177,6 +177,12 @@ You'll notice when using `waitFor` that when something like `waitFor { 1 == 2 }`
 
 This way, if the conditional fails the error message is meaningful but the block still passes. This is obviously not very convenient, and this will be addressed in a future version of Geb by using Groovy's compile time transform capability. If you are interested in tracking or helping solve this issue, you can follow the issue [GEB-123](http://jira.codehaus.org/browse/GEB-123).
 
+### Custom message
+
+If you wish to add a custom message to `WaitTimeoutException` that is being thrown when `waitFor` call times out you can do so by providing a message parameter to the `waitFor` call:
+
+	waitFor (message: 'My custom message') { $("div#result").present }
+
 ## Alert and Confirm Dialogs
 
 WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the [`AlertAndConfirmSupport`](api/geb-core/geb/js/AlertAndConfirmSupport.html) class that is mixed into 

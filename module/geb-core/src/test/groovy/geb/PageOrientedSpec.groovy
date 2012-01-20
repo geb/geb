@@ -17,6 +17,7 @@ package geb
 import geb.test.util.*
 import spock.lang.*
 import geb.error.*
+import geb.waiting.WaitTimeoutException
 
 @Stepwise
 class PageOrientedSpec extends GebSpecWithServer {
@@ -108,6 +109,16 @@ class PageOrientedSpec extends GebSpecWithServer {
 		notPresentNotRequired.text()
 		then:
 		notThrown(RequiredPageContentNotPresent)
+	}
+
+	def "no error when non required component times out"() {
+		when:
+		to PageA
+		def content = notPresentNotRequiredWithWait
+		then:
+		notThrown(RequiredPageContentNotPresent)
+		notThrown(WaitTimeoutException)
+		content == null
 	}
 	
 	def "error when explicitly requiring a component that is not present"() {
@@ -203,6 +214,7 @@ class PageA extends Page {
 		notPresentValueRequired { $("div#asdfasdf").text() }
 		notPresentRequired { $("div#nonexistant") }
 		notPresentNotRequired(required: false) { $("div#nonexistant") }
+		notPresentNotRequiredWithWait(required: false, wait: 1) { $("div#nonexistant") }
 	}
 }
 

@@ -28,15 +28,15 @@ abstract class NavigableSupport implements Navigable {
 	private owner
 	private Map contentTemplates
 	private Browser browser
-	
+
 	NavigableSupport(owner, Map contentTemplates, Browser browser) {
 		this.owner = owner
 		this.contentTemplates = contentTemplates ?: [:]
 		this.browser = browser
 	}
-	
+
 	abstract protected getNavigator()
-	
+
 	private getContent(String name, Object[] args) {
 		def contentTemplate = contentTemplates[name]
 		if (contentTemplate) {
@@ -49,7 +49,7 @@ abstract class NavigableSupport implements Navigable {
 	Navigator find() {
 		getNavigator()
 	}
-	
+
 	Navigator $() {
 		getNavigator()
 	}
@@ -57,7 +57,7 @@ abstract class NavigableSupport implements Navigable {
 	Navigator find(int index) {
 		getNavigator()[index]
 	}
-	
+
 	Navigator $(int index) {
 		getNavigator()[index]
 	}
@@ -65,7 +65,7 @@ abstract class NavigableSupport implements Navigable {
 	Navigator find(String selector) {
 		getNavigator().find(selector)
 	}
-	
+
 	Navigator $(String selector) {
 		getNavigator().find(selector)
 	}
@@ -73,7 +73,7 @@ abstract class NavigableSupport implements Navigable {
 	Navigator find(Map attributes) {
 		getNavigator().find(attributes)
 	}
-	
+
 	Navigator $(Map attributes) {
 		getNavigator().find(attributes)
 	}
@@ -81,7 +81,7 @@ abstract class NavigableSupport implements Navigable {
 	Navigator find(String selector, int index) {
 		getNavigator().find(selector, index)
 	}
-	
+
 	Navigator $(String selector, int index) {
 		getNavigator().find(selector, index)
 	}
@@ -89,19 +89,23 @@ abstract class NavigableSupport implements Navigable {
 	Navigator find(Map attributes, String selector) {
 		getNavigator().find(attributes, selector)
 	}
-	
+
 	Navigator $(Map attributes, String selector) {
 		getNavigator().find(attributes, selector)
 	}
-	
+
 	Navigator $(Navigator[] navigators) {
 		Navigator.on(browser, *navigators)
+	}
+
+	Navigator $(SimplePageContent[] contents) {
+		$(contents*.find() as Navigator[])
 	}
 
 	Navigator $(WebElement[] elements) {
 		Navigator.on(browser, *elements)
 	}
-	
+
 	/*
 	-- Not implemented by Navigator
 	Navigator $(Map attributes, int index) {
@@ -116,7 +120,7 @@ abstract class NavigableSupport implements Navigable {
 
 	def methodMissing(String name, args) {
 		try {
-			getContent(name, *args) 
+			getContent(name, *args)
 		} catch (UndefinedPageContentException e1) {
 			getNavigator()."$name"(*args)
 		}
@@ -124,7 +128,7 @@ abstract class NavigableSupport implements Navigable {
 
 	def propertyMissing(String name) {
 		try {
-			getContent(name) 
+			getContent(name)
 		} catch (UndefinedPageContentException e1) {
 			try {
 				getNavigator()."$name"
@@ -133,13 +137,16 @@ abstract class NavigableSupport implements Navigable {
 			}
 		}
 	}
-	
+
 	def propertyMissing(String name, val) {
 		try {
-			getNavigator()."$name" = val
-		} catch (MissingPropertyException e) {
-			throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as a property to set on ${owner}'s Navigator context")
+			getContent(name).value(val)
+		} catch (UndefinedPageContentException e) {
+			try {
+				getNavigator()."$name" = val
+			} catch (MissingPropertyException e1) {
+				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as a property to set on ${owner}'s Navigator context")
+			}
 		}
 	}
-
 }
