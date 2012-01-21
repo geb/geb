@@ -114,7 +114,7 @@ class PageContentTemplateBuilder {
 				if (!(templatesDefinition instanceof Closure)) {
 					throw new IllegalArgumentException("'$property' static property of class $clazz should be a Closure")
 				}
-				templatesDefinitions << templatesDefinition
+				templatesDefinitions << templatesDefinition.clone()
 			}
 			
 			clazz = clazz.superclass
