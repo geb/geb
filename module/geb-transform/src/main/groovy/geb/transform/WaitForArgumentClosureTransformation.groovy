@@ -8,7 +8,7 @@ import org.codehaus.groovy.control.SourceUnit
 
 import geb.transform.visitor.WaitForVisitor
 
-@GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class WaitForArgumentClosureTransformation implements ASTTransformation{
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
         sourceUnit.AST.classes.each { it.visitContents(new WaitForVisitor(sourceUnit)) }

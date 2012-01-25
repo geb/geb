@@ -1,13 +1,13 @@
 class TestClass {
-    private void waitFor(Closure closure) {
+    def waitFor(Closure closure) {
         closure.call()
     }
 
     boolean booleanMethod(boolean returned) {
-    	returned
+        returned
     }
 
-    void run() {
+    def run() {
         waitFor {
             $closureBody
         }

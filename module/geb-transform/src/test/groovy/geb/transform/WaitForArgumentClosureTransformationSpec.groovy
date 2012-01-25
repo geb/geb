@@ -7,6 +7,7 @@ import org.codehaus.groovy.control.CompilePhase
 import static org.codehaus.groovy.control.CompilePhase.*
 import spock.lang.Unroll
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
+import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
 class WaitForArgumentClosureTransformationSpec extends Specification {
 
@@ -19,14 +20,10 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 	private def transformedInstanceWithClosureBody(String... code) {
 		File tempFile = File.createTempFile('TransformedClass', '.groovy')
 		tempFile << makeCodeTemplate(code)
-		def invoker = new TranformTestHelper(new WaitForArgumentClosureTransformation(), SEMANTIC_ANALYSIS)
+		def invoker = new TranformTestHelper(new WaitForArgumentClosureTransformation(), CANONICALIZATION)
 		def instance = invoker.parse(tempFile).newInstance()
 		tempFile.delete()
 		instance
-	}
-
-	private boolean containsPowerAssertLines(String message) {
-		message.tokenize('\n').grep(~/( *\|)+/)
 	}
 
 	@Unroll("expression '#closureBody' is asserted and fails")
@@ -35,17 +32,11 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 		transformedInstanceWithClosureBody(closureBody).run()
 
 		then:
-		AssertionError error = thrown()
+		PowerAssertionError error = thrown()
 		error.message.contains(closureBody)
-		containsPowerAssertLines(error.message) == shouldContainPowerAssertLines
 
 		where:
-		closureBody                    | shouldContainPowerAssertLines
-		'false'                        | false
-		'null'                         | false
-		'booleanMethod(false)'         | true
-		'1 == 2'                       | true
-		'booleanMethod(false) == true' | true
+		closureBody << ['false', 'null', 'booleanMethod(false)', '1 == 2', 'booleanMethod(false) == true']
 	}
 
 	def "transformation is applied to multiple lines of the closure"() {
@@ -56,7 +47,7 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 		).run()
 
 		then:
-		AssertionError error = thrown()
+		PowerAssertionError error = thrown()
 		error.message.contains('false')
 	}
 	@Unroll("expression '#closureBody' passes")
@@ -90,5 +81,10 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 		then:
 		MultipleCompilationErrorsException exception = thrown()
 		exception.message.contains("Expected a condition, but found an assignment. Did you intend to write '==' ?")
+	}
+
+	def "waitFor closure returns true if all assertions pass"() {
+		expect:
+		transformedInstanceWithClosureBody('true').run() == true
 	}
 }

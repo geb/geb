@@ -40,6 +40,7 @@ class WaitForVisitor extends ClassCodeVisitorSupport {
 	private rewriteClosureStatements(ClosureExpression closureExpression) {
 		BlockStatement blockStatement = closureExpression.code
 		blockStatement.statements = blockStatement.statements.collect { rewriteClosureStatement(it) }
+		blockStatement.statements += new ExpressionStatement(new ConstantExpression(true))
 	}
 
 	Statement rewriteClosureStatement(Statement statement) {
