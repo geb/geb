@@ -1,6 +1,7 @@
 dependencies {
 	compile seleniumDependency, seleniumSupportDependency
 	testCompile project(":module:test-utils")
+	testCompile project(":module:geb-transform")
 }
 
 modifyPom = { pom ->
