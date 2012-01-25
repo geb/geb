@@ -42,13 +42,15 @@ This page lists the high level changes between versions of Geb.
 
 * Added support for indexes and ranges in `moduleList()` method 
 * Form control shortcuts now also work on page and module content
-* Custom timeout message for `waitFor` calls
+* Custom timeout message for `waitFor()` calls
 * Navigators can be composed also from content
+* Closure expressions passed to `waitFor()` calls are now transformed so that every statement in them is asserted - this provides better reporting on `waitFor()` timeouts.
 
 #### Breaking Changes
 * `click()` now instructs the browser to click **only on the first** element the navigator has matched
 * All `click()` method variants return the reciever
 * Content definitions with `required: false, wait: true` return `null` and do not throw `WaitTimeoutException` if the timeout expires
+* Assignment statements are not allowed anymore in closure expressions passed to `waitFor()` calls
 
 
 ### 0.6.2

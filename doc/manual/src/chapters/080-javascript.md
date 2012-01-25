@@ -149,6 +149,8 @@ Because the browser delegates method calls to the page object, the above could h
 
 Recall that the `return` keyword is optional in Groovy, so in the example above the `$("div#result").present` statement acts as the return value for the closure and is used as the basis on whether the closure _passed_ or not. This means that you must ensure that the last statement inside the closure returns a value that is `true` according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth) (if you're unfamiliar with the Groovy Truth **do** read that page).
 
+> Not using explicit `return` statements in closure expressions passed to `waitFor()` is actually preffered. Geb transforms all closure expressions passed to `waitFor()` calls so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see values of the last evaluation of statement that didn't return a truly value in the stacktrace for the `WaitTimeoutException` thrown when `waitFor()` call times out.
+
 The closures given to the `waitFor` method(s) do not need to be single statement.
 
     waitFor {
@@ -159,23 +161,12 @@ The closures given to the `waitFor` method(s) do not need to be single statement
 
 That will work fine.
 
-If you wish to *test* multiple conditions as separate statement inside a `waitFor` closure, you can use the Java/Groovy `assert` keyword.
+If you wish to *test* multiple conditions as separate statement inside a `waitFor` closure, you can just put them in separate lines.
 
     waitFor {
-        assert 1 == 1
+        1 == 1
         2 == 2
     }
-
-Notice that the last line does not have an `assert`. This is because we are relying on Geb checking the return value as a kind of implicit assertion.
-
-You'll notice when using `waitFor` that when something like `waitFor { 1 == 2 }` fails, the error message does not contain any information about the statement that failed. However, if you use an `assert` statement, e.g. `waitFor { assert 1 == 2 }` then you will get a better error message that explains exactly what failed. However, in Java/Groovy `assert` statements do not return a value. This means that `waitFor { assert 1 == 1 }` will fail because the closure will return `null`. Therefore, the best approach to follow to get informative error messages is to do:
-
-    waitFor {
-        assert 1 == 1
-        true
-    }
-
-This way, if the conditional fails the error message is meaningful but the block still passes. This is obviously not very convenient, and this will be addressed in a future version of Geb by using Groovy's compile time transform capability. If you are interested in tracking or helping solve this issue, you can follow the issue [GEB-123](http://jira.codehaus.org/browse/GEB-123).
 
 ### Custom message
 
