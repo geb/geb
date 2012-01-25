@@ -1,0 +1,15 @@
+class TestClass {
+    private void waitFor(Closure closure) {
+        closure.call()
+    }
+
+    boolean booleanMethod(boolean returned) {
+    	returned
+    }
+
+    void run() {
+        waitFor {
+            $closureBody
+        }
+    }
+}
