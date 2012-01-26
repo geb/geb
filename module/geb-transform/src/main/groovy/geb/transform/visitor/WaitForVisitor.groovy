@@ -37,10 +37,13 @@ class WaitForVisitor extends ClassCodeVisitorSupport {
 		sourceUnit
 	}
 
-	private rewriteClosureStatements(ClosureExpression closureExpression) {
+	private void rewriteClosureStatements(ClosureExpression closureExpression) {
 		BlockStatement blockStatement = closureExpression.code
-		blockStatement.statements = blockStatement.statements.collect { rewriteClosureStatement(it) }
-		blockStatement.statements += new ExpressionStatement(new ConstantExpression(true))
+		ListIterator iterator = blockStatement.statements.listIterator()
+		while(iterator.hasNext()) {
+			iterator.set(rewriteClosureStatement(iterator.next()))
+		}
+		iterator.add(new ExpressionStatement(new ConstantExpression(true)))
 	}
 
 	Statement rewriteClosureStatement(Statement statement) {
