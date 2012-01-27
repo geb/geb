@@ -539,7 +539,7 @@ class Browser {
 		}
 		
 		def reportGroupDir = reportGroup ? new File(reportsDir, reportGroup) : reportsDir
-		if (!reportGroupDir.exists() && !reportGroupDir.mkdirs()) {
+		if (!(reportGroupDir.mkdirs() || reportGroupDir.exists())) {
 			throw new IllegalStateException("Could not create report group dir '${reportGroupDir}'")
 		}
 		
