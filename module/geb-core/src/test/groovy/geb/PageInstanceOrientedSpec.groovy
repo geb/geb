@@ -55,7 +55,15 @@ class PageInstanceOrientedSpec extends GebSpecWithServer {
         def expectedPage = new PageWithText(text: 'someText')
         at expectedPage
         and: 'calling at method sets the page instance'
-        page == expectedPage
+		page == expectedPage
+    }
+
+	def "verify the instance flavour of isAt() checking works" () {
+        when:
+        go '/someText'
+        then:
+        isAt(new PageWithText(text: 'someText'))
+		!isAt(new PageWithText(text: 'otherText'))
     }
 }
 

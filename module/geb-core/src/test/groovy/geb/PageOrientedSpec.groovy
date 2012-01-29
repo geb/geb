@@ -18,6 +18,7 @@ import geb.test.util.*
 import spock.lang.*
 import geb.error.*
 import geb.waiting.WaitTimeoutException
+import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
 @Stepwise
 class PageOrientedSpec extends GebSpecWithServer {
@@ -65,12 +66,14 @@ class PageOrientedSpec extends GebSpecWithServer {
 		
 		then:
 		at PageB
+		page.class == PageB
 		
 		when:
 		link.click()
 		
 		then:
 		at PageA
+		page.class == PageA
 	}
 	
 	def "check accessing non navigator content"() {
@@ -83,8 +86,22 @@ class PageOrientedSpec extends GebSpecWithServer {
 	def "verify at checking works"() {
 		when:
 		to PageA
+		and:
+		at(PageC)
+
 		then:
-		at(PageB) == false
+		PowerAssertionError error = thrown()
+		error.message.contains('false')
+	}
+
+	def "verify isAt() works"() {
+		when:
+		to PageA
+
+		then:
+		isAt(PageA)
+		!isAt(PageB)
+		!isAt(PageC)
 	}
 	
 	def "error when required value not present"() {

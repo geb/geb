@@ -45,13 +45,15 @@ This page lists the high level changes between versions of Geb.
 * Custom timeout message for `waitFor()` calls
 * Navigators can be composed also from content
 * Closure expressions passed to `waitFor()` calls are now transformed so that every statement in them is asserted - this provides better reporting on `waitFor()` timeouts.
+* `at` closure properties of Page classes are now transformed so that every statement in them is asserted - this provides better reporting on failed at checks 
+* new `isAt()` method on Browser that behaves like `at()` used to behave before, i.e. does not throw AssertionError but returns `false` if at checking fails
 
 #### Breaking Changes
 * `click()` now instructs the browser to click **only on the first** element the navigator has matched
 * All `click()` method variants return the reciever
 * Content definitions with `required: false, wait: true` return `null` and do not throw `WaitTimeoutException` if the timeout expires
 * Assignment statements are not allowed anymore in closure expressions passed to `waitFor()` calls
-
+* `at()` now throws AssertionException if at checking fails instead of returning false
 
 ### 0.6.2
 

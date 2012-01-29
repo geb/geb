@@ -6,11 +6,11 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.control.SourceUnit
 
-import geb.transform.visitor.WaitForVisitor
+import geb.transform.visitor.EvaluatedClosureVisitor
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-class WaitForArgumentClosureTransformation implements ASTTransformation{
+class EvaluatedClosureTransformation implements ASTTransformation {
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-        sourceUnit.AST.classes.each { it.visitContents(new WaitForVisitor(sourceUnit)) }
+        sourceUnit.AST.classes.each { it.visitContents(new EvaluatedClosureVisitor(sourceUnit)) }
     }
 }

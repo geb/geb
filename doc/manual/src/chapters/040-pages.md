@@ -355,21 +355,23 @@ Each page can define a way to check whether the underling browser is at the page
         static at = { $("h1").text() == "Example" }
     }
 
-This closure can either return a `false` value or throw an `AssertionError` (via the `assert` method).
+This closure can either return a `false` value or throw an `AssertionError` (via the `assert` method). The `verifyAt()` method call will either return true or throw an `AssertionError` even if there are no explicit assertions in the “at” checker.
 
     Browser.drive {
         to ExamplePage
-        assert verifyAt()
+        verifyAt()
     }
 
-The `verifyAt()` method is used by the browser `at()` method…
+> Not using explicit `return` statements in “at” checkers is preffered. Geb transforms all “at” checkers so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see evaluated values of your “at” checker if it fails.
+
+The `verifyAt()` method is used by the browser `at()` method which also returns true or throws an `AssertionError` even if there are no explicit assertions in the “at” checker…
 
     Browser.drive {
         to ExamplePage
-        assert at(ExamplePage)
+        at(ExamplePage)
     }
 
-> If using Groovy 1.7, the use of `assert` in “at” checkers is recommended because you get the benefit of Groovy's expressive assert output.
+If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb-core/geb/Page.html#verifyAtSafely(\)), [`Browser#isAt(Class<? extends Page>)`](api/geb-core/geb/Browser.html#isAt(java.lang.Class\)) and [`Browser#isAt(Page)`](api/geb-core/geb/Browser.html#isAt(geb.Page\))
 
 As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
 

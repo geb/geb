@@ -3,13 +3,13 @@ package geb.transform
 import spock.lang.Specification
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.tools.ast.TranformTestHelper
-import org.codehaus.groovy.control.CompilePhase
+
 import static org.codehaus.groovy.control.CompilePhase.*
 import spock.lang.Unroll
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
 import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
-class WaitForArgumentClosureTransformationSpec extends Specification {
+class EvaluatedClosureTransformationSpec extends Specification {
 
 	private String makeCodeTemplate(String... closureBody) {
 		def resource = getClass().classLoader.getResource('TransformedClass.template')
@@ -17,19 +17,27 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 		template.make([closureBody: closureBody.join('\n')]).toString()
 	}
 
-	private def transformedInstanceWithClosureBody(String... code) {
+	private Class getTransformedClassWithClosureBody(String... code) {
 		File tempFile = File.createTempFile('TransformedClass', '.groovy')
 		tempFile << makeCodeTemplate(code)
-		def invoker = new TranformTestHelper(new WaitForArgumentClosureTransformation(), CANONICALIZATION)
-		def instance = invoker.parse(tempFile).newInstance()
+		def invoker = new TranformTestHelper(new EvaluatedClosureTransformation(), CANONICALIZATION)
+		Class transformed = invoker.parse(tempFile)
 		tempFile.delete()
-		instance
+		transformed
+	}
+
+	private Class getTransformedClass() {
+		getTransformedClassWithClosureBody('')
+	}
+
+	private def getTransformedInstanceWithClosureBody(String... code) {
+		getTransformedClassWithClosureBody(code).newInstance()
 	}
 
 	@Unroll("expression '#closureBody' is asserted and fails")
 	def "various falsy expressions are asserted and fail"() {
 		when:
-		transformedInstanceWithClosureBody(closureBody).run()
+		getTransformedInstanceWithClosureBody(closureBody).run()
 
 		then:
 		PowerAssertionError error = thrown()
@@ -37,11 +45,12 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 
 		where:
 		closureBody << ['false', 'null', 'booleanMethod(false)', '1 == 2', 'booleanMethod(false) == true']
+
 	}
 
 	def "transformation is applied to multiple lines of the closure"() {
 		when:
-		transformedInstanceWithClosureBody(
+		getTransformedInstanceWithClosureBody(
 				'true',
 				'false'
 		).run()
@@ -50,10 +59,11 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 		PowerAssertionError error = thrown()
 		error.message.contains('false')
 	}
+
 	@Unroll("expression '#closureBody' passes")
 	def "various truly expressions pass"() {
 		when:
-		transformedInstanceWithClosureBody(closureBody).run()
+		getTransformedInstanceWithClosureBody(closureBody).run()
 
 		then:
 		noExceptionThrown()
@@ -65,26 +75,41 @@ class WaitForArgumentClosureTransformationSpec extends Specification {
 	@Unroll("expression '#closureBody' is ignored")
 	def "various ignored expressions pass"() {
 		when:
-		transformedInstanceWithClosureBody(closureBody).run()
+		getTransformedInstanceWithClosureBody(closureBody).run()
 
 		then:
 		noExceptionThrown()
 
 		where:
-		closureBody << ['def a = false', 'assert true']
+		closureBody << ['def a = false', 'assert true', 'voidMethod()']
 	}
 
+	@Unroll("compilation error is reported when not allowed statements are found")
 	def "compilation error is reported on assignment statements in waitFor closure body"() {
 		when:
-		transformedInstanceWithClosureBody('a = 2')
+		getTransformedInstanceWithClosureBody(closureBody)
 
 		then:
 		MultipleCompilationErrorsException exception = thrown()
-		exception.message.contains("Expected a condition, but found an assignment. Did you intend to write '==' ?")
+		exception.message.contains(message)
+
+		where:
+		closureBody        | message
+		'a = 2'            | "Expected a condition, but found an assignment. Did you intend to write '==' ?"
+		'spreadCall(*foo)' | 'Spread expressions are not allowed here'
 	}
 
 	def "waitFor closure returns true if all assertions pass"() {
 		expect:
-		transformedInstanceWithClosureBody('true').run() == true
+		getTransformedInstanceWithClosureBody('true').run() == true
+	}
+
+	def "transform is also applied to at closures"() {
+		when:
+		transformedClass.at()
+
+		then:
+		PowerAssertionError error = thrown()
+		error.message.contains('false')
 	}
 }
