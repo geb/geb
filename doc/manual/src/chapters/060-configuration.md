@@ -50,7 +50,7 @@ In the config script it can be a closure that when invoked with no arguments ret
 
     import org.openqa.selenium.firefox.FirefoxDriver
     
-    driver = { new FireFoxDriver() }
+    driver = { new FirefoxDriver() }
 
 This is the preferred mechanism, as it allows the most control over the drivers creation and configuration.
 
