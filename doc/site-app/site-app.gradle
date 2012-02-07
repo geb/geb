@@ -30,8 +30,7 @@ repositories {
 	add gitHub()
 }
 
-// Also needed to be updated in buildscript block
-appEngineVersion = "1.5.1"
+appEngineVersion = "1.6.2"
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.8.0"
