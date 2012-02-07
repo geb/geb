@@ -90,7 +90,8 @@ def findManualArtifact = { configuration ->
 	artifacts.toList().first()
 }
 
-def explodeManual = { manualArtifactFile, label ->
+def explodeManual = { File manualArtifactFile, label ->
+	assert manualArtifactFile.exists()
 	copy {
 		from zipTree(manualArtifactFile)
 		into "build/manual/manual/$label"
@@ -129,7 +130,7 @@ task includeVersionManuals(dependsOn: allVersionConfigurations + [cleanManuals])
 	allVersionConfigurations.each { manualConfiguration ->
 		doLast {
 			def artifact = findManualArtifact(manualConfiguration)
-			explodeManual(artifact, artifact.resolvedDependency.moduleVersion)
+			explodeManual(artifact.file, artifact.resolvedDependency.moduleVersion)
 		}
 	}
 }
