@@ -127,7 +127,7 @@ subprojects {
 				if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
 					uploadArchives {
 						project.deployer = repositories.mavenDeployer {
-							beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
+							beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 							uniqueVersion = false
 							repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
 								authentication(userName: codehausUsername, password: codehausPassword)
