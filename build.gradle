@@ -45,10 +45,6 @@ allprojects { project ->
 }
 
 subprojects {
-	configurations {
-		meta
-	}
-
 	if (project.path in groovyModules) {
 		apply plugin: "groovy"
 		apply plugin: 'idea'
@@ -105,7 +101,7 @@ subprojects {
 		} 
 
 		artifacts {
-			meta javadocJar, sourcesJar
+			archives javadocJar, sourcesJar
 		}
 	}
 		
@@ -117,17 +113,14 @@ subprojects {
 		apply plugin: "maven"
 		apply plugin: "signing"
 		
-		configurations {
-			published.extendsFrom archives, meta, signatures
-		}
-		
-		task release(dependsOn: uploadPublished)
+		task release(dependsOn: uploadArchives)
 		
 		project.afterEvaluate { project, state ->
 			state.rethrowFailure()
 			if (project.path in publishedModules) {
 				signing {
-					sign configurations.archives, configurations.meta
+					sign configurations.archives
+					required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
 				}
 
 				configurations {
@@ -141,13 +134,9 @@ subprojects {
 				project.poms = [project.install.repositories.mavenInstaller.pom]
 
 				if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-					uploadPublished {
+					uploadArchives {
 						project.deployer = repositories.mavenDeployer {
-							beforeDeployment { MavenDeployment deployment ->
-								if (signing.signatory) {
-									signPom(deployment)
-								}
-							}
+							beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
 							uniqueVersion = false
 							configuration = configurations.deployerJars
 							repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
