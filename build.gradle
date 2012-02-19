@@ -45,11 +45,11 @@ allprojects { project ->
 }
 
 subprojects {
-	if (project.path in groovyModules) {
+	if (path in groovyModules) {
 		apply plugin: "groovy"
 		apply plugin: 'idea'
 
-		if (project.path != ":test-utils") {
+		if (path != ":test-utils") {
 			apply from: "file:${rootDir}/clover.gradle"
 		}
 
@@ -60,13 +60,13 @@ subprojects {
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 
-		driver = project.hasProperty("driver") ? project.driver : "htmlunit"
+		driver = hasProperty("driver") ? driver : "htmlunit"
 		test {
-			systemProperties['geb.driver'] = project.driver
+			systemProperties['geb.driver'] = driver
 		}
 	}
 
-	if (project.path in publishedGroovyModules) {
+	if (path in publishedGroovyModules) {
 		groovydoc {
 			exclude "**/internal/**"
 
@@ -82,12 +82,12 @@ subprojects {
 			link "http://groovy.codehaus.org/api/",
 				"groovy.lang"
 
-			link "http://www.gebish.org/manual/$project.version/api/geb-core",
+			link "http://www.gebish.org/manual/$version/api/geb-core",
 				"geb"
 
-			docTitle = "Groovy API Documentation for $project.name $project.version"
-			footer = "<p style='text-align: center'>Groovy API Documentation for $project.name $project.version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
-			windowTitle = "Groovy API for $project.name $project.version"
+			docTitle = "Groovy API Documentation for $name $version"
+			footer = "<p style='text-align: center'>Groovy API Documentation for $name $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
+			windowTitle = "Groovy API for $name $version"
 		}
 
 		task sourcesJar(type: Jar) {
@@ -105,83 +105,49 @@ subprojects {
 		}
 	}
 
-	if (project.path in publishedModules) {
-		if (!plugins.hasPlugin("base")) {
-			apply plugin: "base"
-		}
+	if (path in publishedModules) {
+		apply plugin: "base"
 		apply plugin: "maven"
 		apply plugin: "signing"
 
+		signing {
+			sign configurations.archives
+			required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
+		}
+		
 		task release(dependsOn: uploadArchives)
 
-		project.afterEvaluate { project, state ->
-			state.rethrowFailure()
-			if (project.path in publishedModules) {
-				signing {
-					sign configurations.archives
-					required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
-				}
-
-				project.poms = [project.install.repositories.mavenInstaller.pom]
-
-				if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-					uploadArchives {
-						project.deployer = repositories.mavenDeployer {
-							beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-							uniqueVersion = false
-							repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
-								authentication(userName: codehausUsername, password: codehausPassword)
-							}
-							snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
-								authentication(userName: codehausUsername, password: codehausPassword)
-							}
-							pom.project {
-								url "http://www.gebish.org"
-								inceptionYear "2010"
-								licenses {
-									license {
-										name 'The Apache Software License, Version 2.0'
-										url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-										distribution 'repo'
-									}
-								}
-								scm {
-									url "https://github.com/geb/geb/"
-								}
-								developers {
-									developer {
-										id "ldaley"
-										name "Luke Daley"
-										roles {
-											role "Lead"
-											role "Founder"
-										}
-									}
-									developer {
-										id "robfletcher"
-										name "Rob Fletcher"
-										roles {
-											role "Founder"
-										}
-									}
-								}
-
-							}
-						}
-						project.poms << project.deployer.pom
-					}
-				}
-
-				if (project.hasProperty('modifyPom')) {
-					project.poms*.whenConfigured(project.modifyPom)
-				}
-
-				// Remove test deps from all poms
-				project.poms*.whenConfigured { pom ->
-					pom.dependencies.removeAll(pom.dependencies.findAll { it.scope == "test" })
+		apply from: "$rootDir/gradle/pom.gradle"
+		
+		if (path == ":doc:manual") {
+			task("install", type: Upload, dependsOn: configurations.archives.allArtifacts.buildDependencies) {
+				configuration = configurations.archives
+				description = "Does a maven install of the archives artifacts into the local .m2 cache."
+				repositories {
+					mavenInstaller name: "mavenInstaller"
 				}
 			}
 		}
+		
+		project.poms = [project.install.repositories.mavenInstaller.pom]
+
+		if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
+			uploadArchives {
+				project.deployer = repositories.mavenDeployer {
+					beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+					uniqueVersion = false
+					repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
+						authentication(userName: codehausUsername, password: codehausPassword)
+					}
+					snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
+						authentication(userName: codehausUsername, password: codehausPassword)
+					}
+				}
+				project.poms << project.deployer.pom
+			}
+		}
+		
+		project.poms*.whenConfigured { applyPomMods(it) }
 	}
 }
 

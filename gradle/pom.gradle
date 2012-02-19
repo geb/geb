@@ -1,0 +1,48 @@
+pomModifications = []
+modifyPom = { pomModifications << it }
+applyPomMods = { poms ->
+	poms.each { pom ->
+		pomModifications.each { mod ->
+			mod = mod.clone()
+			mod.delegate = pom
+			mod.resolveStrategy = Closure.DELEGATE_FIRST
+			mod(pom)
+		}
+	}
+}
+
+modifyPom {
+	project {
+		url "http://www.gebish.org"
+		inceptionYear "2010"
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+		scm {
+			url "https://github.com/geb/geb/"
+		}
+		developers {
+			developer {
+				id "ldaley"
+				name "Luke Daley"
+				roles {
+					role "Lead"
+					role "Founder"
+				}
+			}
+			developer {
+				id "robfletcher"
+				name "Rob Fletcher"
+				roles {
+					role "Founder"
+				}
+			}
+		}
+	}
+	
+	dependencies.removeAll(dependencies.findAll { it.scope == "test" })
+}
