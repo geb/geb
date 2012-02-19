@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package geb.test.util
+package geb.test
 
 import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
 
-import org.openqa.selenium.remote.server.DriverServlet
+class CallbackHttpServer extends TestHttpServer {
 
-class WebDriverServer extends TestHttpServer {
-	
+	Closure get
+	Closure post
+	Closure put
+	Closure delete
+
 	protected addServlets(Context context) {
-		context.addServlet(new ServletHolder(new DriverServlet()), "/*")
+		context.addServlet(new ServletHolder(new CallbackServlet(this)), "/*")
 	}
-	
 }

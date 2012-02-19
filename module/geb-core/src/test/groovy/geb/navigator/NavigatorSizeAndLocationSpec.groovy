@@ -15,7 +15,7 @@
  */
 package geb.navigator
 
-import geb.test.util.*
+import geb.test.*
 import spock.lang.*
 import geb.Page
 import geb.Module

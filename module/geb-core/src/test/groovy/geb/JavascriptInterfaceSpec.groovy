@@ -14,7 +14,7 @@
  */
 package geb
 
-import geb.test.util.*
+import geb.test.*
 import spock.lang.*
 
 class JavascriptInterfaceSpec extends GebSpecWithServer {

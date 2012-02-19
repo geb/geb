@@ -1,6 +1,6 @@
 package geb
 
-import geb.test.util.GebSpecWithServer
+import geb.test.GebSpecWithServer
 import spock.lang.Stepwise
 import spock.lang.Unroll
 import spock.lang.Issue

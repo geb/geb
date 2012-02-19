@@ -16,7 +16,7 @@
 package geb.testng
 
 import geb.report.ReporterSupport
-import geb.test.util.CallbackHttpServer
+import geb.test.CallbackHttpServer
 import java.lang.reflect.Method
 import org.testng.ITestResult
 import org.testng.annotations.AfterClass

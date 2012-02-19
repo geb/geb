@@ -1,7 +1,7 @@
 dependencies {
 	compile project(':module:geb-core')
 	compile "junit:junit:4.8.1"
-	testCompile project(":module:test-utils")
+	testCompile project(":module:test-support")
 }
 
 modifyPom = { pom ->

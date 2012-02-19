@@ -1,6 +1,6 @@
 package geb.navigator
 
-import geb.test.util.GebSpec
+import geb.test.GebSpec
 import org.openqa.selenium.*
 import spock.lang.*
 import geb.Page

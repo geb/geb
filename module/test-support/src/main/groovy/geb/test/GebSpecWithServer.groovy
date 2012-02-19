@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package geb.test.util
+package geb.test
 
 import geb.Browser
 import spock.lang.*

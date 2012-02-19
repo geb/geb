@@ -16,7 +16,7 @@ package geb.spock
 
 import geb.Page
 import spock.lang.*
-import geb.test.util.CallbackHttpServer
+import geb.test.CallbackHttpServer
 
 @Stepwise
 class GebSpecStepwiseSpec extends GebReportingSpec {

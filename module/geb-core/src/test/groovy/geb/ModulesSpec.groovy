@@ -15,7 +15,7 @@
 package geb
 
 import spock.lang.*
-import geb.test.util.*
+import geb.test.*
 import geb.error.InvalidPageContent
 
 class ModulesSpec extends GebSpecWithServer {

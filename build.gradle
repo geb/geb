@@ -28,7 +28,7 @@ allprojects { project ->
 	}
 
 	groovyModules = [
-		":module:geb-core", ":module:test-utils",
+		":module:geb-core", ":module:test-support",
 		":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 		":module:geb-easyb", ":module:geb-testng"
 	]
@@ -49,7 +49,7 @@ subprojects {
 		apply plugin: "groovy"
 		apply plugin: 'idea'
 
-		if (path != ":test-utils") {
+		if (path != ":test-support") {
 			apply from: "file:${rootDir}/clover.gradle"
 		}
 

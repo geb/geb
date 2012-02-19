@@ -1,6 +1,6 @@
 using "geb"
 
-import geb.test.util.CallbackHttpServer
+import geb.test.CallbackHttpServer
 
 scenario "using geb", {
 

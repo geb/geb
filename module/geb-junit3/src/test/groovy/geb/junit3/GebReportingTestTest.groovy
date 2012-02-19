@@ -15,7 +15,7 @@
 
 package geb.junit3
 
-import geb.test.util.CallbackHttpServer
+import geb.test.CallbackHttpServer
 import geb.Page
 
 class GebReportingTestTest extends GebReportingTest {

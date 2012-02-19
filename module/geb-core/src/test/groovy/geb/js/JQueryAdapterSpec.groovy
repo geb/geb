@@ -14,7 +14,7 @@
  */
 package geb.js
 
-import geb.test.util.*
+import geb.test.*
 import spock.lang.*
 
 class JQueryAdapterSpec extends GebSpecWithServer {

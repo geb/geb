@@ -1,6 +1,6 @@
 package geb
 
-import geb.test.util.GebSpecWithServer
+import geb.test.GebSpecWithServer
 import geb.driver.CachingDriverFactory
 import groovy.xml.MarkupBuilder
 import spock.lang.Unroll

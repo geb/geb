@@ -1,9 +1,9 @@
 package geb.interaction
 
-import geb.test.util.GebSpec
+import geb.test.GebSpec
 import org.openqa.selenium.Keys
 import geb.Page
-import geb.test.util.GebSpecWithServer
+import geb.test.GebSpecWithServer
 
 class InteractionsSupportSpec extends GebSpecWithServer {
 

@@ -15,7 +15,7 @@
  */
 package geb.navigator
 
-import geb.test.util.GebSpecWithServer
+import geb.test.GebSpecWithServer
 import org.openqa.selenium.By
 
 /**

@@ -4,7 +4,7 @@ dependencies {
 		exclude module: "groovy-all"
 	}
 	
-	testCompile(project(":module:test-utils")) {
+	testCompile(project(":module:test-support")) {
 		exclude module: "spock-core" // only need the test server
 	}
 }

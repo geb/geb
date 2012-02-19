@@ -1,7 +1,7 @@
 dependencies {
 	compile spockDependency
 	compile project(':module:geb-core')
-	testCompile project(":module:test-utils")
+	testCompile project(":module:test-support")
 }
 
 modifyPom = { pom ->

@@ -17,7 +17,7 @@ package geb.navigator
 
 import spock.lang.*
 
-import geb.test.util.*
+import geb.test.*
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.Select
 

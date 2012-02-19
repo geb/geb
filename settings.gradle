@@ -1,5 +1,5 @@
 include "module:geb-core", 
-        "module:test-utils", 
+        "module:test-support", 
         "module:geb-spock", 
         "module:geb-junit3", 
         "module:geb-junit4",

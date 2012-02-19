@@ -1,6 +1,6 @@
 package geb.frame
 
-import geb.test.util.GebSpecWithServer
+import geb.test.GebSpecWithServer
 import geb.Page
 import geb.Module
 import spock.lang.Unroll

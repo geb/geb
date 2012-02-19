@@ -1,6 +1,6 @@
 dependencies {
 	compile seleniumDependency, seleniumSupportDependency
-	testCompile project(":module:test-utils")
+	testCompile project(":module:test-support")
 }
 
 modifyPom = { pom ->

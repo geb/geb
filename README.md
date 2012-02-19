@@ -50,7 +50,7 @@ To run the tests after making your change to a module, you can run…
 
     ./gradlew :module:«module-name»:test
 
-There are lots of example tests in the `geb-core` module that use the classes from the `test-utils` module for running against an in memory HTTP server.
+There are lots of example tests in the `geb-core` module that use the classes from the `test-support` module for running against an in memory HTTP server.
 
 To run the entire test suite, run…
 

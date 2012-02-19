@@ -17,7 +17,7 @@
 package geb.binding
 
 import geb.*
-import geb.test.util.*
+import geb.test.*
 import spock.lang.*
 
 class BindingUpdaterSpec extends GebSpecWithServer {

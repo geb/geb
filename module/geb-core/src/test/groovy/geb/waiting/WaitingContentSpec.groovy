@@ -18,7 +18,7 @@ package geb.waiting
 import geb.*
 import geb.error.*
 import geb.waiting.WaitTimeoutException
-import geb.test.util.*
+import geb.test.*
 import spock.lang.*
 
 class WaitingContentSpec extends GebSpecWithServer {
