@@ -122,14 +122,6 @@ subprojects {
 					required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
 				}
 
-				configurations {
-					deployerJars
-				}
-
-				dependencies {
-					deployerJars "org.apache.maven.wagon:wagon-http-lightweight:1.0-beta-6"
-				}
-
 				project.poms = [project.install.repositories.mavenInstaller.pom]
 
 				if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
@@ -137,7 +129,6 @@ subprojects {
 						project.deployer = repositories.mavenDeployer {
 							beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
 							uniqueVersion = false
-							configuration = configurations.deployerJars
 							repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
 								authentication(userName: codehausUsername, password: codehausPassword)
 							}
