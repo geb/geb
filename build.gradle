@@ -1,16 +1,3 @@
-buildscript {
-	repositories {
-		mavenCentral()
-		mavenRepo (name: "Geb's GitHub", url: "http://cloud.github.com/downloads/geb") {
-			pattern = "[organisation]/[module]-[revision].[ext]"
-		}
-		mavenRepo (name: "Alkemists's GitHub", url: "http://cloud.github.com/downloads/alkemist") {
-			pattern = "[organisation]/[module]-[revision].[ext]"
-		}
-		mavenRepo name: "Gradle", url: "http://repo.gradle.org/gradle/plugins-snapshots/"
-	}
-}
-
 apply plugin: 'idea'
 
 allprojects { project ->
