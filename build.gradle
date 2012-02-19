@@ -94,19 +94,19 @@ subprojects {
 			windowTitle = "Groovy API for $project.name $project.version"
 		}
 		
-		task sourcesJar(type: Jar, dependsOn: classes) { 
-			classifier = 'sources' 
+		task sourcesJar(type: Jar) { 
+			classifier 'sources' 
 			from sourceSets.main.allSource
 		} 
 
-		task javadocJar(type: Jar, dependsOn: javadoc) { 
-			classifier = 'javadoc' 
-			from javadoc.destinationDir 
+		task javadocJar(type: Jar) { 
+			classifier 'javadoc' 
+			from javadoc
 		} 
 
-		task groovydocJar(type: Jar, dependsOn: groovydoc) { 
-			classifier = 'groovydoc'
-			from groovydoc.destinationDir 
+		task groovydocJar(type: Jar) { 
+			classifier 'groovydoc'
+			from groovydoc
 		} 
 
 		artifacts {
