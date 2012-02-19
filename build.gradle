@@ -82,12 +82,6 @@ subprojects {
 		compileGroovy.options.fork = false
 		compileTestGroovy.options.fork = false
 		
-		if (project.hasProperty('t')) {
-			test.doFirst {
-				test.include "**/${t}*.class"
-			}
-		}
-
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 		
