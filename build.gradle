@@ -86,14 +86,6 @@ subprojects {
 		test {
 			systemProperties['geb.driver'] = project.driver
 		}
-		
-		task listCompile(dependsOn: configurations.compile) << {
-			println "compile classpath = ${configurations.compile.resolve().collect {File file -> file.name}.sort()}"
-		}
-
-		task listRuntime(dependsOn: configurations.runtime) << {
-			println "runtime classpath = ${configurations.runtime.resolve().collect {File file -> file.name}.sort()}"
-		}
 	}
 	
 	if (project.path in publishedGroovyModules) {
