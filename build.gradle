@@ -206,65 +206,6 @@ subprojects {
 	}
 }
 
-configurations {
-	build
-}
-
-dependencies {
-	build "com.cenqua.clover:clover:3.0.2"
-	build "org.apache.ant:ant-junit:1.8.1@jar"
-	build "org.apache.ant:ant-nodeps:1.8.1@jar"
-}
-
-task test(dependsOn: getTasksByName("test", true)) << {
-	def reportsDir = "${buildDir}/reports"
-	
-	// Aggregate the test results
-	ant.taskdef(
-		name: 'junitreport2', 
-		classname: "org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator",
-		classpath: configurations.build.asPath
-	)
-	
-	def testReportsDir = new File("${reportsDir}/tests")
-	if (testReportsDir.exists()) {
-		testReportsDir.deleteDir()
-	}
-	testReportsDir.mkdirs()
-	
-	ant.junitreport2(todir: testReportsDir) {
-		subprojects.each {
-			def testResultsDir = "${it.buildDir}/test-results"
-			if (new File(testResultsDir).exists()) {
-				fileset(dir: testResultsDir) {
-					include(name: "TEST-*.xml")
-				}
-			}
-		}
-		report(todir: testReportsDir)
-	}
-	
-	// Aggregate the coverage results
-	if (project.hasProperty("withClover")) {
-		def db = "clover/clover.db"
-		def mergedDb = "${buildDir}/${db}"
-		def cloverReportsDir = "${reportsDir}/clover"
-		ant.taskdef(resource: "cloverlib.xml", classpath: configurations.build.asPath)
-		ant."clover-merge"(initstring: mergedDb) {
-			subprojects.each {
-				def projectCloverDb = "${it.buildDir}/${db}"
-				if (new File(projectCloverDb).exists()) {
-					cloverdb(initstring: projectCloverDb)
-				}
-			}
-		}
-		ant."clover-report"(initstring: mergedDb) {
-			current(outfile:"${cloverReportsDir}/clover.xml")
-		}
-		ant."clover-html-report"(initstring: mergedDb, outdir:"${cloverReportsDir}/html")
-	}
-}
-
 task wrapper(type: Wrapper) {
 	gradleVersion = '1.0-milestone-7'
 }
