@@ -1,0 +1,9 @@
+dependencies {
+	testCompile project(":module:test-support")
+}
+
+test {
+	if (driver == "htmlunit") {
+		exclude "**/ExoticAttributeValuesSpec.class"
+	}
+}

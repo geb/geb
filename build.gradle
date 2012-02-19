@@ -28,7 +28,7 @@ allprojects { project ->
 	}
 
 	groovyModules = [
-		":module:geb-core", ":module:test-support",
+		":module:geb-core", ":module:geb-core-tests", ":module:test-support",
 		":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 		":module:geb-easyb", ":module:geb-testng"
 	]
@@ -63,6 +63,7 @@ subprojects {
 		driver = hasProperty("driver") ? driver : "htmlunit"
 		test {
 			systemProperties['geb.driver'] = driver
+			maxParallelForks Math.max(2, (int) (Runtime.runtime.availableProcessors() / 2))
 		}
 	}
 
