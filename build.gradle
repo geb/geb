@@ -57,11 +57,6 @@ subprojects {
 			apply from: "file:${rootDir}/clover.gradle"
 		}
 		
-		configurations {
-			compile.transitive = true
-			testCompile.transitive = true
-		}
-		
 		dependencies {
 			groovy groovyDependency
 		}
