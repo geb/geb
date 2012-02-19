@@ -101,16 +101,11 @@ subprojects {
 
 		task javadocJar(type: Jar) { 
 			classifier 'javadoc' 
-			from javadoc
-		} 
-
-		task groovydocJar(type: Jar) { 
-			classifier 'groovydoc'
 			from groovydoc
 		} 
 
 		artifacts {
-			meta groovydocJar, javadocJar, sourcesJar
+			meta javadocJar, sourcesJar
 		}
 	}
 		
