@@ -106,6 +106,7 @@ blockquote {
 	position: relative;
 	margin: 0 auto;
 	padding: 0;
+	height: inherit;
 }
 
 #header-content #logo {
@@ -147,19 +148,35 @@ blockquote {
 	text-transform: uppercase;
 }
 
+#header-content li:hover ul.manuals-list {
+	display: block;
+}
+
+#header-content ul.manuals-list {
+	top: 100%;
+	left: 0;
+	right: auto;
+	background-color: rgb(1, 11, 33);
+	display: none;
+}
+
+#header-content ul.manuals-list a {
+	float: none;
+}
+
 #header-content li {
 	display: inline;
 }
 
-#header-content li a {
+#header-content li a, #header-content li span {
 	float: left;
 	display: block;
-	padding: 0px 18px 7px 18px;
+	padding: 10px 18px;
 	color: #F3A251;
 	text-decoration: none;
 }
 
-#header-content li a:hover {
+#header-content li a:hover, #header-content li span {
 	color: #F88F26;
 }
 

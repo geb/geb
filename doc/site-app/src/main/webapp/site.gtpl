@@ -38,7 +38,15 @@
       <h2 id="slogan">very groovy browser automation… web testing, screen scraping and more</h2>
       
       <ul>
-        <li><a href="manual/current/">Manual</a></li>
+        <li>
+          <span>Manual</span>
+          <ul class="manuals-list">
+            <li><a href="manual/current/">Current</a></li>
+            <% request.oldManuals.each { %>
+              <li><a href="manual/$it/">${it}</a></li>
+            <% } %>
+          </ul>
+        </li>
         <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
         <li><a href="http://jira.codehaus.org/browse/GEB">Issues</a></li>
         <li><a href="http://github.com/geb/geb">Code</a></li>
