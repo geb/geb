@@ -4,12 +4,12 @@ allprojects { project ->
 	version = '0.7.0-SNAPSHOT'
 	group = 'org.codehaus.geb'
 	isSnapshot = version.endsWith("-SNAPSHOT")
-    
+
 	grailsVersion = "1.3.7"
 	seleniumVersion = "2.15.0"
 	groovyVersion = "1.7.10"
 	spockVersion = "0.6-groovy-1.7-SNAPSHOT"
-	
+
 	spockDependency = "org.spockframework:spock-core:$spockVersion"
 
 	seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
@@ -20,27 +20,27 @@ allprojects { project ->
 	jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
 
 	groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
-	
+
 	repositories {
 		mavenCentral()
 		mavenRepo name: "spock-snapshots", url: "http://m2repo.spockframework.org/snapshots"
 		mavenRepo name: "java.net", url: "http://download.java.net/maven/2"
 	}
-	
+
 	groovyModules = [
-		":module:geb-core", ":module:test-utils", 
+		":module:geb-core", ":module:test-utils",
 		":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 		":module:geb-easyb", ":module:geb-testng"
 	]
 
 	publishedModules = [
-		":module:geb-core", ":module:geb-spock", 
+		":module:geb-core", ":module:geb-spock",
 		":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
 		":module:geb-testng", ":doc:manual"
 	]
 
 	publishedGroovyModules = groovyModules.findAll { it in publishedModules }
-	
+
 	grailsPluginModule = ":module:geb-grails"
 }
 
@@ -48,24 +48,24 @@ subprojects {
 	if (project.path in groovyModules) {
 		apply plugin: "groovy"
 		apply plugin: 'idea'
-		
+
 		if (project.path != ":test-utils") {
 			apply from: "file:${rootDir}/clover.gradle"
 		}
-		
+
 		dependencies {
 			groovy groovyDependency
 		}
-		
+
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
-		
+
 		driver = project.hasProperty("driver") ? project.driver : "htmlunit"
 		test {
 			systemProperties['geb.driver'] = project.driver
 		}
 	}
-	
+
 	if (project.path in publishedGroovyModules) {
 		groovydoc {
 			exclude "**/internal/**"
@@ -89,32 +89,31 @@ subprojects {
 			footer = "<p style='text-align: center'>Groovy API Documentation for $project.name $project.version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
 			windowTitle = "Groovy API for $project.name $project.version"
 		}
-		
-		task sourcesJar(type: Jar) { 
-			classifier 'sources' 
-			from sourceSets.main.allSource
-		} 
 
-		task javadocJar(type: Jar) { 
-			classifier 'javadoc' 
+		task sourcesJar(type: Jar) {
+			classifier 'sources'
+			from sourceSets.main.allSource
+		}
+
+		task javadocJar(type: Jar) {
+			classifier 'javadoc'
 			from groovydoc
-		} 
+		}
 
 		artifacts {
 			archives javadocJar, sourcesJar
 		}
 	}
-		
-	
+
 	if (project.path in publishedModules) {
 		if (!plugins.hasPlugin("base")) {
 			apply plugin: "base"
 		}
 		apply plugin: "maven"
 		apply plugin: "signing"
-		
+
 		task release(dependsOn: uploadArchives)
-		
+
 		project.afterEvaluate { project, state ->
 			state.rethrowFailure()
 			if (project.path in publishedModules) {
@@ -178,12 +177,12 @@ subprojects {
 
 							}
 						}
-						project.poms << project.deployer.pom 
+						project.poms << project.deployer.pom
 					}
 				}
 
 				if (project.hasProperty('modifyPom')) {
-					project.poms*.whenConfigured(project.modifyPom) 
+					project.poms*.whenConfigured(project.modifyPom)
 				}
 
 				// Remove test deps from all poms
