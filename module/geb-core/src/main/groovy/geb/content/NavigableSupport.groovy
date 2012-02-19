@@ -15,9 +15,10 @@
 package geb.content
 
 import geb.Browser
-import geb.navigator.Navigator
 import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
+import geb.navigator.Navigator
+import geb.navigator.SelectionContext
 import org.openqa.selenium.WebElement
 
 /**
@@ -95,7 +96,7 @@ abstract class NavigableSupport implements Navigable {
 	}
 
 	Navigator $(Navigator[] navigators) {
-		Navigator.on(browser, *navigators)
+		Navigator.on(browser, new SelectionContext(), *navigators)
 	}
 
 	Navigator $(SimplePageContent[] contents) {
@@ -103,7 +104,7 @@ abstract class NavigableSupport implements Navigable {
 	}
 
 	Navigator $(WebElement[] elements) {
-		Navigator.on(browser, *elements)
+		Navigator.on(browser, new SelectionContext(), *elements)
 	}
 
 	/*

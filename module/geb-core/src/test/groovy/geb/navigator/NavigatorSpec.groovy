@@ -1137,7 +1137,7 @@ class NavigatorSpec extends GebSpec {
 		given:
 		def element1 = Mock(WebElement)
 		def element2 = Mock(WebElement)
-		def navigator = new NonEmptyNavigator(browser, element1, element2)
+		def navigator = new NonEmptyNavigator(browser, new SelectionContext(), element1, element2)
 
 		when: navigator.click()
 

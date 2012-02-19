@@ -20,32 +20,34 @@ class NonEmptyNavigator extends Navigator {
 
 	private final List<WebElement> contextElements
 
-	NonEmptyNavigator(Browser browser, WebElement[] contextElements) {
-		this(browser, contextElements as List)
+	NonEmptyNavigator(Browser browser, SelectionContext selectionContext, WebElement[] contextElements) {
+		this(browser, selectionContext, contextElements as List)
 	}
 
-	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
-		super(browser)
+	NonEmptyNavigator(Browser browser, SelectionContext selectionContext, Collection<? extends WebElement> contextElements) {
+		super(browser, selectionContext)
 		this.contextElements = contextElements.toList().unique().asImmutable()
 	}
 
-	protected Navigator navigatorFor(Collection<? extends WebElement> contextElements) {
-		on browser, contextElements
+	protected Navigator navigatorFor(SelectionContext selectionContext, Collection<? extends WebElement> contextElements) {
+		on browser, selectionContext, contextElements
 	}
 
-	protected Navigator navigatorFor(WebElement[] contextElements) {
-		on browser, contextElements
+	protected Navigator navigatorFor(SelectionContext selectionContext, WebElement[] contextElements) {
+		on browser, selectionContext, contextElements
 	}
 
 	Navigator find(String selectorString) {
+        SelectionContext selectionContext = new SelectionContext(selectorString)
+        
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
 			contextElements.each {
 				list.addAll it.findElements(By.cssSelector(selectorString))
 			}
-			navigatorFor list
+			navigatorFor selectionContext, list
 		} else {
-			navigatorFor CssSelector.findByCssSelector(allElements(), selectorString)
+			navigatorFor selectionContext, CssSelector.findByCssSelector(allElements(), selectorString)
 		}
 	}
 
@@ -59,13 +61,13 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator filter(String selectorString) {
-		navigatorFor contextElements.findAll { element ->
+		navigatorFor new SelectionContext(), contextElements.findAll { element ->
 			CssSelector.matches(element, selectorString)
 		}
 	}
 
 	Navigator filter(Map<String, Object> predicates) {
-		navigatorFor contextElements.findAll { matches(it, predicates) }
+		navigatorFor new SelectionContext(), contextElements.findAll { matches(it, predicates) }
 	}
 
 	Navigator filter(Map<String, Object> predicates, String selector) {
@@ -73,25 +75,25 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator not(String selectorString) {
-		navigatorFor contextElements.findAll { element ->
+		navigatorFor new SelectionContext(), contextElements.findAll { element ->
 			!CssSelector.matches(element, selectorString)
 		}
 	}
 
 	Navigator getAt(int index) {
-		navigatorFor getElement(index)
+		navigatorFor new SelectionContext(), getElement(index)
 	}
 
 	Navigator getAt(Range range) {
-		navigatorFor getElements(range)
+		navigatorFor new SelectionContext(), getElements(range)
 	}
 
 	Navigator getAt(EmptyRange range) {
-		new EmptyNavigator(browser)
+		new EmptyNavigator(browser, new SelectionContext())
 	}
 
 	Navigator getAt(Collection indexes) {
-		navigatorFor getElements(indexes)
+		navigatorFor new SelectionContext(), getElements(indexes)
 	}
 
 	Collection<WebElement> allElements() {
@@ -121,79 +123,79 @@ class NonEmptyNavigator extends Navigator {
 		} else if (size == 1) {
 			new EmptyNavigator(browser)
 		} else {
-			navigatorFor(contextElements - contextElements[index])
+			navigatorFor(new SelectionContext(), contextElements - contextElements[index])
 		}
 	}
 
 	Navigator next() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElement By.xpath("following-sibling::*")
 		}
 	}
 
 	Navigator next(String selectorString) {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def siblings = it.findElements(By.xpath("following-sibling::*"))
 			siblings.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator nextAll() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElements By.xpath("following-sibling::*")
 		}
 	}
 
 	Navigator nextAll(String selectorString) {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def siblings = it.findElements(By.xpath("following-sibling::*"))
 			siblings.findAll { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator nextUntil(String selectorString) {
-		navigatorFor collectElements { element ->
+		navigatorFor new SelectionContext(), collectElements { element ->
 			def siblings = element.findElements(By.xpath("following-sibling::*"))
 			collectUntil(siblings, selectorString)
 		}
 	}
 
 	Navigator previous() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*"))
 			siblings ? siblings.last() : EMPTY_LIST
 		}
 	}
 
 	Navigator previous(String selectorString) {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
 			siblings.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator prevAll() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElements(By.xpath("preceding-sibling::*"))
 		}
 	}
 
 	Navigator prevAll(String selectorString) {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
 			siblings.findAll { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator prevUntil(String selectorString) {
-		navigatorFor collectElements { element ->
+		navigatorFor new SelectionContext(), collectElements { element ->
 			def siblings = element.findElements(By.xpath("preceding-sibling::*")).reverse()
 			collectUntil(siblings, selectorString)
 		}
 	}
 
 	Navigator parent() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElement By.xpath("parent::*")
 		}
 	}
@@ -203,34 +205,34 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator parents() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElements(By.xpath("ancestor::*")).reverse()
 		}
 	}
 
 	Navigator parents(String selectorString) {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def ancestors = it.findElements(By.xpath("ancestor::*")).reverse()
 			ancestors.findAll { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator parentsUntil(String selectorString) {
-		navigatorFor collectElements { element ->
+		navigatorFor new SelectionContext(), collectElements { element ->
 			def ancestors = element.findElements(By.xpath("ancestor::*")).reverse()
 			collectUntil(ancestors, selectorString)
 		}
 	}
 
 	Navigator closest(String selectorString) {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			def parents = it.findElements(By.xpath("ancestor::*")).reverse()
 			parents.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	Navigator children() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElements By.xpath("child::*")
 		}
 	}
@@ -240,7 +242,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator siblings() {
-		navigatorFor collectElements {
+		navigatorFor new SelectionContext(), collectElements {
 			it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
 		}
 	}
@@ -323,15 +325,15 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator first() {
-		navigatorFor firstElement()
+		navigatorFor new SelectionContext(), firstElement()
 	}
 
 	Navigator last() {
-		navigatorFor lastElement()
+		navigatorFor new SelectionContext(), lastElement()
 	}
 
 	Navigator tail() {
-		navigatorFor contextElements.tail()
+		navigatorFor new SelectionContext(), contextElements.tail()
 	}
 
 	Navigator verifyNotEmpty() {
@@ -344,7 +346,7 @@ class NonEmptyNavigator extends Navigator {
 
 	def methodMissing(String name, arguments) {
 		if (!arguments) {
-			navigatorFor collectElements {
+			navigatorFor new SelectionContext(), collectElements {
 				it.findElements By.name(name)
 			}
 		} else {

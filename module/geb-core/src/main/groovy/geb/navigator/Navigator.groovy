@@ -29,9 +29,11 @@ import geb.js.JQueryAdapter
 abstract class Navigator implements Iterable<Navigator> {
 
 	final Browser browser
+    final SelectionContext selectionContext
 	
-	Navigator(Browser browser) {
+	Navigator(Browser browser, SelectionContext selectionContext) {
 		this.browser = browser
+        this.selectionContext = selectionContext
 	}
 	
 	boolean asBoolean() {
@@ -210,7 +212,7 @@ abstract class Navigator implements Iterable<Navigator> {
 		def result = []
 		result.addAll allElements()
 		result.addAll elements
-		on(browser, result)
+		on(browser, new SelectionContext(), result)
 	}
 
 	/**
@@ -558,7 +560,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	Navigator findAll(Closure predicate) {
 		Collection<Navigator> results = super.findAll(predicate)
-		on getBrowser(), results*.allElements().flatten()
+		on getBrowser(), new SelectionContext(), results*.allElements().flatten()
 	}
 
 	/**
@@ -618,25 +620,27 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * for the other one, with most of the logic, simple.
 	 * </p>
 	 * @param browser the browser the content is attached to
+     * @param selectionContext the selectionContext relevant to this Navigator
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Browser browser, WebElement[] contextElements) {
-		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
+	static Navigator on(Browser browser, SelectionContext selectionContext, WebElement[] contextElements) {
+		contextElements ? new NonEmptyNavigator(browser, selectionContext, contextElements) : new EmptyNavigator(browser, selectionContext)
 	}
 
 	/**
 	 * Factory method to create a Navigator instance that is composed of other instances.
 	 * 
 	 * @param browser the browser the content is attached to
+     * @param selectionContext the selectionContext relevant to this Navigator
 	 * @param navigators the navigators to compose of
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Browser browser, Navigator[] navigators) {
+	static Navigator on(Browser browser, SelectionContext selectionContext, Navigator[] navigators) {
 		if (navigators) {
-			on(browser, navigators*.allElements().flatten())
+			on(browser, selectionContext, navigators*.allElements().flatten())
 		} else {
-			new EmptyNavigator(browser)
+			new EmptyNavigator(browser, selectionContext)
 		}
 	}
 
@@ -648,11 +652,12 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * for the other one, with most of the logic, simple.
 	 * </p>
 	 * @param browser the browser the content is attached to
+     * @param selectionContext the selectionContext relevant to this Navigator
 	 * @param contextElements the context elements to use
 	 * @return new Navigator instance
 	 */
-	static Navigator on(Browser browser, Collection<? extends WebElement> contextElements) {
-		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
+	static Navigator on(Browser browser, SelectionContext selectionContext, Collection<? extends WebElement> contextElements) {
+		contextElements ? new NonEmptyNavigator(browser, selectionContext, contextElements) : new EmptyNavigator(browser, selectionContext)
 	}
 
 	/**
@@ -667,7 +672,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	static Navigator on(Browser browser) {
 		def rootElement = browser.driver.findElement(By.tagName("html"))
-		rootElement ? new NonEmptyNavigator(browser, rootElement) : new EmptyNavigator(browser)
+		rootElement ? new NonEmptyNavigator(browser, new SelectionContext(), rootElement) : new EmptyNavigator(browser)
 	}
 }
 
