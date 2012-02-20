@@ -146,6 +146,8 @@ task filter(type: Copy) {
 	}
 
 	properties["geb.manual.oldManualVersions"] = oldManualVersions.reverse().join(',')
+	properties["geb.manual.currentManualVersion"] = stableVersion
+	properties["geb.manual.snapshotManualVersion"] = project.version
 
 	inputs.properties(properties)
 	filter(ReplaceTokens, tokens: properties)

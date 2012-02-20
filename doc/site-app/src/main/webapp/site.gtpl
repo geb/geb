@@ -39,12 +39,13 @@
       
       <ul>
         <li>
-          <span>Manual</span>
+          <a href="/manual/">Manual</a>
           <ul class="manuals-list">
-            <li><a href="manual/current/">Current</a></li>
+            <li><a href="manual/current/">${request.currentManual} - current</a></li>
             <% request.oldManuals.each { %>
               <li><a href="manual/$it/">${it}</a></li>
             <% } %>
+            <li><a href="manual/snapshot/">${request.snapshotManual}</a></li>
           </ul>
         </li>
         <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
