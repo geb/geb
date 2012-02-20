@@ -1,16 +1,16 @@
 def loadOldManualsListFromProperties() {
-    def manualPropertiesStream = context.getResourceAsStream("/WEB-INF/manual.properties")
-    if (manualPropertiesStream == null) {
-        return binding.response.sendError(500, "no manual properties found")
-    }
+	def manualPropertiesStream = context.getResourceAsStream("/WEB-INF/manual.properties")
+	if (manualPropertiesStream == null) {
+		return binding.response.sendError(500, "no manual properties found")
+	}
 
-    def manualProperties = new Properties()
-    manualProperties.load(manualPropertiesStream)
+	def manualProperties = new Properties()
+	manualProperties.load(manualPropertiesStream)
 
-    if (!manualProperties.containsKey('old')) {
-        return binding.response.sendError(500, "no old manual list found")
-    }
-    manualProperties.old.tokenize(',')
+	if (!manualProperties.containsKey('old')) {
+		return binding.response.sendError(500, "no old manual list found")
+	}
+	manualProperties.old.tokenize(',')
 }
 
 request['pages'] = [
