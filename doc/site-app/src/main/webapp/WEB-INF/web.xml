@@ -37,4 +37,29 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    
+    <context-param>
+          <param-name>org.mortbay.jetty.servlet.Default.dirAllowed</param-name>
+          <param-value>true</param-value>
+    </context-param>
+    
+    <servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
+        <init-param>
+            <param-name>acceptRanges</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dirAllowed</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/manual/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>
