@@ -156,6 +156,6 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion "1.0-milestone-8a-20120216221836+0100"
+	gradleVersion "1.0-milestone-8a"
 }
 
