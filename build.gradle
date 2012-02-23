@@ -1,4 +1,5 @@
 apply plugin: 'idea'
+apply from: "gradle/idea.gradle"
 
 allprojects { project ->
 	version = '0.7.0-SNAPSHOT'
