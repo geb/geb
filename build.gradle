@@ -133,23 +133,25 @@ subprojects {
 		
 		project.poms = [project.install.repositories.mavenInstaller.pom]
 
-		uploadArchives {
+		addAuthentication = { task, repository ->
+			gradle.taskGraph.whenReady { taskGraph ->
+				if (taskGraph.hasTask(task)) {
+					repository.authentication(userName: codehausUsername, password: codehausPassword)
+				}
+			}
+		}
+		
+		uploadArchives { task ->
 			project.poms << repositories.mavenDeployer {
 				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 				uniqueVersion = false
 				repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
-					authentication(userName: codehausUsername, password: codehausPassword)
+					addAuthentication(task, delegate)
 				}
 				snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
-					authentication(userName: codehausUsername, password: codehausPassword)
+					addAuthentication(task, delegate)
 				}
 			}.pom
-		}
-		
-		gradle.taskGraph.whenReady {
-			if (it.hasTask(uploadArchives)) {
-				codehausUsername && codehausPassword // fail fast if we can't upload
-			}
 		}
 		
 		project.poms*.whenConfigured { applyPomMods(it) }
