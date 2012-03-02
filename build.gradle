@@ -9,7 +9,7 @@ allprojects { project ->
 	grailsVersion = "1.3.7"
 	seleniumVersion = "2.15.0"
 	groovyVersion = "1.7.10"
-	spockVersion = "0.6-groovy-1.7-SNAPSHOT"
+	spockVersion = "0.6-groovy-1.7"
 
 	spockDependency = "org.spockframework:spock-core:$spockVersion"
 
