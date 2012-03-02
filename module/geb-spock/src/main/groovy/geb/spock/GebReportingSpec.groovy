@@ -22,7 +22,7 @@ import org.junit.rules.TestName
 class GebReportingSpec extends GebSpec {
 
 	// Ridiculous name to avoid name clashes
-	@Rule _gebReportingSpecTestName = new TestName()
+	@Rule TestName _gebReportingSpecTestName
 	def _gebReportingPerTestCounter = 1
 	@Shared _gebReportingSpecTestCounter = 1
 

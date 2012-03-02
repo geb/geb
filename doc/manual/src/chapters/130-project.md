@@ -40,6 +40,12 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
+* Compatibility with Spock 0.6
+
+### 0.6.2
+
+#### New Features
+
 * New `moduleList()` function for repeating content
 * New `withFrame()` method for working with frames
 * New `withWindow()` and `withNewWindow()` methods for working with multiple windows
