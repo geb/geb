@@ -209,7 +209,7 @@ Via `@Grab`…
     
     @Grapes([
         @Grab("org.codehaus.geb:geb-core:@geb-version@"),
-        @Grab("org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@")
+        @Grab("org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@"),
         @Grab("org.seleniumhq.selenium:selenium-support:@selenium-version@")
     ])
     import geb.Browser
