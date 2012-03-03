@@ -61,7 +61,7 @@ subprojects {
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 
-		driver = hasProperty("driver") ? driver : "htmlunit"
+		driver = project.hasProperty("driver") ? driver : "htmlunit"
 		test {
 			systemProperties['geb.driver'] = driver
 			maxParallelForks Math.max(2, (int) (Runtime.runtime.availableProcessors() / 2))
