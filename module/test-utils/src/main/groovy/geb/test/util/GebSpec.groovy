@@ -32,7 +32,7 @@ class GebSpec extends Specification {
 	@Shared Browser _browser
 
 	// Ridiculous name to avoid name clashes
-	@Rule _gebReportingSpecTestName = new TestName()
+	@Rule TestName _gebReportingSpecTestName = new TestName()
 	def _gebReportingPerTestCounter = 0
 	@Shared _gebReportingSpecTestCounter = 0
 	

@@ -17,9 +17,9 @@ package geb.waiting
 
 import geb.*
 import geb.error.*
-import geb.waiting.WaitTimeoutException
 import geb.test.util.*
 import spock.lang.*
+import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
 class WaitingContentSpec extends GebSpecWithServer {
 
@@ -48,12 +48,12 @@ class WaitingContentSpec extends GebSpecWithServer {
 	}
 	
 	protected getContent() {
-		TestPage.content = {
+		DynamicallySpecifiedContentPage.content = {
 			delegate.div(params, factory)
 		}
 		
 		go()
-		page TestPage
+		page DynamicallySpecifiedContentPage
 		js.showIn(showDelay)
 		div
 	}
@@ -139,8 +139,25 @@ class WaitingContentSpec extends GebSpecWithServer {
 		then:
 		content
 	}
+
+	def "content with wait option set throws timeout exception with power assertion error in cause"() {
+		when:
+		to StaticallySpecifiedContentPage
+		waitContent
+
+		then:
+		WaitTimeoutException exception = thrown()
+		exception.cause in PowerAssertionError
+		exception.cause.message.contains('$(div)')
+	}
 }
 
-class TestPage extends Page {
+class DynamicallySpecifiedContentPage extends Page {
 	static content = null
+}
+
+class StaticallySpecifiedContentPage extends Page {
+	static content = {
+		waitContent(wait: 1) { $("div") }
+	}
 }

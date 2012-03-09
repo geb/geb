@@ -25,11 +25,20 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 
 	@Override
 	void visitField(FieldNode node) {
-		if (node.static && node.name == 'at') {
-			if (node.initialExpression in ClosureExpression) {
-				rewriteClosureStatements(node.initialExpression)
+		if (node.static && node.initialExpression in ClosureExpression) {
+			switch (node.name) {
+				case 'at':
+					rewriteClosureStatements(node.initialExpression)
+					break
+				case 'content':
+					visitContentDslStatements(node.initialExpression)
+					break
 			}
 		}
+	}
+
+	private boolean lastArgumentIsClosureExpression(ArgumentListExpression arguments) {
+		arguments.expressions && arguments.expressions[-1] in ClosureExpression
 	}
 
 	@Override
@@ -38,7 +47,7 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 			MethodCallExpression expression = statement.expression
 			if (expression.methodAsString == 'waitFor' && expression.arguments in ArgumentListExpression) {
 				ArgumentListExpression arguments = expression.arguments
-				if (arguments.expressions && arguments.expressions[-1] in ClosureExpression) {
+				if (lastArgumentIsClosureExpression(arguments)) {
 					rewriteClosureStatements(arguments.expressions[-1])
 				}
 			}
@@ -48,6 +57,34 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 	@Override
 	protected SourceUnit getSourceUnit() {
 		sourceUnit
+	}
+
+	private boolean waitOptionIsSpecified(ArgumentListExpression arguments) {
+		MapExpression paramMap = arguments.expressions.find { it in MapExpression }
+		paramMap?.mapEntryExpressions.any {
+			if (it.keyExpression in ConstantExpression) {
+				ConstantExpression key = it.keyExpression
+				key.value == 'wait'
+			}
+		}
+	}
+
+	private void visitContentDslStatements(ClosureExpression closureExpression) {
+		BlockStatement blockStatement = closureExpression.code
+		blockStatement.statements.each { Statement statement ->
+			if (statement in ExpressionStatement) {
+				ExpressionStatement expressionStatement = statement
+				if (expressionStatement.expression in MethodCallExpression) {
+					MethodCallExpression methodCall = expressionStatement.expression
+					if (methodCall.arguments in ArgumentListExpression) {
+						ArgumentListExpression arguments = methodCall.arguments
+						if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments)) {
+							rewriteClosureStatements(arguments.expressions[-1])
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private void rewriteClosureStatements(ClosureExpression closureExpression) {
@@ -72,7 +109,7 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 		if (statement in ExpressionStatement) {
 			ExpressionStatement expressionStatement = statement
 			if (!(expressionStatement.expression in DeclarationExpression)
-					&& checkIsValidCondition(expressionStatement)) {
+				&& checkIsValidCondition(expressionStatement)) {
 				return expressionStatement.expression
 			}
 		}
