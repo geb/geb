@@ -23,6 +23,7 @@ import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
+import geb.error.RequiredPageContentNotPresent
 
 /**
  * The Page type is the basis of the Page Object pattern in Geb.
@@ -118,8 +119,9 @@ class Page {
 	/**
 	 * Executes this page's "at checker".
 	 * 
-	 * @return whether the at checker succeeded or not.
+	 * @return always true
 	 * @see #verifyAtSafely()
+	 * @throws AssertionError if this page's "at checker" doesn't pass
 	 */
 	boolean verifyAt() {
 		def verifier = this.class.at?.clone()
@@ -143,6 +145,8 @@ class Page {
 		try {
 			verifyAt()
 		} catch (AssertionError e) {
+			false
+		} catch (RequiredPageContentNotPresent e) {
 			false
 		}
 	}

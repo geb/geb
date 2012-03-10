@@ -17,6 +17,7 @@ package geb.waiting
 import geb.*
 import geb.test.*
 import spock.lang.*
+import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
 class WaitingSupportSpec extends GebSpecWithServer {
 
@@ -65,7 +66,9 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		js.showIn(3)
 		waitFor(1) { !$("div").empty }
 		then:
-		thrown(WaitTimeoutException)
+		WaitTimeoutException exception = thrown()
+		exception.cause in PowerAssertionError
+		exception.cause.message.contains('!$("div").empty')
 	}
 
 	def "failed waiting throwing exception"() {
@@ -133,12 +136,12 @@ class WaitingSupportSpecPage extends Page {
 		mod { module WaitingSupportSpecModule }
 	}
 	def waitForDiv() {
-		waitFor { $("div").empty }
+		waitFor { !$("div").empty }
 	}
 }
 
 class WaitingSupportSpecModule extends Module {
 	def waitForDiv() {
-		waitFor { $("div").empty }
+		waitFor { !$("div").empty }
 	}
 }

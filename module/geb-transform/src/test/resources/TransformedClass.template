@@ -1,0 +1,20 @@
+class TestClass {
+    static at = { false }
+
+    def waitFor(Closure closure) {
+        closure.call()
+    }
+
+    boolean booleanMethod(boolean returned) {
+        returned
+    }
+
+    void voidMethod() {
+    }
+
+    def run() {
+        waitFor {
+            $closureBody
+        }
+    }
+}

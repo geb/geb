@@ -181,7 +181,7 @@ Pages define an [“at checker”][page-at] that the browser uses for this test.
 
     class SignupPage extends Page {
         static at = {
-            assert $("h1").text() == "Signup Page"
+            $("h1").text() == "Signup Page"
         }
     }
     
@@ -189,6 +189,10 @@ Pages define an [“at checker”][page-at] that the browser uses for this test.
         to SignupPage
         at SignupPage
     }
+
+The `at SignupPage` method call will either return true or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
+
+> Not using explicit `return` statements in “at” checkers is preffered. Geb transforms all “at” checkers so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see evaluated values of your “at” checker if it fails. See the [“at checker”][page-at] section for more details.
 
 It's a good idea to use an at check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
 

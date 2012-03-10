@@ -244,23 +244,50 @@ class Browser {
 	}
 
 	/**
-	 * Checks if the browser is at the current page by running the at checker for this page type.
+	 * Checks if the browser is at the current page by running the at checker for this page type, and throws an
+	 * AssertionError if not.
 	 * <p>
 	 * A new instance of the page is created for the at check. If the at checker is successful, 
 	 * this browser object's page instance is updated to the new instance of the given page type.
+	 *
+	 * @return always true
+	 * @throws AssertionError if this page's "at checker" doesn't pass
 	 */
 	boolean at(Class<? extends Page> pageType) {
-		doAt(page.class == pageType ? page : createPage(pageType))
+		doAt(createPage(pageType))
+	}
+
+	/**
+	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it
+	 * and throws an AssertionError if not.
+	 * <p>
+	 * If the given page at checker is successful, this browser object's page instance is updated
+	 * to the one the method is called with.
+	 *
+	 * @return always true
+	 * @throws AssertionError if this page's "at checker" doesn't pass
+	 */
+	boolean at(Page page) {
+		doAt(page)
+	}
+
+	/**
+	 * Checks if the browser is at the given page by running the at checker for this page type.
+	 *
+	 * @return true if browser is at the given page otherwise false
+	 */
+	boolean isAt(Class<? extends Page> pageType) {
+		isAt(createPage(pageType))
 	}
 
 	/**
 	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it.
-	 * <p>
-	 * If the given page at checker is successful, this browser object's page instance is updated
-	 * to the one the method is called with.
+	 *
+	 * @return true if browser is at the given page otherwise false
 	 */
-	boolean at(Page page) {
-		doAt(page)
+	boolean isAt(Page page) {
+		initialisePage(page)
+		page.verifyAtSafely()
 	}
 
 	/**
@@ -292,19 +319,9 @@ class Browser {
 	 */
 	private boolean doAt(Page page) {
 		initialisePage(page)
-		def at
-		try {
-			at = page.verifyAt()
-		} catch (RequiredPageContentNotPresent e) {
-			at = false
-		}
-		
-		if (at) {
-			makeCurrentPage(page)
-			true
-		} else {
-			false
-		}
+		page.verifyAt()
+		makeCurrentPage(page)
+		true
 	}
 
 	/**
