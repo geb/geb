@@ -7,7 +7,7 @@ include "module:geb-core",
         "module:geb-grails",
         "module:geb-testng",
         "module:geb-easyb",
-        "module:geb-transform",
+        "module:geb-implicit-assertions",
         "doc:manual",
         "doc:site-app"
 

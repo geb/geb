@@ -33,7 +33,7 @@ allprojects { project ->
 		groovyModules = [
 			":module:geb-core", ":module:geb-core-tests", ":module:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
-			":module:geb-easyb", ":module:geb-testng", ":module:geb-transform"
+			":module:geb-easyb", ":module:geb-testng", ":module:geb-implicit-assertions"
 		]
 
 		publishedModules = [
