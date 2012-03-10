@@ -66,9 +66,10 @@ task packageManual(type: Sync) {
 	into "$buildDir/manual"
 	from compileManual
 	
-	publishedGroovyModules.collect { project(it) }.each {
-		from it.groovydoc
-		into ("api/$it.name")
+	publishedGroovyModules.collect { project(it) }.each { project ->
+		into ("api/$project.name") {
+			from project.groovydoc
+		}
 	}
 }
 
