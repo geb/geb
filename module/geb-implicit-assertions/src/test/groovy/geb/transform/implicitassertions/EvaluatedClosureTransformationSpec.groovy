@@ -1,4 +1,4 @@
-package geb.transform
+package geb.transform.implicitassertions
 
 import spock.lang.Specification
 import groovy.text.SimpleTemplateEngine

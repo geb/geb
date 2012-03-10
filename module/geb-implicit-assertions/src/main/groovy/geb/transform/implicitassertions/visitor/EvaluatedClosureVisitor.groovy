@@ -1,6 +1,6 @@
-package geb.transform.visitor
+package geb.transform.implicitassertions.visitor
 
-import geb.transform.Runtime
+import geb.transform.implicitassertions.Runtime
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassCodeVisitorSupport
 import org.codehaus.groovy.ast.ClassHelper

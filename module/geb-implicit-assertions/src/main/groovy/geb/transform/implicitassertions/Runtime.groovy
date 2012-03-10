@@ -1,4 +1,4 @@
-package geb.transform
+package geb.transform.implicitassertions
 
 import org.codehaus.groovy.runtime.InvokerHelper
 
