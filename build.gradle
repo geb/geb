@@ -26,7 +26,6 @@ allprojects { project ->
 
 		repositories {
 			mavenCentral()
-			mavenRepo name: "spock-snapshots", url: "http://m2repo.spockframework.org/snapshots"
 			mavenRepo name: "java.net", url: "http://download.java.net/maven/2"
 		}
 
