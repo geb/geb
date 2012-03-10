@@ -138,7 +138,10 @@ task includeVersionManuals(dependsOn: allVersionConfigurations + [cleanManuals])
 
 task includeManuals(dependsOn: [includeSnapshotManual, includeCurrentManual, includeVersionManuals])
 
-task filter(type: Copy) {
+war {
+	dependsOn includeManuals
+	from "build/manual"
+	
 	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : "snapshot" 
 	def properties = [version: siteVersion]
 
@@ -151,16 +154,15 @@ task filter(type: Copy) {
 	properties["geb.manual.currentManualVersion"] = stableVersion
 	properties["geb.manual.snapshotManualVersion"] = project.version
 
+	def filterableExtensions = ["xml", "properties"]
 	inputs.properties(properties)
-	filter(ReplaceTokens, tokens: properties)
-	from "src/main/webapp-filtered"
-	into "build/exploded-war-filtered"
-}
-
-war {
-	dependsOn filter, includeManuals
-	from filter.destinationDir
-	from "build/manual"
+	inputs.property('filterableExtensions', filterableExtensions)
+	
+	eachFile { file ->
+		if (filterableExtensions.any { file.name.endsWith(it) }) {
+			file.filter(ReplaceTokens, tokens: properties)
+		}
+	}
 }
 
 gae {
