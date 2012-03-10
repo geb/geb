@@ -4,45 +4,48 @@ apply from: "gradle/idea.gradle"
 allprojects { project ->
 	version = '0.7.0-SNAPSHOT'
 	group = 'org.codehaus.geb'
-	isSnapshot = version.endsWith("-SNAPSHOT")
+	
+	ext {
+		isSnapshot = version.endsWith("-SNAPSHOT")
 
-	grailsVersion = "1.3.7"
-	seleniumVersion = "2.15.0"
-	groovyVersion = "1.7.10"
-	spockVersion = "0.6-groovy-1.7"
+		grailsVersion = "1.3.7"
+		seleniumVersion = "2.15.0"
+		groovyVersion = "1.7.10"
+		spockVersion = "0.6-groovy-1.7"
 
-	spockDependency = "org.spockframework:spock-core:$spockVersion"
+		spockDependency = "org.spockframework:spock-core:$spockVersion"
 
-	seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
-	seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-	firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-	htmlUnitDriverDependency = "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion"
+		seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+		seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+		firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+		htmlUnitDriverDependency = "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion"
 
-	jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
+		jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
 
-	groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
+		groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
-	repositories {
-		mavenCentral()
-		mavenRepo name: "spock-snapshots", url: "http://m2repo.spockframework.org/snapshots"
-		mavenRepo name: "java.net", url: "http://download.java.net/maven/2"
+		repositories {
+			mavenCentral()
+			mavenRepo name: "spock-snapshots", url: "http://m2repo.spockframework.org/snapshots"
+			mavenRepo name: "java.net", url: "http://download.java.net/maven/2"
+		}
+
+		groovyModules = [
+			":module:geb-core", ":module:geb-core-tests", ":module:test-support",
+			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
+			":module:geb-easyb", ":module:geb-testng", ":module:geb-transform"
+		]
+
+		publishedModules = [
+			":module:geb-core", ":module:geb-spock",
+			":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
+			":module:geb-testng", ":doc:manual"
+		]
+
+		publishedGroovyModules = groovyModules.findAll { it in publishedModules }
+
+		grailsPluginModule = ":module:geb-grails"
 	}
-
-	groovyModules = [
-		":module:geb-core", ":module:geb-core-tests", ":module:test-support",
-		":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
-		":module:geb-easyb", ":module:geb-testng", ":module:geb-transform"
-	]
-
-	publishedModules = [
-		":module:geb-core", ":module:geb-spock",
-		":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
-		":module:geb-testng", ":doc:manual"
-	]
-
-	publishedGroovyModules = groovyModules.findAll { it in publishedModules }
-
-	grailsPluginModule = ":module:geb-grails"
 }
 
 subprojects {
@@ -61,7 +64,7 @@ subprojects {
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 
-		driver = project.hasProperty("driver") ? driver : "htmlunit"
+		ext.driver = project.hasProperty("driver") ? driver : "htmlunit"
 		test {
 			systemProperties['geb.driver'] = driver
 			maxParallelForks Math.max(2, (int) (Runtime.runtime.availableProcessors() / 2))
@@ -131,9 +134,9 @@ subprojects {
 			}
 		}
 		
-		project.poms = [project.install.repositories.mavenInstaller.pom]
+		ext.poms = [project.install.repositories.mavenInstaller.pom]
 
-		addAuthentication = { task, repository ->
+		ext.addAuthentication = { task, repository ->
 			gradle.taskGraph.whenReady { taskGraph ->
 				if (taskGraph.hasTask(task)) {
 					repository.authentication(userName: codehausUsername, password: codehausPassword)

@@ -5,7 +5,7 @@ apply plugin: "groovy"
 apply plugin: "gae"
 
 buildscript {
-	gitHub = {
+	ext.gitHub = {
 		def resolver = new URLResolver()
 
 		resolver.with {
@@ -30,7 +30,7 @@ repositories {
 	add gitHub()
 }
 
-appEngineVersion = "1.6.2"
+ext.appEngineVersion = "1.6.2"
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.8.0"
@@ -43,11 +43,13 @@ dependencies {
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
 }
 
-// The version of manual to put under the “current” label
-stableVersion = "0.6.3"
+ext {
+	// The version of manual to put under the “current” label
+	stableVersion = "0.6.3"
 
-// The old versions of Geb we are including manuals for
-oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2"]
+	// The old versions of Geb we are including manuals for
+	oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2"]
+}
 
 def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
 configurations {
