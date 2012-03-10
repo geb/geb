@@ -12,7 +12,6 @@ buildscript {
 }
 
 archivesBaseName = "geb-manual"
-ext.output = file("build/manual")
 
 modifyPom = { pom ->
 	pom.project {
@@ -21,22 +20,10 @@ modifyPom = { pom ->
 	}
 }
 
-task compileApi(dependsOn: publishedGroovyModules.collect { project(it).groovydoc }) {
-	publishedGroovyModules.collect { project(it) }.each { groovyProject ->
-		inputs.dir groovyProject.groovydoc.destinationDir
-	
-		doLast {
-			project.copy {
-				from groovyProject.groovydoc.destinationDir
-				into "$buildDir/manual/api/$groovyProject.name"
-			}
-		}
-	}
+task tokeniseManual(type: Copy) {
+	from "src"
+	into "$buildDir/manual-tokenised"
 
-	outputs.dir "build/manual/api"
-}
-
-task compileManual {
 	ext.substitutionProperties = [
 		"geb-version": project.version,
 		"spock-version": "0.5-groovy-1.7",
@@ -45,49 +32,52 @@ task compileManual {
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
 		"home-page": "www.gebish.org"
 	]
-	
-	inputs.properties substitutionProperties
-	inputs.dir "src"
-	outputs.dir "$buildDir/manual"
 
-	doLast {
-		def tmpSpace = file("$buildDir/tmp/manual")
-		assert !tmpSpace.exists() || tmpSpace.deleteDir()
-		
-		copy {
-			from "src"
-			into tmpSpace
-			
-			// There's an issue with encoding being messed up by filter(), so do it manually for now
-			//filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: substitutionProperties)
+	inputs.properties(substitutionProperties)
+
+	def tokenisableExtensions = ["md", "html"]
+	inputs.property("tokenisableExtensions", tokenisableExtensions)
+
+	eachFile { file ->
+		if (tokenisableExtensions.any { file.name.endsWith(it) }) {
+			file.filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: substitutionProperties)
 		}
-		
-		tmpSpace.eachFileRecurse { filterFile ->
-			if (["md", "html"].any { filterFile.name.endsWith(it) }) {
-				def text = filterFile.getText("UTF-8")
-				substitutionProperties.each { k, v ->
-					text = text.replace("@$k@", v)
-				}
-				
-				filterFile.setText(text, "UTF-8")
-			}
-		}
-		
-		new markdown2book.Generator(file("$buildDir/tmp/manual"), file("$buildDir/manual"), "UTF-8").generate()
 	}
 }
 
-task compile(type: Copy, dependsOn: [compileManual, compileApi])
+task compileManual {
+	dependsOn tokeniseManual
 
-task zip(type: Zip, dependsOn: compile) {
-	inputs.dir output
-	outputs.file archivePath
-	from output
+	ext.source = tokeniseManual.destinationDir
+	inputs.dir(source)
+
+	ext.destination = file("$buildDir/manual-compiled")
+	outputs.dir(destination)
+
+	ext.encoding = "UTF-8"
+	inputs.property("encoding", encoding)
+
+	doLast {
+		new markdown2book.Generator(source, destination, encoding).generate()
+	}
+}
+
+task packageManual(type: Sync) {
+	into "$buildDir/manual"
+	from compileManual
+	
+	publishedGroovyModules.collect { project(it) }.each {
+		from it.groovydoc
+		into ("api/$it.name")
+	}
+}
+
+task manualZip(type: Zip) {
+	from packageManual
 }
 
 artifacts {
-	archives zip
+	archives manualZip
 }
 
-
-task build(dependsOn: zip)
+task build(dependsOn: manualZip)
