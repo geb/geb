@@ -119,9 +119,9 @@ class Page {
 	/**
 	 * Executes this page's "at checker".
 	 * 
-	 * @return always true
+	 * @return whether the at checker succeeded or not.
 	 * @see #verifyAtSafely()
-	 * @throws AssertionError if this page's "at checker" doesn't pass
+	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
 	 */
 	boolean verifyAt() {
 		def verifier = this.class.at?.clone()
