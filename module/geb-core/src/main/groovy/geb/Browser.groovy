@@ -129,7 +129,7 @@ class Browser {
 	/**
 	 * Changes the base url used for resolving relative urls.
 	 * <p>
-	 * This method delegates to {@link geb.Configuration#setBaseUrl(def)}.
+	 * This method delegates to {@link geb.Configuration#setBaseUrl}.
 	 */
 	void setBaseUrl(String baseUrl) {
 		config.baseUrl = baseUrl
@@ -244,14 +244,16 @@ class Browser {
 	}
 
 	/**
-	 * Checks if the browser is at the current page by running the at checker for this page type, and throws an
-	 * AssertionError if not.
-	 * <p>
-	 * A new instance of the page is created for the at check. If the at checker is successful, 
-	 * this browser object's page instance is updated to the new instance of the given page type.
+	 * Checks if the browser is at the current page by running the at checker for this page type
 	 *
-	 * @return always true
-	 * @throws AssertionError if this page's "at checker" doesn't pass
+	 * A new instance of the page is created for the at check. If the at checker is successful,
+	 * this browser object's page instance is updated to the new instance of the given page type.
+	 * <p>
+	 * If <a href="http://www.gebish.org/manual/current/implicit_assertions.html">implicit assertions</a>
+	 * are enabled (which they are by default). This method will only ever return {@code true} or throw an
+	 * {@link AssertionError}
+	 *
+	 * @return whether the at checker succeeded or not (always true if implicit assertions are enabled)
 	 */
 	boolean at(Class<? extends Page> pageType) {
 		doAt(createPage(pageType))
@@ -260,19 +262,26 @@ class Browser {
 	/**
 	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it
 	 * and throws an AssertionError if not.
-	 * <p>
+	 *
 	 * If the given page at checker is successful, this browser object's page instance is updated
 	 * to the one the method is called with.
+	 * <p>
+	 * If <a href="http://www.gebish.org/manual/current/implicit_assertions.html">implicit assertions</a>
+	 * are enabled (which they are by default). This method will only ever return {@code true} or throw an
+	 * {@link AssertionError}.
 	 *
-	 * @return always true
-	 * @throws AssertionError if this page's "at checker" doesn't pass
+	 * @return whether the at checker succeeded or not (always true if implicit assertions are enabled)
 	 */
 	boolean at(Page page) {
 		doAt(page)
 	}
 
 	/**
-	 * Checks if the browser is at the given page by running the at checker for this page type.
+	 * Checks if the browser is at the given page by running the at checker for this page type, suppressing assertion errors.
+	 *
+	 * If the at check throws an {@link AssertionError}
+	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit_assertions.html">implicit assertions</a>
+	 * are enabled) this method will suppress the exception and return false.
 	 *
 	 * @return true if browser is at the given page otherwise false
 	 */
@@ -281,8 +290,12 @@ class Browser {
 	}
 
 	/**
-	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it.
+	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it, suppressing assertion errors.
 	 *
+	 * If the at check throws an {@link AssertionError}
+	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit_assertions.html">implicit assertions</a>
+	 * are enabled) this method will suppress the exception and return false.
+
 	 * @return true if browser is at the given page otherwise false
 	 */
 	boolean isAt(Page page) {

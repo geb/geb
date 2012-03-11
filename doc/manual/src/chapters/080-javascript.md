@@ -149,7 +149,7 @@ Because the browser delegates method calls to the page object, the above could h
 
 Recall that the `return` keyword is optional in Groovy, so in the example above the `$("div#result").present` statement acts as the return value for the closure and is used as the basis on whether the closure _passed_ or not. This means that you must ensure that the last statement inside the closure returns a value that is `true` according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth) (if you're unfamiliar with the Groovy Truth **do** read that page).
 
-> Not using explicit `return` statements in closure expressions passed to `waitFor()` is actually preferred. Geb transforms all closure expressions passed to `waitFor()` calls so that each statement becomes an implicit assertion (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see values of the last evaluation of statement that didn't return a truish value in the stacktrace for the `WaitTimeoutException` thrown when `waitFor()` call times out.
+> Not using explicit `return` statements in closure expressions passed to `waitFor()` is actually preferred. See the section on [implicit assertions][implicit-assertions] for more information.
 
 The closures given to the `waitFor` method(s) do not need to be single statement.
 

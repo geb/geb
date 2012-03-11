@@ -41,3 +41,6 @@
 [bindingupdater-api]: api/geb-core/geb/binding/BindingUpdater.html
 [grails]: http://grails.org
 [waiting]: javascript.html#waiting
+[waiting-content]: pages.html#wait
+[assertion-error]: http://docs.oracle.com/javase/6/docs/api/java/lang/AssertionError.html
+[implicit-assertions]: implicit-assertions.html

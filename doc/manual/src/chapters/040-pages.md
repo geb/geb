@@ -328,6 +328,8 @@ You can modify the behaviour of content with `wait` option set to true if you us
 
 Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no `WaitTimeoutException` thrown and `null` value will be returned.
 
+Waiting content blocks are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
+
 ### Aliasing
 
 If you wish to have the same content definitions available under diferent names you can create a content definition that specifies `aliases` parameter:
@@ -361,14 +363,14 @@ This closure can either return a `false` value or throw an `AssertionError` (via
         verifyAt()
     }
 
-> Not using explicit `return` statements in “at” checkers is preffered. Geb transforms all “at” checkers so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see evaluated values of your “at” checker if it fails.
-
 The `verifyAt()` method is used by the browser `at()` method which also returns true or throws an `AssertionError` even if there are no explicit assertions in the “at” checker…
 
     Browser.drive {
         to ExamplePage
         at(ExamplePage)
     }
+
+At checkers are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
 If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb-core/geb/Page.html#verifyAtSafely(\)), [`Browser#isAt(Class<? extends Page>)`](api/geb-core/geb/Browser.html#isAt(java.lang.Class\)) and [`Browser#isAt(Page)`](api/geb-core/geb/Browser.html#isAt(geb.Page\))
 
