@@ -16,7 +16,6 @@
 
 dependencies {
 	testCompile project(":module:test-support")
-	testCompile project(":module:geb-implicit-assertions")
 }
 
 test {
