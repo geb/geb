@@ -43,6 +43,17 @@ dependencies {
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
 }
 
+gaeDownloadSdk.doLast {
+	copy {
+		def sdk = configurations.gaeSdk.singleFile
+		def dest = file("build/exploded-gae-sdk/$sdk.name" - ".zip")
+		from zipTree(sdk)
+		into dest
+		
+		System.setProperty("appengine.sdk.root", dest.canonicalPath)
+	}
+}
+
 ext {
 	// The version of manual to put under the “current” label
 	stableVersion = "0.6.3"
@@ -53,7 +64,6 @@ ext {
 
 def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
 configurations {
-	snapshotManual
 	currentManual
 	
 	oldManualVersions.each {
@@ -67,7 +77,6 @@ repositories {
 }
 
 dependencies {
-	snapshotManual project(path: ":doc:manual", configuration: "archives")
 	currentManual manualDependency(stableVersion)
 	
 	oldManualVersions.each {
@@ -75,72 +84,42 @@ dependencies {
 	}
 }
 
-def findManualArtifacts = { configuration ->
-	configuration.resolvedConfiguration.resolvedArtifacts.findAll {
-		it.name == "geb-manual" && it.type == "zip"
-	}.unique {
-		// sometimes there are two of the same artifact in the configuration
-		it.name
-	}
-}
+task configureWarManuals << {
+	configure(war) {
+		ext.explodeManual = { configuration, label ->
+			def artifacts = configuration.resolvedConfiguration.resolvedArtifacts.findAll {
+				it.name == "geb-manual" && it.type == "zip"
+			}.unique {
+				// sometimes there are two of the same artifact in the configuration
+				it.name
+			}
 
-def findManualArtifact = { configuration ->
-	def artifacts = findManualArtifacts(configuration)
-	def size = artifacts.size()
-	assert size == 1 : "$configuration should have one manual artifact, not $size"
-	artifacts.toList().first()
-}
+			def size = artifacts.size()
+			assert size == 1 : "$configuration should have one manual artifact, not $size"
+			def artifactFile = artifacts.toList().first().file
 
-def explodeManual = { File manualArtifactFile, label ->
-	assert manualArtifactFile.exists()
-	copy {
-		from zipTree(manualArtifactFile)
-		into "build/manual/manual/$label"
-	}
-}
-
-gaeDownloadSdk.doLast {
-	copy {
-		def sdk = configurations.gaeSdk.singleFile
-		def dest = file("build/exploded-gae-sdk/$sdk.name" - ".zip")
-		from zipTree(sdk)
-		into dest
-		
-		System.setProperty("appengine.sdk.root", dest.canonicalPath)
-	}
-}
-
-task cleanManuals(type: Delete) {
-	delete "$buildDir/manual"
-}
-
-task includeSnapshotManual(dependsOn: [configurations.snapshotManual, cleanManuals]) {
-	doLast {
-		explodeManual(findManualArtifact(configurations.snapshotManual).file, "snapshot")
-	}
-}
-
-task includeCurrentManual(dependsOn: [configurations.currentManual, cleanManuals]) {
-	doLast {
-		explodeManual(findManualArtifact(configurations.currentManual).file, "current")
-	}
-}
-
-def allVersionConfigurations = [configurations.currentManual] + oldManualVersions.collect { configurations["manual-$it"] } 
-task includeVersionManuals(dependsOn: allVersionConfigurations + [cleanManuals]) {
-	allVersionConfigurations.each { manualConfiguration ->
-		doLast {
-			def artifact = findManualArtifact(manualConfiguration)
-			explodeManual(artifact.file, artifact.resolvedDependency.moduleVersion)
+			assert artifactFile.exists()
+			into ("manual/$label") {
+				from zipTree(artifactFile)
+			}
 		}
+
+		oldManualVersions.each {
+			explodeManual(configurations["manual-$it"], it)
+		}
+		explodeManual(configurations.currentManual, stableVersion)
+		explodeManual(configurations.currentManual, "current")
 	}
 }
 
-task includeManuals(dependsOn: [includeSnapshotManual, includeCurrentManual, includeVersionManuals])
+evaluationDependsOn ":doc:manual"
 
 war {
-	dependsOn includeManuals
-	from "build/manual"
+	dependsOn configureWarManuals
+
+	from (project(":doc:manual").packageManual) {
+		into("manual/snapshot")
+	}
 	
 	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : "snapshot" 
 	def properties = [version: siteVersion]
