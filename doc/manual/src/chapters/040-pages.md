@@ -328,7 +328,6 @@ You can modify the behaviour of content with `wait` option set to true if you us
 
 Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no `WaitTimeoutException` thrown and `null` value will be returned.
 
-
 ### Aliasing
 
 If you wish to have the same content definitions available under diferent names you can create a content definition that specifies `aliases` parameter:
