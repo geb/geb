@@ -15,6 +15,11 @@ import org.codehaus.groovy.syntax.SyntaxException
 import org.codehaus.groovy.ast.expr.*
 import static org.codehaus.groovy.syntax.Types.ASSIGNMENT_OPERATOR
 import static org.codehaus.groovy.syntax.Types.ofType
+import org.codehaus.groovy.ast.stmt.IfStatement
+import static org.codehaus.groovy.syntax.Types.SEMICOLON
+import org.codehaus.groovy.ast.ClassNode
+import static org.codehaus.groovy.syntax.Types.EXPRESSION
+import org.codehaus.groovy.ast.stmt.AssertStatement
 
 class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 	SourceUnit sourceUnit
@@ -127,41 +132,32 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 	}
 
 	private Statement encloseWithVoidCheckAndAssert(Expression toBeRewritten, Statement original) {
+		Statement replacement
+
+		BooleanExpression booleanExpression = new BooleanExpression(toBeRewritten)
+		Statement withAssertion = new AssertStatement(booleanExpression)
+
 		if (toBeRewritten in MethodCallExpression) {
 			MethodCallExpression rewrittenMethodCall = toBeRewritten
-			new AstBuilder().buildFromSpec {
-				ifStatement {
-					booleanExpression {
-						staticMethodCall(Runtime, 'isVoidMethod') {
-							argumentList {
-								expression.add(rewrittenMethodCall.objectExpression)
-								expression.add(rewrittenMethodCall.method)
-								expression.add(toArgumentArray(rewrittenMethodCall.arguments))
-							}
-						}
-					}
-					expression {
-						expression.add(toBeRewritten)
-					}
-					assertStatement {
-						booleanExpression {
-							expression.add(toBeRewritten)
-						}
-					}
-					expression.first().setSourcePosition(original)
-				}
-			}.first()
+
+			Statement noAssertion = new ExpressionStatement(toBeRewritten)
+			
+			ArgumentListExpression isVoidMethodArguments = new ArgumentListExpression()
+			isVoidMethodArguments.with {
+				addExpression(rewrittenMethodCall.objectExpression)
+				addExpression(rewrittenMethodCall.method)
+				addExpression(toArgumentArray(rewrittenMethodCall.arguments))
+			}
+			
+			StaticMethodCallExpression isVoidMethod = new StaticMethodCallExpression(new ClassNode(Runtime), "isVoidMethod", isVoidMethodArguments)
+
+			replacement = new IfStatement(new BooleanExpression(isVoidMethod), noAssertion, withAssertion)
 		} else {
-			Statement result = new AstBuilder().buildFromSpec {
-				assertStatement {
-					booleanExpression {
-						expression.add(toBeRewritten)
-					}
-				}
-			}.first()
-			result.setSourcePosition(original)
-			result
+			replacement = withAssertion
 		}
+
+		replacement.setSourcePosition(original)
+		replacement
 	}
 
 	private Expression toArgumentArray(Expression arguments) {
