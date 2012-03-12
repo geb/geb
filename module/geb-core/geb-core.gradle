@@ -8,7 +8,7 @@ dependencies {
 	compile project(":module:geb-implicit-assertions")
 }
 
-modifyPom = { pom ->
+modifyPom { pom ->
 	pom.project {
 		name "Geb Core"
 		description "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."

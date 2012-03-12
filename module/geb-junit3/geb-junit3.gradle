@@ -4,7 +4,7 @@ dependencies {
 	testCompile project(":module:test-support")
 }
 
-modifyPom = { pom ->
+modifyPom { pom ->
 	pom.project {
 		name "Geb for JUnit 3"
 		description "Geb (pronounced \"jeb\") integration with the JUnit 3 test framework."

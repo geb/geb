@@ -30,7 +30,7 @@ test.doLast {
 	if (ant.easybresult != "0") System.err.println ">> Easyb Failed ($ant.easybresult)"
 }
 
-modifyPom = { pom ->
+modifyPom { pom ->
 	pom.project {
 		name "Geb for EasyB"
 		description "Geb (pronounced \"jeb\") integration with the EasyB test framework."

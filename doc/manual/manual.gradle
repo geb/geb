@@ -13,7 +13,7 @@ buildscript {
 
 archivesBaseName = "geb-manual"
 
-modifyPom = { pom ->
+modifyPom { pom ->
 	pom.project {
 		name "Geb Manual - The Book of Geb"
 		description "Geb (pronounced \"jeb\") manual, user guide and API reference."
