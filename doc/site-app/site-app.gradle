@@ -30,7 +30,7 @@ repositories {
 	add gitHub()
 }
 
-ext.appEngineVersion = "1.6.2"
+ext.appEngineVersion = "1.6.3"
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.8.0"
