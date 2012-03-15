@@ -136,6 +136,8 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 
 		BooleanExpression booleanExpression = new BooleanExpression(toBeRewritten)
 		Statement withAssertion = new AssertStatement(booleanExpression)
+		withAssertion.setSourcePosition(toBeRewritten)
+		withAssertion.setStatementLabel((String) toBeRewritten.getNodeMetaData("statementLabel"));
 
 		if (toBeRewritten in MethodCallExpression) {
 			MethodCallExpression rewrittenMethodCall = toBeRewritten
