@@ -5,7 +5,7 @@ import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassCodeVisitorSupport
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.FieldNode
-import org.codehaus.groovy.ast.builder.AstBuilder
+
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.ast.stmt.Statement
@@ -16,9 +16,9 @@ import org.codehaus.groovy.ast.expr.*
 import static org.codehaus.groovy.syntax.Types.ASSIGNMENT_OPERATOR
 import static org.codehaus.groovy.syntax.Types.ofType
 import org.codehaus.groovy.ast.stmt.IfStatement
-import static org.codehaus.groovy.syntax.Types.SEMICOLON
+
 import org.codehaus.groovy.ast.ClassNode
-import static org.codehaus.groovy.syntax.Types.EXPRESSION
+
 import org.codehaus.groovy.ast.stmt.AssertStatement
 
 class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
@@ -55,10 +55,80 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 				if (lastArgumentIsClosureExpression(arguments)) {
 					rewriteClosureStatements(arguments.expressions[-1])
 				}
+			} else {
+				compensateForSpockIfNecessary(expression)	
 			}
 		}
 	}
 
+	void compensateForSpockIfNecessary(MethodCallExpression expression) {
+		if (expression.objectExpression in ClassExpression && expression.method in ConstantExpression) {
+			ClassExpression classExpression = expression.objectExpression as ClassExpression
+			ConstantExpression method = expression.method as ConstantExpression
+			
+			if (classExpression.type.name == "org.spockframework.runtime.SpockRuntime" && method.value == "verifyMethodCondition") {
+				if (expression.arguments in ArgumentListExpression) {
+					ArgumentListExpression arguments = expression.arguments as ArgumentListExpression
+					List<Expression> argumentExpressions = arguments.expressions
+					
+					if (argumentExpressions.size() >= 8) {
+						Expression verifyMethodConditionMethodArg = argumentExpressions.get(6)
+						String methodName = getConstantValueOfType(extractRecordedValueExpression(verifyMethodConditionMethodArg), String)
+						
+						if (methodName) {
+							Expression verifyMethodConditionArgsArgument = argumentExpressions.get(7)
+							if (verifyMethodConditionArgsArgument in ArrayExpression) {
+								 
+		                        List<Expression> values = (verifyMethodConditionArgsArgument as ArrayExpression).expressions.collect { Expression argumentExpression ->
+									extractRecordedValueExpression(argumentExpression)									
+								} 
+								
+								visitSpockValueRecordMethodCall(methodName, values)
+							}
+						}	
+					}
+				}
+			}
+		}
+	}
+	
+	
+	Expression extractRecordedValueExpression(Expression valueRecordExpression) {
+		if (valueRecordExpression in MethodCallExpression) {
+			MethodCallExpression methodCallExpression = valueRecordExpression as MethodCallExpression
+
+			if (methodCallExpression.arguments in ArgumentListExpression) {
+				ArgumentListExpression arguments = methodCallExpression.arguments as ArgumentListExpression
+
+				if (arguments.expressions.size() >= 2) {
+					return arguments.expressions.get(1)
+				}
+			}
+		}
+		
+		null
+	}
+	
+	def getConstantValueOfType(Expression expression, Class type) {
+		if (expression != null && expression in ConstantExpression) {
+			Object value = ((ConstantExpression)expression).value
+			type.isInstance(value) ? value : null
+		} else {
+			null
+		}
+	}
+
+	void visitSpockValueRecordMethodCall(String name, List<Expression> arguments) {
+		if (name == "waitFor") {
+			if (!arguments.empty) { 
+				Expression lastArg = arguments.last()
+				if (lastArg instanceof ClosureExpression) {
+					rewriteClosureStatements(lastArg as ClosureExpression)
+				}
+			}
+		}	
+	}
+	
 	@Override
 	protected SourceUnit getSourceUnit() {
 		sourceUnit

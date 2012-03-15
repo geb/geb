@@ -148,7 +148,7 @@ class WaitingContentSpec extends GebSpecWithServer {
 		then:
 		WaitTimeoutException exception = thrown()
 		exception.cause in PowerAssertionError
-		exception.cause.message.contains('$(div)')
+		exception.cause.message.contains('$("div")')
 	}
 }
 
