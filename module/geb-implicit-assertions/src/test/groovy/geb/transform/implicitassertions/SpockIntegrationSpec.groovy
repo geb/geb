@@ -23,6 +23,7 @@ import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
 import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
 import org.junit.runner.Result
 import org.junit.runner.notification.Failure
+import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
 class SpockIntegrationSpec extends Specification {
 	
@@ -48,9 +49,8 @@ class SpockIntegrationSpec extends Specification {
 		then:
 		result.failureCount == 1
 		Failure failure = result.failures.first()
-		Throwable cause = failure.exception.cause
-		cause != null
-		cause.message.contains "1 == 2"
+		PowerAssertionError error = failure.exception
+		error.message.contains "1 == 2"
 	}
 
 	def "transform works in a spec helper method"() {
@@ -61,9 +61,8 @@ class SpockIntegrationSpec extends Specification {
 		specClass.newInstance().helperMethod()
 
 		then:
-		Throwable thrown = thrown()
-		Throwable cause = thrown.cause
-		cause.message.contains "3 == 4"
+		PowerAssertionError error = thrown()
+		error.message.contains "3 == 4"
 	}
 
 }

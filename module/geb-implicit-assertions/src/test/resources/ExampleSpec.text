@@ -28,11 +28,6 @@ class ExampleSpec extends Specification {
 	}
 
 	private waitFor(Closure c) {
-		def result = null
-		try {
-			c()
-		} catch (Throwable e) {
-			throw new Exception("nested", e)
-		}
+		c()
 	}
 }
