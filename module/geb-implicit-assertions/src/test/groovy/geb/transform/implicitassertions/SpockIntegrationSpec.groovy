@@ -27,7 +27,7 @@ import org.codehaus.groovy.transform.powerassert.PowerAssertionError
 
 class SpockIntegrationSpec extends Specification {
 	
-	def makeSpecClass() {
+	def makeSpecClass(filename = "ExampleSpec") {
 		def invoker = new TransformTestHelper() {
 			protected configure(TransformTestHelper.Transforms transforms) {
 				transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
@@ -35,7 +35,7 @@ class SpockIntegrationSpec extends Specification {
 			}
 		}
 		
-		def file = new File(getClass().classLoader.getResource('ExampleSpec.text').toURI())
+		def file = new File(getClass().classLoader.getResource("${filename}.text").toURI())
 		invoker.parse(file)
 	}
 
@@ -65,5 +65,16 @@ class SpockIntegrationSpec extends Specification {
 		error.message.contains "3 == 4"
 	}
 
+	def "can have wait for methods with explicit asserts"() {
+		given:
+		def specClass = makeSpecClass("ExampleSpec2")
+
+		when:
+		Result result = JUnitCore.runClasses(specClass)
+
+		then:
+		result.failureCount == 0
+
+	}
 }
 

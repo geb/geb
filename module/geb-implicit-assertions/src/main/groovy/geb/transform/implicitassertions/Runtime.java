@@ -13,7 +13,7 @@ public abstract class Runtime {
 		int i = 0;
 		for (Object arg : args) {
 			argTypes[i++] = arg == null ? null : arg.getClass();
-		} 
+		}
 
 		MetaClass metaClass = target instanceof Class ? InvokerHelper.getMetaClass((Class) target) : InvokerHelper.getMetaClass(target);
 
