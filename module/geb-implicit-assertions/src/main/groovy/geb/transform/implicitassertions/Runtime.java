@@ -5,6 +5,8 @@ import groovy.lang.MetaMethod;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
 public abstract class Runtime {
+
+	@SuppressWarnings("UnusedDeclaration")
 	public static boolean isVoidMethod(Object target, String method, Object... args) {
 		
 		Class[] argTypes = new Class[args.length];
