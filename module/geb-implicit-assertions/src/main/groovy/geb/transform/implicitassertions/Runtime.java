@@ -26,5 +26,19 @@ public abstract class Runtime {
 		return returnType == void.class || returnType == Void.class;
 	}
 
+	private static ThreadLocal<Object> recordedValue = new ThreadLocal<Object>();
+
+	@SuppressWarnings("UnusedDeclaration")
+	public static Object recordValue(Object value) {
+		recordedValue.set(value);
+		return value;
+	}
+	
+	@SuppressWarnings("UnusedDeclaration")
+	public static Object retrieveRecordedValue() {
+		Object value = recordedValue.get();
+		recordedValue.set(null);
+		return value;
+	}
 
 }

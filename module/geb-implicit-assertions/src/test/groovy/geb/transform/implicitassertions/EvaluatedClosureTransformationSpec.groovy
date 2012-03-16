@@ -22,8 +22,8 @@ class EvaluatedClosureTransformationSpec extends Specification {
 		tempFile << makeCodeTemplate(code)
 		def invoker = new TransformTestHelper() {
 			protected configure(TransformTestHelper.Transforms transforms) {
-                transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
-                transforms.add(new EvaluatedClosureTransformation(), CANONICALIZATION)
+				transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
+				transforms.add(new EvaluatedClosureTransformation(), CANONICALIZATION)
 			}
 
 		}
@@ -57,8 +57,8 @@ class EvaluatedClosureTransformationSpec extends Specification {
 	def "transformation is applied to multiple lines of the closure"() {
 		when:
 		getTransformedInstanceWithClosureBody(
-				'true',
-				'false'
+			'true',
+			'false'
 		).run()
 
 		then:
@@ -69,13 +69,20 @@ class EvaluatedClosureTransformationSpec extends Specification {
 	@Unroll("expression '#closureBody' passes")
 	def "various truly expressions pass"() {
 		when:
-		getTransformedInstanceWithClosureBody(closureBody).run()
+		def returnValue = getTransformedInstanceWithClosureBody(closureBody).run()
 
 		then:
 		noExceptionThrown()
+		
+		and:
+		returnValue == expectedReturnValue
 
 		where:
-		closureBody << ['true', '1', 'booleanMethod(true)', '1 == 1', 'booleanMethod(false) == false']
+		closureBody                     | expectedReturnValue
+		'true'                          | true
+		'1'                             | 1
+		'booleanMethod(true)'           | true
+		'booleanMethod(false) == false' | true
 	}
 
 	@Unroll("expression '#closureBody' is ignored")

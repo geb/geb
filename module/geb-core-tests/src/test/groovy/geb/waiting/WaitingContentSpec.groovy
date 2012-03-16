@@ -137,7 +137,7 @@ class WaitingContentSpec extends GebSpecWithServer {
 		params = [wait: [3, 0.1]]
 		
 		then:
-		content
+		content.text()
 	}
 
 	def "content with wait option set throws timeout exception with power assertion error in cause"() {
@@ -150,6 +150,16 @@ class WaitingContentSpec extends GebSpecWithServer {
 		exception.cause in PowerAssertionError
 		exception.cause.message.contains('$("div")')
 	}
+
+	def "content with wait option returns content"() {
+		when:
+		to StaticallySpecifiedContentPage
+		js.showIn(0)
+
+		then:
+		waitContent.text() == "a"
+	}
+
 }
 
 class DynamicallySpecifiedContentPage extends Page {

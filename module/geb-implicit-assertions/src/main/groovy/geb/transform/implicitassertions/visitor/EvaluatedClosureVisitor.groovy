@@ -168,7 +168,6 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 		while (iterator.hasNext()) {
 			iterator.set(rewriteClosureStatement(iterator.next()))
 		}
-		iterator.add(new ExpressionStatement(new ConstantExpression(true)))
 	}
 
 	private Statement rewriteClosureStatement(Statement statement) {
@@ -204,32 +203,46 @@ class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
 	private Statement encloseWithVoidCheckAndAssert(Expression toBeRewritten, Statement original) {
 		Statement replacement
 
-		BooleanExpression booleanExpression = new BooleanExpression(toBeRewritten)
+		Expression recordedValueExpression = createRuntimeCall("recordValue", toBeRewritten)
+		BooleanExpression booleanExpression = new BooleanExpression(recordedValueExpression)
+
+		Statement retrieveRecordedValueStatement = new ExpressionStatement(createRuntimeCall("retrieveRecordedValue"))
+
 		Statement withAssertion = new AssertStatement(booleanExpression)
 		withAssertion.setSourcePosition(toBeRewritten)
 		withAssertion.setStatementLabel((String) toBeRewritten.getNodeMetaData("statementLabel"));
+
+		BlockStatement assertAndRetrieveRecordedValue = new BlockStatement()
+		assertAndRetrieveRecordedValue.addStatement(withAssertion)
+		assertAndRetrieveRecordedValue.addStatement(retrieveRecordedValueStatement)
 
 		if (toBeRewritten in MethodCallExpression) {
 			MethodCallExpression rewrittenMethodCall = toBeRewritten
 
 			Statement noAssertion = new ExpressionStatement(toBeRewritten)
-			
-			ArgumentListExpression isVoidMethodArguments = new ArgumentListExpression()
-			isVoidMethodArguments.with {
-				addExpression(rewrittenMethodCall.objectExpression)
-				addExpression(rewrittenMethodCall.method)
-				addExpression(toArgumentArray(rewrittenMethodCall.arguments))
-			}
-			
-			StaticMethodCallExpression isVoidMethod = new StaticMethodCallExpression(new ClassNode(Runtime), "isVoidMethod", isVoidMethodArguments)
+			StaticMethodCallExpression isVoidMethod = createRuntimeCall(
+				"isVoidMethod",
+				rewrittenMethodCall.objectExpression,
+				rewrittenMethodCall.method,
+				toArgumentArray(rewrittenMethodCall.arguments)
+			)
 
-			replacement = new IfStatement(new BooleanExpression(isVoidMethod), noAssertion, withAssertion)
+			replacement = new IfStatement(new BooleanExpression(isVoidMethod), noAssertion, assertAndRetrieveRecordedValue)
 		} else {
-			replacement = withAssertion
+			replacement = assertAndRetrieveRecordedValue
 		}
 
 		replacement.setSourcePosition(original)
 		replacement
+	}
+
+	private StaticMethodCallExpression createRuntimeCall(String methodName, Expression... argumentExpressions) {
+		ArgumentListExpression argumentListExpression = new ArgumentListExpression()
+		for (Expression expression in argumentExpressions) {
+			argumentListExpression.addExpression(expression)
+		}
+
+		new StaticMethodCallExpression(new ClassNode(Runtime), methodName, argumentListExpression)
 	}
 
 	private Expression toArgumentArray(Expression arguments) {
