@@ -137,7 +137,7 @@ class WaitingContentSpec extends GebSpecWithServer {
 		params = [wait: [3, 0.1]]
 		
 		then:
-		content.text()
+		content
 	}
 
 	def "content with wait option set throws timeout exception with power assertion error in cause"() {
