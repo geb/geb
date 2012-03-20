@@ -15,7 +15,7 @@ public abstract class Runtime {
 			argTypes[i++] = arg == null ? null : arg.getClass();
 		} 
 
-		MetaClass metaClass = InvokerHelper.getMetaClass(target);
+		MetaClass metaClass = target instanceof Class ? InvokerHelper.getMetaClass((Class) target) : InvokerHelper.getMetaClass(target);
 
 		MetaMethod metaMethod = metaClass.pickMethod(method, argTypes);
 		if (metaMethod == null) {
