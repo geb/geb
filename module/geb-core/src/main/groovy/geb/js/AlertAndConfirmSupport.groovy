@@ -14,13 +14,19 @@
  */
 package geb.js
 
+import geb.Configuration
+import geb.waiting.Wait
+import geb.waiting.WaitTimeoutException
+
 class AlertAndConfirmSupport {
 
 	private final static UNKNOWN = -1
 	private final Closure javascriptInterfaceFactory
+	private final Configuration config
 	
-	AlertAndConfirmSupport(Closure javascriptInterfaceFactory) {
+	AlertAndConfirmSupport(Closure javascriptInterfaceFactory, Configuration config) {
 		this.javascriptInterfaceFactory = javascriptInterfaceFactory
+		this.config = config
 	}
 	
 	private JavascriptInterface getJavascriptInterface() {
@@ -103,7 +109,7 @@ class AlertAndConfirmSupport {
 		"""
 	}
 
-	private captureDialog(Closure installer, String function, Closure actions) {
+	private captureDialog(Closure installer, String function, Closure actions, Wait wait = null) {
 		def js = getJavascriptInterface()
 		
 		installer(js)
@@ -114,11 +120,14 @@ class AlertAndConfirmSupport {
 		} catch (Throwable e) {
 			actionsError = e
 		}
-		
-		// Need to do this even if actions raised exception
-		def message = popLastDialogMessage(js)
-		popLastDialogFunctionOnto(js, function)
-		
+		def message
+		try {
+			message = wait ? wait.waitFor { popLastDialogMessage(js) } : popLastDialogMessage(js)
+		} finally {
+			// Need to do this even if actions raised exception
+			popLastDialogFunctionOnto(js, function)
+		}
+
 		if (actionsError) {
 			throw actionsError
 		} else {
@@ -126,16 +135,20 @@ class AlertAndConfirmSupport {
 		}
 	}
 	
-	private captureAlert(Closure actions) {
-		captureDialog(this.&installAlert, 'alert', actions)
+	private captureAlert(Closure actions, waitParam = null) {
+		captureDialog(this.&installAlert, 'alert', actions, config.getWaitForParam(waitParam))
 	}
 
-	private captureConfirm(boolean ok, Closure actions) {
-		captureDialog(this.&installConfirm.curry(ok), 'confirm', actions)
+	private captureConfirm(boolean ok, Closure actions, waitParam = null) {
+		captureDialog(this.&installConfirm.curry(ok), 'confirm', actions, config.getWaitForParam(waitParam))
 	}
 
 	def withAlert(Closure actions) {
-		def message = captureAlert(actions)
+		withAlert([:], actions)
+	}
+
+	def withAlert(Map params, Closure actions) {
+		def message = captureAlert(actions, params.wait)
 		if (message == null) {
 			throw new AssertionError("no browser alert() was raised")
 		} else if (message == UNKNOWN) {
@@ -152,12 +165,20 @@ class AlertAndConfirmSupport {
 		}
 	}
 
-	def withConfirm(Closure actions) {
-		withConfirm(true, actions)
+	def withConfirm(Map params, Closure actions) {
+		withConfirm(params, true, actions)
 	}
-	
+
+	def withConfirm(Closure actions) {
+		withConfirm([:], actions)
+	}
+
 	def withConfirm(boolean ok, Closure actions) {
-		def message = captureConfirm(ok, actions)
+		withConfirm([:], ok, actions)
+	}
+
+	def withConfirm(Map params, boolean ok, Closure actions) {
+		def message = captureConfirm(ok, actions, params.wait)
 		if (message == null) {
 			throw new AssertionError("no browser confirm() was raised")
 		} else if (message == UNKNOWN) {

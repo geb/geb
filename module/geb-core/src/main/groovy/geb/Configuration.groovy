@@ -71,6 +71,31 @@ class Configuration {
 		new Wait(timeout, getDefaultWaitRetryInterval())
 	}
 
+	Wait getWaitForParam(waitingParam) {
+		if (waitingParam == true) {
+			defaultWait
+		} else if (waitingParam instanceof CharSequence) {
+			getWaitPreset(waitingParam.toString())
+		} else if (waitingParam instanceof Number && waitingParam > 0) {
+			getWait(waitingParam.doubleValue())
+		} else if (waitingParam instanceof Collection) {
+			if (waitingParam.size() == 2) {
+				def timeout = waitingParam[0]
+				def retryInterval = waitingParam[1]
+
+				if (timeout instanceof Number && retryInterval instanceof Number) {
+					new Wait(timeout.doubleValue(), retryInterval.doubleValue())
+				} else {
+					throw new IllegalArgumentException("'wait' param has illegal value '$waitingParam' (collection elements must be numbers)")
+				}
+			} else {
+				throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection must have 2 elements)")
+			}
+		} else {
+			null
+		}
+	}
+
 	/**
 	 * The default {@code timeout} value to use for waiting (i.e. if unspecified).
 	 * <p>

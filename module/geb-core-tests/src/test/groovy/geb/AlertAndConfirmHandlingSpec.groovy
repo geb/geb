@@ -38,6 +38,9 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 					<input type="button" name="noAlertReload" onclick="window.location.reload();"/>
 					<input type="button" name="hasConfirmReload" onclick="confirmResult = confirm(++i); window.location.reload();" />
 					<input type="button" name="noConfirmReload" onclick="window.location.reload();" />
+
+					<input type="button" name="hasAsynchronousAlert" onclick="setTimeout(function() { alert('asynchronous alert') }, 1000);" />
+					<input type="button" name="hasAsynchronousConfirm" onclick="setTimeout(function() { confirm('asynchronous confirm') }, 1000);" />
 					
 				</body>
 				</html>
@@ -117,6 +120,11 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		rationalise(innerMsg) == 1
 		rationalise(outerMsg) == 2
 	}
+
+	def "withAlert supports waiting"() {
+		expect:
+		withAlert(wait: true) { hasAsynchronousAlert().click() } == 'asynchronous alert'
+	}
 	
 	private getConfirmResult() {
 		js.confirmResult
@@ -187,6 +195,11 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		innerConfirmResult == false
 		outerConfirmResult == true
 	}
+
+	def "withConfirm supports waiting"() {
+		expect:
+		withConfirm(wait: true) { hasAsynchronousConfirm().click() } == 'asynchronous confirm'
+	}
 	
 	def "pages and modules have the methods too"() {
 		given:
@@ -197,7 +210,6 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		then:
 		notThrown(Exception)
 	}
-	
 }
 
 class AlertAndConfirmHandlingSpecPage extends Page {

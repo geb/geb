@@ -47,6 +47,7 @@ This page lists the high level changes between versions of Geb.
 * Closure expressions passed to `waitFor()` calls are now transformed so that every statement in them is asserted - this provides better reporting on `waitFor()` timeouts.
 * `at` closure properties of Page classes are now transformed so that every statement in them is asserted - this provides better reporting on failed at checks 
 * new `isAt()` method on Browser that behaves like `at()` used to behave before, i.e. does not throw AssertionError but returns `false` if at checking fails
+* `withAlert()` and `withConfirm()` now accept a `wait` option and the possible values are the same as for waiting content
 
 #### Breaking Changes
 

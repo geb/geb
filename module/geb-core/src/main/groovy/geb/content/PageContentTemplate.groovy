@@ -19,9 +19,7 @@ import geb.Page
 import geb.Module
 
 import geb.Configuration
-import geb.waiting.Wait
 
-import geb.error.InvalidPageContent
 import geb.error.RequiredPageValueNotPresent
 import geb.waiting.WaitTimeoutException
 
@@ -62,35 +60,6 @@ class PageContentTemplate {
 		params.to
 	}
 	
-	/**
-	 * Returns the Wait to use to wait for this content to materialise, or null if there should be no waiting.
-	 */
-	Wait getWait() {
-		def waitingParam = params.wait
-		if (waitingParam == true) {
-			config.getDefaultWait()
-		} else if (waitingParam instanceof CharSequence) {
-			config.getWaitPreset(waitingParam.toString())
-		} else if (waitingParam instanceof Number && waitingParam > 0) {
-			config.getWait(waitingParam.doubleValue())
-		} else if (waitingParam instanceof Collection) {
-			if (waitingParam.size() == 2) {
-				def timeout = waitingParam[0]
-				def retryInterval = waitingParam[1]
-				
-				if (timeout instanceof Number && retryInterval instanceof Number) {
-					new Wait(timeout.doubleValue(), retryInterval.doubleValue())
-				} else {
-					throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection elements must be numbers)")
-				}
-			} else {
-				throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection must have 2 elements)")
-			}
-		} else {
-			null
-		}
-	}
-	
 	Page getPage() {
 		owner instanceof Page ? owner : owner.getPage()
 	}
@@ -113,7 +82,7 @@ class PageContentTemplate {
 			creation
 		}
 		
-		def wait = getWait()
+		def wait = config.getWaitForParam(params.wait)
 		if (wait) {
 			try {
 				wait.waitFor(createAction)

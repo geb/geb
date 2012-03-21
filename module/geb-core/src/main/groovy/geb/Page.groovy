@@ -75,7 +75,7 @@ class Page {
 	@Delegate private InteractionsSupport interactionsSupport
 	
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }) 
+	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
 	
 	/**
 	 * Initialises this page instance, connecting it to the browser.
@@ -90,6 +90,7 @@ class Page {
 		_waitingSupport = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)
 		interactionsSupport = new InteractionsSupport(browser)
+		_alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }, browser.config)
 		this
 	}
 	

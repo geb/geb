@@ -203,6 +203,19 @@ The `withAlert()` method is used like so…
 
 If an alert dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
 
+The `withAlert()` method also accepts a wait option. It is useful if the code in your “actions” closure is raising a dialog in an asynchronous manner and can be used like that:
+
+	assert withAlert(wait: true) { $("input", name: "showAlert").click() } == "Bang!"
+
+The value for the `wait` option can be one of the following:
+
+* **`true`** - wait for the content using the _default wait_ configuration
+* **a string** - wait for the content using the _wait preset_ with this name from the configuration
+* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
+* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+
+Any other value will be interpreted as `false`.
+
 The second method, `withNoAlert()`, is used to verify actions that will not produce an `alert()` dialog. If an alert dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
 
 Given the following HTML…
@@ -236,6 +249,8 @@ The `withConfirm()` method is used like so…
     assert withConfirm(true) { $("input", name: "showConfirm").click() } == "Do you like Geb?"
 
 If a confirmation dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
+
+The `withConfirm()` method also accepts a wait option just like the `withAlert()` method. See the [description of `withAlert()`](javascript.html#alert) to learn about the possible values and usage.
 
 The second method, `withNoConfirm()`, is used to verify actions that will not produce an `confirm()` dialog. If a confirmation dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
 

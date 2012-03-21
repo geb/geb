@@ -36,10 +36,10 @@ class Module extends TemplateDerivedPageContent {
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport
 	@Delegate private WaitingSupport _waitingSupport
-    @Delegate private FrameSupport frameSupport
+	@Delegate private FrameSupport frameSupport
 	
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	@Delegate private final AlertAndConfirmSupport  _alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() })
+	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		def contentTemplates = PageContentTemplateBuilder.build(template.config, this, 'content', this.class, Module)
@@ -47,7 +47,8 @@ class Module extends TemplateDerivedPageContent {
 		super.init(template, navigator, *args)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport  = new WaitingSupport(browser.config)
-        frameSupport = new FrameSupport(browser)
+		frameSupport = new FrameSupport(browser)
+		_alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }, browser.config)
 	}
 
 	JavascriptInterface getJs() {
