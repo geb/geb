@@ -3,10 +3,10 @@ import org.grails.gradle.plugin.GrailsTask
 buildscript {
 	repositories {
 		mavenCentral()
-		mavenRepo name: "grails", url: 'http://repo.grails.org/grails/repo'
+		maven { url 'http://repo.grails.org/grails/repo' }
 	}
 	dependencies {
-		classpath "org.grails:grails-gradle-plugin:1.1.0"
+		classpath "org.grails:grails-gradle-plugin:1.1.1-SNAPSHOT"
 	}
 }
 
@@ -17,23 +17,31 @@ configurations {
 	compile.exclude module: 'xml-apis'
 }
 
-dependencies {
-	compile "org.slf4j:slf4j-log4j12:1.5.5",
-	        "org.grails:grails-crud:${grailsVersion}",
-	        
-	compile ("org.grails:grails-gorm:${grailsVersion}")
+repositories {
+	maven { url 'http://repo.grails.org/grails/repo' }
+}
 
-	runtime "hsqldb:hsqldb:1.8.0.5",
-	        "net.sf.ehcache:ehcache-core:1.7.1"
+dependencies {
+	["plugin-tomcat", "plugin-datasource", "plugin-services", "hibernate"].each { module ->
+		compile "org.grails:grails-$module:$grailsVersion"
+	}
+	
+	bootstrap "org.codehaus.groovy:groovy-all:1.8.6"
 	
 	test project(':module:geb-junit4'),
-	     project(':module:geb-spock'),
 	     project(':module:geb-easyb'),
 	     htmlUnitDriverDependency
+	test project(':module:geb-spock'), {
+		exclude module: "spock-core"
+	}
+	bootstrap "org.apache.maven:maven-ant-tasks:2.1.0"
+	bootstrap "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
+		exclude module: "xml-apis"
+		exclude module: "groovy"
+	}
 }
 
 System.setProperty("server.port", "8010")
-System.setProperty("geb.building", "true") // disables geb deps in plugins build config
 
 def findTemplatedFiles = {
 	def files = [:]
@@ -85,19 +93,18 @@ task clean(type: Delete, overwrite: true) { task ->
 	}
 }
 
-task release(type: GrailsTask) {
-	if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-		command "release-plugin"
-		configuration "compile"
-		useRuntimeClasspathForBootstrap true
-		
-		args = "-zipOnly -username=${codehausUsername} -password=${codehausPassword} "
-		if (project.version.endsWith("-SNAPSHOT")) {
-			args += "-message='snapshot release for “${project.version}”' -snapshot"
-		} else {
-			args += "-message='Release “${project.version}”'"
-		}
-	}
+task packagePlugin(type: GrailsTask) {
+	command "package-plugin"
+}
+
+task release(type: GrailsTask, dependsOn: packagePlugin) {
+	command "publish-plugin"
+
+	args "--non-interactive --noScm --repository=grailsCentral --portal=grailsCentral"
+	if (isSnapshot) args += " --snapshot"
+
+	doFirst { System.setProperty("geb.releasing", "true") }
+	doLast { System.clearProperty("geb.releasing") }
 }
 
 task build(dependsOn: [test, assemble])

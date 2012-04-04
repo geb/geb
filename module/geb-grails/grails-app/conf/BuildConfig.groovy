@@ -18,17 +18,13 @@ grails.project.dependency.resolution = {
 	repositories {
 		grailsCentral()
 		grailsHome()
-		mavenLocal()
 		mavenCentral()
+		
 	}
 	
-	def runningInGebBuild = System.getProperty("geb.building") != null
-	
 	plugins {
-		if (runningInGebBuild) {
-			compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.5-groovy-1.7", ":easyb:2.02") {
-				export = false
-			}
+		compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.6", ":easyb:2.02", ":release:2.0.0.BUILD-SNAPSHOT") {
+			export = false
 		}
 	}
 }
