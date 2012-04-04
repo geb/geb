@@ -13,8 +13,14 @@ buildscript {
 apply plugin: "grails"
 
 configurations {
-	compile.exclude module: "commons-logging"
-	compile.exclude module: 'xml-apis'
+	all {
+		exclude module: "commons-logging"
+		exclude module: 'xml-apis'
+	}
+	test {
+		exclude module: "groovy-all"
+	}
+	releaseBootstrap.extendsFrom bootstrap
 }
 
 repositories {
@@ -28,16 +34,22 @@ dependencies {
 	
 	bootstrap "org.codehaus.groovy:groovy-all:1.8.6"
 	
-	test project(':module:geb-junit4'),
-	     project(':module:geb-easyb'),
-	     htmlUnitDriverDependency
+	test project(':module:geb-junit4')
+	test htmlUnitDriverDependency
 	test project(':module:geb-spock'), {
 		exclude module: "spock-core"
+		exclude module: "groovy-all"
 	}
-	bootstrap "org.apache.maven:maven-ant-tasks:2.1.0"
-	bootstrap "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
+	releaseBootstrap "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
 		exclude module: "xml-apis"
 		exclude module: "groovy"
+		exclude module: "httpclient"
+		exclude module: "nekohtml"
+		exclude module: "httpcore"
+		exclude module: "groovy"
+	}
+	releaseBootstrap ("org.apache.maven:maven-ant-tasks:2.1.0") {
+		exclude group: "nekohtml"
 	}
 }
 
@@ -97,7 +109,14 @@ task packagePlugin(type: GrailsTask) {
 	command "package-plugin"
 }
 
+task dumpClassloaders(type: GrailsTask) {
+	command "dump-classloaders"
+}
+
+test.dependsOn packagePlugin
+
 task release(type: GrailsTask, dependsOn: packagePlugin) {
+	bootstrapClasspath = configurations.releaseBootstrap
 	command "publish-plugin"
 
 	args "--non-interactive --noScm --repository=grailsCentral --portal=grailsCentral"

@@ -19,11 +19,16 @@ grails.project.dependency.resolution = {
 		grailsCentral()
 		grailsHome()
 		mavenCentral()
-		
 	}
 	
 	plugins {
-		compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion", ":spock:0.6", ":easyb:2.02", ":release:2.0.0.BUILD-SNAPSHOT") {
+		test(":spock:0.6") { 
+			export = false
+		}
+		compile(":hibernate:$grailsVersion", ":tomcat:$grailsVersion") {
+			export = false
+		}
+		compile(":release:2.0.0.BUILD-SNAPSHOT") {
 			export = false
 		}
 	}
