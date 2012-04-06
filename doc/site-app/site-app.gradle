@@ -56,10 +56,10 @@ gaeDownloadSdk.doLast {
 
 ext {
 	// The version of manual to put under the “current” label
-	stableVersion = "0.6.3"
+	stableVersion = "0.7.0"
 
 	// The old versions of Geb we are including manuals for
-	oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2"]
+	oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2", "0.6.3"]
 }
 
 def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
