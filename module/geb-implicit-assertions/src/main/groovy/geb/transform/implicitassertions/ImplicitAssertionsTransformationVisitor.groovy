@@ -1,6 +1,5 @@
 package geb.transform.implicitassertions
 
-import geb.transform.implicitassertions.Runtime
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassCodeVisitorSupport
 import org.codehaus.groovy.ast.ClassHelper
@@ -33,10 +32,10 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		if (node.static && node.initialExpression in ClosureExpression) {
 			switch (node.name) {
 				case 'at':
-					rewriteClosureStatements(node.initialExpression)
+					transformEachStatement(node.initialExpression)
 					break
 				case 'content':
-					visitContentDslStatements(node.initialExpression)
+					visitContentDsl(node.initialExpression)
 					break
 			}
 		}
@@ -53,7 +52,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 			if (expression.methodAsString == 'waitFor' && expression.arguments in ArgumentListExpression) {
 				ArgumentListExpression arguments = expression.arguments
 				if (lastArgumentIsClosureExpression(arguments)) {
-					rewriteClosureStatements(arguments.expressions[-1])
+					transformEachStatement(arguments.expressions[-1])
 				}
 			} else {
 				compensateForSpockIfNecessary(expression)	
@@ -123,7 +122,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 			if (!arguments.empty) { 
 				Expression lastArg = arguments.last()
 				if (lastArg instanceof ClosureExpression) {
-					rewriteClosureStatements(lastArg as ClosureExpression)
+					transformEachStatement(lastArg as ClosureExpression)
 				}
 			}
 		}	
@@ -144,7 +143,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		}
 	}
 
-	private void visitContentDslStatements(ClosureExpression closureExpression) {
+	private void visitContentDsl(ClosureExpression closureExpression) {
 		BlockStatement blockStatement = closureExpression.code
 		blockStatement.statements.each { Statement statement ->
 			if (statement in ExpressionStatement) {
@@ -154,7 +153,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 					if (methodCall.arguments in ArgumentListExpression) {
 						ArgumentListExpression arguments = methodCall.arguments
 						if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments)) {
-							rewriteClosureStatements(arguments.expressions[-1])
+							transformEachStatement(arguments.expressions[-1])
 						}
 					}
 				}
@@ -162,34 +161,34 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		}
 	}
 
-	private void rewriteClosureStatements(ClosureExpression closureExpression) {
+	private void transformEachStatement(ClosureExpression closureExpression) {
 		BlockStatement blockStatement = closureExpression.code
 		ListIterator iterator = blockStatement.statements.listIterator()
 		while (iterator.hasNext()) {
-			iterator.set(rewriteClosureStatement(iterator.next()))
+			iterator.set(maybeTransform(iterator.next()))
 		}
 	}
 
-	private Statement rewriteClosureStatement(Statement statement) {
+	private Statement maybeTransform(Statement statement) {
 		Statement result = statement
-		Expression toBeRewritten = getExpressionToBeRewritten(statement)
-		if (toBeRewritten) {
-			result = encloseWithVoidCheckAndAssert(toBeRewritten, statement)
+		Expression expression = getTransformableExpression(statement)
+		if (expression) {
+			result = transform(expression, statement)
 		}
 		return result
 	}
 
-	private Expression getExpressionToBeRewritten(Statement statement) {
+	private Expression getTransformableExpression(Statement statement) {
 		if (statement in ExpressionStatement) {
 			ExpressionStatement expressionStatement = statement
 			if (!(expressionStatement.expression in DeclarationExpression)
-				&& checkIsValidCondition(expressionStatement)) {
+				&& isTransformable(expressionStatement)) {
 				return expressionStatement.expression
 			}
 		}
 	}
 
-	boolean checkIsValidCondition(ExpressionStatement statement) {
+	boolean isTransformable(ExpressionStatement statement) {
 		if (statement.expression in BinaryExpression) {
 			BinaryExpression binaryExpression = statement.expression
 			if (ofType(binaryExpression.operation.type, ASSIGNMENT_OPERATOR)) {
@@ -200,26 +199,26 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		true
 	}
 
-	private Statement encloseWithVoidCheckAndAssert(Expression toBeRewritten, Statement original) {
+	private Statement transform(Expression expression, Statement statement) {
 		Statement replacement
 
-		Expression recordedValueExpression = createRuntimeCall("recordValue", toBeRewritten)
+		Expression recordedValueExpression = createRuntimeCall("recordValue", expression)
 		BooleanExpression booleanExpression = new BooleanExpression(recordedValueExpression)
 
 		Statement retrieveRecordedValueStatement = new ExpressionStatement(createRuntimeCall("retrieveRecordedValue"))
 
 		Statement withAssertion = new AssertStatement(booleanExpression)
-		withAssertion.setSourcePosition(toBeRewritten)
-		withAssertion.setStatementLabel((String) toBeRewritten.getNodeMetaData("statementLabel"));
+		withAssertion.setSourcePosition(expression)
+		withAssertion.setStatementLabel((String) expression.getNodeMetaData("statementLabel"));
 
 		BlockStatement assertAndRetrieveRecordedValue = new BlockStatement()
 		assertAndRetrieveRecordedValue.addStatement(withAssertion)
 		assertAndRetrieveRecordedValue.addStatement(retrieveRecordedValueStatement)
 
-		if (toBeRewritten in MethodCallExpression) {
-			MethodCallExpression rewrittenMethodCall = toBeRewritten
+		if (expression in MethodCallExpression) {
+			MethodCallExpression rewrittenMethodCall = expression
 
-			Statement noAssertion = new ExpressionStatement(toBeRewritten)
+			Statement noAssertion = new ExpressionStatement(expression)
 			StaticMethodCallExpression isVoidMethod = createRuntimeCall(
 				"isVoidMethod",
 				rewrittenMethodCall.objectExpression,
@@ -232,7 +231,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 			replacement = assertAndRetrieveRecordedValue
 		}
 
-		replacement.setSourcePosition(original)
+		replacement.setSourcePosition(statement)
 		replacement
 	}
 
