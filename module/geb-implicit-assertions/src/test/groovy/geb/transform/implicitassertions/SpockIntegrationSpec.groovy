@@ -31,7 +31,7 @@ class SpockIntegrationSpec extends Specification {
 		def invoker = new TransformTestHelper() {
 			protected configure(TransformTestHelper.Transforms transforms) {
 				transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
-				transforms.add(new EvaluatedClosureTransformation(), CANONICALIZATION)
+				transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
 			}
 		}
 		

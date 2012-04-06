@@ -19,7 +19,7 @@ class EvaluatedClosureTransformationSpec extends Specification {
 	private Class getTransformedClassWithClosureBody(String... code) {
 		File tempFile = File.createTempFile('TransformedClass', '.groovy')
 		tempFile << makeCodeTemplate(code)
-		def invoker = new TranformTestHelper(new EvaluatedClosureTransformation(), CANONICALIZATION)
+		def invoker = new TranformTestHelper(new ImplicitAssertionsTransformation(), CANONICALIZATION)
 		Class transformed = invoker.parse(tempFile)
 		tempFile.delete()
 		transformed
