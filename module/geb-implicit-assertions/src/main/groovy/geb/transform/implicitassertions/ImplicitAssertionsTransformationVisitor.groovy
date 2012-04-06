@@ -1,24 +1,15 @@
 package geb.transform.implicitassertions
 
-import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassCodeVisitorSupport
 import org.codehaus.groovy.ast.ClassHelper
+import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.FieldNode
-
-import org.codehaus.groovy.ast.stmt.BlockStatement
-import org.codehaus.groovy.ast.stmt.ExpressionStatement
-import org.codehaus.groovy.ast.stmt.Statement
 import org.codehaus.groovy.control.SourceUnit
-import org.codehaus.groovy.control.messages.SyntaxErrorMessage
-import org.codehaus.groovy.syntax.SyntaxException
 import org.codehaus.groovy.ast.expr.*
+import org.codehaus.groovy.ast.stmt.*
 import static org.codehaus.groovy.syntax.Types.ASSIGNMENT_OPERATOR
 import static org.codehaus.groovy.syntax.Types.ofType
-import org.codehaus.groovy.ast.stmt.IfStatement
-
-import org.codehaus.groovy.ast.ClassNode
-
-import org.codehaus.groovy.ast.stmt.AssertStatement
+import static geb.transform.implicitassertions.ImplicitAssertionsTransformationUtil.*
 
 class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 	SourceUnit sourceUnit
@@ -192,7 +183,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		if (statement.expression in BinaryExpression) {
 			BinaryExpression binaryExpression = statement.expression
 			if (ofType(binaryExpression.operation.type, ASSIGNMENT_OPERATOR)) {
-				reportError(statement, "Expected a condition, but found an assignment. Did you intend to write '==' ?")
+				reportError(statement, "Expected a condition, but found an assignment. Did you intend to write '==' ?", sourceUnit)
 				false
 			}
 		}
@@ -254,18 +245,13 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		}
 		List<SpreadExpression> spreadExpressions = argumentList.findAll { it in SpreadExpression }
 		if (spreadExpressions) {
-			spreadExpressions.each { reportError(it, 'Spread expressions are not allowed here') }
+			spreadExpressions.each { reportError(it, 'Spread expressions are not allowed here', sourceUnit) }
 			return null
 		} else {
 			new ArrayExpression(ClassHelper.OBJECT_TYPE, argumentList);
 		}
 	}
 
-	private void reportError(ASTNode node, String message) {
-		def line = node.lineNumber > 0 ? node.lineNumber : node.lastLineNumber
-		def column = node.columnNumber > 0 ? node.columnNumber : node.lastColumnNumber
-		def errorMessage = new SyntaxErrorMessage(new SyntaxException(message, line, column), sourceUnit)
-		sourceUnit.errorCollector.addErrorAndContinue(errorMessage)
-	}
+
 }
 
