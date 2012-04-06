@@ -1,4 +1,4 @@
-package geb.transform.implicitassertions.visitor
+package geb.transform.implicitassertions
 
 import geb.transform.implicitassertions.Runtime
 import org.codehaus.groovy.ast.ASTNode
@@ -21,10 +21,10 @@ import org.codehaus.groovy.ast.ClassNode
 
 import org.codehaus.groovy.ast.stmt.AssertStatement
 
-class EvaluatedClosureVisitor extends ClassCodeVisitorSupport {
+class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 	SourceUnit sourceUnit
 
-	EvaluatedClosureVisitor(SourceUnit sourceUnit) {
+	ImplicitAssertionsTransformationVisitor(SourceUnit sourceUnit) {
 		this.sourceUnit = sourceUnit
 	}
 
