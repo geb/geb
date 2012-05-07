@@ -23,6 +23,7 @@ import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
+import geb.error.PageOnLoadListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent
 
 /**
@@ -67,6 +68,8 @@ class Page {
 	static url = ""
 	
 	private Browser browser
+	
+	private final Set<PageOnLoadListener> onLoadListeners = new LinkedHashSet()
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport 
@@ -226,6 +229,16 @@ class Page {
 	 */
 	void onLoad(Page previousPage) {
 		
+	}
+	
+	void registerOnLoadListener(PageOnLoadListener listener) {
+		if(!onLoadListeners.add(listener)) {
+			throw new PageOnLoadListenerAlreadyRegisteredException(this, listener)
+		}
+	}
+	
+	void informOnLoadListeners() {
+		onLoadListeners*.pageLoaded(browser, this)
 	}
 	
 	/**
