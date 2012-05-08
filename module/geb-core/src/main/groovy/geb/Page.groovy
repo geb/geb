@@ -235,12 +235,20 @@ class Page {
 		
 	}
 	
+	/**
+	 * Registers a listener which will receive a callback whenever this page is loaded by the Browser object
+	 * 
+	 * @param listener The listener object that will be notified when this page is loaded
+	 */
 	void registerOnLoadListener(PageOnLoadListener listener) {
 		if(!onLoadListeners.add(listener)) {
 			throw new PageOnLoadListenerAlreadyRegisteredException(this, listener)
 		}
 	}
 	
+	/**
+	 * Notifies all registered listeners that this page has been loaded
+	 */
 	void informOnLoadListeners() {
 		onLoadListeners*.pageLoaded(browser, this)
 	}
