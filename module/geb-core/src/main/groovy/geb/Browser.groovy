@@ -317,7 +317,7 @@ class Browser {
 			def previousPage = this.page
 			this.page = page
 			this.page.onLoad(previousPage)
-			this.page.informOnLoadListeners(this, previousPage)
+			this.page.informOnLoadListeners()
 		}
 	}
 
