@@ -53,15 +53,23 @@ class DomDecoratingSupport {
 	
 	def getDomDecoratingJsFiles() {
 		if ( !(this.@domDecoratingJsFiles?.size()) ) {
-			if ( owner.getClass().getResource( "/" + owner.getClass().name + ".js" )?.path ) {
-				this.@domDecoratingJsFile = [ "/" + owner.getClass().name + ".js" ]
-			} else if ( owner.class.getResource( owner.getClass().simpleName + ".js" )?.path ) {
-				this.@domDecoratingJsFile = [ owner.getClass().simpleName + ".js" ]
+			if ( owner.getClass().getResource( this.defaultRootPackageJsFile )?.path ) {
+				this.@domDecoratingJsFile = [ this.defaultRootPackageJsFile ]
+			} else if ( owner.class.getResource( this.defaultOwnerPackageJsFile )?.path ) {
+				this.@domDecoratingJsFile = [ this.defaultOwnerPackageJsFile ]
 			}
 		}
 		this.@domDecoratingJsFiles
 	}
-		
+	
+	private getDefaultRootPackageJsFile() {
+		"/" + owner.getClass().name + ".js"
+	}
+	
+	private getDefaultOwnerPackageJsFile() {
+		owner.getClass().simpleName + ".js"
+	}
+	
 	/**
 	 * <p>
 	 * Executes a list of scripts on the page DOM
@@ -87,8 +95,8 @@ class DomDecoratingSupport {
 	 */
 	def decorateDom() {
 		def result = []
-		for ( jsFileName in getDomDecoratingJsFiles() ) {
-			final String jsFilePath = owner.getClass().getResource( jsFileName ).path
+		for ( jsFile in getDomDecoratingJsFiles() ) {
+			final String jsFilePath = owner.getClass().getResource( jsFile ).path
 			result << js.exec( ( new File( jsFilePath ) ).text )
 		}
 		return result
