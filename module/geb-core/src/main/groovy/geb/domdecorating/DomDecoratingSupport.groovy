@@ -21,7 +21,6 @@ package geb.domdecorating
 class DomDecoratingSupport {
 	
 	private owner
-	private def domDecoratingJsFiles = null
 	
 	/**
 	 * Constructor which registers on load listener
@@ -31,37 +30,46 @@ class DomDecoratingSupport {
 		this.owner.registerOnLoadListener( new DomDecoratingPageOnLoadListener() )
 	}
 	
-	void setDomDecoratingJsFile( String jsFile ) {
-		domDecoratingJsFiles = [ jsFile ]
-	}
-	
-	void setDomDecoratingJsFile( File jsFile ) {
-		domDecoratingJsFiles = [ jsFile.path ]
-	}
-	
-	void setDomDecoratingJsFiles( String[] jsFiles ) {
-		domDecoratingJsFiles = jsFiles.toList()
-	}
-	
-	void setDomDecoratingJsFiles( File[] jsFiles ) {
-		domDecoratingJsFiles = jsFiles.toList()*.toString()
-	}
-	
-	void setDomDecoratingJsFiles( List jsFiles ) {
-		domDecoratingJsFiles = jsFiles*.toString()
-	}
-	
-	def getDomDecoratingJsFiles() {
-		if ( !(this.@domDecoratingJsFiles?.size()) ) {
-			if ( getJsResourcePath( this.defaultRootPackageJsFile ) ) {
-				this.@domDecoratingJsFile = [ this.defaultRootPackageJsFile ]
-			} else if ( getJsResourcePath( this.defaultOwnerPackageJsFile ) ) {
-				this.@domDecoratingJsFile = [ this.defaultOwnerPackageJsFile ]
+	/**
+	 * Checks for existence of methods:
+	 *  static def getDomDecoratingJsFiles() or 
+	 *  static def getDomDecoratingJsFile()
+	 *  
+	 * These methods return a list of javascript files or a single file name respectively.
+	 * The returned file names are assumed to be accessible through the classpath.
+	 * If neither of these methods exists, then this will check to see if a script with
+	 * the name of the class exists on the classpath.
+	 * 
+	 * @return List of javascript file paths
+	 */
+	private def resolveDomDecoratingJsFiles() {
+		def domDecoratingJsFiles = []
+		try {
+			// Search for existing method which returns a list
+			domDecoratingJsFiles = ( owner.getClass().getMethod( "getDomDecoratingJsFiles", null ).invoke( null, null ) as List )*.toString()
+		} catch ( Exception e1 ) {
+			try {
+				// Search for existing method which returns a single string
+				domDecoratingJsFiles = [
+					owner.getClass().getMethod( "getDomDecoratingJsFile", null ).invoke( null, null ).toString()
+				]
+			} catch ( Exception e2 ) {
+				if ( getJsResourcePath( this.defaultRootPackageJsFile ) ) {
+					// Search for default script within root package
+					domDecoratingJsFiles = [
+						this.defaultRootPackageJsFile
+					]
+				} else if ( getJsResourcePath( this.defaultOwnerPackageJsFile ) ) {
+					// Search for default script within owner package
+					domDecoratingJsFiles = [
+						this.defaultOwnerPackageJsFile
+					]
+				}
 			}
 		}
-		this.@domDecoratingJsFiles
+		domDecoratingJsFiles
 	}
-	
+   	
 	private getDefaultRootPackageJsFile() {
 		"/" + owner.getClass().name + ".js"
 	}
@@ -99,9 +107,9 @@ class DomDecoratingSupport {
 	 */
 	def decorateDom() {
 		def result = []
-		for ( jsFile in getDomDecoratingJsFiles() ) {
+		for ( jsFile in resolveDomDecoratingJsFiles() ) {
 			final String jsFilePath = getJsResourcePath( jsFile )
-			result << js.exec( ( new File( jsFilePath ) ).text )
+			result << owner.js.exec( ( new File( jsFilePath ) ).text )
 		}
 		return result
 	}
