@@ -43,12 +43,18 @@ class DomDecoratingTestPage extends Page {
 	}
 	
 	static String getHTML() {
+		
+		def jquery = getClass().getResource("/jquery-1.4.2.min.js")
+		
 		"""
 			<html>
 				<head>
 					<title>
 						${DomDecoratingTestPage.getExpectedTitle()}
 					</title>
+					<script type="text/javascript">
+						${jquery.openStream().text}
+					</script>
 				</head>
 				<body>
 					<table id="book-details">
@@ -84,3 +90,4 @@ class DomDecoratingTestPage extends Page {
 	
 	static at = { title =~ DomDecoratingTestPage.getExpectedTitle() }
 }
+
