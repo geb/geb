@@ -53,9 +53,9 @@ class DomDecoratingSupport {
 	
 	def getDomDecoratingJsFiles() {
 		if ( !(this.@domDecoratingJsFiles?.size()) ) {
-			if ( owner.getClass().getResource( this.defaultRootPackageJsFile )?.path ) {
+			if ( getJsResourcePath( this.defaultRootPackageJsFile ) ) {
 				this.@domDecoratingJsFile = [ this.defaultRootPackageJsFile ]
-			} else if ( owner.class.getResource( this.defaultOwnerPackageJsFile )?.path ) {
+			} else if ( getJsResourcePath( this.defaultOwnerPackageJsFile ) ) {
 				this.@domDecoratingJsFile = [ this.defaultOwnerPackageJsFile ]
 			}
 		}
@@ -68,6 +68,10 @@ class DomDecoratingSupport {
 	
 	private getDefaultOwnerPackageJsFile() {
 		owner.getClass().simpleName + ".js"
+	}
+	
+	private def getJsResourcePath( String jsFile ) {
+		owner.getClass().getResource( jsFile )?.path
 	}
 	
 	/**
@@ -96,7 +100,7 @@ class DomDecoratingSupport {
 	def decorateDom() {
 		def result = []
 		for ( jsFile in getDomDecoratingJsFiles() ) {
-			final String jsFilePath = owner.getClass().getResource( jsFile ).path
+			final String jsFilePath = getJsResourcePath( jsFile )
 			result << js.exec( ( new File( jsFilePath ) ).text )
 		}
 		return result
