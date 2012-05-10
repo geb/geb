@@ -103,5 +103,5 @@ class DomDecoratingTestPage extends Page {
 
 class DomDecoratingProcessedTestPage extends DomDecoratingTestPage {
 
-	static def domDecoratingJsFile = "/geb.domdecorating.DomDecoratingProcessedTestPage.js"
+	static def domDecoratingJsFile = "DomDecoratingProcessedTestPage.js"
 }
