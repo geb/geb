@@ -48,8 +48,10 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 	def "non-decorated page is not decorated"() {
 		setup:
 		at NonDecoratedPage
+		
 		expect:
 		result == $( selector )?.text()
+		
 		where:
 		selector << getSelectors()
 		result << [null, null, null]
@@ -58,8 +60,10 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 	def "default-decorated page is decorated"() {
 		setup:
 		at DefaultDecoratedPage
+		
 		expect:
 		result == $( selector )?.text()
+		
 		where:
 		selector << getSelectors()
 		result << getDecoratedResults()
@@ -68,8 +72,10 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 	def "single-file-decorated page is decorated"() {
 		setup:
 		at SingleFileDecoratedPage
+		
 		expect:
 		result == $( selector )?.text()
+		
 		where:
 		selector << getSelectors()
 		result << getDecoratedResults()
@@ -78,8 +84,10 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 	def "multi-file-decorated page is decorated"() {
 		setup:
 		at MultiFileDecoratedPage
+		
 		expect:
 		result == $( selector )?.text()
+		
 		where:
 		selector << getSelectors()
 		result << getDecoratedResults()
