@@ -21,7 +21,7 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 
 	def setupSpec() {
 		server.get = { req, res ->
-			res.outputStream << DomDecoratingTestPage.getHTML()
+			res.outputStream << DefaultDecoratedPage.getHTML()
 		}
 	}
 
@@ -37,9 +37,17 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 		]
 	}
 
-	def "page is not processed"() {
+	def getDecoratedResults() {
+		[
+			"Grails in Action",
+			"Manning Publications Co",
+			"Glen Smith and Peter Ledbrook"
+		]
+	}
+	
+	def "non-decorated page is not decorated"() {
 		setup:
-		at DomDecoratingTestPage
+		at NonDecoratedPage
 		expect:
 		result == $( selector )?.text()
 		where:
@@ -47,65 +55,34 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 		result << [null, null, null]
 	}
 
-	def "page is processed"() {
+	def "default-decorated page is decorated"() {
 		setup:
-		at DomDecoratingProcessedTestPage
+		at DefaultDecoratedPage
 		expect:
 		result == $( selector )?.text()
 		where:
 		selector << getSelectors()
-		result << [
-			"Grails in Action",
-			"Manning Publications Co",
-			"Glen Smith and Peter Ledbrook"
-		]
+		result << getDecoratedResults()
+	}
+	
+	def "single-file-decorated page is decorated"() {
+		setup:
+		at SingleFileDecoratedPage
+		expect:
+		result == $( selector )?.text()
+		where:
+		selector << getSelectors()
+		result << getDecoratedResults()
+	}
+	
+	def "multi-file-decorated page is decorated"() {
+		setup:
+		at MultiFileDecoratedPage
+		expect:
+		result == $( selector )?.text()
+		where:
+		selector << getSelectors()
+		result << getDecoratedResults()
 	}
 }
 
-class DomDecoratingTestPage extends Page {
-
-	static String getExpectedTitle() {
-		"Dom Decorating Test Page"
-	}
-
-	static String getHTML() {
-
-		def jquery = getClass().getResource("/jquery-1.4.2.min.js")
-
-		"""
-			<html>
-				<head>
-					<title>
-						${DomDecoratingTestPage.getExpectedTitle()}
-					</title>
-					<script type="text/javascript">
-						${jquery.openStream().text}
-					</script>
-				</head>
-				<body>
-					<table id="book-details">
-						<tr>
-							<th>Book Title</th>
-							<td>Grails in Action</td>
-						</tr>
-						<tr>
-							<th>Publisher</th>
-							<td>Manning Publications Co</td>
-						</tr>
-						<tr>
-							<th>Author</th>
-							<td>Glen Smith and Peter Ledbrook</td>
-						</tr>
-					</table>
-				</body>
-			</html>
-		"""
-	}
-
-	static at = { title =~ DomDecoratingTestPage.getExpectedTitle() }
-}
-
-class DomDecoratingProcessedTestPage extends DomDecoratingTestPage {
-
-	static def domDecoratingJsFile = "DomDecoratingProcessedTestPage.js"
-}
