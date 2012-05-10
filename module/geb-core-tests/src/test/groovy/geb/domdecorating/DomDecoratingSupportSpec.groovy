@@ -29,17 +29,21 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 		go()
 	}
 
+	def getSelectors() {
+		[
+			"table#book-details td.__book-title_value",
+			"table#book-details td.__publisher_value",
+			"table#book-details td.__author_value"
+		]
+	}
+
 	def "page is not processed"() {
 		setup:
 		at DomDecoratingTestPage
 		expect:
 		result == $( selector )?.text()
 		where:
-		selector << [
-			"table#book-details td.__book-title_value",
-			"table#book-details td.__publisher_value",
-			"table#book-details td.__author_value"
-		]
+		selector << getSelectors()
 		result << [null, null, null]
 	}
 
@@ -49,12 +53,12 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 		expect:
 		result == $( selector )?.text()
 		where:
-		selector << [
-			"table#book-details td.__book-title_value",
-			"table#book-details td.__publisher_value",
-			"table#book-details td.__author_value"
+		selector << getSelectors()
+		result << [
+			"Grails in Action",
+			"Manning Publications Co",
+			"Glen Smith and Peter Ledbrook"
 		]
-		result << ["Grails in Action", "Manning Publications Co", "Glen Smith and Peter Ledbrook"]
 	}
 }
 
