@@ -29,7 +29,7 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 		go()
 	}
 
-	def "base page is not processed"() {
+	def "page is not processed"() {
 		setup:
 		at DomDecoratingTestPage
 		expect:
@@ -43,7 +43,7 @@ class DomDecoratingSupportSpec extends GebSpecWithServer {
 		result << [null, null, null]
 	}
 
-	def "processed page is processed"() {
+	def "page is processed"() {
 		setup:
 		at DomDecoratingProcessedTestPage
 		expect:
