@@ -23,6 +23,8 @@ import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
+import geb.domdecorating.DomDecoratingSupport
+import geb.error.PageOnLoadListenerAlreadyRegisteredException
 import geb.error.RequiredPageContentNotPresent
 
 /**
@@ -68,6 +70,8 @@ class Page {
 	
 	private Browser browser
 	
+	private final Set<PageOnLoadListener> onLoadListeners = new LinkedHashSet()
+	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport 
 	@Delegate private WaitingSupport _waitingSupport
@@ -76,6 +80,8 @@ class Page {
 	
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
+	
+	@Delegate private DomDecoratingSupport domDecoratingSupport
 	
 	/**
 	 * Initialises this page instance, connecting it to the browser.
@@ -91,6 +97,7 @@ class Page {
 		frameSupport = new FrameSupport(browser)
 		interactionsSupport = new InteractionsSupport(browser)
 		_alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }, browser.config)
+		domDecoratingSupport = new DomDecoratingSupport(this)
 		this
 	}
 	
@@ -226,6 +233,24 @@ class Page {
 	 */
 	void onLoad(Page previousPage) {
 		
+	}
+	
+	/**
+	 * Registers a listener which will receive a callback whenever this page is loaded by the Browser object
+	 * 
+	 * @param listener The listener object that will be notified when this page is loaded
+	 */
+	void registerOnLoadListener(PageOnLoadListener listener) {
+		if(!onLoadListeners.add(listener)) {
+			throw new PageOnLoadListenerAlreadyRegisteredException(this, listener)
+		}
+	}
+	
+	/**
+	 * Notifies all registered listeners that this page has been loaded
+	 */
+	void informOnLoadListeners() {
+		onLoadListeners*.pageLoaded(browser, this)
 	}
 	
 	/**
