@@ -7,10 +7,10 @@
     import geb.Browser
     
     Browser.drive {
-        go "http://google.com"
-        $("input[name=q]").value() = "Chuck Norris"
-        $("input[value=Google Search]").click()
-        assert $("li.g", 0).get("a.l").text() ==~ /Chuck/
+        go "http://google.com/ncr"
+        $("input[name=q]").value "Chuck Norris"
+        $("input[value='Google Search']").click()
+        waitFor { $("li.g", 0).find("a.l").text().contains("Chuck") }
     }
 
 This is valid Geb code, and it works well for a one off script but there are two big issues with this approach. Imagine that you have _many_ tests that involve searching and checking results. The implementation of how to search and how to find the results is going to have to be duplicated in _every_ test, maybe _many times_ per test. As soon as something as trivial as the name of the search field changes you have to update a lot of code. The Page Object Pattern allows us to apply the same principles of modularity, reuse and encapsulation that we use in other aspects of programming to avoid such issues in browser automation code.
@@ -18,32 +18,32 @@ This is valid Geb code, and it works well for a one off script but there are two
 Here is the same script, utilising page objects…
 
     import geb.*
-    
+
     class GoogleHomePage extends Page {
-        static url = "http://google.com"
+        static url = "http://google.com/?complete=0"
         static at = { title == "Google" }
         static content = {
             searchField { $("input[name=q]") }
-            searchButton(to: GoogleResultsPage) { $("input[value=Google Search]") }
+            searchButton(to: GoogleResultsPage) { $("input[value='Google Search']") }
         }
     }
-    
+
     class GoogleResultsPage extends Page {
-        static at = { title.endsWith("Google Search") }
+        static at = { waitFor { title.endsWith("Google Search") } }
         static content = {
-            results { $("li.g") }
+            results(wait: true) { $("li.g") }
             result { index -> results[index] }
             resultLink { index -> result(index).find("a.l") }
         }
     }
-    
+
     // Now the script
     Browser.drive {
         to GoogleHomePage
-        searchField.value = "Chuck Norris"
-        searchButton.click()
-        assert at(GoogleResultsPage)
-        assert resultLink(0).text() ==~ /Chuck/
+        searchField().value "Chuck Norris"
+        searchButton().click()
+        at GoogleResultsPage
+        resultLink(0).text().contains("Chuck")
     }
 
 You have now encapsulated, in a reusable fashion, information about each page and how to interact with it. As anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can become an expensive and frustrating process. Geb's support for the Page Object pattern addresses this problem.
