@@ -73,6 +73,12 @@ task packageManual(type: Sync) {
 	}
 }
 
+task openManual() {
+	doLast {
+		new java.awt.Desktop().browse(file("$compileManual.destination/index.html").toURI())
+	}
+}
+
 task manualZip(type: Zip) {
 	from packageManual
 }
