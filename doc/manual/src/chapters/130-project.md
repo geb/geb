@@ -4,12 +4,7 @@ The Geb home page can be found at [http://www.gebish.org](http://www.gebish.org)
 
 ## API Reference
 
-* [geb-core](api/geb-core/index.html)
-* [geb-spock](api/geb-spock/index.html)
-* [geb-junit4](api/geb-junit4/index.html)
-* [geb-testng](api/geb-testng/index.html)
-* [geb-easyb](api/geb-easyb/index.html)
-* [geb-junit3](api/geb-junit3/index.html)
+The API reference can be found [here](api/index.html).
 
 ## Support & Development
 

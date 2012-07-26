@@ -42,6 +42,7 @@ allprojects { project ->
 		]
 
 		publishedGroovyModules = groovyModules.findAll { it in publishedModules }
+		apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions"
 
 		grailsPluginModule = ":module:geb-grails"
 	}
@@ -71,29 +72,6 @@ subprojects {
 	}
 
 	if (path in publishedGroovyModules) {
-		groovydoc {
-			exclude "**/internal/**"
-
-			link "http://download.oracle.com/javase/6/docs/api/",
-				"java.net",
-				"java.util",
-				"java.lang",
-				"java.io"
-
-			link "http://selenium.googlecode.com/svn/trunk/docs/api/java/",
-				"org.openqa.selenium"
-
-			link "http://groovy.codehaus.org/api/",
-				"groovy.lang"
-
-			link "http://www.gebish.org/manual/$version/api/geb-core",
-				"geb"
-
-			docTitle = "Groovy API Documentation for $name $version"
-			footer = "<p style='text-align: center'>Groovy API Documentation for $name $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
-			windowTitle = "Groovy API for $name $version"
-		}
-
 		task sourcesJar(type: Jar) {
 			classifier 'sources'
 			from sourceSets.main.allSource
@@ -109,6 +87,30 @@ subprojects {
 		}
 	}
 
+	tasks.withType(Groovydoc) {
+		exclude "**/internal/**"
+
+		link "http://download.oracle.com/javase/6/docs/api/",
+			"java.net",
+			"java.util",
+			"java.lang",
+			"java.io"
+
+		link "http://selenium.googlecode.com/svn/trunk/docs/api/java/",
+			"org.openqa.selenium"
+
+		link "http://groovy.codehaus.org/api/",
+			"groovy.lang"
+
+		link "http://www.gebish.org/manual/$version/api/geb-core",
+			"geb"
+
+		def docName = project.name == "manual" ? "Geb" : project.name
+		docTitle = "Groovy API Documentation for $docName $version"
+		footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
+		windowTitle = "Groovy API for $docName $version"
+	}
+	
 	if (path in publishedModules) {
 		apply plugin: "base"
 		apply plugin: "maven"

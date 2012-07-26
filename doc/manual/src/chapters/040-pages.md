@@ -175,7 +175,7 @@ Default value: `true`
 
 The `required` option controls whether or not the content returned by the definition has to exist or not. This is only relevant when the definition returns a `Navigator` object (via the `$()` function), it is ignored if the definition returns anything else.
 
-If the `required` option is set to `true` and the returned content does not exist, a [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception will be thrown.
+If the `required` option is set to `true` and the returned content does not exist, a [`RequiredPageContentNotPresent`](api/geb/error/RequiredPageContentNotPresent.html) exception will be thrown.
 
     class ExamplePage extends Page {
         static content = {
@@ -260,14 +260,14 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb-core/geb/Browser.html#page(Class[]\)) which is explained in the section on 
+Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page(Class[]\)) which is explained in the section on 
 [changing pages][changing-pages].
 
 #### wait
 
 Default value: `false`
 
-The `wait` option allows Geb to wait an amount of time for content to appear on the page, instead of throwing a [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception if the content is not present when requested.
+The `wait` option allows Geb to wait an amount of time for content to appear on the page, instead of throwing a [`RequiredPageContentNotPresent`](api/geb/error/RequiredPageContentNotPresent.html) exception if the content is not present when requested.
 
     class DynamicPage extends Page {
         static content = {
@@ -293,7 +293,7 @@ This is equivalent to:
         assert waitFor { dynamicallyAdded }.text() == "I'm here now"
     }
 
-See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a [`WaitTimeoutException`](api/geb-core/geb/waiting/WaitTimeoutException.html) will be thrown if the wait timeout expires.
+See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a [`WaitTimeoutException`](api/geb/waiting/WaitTimeoutException.html) will be thrown if the wait timeout expires.
 
 The value for the `wait` option can be one of the following:
 
@@ -318,7 +318,7 @@ It is also possible to use `wait` when defining non element content, such as a s
         assert successStatus
     }
 
-In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the [`RequiredPageContentNotPresent`](api/geb-core/geb/error/RequiredPageContentNotPresent.html) exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
+In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”. If the `status` element is not present when we request `successStatus`, the [`RequiredPageContentNotPresent`](api/geb/error/RequiredPageContentNotPresent.html) exception that would be thrown is swallowed and Geb will try again after the retry interval has expired.
 
 You can modify the behaviour of content with `wait` option set to true if you use it together with `required` option set to false. Given a content definition:
 
@@ -346,7 +346,7 @@ If you wish to have the same content definitions available under diferent names 
         assert someButton.text() == someButtonByAnotherName.text()
     }
 
-Rember that the aliased content has to be defined before the aliasing content, otherwise you will get a [`InvalidPageContent`](api/geb-core/geb/error/InvalidPageContent.html) exception.
+Rember that the aliased content has to be defined before the aliasing content, otherwise you will get a [`InvalidPageContent`](api/geb/error/InvalidPageContent.html) exception.
 
 ## “At” Verification
 
@@ -372,7 +372,7 @@ The `verifyAt()` method is used by the browser `at()` method which also returns 
 
 At checkers are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
-If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb-core/geb/Page.html#verifyAtSafely(\)), [`Browser#isAt(Class<? extends Page>)`](api/geb-core/geb/Browser.html#isAt(java.lang.Class\)) and [`Browser#isAt(Page)`](api/geb-core/geb/Browser.html#isAt(geb.Page\))
+If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely(\)), [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt(java.lang.Class\)) and [`Browser#isAt(Page)`](api/geb/Browser.html#isAt(geb.Page\))
 
 As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
 
@@ -430,7 +430,7 @@ The `to()` method can also take arguments…
 
 This will result in a request being made to “`http://myapp.com/example/1/2`”. This is because by default, any arguments passed to the `to()` method after the page class are converted to a URL path by calling `toString()` on each argument and joining them with “`/`”. 
 
-However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the [`convertToPath()`](api/geb-core/geb/Page.html#convertToPath(Object[]\)) method. 
+However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the [`convertToPath()`](api/geb/Page.html#convertToPath(Object[]\)) method. 
 The [`Page`][page-api] implementation of this method looks like this…
 
     String convertToPath(Object[] args) {
@@ -470,7 +470,7 @@ Any type of argument can be used with the `to()` method, **except** named parame
         to PersonPage, newPerson, flag: true
     }
 
-This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb-core/geb/Page.html#convertToPath(Object[]\)) method.
+This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb/Page.html#convertToPath(Object[]\)) method.
 
 
 ## Inheritance

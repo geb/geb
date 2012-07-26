@@ -4,7 +4,7 @@ Geb features an API that can be used to make direct HTTP requests from the appli
 
 The direct download API works by using [`java.net.HttpURLConnection`][httpurlconnection] to directly connect to a URL from the application executing Geb, bypassing WebDriver.
 
-The Direct Download API is provided by the [`DownloadSupport`](api/geb-core/geb/download/DownloadSupport.html) class, which is mixed in to pages and modules (which means you can just call these instance methods directly from anywhere where you would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules). Consult the [`DownloadSupport`](api/geb-core/geb/download/DownloadSupport.html) API reference for the `download*` methods that are available.
+The Direct Download API is provided by the [`DownloadSupport`](api/geb/download/DownloadSupport.html) class, which is mixed in to pages and modules (which means you can just call these instance methods directly from anywhere where you would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules). Consult the [`DownloadSupport`](api/geb/download/DownloadSupport.html) API reference for the `download*` methods that are available.
  
 ## Downloading Example
 
@@ -46,4 +46,4 @@ For example, we could test what happens when we send gibberish in the `Accept-En
 
 ## Errors
 
-Any IO type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a [`DownloadException`](api/geb-core/geb/download/DownloadException.html) being thrown that wraps the original exception and provides access to the HttpURLConnection used to make the request.
+Any IO type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a [`DownloadException`](api/geb/download/DownloadException.html) being thrown that wraps the original exception and provides access to the HttpURLConnection used to make the request.

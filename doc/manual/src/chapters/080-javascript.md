@@ -4,7 +4,7 @@ This section discusses how to deal with some of the challenges in testing and/or
 
 ## The “js” object
 
-The browser instance exposes a “[`js`](api/geb-core/geb/Browser.html#getJs(\))” object that provides support for working with Javascript over and above what WebDriver provides. 
+The browser instance exposes a “[`js`](api/geb/Browser.html#getJs(\))” object that provides support for working with Javascript over and above what WebDriver provides. 
 It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`][javascriptexecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) method. 
 
 > Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) in order to understand how type conversion works between the two worlds.
@@ -102,7 +102,7 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
 
 Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX, timers or effects.
 
-The `waitFor` methods are provided by the [`WaitingSupport`](api/geb-core/geb/waiting/WaitingSupport.html) mixin which delegates to the [`Wait` class](api/geb-core/geb/waiting/Wait.html) (see the documentation of the [`waitFor` method](api/geb-core/geb/waiting/Wait.html#waitFor(groovy.lang.Closure\)) of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth "Groovy - Groovy Truth"), and how long to wait in between invoking the closure again.
+The `waitFor` methods are provided by the [`WaitingSupport`](api/geb/waiting/WaitingSupport.html) mixin which delegates to the [`Wait` class](api/geb/waiting/Wait.html) (see the documentation of the [`waitFor` method](api/geb/waiting/Wait.html#waitFor(groovy.lang.Closure\)) of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth "Groovy - Groovy Truth"), and how long to wait in between invoking the closure again.
 
     waitFor {} // use default configuration
     waitFor(10) {} // wait for up to 10 seconds, using the default retry interval
@@ -176,7 +176,7 @@ If you wish to add a custom message to `WaitTimeoutException` that is being thro
 
 ## Alert and Confirm Dialogs
 
-WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the [`AlertAndConfirmSupport`](api/geb-core/geb/js/AlertAndConfirmSupport.html) class that is mixed into 
+WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the [`AlertAndConfirmSupport`](api/geb/js/AlertAndConfirmSupport.html) class that is mixed into 
 [`Page`][page-api] and 
 [`Module`][module-api].
 

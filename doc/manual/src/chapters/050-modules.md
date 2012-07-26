@@ -2,7 +2,7 @@
 
 Modules are re-usable definitions of content that can be used across multiple pages. They are useful for modelling things like UI widgets that are used across multiple pages, or even for defining more complex UI elements in the one page.
 
-They are defined in a manner similar to pages, but extend [`Module`](api/geb-core/geb/Module.html)…
+They are defined in a manner similar to pages, but extend [`Module`](api/geb/Module.html)…
 
     class ExampleModule extends Module {
         static content = {
