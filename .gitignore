@@ -10,3 +10,4 @@ stacktrace.log
 .idea
 out
 *.ipr
+*.hprof
