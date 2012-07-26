@@ -38,6 +38,12 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### Fixes
+
+* `startsWith()`, `contains()` etc. now work for selecting via element text now works for multiline (i.e. `<br/>`) text \[[GEB-202](http://jira.codehaus.org/browse/GEB-202)\]
+
+### 0.7.0
+
 #### New Features
 
 * Added support for indexes and ranges in `moduleList()` method 

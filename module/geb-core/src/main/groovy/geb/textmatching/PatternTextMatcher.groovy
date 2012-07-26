@@ -21,7 +21,7 @@ class PatternTextMatcher implements TextMatcher {
 	final Pattern pattern
 	
 	PatternTextMatcher(CharSequence pattern) {
-		this.pattern = Pattern.compile(pattern.toString())
+		this.pattern = Pattern.compile(pattern.toString(), Pattern.DOTALL)
 	}
 	
 	boolean matches(String text) {
