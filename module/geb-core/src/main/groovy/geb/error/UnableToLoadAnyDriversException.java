@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class UnknownDriverShortNameException extends GebException {
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
-	UnknownDriverShortNameException(String unknown, String[] knowns) {
-		super("The value '$unknown' is not a valid driver short name (valid: ${knowns.join(', ')})".toString())
+public class UnableToLoadAnyDriversException extends GebException {
+
+	public UnableToLoadAnyDriversException(String[] attemptedDriverClassNames) {
+		super(String.format("Unable to load any drivers from: [%s]", DefaultGroovyMethods.join(attemptedDriverClassNames, ", ")));
 	}
 
 }

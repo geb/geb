@@ -10,19 +10,14 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+* limitations under the License.
  */
-package geb.error
+package geb.navigator;
 
-import geb.content.Navigable
+public class EmptyNavigatorException extends IllegalStateException {
 
-class UnresolvablePropertyException extends GebException {
-
-	final Navigable container
-	final String name
-	
-	UnresolvablePropertyException(Navigable container, String name, String message) {
-		super(message)
+	public EmptyNavigatorException() {
+		super("The Navigator instance is empty");
 	}
 
 }

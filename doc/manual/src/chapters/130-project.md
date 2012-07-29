@@ -33,9 +33,14 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### New Features
+
+* Geb is now built with Groovy 1.8.6. This was forced to resolve \[[GEB-194](http://jira.codehaus.org/browse/GEB-194)\].
+
 #### Fixes
 
 * `startsWith()`, `contains()` etc. now work for selecting via element text now works for multiline (i.e. `<br/>`) text \[[GEB-202](http://jira.codehaus.org/browse/GEB-202)\]
+* Geb now works with Java 7 \[[GEB-194](http://jira.codehaus.org/browse/GEB-194)\].
 
 ### 0.7.0
 

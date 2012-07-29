@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.download
+package geb.download;
 
-import geb.error.GebException
+import geb.error.GebException;
 
-class DownloadException extends GebException {
-	
-	final HttpURLConnection connection
-	
-	DownloadException(HttpURLConnection connection, CharSequence message, Throwable cause = null) {
-		super(message, cause)
-		this.connection = connection
+import java.net.HttpURLConnection;
+
+public class DownloadException extends GebException {
+
+	final private HttpURLConnection connection;
+
+	public DownloadException(HttpURLConnection connection, CharSequence message) {
+		this(connection, message, null);
 	}
-	
+
+	public DownloadException(HttpURLConnection connection, CharSequence message, Throwable cause) {
+		super(message, cause);
+		this.connection = connection;
+	}
+
+	public HttpURLConnection getConnection() {
+		return connection;
+	}
 }

@@ -13,32 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.waiting
+package geb.waiting;
 
-import geb.error.GebException
+import geb.error.GebException;
 
 /**
  * Thrown when a wait operation exceeds its timeout.
- * <p>
+ *
  * The {@code cause} of the exception will be the exception thrown while waiting.
- * 
+ *
  * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
  */
-class WaitTimeoutException extends GebException {
+public class WaitTimeoutException extends GebException {
 
-	WaitTimeoutException(Wait wait, Throwable cause = null) {
-		super(toMessage(wait, cause), cause)
+	public WaitTimeoutException(Wait wait) {
+		this(wait, null);
 	}
-	
-	private static toMessage(Wait wait, Throwable cause) {
-		def message = "condition did not pass in $wait.timeout seconds"
-		if (wait.customMessage) {
-			message +=" (${wait.customMessage})"
+
+	public WaitTimeoutException(Wait wait, Throwable cause) {
+		super(toMessage(wait, cause), cause);
+	}
+
+	private static String toMessage(Wait wait, Throwable cause) {
+		StringBuilder message = new StringBuilder(String.format("condition did not pass in %s seconds", wait.getTimeout()));
+		if (wait.getCustomMessage() != null) {
+			message.append(String.format("(%s)", wait.getCustomMessage()));
 		}
-		if (cause) {
-			message += " (failed with exception)"
+		if (cause != null) {
+			message.append(" (failed with exception)");
 		}
-		message
+		return message.toString();
 	}
 
 }

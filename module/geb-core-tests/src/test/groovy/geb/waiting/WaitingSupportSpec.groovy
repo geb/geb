@@ -14,10 +14,10 @@
  */
 package geb.waiting
 
-import geb.*
-import geb.test.*
-import spock.lang.*
-import org.codehaus.groovy.transform.powerassert.PowerAssertionError
+import geb.Module
+import geb.Page
+import geb.test.GebSpecWithServer
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 
 class WaitingSupportSpec extends GebSpecWithServer {
 

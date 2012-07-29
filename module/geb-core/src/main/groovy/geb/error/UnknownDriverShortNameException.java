@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *		http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,14 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-import geb.*
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
-class PageChangeListenerAlreadyRegisteredException extends GebException {
+public class UnknownDriverShortNameException extends GebException {
 
-	PageChangeListenerAlreadyRegisteredException(Browser browser, PageChangeListener listener) {
-		super("Attempt to register duplicate page change listener '${listener.toString()}' for browser '${browser.toString()}'")
+	public UnknownDriverShortNameException(String unknown, String[] knowns) {
+		super(String.format("The value '%s' is not a valid driver short name (valid: %s)", unknown, DefaultGroovyMethods.join(knowns, ", ")));
 	}
-	
+
 }

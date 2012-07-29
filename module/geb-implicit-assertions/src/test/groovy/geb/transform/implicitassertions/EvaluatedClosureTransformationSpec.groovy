@@ -2,11 +2,11 @@ package geb.transform.implicitassertions
 
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
-import org.codehaus.groovy.transform.powerassert.PowerAssertionError
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Specification
 import spock.lang.Unroll
+
 import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
-import org.codehaus.groovy.tools.ast.TranformTestHelper
 
 class EvaluatedClosureTransformationSpec extends Specification {
 
@@ -19,7 +19,15 @@ class EvaluatedClosureTransformationSpec extends Specification {
 	private Class getTransformedClassWithClosureBody(String... code) {
 		File tempFile = File.createTempFile('TransformedClass', '.groovy')
 		tempFile << makeCodeTemplate(code)
-		def invoker = new TranformTestHelper(new EvaluatedClosureTransformation(), CANONICALIZATION)
+
+		def invoker = new TransformTestHelper() {
+			protected configure(TransformTestHelper.Transforms transforms) {
+				transforms.add(new EvaluatedClosureTransformation(), CANONICALIZATION)
+			}
+		}
+
+		invoker.parse(tempFile)
+
 		Class transformed = invoker.parse(tempFile)
 		tempFile.delete()
 		transformed

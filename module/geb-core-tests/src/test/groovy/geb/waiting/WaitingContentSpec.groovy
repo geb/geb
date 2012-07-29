@@ -15,11 +15,11 @@
  */
 package geb.waiting
 
-import geb.*
-import geb.error.*
-import geb.test.*
-import spock.lang.*
-import org.codehaus.groovy.transform.powerassert.PowerAssertionError
+import geb.Page
+import geb.error.RequiredPageContentNotPresent
+import geb.test.GebSpecWithServer
+import spock.lang.Unroll
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 
 class WaitingContentSpec extends GebSpecWithServer {
 

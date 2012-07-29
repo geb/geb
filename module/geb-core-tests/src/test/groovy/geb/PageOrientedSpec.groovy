@@ -14,11 +14,14 @@
  */
 package geb
 
-import geb.test.*
-import spock.lang.*
-import geb.error.*
+import geb.error.RequiredPageContentNotPresent
+import geb.error.RequiredPageValueNotPresent
+import geb.error.UnexpectedPageException
+import geb.test.GebSpecWithServer
 import geb.waiting.WaitTimeoutException
-import org.codehaus.groovy.transform.powerassert.PowerAssertionError
+import spock.lang.Issue
+import spock.lang.Stepwise
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 
 @Stepwise
 class PageOrientedSpec extends GebSpecWithServer {

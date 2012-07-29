@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,12 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class UnableToLoadAnyDriversException extends GebException {
+import geb.content.Navigable;
 
-	UnableToLoadAnyDriversException(String[] attemptedDriverClassNames) {
-		super("Unable to load any drivers from: [${attemptedDriverClassNames.join(', ')}]")
+public class UnresolvablePropertyException extends GebException {
+
+	final private Navigable container;
+	final private String name;
+
+	public UnresolvablePropertyException(Navigable container, String name, String message) {
+		super(message);
+		this.container = container;
+		this.name = name;
 	}
 
+	public Navigable getContainer() {
+		return container;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

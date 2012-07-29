@@ -12,14 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-import geb.Page
+import geb.Page;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
-class UnexpectedPageException extends GebException {
+public class UnexpectedPageException extends GebException {
 
-	UnexpectedPageException(Class<? extends Page>[] potentials) {
-		super("unable to find page match (given potentials: $potentials)")
+	public UnexpectedPageException(Class<? extends Page>[] potentials) {
+		super(String.format("unable to find page match (given potentials: %s)", DefaultGroovyMethods.toString(potentials)));
 	}
 
 }
