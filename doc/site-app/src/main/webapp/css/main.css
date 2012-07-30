@@ -148,11 +148,11 @@ blockquote {
 	text-transform: uppercase;
 }
 
-#header-content li:hover ul.manuals-list {
+#header-content li:hover ul.link-list {
 	display: block;
 }
 
-#header-content ul.manuals-list {
+#header-content ul.link-list {
 	top: 100%;
 	left: 0;
 	right: auto;
@@ -160,8 +160,16 @@ blockquote {
 	display: none;
 }
 
-#header-content ul.manuals-list a {
+#header-content ul.link-list#api-list {
+	left: 91px;
+}
+
+#header-content ul.link-list a {
 	float: none;
+}
+
+#header-content li div {
+	display: inline;
 }
 
 #header-content li {
@@ -176,7 +184,7 @@ blockquote {
 	text-decoration: none;
 }
 
-#header-content li a:hover, #header-content li span {
+#header-content li a:hover {
 	color: #F88F26;
 }
 

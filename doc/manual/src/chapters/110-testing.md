@@ -44,7 +44,7 @@ The browser instance is created by the testing integration. The [configuration m
 
 The Spock, JUnit and TestNG integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports at the end of test methods with the label “end”. They also set the [report group](reporting.html#the_report_group) to the name of the test class (substituting “.” for “/”).
 
-The [`report(String label)`](api/geb-core/geb/Browser.html#report(java.lang.String\)) browser method is replaced with a specialised version. This method works the same as the browser method, but adds counters and the current test method name as prefixes to the given label.
+The [`report(String label)`](api/geb/Browser.html#report(java.lang.String\)) browser method is replaced with a specialised version. This method works the same as the browser method, but adds counters and the current test method name as prefixes to the given label.
 
     package my.tests
     
@@ -64,7 +64,7 @@ The [`report(String label)`](api/geb-core/geb/Browser.html#report(java.lang.Stri
         }
     }
 
-Assuming a configured `reportsDir` of `reports/geb` and the default reporter (i.e. [`ScreenshotAndPageSourceReporter`](api/geb-core/geb/report/ScreenshotAndPageSourceReporter.html)), we would find the following files:
+Assuming a configured `reportsDir` of `reports/geb` and the default reporter (i.e. [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotAndPageSourceReporter.html)), we would find the following files:
 
 * `reports/geb/my/tests/FunctionalSpec/1-1-login-login screen.html`
 * `reports/geb/my/tests/FunctionalSpec/1-1-login-login screen.png`

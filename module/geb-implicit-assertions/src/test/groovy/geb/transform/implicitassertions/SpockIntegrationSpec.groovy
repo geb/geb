@@ -23,7 +23,7 @@ import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
 import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
 import org.junit.runner.Result
 import org.junit.runner.notification.Failure
-import org.codehaus.groovy.transform.powerassert.PowerAssertionError
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 
 class SpockIntegrationSpec extends Specification {
 	

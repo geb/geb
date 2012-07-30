@@ -10,18 +10,22 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+* limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class GebException extends Exception {
+public class GebException extends Exception {
 
-	GebException(message, Throwable cause = null) {
-		super(message.toString(), cause)
+	public GebException(Object message) {
+		this(message, null);
 	}
-	
-	GebException(Throwable cause) {
-		this(null, cause)
+
+	public GebException(Object message, Throwable cause) {
+		super(message == null ? null : message.toString(), cause);
+	}
+
+	public GebException(Throwable cause) {
+		this(null, cause);
 	}
 
 }

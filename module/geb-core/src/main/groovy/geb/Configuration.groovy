@@ -54,6 +54,16 @@ class Configuration {
 		configObject.putAll(rawConfig)
 		configObject
 	}
+
+	/**
+	 * Updates a {@code waiting.preset} config entry for a given preset name.
+	 */
+	void setWaitPreset(String name, Double presetTimeout, Double presetRetryInterval) {
+		rawConfig.waiting.presets[name].with {
+			timeout = presetTimeout
+			retryInterval = presetRetryInterval
+		}
+	}
 	
 	Wait getWaitPreset(String name) {
 		def preset = rawConfig.waiting.presets[name]
@@ -97,12 +107,30 @@ class Configuration {
 	}
 
 	/**
+	 * Updates the {@code waiting.timeout} config entry.
+	 *
+	 * @see #getDefaultWaitTimeout()
+	 */
+	void setDefaultWaitTimeout(Double defaultWaitTimeout) {
+		rawConfig.waiting.timeout = defaultWaitTimeout
+	}
+
+	/**
 	 * The default {@code timeout} value to use for waiting (i.e. if unspecified).
 	 * <p>
 	 * Either the value at config path {@code waiting.timeout} or {@link geb.waiting.Wait#DEFAULT_TIMEOUT 5}.
 	 */
 	Double getDefaultWaitTimeout() {
 		readValue(rawConfig.waiting, 'timeout', Wait.DEFAULT_TIMEOUT)
+	}
+
+	/**
+	 * Updates the {@code waiting.retryInterval} config entry.
+	 *
+	 * @see #getDefaultWaitRetryInterval()
+	 */
+	void setDefaultWaitRetryInterval(Double defaultWaitRetryInterval) {
+		rawConfig.waiting.retryInterval = defaultWaitRetryInterval
 	}
 	
 	/**

@@ -130,6 +130,16 @@ class ModulesSpec extends GebSpecWithServer {
 		2     | 'd'           | true
 		3     | 'd'           | false
 	}
+
+	def 'passing a class that does not extend from module as a module produces a human readable error'() {
+		when:
+		to ContainsAnInvalidModulePage
+		invalid
+
+		then:
+		InvalidPageContent e = thrown()
+		e.message == "class '${DoesNotExtendFromModule}' should extend from ${Module} to be allowed to be a part of a module definition with name 'invalid'"
+	}
 }
 
 class ModulesSpecPage extends Page {
@@ -217,4 +227,13 @@ class OptionalModule extends Module {
 	static content = {
 		p(required: false) { $("p") }
 	}
+}
+
+class ContainsAnInvalidModulePage extends Page {
+	static content = {
+		invalid { module (DoesNotExtendFromModule) }
+	}
+}
+
+class DoesNotExtendFromModule {
 }

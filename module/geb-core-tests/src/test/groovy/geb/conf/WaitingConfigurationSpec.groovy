@@ -37,6 +37,56 @@ class WaitingConfigurationSpec extends Specification {
 		getWaitPreset("anything") == defaultWait
 		getWait(10) == new Wait(10)
 	}
+
+	@Unroll
+	def "setter for defaultWaitTimeout when #scenario" () {
+		given:
+		userConf = userConfiguration
+
+		when:
+		defaultWaitTimeout = 10
+
+		then:
+		defaultWaitTimeout == 10
+
+		where:
+		userConfiguration << ['', 'waiting { timeout = 15 }']
+		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
+	}
+
+	@Unroll
+	def "setter for defaultWaitRetryInterval when #scenario" () {
+		given:
+		userConf = userConfiguration
+
+		when:
+		defaultWaitRetryInterval = 1
+
+		then:
+		defaultWaitRetryInterval == 1
+
+		where:
+		userConfiguration << ['', 'waiting { retryInterval = 0.5 }']
+		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
+	}
+
+	@Unroll
+	def "setter for waitPreset when #scenario" () {
+		given:
+		userConf = userConfiguration
+
+		when:
+		setWaitPreset('customPreset', 1, 1)
+
+		then:
+		def preset = getWaitPreset('customPreset')
+		preset.timeout == 1
+		preset.retryInterval == 1
+
+		where:
+		userConfiguration << ['', 'waiting { presets { customPreset { timeout = 20; retryInterval = 1 } } }']
+		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
+	}
 	
 	def "specified default wait values"() {
 		when:

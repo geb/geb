@@ -32,9 +32,9 @@ Some config options can be specified by system properties. In general, config op
 
 The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options. For example, Grails dictates what the base url and directory for reports should be set to and the Geb plugin for Grails uses the build adapter mechanism to set this up.
 
-This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb-core/geb/BuildAdapter.html) interface. Currently, the build adapter can only influence the base url to use, and the location of the reports directory.
+This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb/BuildAdapter.html) interface. Currently, the build adapter can only influence the base url to use, and the location of the reports directory.
 
-If the `geb.build.adapter` system property is not explicitly set, it defaults to [`SystemPropertiesBuildAdapter`](api/geb-core/geb/buildadapter/SystemPropertiesBuildAdapter.html). As you can probably deduce, this default implementation uses system properties to specify values, so is usable in most circumstances. See the linked API doc for the details of the specific system properties it looks for.
+If the `geb.build.adapter` system property is not explicitly set, it defaults to [`SystemPropertiesBuildAdapter`](api/geb/buildadapter/SystemPropertiesBuildAdapter.html). As you can probably deduce, this default implementation uses system properties to specify values, so is usable in most circumstances. See the linked API doc for the details of the specific system properties it looks for.
 
 > Note that while the default build adapter uses system properties, it should not be considered to be the same as system property configuration due to values in the config script taking precedence over the build adapter which is not true for system properties.
 
@@ -107,7 +107,7 @@ The following table gives the possible short names that can be used:
     </tr>
 </table>
 
-If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a [`UnableToLoadAnyDriversException`](api/geb-core/geb/error/UnableToLoadAnyDriversException.html) will be thrown.
+If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a [`UnableToLoadAnyDriversException`](api/geb/error/UnableToLoadAnyDriversException.html) will be thrown.
 
 ### Driver Caching
 
@@ -156,7 +156,7 @@ Here we have defined two presets, `slow` and `quick`. Notice that the `quick` pr
 
 ### Reporter
 
-The *reporter* is the object responsible for snapshotting the state of the browser (see the [reporting](reporting.html) chapter for details). All reporters are implemenations of the [`Reporter`](api/geb-core/geb/report/Reporter.html) interface. By default, Geb uses the [`ScreenshotAndPageSourceReporter`](api/geb-core/geb/report/ScreenshotAndPageSourceReporter.html) implementation that dumps the page source as html and attempts to take a screenshot as a png file. This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
+The *reporter* is the object responsible for snapshotting the state of the browser (see the [reporting](reporting.html) chapter for details). All reporters are implemenations of the [`Reporter`](api/geb/report/Reporter.html) interface. By default, Geb uses the [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotAndPageSourceReporter.html) implementation that dumps the page source as html and attempts to take a screenshot as a png file. This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
 
     reporter = new CustomReporter()
 

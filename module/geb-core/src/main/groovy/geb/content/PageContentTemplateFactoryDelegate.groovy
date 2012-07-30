@@ -16,6 +16,7 @@ package geb.content
 
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
+import geb.Module
 
 class PageContentTemplateFactoryDelegate {
 
@@ -53,7 +54,11 @@ class PageContentTemplateFactoryDelegate {
 		if (params == null) {
 			params = [:]
 		}
-		
+
+		if (!(moduleClass in Module)) {
+			throw new InvalidPageContent("class '${moduleClass}' should extend from ${Module} to be allowed to be a part of a module definition with name '${template.name}'")
+		}
+
 		// Make sure they haven't used params that map to our internal ivars
 		if (params.any { it.key in DISALLOWED_MODULE_PARAMS }) {
 			def disallowed = DISALLOWED_MODULE_PARAMS.join(', ')

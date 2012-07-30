@@ -45,6 +45,24 @@ task tokeniseManual(type: Copy) {
 	}
 }
 
+configurations {
+	groovydoc
+}
+
+dependencies {
+	groovydoc groovyDependency
+}
+
+task apiDoc(type: Groovydoc) {
+	groovyClasspath = configurations.groovydoc
+	classpath = files()
+	destinationDir = file("$buildDir/apiDoc")
+	apiGroovyModules.collect { project(it) }.each {
+		source it.sourceSets.main.groovy, it.sourceSets.main.java
+		classpath += it.sourceSets.main.compileClasspath + it.sourceSets.main.output
+	}
+}
+
 task compileManual {
 	dependsOn tokeniseManual
 
@@ -66,10 +84,14 @@ task packageManual(type: Sync) {
 	into "$buildDir/manual"
 	from compileManual
 	
-	publishedGroovyModules.collect { project(it) }.each { project ->
-		into ("api/$project.name") {
-			from project.groovydoc
-		}
+	into ("api") {
+		from apiDoc
+	}
+}
+
+task openManual() {
+	doLast {
+		new java.awt.Desktop().browse(file("$compileManual.destination/index.html").toURI())
 	}
 }
 

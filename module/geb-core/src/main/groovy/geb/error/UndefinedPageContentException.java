@@ -12,8 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package geb.error;
 
-package geb.error
+public class UndefinedPageContentException extends GebException {
 
-import geb.ConfigurationLoader
+	public UndefinedPageContentException(Object container, Object name) {
+		super(String.format("%s does not define content with name '%s'", container, name));
+	}
 
+}

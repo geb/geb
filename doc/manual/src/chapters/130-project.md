@@ -4,12 +4,7 @@ The Geb home page can be found at [http://www.gebish.org](http://www.gebish.org)
 
 ## API Reference
 
-* [geb-core](api/geb-core/index.html)
-* [geb-spock](api/geb-spock/index.html)
-* [geb-junit4](api/geb-junit4/index.html)
-* [geb-testng](api/geb-testng/index.html)
-* [geb-easyb](api/geb-easyb/index.html)
-* [geb-junit3](api/geb-junit3/index.html)
+The API reference can be found [here](api/index.html).
 
 ## Support & Development
 
@@ -37,6 +32,19 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
+
+### 0.7.1
+
+#### New Features
+
+* Geb is now built with Groovy 1.8.6. This was forced to resolve \[[GEB-194](http://jira.codehaus.org/browse/GEB-194)\].
+
+#### Fixes
+
+* `startsWith()`, `contains()` etc. now work for selecting via element text now works for multiline (i.e. `<br/>`) text \[[GEB-202](http://jira.codehaus.org/browse/GEB-202)\]
+* Geb now works with Java 7 \[[GEB-194](http://jira.codehaus.org/browse/GEB-194)\].
+
+### 0.7.0
 
 #### New Features
 

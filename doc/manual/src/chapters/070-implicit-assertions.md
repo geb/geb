@@ -29,18 +29,28 @@ This automatically becomes…
 
     class ImplicitAssertionsExamplePage extends Page {
         
-        static at = { assert title == "Implicit Assertions!"; title == "Implicit Assertions!" }
+        static at = { assert title == "Implicit Assertions!" }
         
         static content = {
-            dynamicParagraph(wait: true) { assert $("p"); $("p") }
+            dynamicParagraph(wait: true) { assert $("p", 0).text() == "implicit assertions are cool!" }
         }
         
         def waitForHeading() {
-            waitFor { assert $("h1"); $("h1") }
+            waitFor { assert $("h1") }
         }
     }
 
 Because of this, Geb is able to provide much better error messages when the expression fails due to Groovy's [power asserts](http://dontmindthelanguage.wordpress.com/2009/12/11/groovy-1-7-power-assert/).
+
+**Note:** A special form of `assert` is used that returns the value of the expression, whereas a regular `assert` returns `null`. 
+
+This means that given…
+
+    static content = {
+        headingText(wait: true) { $("h1").text() }
+    }
+
+Accessing `headingText` here will *wait* for there to be a `h1` and for it to have some text (because an [empty string is `false` in Groovy](http://docs.codehaus.org/display/GROOVY/Groovy+Truth)), which will then be returned. This means that even when implicit assertions are used, the value is still returned and is is usable.
 
 ## At Verification
 
