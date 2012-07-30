@@ -8,7 +8,7 @@ import spock.lang.Unroll
 
 import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
 
-class EvaluatedClosureTransformationSpec extends Specification {
+class ImplicitAssertionsTransformationSpec extends Specification {
 
 	private String makeCodeTemplate(String... closureBody) {
 		def resource = getClass().classLoader.getResource('TransformedClass.template')
@@ -22,7 +22,7 @@ class EvaluatedClosureTransformationSpec extends Specification {
 
 		def invoker = new TransformTestHelper() {
 			protected configure(TransformTestHelper.Transforms transforms) {
-				transforms.add(new EvaluatedClosureTransformation(), CANONICALIZATION)
+				transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
 			}
 		}
 
