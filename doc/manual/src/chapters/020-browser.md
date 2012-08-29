@@ -96,7 +96,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 
 ### Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb-core/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
 
     class SignupPage extends Page {
         static url = "signup"
@@ -259,7 +259,7 @@ Listeners cannot be registered twice. If an attempt is made to register a listen
 
 When you're working with an application that opens new windows or tabs, for example when clicking on a link with a target attribute set, you can use `withWindow()` and `withNewWindow()` methods to execute code in the context of other windows.
 
-If you know the name of the window in which context you want to execute the code you can use [`withWindow(String windowName, Closure block)`](api/geb-core/geb/Browser.html#withWindow(java.lang.String, groovy.lang.Closure\)). Given this html:
+If you know the name of the window in which context you want to execute the code you can use [`withWindow(String windowName, Closure block)`](api/geb/Browser.html#withWindow(java.lang.String, groovy.lang.Closure\)). Given this html:
 
     <a href="http://www.gebish.org" target="myWindow">Geb</a>
 
@@ -270,7 +270,7 @@ This code passes:
         assert $('title').text() == 'Geb - Very Groovy Browser Automation'
     }
 
-If you don't know the name of the window but you know something about the content of the window you can use the [`withWindow(Closure specification, Closure block)`](api/geb-core/geb/Browser.html#withWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. The first closure passed should return true for the window, or windows, you want to use as context. Note that if there is no window for which the window specification closure returns true then [`NoSuchWindowException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html) is thrown. So given:
+If you don't know the name of the window but you know something about the content of the window you can use the [`withWindow(Closure specification, Closure block)`](api/geb/Browser.html#withWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. The first closure passed should return true for the window, or windows, you want to use as context. Note that if there is no window for which the window specification closure returns true then [`NoSuchWindowException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html) is thrown. So given:
 
     <a href="http://www.gebish.org" target="_blank">Geb</a>
 
@@ -281,7 +281,7 @@ This code passes:
         assert $('#slogan').text() == 'very groovy browser automation… web testing, screen scraping and more'
     }
 
-Finally if you want to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb-core/geb/Browser.html#withNewWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. Given html as above the following will pass:
+Finally if you want to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. Given html as above the following will pass:
 
     withNewWindow({ $('a').click() }) {
         assert $('title').text() == 'Geb - Very Groovy Browser Automation'
