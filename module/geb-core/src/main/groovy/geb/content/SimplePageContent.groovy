@@ -16,6 +16,7 @@ package geb.content
 
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
+import geb.navigator.NavigatorBackedNavigatorFactory
 
 class SimplePageContent extends TemplateDerivedPageContent implements Iterable<Navigator> {
 
@@ -28,7 +29,7 @@ class SimplePageContent extends TemplateDerivedPageContent implements Iterable<N
 	@Delegate private NavigableSupport navigableSupport
 
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		navigableSupport = new ConstantBaseNavigableSupport(this, null, navigator)
+		navigableSupport = new NavigableSupport(this, null, new NavigatorBackedNavigatorFactory(navigator))
 		super.init(template, navigator, *args)
 	}
 

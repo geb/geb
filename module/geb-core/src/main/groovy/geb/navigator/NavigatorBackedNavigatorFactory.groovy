@@ -16,16 +16,18 @@
 
 package geb.navigator
 
-class NavigatorBackedNavigatorFactory implements NavigatorFactory {
+class NavigatorBackedNavigatorFactory extends AbstractNavigatorFactory {
 
 	final Navigator base
 
 	NavigatorBackedNavigatorFactory(Navigator navigator) {
-		this.base = navigator
+		super(navigator.browser)
+		base = navigator
 	}
 
 	@Override
 	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range) {
 		base.find(attributePredicates, cssSelector, range)
 	}
+
 }

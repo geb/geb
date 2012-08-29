@@ -231,10 +231,10 @@ abstract class Navigator implements Iterable<Navigator> {
 	}
 	
 	Navigator add(Collection<WebElement> elements) {
-		def result = []
+		List<WebElement> result = []
 		result.addAll allElements()
 		result.addAll elements
-		on(browser, result)
+		browser.navigatorFactory.create(*result)
 	}
 
 	/**
@@ -582,7 +582,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	Navigator findAll(Closure predicate) {
 		Collection<Navigator> results = super.findAll(predicate)
-		on getBrowser(), results*.allElements().flatten()
+		browser.navigatorFactory.create(*results*.allElements().flatten())
 	}
 
 	/**
@@ -632,51 +632,6 @@ abstract class Navigator implements Iterable<Navigator> {
 	 */
 	int getY() {
 		firstElement()?.location?.y ?: 0
-	}
-	
-	/**
-	 * Factory method to create an initial Navigator instance.
-	 * <p>
-	 * Hides the fact that there are two implementations of Navigator at work behind
-	 * the scenes: one for working with an empty context that keeps the code
-	 * for the other one, with most of the logic, simple.
-	 * </p>
-	 * @param browser the browser the content is attached to
-	 * @param contextElements the context elements to use
-	 * @return new Navigator instance
-	 */
-	static Navigator on(Browser browser, WebElement[] contextElements) {
-		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
-	}
-
-	/**
-	 * Factory method to create a Navigator instance that is composed of other instances.
-	 * 
-	 * @param browser the browser the content is attached to
-	 * @param navigators the navigators to compose of
-	 * @return new Navigator instance
-	 */
-	static Navigator on(Browser browser, Navigator[] navigators) {
-		if (navigators) {
-			on(browser, navigators*.allElements().flatten())
-		} else {
-			new EmptyNavigator(browser)
-		}
-	}
-
-	/**
-	 * Factory method to create an initial Navigator instance.
-	 * <p>
-	 * Hides the fact that there are two implementations of Navigator at work behind
-	 * the scenes: one for working with an empty context that keeps the code
-	 * for the other one, with most of the logic, simple.
-	 * </p>
-	 * @param browser the browser the content is attached to
-	 * @param contextElements the context elements to use
-	 * @return new Navigator instance
-	 */
-	static Navigator on(Browser browser, Collection<? extends WebElement> contextElements) {
-		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
 	}
 
 }

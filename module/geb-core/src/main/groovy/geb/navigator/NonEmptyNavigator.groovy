@@ -30,11 +30,11 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	protected Navigator navigatorFor(Collection<? extends WebElement> contextElements) {
-		on browser, contextElements
+		browser.navigatorFactory.create(*contextElements)
 	}
 
 	protected Navigator navigatorFor(WebElement[] contextElements) {
-		on browser, contextElements
+		browser.navigatorFactory.create(*contextElements)
 	}
 
 	@Override

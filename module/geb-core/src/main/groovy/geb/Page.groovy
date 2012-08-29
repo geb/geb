@@ -14,7 +14,6 @@
  */
 package geb
 
-import geb.content.FactoryNavigableSupport
 import geb.content.NavigableSupport
 import geb.content.PageContentTemplateBuilder
 import geb.download.DownloadSupport
@@ -87,7 +86,7 @@ class Page {
 	Page init(Browser browser) {
 		this.browser = browser
 		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, 'content', this.class, Page)
-		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser)
+		navigableSupport = new NavigableSupport(this, contentTemplates, browser.navigatorFactory)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)

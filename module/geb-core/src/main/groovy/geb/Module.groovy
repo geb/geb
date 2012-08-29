@@ -22,6 +22,7 @@ import geb.textmatching.TextMatchingSupport
 import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
 import geb.frame.FrameSupport
+import geb.navigator.NavigatorBackedNavigatorFactory
 
 class Module extends TemplateDerivedPageContent {
 
@@ -42,8 +43,8 @@ class Module extends TemplateDerivedPageContent {
 	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		def contentTemplates = PageContentTemplateBuilder.build(template.config, this, 'content', this.class, Module)
-		navigableSupport = new ConstantBaseNavigableSupport(this, contentTemplates, navigator) 
+		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, 'content', this.class, Module)
+		navigableSupport = new NavigableSupport(this, contentTemplates, new NavigatorBackedNavigatorFactory(navigator))
 		super.init(template, navigator, *args)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport  = new WaitingSupport(browser.config)

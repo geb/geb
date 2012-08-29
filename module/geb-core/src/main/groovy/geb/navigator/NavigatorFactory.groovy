@@ -16,10 +16,16 @@
 
 package geb.navigator
 
+import org.openqa.selenium.WebElement
+
 interface NavigatorFactory {
 
 	Navigator getBase()
 
 	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range)
+
+	Navigator create(WebElement... elements)
+
+	Navigator create(Navigator... elements)
 
 }

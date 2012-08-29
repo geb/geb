@@ -94,7 +94,7 @@ class PageContentTemplateBuilder {
 		builder.templates
 	}
 
-	static build(Configuration config, Navigable container, String property, Class startAt, Class stopAt = Object) {
+	static Map<String, PageContentTemplate> build(Configuration config, Navigable container, String property, Class startAt, Class stopAt = Object) {
 		if (!stopAt.isAssignableFrom(startAt)) {
 			throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
 		}

@@ -15,6 +15,7 @@
 package geb.content
 
 import geb.navigator.Navigator
+import geb.navigator.NavigatorBackedNavigatorFactory
 
 class ModuleBaseDefinitionDelegate {
 
@@ -26,7 +27,7 @@ class ModuleBaseDefinitionDelegate {
 	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
 		this.startingBase = startingBase
 		this.params = params
-		navigableSupport = new ConstantBaseNavigableSupport(this, null, startingBase)
+		navigableSupport = new NavigableSupport(this, null, new NavigatorBackedNavigatorFactory(startingBase))
 	}
 	
 	def methodMissing(String name, args) {

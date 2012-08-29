@@ -21,18 +21,15 @@ package geb.navigator
 import geb.Browser
 import org.openqa.selenium.By
 
-class BrowserBackedNavigatorFactory implements NavigatorFactory {
-
-	private final Browser browser
+class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
 	BrowserBackedNavigatorFactory(Browser browser) {
-		this.browser = browser
+		super(browser)
 	}
 
 	@Override
 	Navigator getBase() {
-		def rootElement = browser.driver.findElement(By.tagName("html"))
-		rootElement ? new NonEmptyNavigator(browser, rootElement) : new EmptyNavigator(browser)
+		create(browser.driver.findElement(By.tagName("html")))
 	}
 
 	@Override
