@@ -14,12 +14,12 @@
  */
 package geb.content
 
-import geb.error.InvalidPageContent
 import geb.Configuration
+import geb.error.InvalidPageContent
 
 class PageContentTemplateBuilder {
 
-	static PARAM_DEFAULTS = [
+	static Map<String, Object> PARAM_DEFAULTS = [
 		required: true,
 		cache: false,
 		to: null
@@ -27,13 +27,13 @@ class PageContentTemplateBuilder {
 
 	Configuration config
 	Navigable container
-	
-	final templates = [:]
-	
+
+	final Map<String, PageContentTemplate> templates = [:]
+
 	def methodMissing(String name, args) {
-		def definition
-		def params
-		
+		Closure definition = null
+		Map params = null
+
 		if (args.size() == 0) {
 			throw new InvalidPageContent("Definition of page content template '$name' of '$container' contains no definition")
 		} else if (args.size() == 1) {
@@ -46,9 +46,9 @@ class PageContentTemplateBuilder {
 			params = args[0]
 			definition = args[1]
 		}
-		
+
 		if (params != null && !(params instanceof Map)) {
-				throwBadInvocationError(name, args)
+			throwBadInvocationError(name, args)
 		}
 		if (definition != null) {
 			if (!(definition instanceof Closure)) {
@@ -59,17 +59,17 @@ class PageContentTemplateBuilder {
 				throwBadInvocationError(name, args)
 			}
 		}
-		
+
 		def template = create(name, params, definition)
 		templates[name] = template
 		template
 	}
-	
+
 	private throwBadInvocationError(name, args) {
 		throw new InvalidPageContent("Definition of page component template '$name' of '$container' is invalid, params must be either a Closure, or Map and Closure (args were: ${args*.class})")
 	}
-	
-	private create(name, params, definition) {
+
+	private PageContentTemplate create(name, params, definition) {
 		def aliasedName = params?.aliases
 		if (aliasedName) {
 			if (!templates[aliasedName]) {
@@ -81,45 +81,46 @@ class PageContentTemplateBuilder {
 		}
 	}
 
-	protected mergeWithDefaultParams(Map params) {
-		params ? PARAM_DEFAULTS + params : PARAM_DEFAULTS.clone()
+	protected Map mergeWithDefaultParams(Map params) {
+		params ? PARAM_DEFAULTS + params : PARAM_DEFAULTS.clone() as Map
 	}
 
-	static build(Configuration config, Navigable container, List<Closure> templatesDefinitions) {
-		def builder = newInstance(config: config, container: container)
+	static Map<String, PageContentTemplate> build(Configuration config, Navigable container, List<Closure> templatesDefinitions) {
+		PageContentTemplateBuilder builder = newInstance(config: config, container: container)
 		for (templatesDefinition in templatesDefinitions) {
 			templatesDefinition.delegate = builder
 			templatesDefinition()
 		}
 		builder.templates
 	}
-	
+
 	static build(Configuration config, Navigable container, String property, Class startAt, Class stopAt = Object) {
 		if (!stopAt.isAssignableFrom(startAt)) {
 			throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
 		}
-		
+
 		def templatesDefinitions = []
 		def clazz = startAt
-		
+
 		while (clazz != stopAt) {
 			def templatesDefinition
+			//noinspection GroovyUnusedCatchParameter
 			try {
 				templatesDefinition = clazz[property]
 			} catch (MissingPropertyException e) {
 				// swallow
 			}
-			
+
 			if (templatesDefinition) {
 				if (!(templatesDefinition instanceof Closure)) {
 					throw new IllegalArgumentException("'$property' static property of class $clazz should be a Closure")
 				}
 				templatesDefinitions << templatesDefinition.clone()
 			}
-			
+
 			clazz = clazz.superclass
 		}
-		
+
 		PageContentTemplateBuilder.build(config, container, templatesDefinitions.reverse())
 	}
 }
