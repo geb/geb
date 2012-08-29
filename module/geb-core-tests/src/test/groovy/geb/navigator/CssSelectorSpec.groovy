@@ -1,14 +1,12 @@
 package geb.navigator
 
+import geb.Browser
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
-import static geb.navigator.SelectorType.*
-import geb.navigator.Navigator
-import geb.navigator.CssSelector
-import geb.Browser
+
+import static geb.navigator.CssSelector.Type.*
 
 class CssSelectorSpec extends Specification {
 

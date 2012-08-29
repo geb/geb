@@ -2,22 +2,35 @@ package geb.navigator
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
+
 import static java.util.Collections.EMPTY_LIST
-import static geb.navigator.SelectorType.*
 
 class CssSelector {
 
-	private static final CssSelector DESCENDANT_SELECTOR = new CssSelector(SelectorType.DESCENDANT, " ")
+	enum Type {
+		ELEMENT(""),
+		HTML_CLASS("."),
+		ID("#"),
+		DESCENDANT("")
+
+		final prefix
+
+		Type(String prefix) {
+			this.prefix = prefix
+		}
+	}
+
+	private static final CssSelector DESCENDANT_SELECTOR = new CssSelector(Type.DESCENDANT, " ")
 	private static final String CSS_SELECTOR_SPECIAL_CHARS_PATTERN = '[!"#$%&\'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|\\}~\\\\]'
 
-	final SelectorType type
+	final Type type
 	final String value
 
 	CssSelector() {
 		super()
 	}
 
-	CssSelector(SelectorType type, String value) {
+	CssSelector(Type type, String value) {
 		this.type = type
 		this.value = value
 	}
@@ -30,7 +43,7 @@ class CssSelector {
 			def context = elements
 			boolean descend = true
 			selectorGroup.each { CssSelector selector ->
-				if (selector.type == SelectorType.DESCENDANT) {
+				if (selector.type == Type.DESCENDANT) {
 					descend = true
 				} else {
 					context = context.inject([]) { list, element ->
@@ -69,11 +82,11 @@ class CssSelector {
 	boolean matches(WebElement element) {
 		// TODO: switch = failure of object orientation
 		switch (type) {
-			case ELEMENT:
+			case Type.ELEMENT:
 				return element.tagName == value
-			case HTML_CLASS:
+			case Type.HTML_CLASS:
 				return element.getAttribute("class") =~ /(^|\s)$value($|\s)/
-			case ID:
+			case Type.ID:
 				return element.getAttribute("id") == value
 			default:
 				return false
@@ -82,11 +95,11 @@ class CssSelector {
 
 	List<WebElement> select(WebElement element) {
 		switch (type) {
-			case ELEMENT:
+			case Type.ELEMENT:
 				return element.findElements(By.tagName(value))
-			case HTML_CLASS:
+			case Type.HTML_CLASS:
 				return element.findElements(By.className(value))
-			case ID:
+			case Type.ID:
 				return element.findElements(By.id(value))
 			default:
 				return EMPTY_LIST
@@ -134,11 +147,11 @@ class CssSelector {
 		tokenize(selector).each { String part ->
 			if (part) {
 				if (part.startsWith(".")) {
-					list << new CssSelector(SelectorType.HTML_CLASS, part.substring(1))
+					list << new CssSelector(Type.HTML_CLASS, part.substring(1))
 				} else if (part.startsWith("#")) {
-					list << new CssSelector(SelectorType.ID, part.substring(1))
+					list << new CssSelector(Type.ID, part.substring(1))
 				} else {
-					list << new CssSelector(SelectorType.ELEMENT, part)
+					list << new CssSelector(Type.ELEMENT, part)
 				}
 			}
 		}
@@ -157,18 +170,5 @@ class CssSelector {
 		}
 		tokens << selector.substring(previous)
 		return tokens
-	}
-}
-
-enum SelectorType {
-	ELEMENT(""),
-	HTML_CLASS("."),
-	ID("#"),
-	DESCENDANT("")
-
-	final prefix
-
-	SelectorType(String prefix) {
-		this.prefix = prefix
 	}
 }
