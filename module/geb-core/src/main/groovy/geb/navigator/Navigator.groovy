@@ -679,20 +679,6 @@ abstract class Navigator implements Iterable<Navigator> {
 		contextElements ? new NonEmptyNavigator(browser, contextElements) : new EmptyNavigator(browser)
 	}
 
-	/**
-	 * Factory method to create an initial Navigator instance.
-	 * <p>
-	 * Hides the fact that there are two implementations of Navigator at work behind
-	 * the scenes: one for working with an empty context that keeps the code
-	 * for the other one, with most of the logic, simple.
-	 * </p>
-	 * @param browser the browser for which to create a navigator of it's entire content
-	 * @return new Navigator instance
-	 */
-	static Navigator on(Browser browser) {
-		def rootElement = browser.driver.findElement(By.tagName("html"))
-		rootElement ? new NonEmptyNavigator(browser, rootElement) : new EmptyNavigator(browser)
-	}
 }
 
 // TODO: this should be a private static member but can't in Groovy 1.6

@@ -19,7 +19,7 @@ class CssSelectorSpec extends Specification {
 	def setupSpec() {
 		browser = new Browser()
 		browser.go(getClass().getResource("/test.html") as String)
-		onPage = Navigator.on(browser)
+		onPage = browser.navigatorFactory.base
 	}
 	
 	def "selector type matching rules"() {

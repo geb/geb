@@ -18,7 +18,7 @@ class NavigatorSpec extends GebSpec {
 	def setupSpec() {
 		driver = browser.driver
 		browser.go(testPageUrlString)
-		page = Navigator.on(browser)
+		page = browser.navigatorFactory.base
 	}
 	
 	def "navigator with content coerces to true"() {
