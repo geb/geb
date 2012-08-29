@@ -11,7 +11,7 @@ You still need to include the appropriate Geb module for testing (i.e. `geb-juni
 For example, if you plan to use Spock with Geb you would need to add the following to the `BuildConfig.groovy`…
 
     dependencies {
-        test "org.codehaus.geb:geb-spock:@geb-version@"
+        test "@geb-group@:geb-spock:@geb-version@"
     }
     plugins {
         test ":spock:@spock-version@"
@@ -25,7 +25,7 @@ As Grails provides JUnit support out of the box, you only need to pull in the `g
 > Grails 1.3 and later use JUnit 4. Earlier versions of Grails than this use Groovy 1.6 which Geb no longer supports.
 
     dependencies {
-        test "org.codehaus.geb:geb-junit4:@geb-version@"
+        test "@geb-group@:geb-junit4:@geb-version@"
     }
     plugins {
         test ":geb:@geb-version@"
@@ -77,11 +77,11 @@ Below is a valid Gradle `build.gradle` file for working with Geb for testing.
         def seleniumVersion = "@selenium-version@"
 
         // If using Spock, need to depend on geb-spock
-        testCompile "org.codehaus.geb:geb-spock:$gebVersion"
+        testCompile "@geb-group@:geb-spock:$gebVersion"
         testCompile "org.spockframework:spock-core:@spock-version@"
 
         // If using JUnit, need to depend on geb-junit (3 or 4)
-        testCompile "org.codehaus.geb:geb-junit4:$gebVersion"
+        testCompile "@geb-group@:geb-junit4:$gebVersion"
         testCompile "junit:junit-dep:4.8.2"
 
         // Need a driver implementation
@@ -106,7 +106,7 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
     <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <modelVersion>4.0.0</modelVersion>
-      <groupId>org.codehaus.geb.example</groupId>
+      <groupId>@geb-group@.example</groupId>
       <artifactId>geb-maven-example</artifactId>
       <packaging>jar</packaging>
       <version>1</version>
@@ -131,7 +131,7 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.geb</groupId>
+          <groupId>@geb-group@</groupId>
           <artifactId>geb-spock</artifactId>
           <version>@geb-version@</version>
           <scope>test</scope>

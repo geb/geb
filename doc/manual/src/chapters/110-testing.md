@@ -98,25 +98,25 @@ The following table illustrates the specific jars and class names for Spock and 
     </tr>
     <tr>
         <td>Spock</td>
-        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-spock">geb-spock</a></td>
+        <td><a href="http://mvnrepository.com/artifact/@geb-group@/geb-spock">geb-spock</a></td>
         <td><a href="api/geb-spock/geb/spock/GebSpec.html">geb.spock.GebSpec</a></td>
         <td><a href="api/geb-spock/geb/spock/GebReportingSpec.html">geb.spock.GebReportingSpec</a></td>
     </tr>
     <tr>
         <td>JUnit 4</td>
-        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit4">geb-junit4</a></td>
+        <td><a href="http://mvnrepository.com/artifact/@geb-group@/geb-junit4">geb-junit4</a></td>
         <td><a href="api/geb-junit4/geb/junit4/GebTest.html">geb.junit4.GebTest</a></td>
         <td><a href="api/geb-junit4/geb/junit4/GebReportingTest.html">geb.junit4.GebReportingTest</a></td>
     </tr>
     <tr>
         <td>JUnit 3</td>
-        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-junit3">geb-junit3</a></td>
+        <td><a href="http://mvnrepository.com/artifact/@geb-group@/geb-junit3">geb-junit3</a></td>
         <td><a href="api/geb-junit3/geb/junit3/GebTest.html">geb.junit3.GebTest</a></td>
         <td><a href="api/geb-junit3/geb/junit3/GebReportingTest.html">geb.junit3.GebReportingTest</a></td>
     </tr>
     <tr>
         <td>TestNG</td>
-        <td><a href="http://mvnrepository.com/artifact/org.codehaus.geb/geb-testng">geb-testng</a></td>
+        <td><a href="http://mvnrepository.com/artifact/@geb-group@/geb-testng">geb-testng</a></td>
         <td><a href="api/geb-testng/geb/testng/GebTest.html">geb.testng.GebTest</a></td>
         <td><a href="api/geb-testng/geb/testng/GebReportingTest.html">geb.testng.GebReportingTest</a></td>
     </tr>

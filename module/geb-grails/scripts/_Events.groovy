@@ -80,7 +80,7 @@ You need to explicitly add these dependency definitions to your BuildConfig.groo
 For example:
 
 dependencies {
-   test "org.codehaus.geb:geb-spock:$gebPluginVersion"
+   test "org.gebish:geb-spock:$gebPluginVersion"
 }
 
 The available testing adapters are:

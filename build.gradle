@@ -3,7 +3,7 @@ apply from: "gradle/idea.gradle"
 
 allprojects { project ->
 	version = '1.0.0-SNAPSHOT'
-	group = 'org.codehaus.geb'
+	group = 'org.gebish'
 	
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")

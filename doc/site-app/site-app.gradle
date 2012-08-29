@@ -62,7 +62,7 @@ ext {
 	oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2", "0.6.3", "0.7.0", "0.7.1"]
 }
 
-def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
+def manualDependency = { "$project.group:geb-manual:$it@zip" }
 configurations {
 	currentManual
 	
