@@ -72,8 +72,8 @@ configurations {
 }
 
 repositories {
-	maven { url "https://nexus.codehaus.org/content/repositories/snapshots" }
-	maven { url "https://nexus.codehaus.org/content/repositories/releases" }
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+	maven { url "https://oss.sonatype.org/content/repositories/releases" }
 }
 
 dependencies {

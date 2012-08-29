@@ -143,11 +143,11 @@ subprojects {
 				uniqueVersion = false
 				gradle.taskGraph.whenReady { taskGraph ->
 					if (taskGraph.hasTask(task)) {
-						repository(url: "https://nexus.codehaus.org/service/local/staging/deploy/maven2/") {
-							authentication(userName: codehausUsername, password: codehausPassword)
+						repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+							authentication(userName: sonatypeOssUsername, password: sonatypeOssPassword)
 						}
-						snapshotRepository(url: "https://nexus.codehaus.org/content/repositories/snapshots/") {
-							authentication(userName: codehausUsername, password: codehausPassword)
+						snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+							authentication(userName: sonatypeOssUsername, password: sonatypeOssPassword)
 						}
 					}
 				}
