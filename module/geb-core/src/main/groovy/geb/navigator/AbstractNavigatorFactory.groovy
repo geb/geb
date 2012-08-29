@@ -34,13 +34,18 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
 	@Override
 	Navigator create(WebElement... elements) {
 		Collection<WebElement> filteredElements = elements.findAll { it != null }
-		filteredElements ? createNonEmptyNavigator(*filteredElements) : createEmptyNavigator()
+		filteredElements ? createNonEmptyNavigator(* filteredElements) : createEmptyNavigator()
 	}
 
 	@Override
 	Navigator create(Navigator... elements) {
 		Collection<Navigator> filteredElements = elements.findAll { it != null }
 		filteredElements ? createNonEmptyNavigator(* filteredElements*.allElements().flatten()) : createEmptyNavigator()
+	}
+
+	@Override
+	NavigatorFactory relativeTo(Navigator newBase) {
+		createRelativeNavigatorFactory(newBase)
 	}
 
 	protected Navigator createNonEmptyNavigator(WebElement... elements) {
@@ -50,4 +55,9 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
 	protected Navigator createEmptyNavigator() {
 		new EmptyNavigator(browser)
 	}
+
+	protected NavigatorFactory createRelativeNavigatorFactory(Navigator navigator) {
+		new NavigatorBackedNavigatorFactory(navigator)
+	}
+
 }

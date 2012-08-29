@@ -28,4 +28,5 @@ interface NavigatorFactory {
 
 	Navigator create(Navigator... elements)
 
+	NavigatorFactory relativeTo(Navigator newBase)
 }

@@ -29,7 +29,7 @@ class SimplePageContent extends TemplateDerivedPageContent implements Iterable<N
 	@Delegate private NavigableSupport navigableSupport
 
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		navigableSupport = new NavigableSupport(this, null, new NavigatorBackedNavigatorFactory(navigator))
+		navigableSupport = new NavigableSupport(this, null, navigator.browser.navigatorFactory.relativeTo(navigator))
 		super.init(template, navigator, *args)
 	}
 

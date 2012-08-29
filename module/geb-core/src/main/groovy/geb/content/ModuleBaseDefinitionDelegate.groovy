@@ -27,7 +27,7 @@ class ModuleBaseDefinitionDelegate {
 	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
 		this.startingBase = startingBase
 		this.params = params
-		navigableSupport = new NavigableSupport(this, null, new NavigatorBackedNavigatorFactory(startingBase))
+		navigableSupport = new NavigableSupport(this, null, startingBase.browser.navigatorFactory.relativeTo(startingBase))
 	}
 	
 	def methodMissing(String name, args) {

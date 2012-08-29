@@ -44,7 +44,7 @@ class Module extends TemplateDerivedPageContent {
 	
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, 'content', this.class, Module)
-		navigableSupport = new NavigableSupport(this, contentTemplates, new NavigatorBackedNavigatorFactory(navigator))
+		navigableSupport = new NavigableSupport(this, contentTemplates, navigator.browser.navigatorFactory.relativeTo(navigator))
 		super.init(template, navigator, *args)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport  = new WaitingSupport(browser.config)
