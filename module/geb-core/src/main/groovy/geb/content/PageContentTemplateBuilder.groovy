@@ -31,8 +31,8 @@ class PageContentTemplateBuilder {
 	final Map<String, PageContentTemplate> templates = [:]
 
 	def methodMissing(String name, args) {
-		Closure definition = null
-		Map params = null
+		def definition = null
+		def params = null
 
 		if (args.size() == 0) {
 			throw new InvalidPageContent("Definition of page content template '$name' of '$container' contains no definition")

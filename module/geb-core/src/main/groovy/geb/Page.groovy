@@ -14,16 +14,18 @@
  */
 package geb
 
-import geb.js.*
-import geb.content.*
-import geb.navigator.Navigator
-import org.openqa.selenium.WebDriver
-import geb.textmatching.TextMatchingSupport
+import geb.content.FactoryNavigableSupport
+import geb.content.NavigableSupport
+import geb.content.PageContentTemplateBuilder
 import geb.download.DownloadSupport
-import geb.waiting.WaitingSupport
+import geb.error.RequiredPageContentNotPresent
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
-import geb.error.RequiredPageContentNotPresent
+import geb.js.AlertAndConfirmSupport
+import geb.js.JavascriptInterface
+import geb.textmatching.TextMatchingSupport
+import geb.waiting.WaitingSupport
+import org.openqa.selenium.WebDriver
 
 /**
  * The Page type is the basis of the Page Object pattern in Geb.
@@ -62,7 +64,7 @@ class Page {
 	 * <p>
 	 * This implementation returns an empty string.
 	 * 
-	 * @see to(Map,Object[])
+	 * @see #to(Map,Object[])
 	 */
 	static url = ""
 	
@@ -85,7 +87,7 @@ class Page {
 	Page init(Browser browser) {
 		this.browser = browser
 		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, 'content', this.class, Page)
-		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser, { return Navigator.on(browser) })
+		navigableSupport = new FactoryNavigableSupport(this, contentTemplates, browser)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)

@@ -24,6 +24,8 @@ import geb.error.UnexpectedPageException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
 import org.openqa.selenium.NoSuchWindowException
+import geb.navigator.NavigatorFactory
+import geb.navigator.BrowserBackedNavigatorFactory
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
@@ -37,8 +39,8 @@ class Browser {
 	private Page page
 	private final Configuration config
 	private final pageChangeListeners = new LinkedHashSet()
-	
 	private String reportGroup = null
+	private NavigatorFactory navigatorFactory = new BrowserBackedNavigatorFactory(this)
 
 	/**
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
@@ -100,8 +102,16 @@ class Browser {
 	WebDriver getDriver() {
 		config.driver
 	}
-	
+
 	/**
+	 * Returns the factory that creates navigator instances for this browser.
+	 *
+	 * @return The navigator factory
+	 */
+	NavigatorFactory getNavigatorFactory() {
+		navigatorFactory
+	}
+/**
 	 * Set (or change) the webdriver underneath this browser.
 	 * <p>
 	 * This should only be called before making any requests as a means to override the driver instance

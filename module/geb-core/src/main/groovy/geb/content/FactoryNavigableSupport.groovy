@@ -17,18 +17,23 @@ package geb.content
 
 import geb.Browser
 import geb.navigator.Navigator
+import geb.navigator.NavigatorFactory
 
 class FactoryNavigableSupport extends NavigableSupport {
-	
-	private Closure factory
-	
-	FactoryNavigableSupport(owner, Map contentTemplates, Browser browser, Closure factory) {
+
+	private NavigatorFactory factory
+
+	FactoryNavigableSupport(owner, Map contentTemplates, Browser browser) {
+		this(owner, contentTemplates, browser, browser.navigatorFactory)
+	}
+
+	FactoryNavigableSupport(owner, Map contentTemplates, Browser browser, NavigatorFactory factory) {
 		super(owner, contentTemplates, browser)
 		this.factory = factory
 	}
-	
+
 	protected Navigator getNavigator() {
-		factory()
+		factory.base
 	}
-	
+
 }
