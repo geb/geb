@@ -19,7 +19,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Luke Daley](http://ldaley.com)
 * [Robert Fletcher](http://adhockery.blogspot.com/)
 * [Peter Niederwieser](http://pniederw.wordpress.com/)
-* [Marcin Erdmann](https://github.com/erdi)
+* [Marcin Erdmann](http://blog.proxerd.pl)
 
 ### Contributors
 
