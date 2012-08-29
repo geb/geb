@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class RequiredPageValueNotPresent extends GebAssertionError {
+public class RequiredPageContentNotPresent extends GebAssertionError {
 
-	final template
+	private final Object content;
 	
-	RequiredPageValueNotPresent(template, Object[] args) {
-		super("Template '$template' returned null for args: $args")
-		this.template = template
+	public RequiredPageContentNotPresent(Object content) {
+		super(String.format("The required page content '%s' is not present", content));
+		this.content = content;
+	}
+
+	public Object getContent() {
+		return content;
 	}
 
 }

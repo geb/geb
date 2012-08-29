@@ -12,12 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class GebAssertionError extends AssertionError {
+public class GebAssertionError extends AssertionError {
 
-	GebAssertionError(detailMessage) {
-		super(detailMessage as Object)
+	public GebAssertionError(Object detailMessage) {
+		super(detailMessage.toString());
 	}
 
 }

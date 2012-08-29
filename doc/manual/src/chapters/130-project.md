@@ -33,6 +33,12 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+### 0.7.2
+
+#### Fixes
+
+* Further fixes for Java 7 \[[GEB-211](http://jira.codehaus.org/browse/GEB-211)\].
+
 ### 0.7.1
 
 #### New Features
