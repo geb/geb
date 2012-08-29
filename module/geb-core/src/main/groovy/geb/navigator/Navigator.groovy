@@ -574,7 +574,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	abstract Collection<WebElement> allElements()
 
 	Iterator<Navigator> iterator() {
-		return new NavigatorIterator(this)
+		return new NavigatorIterator()
 	}
 
 	/**
@@ -634,33 +634,28 @@ abstract class Navigator implements Iterable<Navigator> {
 		firstElement()?.location?.y ?: 0
 	}
 
-}
+	/**
+	 * Iterator for looping over the context elements of a Navigator instance.
+	 */
+	class NavigatorIterator implements Iterator<Navigator> {
 
-// TODO: this should be a private static member but can't in Groovy 1.6
+		private int index
 
-/**
- * Iterator for looping over the context elements of a Navigator instance.
- */
-class NavigatorIterator implements Iterator<Navigator> {
+		boolean hasNext() {
+			return index < Navigator.this.size()
+		}
 
-	private int index
-	private Navigator navigator
+		Navigator next() {
+			return Navigator.this[index++]
+		}
 
-	NavigatorIterator(Navigator navigator) {
-		this.navigator = navigator
-	}
-
-	boolean hasNext() {
-		return index < navigator.size()
-	}
-
-	Navigator next() {
-		return navigator[index++]
-	}
-
-	void remove() {
-		throw new UnsupportedOperationException()
+		void remove() {
+			throw new UnsupportedOperationException()
+		}
 	}
 }
+
+
+
 
 
