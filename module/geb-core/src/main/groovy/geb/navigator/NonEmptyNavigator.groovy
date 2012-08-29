@@ -37,6 +37,21 @@ class NonEmptyNavigator extends Navigator {
 		on browser, contextElements
 	}
 
+	@Override
+	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
+		find(predicates, selector)[range]
+	}
+
+	@Override
+	Navigator find(Map<String, Object> predicates, String selector, Integer index) {
+		find(predicates, selector, index..index)
+	}
+
+	@Override
+	Navigator find(Map<String, Object> predicates, Integer index) {
+		find(predicates, null, index)
+	}
+
 	Navigator find(String selectorString) {
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
@@ -55,7 +70,11 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator find(Map<String, Object> predicates, String selector) {
 		selector = optimizeSelector(selector, predicates)
-		find(selector).filter(predicates)
+		if (selector) {
+			find(selector).filter(predicates)
+		} else {
+			find(predicates)
+		}
 	}
 
 	Navigator filter(String selectorString) {
@@ -386,6 +405,10 @@ class NonEmptyNavigator extends Navigator {
 	 * a side-effect in that it _removes_ those keys from the predicates map.
 	 */
 	private String optimizeSelector(String selector, Map<String, Object> predicates) {
+		if (!selector) {
+			return selector
+		}
+
 		def buffer = new StringBuilder(selector)
 		if (predicates.containsKey("id") && predicates["id"] in String) {
 			buffer << "#" << CssSelector.escape(predicates.remove("id"))

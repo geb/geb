@@ -16,6 +16,7 @@
 package geb.content
 
 import geb.Browser
+import geb.navigator.Navigator
 
 class FactoryNavigableSupport extends NavigableSupport {
 	
@@ -26,7 +27,7 @@ class FactoryNavigableSupport extends NavigableSupport {
 		this.factory = factory
 	}
 	
-	protected getNavigator() {
+	protected Navigator getNavigator() {
 		factory()
 	}
 	

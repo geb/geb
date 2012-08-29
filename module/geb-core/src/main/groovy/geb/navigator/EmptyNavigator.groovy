@@ -23,6 +23,12 @@ class EmptyNavigator extends Navigator {
 
 	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
+	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) { this }
+
+	Navigator find(Map<String, Object> predicates, String selector, Integer index) { this }
+
+	Navigator find(Map<String, Object> predicates, Integer index) { this }
+
 	Navigator find(String selector) { this }
 
 	Navigator find(Map<String, Object> predicates) { this }

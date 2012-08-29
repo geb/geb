@@ -62,6 +62,30 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector a CSS selector
 	 * @return new Navigator instance containing the matched elements
 	 */
+	abstract Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range)
+
+	/**
+	 * Shorthand for <code>find(predicates, selector, index..index)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	abstract Navigator find(Map<String, Object> predicates, String selector, Integer index)
+
+	/**
+	 * Shorthand for <code>find(predicates, null, index..index)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	abstract Navigator find(Map<String, Object> predicates, Integer index)
+
+	/**
+	 * Shorthand for <code>find(null, selector, null)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
 	abstract Navigator find(String selector)
 
 	/**

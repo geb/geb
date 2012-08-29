@@ -26,7 +26,7 @@ class ConstantBaseNavigableSupport extends NavigableSupport {
 		this.navigator = navigator
 	}
 	
-	protected getNavigator() {
+	protected Navigator getNavigator() {
 		navigator
 	}
 	

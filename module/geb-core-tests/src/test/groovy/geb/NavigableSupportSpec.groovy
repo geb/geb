@@ -14,9 +14,8 @@
  */
 package geb
 
-import geb.test.*
-import spock.lang.*
 import geb.error.UnresolvablePropertyException
+import geb.test.GebSpecWithServer
 
 class NavigableSupportSpec extends GebSpecWithServer {
 
@@ -30,11 +29,11 @@ class NavigableSupportSpec extends GebSpecWithServer {
 			}
 		}
 	}
-	
+
 	def setup() {
 		go()
 	}
-	
+
 	def "no args"() {
 		expect:
 		$().tag() == "html"
@@ -52,7 +51,7 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		$("p").size() == 3
 		find("p").size() == 3
 	}
-	
+
 	def "just attributes"() {
 		expect:
 		$(class: "a").text() == "a"
@@ -76,21 +75,19 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		$("p", class: "c").text() == "c"
 		find("p", class: "c").text() == "c"
 	}
-	
-	@Ignore // See NavigableSupport
+
 	def "attributes and index"() {
 		expect:
 		$(1, class: ~/\w/).text() == "b"
 		find(1, class: ~/\w/).text() == "b"
 	}
 
-	@Ignore // See NavigableSupport
 	def "selector, attributes and index"() {
 		expect:
 		$("p", 1, class: ~/\w/).text() == "b"
 		find("p", 1, class: ~/\w/).text() == "b"
 	}
-	
+
 	def "delegating missing properties to the navigator"() {
 		expect:
 		e == "val"
@@ -99,12 +96,12 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		then:
 		e == "changed"
 	}
-	
+
 	def "delegating missing methods to the navigator"() {
 		expect:
 		e().tag() == "input"
 	}
-	
+
 	def "invalid property access throws unresolvable exception"() {
 		when:
 		z
@@ -123,7 +120,7 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		expect:
 		z().empty
 	}
-	
+
 	def "composition with navigators"() {
 		expect:
 		$($(".a")).size() == 1
@@ -145,15 +142,15 @@ class NavigableSupportSpec extends GebSpecWithServer {
 		expect:
 		$($(".a").firstElement()).size() == 1
 		$($(".a").firstElement(), $(".c").firstElement()).size() == 2
-		$(*($("p").allElements()), $("input").firstElement()).size() == 4
+		$(* ($("p").allElements()), $("input").firstElement()).size() == 4
 	}
-	
+
 	def "attribute access notation"() {
 		expect:
 		$("p").@class == 'a'
 		$("p")*.@class == ['a', 'b', 'c']
 	}
-	
+
 }
 
 class NavigableSupportSpecPage extends Page {

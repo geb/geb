@@ -35,7 +35,7 @@ abstract class NavigableSupport implements Navigable {
 		this.browser = browser
 	}
 
-	abstract protected getNavigator()
+	abstract protected Navigator getNavigator()
 
 	private getContent(String name, Object[] args) {
 		def contentTemplate = contentTemplates[name]
@@ -106,17 +106,13 @@ abstract class NavigableSupport implements Navigable {
 		Navigator.on(browser, *elements)
 	}
 
-	/*
-	-- Not implemented by Navigator
-	Navigator $(Map attributes, int index) {
-		getNavigator().find(attributes, index)
+	Navigator $(Map attributes, Integer index) {
+		getNavigator().find(attributes, null, index..index)
 	}
 
-	-- Not implemented by Navigator	
-	Navigator $(Map attributes, String selector, int index) {
-		getNavigator().find(attributes, selector, index)
+	Navigator $(Map attributes, String selector, Integer index) {
+		getNavigator().find(attributes, selector, index..index)
 	}
-	*/
 
 	def methodMissing(String name, args) {
 		try {
