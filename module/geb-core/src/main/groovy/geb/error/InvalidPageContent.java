@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class InvalidPageContent extends GebException {
+public class InvalidPageContent extends GebException {
 
-	InvalidPageContent(String message, Throwable cause = null) {
-		super(message, cause)
+	public InvalidPageContent(Object message, Throwable cause) {
+		super(message, cause);
 	}
-	
+
+	public InvalidPageContent(Object message) {
+		super(message);
+	}
 }

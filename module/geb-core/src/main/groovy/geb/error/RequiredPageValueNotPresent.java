@@ -12,15 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error
+package geb.error;
 
-class RequiredPageContentNotPresent extends GebAssertionError {
+import geb.content.PageContentTemplate;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
-	final content
-	
-	RequiredPageContentNotPresent(content) {
-		super("The required page content '$content' is not present")
-		this.content = content
+public class RequiredPageValueNotPresent extends GebAssertionError {
+
+	private final PageContentTemplate template;
+
+	public RequiredPageValueNotPresent(PageContentTemplate template, Object[] args) {
+		super(String.format("Template '%s' returned null for args: '%s'", template, DefaultGroovyMethods.toString(args)));
+		this.template = template;
 	}
 
+	public PageContentTemplate getTemplate() {
+		return template;
+	}
 }

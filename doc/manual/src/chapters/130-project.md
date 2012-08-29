@@ -33,6 +33,10 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### Fixes
+
+* Further fixes for Java 7 \[[GEB-211](http://jira.codehaus.org/browse/GEB-211)\].
+
 #### New Features
 
 * Geb is now built with Groovy 1.8.6. This was forced to resolve \[[GEB-194](http://jira.codehaus.org/browse/GEB-194)\].
