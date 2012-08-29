@@ -369,6 +369,41 @@ class Browser {
 			page(Page)
 		}
 	}
+
+	/**
+	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
+	 *
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 * @see #at(geb.Page)
+	 */
+	void toAt(Class<? extends Page> pageType, Object[] args) {
+		toAt([:], pageType, args)
+	}
+
+	/**
+	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
+	 *
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 * @see #at(geb.Page)
+	 */
+	void toAt(Map params, Class<? extends Page> pageType) {
+		toAt(params, pageType, null)
+	}
+
+	/**
+	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
+	 *
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 * @see #at(geb.Page)
+	 */
+	void toAt(Map params, Class<? extends Page> pageType, Object[] args) {
+		to(params, pageType, args)
+		at(pageType)
+	}
+
 	
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.

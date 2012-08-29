@@ -203,7 +203,7 @@ The `to()` method that takes a single page type **does not** verify that the the
         at AccessDeniedPage
     }
 
-It's very common to see an at check directly after a `to()` call.
+It's very common to see an at check directly after a `to()` call. If you wish to go to a page and verify it's at checker in one go you can use [`toAt()`](api/geb/Browser.html#toAt(java.lang.Class, java.lang.Object\)) method.
 
 Pages can also define content that declares what the browser's page type should change to when that content is clicked. It's advised to use an at check after clicking on such content (see the DSL reference for the [`to`](pages.html#to) parameter).
 

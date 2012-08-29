@@ -18,12 +18,19 @@ package geb
 
 import geb.test.GebSpecWithServer
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+import spock.lang.Unroll
+import javax.servlet.http.HttpServletRequest
 
 class ToAndAtSpec extends GebSpecWithServer {
 	def setupSpec() {
-		responseHtml {
+		responseHtml { HttpServletRequest request ->
 			body {
-				div id: 'a'
+				if (!request.parameterMap.hideA) {
+					div id: 'a'
+				}
+				if (request.parameterMap.showB) {
+					div id: 'b'
+				}
 			}
 		}
 	}
@@ -34,6 +41,13 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 		then:
 		$('#a')
+		!$('#b')
+
+		when:
+		go '/?hideA=true'
+
+		then:
+		!$('#a')
 		!$('#b')
 	}
 
@@ -57,12 +71,49 @@ class ToAndAtSpec extends GebSpecWithServer {
 		!isAt(ToAndAtSpecPageB)
 		!isAt(ToAndAtSpecPageB)
 	}
+
+	@Unroll
+	def "verify toAt() asserts that we are at the expected page - #scenario"() {
+		when:
+		toAt(*args)
+
+		then:
+		PowerAssertionError error = thrown()
+		error.message.contains('div')
+
+		where:
+		scenario      | args
+		'simple call' | [ToAndAtSpecPageB]
+		'call with map' | [[hideA: true], ToAndAtSpecPageA]
+		'call with parameter' | [ToAndAtSpecPageA, true]
+		'call with parameter and map' | [[hideA: true], ToAndAtSpecPageA, true]
+	}
+
+	@Unroll
+	def "verify toAt() passes when we are at the expected page - #scenario"() {
+		when:
+		toAt(*args)
+
+		then:
+		notThrown(PowerAssertionError)
+
+		where:
+		scenario      | args
+		'simple call' | [ToAndAtSpecPageA]
+		'call with map' | [[showB: true], ToAndAtSpecPageB]
+		'call with parameter' | [ToAndAtSpecPageB, true]
+		'call with parameter and map' | [[showB: true], ToAndAtSpecPageB, true]
+	}
 }
 
 class ToAndAtSpecPageA extends Page {
 	static at = { div }
 	static content = {
-		div { $("#a") }
+		div(required: false) { $("#a") }
+	}
+
+	String convertToPath(param) {
+		return param ? "?hideA=$param" : ''
 	}
 }
 
@@ -70,6 +121,10 @@ class ToAndAtSpecPageB extends Page {
 	static at = { div }
 	static content = {
 		div(required: false) { $("#b") }
+	}
+
+	String convertToPath(param) {
+		return param ? "?showB=$param" : ''
 	}
 }
 

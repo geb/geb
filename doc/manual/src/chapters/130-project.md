@@ -33,6 +33,10 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### New Features
+
+* New `toAt()` method that changes the page on the browser and verifies the at checker of that page in one method call \[[GEB-1](http://jira.codehaus.org/browse/GEB-1)\].
+
 ### 0.7.2
 
 #### Fixes
