@@ -59,57 +59,36 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "verify the Page API works"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		
 		then:
-		at PageA
+		at PageOrientedSpecPageA
 		
 		when:
 		link.click()
 		
 		then:
-		at PageB
-		page.class == PageB
+		at PageOrientedSpecPageB
+		page.class == PageOrientedSpecPageB
 		
 		when:
 		link.click()
 		
 		then:
-		at PageA
-		page.class == PageA
+		at PageOrientedSpecPageA
+		page.class == PageOrientedSpecPageA
 	}
 	
 	def "check accessing non navigator content"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		then:
 		linkText == "b"
 	}
-	
-	def "verify at checking works"() {
-		when:
-		to PageA
-		and:
-		at(PageC)
 
-		then:
-		PowerAssertionError error = thrown()
-		error.message.contains('false')
-	}
-
-	def "verify isAt() works"() {
-		when:
-		to PageA
-
-		then:
-		isAt(PageA)
-		!isAt(PageB)
-		!isAt(PageC)
-	}
-	
 	def "error when required value not present"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		notPresentValueRequired.text()
 		then:
 		thrown(RequiredPageValueNotPresent)
@@ -117,7 +96,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "error when required component not present"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		notPresentRequired.text()
 		then:
 		thrown(RequiredPageContentNotPresent)
@@ -125,7 +104,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "no error when non required component not present"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		notPresentNotRequired.text()
 		then:
 		notThrown(RequiredPageContentNotPresent)
@@ -133,7 +112,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 	def "no error when non required component times out"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		def content = notPresentNotRequiredWithWait
 		then:
 		notThrown(RequiredPageContentNotPresent)
@@ -143,7 +122,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "error when explicitly requiring a component that is not present"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		notPresentNotRequired.require()
 		then:
 		thrown(RequiredPageContentNotPresent)
@@ -151,7 +130,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 	def "no error when explicitly requiring component that is present"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		link.require()
 		then:
 		notThrown(RequiredPageContentNotPresent)
@@ -159,15 +138,15 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "variant to should cycle through and select match"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		linkWithVariantTo.click()
 		then:
-		at PageB
+		at PageOrientedSpecPageB
 	}
 	
 	def "exception should be thrown when no to values match"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		linkWithVariantToNoMatches.click()
 		then:
 		thrown(UnexpectedPageException)
@@ -175,14 +154,14 @@ class PageOrientedSpec extends GebSpecWithServer {
 	
 	def "call in mixed in method from TextMatchingSupport"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		then:
 		contains("b").matches("abc")
 	}
 	
 	def "can use attribute notation on page content"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		then:
 		link.@id == "a"
 	}
@@ -217,18 +196,18 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 	def "verify content aliasing works"() {
 		when:
-		to PageA
+		to PageOrientedSpecPageA
 		then:
 		linkTextAlias == 'b'
 	}
 }
 
-class PageA extends Page {
+class PageOrientedSpecPageA extends Page {
 	static at = { link }
 	static content = {
-		link(to: PageB) { $("#a") }
-		linkWithVariantTo(to: [PageD, PageC, PageB]) { link }
-		linkWithVariantToNoMatches(to: [PageD, PageC]) { link }
+		link(to: PageOrientedSpecPageB) { $("#a") }
+		linkWithVariantTo(to: [PageOrientedSpecPageD, PageOrientedSpecPageC, PageOrientedSpecPageB]) { link }
+		linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
 		linkText { link.text().trim() }
 		linkTextAlias(aliases: 'linkText')
 		notPresentValueRequired { $("div#asdfasdf").text() }
@@ -238,19 +217,19 @@ class PageA extends Page {
 	}
 }
 
-class PageB extends Page {
+class PageOrientedSpecPageB extends Page {
 	static at = { link }
 	static content = {
-		link(to: PageA) { $("#b") }
+		link(to: PageOrientedSpecPageA) { $("#b") }
 		linkText { link.text() }
 	}
 }
 
-class PageC extends Page {
+class PageOrientedSpecPageC extends Page {
 	static at = { false }
 }
 
-class PageD extends Page {
+class PageOrientedSpecPageD extends Page {
 	static at = { assert 1 == 2 }
 }
 
