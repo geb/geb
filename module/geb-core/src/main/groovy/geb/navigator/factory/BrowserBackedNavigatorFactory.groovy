@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package geb.navigator
 
-class NavigatorBackedNavigatorFactory extends AbstractNavigatorFactory {
 
-	final Navigator base
+package geb.navigator.factory
 
-	NavigatorBackedNavigatorFactory(Navigator navigator) {
-		super(navigator.browser)
-		base = navigator
-	}
+import geb.navigator.Navigator
+import groovy.transform.InheritConstructors
+import org.openqa.selenium.By
+
+@InheritConstructors
+class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
 	@Override
-	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range) {
-		base.find(attributePredicates, cssSelector, range)
+	Navigator getBase() {
+		createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName("html"))))
 	}
 
 }

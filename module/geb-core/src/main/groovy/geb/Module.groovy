@@ -22,7 +22,6 @@ import geb.textmatching.TextMatchingSupport
 import geb.download.DownloadSupport
 import geb.waiting.WaitingSupport
 import geb.frame.FrameSupport
-import geb.navigator.NavigatorBackedNavigatorFactory
 
 class Module extends TemplateDerivedPageContent {
 

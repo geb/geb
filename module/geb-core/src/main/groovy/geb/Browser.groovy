@@ -18,14 +18,15 @@ import geb.js.JavascriptInterface
 import geb.driver.RemoteDriverOperations
 
 import geb.error.PageChangeListenerAlreadyRegisteredException
-import geb.error.RequiredPageContentNotPresent
+
 import geb.error.UnexpectedPageException
 
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
 import org.openqa.selenium.NoSuchWindowException
-import geb.navigator.NavigatorFactory
-import geb.navigator.BrowserBackedNavigatorFactory
+import geb.navigator.factory.NavigatorFactory
+import geb.navigator.factory.BrowserBackedNavigatorFactory
+import geb.navigator.factory.DefaultInnerNavigatorFactory
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
@@ -40,7 +41,7 @@ class Browser {
 	private final Configuration config
 	private final pageChangeListeners = new LinkedHashSet()
 	private String reportGroup = null
-	private NavigatorFactory navigatorFactory = new BrowserBackedNavigatorFactory(this)
+	private NavigatorFactory navigatorFactory = new BrowserBackedNavigatorFactory(this, new DefaultInnerNavigatorFactory())
 
 	/**
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).

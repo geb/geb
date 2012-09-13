@@ -14,27 +14,17 @@
  * limitations under the License.
  */
 
+package geb.navigator.factory
 
+import geb.navigator.Navigator
 
-package geb.navigator
+class NavigatorBackedNavigatorFactory extends AbstractNavigatorFactory {
 
-import geb.Browser
-import org.openqa.selenium.By
+	final Navigator base
 
-class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
-
-	BrowserBackedNavigatorFactory(Browser browser) {
-		super(browser)
-	}
-
-	@Override
-	Navigator getBase() {
-		create(browser.driver.findElement(By.tagName("html")))
-	}
-
-	@Override
-	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range) {
-		base.find(attributePredicates, cssSelector, range)
+	NavigatorBackedNavigatorFactory(Navigator navigator, InnerNavigatorFactory innerNavigatorFactory) {
+		super(navigator.browser, innerNavigatorFactory)
+		base = navigator
 	}
 
 }

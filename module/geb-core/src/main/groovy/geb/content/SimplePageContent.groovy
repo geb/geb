@@ -16,7 +16,6 @@ package geb.content
 
 import geb.navigator.Navigator
 import geb.navigator.AttributeAccessingMetaClass
-import geb.navigator.NavigatorBackedNavigatorFactory
 
 class SimplePageContent extends TemplateDerivedPageContent implements Iterable<Navigator> {
 

@@ -15,7 +15,6 @@
 package geb.content
 
 import geb.navigator.Navigator
-import geb.navigator.NavigatorBackedNavigatorFactory
 
 class ModuleBaseDefinitionDelegate {
 

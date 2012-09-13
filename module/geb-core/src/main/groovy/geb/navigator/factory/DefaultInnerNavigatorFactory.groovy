@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package geb.navigator
+package geb.navigator.factory
 
+import geb.Browser
+import geb.navigator.EmptyNavigator
+import geb.navigator.Navigator
+import geb.navigator.NonEmptyNavigator
 import org.openqa.selenium.WebElement
 
-interface NavigatorFactory {
+class DefaultInnerNavigatorFactory implements InnerNavigatorFactory {
 
-	Navigator getBase()
+	@Override
+	Navigator createNavigator(Browser browser, List<WebElement> elements) {
+		elements ? new NonEmptyNavigator(browser, elements) : new EmptyNavigator(browser)
+	}
 
-	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range)
-
-	Navigator create(WebElement... elements)
-
-	Navigator create(Navigator... elements)
-
-	NavigatorFactory relativeTo(Navigator newBase)
 }

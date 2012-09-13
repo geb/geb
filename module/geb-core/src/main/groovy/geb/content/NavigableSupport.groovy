@@ -17,7 +17,7 @@ package geb.content
 import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
-import geb.navigator.NavigatorFactory
+import geb.navigator.factory.NavigatorFactory
 import org.openqa.selenium.WebElement
 
 /**
@@ -97,7 +97,7 @@ class NavigableSupport implements Navigable {
 	}
 
 	Navigator $(Navigator[] navigators) {
-		navigatorFactory.create(*navigators)
+		navigatorFactory.createFromNavigators(Arrays.asList(navigators))
 	}
 
 	Navigator $(SimplePageContent[] contents) {
@@ -105,7 +105,7 @@ class NavigableSupport implements Navigable {
 	}
 
 	Navigator $(WebElement[] elements) {
-		navigatorFactory.create(*elements)
+		navigatorFactory.createFromWebElements(Arrays.asList(elements))
 	}
 
 	Navigator $(Map attributes, Integer index) {

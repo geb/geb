@@ -29,12 +29,12 @@ class NonEmptyNavigator extends Navigator {
 		this.contextElements = contextElements.toList().unique().asImmutable()
 	}
 
-	protected Navigator navigatorFor(Collection<? extends WebElement> contextElements) {
-		browser.navigatorFactory.create(*contextElements)
+	protected Navigator navigatorFor(Collection<WebElement> contextElements) {
+		browser.navigatorFactory.createFromWebElements(contextElements)
 	}
 
 	protected Navigator navigatorFor(WebElement[] contextElements) {
-		browser.navigatorFactory.create(*contextElements)
+		browser.navigatorFactory.createFromWebElements(Arrays.asList(contextElements))
 	}
 
 	@Override

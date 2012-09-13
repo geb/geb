@@ -59,9 +59,9 @@ class JQueryAdapter {
 	def methodMissing(String name, args) {
 		def result = _callJQueryMethod(name, args)
 		if (result instanceof WebElement) {
-			navigator.browser.navigatorFactory.create(result)
+			navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
 		} else  if (result instanceof List) {
-			navigator.browser.navigatorFactory.create(*result)
+			navigator.browser.navigatorFactory.createFromWebElements(result)
 		} else {
 			result
 		}

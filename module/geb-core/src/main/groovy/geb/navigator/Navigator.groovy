@@ -234,7 +234,7 @@ abstract class Navigator implements Iterable<Navigator> {
 		List<WebElement> result = []
 		result.addAll allElements()
 		result.addAll elements
-		browser.navigatorFactory.create(*result)
+		browser.navigatorFactory.createFromWebElements(result)
 	}
 
 	/**
@@ -581,8 +581,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * Overrides the standard Groovy findAll so that the object returned is a Navigator rather than a Collection<Navigator>.
 	 */
 	Navigator findAll(Closure predicate) {
-		Collection<Navigator> results = super.findAll(predicate)
-		browser.navigatorFactory.create(*results*.allElements().flatten())
+		browser.navigatorFactory.createFromNavigators(super.findAll(predicate))
 	}
 
 	/**
