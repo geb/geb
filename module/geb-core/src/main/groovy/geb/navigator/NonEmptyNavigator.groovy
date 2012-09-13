@@ -20,10 +20,6 @@ class NonEmptyNavigator extends Navigator {
 
 	private final List<WebElement> contextElements
 
-	NonEmptyNavigator(Browser browser, WebElement[] contextElements) {
-		this(browser, contextElements as List)
-	}
-
 	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
 		super(browser)
 		this.contextElements = contextElements.toList().unique().asImmutable()
@@ -31,10 +27,6 @@ class NonEmptyNavigator extends Navigator {
 
 	protected Navigator navigatorFor(Collection<WebElement> contextElements) {
 		browser.navigatorFactory.createFromWebElements(contextElements)
-	}
-
-	protected Navigator navigatorFor(WebElement[] contextElements) {
-		browser.navigatorFactory.createFromWebElements(Arrays.asList(contextElements))
 	}
 
 	@Override
@@ -98,7 +90,7 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator getAt(int index) {
-		navigatorFor getElement(index)
+		navigatorFor(Collections.singleton(getElement(index)))
 	}
 
 	Navigator getAt(Range range) {
@@ -342,11 +334,11 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	Navigator first() {
-		navigatorFor firstElement()
+		navigatorFor(Collections.singleton(firstElement()))
 	}
 
 	Navigator last() {
-		navigatorFor lastElement()
+		navigatorFor(Collections.singleton(lastElement()))
 	}
 
 	Navigator tail() {
