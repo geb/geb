@@ -41,6 +41,10 @@ This page lists the high level changes between versions of Geb.
 
 * Fixed an issue where waitFor would throw a WaitTimeoutException even if the last evaluation before timeout returned a truthy value \[[GEB-215](http://jira.codehaus.org/browse/GEB-215)\].
 
+#### Breaking Changes
+
+* `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present
+
 ### 0.7.2
 
 #### Fixes

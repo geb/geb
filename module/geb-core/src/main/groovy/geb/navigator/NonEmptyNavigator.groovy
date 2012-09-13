@@ -18,6 +18,13 @@ class NonEmptyNavigator extends Navigator {
 		NonEmptyNavigator.metaClass = mc
 	}
 
+	private final static BOOLEAN_ATTRIBUTES = ['async', 'autofocus', 'autoplay', 'checked', 'compact', 'complete',
+		'controls', 'declare', 'defaultchecked', 'defaultselected', 'defer', 'disabled', 'draggable', 'ended',
+		'formnovalidate', 'hidden', 'indeterminate', 'iscontenteditable', 'ismap', 'itemscope', 'loop',
+		'multiple', 'muted', 'nohref', 'noresize', 'noshade', 'novalidate', 'nowrap', 'open', 'paused',
+		'pubdate', 'readonly', 'required', 'reversed', 'scoped', 'seamless', 'seeking', 'selected',
+		'spellcheck', 'truespeed', 'willvalidate']
+
 	private final List<WebElement> contextElements
 
 	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
@@ -281,7 +288,11 @@ class NonEmptyNavigator extends Navigator {
 	}
 
 	String getAttribute(String name) {
-		firstElement().getAttribute(name)
+		def attribute = firstElement().getAttribute(name)
+		if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
+			attribute = null
+		}
+		attribute
 	}
 	
 	List<String> classes() {

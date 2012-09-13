@@ -545,7 +545,7 @@ class Browser {
 			switchToWindow(original)
 		}
 		if (!anyMatching) {
-			throw new NoSuchWindowException()
+			throw new NoSuchWindowException('Could not find a window that would match the specification')
 		}
 	}
 

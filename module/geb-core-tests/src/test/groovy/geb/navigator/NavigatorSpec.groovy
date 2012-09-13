@@ -31,11 +31,11 @@ class NavigatorSpec extends GebSpec {
 		expect: !navigator
 	}
 	
-	def "getAtttribute returns false for boolean attributes that are not present"() {
+	def "getAtttribute returns null for boolean attributes that are not present"() {
 		expect:
 		def element = $("#the_plain_select")
-		element.getAttribute("multiple") == "false"
-		element.@multiple == "false"
+		element.getAttribute("multiple") == null
+		element.@multiple == null
 	}
 
 	def "getElement by index"() {
