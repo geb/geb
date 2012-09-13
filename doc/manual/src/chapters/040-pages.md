@@ -346,7 +346,7 @@ If you wish to have the same content definitions available under diferent names 
         assert someButton.text() == someButtonByAnotherName.text()
     }
 
-Rember that the aliased content has to be defined before the aliasing content, otherwise you will get a [`InvalidPageContent`](api/geb/error/InvalidPageContent.html) exception.
+Remember that the aliased content has to be defined before the aliasing content, otherwise you will get a [`InvalidPageContent`](api/geb/error/InvalidPageContent.html) exception.
 
 ## “At” Verification
 
