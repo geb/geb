@@ -40,6 +40,7 @@ This page lists the high level changes between versions of Geb.
 #### Fixes
 
 * Fixed an issue where waitFor would throw a WaitTimeoutException even if the last evaluation before timeout returned a truthy value \[[GEB-215](http://jira.codehaus.org/browse/GEB-215)\].
+* Fixed taking screenshots for reporting when the browser is not on a HTML page (e.g. XML file) \[[GEB-126](http://jira.codehaus.org/browse/GEB-126)\].
 
 #### Breaking Changes
 

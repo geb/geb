@@ -19,7 +19,7 @@ import geb.Browser
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.OutputType
 
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebDriverException
 
 /**
  * Writes the source of the browser's current page as html and takes a PNG screenshot
@@ -33,12 +33,17 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		// note - this is not covered by tests unless using a driver that can take screenshots
 		def screenshotDriver = determineScreenshotDriver(browser)
 		if (screenshotDriver) {
-			def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
-			def decoded = Base64.decode(rawBase64)
-			
-			// WebDriver has a bug where sometimes the screenshot has been encoded twice
-			if (!PngUtils.isPng(decoded)) {
-				decoded = Base64.decode(decoded)
+			def decoded
+			try {
+				def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
+				decoded = Base64.decode(rawBase64)
+
+				// WebDriver has a bug where sometimes the screenshot has been encoded twice
+				if (!PngUtils.isPng(decoded)) {
+					decoded = Base64.decode(decoded)
+				}
+			} catch (WebDriverException e) {
+				decoded = new ExceptionToPngConverter(e).convert('An exception has been thrown while getting the screenshot:')
 			}
 			
 			saveScreenshotPngBytes(outputDir, label, decoded)
