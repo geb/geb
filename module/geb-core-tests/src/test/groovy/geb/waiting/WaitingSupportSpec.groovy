@@ -101,6 +101,11 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		then:
 		waitFor(1, 10) { assert $("div").empty; true }
 	}
+
+	def "waitFor block takes longer than the timeout but succeeds"() {
+		expect:
+		waitFor(1) { sleep 1500; true }
+	}
 	
 	def "default variant"() {
 		when:

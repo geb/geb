@@ -124,7 +124,7 @@ class Wait {
 			}
 		}
 		
-		if (timedOut) {
+		if (!pass && timedOut) {
 			throw new WaitTimeoutException(this, thrown)
 		}
 		

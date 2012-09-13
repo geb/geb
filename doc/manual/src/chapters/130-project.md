@@ -37,6 +37,10 @@ This page lists the high level changes between versions of Geb.
 
 * New `toAt()` method that changes the page on the browser and verifies the at checker of that page in one method call \[[GEB-1](http://jira.codehaus.org/browse/GEB-1)\].
 
+#### Fixes
+
+* Fixed an issue where waitFor would throw a WaitTimeoutException even if the last evaluation before timeout returned a truthy value \[[GEB-215](http://jira.codehaus.org/browse/GEB-215)\].
+
 ### 0.7.2
 
 #### Fixes
