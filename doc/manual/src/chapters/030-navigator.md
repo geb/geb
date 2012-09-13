@@ -288,7 +288,7 @@ Consider the following HTML…
 
     <p title="a" class="a para">a</p>
     <p title="b" class="b para">b</p>
-    <p title="c" class="c para">v</p>
+    <p title="c" class="c para">c</p>
 
 The following assertions are valid…
 
