@@ -119,7 +119,7 @@ Rather than inject your own `NavigatorFactory`, it is simpler to inject a custom
         if (elements) ? new MyCustomNavigator(browser, elements) : new geb.navigator.EmptyNavigator()
     }
 
-This is a rather advanced use case. If you need to do this, check out the source code or get in touch via the mailing list if you need help.s
+This is a rather advanced use case. If you need to do this, check out the source code or get in touch via the mailing list if you need help.
 
 ### Driver Caching
 
