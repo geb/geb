@@ -109,6 +109,18 @@ The following table gives the possible short names that can be used:
 
 If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a [`UnableToLoadAnyDriversException`](api/geb/error/UnableToLoadAnyDriversException.html) will be thrown.
 
+### Navigator Factory
+
+It is possible to specify your own implementation of [`NavigatorFactory`](api/geb/navigatory/factory/NavigatorFactory.html) via configuration. This is useful if you want to extend the [`Navigator`](api/geb/navigatory/Navigator.html) class to provide your own behaviour extensions.
+
+Rather than inject your own `NavigatorFactory`, it is simpler to inject a custom [`InnerNavigatorFactory`](api/geb/navigatory/factory/NavigatorFactory.html) which is a much simpler interface. To do this, you can specify a closure for the config key `innerNavigatorFactory`…
+
+    innerNavigatorFactory = { Browser browser, List<org.openqa.selenium.WebElement> elements
+        if (elements) ? new MyCustomNavigator(browser, elements) : new geb.navigator.EmptyNavigator()
+    }
+
+This is a rather advanced use case. If you need to do this, check out the source code or get in touch via the mailing list if you need help.s
+
 ### Driver Caching
 
 Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. [the implicit driver lifecycle](driver.html#implicit_lifecycle)) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become [responsible for quitting](driver.html#explicit_lifecycle) every driver that is created at the appropriate time.

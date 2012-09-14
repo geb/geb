@@ -48,9 +48,9 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
 		innerNavigatorFactory.createNavigator(browser, filtered)
 	}
 
-	Navigator createFromNavigators(Iterable<Navigator> elements) {
+	Navigator createFromNavigators(Iterable<Navigator> navigators) {
 		List<WebElement> filtered = []
-		elements.each {
+		navigators.each {
 			if (it != null) {
 				filtered.addAll(it.allElements())
 			}

@@ -41,7 +41,7 @@ class Browser {
 	private final Configuration config
 	private final pageChangeListeners = new LinkedHashSet()
 	private String reportGroup = null
-	private NavigatorFactory navigatorFactory = new BrowserBackedNavigatorFactory(this, new DefaultInnerNavigatorFactory())
+	private NavigatorFactory navigatorFactory = null
 
 	/**
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
@@ -64,7 +64,6 @@ class Browser {
 	 */
 	Browser(Configuration config) {
 		this.config = config
-		page(Page)
 	}
 
 	/**
@@ -83,6 +82,10 @@ class Browser {
 	 * All browser objects are created with a page type of {@link geb.Page} initially.
 	 */
 	Page getPage() {
+		if (page == null) {
+			page = createPage(Page)
+		}
+
 		this.page
 	}
 	
@@ -110,9 +113,23 @@ class Browser {
 	 * @return The navigator factory
 	 */
 	NavigatorFactory getNavigatorFactory() {
+		if (navigatorFactory == null) {
+			navigatorFactory = createNavigatorFactory()
+		}
+
 		navigatorFactory
 	}
-/**
+
+	/**
+	 * Called to create the navigator factory, the first time it is requested.
+	 *
+	 * @return The navigator factory
+	 */
+	protected NavigatorFactory createNavigatorFactory() {
+		config.createNavigatorFactory(this)
+	}
+
+	/**
 	 * Set (or change) the webdriver underneath this browser.
 	 * <p>
 	 * This should only be called before making any requests as a means to override the driver instance
@@ -157,7 +174,7 @@ class Browser {
 	 */
 	void registerPageChangeListener(PageChangeListener listener) {
 		if (pageChangeListeners.add(listener)) {
-			listener.pageWillChange(this, null, page)
+			listener.pageWillChange(this, null, getPage())
 		} else {
 			throw new PageChangeListenerAlreadyRegisteredException(this, listener)
 		}
@@ -176,21 +193,21 @@ class Browser {
 	 * Delegates the method call directly to the current page object.
 	 */
 	def methodMissing(String name, args) {
-		page."$name"(*args)
+		getPage()."$name"(*args)
 	}
 
 	/**
 	 * Delegates the property access directly to the current page object.
 	 */
 	def propertyMissing(String name) {
-		page."$name"
+		getPage()."$name"
 	}
 	
 	/**
 	 * Delegates the property assignment directly to the current page object.
 	 */
 	def propertyMissing(String name, value) {
-		page."$name" = value
+		getPage()."$name" = value
 	}	
 	
 	/**
@@ -322,12 +339,12 @@ class Browser {
 	 * <p>
 	 */
 	private void makeCurrentPage(Page page) {
-		if (!page.is(this.page)) {
-			informPageChangeListeners(this.page, page)
-			this.page?.onUnload(page)
-			def previousPage = this.page
+		if (!page.is(getPage())) {
+			informPageChangeListeners(getPage(), page)
+			getPage().onUnload(page)
+			def previousPage = getPage()
 			this.page = page
-			this.page.onLoad(previousPage)
+			getPage().onLoad(previousPage)
 		}
 	}
 

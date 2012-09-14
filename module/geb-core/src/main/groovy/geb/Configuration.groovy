@@ -21,6 +21,12 @@ import geb.report.ScreenshotAndPageSourceReporter
 import geb.waiting.Wait
 import org.openqa.selenium.WebDriver
 import geb.driver.*
+import geb.navigator.factory.InnerNavigatorFactory
+import geb.navigator.factory.NavigatorFactory
+import geb.navigator.factory.BrowserBackedNavigatorFactory
+import geb.error.InvalidGebConfiguration
+import geb.navigator.factory.DefaultInnerNavigatorFactory
+import geb.navigator.factory.ClosureInnerNavigatorFactory
 
 /**
  * Represents a particular configuration of Geb.
@@ -323,7 +329,73 @@ class Configuration {
 	void setAutoClearCookies(boolean flag) {
 		rawConfig.autoClearCookies = flag
 	}
-	
+
+	/**
+	 * Creates the navigator factory to be used.
+	 *
+	 * Returns {@link BrowserBackedNavigatorFactory} by default.
+	 * <p>
+	 * Override by setting the 'navigatorFactory' to a closure that takes a single {@link Browser} argument
+	 * and returns an instance of {@link NavigatorFactory}
+	 *
+	 * @param browser The browser to use as the basis of the navigatory factory.
+	 * @return
+	 */
+	NavigatorFactory createNavigatorFactory(Browser browser) {
+		def navigatorFactory = readValue("navigatorFactory", null)
+		if (navigatorFactory == null) {
+			new BrowserBackedNavigatorFactory(browser, getInnerNavigatorFactory())
+		} else {
+			if (navigatorFactory instanceof Closure) {
+				def result = navigatorFactory.call(browser)
+				if (result instanceof NavigatorFactory) {
+					return result
+				} else {
+					throw new InvalidGebConfiguration("navigatorFactory returned '${result}', it should be a NavigatorFactory implementation")
+				}
+			} else {
+				throw new InvalidGebConfiguration("navigatorFactory is '${navigatorFactory}', it should be a Closure that returns a NavigatorFactory implementation")
+			}
+		}
+	}
+
+	/**
+	 * Returns the inner navigatory factory, that turns WebElements into Navigators.
+	 *
+	 * Returns {@link DefaultInnerNavigatorFactory} instances by default.
+	 * <p>
+	 * To override, set 'innerNavigatorFactory' to:
+	 * <ul>
+	 * <li>An instance of {@link InnerNavigatorFactory}
+	 * <li>A Closure, that has the signature ({@link Browser}, List<{@link org.openqa.selenium.WebElement}>)
+	 * </ul>
+	 *
+	 * @return The inner navigator factory.
+	 */
+	InnerNavigatorFactory getInnerNavigatorFactory() {
+		def innerNavigatorFactory = readValue("innerNavigatorFactory", null)
+		if (innerNavigatorFactory == null) {
+			new DefaultInnerNavigatorFactory()
+		} else if (innerNavigatorFactory instanceof InnerNavigatorFactory) {
+			innerNavigatorFactory
+		} else if (innerNavigatorFactory instanceof Closure) {
+			new ClosureInnerNavigatorFactory(innerNavigatorFactory)
+		} else {
+			throw new InvalidGebConfiguration("innerNavigatorFactory is '${innerNavigatorFactory}', it should be a Closure or InnerNavigatorFactory implementation")
+		}
+	}
+
+	/**
+	 * Sets the inner navigator factory.
+	 *
+	 * Only effectual before the browser calls {@link #createNavigatorFactory(Browser)} initially.
+	 *
+	 * @param innerNavigatorFactory
+	 */
+	void setInnerNavigatorFactory(InnerNavigatorFactory innerNavigatorFactory) {
+		this.rawConfig.innerNavigatorFactory = innerNavigatorFactory
+	}
+
 	protected DriverFactory getDriverFactory(driverValue) {
 		if (driverValue instanceof CharSequence) {
 			new NameBasedDriverFactory(classLoader, driverValue.toString())
@@ -355,5 +427,7 @@ class Configuration {
 			defaultValue
 		}
 	}
+
+
 	
 }

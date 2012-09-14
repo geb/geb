@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
+package geb.error;
 
+public class InvalidGebConfiguration extends GebException {
 
-package geb.navigator.factory
-
-import geb.Browser
-import geb.navigator.Navigator
-import org.openqa.selenium.By
-
-class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
-
-	BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
-		super(browser, innerNavigatorFactory)
+	public InvalidGebConfiguration(Object message) {
+		super(message);
 	}
 
-	@Override
-	Navigator getBase() {
-		createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName("html"))))
+	public InvalidGebConfiguration(Object message, Throwable cause) {
+		super(message, cause);
 	}
-
 }

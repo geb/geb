@@ -20,8 +20,26 @@ import geb.navigator.Navigator
 import org.openqa.selenium.WebElement
 import geb.Browser
 
+/**
+ * Creates Navigator instances from zero or more WebElement instances.
+ *
+ * Designed to be the extension point for injecting a custom navigator implementation.
+ *
+ * @see geb.Configuration#getInnerNavigatorFactory()
+ * @see DefaultInnerNavigatorFactory
+ */
 interface InnerNavigatorFactory {
 
+	/**
+	 * Create a Navigator instance for the given web elements.
+	 *
+	 * The elements list may be null or zero length. Which means that they navigator
+	 * should represent “no matched content” (a.k.a {@link geb.navigator.EmptyNavigator})
+	 *
+	 * @param browser The browser to attach the navigators too.
+	 * @param elements Zero or more content elements to wrap as a navigator
+	 * @return A navigator instance, for the given elements
+	 */
 	Navigator createNavigator(Browser browser, List<WebElement> elements)
 
 }

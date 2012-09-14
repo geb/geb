@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-
-
 package geb.navigator.factory
 
-import geb.Browser
 import geb.navigator.Navigator
-import org.openqa.selenium.By
+import geb.Browser
+import org.openqa.selenium.WebElement
 
-class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
+class ClosureInnerNavigatorFactory implements InnerNavigatorFactory {
 
-	BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
-		super(browser, innerNavigatorFactory)
+	private final Closure<Navigator> closure
+
+	ClosureInnerNavigatorFactory(Closure<Navigator> closure) {
+		this.closure = closure
 	}
 
 	@Override
-	Navigator getBase() {
-		createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName("html"))))
+	Navigator createNavigator(Browser browser, List<WebElement> elements) {
+		closure.call(browser, elements)
 	}
-
 }
