@@ -34,10 +34,6 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
 		return browser
 	}
 
-	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range) {
-		getBase().find(attributePredicates, cssSelector, range)
-	}
-
 	Navigator createFromWebElements(Iterable<WebElement> elements) {
 		List<WebElement> filtered = []
 		elements.each {

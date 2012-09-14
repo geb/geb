@@ -34,19 +34,6 @@ interface NavigatorFactory {
 	Navigator getBase()
 
 	/**
-	 * The primary interface for selecting navigators.
-	 *
-	 * The parameters define the content to construct the navigator from. All of the criteria are 'anded' together.
-	 *
-	 * @param attributePredicates The attribute predicates to use in finding the content to create the navigator from.
-	 * @param cssSelector The CSS selector to use in finding the content to create the navigator from.
-	 * @param range The range/index to restrict the content backing the navigator to.
-	 * @see Navigator#find(Map,String,Range)
-	 * @return The created navigator
-	 */
-	Navigator create(Map<String, Object> attributePredicates, String cssSelector, Range<Integer> range)
-
-	/**
 	 * Create a navigator, backed by the given web elements.
 	 *
 	 * @param elements The web elements to back the navigator.
