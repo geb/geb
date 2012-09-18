@@ -275,15 +275,14 @@ class Browser {
 	 * Checks if the browser is at the current page by running the at checker for this page type
 	 *
 	 * A new instance of the page is created for the at check. If the at checker is successful,
-	 * this browser object's page instance is updated to the new instance of the given page type.
+	 * this browser object's page instance is updated to the new instance of the given page type and the new instance is returned.
 	 * <p>
 	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
-	 * are enabled (which they are by default). This method will only ever return {@code true} or throw an
-	 * {@link AssertionError}
+	 * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
 	 *
-	 * @return whether the at checker succeeded or not (always true if implicit assertions are enabled)
+	 * @return a page instance of the given page type when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
-	boolean at(Class<? extends Page> pageType) {
+	Page at(Class<? extends Page> pageType) {
 		doAt(createPage(pageType))
 	}
 
@@ -292,15 +291,14 @@ class Browser {
 	 * and throws an AssertionError if not.
 	 *
 	 * If the given page at checker is successful, this browser object's page instance is updated
-	 * to the one the method is called with.
+	 * to the one the method is called with and that page instance is also returned.
 	 * <p>
 	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
-	 * are enabled (which they are by default). This method will only ever return {@code true} or throw an
-	 * {@link AssertionError}.
+	 * are enabled (which they are by default). This method will only ever return the page instance the method is called with or throw an {@link AssertionError}.
 	 *
-	 * @return whether the at checker succeeded or not (always true if implicit assertions are enabled)
+	 * @return the page instance the method is called with when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
-	boolean at(Page page) {
+	Page at(Page page) {
 		doAt(page)
 	}
 
@@ -358,11 +356,11 @@ class Browser {
 	/**
 	 * Runs a page's at checker, expecting the page to be initialised with this browser instance.
 	 */
-	private boolean doAt(Page page) {
+	private Page doAt(Page page) {
 		initialisePage(page)
-		page.verifyAt()
+		def atResult = page.verifyAt()
 		makeCurrentPage(page)
-		true
+		atResult ? page : null
 	}
 
 	/**
@@ -401,33 +399,36 @@ class Browser {
 	/**
 	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
 	 *
+	 * @return a page instance of the passed page type when the at checker succeeded
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	void toAt(Class<? extends Page> pageType, Object[] args) {
+	Page toAt(Class<? extends Page> pageType, Object[] args) {
 		toAt([:], pageType, args)
 	}
 
 	/**
 	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
 	 *
+	 * @return a page instance of the passed page type when the at checker succeeded
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	void toAt(Map params, Class<? extends Page> pageType) {
+	Page toAt(Map params, Class<? extends Page> pageType) {
 		toAt(params, pageType, null)
 	}
 
 	/**
 	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
 	 *
+	 * @return a page instance of the passed page type when the at checker succeeded
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	void toAt(Map params, Class<? extends Page> pageType, Object[] args) {
+	Page toAt(Map params, Class<? extends Page> pageType, Object[] args) {
 		to(params, pageType, args)
 		at(pageType)
 	}
@@ -435,32 +436,37 @@ class Browser {
 	
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
-	 * 
+	 *
+	 * @return a page instance of the passed page type
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	void to(Class<? extends Page> pageType, Object[] args) {
+	Page to(Class<? extends Page> pageType, Object[] args) {
 		to([:], pageType, *args)
 	}
 
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
-	 * 
+	 *
+	 * @return a page instance of the passed page type
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	void to(Map params, Class<? extends Page> pageType) {
+	Page to(Map params, Class<? extends Page> pageType) {
 		to(params, pageType, null)
 	}
 
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
-	 * 
+	 *
+	 * @return a page instance of the passed page type
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	void to(Map params, Class<? extends Page> pageType, Object[] args) {
-		createPage(pageType).to(params, *args)
+	Page to(Map params, Class<? extends Page> pageType, Object[] args) {
+		def page = createPage(pageType)
+		page.to(params, *args)
+		page
 	}
 	
 	/**

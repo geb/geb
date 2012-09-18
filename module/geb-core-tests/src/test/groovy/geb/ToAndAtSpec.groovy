@@ -90,12 +90,13 @@ class ToAndAtSpec extends GebSpecWithServer {
 	}
 
 	@Unroll
-	def "verify toAt() passes when we are at the expected page - #scenario"() {
+	def "verify toAt() succeeds when we are at the expected page - #scenario"() {
 		when:
-		toAt(*args)
+		def newPage = toAt(*args)
 
 		then:
 		notThrown(PowerAssertionError)
+		newPage in args.find { it instanceof Class }
 
 		where:
 		scenario      | args
@@ -103,6 +104,33 @@ class ToAndAtSpec extends GebSpecWithServer {
 		'call with map' | [[showB: true], ToAndAtSpecPageB]
 		'call with parameter' | [ToAndAtSpecPageB, true]
 		'call with parameter and map' | [[showB: true], ToAndAtSpecPageB, true]
+	}
+
+	@Unroll
+	def "to() returns a page instance - #scenario"() {
+		expect:
+		to(*args) in args.find { it instanceof Class }
+
+		where:
+		scenario      | args
+		'simple call' | [ToAndAtSpecPageA]
+		'call with map' | [[showB: true], ToAndAtSpecPageB]
+		'call with parameter' | [ToAndAtSpecPageB, true]
+		'call with parameter and map' | [[showB: true], ToAndAtSpecPageB, true]
+	}
+
+	@Unroll
+	def 'at( #scenario ) returns an instance of a page if it succeeds'() {
+		when:
+		to ToAndAtSpecPageA
+
+		then:
+		at(page) in ToAndAtSpecPageA
+
+		where:
+		scenario | page
+		'Class'  | ToAndAtSpecPageA
+		'Page'   | new ToAndAtSpecPageA()
 	}
 }
 

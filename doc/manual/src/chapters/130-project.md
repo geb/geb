@@ -46,6 +46,7 @@ This page lists the high level changes between versions of Geb.
 #### Breaking Changes
 
 * `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present
+* `at()` and `toAt()` methods on `Browser` now return a page instance if they succeed and `to()` method always returns a page instance \[[GEB-217](http://jira.codehaus.org/browse/GEB-217)\].
 
 ### 0.7.2
 
