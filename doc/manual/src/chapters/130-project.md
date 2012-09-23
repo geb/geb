@@ -42,10 +42,11 @@ This page lists the high level changes between versions of Geb.
 
 * Fixed an issue where waitFor would throw a WaitTimeoutException even if the last evaluation before timeout returned a truthy value \[[GEB-215](http://jira.codehaus.org/browse/GEB-215)\].
 * Fixed taking screenshots for reporting when the browser is not on a HTML page (e.g. XML file) \[[GEB-126](http://jira.codehaus.org/browse/GEB-126)\].
+* Return the last evaluation value for a `(wait: true, required: false)` content instead of always returning null \[[GEB-216](http://jira.codehaus.org/browse/GEB-216)\].
 
 #### Breaking Changes
 
-* `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present
+* `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present.
 * `at()` and `toAt()` methods on `Browser` now return a page instance if they succeed and `to()` method always returns a page instance \[[GEB-217](http://jira.codehaus.org/browse/GEB-217)\].
 
 ### 0.7.2

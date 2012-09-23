@@ -18,6 +18,8 @@ import geb.Module
 import geb.Page
 import geb.test.GebSpecWithServer
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+import geb.navigator.EmptyNavigator
+import spock.lang.Unroll
 
 class WaitingSupportSpec extends GebSpecWithServer {
 
@@ -40,11 +42,11 @@ class WaitingSupportSpec extends GebSpecWithServer {
 			"""
 		}
 	}
-		
+
 	def setup() {
 		go()
 	}
-	
+
 	def "basic waiting"() {
 		when:
 		js.showIn(2)
@@ -60,7 +62,7 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		$("div").empty
 		waitFor(3) { assert !$("div").empty; true }
 	}
-	
+
 	def "failed waiting"() {
 		when:
 		js.showIn(3)
@@ -78,7 +80,7 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		WaitTimeoutException e = thrown()
 		e.cause instanceof IllegalArgumentException
 	}
-	
+
 	def "larger interval than timeout"() {
 		when:
 		js.showIn(4)
@@ -104,16 +106,49 @@ class WaitingSupportSpec extends GebSpecWithServer {
 
 	def "waitFor block takes longer than the timeout but succeeds"() {
 		expect:
-		waitFor(1) { sleep 1500; true }
+		waitFor(0) { true }
 	}
-	
+
+	@Unroll
+	def "lastEvaluationValue is set on WaitTimeoutException when waiting for #waitForTime secs and expected result is #lastEvaluationValueClass.simpleName"() {
+		when:
+		waitFor(waitForTime, evaluatedClosure)
+
+		then:
+		WaitTimeoutException e = thrown()
+		!e.lastEvaluationValue
+		e.lastEvaluationValue in lastEvaluationValueClass
+
+		where:
+		evaluatedClosure << [{ false }, { $('#not-existing-element') }, { throw new Exception() } ] * 2
+		lastEvaluationValueClass << [Boolean, EmptyNavigator, UnknownWaitForEvaluationResult] * 2
+		waitForTime << [0, 0.5].sum { [it] * 3 }
+	}
+
+	@Unroll
+	def "UnknownWaitForEvaluationValue holds the thrown exception when waitFor times out due to it when waiting for #waitForTime secs"() {
+		given:
+		def exception = new Exception()
+
+		when:
+		waitFor(waitForTime) { sleep 100; throw exception }
+
+		then:
+		WaitTimeoutException e = thrown()
+		e.lastEvaluationValue.thrown == exception
+
+
+		where:
+		waitForTime << [0, 0.5]
+	}
+
 	def "default variant"() {
 		when:
 		js.showIn(2)
 		then:
-		waitFor{ $("div").empty }
+		waitFor { $("div").empty }
 	}
-	
+
 	def "available on page"() {
 		given:
 		page WaitingSupportSpecPage
@@ -123,7 +158,7 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		$("div").empty
 		waitForDiv()
 	}
-	
+
 	def "available on module"() {
 		given:
 		page WaitingSupportSpecPage
@@ -133,13 +168,14 @@ class WaitingSupportSpec extends GebSpecWithServer {
 		$("div").empty
 		mod.waitForDiv()
 	}
-	
+
 }
 
 class WaitingSupportSpecPage extends Page {
 	static content = {
 		mod { module WaitingSupportSpecModule }
 	}
+
 	def waitForDiv() {
 		waitFor { !$("div").empty }
 	}

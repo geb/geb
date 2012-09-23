@@ -26,12 +26,23 @@ import geb.error.GebException;
  */
 public class WaitTimeoutException extends GebException {
 
+	private Object lastEvaluationValue;
+
 	public WaitTimeoutException(Wait wait) {
-		this(wait, null);
+		this(wait, null, null);
 	}
 
 	public WaitTimeoutException(Wait wait, Throwable cause) {
+		this(wait, cause, null);
+	}
+
+	public WaitTimeoutException(Wait wait, Throwable cause, Object lastEvaluationValue) {
 		super(toMessage(wait, cause), cause);
+		this.lastEvaluationValue = lastEvaluationValue;
+	}
+
+	public Object getLastEvaluationValue() {
+		return lastEvaluationValue;
 	}
 
 	private static String toMessage(Wait wait, Throwable cause) {

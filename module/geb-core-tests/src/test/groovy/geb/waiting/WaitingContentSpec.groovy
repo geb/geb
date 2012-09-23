@@ -140,15 +140,19 @@ class WaitingContentSpec extends GebSpecWithServer {
 		content
 	}
 
-	def "content with wait option set throws timeout exception with power assertion error in cause"() {
+	@Unroll
+	def "content with wait option set throws timeout exception with power assertion error in cause for '#contentName'"() {
 		when:
 		to StaticallySpecifiedContentPage
-		waitContent
+		page[contentName]
 
 		then:
 		WaitTimeoutException exception = thrown()
 		exception.cause in PowerAssertionError
 		exception.cause.message.contains('$("div")')
+
+		where:
+		contentName << ['waitContent', 'waitContentExplicitlyRequired']
 	}
 
 	def "content with wait option returns content"() {
@@ -169,5 +173,6 @@ class DynamicallySpecifiedContentPage extends Page {
 class StaticallySpecifiedContentPage extends Page {
 	static content = {
 		waitContent(wait: 1) { $("div") }
+		waitContentExplicitlyRequired(wait: 1, required: true) { $("div") }
 	}
 }

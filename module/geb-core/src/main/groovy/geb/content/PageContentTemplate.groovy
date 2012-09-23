@@ -90,7 +90,7 @@ class PageContentTemplate {
 				if (required) {
 					throw e
 				}
-				null
+				e.lastEvaluationValue
 			}
 		} else {
 			createAction()

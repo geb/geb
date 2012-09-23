@@ -18,7 +18,7 @@ package geb.waiting
 /**
  * Represents a particular configuration of waiting, but does not encompass what is to be waited on.
  * <p>
- * Generally not used by user code, but used internally by {@link geb.conf.Configuration} and {@link geb.waiting.WaitingSupport}.
+ * Generally not used by user code, but used internally by {@link geb.Configuration} and {@link geb.waiting.WaitingSupport}.
  * 
  * @see #waitFor(Closure)
  */
@@ -105,7 +105,7 @@ class Wait {
 		try {
 			pass = block()
 		} catch (Throwable e) {
-			pass = false
+			pass = new UnknownWaitForEvaluationResult(e)
 			thrown = e
 		}
 		
@@ -117,7 +117,7 @@ class Wait {
 				pass = block()
 				thrown = null
 			} catch (Throwable e) {
-				pass = false
+				pass = new UnknownWaitForEvaluationResult(e)
 				thrown = e
 			} finally {
 				timedOut = new Date() > stopAt
@@ -125,7 +125,7 @@ class Wait {
 		}
 		
 		if (!pass && timedOut) {
-			throw new WaitTimeoutException(this, thrown)
+			throw new WaitTimeoutException(this, thrown, pass)
 		}
 		
 		pass

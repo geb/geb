@@ -21,7 +21,7 @@ import geb.test.GebSpecWithServer
 import geb.waiting.WaitTimeoutException
 import spock.lang.Issue
 import spock.lang.Stepwise
-import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+import geb.content.SimplePageContent
 
 @Stepwise
 class PageOrientedSpec extends GebSpecWithServer {
@@ -117,7 +117,8 @@ class PageOrientedSpec extends GebSpecWithServer {
 		then:
 		notThrown(RequiredPageContentNotPresent)
 		notThrown(WaitTimeoutException)
-		content == null
+		!content
+		content in SimplePageContent
 	}
 	
 	def "error when explicitly requiring a component that is not present"() {

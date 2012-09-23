@@ -124,6 +124,17 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		sourceUnit
 	}
 
+	private boolean requiredOptionSpecifiedAsFalse(ArgumentListExpression arguments) {
+		MapExpression paramMap = arguments.expressions.find { it in MapExpression }
+		paramMap?.mapEntryExpressions.any {
+			if (it.keyExpression in ConstantExpression && it.valueExpression in ConstantExpression) {
+				ConstantExpression key = it.keyExpression
+				ConstantExpression value = it.valueExpression
+				key.value == 'required' && value.value == false
+			}
+		}
+	}
+
 	private boolean waitOptionIsSpecified(ArgumentListExpression arguments) {
 		MapExpression paramMap = arguments.expressions.find { it in MapExpression }
 		paramMap?.mapEntryExpressions.any {
@@ -143,7 +154,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 					MethodCallExpression methodCall = expressionStatement.expression
 					if (methodCall.arguments in ArgumentListExpression) {
 						ArgumentListExpression arguments = methodCall.arguments
-						if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments)) {
+						if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments) && !requiredOptionSpecifiedAsFalse(arguments)) {
 							transformEachStatement(arguments.expressions[-1])
 						}
 					}

@@ -326,7 +326,7 @@ You can modify the behaviour of content with `wait` option set to true if you us
         dynamicallyAdded(wait: true, required: false) { $("p.dynamic") }
     }
 
-Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no `WaitTimeoutException` thrown and `null` value will be returned.
+Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no `WaitTimeoutException` thrown and the last closure evaluation value will be returned. If there is an exception thrown during closure evaluation it will be wrapped in an [`UnknownWaitForEvaluationResult`](api/geb/waiting/UnknownWaitForEvaluationResult.html) instance and returned.
 
 Waiting content blocks are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
