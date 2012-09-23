@@ -64,6 +64,18 @@ class FrameSupportSpec extends GebSpecWithServer {
 		frame << ['frame', 'idontexist']
 	}
 
+	@Unroll("expect frame to fail if called for a non existing frame '#frame'")
+	def "expect frame to fail if called for a non existing frame"() {
+		when:
+		frame(frame, SubFramePage)
+
+		then:
+		thrown(NoSuchFrameException)
+
+		where:
+		frame << ['frame', 'idontexist']
+	}
+
 	@Unroll
 	def "expect withFrame to fail if called for a navigator that doesn't contain a frame"() {
 		when:
@@ -79,9 +91,33 @@ class FrameSupportSpec extends GebSpecWithServer {
 		'No elements for given content:' | { $('') }
 	}
 
+
+	@Unroll
+	def "expect frame to fail if called for a navigator that doesn't contain a frame"() {
+		when:
+		frame(navigatorFactory.call(), SubFramePage)
+
+		then:
+		NoSuchFrameException e = thrown()
+		e.message.startsWith(message)
+
+		where:
+		message                          | navigatorFactory
+		''                               | { $('span') }
+		'No elements for given content:' | { $('') }
+	}
+
 	def "expect withFrame to fail if called for an empty navigator"() {
 		when:
 		withFrame($('nonexistingelem')) {}
+
+		then:
+		thrown(NoSuchFrameException)
+	}
+
+	def "expect frame to fail if called for an empty navigator"() {
+		when:
+		frame($('nonexistingelem'),SubFramePage)
 
 		then:
 		thrown(NoSuchFrameException)
@@ -191,6 +227,25 @@ class FrameSupportSpec extends GebSpecWithServer {
 		page.returnValueOfWithFrameCallForPageContent == 'footer'
 		mod.callAllVariantsOfWithFrame() == 3
 	}
+
+	@Unroll("frame call changes focus to given page '#selector'")
+	def "frame call changes focus to given page"() {
+		given:
+		go pagePath
+
+		when:
+		frame($(selector), SubFramePage)
+
+		then:
+		page instanceof SubFramePage
+		basicSpan.text() == text
+
+		where:
+		pagePath | selector     | text
+		"frames" | '#header-id' | 'header'
+		"frames" | '#footer'    | 'footer'
+		"iframe" | '#inline'    | 'inline'
+	}
 }
 
 class FrameSupportSpecPage extends Page {
@@ -211,6 +266,12 @@ class FrameSupportSpecPage extends Page {
 
 	def getReturnValueOfWithFrameCallForPageContent() {
 		withFrame(footer) { $('span').text() }
+	}
+}
+
+class SubFramePage extends Page {
+	static content = {
+		basicSpan {$('span')}
 	}
 }
 
