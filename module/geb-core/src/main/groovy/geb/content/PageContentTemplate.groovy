@@ -22,6 +22,7 @@ import geb.Configuration
 
 import geb.error.RequiredPageValueNotPresent
 import geb.waiting.WaitTimeoutException
+import geb.error.InvalidPageContent
 
 class PageContentTemplate {
 
@@ -58,6 +59,14 @@ class PageContentTemplate {
 	 */
 	def getTo() {
 		params.to
+	}
+
+	Class<? extends Page> getPageParameter() {
+		def pageParam = params.page
+		if (pageParam && (!(pageParam instanceof Class) || !(pageParam in Page))) {
+			throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $this: $pageParam")
+		}
+		pageParam
 	}
 	
 	Page getPage() {

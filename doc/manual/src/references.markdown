@@ -44,3 +44,5 @@
 [waiting-content]: pages.html#wait
 [assertion-error]: http://docs.oracle.com/javase/6/docs/api/java/lang/AssertionError.html
 [implicit-assertions]: implicit-assertions.html
+[page-option]: pages.html#page
+[switch-frame-and-page]: pages.html#switching_pages_and_frames_at_once

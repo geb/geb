@@ -109,6 +109,10 @@ abstract class TemplateDerivedPageContent implements PageContent {
 			throw new IllegalStateException("Unhandleable 'to' value from template $_template: $to")
 		}
 	}
+
+	Class<? extends Page> getPageParameter() {
+		_template.pageParameter
+	}
 	
 	boolean asBoolean() {
 		_navigator.asBoolean()

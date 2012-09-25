@@ -330,6 +330,47 @@ Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no
 
 Waiting content blocks are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
+#### page
+
+Default value: `null`
+
+The `page` option allows the definition of a page the browser will be set to if the content describes a frame and is used in a `withFrame()` call.
+
+Given the following html...
+
+    <html>
+        <body>
+            <frame id="frame-id" src="frame.html"></frame>
+        <body>
+    </html>
+
+...and the code for frame.html...
+
+    <html>
+        <body>
+            <span>frame text</span>
+        </body>
+    </html>
+
+...the following will pass...
+
+    class PageWithFrame extends Page {
+        static content = {
+            myFrame(page: FrameDescribingPage) { $('#frame-id') }
+        }
+    }
+
+    class FrameDescribingPage extends Page {
+        static content = {
+            frameContentsText { $('span').text() }
+        }
+    }
+
+    to PageWithFrame
+    withFrame(myFrame) {
+        assert frameContentsText == 'frame text'
+    }
+
 ### Aliasing
 
 If you wish to have the same content definitions available under diferent names you can create a content definition that specifies `aliases` parameter:
@@ -527,7 +568,11 @@ The `onUnload()` method is called with next page object instance when the page i
 
 ## Dealing with frames
 
-Frames might seem a thing of the past but if you're accessing or testing some legacy application with Geb you might still need to deal with them. Thankfully Geb makes working with them groovier thanks to the `withFrame()` method which is available on Browser, Page and Module. There are multiple flavours of the `withFrame()` method, but the for all of them the closure parameter is executed in the context of a frame specified by the first parameter:
+Frames might seem a thing of the past but if you're accessing or testing some legacy application with Geb you might still need to deal with them. Thankfully Geb makes working with them groovier thanks to the `withFrame()` method which is available on Browser, Page and Module.
+
+### Executing code in the context of a frame
+
+There are multiple flavours of the `withFrame()` method, but the for all of them the closure parameter is executed in the context of a frame specified by the first parameter:
 
 * `withFrame(String, Closure)` - String parameter contains the name or id of a frame element
 * `withFrame(int, Closure)` - int parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index “0”, the second at index “1” and the third at index “2”
@@ -569,3 +614,19 @@ Given the following html...
     
 If a frame cannot be found for a given first argument of the `withFrame()` call then [`NoSuchFrameException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchFrameException.html) is thrown.
 
+### Switching pages and frames at once
+
+All of the aforementioned `withFrame()` variants also accept an optional second argument (a page class) which allows to switch page for the execution of the closure passed as the last parameter.
+
+Following shows an example usage:
+
+    to PageWithFrames
+    //browser.page set to a PageWithFrames instance
+
+    withFrame('frame-name', PageDescribingFrameContents) {
+        //browser.page set to a PageDescribingFrameContents instance
+    }
+
+    //browser.page set back to the PageWithFrames instance
+
+It is also possible to [specify a page to switch to for a page content that describes a frame][page-option].

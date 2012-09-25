@@ -22,6 +22,8 @@ import geb.waiting.WaitTimeoutException
 import spock.lang.Issue
 import spock.lang.Stepwise
 import geb.content.SimplePageContent
+import geb.error.InvalidPageContent
+import spock.lang.Unroll
 
 @Stepwise
 class PageOrientedSpec extends GebSpecWithServer {
@@ -201,6 +203,24 @@ class PageOrientedSpec extends GebSpecWithServer {
 		then:
 		linkTextAlias == 'b'
 	}
+
+	@Unroll
+	def "invalid page parameter ( #pageParameter ) for content throws an informative exception"() {
+		given:
+		to PageContentParamPage
+
+		when:
+		page[contentName].pageParameter
+
+		then:
+		InvalidPageContent e = thrown()
+		e.message == "'page' content parameter should be a class that extends Page but it isn't for $contentName - $page: $pageParameter"
+
+		where:
+		contentName  | pageParameter
+		'wrongClass' | String
+		'instance'   | new PageContentParamPage()
+	}
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -247,4 +267,15 @@ class InstanceMethodPage extends Page {
 	}
 	
 	def getValue() { 3 }
+}
+
+class PageContentParamPage extends Page {
+	static content = {
+		wrongClass(page: String)  { $('a') }
+		instance(page: new PageContentParamPage()) { $('a') }
+	}
+
+	String toString() {
+		"${getClass().simpleName} instance"
+	}
 }

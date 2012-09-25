@@ -4,7 +4,6 @@ import geb.test.GebSpecWithServer
 import geb.Page
 import geb.Module
 import spock.lang.Unroll
-import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchFrameException
 
 class FrameSupportSpec extends GebSpecWithServer {
@@ -32,7 +31,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 	}
 
 	def setup() {
-		go "frames"
+		to FrameSupportSpecPage
 	}
 
 	def "verify the server is configured correctly for main page"() {
@@ -67,16 +66,16 @@ class FrameSupportSpec extends GebSpecWithServer {
 	@Unroll
 	def "expect withFrame to fail if called for a navigator that doesn't contain a frame"() {
 		when:
-		withFrame(navigatorFactory.call()) {}
+		withFrame($(selector)) {}
 
 		then:
 		NoSuchFrameException e = thrown()
 		e.message.startsWith(message)
 
 		where:
-		message                          | navigatorFactory
-		''                               | { $('span') }
-		'No elements for given content:' | { $('') }
+		message                          | selector
+		''                               | 'span'
+		'No elements for given content:' | ''
 	}
 
 	def "expect withFrame to fail if called for an empty navigator"() {
@@ -87,7 +86,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 		thrown(NoSuchFrameException)
 	}
 
-	@Unroll("expect the closure argument passed to withFrame to be executed for '#frame' as frame identifier")
+	@Unroll("expect the closure argument passed to withFrame to be executed for '#frameid' as frame identifier")
 	def "expect the closure argument passed to withFrame to be executed"() {
 		given:
 		go pagePath
@@ -165,22 +164,67 @@ class FrameSupportSpec extends GebSpecWithServer {
 	@Unroll
 	def "ensure original context is kept after a withFrame call"() {
 		when:
-		withFrame(frame) {}
+		withFrame(frameFactory.call()) {
+			assert page in FrameSupportSpecPage
+		}
 
 		then:
 		inFramesContext
 
 		when:
-		withFrame(frame) { throw new Exception() }
+		withFrame(frameFactory.call()) {
+			throw new Exception()
+		}
 
 		then:
 		thrown(Exception)
 		inFramesContext
 
 		where:
-		frame << ['header', 0]
+		frameFactory << [{ 'header' }, { 0 }, { $('#header-id') }, { page.footer }]
 	}
 
+	@Unroll
+	def "passing a page class to withFrame changes the page only for the closure body"() {
+		when:
+		withFrame(frameFactory.call(), FrameSupportSpecFramePage) {
+			assert page in FrameSupportSpecFramePage
+		}
+
+		then:
+		page in FrameSupportSpecPage
+
+		when:
+		withFrame(frameFactory.call(), FrameSupportSpecFramePage) {
+			throw new Exception()
+		}
+
+		then:
+		thrown(Exception)
+		page in FrameSupportSpecPage
+
+		where:
+		frameFactory << [{ 'header' }, { 0 }, { $('#header-id') }, { page.footer }]
+	}
+
+	def "page content with page parameter specified changes the page for the closure body"() {
+		when:
+		withFrame(footerWithPageParam) {
+			assert page in FrameSupportSpecFramePage
+		}
+
+		then:
+		page in FrameSupportSpecPage
+
+		when:
+		withFrame(footerWithPageParam, FrameSupportSpecFramePage) {
+			throw new Exception()
+		}
+
+		then:
+		thrown(Exception)
+		page in FrameSupportSpecPage
+	}
 
 	def "ensure pages and modules have withFrame available"() {
 		when:
@@ -197,6 +241,7 @@ class FrameSupportSpecPage extends Page {
 	static url = "/frames"
 	static content = {
 		footer { $('#footer') }
+		footerWithPageParam(page: FrameSupportSpecFramePage) { footer }
 		mod { module FrameSupportSpecModule }
 	}
 
@@ -212,6 +257,9 @@ class FrameSupportSpecPage extends Page {
 	def getReturnValueOfWithFrameCallForPageContent() {
 		withFrame(footer) { $('span').text() }
 	}
+}
+
+class FrameSupportSpecFramePage extends Page {
 }
 
 class FrameSupportSpecModule extends Module {
