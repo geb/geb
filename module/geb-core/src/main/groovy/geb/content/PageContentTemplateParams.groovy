@@ -21,11 +21,34 @@ import geb.error.InvalidPageContent
 
 class PageContentTemplateParams {
 
+	/**
+	 * The value of the 'required' option, as a boolean according to the Groovy Truth. Defaults to false.
+	 */
 	final boolean required
+
+	/**
+	 * The value of the 'cache' option, as a boolean according to the Groovy Truth. Defaults to false.
+	 */
 	final boolean cache
+
+	/**
+	 * If the to option was a list, this will be the specified list. Defaults to null.
+	 */
 	List<Class<? extends Page>> toList
+
+	/**
+	 * If the to option was a single page class, this will be the specified page class. Defaults to null.
+	 */
 	Class<? extends Page> toSingle
+
+	/**
+	 * The value of the 'page' option. Defaults to null.
+	 */
 	Class<? extends Page> page
+
+	/**
+	 * The value of the 'wait' option. Defaults to null (no wait).
+	 */
 	final wait
 
 	PageContentTemplateParams(PageContentTemplate owner, Map<String, ?> params) {
