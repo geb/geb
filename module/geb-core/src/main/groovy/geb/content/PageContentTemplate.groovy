@@ -29,12 +29,12 @@ class PageContentTemplate {
 	final Configuration config
 	final Navigable owner
 	final String name
-	final Map params
+	final PageContentTemplateParams params
 	final Closure factory
 	
 	private cache = [:]
 	
-	PageContentTemplate(Configuration config, Navigable owner, String name, Map params, Closure factory) {
+	PageContentTemplate(Configuration config, Navigable owner, String name, PageContentTemplateParams params, Closure factory) {
 		this.config = config
 		this.owner = owner
 		this.name = name
@@ -44,21 +44,6 @@ class PageContentTemplate {
 	
 	String toString() {
 		"$name - $owner"
-	}
-	
-	boolean isRequired() {
-		params.required
-	}
-	
-	boolean isCaching() {
-		params.cache
-	}
-	
-	/**
-	 * Can return Class or List&lt;Class&gt;
-	 */
-	def getTo() {
-		params.to
 	}
 
 	Class<? extends Page> getPageParameter() {
@@ -74,14 +59,14 @@ class PageContentTemplate {
 	}
 	
 	def get(Object[] args) {
-		caching ? fromCache(*args) : create(*args)
+		params.cache ? fromCache(*args) : create(*args)
 	}
 
 	private create(Object[] args) {
 		def createAction = {
 			def factoryReturn = invokeFactory(*args)
 			def creation = wrapFactoryReturn(factoryReturn, *args)
-			if (required) {
+			if (params.required) {
 				if (creation != null && creation instanceof PageContent) {
 					creation.require()
 				} else if (creation == null) {
@@ -96,7 +81,7 @@ class PageContentTemplate {
 			try {
 				wait.waitFor(createAction)
 			} catch (WaitTimeoutException e) {
-				if (required) {
+				if (params.required) {
 					throw e
 				}
 				e.lastEvaluationValue

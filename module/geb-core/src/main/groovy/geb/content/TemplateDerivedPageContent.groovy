@@ -100,7 +100,7 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	}
 	
 	Navigator click() {
-		def to = _template.to
+		def to = _template.params.to
 		if (to == null) {
 			_navigator.click()
 		} else if (to instanceof Class || to instanceof List) {
