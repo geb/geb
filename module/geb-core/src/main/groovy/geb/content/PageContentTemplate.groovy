@@ -63,7 +63,7 @@ class PageContentTemplate {
 
 	Class<? extends Page> getPageParameter() {
 		def pageParam = params.page
-		if (pageParam && (!(pageParam instanceof Class) || !(pageParam in Page))) {
+		if (pageParam && (!(pageParam instanceof Class) || !Page.isAssignableFrom(pageParam))) {
 			throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $this: $pageParam")
 		}
 		pageParam
