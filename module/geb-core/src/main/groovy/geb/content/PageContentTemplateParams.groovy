@@ -22,7 +22,7 @@ import geb.error.InvalidPageContent
 class PageContentTemplateParams {
 
 	/**
-	 * The value of the 'required' option, as a boolean according to the Groovy Truth. Defaults to false.
+	 * The value of the 'required' option, as a boolean according to the Groovy Truth. Defaults to true.
 	 */
 	final boolean required
 
@@ -52,8 +52,12 @@ class PageContentTemplateParams {
 	final wait
 
 	PageContentTemplateParams(PageContentTemplate owner, Map<String, ?> params) {
-		required = params.required
-		cache = params.cache
+		if (params == null) {
+			params = Collections.emptyMap()
+		}
+
+		required = toBoolean(params, 'required', true)
+		cache = toBoolean(params, 'cache', false)
 
 		def toParam = params.to
 		if (!toParam) {
@@ -76,6 +80,10 @@ class PageContentTemplateParams {
 		page = pageParam as Class<? extends Page>
 
 		wait = params.wait
+	}
+
+	private static boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {
+		params.containsKey(key) ? params[key] : defaultValue as boolean
 	}
 
 }

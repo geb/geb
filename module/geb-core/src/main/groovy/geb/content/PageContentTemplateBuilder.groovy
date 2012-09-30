@@ -19,12 +19,6 @@ import geb.error.InvalidPageContent
 
 class PageContentTemplateBuilder {
 
-	static Map<String, Object> PARAM_DEFAULTS = [
-		required: true,
-		cache: false,
-		to: null
-	]
-
 	Configuration config
 	Navigable container
 
@@ -77,12 +71,8 @@ class PageContentTemplateBuilder {
 			}
 			templates[aliasedName]
 		} else {
-			new PageContentTemplate(config, container, name, mergeWithDefaultParams(params), definition)
+			new PageContentTemplate(config, container, name, params, definition)
 		}
-	}
-
-	protected Map mergeWithDefaultParams(Map<String, ?> params) {
-		params ? PARAM_DEFAULTS + params : PARAM_DEFAULTS.clone() as Map
 	}
 
 	static Map<String, PageContentTemplate> build(Configuration config, Navigable container, List<Closure> templatesDefinitions) {
