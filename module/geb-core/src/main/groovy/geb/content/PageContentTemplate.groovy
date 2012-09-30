@@ -34,11 +34,11 @@ class PageContentTemplate {
 	
 	private cache = [:]
 	
-	PageContentTemplate(Configuration config, Navigable owner, String name, PageContentTemplateParams params, Closure factory) {
+	PageContentTemplate(Configuration config, Navigable owner, String name, Map<String, ?> params, Closure factory) {
 		this.config = config
 		this.owner = owner
 		this.name = name
-		this.params = params
+		this.params = new PageContentTemplateParams(this, params)
 		this.factory = factory
 	}
 	
@@ -46,14 +46,6 @@ class PageContentTemplate {
 		"$name - $owner"
 	}
 
-	Class<? extends Page> getPageParameter() {
-		def pageParam = params.page
-		if (pageParam && (!(pageParam instanceof Class) || !Page.isAssignableFrom(pageParam))) {
-			throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $this: $pageParam")
-		}
-		pageParam
-	}
-	
 	Page getPage() {
 		owner instanceof Page ? owner : owner.getPage()
 	}

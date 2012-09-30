@@ -100,20 +100,19 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	}
 	
 	Navigator click() {
-		def to = _template.params.to
-		if (to == null) {
-			_navigator.click()
-		} else if (to instanceof Class || to instanceof List) {
-			_navigator.click(to)
+		if (templateParams.toSingle) {
+			_navigator.click(templateParams.toSingle)
+		} else if (templateParams.toList) {
+			_navigator.click(templateParams.toList)
 		} else {
-			throw new IllegalStateException("Unhandleable 'to' value from template $_template: $to")
+			_navigator.click()
 		}
 	}
 
-	Class<? extends Page> getPageParameter() {
-		_template.pageParameter
+	PageContentTemplateParams getTemplateParams() {
+		_template.params
 	}
-	
+
 	boolean asBoolean() {
 		_navigator.asBoolean()
 	}

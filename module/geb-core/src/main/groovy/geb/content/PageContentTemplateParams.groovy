@@ -17,26 +17,41 @@
 package geb.content
 
 import geb.Page
+import geb.error.InvalidPageContent
 
 class PageContentTemplateParams {
 
 	final boolean required
 	final boolean cache
-
-	/**
-	 * Can return Class or List&lt;Class&gt;
-	 */
-	final to
-
-	final page
-
+	List<Class<? extends Page>> toList
+	Class<? extends Page> toSingle
+	Class<? extends Page> page
 	final wait
 
-	PageContentTemplateParams(Map<String, ?> params) {
+	PageContentTemplateParams(PageContentTemplate owner, Map<String, ?> params) {
 		required = params.required
 		cache = params.cache
-		to = params.to
-		page = params.page
+
+		def toParam = params.to
+		if (!toParam) {
+			toSingle = null
+			toList = null
+		} else if (toParam instanceof Class && Page.isAssignableFrom(toParam)) {
+			toSingle = toParam
+			toList = null
+		} else if (toParam instanceof List) {
+			toSingle = null
+			toList = toParam
+		} else {
+			throw new InvalidPageContent("'to' content parameter should be a class that extends Page or a list of classes that extend Page, but it isn't for $owner: $toParam")
+		}
+
+		def pageParam = params.page
+		if (pageParam && (!(pageParam instanceof Class) || !Page.isAssignableFrom(pageParam))) {
+			throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $owner: $pageParam")
+		}
+		page = pageParam as Class<? extends Page>
+
 		wait = params.wait
 	}
 
