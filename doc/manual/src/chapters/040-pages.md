@@ -572,7 +572,7 @@ Frames might seem a thing of the past but if you're accessing or testing some le
 
 ### Executing code in the context of a frame
 
-There are multiple flavours of the `withFrame()` method, but the for all of them the closure parameter is executed in the context of a frame specified by the first parameter:
+There are multiple flavours of the `withFrame()` method, but the for all of them the closure parameter is executed in the context of a frame specified by the first parameter and after the execution the browser page is restored to what it was before the call:
 
 * `withFrame(String, Closure)` - String parameter contains the name or id of a frame element
 * `withFrame(int, Closure)` - int parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index “0”, the second at index “1” and the third at index “2”

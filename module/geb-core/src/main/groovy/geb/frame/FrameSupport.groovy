@@ -20,18 +20,15 @@ class FrameSupport {
 	}
 
 	def withFrame(frame, Class<? extends Page> page, Closure block) {
-		def currentPage
+		def originalPage = browser.page
 		browser.driver.switchTo().frame(frame)
 		if (page) {
-			currentPage = browser.page
 			browser.page(page)
 		}
 		try {
 			block.call()
 		} finally {
-			if (currentPage) {
-				browser.page(currentPage)
-			}
+			browser.page(originalPage)
 			browser.driver.switchTo().defaultContent()
 		}
 	}

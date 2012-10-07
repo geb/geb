@@ -185,17 +185,18 @@ class FrameSupportSpec extends GebSpecWithServer {
 	}
 
 	@Unroll
-	def "passing a page class to withFrame changes the page only for the closure body"() {
+	def "page is restored to what it was before a withFrame call"() {
 		when:
-		withFrame(frameFactory.call(), FrameSupportSpecFramePage) {
-			assert page in FrameSupportSpecFramePage
+		withFrame(frameFactory.call()) {
+			page FrameSupportSpecFramePage
 		}
 
 		then:
 		page in FrameSupportSpecPage
 
 		when:
-		withFrame(frameFactory.call(), FrameSupportSpecFramePage) {
+		withFrame(frameFactory.call()) {
+			page FrameSupportSpecFramePage
 			throw new Exception()
 		}
 
