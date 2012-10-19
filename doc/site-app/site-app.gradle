@@ -62,7 +62,7 @@ ext {
 	oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2", "0.6.3", "0.7.0", "0.7.1"]
 }
 
-def manualDependency = { "$project.group:geb-manual:$it@zip" }
+def manualDependency = { "org.codehaus.geb:geb-manual:$it@zip" }
 configurations {
 	currentManual
 	
@@ -72,6 +72,7 @@ configurations {
 }
 
 repositories {
+	mavenCentral()
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 	maven { url "https://oss.sonatype.org/content/repositories/releases" }
 }
@@ -120,8 +121,8 @@ war {
 	from (project(":doc:manual").packageManual) {
 		into("manual/snapshot")
 	}
-	
-	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : "snapshot" 
+
+	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : project.version.replace(".", "-").toLowerCase()
 	def properties = [version: siteVersion]
 
 	["consumerKey", "consumerSecret", "accessToken", "secretToken"].each {
