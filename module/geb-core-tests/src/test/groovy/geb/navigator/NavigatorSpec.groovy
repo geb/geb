@@ -47,7 +47,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("\$('#selector1').add('#selector2') should result in the elements #expectedContent")
 	def "add"() {
 		when:
-		def navigator = $(selector1).add(selector2)
+		def navigator = $(selector1).add(selector2).unique()
 		
 		then:
 		navigator*.@id == expectedIds
@@ -293,7 +293,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling nextAll() on #selector should return #expectedIds")
 	def "nextAll selects all following elements"() {
 		given: def navigator = $(selector)
-		expect: navigator.nextAll()*.@id == expectedIds
+		expect: navigator.nextAll().unique()*.@id == expectedIds
 
 		where:
 		selector          | expectedIds
@@ -307,7 +307,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling next(#nextSelector) on #selector should return #expectedIds")
 	def "next with selector argument"() {
 		given: def navigator = $(selector)
-		expect: navigator.next(nextSelector)*.@id == expectedIds
+		expect: navigator.next(nextSelector).unique()*.@id == expectedIds
 
 		where:
 		selector     | nextSelector | expectedIds
@@ -322,7 +322,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling nextAll(#nextSelector) on #selector should return #expectedIds")
 	def "nextAll with selector"() {
 		given: def navigator = $(selector)
-		expect: navigator.nextAll(nextSelector)*.@id == expectedIds
+		expect: navigator.nextAll(nextSelector).unique()*.@id == expectedIds
 
 		where:
 		selector     | nextSelector | expectedIds
@@ -368,7 +368,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling prevAll() on #selector should return #expectedIds")
 	def "prevAll selects immediately preceding elements"() {
 		given: def navigator = $(selector)
-		expect: navigator.prevAll()*.@id == expectedIds
+		expect: navigator.prevAll().unique()*.@id == expectedIds
 
 		where:
 		selector        | expectedIds
@@ -397,7 +397,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling prevAll(#previousSelector) on #selector should return #expectedIds")
 	def "prevAll with selector"() {
 		given: def navigator = $(selector)
-		expect: navigator.prevAll(previousSelector)*.@id == expectedIds
+		expect: navigator.prevAll(previousSelector).unique()*.@id == expectedIds
 
 		where:
 		selector               | previousSelector | expectedIds
@@ -430,7 +430,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling parent() on #selector should return #expectedIds")
 	def "parent selects immediate parent of each element"() {
 		given: def navigator = $(selector)
-		expect: navigator.parent()*.@id == expectedIds
+		expect: navigator.parent().unique()*.@id == expectedIds
 
 		where:
 		selector        | expectedIds
@@ -444,7 +444,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling parents() on #selector should return #expectedTags")
 	def "parents selects all parents of each element"() {
 		given: def navigator = $(selector)
-		expect: navigator.parents()*.tag() == expectedTags
+		expect: navigator.parents().unique()*.tag() == expectedTags
 
 		where:
 		selector        | expectedTags
@@ -457,7 +457,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling parents(#parentSelector) on #selector should return #expectedIds")
 	def "parents selects all parents of each element filtered by a selector"() {
 		given: def navigator = $(selector)
-		expect: navigator.parents(parentSelector)*.@id == expectedIds
+		expect: navigator.parents(parentSelector).unique()*.@id == expectedIds
 
 		where:
 		selector        | parentSelector | expectedIds
@@ -473,7 +473,7 @@ class NavigatorSpec extends GebSpec {
 		given: def navigator = $(selector)
 
 		expect:
-		def parents = navigator.parentsUntil(parentSelector).collect {
+		def parents = navigator.parentsUntil(parentSelector).unique().collect {
 			it.@id ? "${it.tag()}#${it.@id}" : it.tag()
 		}
 		parents == expectedTags
@@ -492,7 +492,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling parent(#parentSelector) on #selector should return #expectedIds")
 	def "parent with selector"() {
 		given: def navigator = $(selector)
-		expect: navigator.parent(parentSelector)*.@id == expectedIds
+		expect: navigator.parent(parentSelector).unique()*.@id == expectedIds
 
 		where:
 		selector         | parentSelector | expectedIds
@@ -508,7 +508,7 @@ class NavigatorSpec extends GebSpec {
 	@Unroll("calling closest(#closestSelector) on #selector should return #expectedIds")
 	def "closest with selector"() {
 		given: def navigator = $(selector)
-		expect: navigator.closest(closestSelector)*.@id == expectedIds
+		expect: navigator.closest(closestSelector).unique()*.@id == expectedIds
 
 		where:
 		selector     | closestSelector | expectedIds
@@ -575,17 +575,17 @@ class NavigatorSpec extends GebSpec {
 		"#header"           | ".col-2"        | []
 	}
 
-	def "adding two navigators results in a new navigator with the unique set of elements"() {
+	def "adding two navigators results in a new navigator with all of the elements"() {
 		when: def navigator = (navigator1 + navigator2)
 
 		then: navigator*.@id == expectedIds
 
 		where:
 		navigator1      | navigator2    | expectedIds
-		$("#article-1") | $(".article") | ["article-1", "article-2", "article-3"]
+		$("#article-1") | $(".article") | ["article-1", "article-1", "article-2", "article-3"]
 	}
 
-	def "unique is applied by default"() {
+	def "navigator can contain duplicate elements"() {
 		when:
 		def navigator = $("div").find("ol")
 
@@ -593,7 +593,7 @@ class NavigatorSpec extends GebSpec {
 		navigator.size() == expectedSize
 
 		where:
-		expectedSize = 5
+		expectedSize = 15
 	}
 
 	@Unroll("the value of text() on #selector should be '#expectedText'")

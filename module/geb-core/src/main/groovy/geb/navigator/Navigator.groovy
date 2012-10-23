@@ -652,6 +652,11 @@ abstract class Navigator implements Iterable<Navigator> {
 			throw new UnsupportedOperationException()
 		}
 	}
+
+	/**
+	 * Creates a new Navigator instance containing all elements of this instance with duplicate elements removed
+	 */
+	abstract Navigator unique()
 }
 
 

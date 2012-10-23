@@ -29,7 +29,7 @@ class NonEmptyNavigator extends Navigator {
 
 	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
 		super(browser)
-		this.contextElements = contextElements.toList().unique().asImmutable()
+		this.contextElements = contextElements.toList().asImmutable()
 	}
 
 	protected Navigator navigatorFor(Collection<WebElement> contextElements) {
@@ -358,6 +358,10 @@ class NonEmptyNavigator extends Navigator {
 
 	Navigator verifyNotEmpty() {
 		this
+	}
+
+	Navigator unique() {
+		new NonEmptyNavigator(browser, contextElements.unique(false))
 	}
 
 	String toString() {

@@ -200,7 +200,7 @@ class NavigatorGroovySpec extends Specification {
 	}
 	
 	def "can use plus(Navigator) on Navigator"() {
-		when: def navigator = navigator1 + navigator2
+		when: def navigator = (navigator1 + navigator2).unique()
 		then: navigator.size() == expectedSize
 		and: navigator*.@id == expectedIds
 		where:

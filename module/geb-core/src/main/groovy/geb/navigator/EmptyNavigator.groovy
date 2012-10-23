@@ -143,6 +143,8 @@ class EmptyNavigator extends Navigator {
 
 	Navigator value(value) { this }
 
+	Navigator unique() { this }
+
 	String toString() { "[]" }
 
 	def methodMissing(String name, arguments) {
