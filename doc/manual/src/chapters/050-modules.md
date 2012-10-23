@@ -87,7 +87,7 @@ However, module classes can also define their own base…
 
     import geb.Module
     
-    class FormModule extends {
+    class FormModule extends Module {
         static base = { $("form") }
     }
 
