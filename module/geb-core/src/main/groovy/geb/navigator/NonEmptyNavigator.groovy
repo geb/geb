@@ -2,13 +2,14 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
-import java.util.regex.Pattern
+import geb.textmatching.TextMatcher
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
-import static java.util.Collections.EMPTY_LIST
 
-import geb.textmatching.TextMatcher
+import java.util.regex.Pattern
+
+import static java.util.Collections.EMPTY_LIST
 
 class NonEmptyNavigator extends AbstractNavigator {
 
@@ -51,6 +52,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		find(predicates, null, index)
 	}
 
+	@Override
 	Navigator find(String selectorString) {
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
@@ -63,10 +65,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator find(Map<String, Object> predicates) {
 		find predicates, "*"
 	}
 
+	@Override
 	Navigator find(Map<String, Object> predicates, String selector) {
 		selector = optimizeSelector(selector, predicates)
 		if (selector) {
@@ -76,30 +80,36 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator filter(String selectorString) {
 		navigatorFor contextElements.findAll { element ->
 			CssSelector.matches(element, selectorString)
 		}
 	}
 
+	@Override
 	Navigator filter(Map<String, Object> predicates) {
 		navigatorFor contextElements.findAll { matches(it, predicates) }
 	}
 
+	@Override
 	Navigator filter(Map<String, Object> predicates, String selector) {
 		filter(selector).filter(predicates)
 	}
 
+	@Override
 	Navigator not(String selectorString) {
 		navigatorFor contextElements.findAll { element ->
 			!CssSelector.matches(element, selectorString)
 		}
 	}
 
+	@Override
 	Navigator getAt(int index) {
 		navigatorFor(Collections.singleton(getElement(index)))
 	}
 
+	@Override
 	Navigator getAt(Range range) {
 		navigatorFor getElements(range)
 	}
@@ -108,18 +118,22 @@ class NonEmptyNavigator extends AbstractNavigator {
 		new EmptyNavigator(browser)
 	}
 
+	@Override
 	Navigator getAt(Collection indexes) {
 		navigatorFor getElements(indexes)
 	}
 
+	@Override
 	Collection<WebElement> allElements() {
 		contextElements as WebElement[]
 	}
 
+	@Override
 	WebElement getElement(int index) {
 		contextElements[index]
 	}
 
+	@Override
 	List<WebElement> getElements(Range range) {
 		contextElements[range]
 	}
@@ -128,10 +142,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 		EMPTY_LIST
 	}
 
+	@Override
 	List<WebElement> getElements(Collection indexes) {
 		contextElements[indexes]
 	}
 
+	@Override
 	Navigator remove(int index) {
 		int size = size()
 		if (!(index in -size..<size)) {
@@ -143,12 +159,14 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator next() {
 		navigatorFor collectElements {
 			it.findElement By.xpath("following-sibling::*")
 		}
 	}
 
+	@Override
 	Navigator next(String selectorString) {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("following-sibling::*"))
@@ -156,12 +174,14 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator nextAll() {
 		navigatorFor collectElements {
 			it.findElements By.xpath("following-sibling::*")
 		}
 	}
 
+	@Override
 	Navigator nextAll(String selectorString) {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("following-sibling::*"))
@@ -169,6 +189,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator nextUntil(String selectorString) {
 		navigatorFor collectElements { element ->
 			def siblings = element.findElements(By.xpath("following-sibling::*"))
@@ -176,6 +197,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator previous() {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*"))
@@ -183,6 +205,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator previous(String selectorString) {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
@@ -190,12 +213,14 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator prevAll() {
 		navigatorFor collectElements {
 			it.findElements(By.xpath("preceding-sibling::*"))
 		}
 	}
 
+	@Override
 	Navigator prevAll(String selectorString) {
 		navigatorFor collectElements {
 			def siblings = it.findElements(By.xpath("preceding-sibling::*")).reverse()
@@ -203,6 +228,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator prevUntil(String selectorString) {
 		navigatorFor collectElements { element ->
 			def siblings = element.findElements(By.xpath("preceding-sibling::*")).reverse()
@@ -210,22 +236,26 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator parent() {
 		navigatorFor collectElements {
 			it.findElement By.xpath("parent::*")
 		}
 	}
 
+	@Override
 	Navigator parent(String selectorString) {
 		parent().filter(selectorString)
 	}
 
+	@Override
 	Navigator parents() {
 		navigatorFor collectElements {
 			it.findElements(By.xpath("ancestor::*")).reverse()
 		}
 	}
 
+	@Override
 	Navigator parents(String selectorString) {
 		navigatorFor collectElements {
 			def ancestors = it.findElements(By.xpath("ancestor::*")).reverse()
@@ -233,6 +263,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator parentsUntil(String selectorString) {
 		navigatorFor collectElements { element ->
 			def ancestors = element.findElements(By.xpath("ancestor::*")).reverse()
@@ -240,6 +271,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator closest(String selectorString) {
 		navigatorFor collectElements {
 			def parents = it.findElements(By.xpath("ancestor::*")).reverse()
@@ -247,46 +279,56 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	Navigator children() {
 		navigatorFor collectElements {
 			it.findElements By.xpath("child::*")
 		}
 	}
 
+	@Override
 	Navigator children(String selectorString) {
 		children().filter(selectorString)
 	}
 
+	@Override
 	Navigator siblings() {
 		navigatorFor collectElements {
 			it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
 		}
 	}
 
+	@Override
 	Navigator siblings(String selectorString) {
 		siblings().filter(selectorString)
 	}
 
+	@Override
 	boolean hasClass(String valueToContain) {
 		any { valueToContain in it.classes() }
 	}
 
+	@Override
 	boolean is(String tag) {
 		contextElements.any { tag.equalsIgnoreCase(it.tagName) }
 	}
 
+	@Override
 	boolean isDisplayed() {
 		firstElement()?.displayed ?: false
 	}
 
+	@Override
 	String tag() {
 		firstElement().tagName
 	}
 
+	@Override
 	String text() {
 		firstElement().text
 	}
 
+	@Override
 	String getAttribute(String name) {
 		def attribute = firstElement().getAttribute(name)
 		if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
@@ -294,20 +336,24 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 		attribute
 	}
-	
+
+	@Override
 	List<String> classes() {
 		contextElements.head().getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
 	}
 
+	@Override
 	def value() {
 		getInputValue(contextElements.head())
 	}
 
+	@Override
 	Navigator value(value) {
 		setInputValues(contextElements, value)
 		this
 	}
 
+	@Override
 	Navigator leftShift(value) {
 		contextElements.each {
 			it.sendKeys value
@@ -315,59 +361,72 @@ class NonEmptyNavigator extends AbstractNavigator {
 		this
 	}
 
+	@Override
 	Navigator click() {
 		contextElements.first().click()
 		this
 	}
 
+	@Override
 	Navigator click(Class<? extends Page> pageClass) {
 		click()
 		browser.page(pageClass)
 		this
 	}
 
+	@Override
 	Navigator click(List<Class<? extends Page>> potentialPageClasses) {
 		click()
-		browser.page(*potentialPageClasses)
+		browser.page(* potentialPageClasses)
 		this
 	}
 
+	@Override
 	int size() {
 		contextElements.size()
 	}
 
+	@Override
 	boolean isEmpty() {
 		size() == 0
 	}
 
+	@Override
 	Navigator head() {
 		first()
 	}
 
+	@Override
 	Navigator first() {
 		navigatorFor(Collections.singleton(firstElement()))
 	}
 
+	@Override
 	Navigator last() {
 		navigatorFor(Collections.singleton(lastElement()))
 	}
 
+	@Override
 	Navigator tail() {
 		navigatorFor contextElements.tail()
 	}
 
+	@Override
 	Navigator verifyNotEmpty() {
 		this
 	}
 
+	@Override
 	Navigator unique() {
 		new NonEmptyNavigator(browser, contextElements.unique(false))
 	}
 
+	@Override
 	String toString() {
 		contextElements*.toString()
 	}
 
+	@Override
 	def methodMissing(String name, arguments) {
 		if (!arguments) {
 			navigatorFor collectElements {
@@ -378,6 +437,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
+	@Override
 	def propertyMissing(String name) {
 		switch (name) {
 			case ~/@.+/:
@@ -442,22 +502,30 @@ class NonEmptyNavigator extends AbstractNavigator {
 		result
 	}
 
-	private boolean matches(String actualValue, String requiredValue) { actualValue == requiredValue }
+	private boolean matches(String actualValue, String requiredValue) {
+		actualValue == requiredValue
+	}
 
-	private boolean matches(String actualValue, Pattern requiredValue) { actualValue ==~ requiredValue }
-	
-	private boolean matches(String actualValue, TextMatcher matcher) { matcher.matches(actualValue) }
+	private boolean matches(String actualValue, Pattern requiredValue) {
+		actualValue ==~ requiredValue
+	}
 
-	private boolean matches(Collection<String> actualValue, String requiredValue) { requiredValue in actualValue }
+	private boolean matches(String actualValue, TextMatcher matcher) {
+		matcher.matches(actualValue)
+	}
+
+	private boolean matches(Collection<String> actualValue, String requiredValue) {
+		requiredValue in actualValue
+	}
 
 	private boolean matches(Collection<String> actualValue, Pattern requiredValue) {
 		actualValue.any { it ==~ requiredValue }
 	}
 
-	private boolean matches(Collection<String> actualValue, TextMatcher matcher) { 
+	private boolean matches(Collection<String> actualValue, TextMatcher matcher) {
 		actualValue.any { matcher.matches(it) }
 	}
-	
+
 	private getInputValues(Collection<WebElement> inputs) {
 		def values = []
 		inputs.each { WebElement input ->
@@ -519,12 +587,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 			input.sendKeys value as String
 		}
 	}
-	
+
 	private getValue(WebElement input) {
 		if (input == null) {
 			return null
 		}
-		
+
 		def tag = input.tagName
 		if (tag == "textarea") {
 			input.text
@@ -532,22 +600,22 @@ class NonEmptyNavigator extends AbstractNavigator {
 			input.getAttribute('value')
 		}
 	}
-	
+
 	private setSelectValue(WebElement element, value) {
 		def select = new SelectFactory().createSelectFor(element)
-		
+
 		if (value == null || (value instanceof Collection && value.empty)) {
 			select.deselectAll()
 			return
 		}
-		
+
 		def valueStrings
 		if (select.multiple) {
 			valueStrings = (value instanceof Collection ? new LinkedList(value) : [value])*.toString()
 		} else {
 			valueStrings = [value.toString()]
 		}
-		
+
 		select.options.each { WebElement option ->
 			def optionValue = getValue(option)
 			if (optionValue in valueStrings) {
@@ -560,7 +628,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 				select.deselectByValue(optionValue)
 			}
 		}
-		
+
 		if (!valueStrings.empty) {
 			if (select.multiple) {
 				throw new IllegalArgumentException("couldn't select options with text or values: $valueStrings")
@@ -569,7 +637,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 			}
 		}
 	}
-	
+
 	private String labelFor(WebElement input) {
 		def id = input.getAttribute("id")
 		def labels = browser.driver.findElements(By.xpath("//label[@for='$id']"))
