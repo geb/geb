@@ -25,7 +25,6 @@ import org.openqa.selenium.WebElement
  */
 interface Navigator extends Iterable<Navigator> {
 
-
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
 	 * CSS selector. Any CSS capabilities supported by the underlying WebDriver instance are supported.

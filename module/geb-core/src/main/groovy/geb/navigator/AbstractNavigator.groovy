@@ -29,24 +29,6 @@ abstract class AbstractNavigator implements Navigator {
 		this.browser = browser
 	}
 
-	boolean asBoolean() {
-		!empty
-	}
-
-	Navigator find(String selector, int index) {
-		find(selector)[index]
-	}
-
-	Navigator has(String selector) {
-		findAll { Navigator it ->
-			!it.find(selector).empty
-		}
-	}
-
-	Navigator eq(int index) {
-		this[index]
-	}
-
 	/**
 	 * Gets the element at the given index.
 	 * @param index index of the element to retrieve - pass a negative value to start from the back
@@ -67,6 +49,25 @@ abstract class AbstractNavigator implements Navigator {
 	 * @return the elements at the given indexes, or an empty list if no such elements exist
 	 */
 	protected abstract List<WebElement> getElements(Collection indexes)
+
+	boolean asBoolean() {
+		!empty
+	}
+
+	Navigator find(String selector, int index) {
+		find(selector)[index]
+	}
+
+	Navigator has(String selector) {
+		findAll { Navigator it ->
+			!it.find(selector).empty
+		}
+	}
+
+	Navigator eq(int index) {
+		this[index]
+	}
+
 
 	Navigator add(String selector) {
 		add browser.driver.findElements(By.cssSelector(selector))
