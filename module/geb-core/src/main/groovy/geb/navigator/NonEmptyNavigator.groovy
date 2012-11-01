@@ -10,7 +10,7 @@ import static java.util.Collections.EMPTY_LIST
 
 import geb.textmatching.TextMatcher
 
-class NonEmptyNavigator extends Navigator {
+class NonEmptyNavigator extends AbstractNavigator {
 
 	static {
 		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(NonEmptyNavigator))

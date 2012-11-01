@@ -15,28 +15,16 @@
  */
 package geb.navigator
 
-import geb.Browser
 import geb.Page
-import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
 import geb.js.JQueryAdapter
+import org.openqa.selenium.WebElement
 
 /**
  * Navigator is a jQuery-style DOM traversal tool that wraps a set of WebDriver WebElements.
  * The code is based on the Doj library written by Kevin Wetzels: http://code.google.com/p/hue/
  */
-abstract class Navigator implements Iterable<Navigator> {
+interface Navigator extends Iterable<Navigator> {
 
-	final Browser browser
-	
-	Navigator(Browser browser) {
-		this.browser = browser
-	}
-	
-	boolean asBoolean() {
-		!empty
-	}
 
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
@@ -62,7 +50,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector a CSS selector
 	 * @return new Navigator instance containing the matched elements
 	 */
-	abstract Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range)
+	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range)
 
 	/**
 	 * Shorthand for <code>find(predicates, selector, index..index)</code>
@@ -70,7 +58,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector
 	 * @return new Navigator
 	 */
-	abstract Navigator find(Map<String, Object> predicates, String selector, Integer index)
+	Navigator find(Map<String, Object> predicates, String selector, Integer index)
 
 	/**
 	 * Shorthand for <code>find(predicates, null, index..index)</code>
@@ -78,7 +66,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector
 	 * @return new Navigator
 	 */
-	abstract Navigator find(Map<String, Object> predicates, Integer index)
+	Navigator find(Map<String, Object> predicates, Integer index)
 
 	/**
 	 * Shorthand for <code>find(null, selector, null)</code>
@@ -86,7 +74,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector
 	 * @return new Navigator
 	 */
-	abstract Navigator find(String selector)
+	Navigator find(String selector)
 
 	/**
 	 * Shorthand for <code>find(selector)[indexOfElement]</code>.
@@ -94,9 +82,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param index index of the required element in the selection
 	 * @return new Navigator instance containing a single element
 	 */
-	Navigator find(String selector, int index) {
-		find(selector)[index]
-	}
+	Navigator find(String selector, int index)
 
 	/**
 	 * Creates a new Navigator instance containing the elements whose attributes match the specified values or patterns.
@@ -116,7 +102,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance containing the matched elements
 	 */
-	abstract Navigator find(Map<String, Object> predicates)
+	Navigator find(Map<String, Object> predicates)
 
 	/**
 	 * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
@@ -125,7 +111,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance containing the matched elements
 	 */
-	abstract Navigator find(Map<String, Object> predicates, String selector)
+	Navigator find(Map<String, Object> predicates, String selector)
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
@@ -133,11 +119,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector a CSS selector
 	 * @return a new Navigator instance
 	 */
-	Navigator has(String selector) {
-		findAll {
-			!it.find(selector).empty
-		}
-	}
+	Navigator has(String selector)
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only those that match
@@ -146,18 +128,18 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector a CSS selector
 	 * @return a new Navigator instance
 	 */
-	abstract Navigator filter(String selector)
+	Navigator filter(String selector)
 
-	abstract Navigator filter(Map<String, Object> predicates)
+	Navigator filter(Map<String, Object> predicates)
 
-	abstract Navigator filter(Map<String, Object> predicates, String selector)
+	Navigator filter(Map<String, Object> predicates, String selector)
 
 	/**
 	 * Returns a new Navigator instance containing all elements of the current Navigator that do not match the selector.
 	 * @param selector a CSS selector
 	 * @return a new Navigator instance
 	 */
-	abstract Navigator not(String selector)
+	Navigator not(String selector)
 
 	/**
 	 * Gets the wrapped element at the given index.
@@ -167,9 +149,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param index index of the element to retrieve - pass a negative value to start from the back
 	 * @return new Navigator instance
 	 */
-	Navigator eq(int index) {
-		this[index]
-	}
+	Navigator eq(int index)
 
 	/**
 	 * Gets the wrapped element at the given index.
@@ -179,7 +159,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param index index of the element to retrieve - pass a negative value to start from the back
 	 * @return new Navigator instance
 	 */
-	abstract Navigator getAt(int index)
+	Navigator getAt(int index)
 
 	/**
 	 * Gets the wrapped elements in the given range.
@@ -189,7 +169,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param range range of the elements to retrieve
 	 * @return new Navigator instance
 	 */
-	abstract Navigator getAt(Range range)
+	Navigator getAt(Range range)
 
 	/**
 	 * Gets the wrapped elements at the given indexes.
@@ -199,43 +179,13 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param indexes indexes of the elements to retrieve
 	 * @return new Navigator instance
 	 */
-	abstract Navigator getAt(Collection indexes)
+	Navigator getAt(Collection indexes)
 
-	/**
-	 * Gets the element at the given index.
-	 * @param index index of the element to retrieve - pass a negative value to start from the back
-	 * @return the element at the given index, or null if no such element exists
-	 */
-	protected abstract WebElement getElement(int index)
-
-	/**
-	 * Gets the elements in the given range.
-	 * @param range range of the elements to retrieve
-	 * @return the elements in the given range, or an empty list if no such elements exist
-	 */
-	protected abstract List<WebElement> getElements(Range range)
-
-	/**
-	 * Gets the elements at the given indexes.
-	 * @param indexes indexes of the elements to retrieve
-	 * @return the elements at the given indexes, or an empty list if no such elements exist
-	 */
-	protected abstract List<WebElement> getElements(Collection indexes)
+	Navigator add(String selector)
 	
-	Navigator add(String selector) {
-		add browser.driver.findElements(By.cssSelector(selector))
-	}
+	Navigator add(WebElement[] elements)
 	
-	Navigator add(WebElement[] elements) {
-		add Arrays.asList(elements)
-	}
-	
-	Navigator add(Collection<WebElement> elements) {
-		List<WebElement> result = []
-		result.addAll allElements()
-		result.addAll elements
-		browser.navigatorFactory.createFromWebElements(result)
-	}
+	Navigator add(Collection<WebElement> elements)
 
 	/**
 	 * Creates a new Navigator instance by removing the element at the given index
@@ -246,7 +196,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param index index of the element to remove - pass a negative value to start from the back
 	 * @return new Navigator instance
 	 */
-	abstract Navigator remove(int index)
+	Navigator remove(int index)
 
 	/**
 	 * Merges the Navigator instance with the current instance to create a new
@@ -254,16 +204,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param navigator navigator to merge with this one
 	 * @return new Navigator instance
 	 */
-	Navigator plus(Navigator navigator) {
-		add navigator.allElements()
-	}
+	Navigator plus(Navigator navigator)
 
 	/**
 	 * Creates a new Navigator instance containing the next sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
 	 */
-	abstract Navigator next()
+	Navigator next()
 
 	/**
 	 * Creates a new Navigator instance containing the next sibling elements of the
@@ -275,14 +223,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator next(String selector)
+	Navigator next(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
 	 */
-	abstract Navigator nextAll()
+	Navigator nextAll()
 
 	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
@@ -294,7 +242,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator nextAll(String selector)
+	Navigator nextAll(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
@@ -303,21 +251,21 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator nextUntil(String selector)
+	Navigator nextUntil(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
 	 */
-	abstract Navigator previous()
+	Navigator previous()
 
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
 	 */
-	abstract Navigator prevAll()
+	Navigator prevAll()
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
@@ -329,7 +277,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator previous(String selector)
+	Navigator previous(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
@@ -338,7 +286,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator prevAll(String selector)
+	Navigator prevAll(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
@@ -347,14 +295,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator prevUntil(String selector)
+	Navigator prevUntil(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the direct parent elements of the
 	 * current context elements.
 	 * @return new Navigator instance
 	 */
-	abstract Navigator parent()
+	Navigator parent()
 
 	/**
 	 * Creates a new Navigator instance containing the direct parent elements of the current
@@ -363,14 +311,14 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator parent(String selector)
+	Navigator parent(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all the ancestor elements of the
 	 * current context elements.
 	 * @return new Navigator instance
 	 */
-	abstract Navigator parents()
+	Navigator parents()
 
 	/**
 	 * Creates a new Navigator instance containing all the ancestor elements of the
@@ -379,7 +327,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator parents(String selector)
+	Navigator parents(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all the ancestor elements of the
@@ -388,7 +336,7 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator parentsUntil(String selector)
+	Navigator parentsUntil(String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the first ancestor element of each of the current
@@ -400,29 +348,29 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	abstract Navigator closest(String selector)
+	Navigator closest(String selector)
 
-	abstract Navigator children()
+	Navigator children()
 
-	abstract Navigator children(String selector)
+	Navigator children(String selector)
 
-	abstract Navigator siblings()
+	Navigator siblings()
 
-	abstract Navigator siblings(String selector)
+	Navigator siblings(String selector)
 
 	/**
 	 * Returns true if at least one of the context elements has the given class.
 	 * @param className class to check for
 	 * @return true if at least one of the context elements has the given class
 	 */
-	abstract boolean hasClass(String className)
+	boolean hasClass(String className)
 
 	/**
 	 * Returns true if at least one of the context elements matches the tag.
 	 * @param tag tag to match
 	 * @return true if at least one of the context elements matches the tag
 	 */
-	abstract boolean is(String tag)
+	boolean is(String tag)
 
 	/**
 	 * Uses the isDisplayed() of RenderedWebElement to determine if the first element in the context is displayed.
@@ -430,60 +378,51 @@ abstract class Navigator implements Iterable<Navigator> {
 	 *
 	 * @return true if the first element is displayed
 	 */
-	abstract boolean isDisplayed()
+	boolean isDisplayed()
 
 	/**
 	 * Shorthand for <code>hasAttribute("disabled")</code>.
 	 * @return true when the first element is disabled
 	 */
-	boolean isDisabled() {
-		def value = getAttribute("disabled")
-		// Different drivers return different values here
-		(value == "disabled" || value == "true")
-	}
+	boolean isDisabled()
 
 	/**
 	 * Shorthand for <code>hasAttribute("readonly")</code>.
 	 * @return true when the first element is readonly
 	 */
-	boolean isReadOnly() {
-		def value = getAttribute("readonly")
-		(value == "readonly" || value == "true")
-	}
+	boolean isReadOnly()
 
 	/**
 	 * Returns the tag name of the first context element.
 	 * @return the tag name of the first context element
 	 */
-	abstract String tag()
+	String tag()
 
 	/**
 	 * Returns the text content of the first context element.
 	 * @return the text content of the first context element
 	 */
-	abstract String text()
+	String text()
 
 	/**
 	 * Returns the value of the given attribute of the first context element.
 	 * @param name name of the attribute
 	 * @return the value of the given attribute of the first context element
 	 */
-	abstract String getAttribute(String name)
+	String getAttribute(String name)
 
 	/**
 	 * Returns the value of the given attribute of the first context element.
 	 * @param name name of the attribute
 	 * @return the value of the given attribute of the first context element
 	 */
-	String attr(String name) {
-		getAttribute(name)
-	}
+	String attr(String name)
 
 	/**
 	 * Returns the class names present on all elements. The result is a unique set and is in alphabetical order.
 	 * @return the class names present on all elements.
 	 */
-	abstract List<String> classes()
+	List<String> classes()
 
 	/**
 	 * Returns the value of the first context element for input elements
@@ -493,170 +432,132 @@ abstract class Navigator implements Iterable<Navigator> {
 	 * </p>
 	 * @return value of the first context element
 	 */
-	abstract value()
+	def value()
 
 	/**
 	 * Sets the value of the form input elements to the given value.
 	 * @param value value to use
 	 * @return current Navigator instance
 	 */
-	abstract Navigator value(value)
+	Navigator value(value)
 
-	abstract Navigator leftShift(value)
+	Navigator leftShift(value)
 
 	/**
 	 * Clicks on the first context element.
 	 * @throws java.io.IOException
 	 * @throws java.lang.ClassCastException
 	 */
-	abstract Navigator click() throws IOException, ClassCastException
+	Navigator click() throws IOException, ClassCastException
 
-	abstract Navigator click(Class<? extends Page> pageClass)
+	Navigator click(Class<? extends Page> pageClass)
 
-	abstract Navigator click(List<Class<? extends Page>> potentialPageClasses)
+	Navigator click(List<Class<? extends Page>> potentialPageClasses)
 
 	/**
 	 * Returns the number of context elements.
 	 * @return the number of context elements
 	 */
-	abstract int size()
+	int size()
 
 	/**
 	 * Returns true when there are no context elements.
 	 * @return true when there are no context elements
 	 */
-	abstract boolean isEmpty()
+	boolean isEmpty()
 
 	/**
 	 * Creates a new Navigator instance containing only the first context element (wrapped).
 	 * @return new Navigator instance
 	 */
-	abstract Navigator head()
+	Navigator head()
 
 	 /**
 	 * Creates a new Navigator instance containing only the first context element (wrapped).
 	 * @return new Navigator instance
 	 */
-	abstract Navigator first()
+	Navigator first()
 
 	/**
 	 * Creates a new Navigator instance containing only the last context element (wrapped).
 	 * @return new Navigator instance
 	 */
-	abstract Navigator last()
+	Navigator last()
 
 	/**
 	 * Creates a new Navigator instance containing all but the first context element (wrapped).
 	 * @return new Navigator instance
 	 */
-	abstract Navigator tail()
+	Navigator tail()
 
 	/**
 	 * Returns the first context element (not wrapped).
 	 * @return the first context element (not wrapped)
 	 */
-	WebElement firstElement() {
-		return getElement(0)
-	}
+	WebElement firstElement()
 
 	/**
 	 * Returns the last context element (not wrapped).
 	 * @return the last context element (not wrapped)
 	 */
-	WebElement lastElement() {
-		return getElement(-1)
-	}
+	WebElement lastElement()
 
 	/**
 	 * Returns all context elements.
 	 * @return all context elements
 	 */
-	abstract Collection<WebElement> allElements()
+	Collection<WebElement> allElements()
 
-	Iterator<Navigator> iterator() {
-		return new NavigatorIterator()
-	}
+	Iterator<Navigator> iterator()
 
 	/**
 	 * Overrides the standard Groovy findAll so that the object returned is a Navigator rather than a Collection<Navigator>.
 	 */
-	Navigator findAll(Closure predicate) {
-		browser.navigatorFactory.createFromNavigators(super.findAll(predicate))
-	}
+	Navigator findAll(Closure predicate)
 
 	/**
 	 * Throws an exception when the Navigator instance is empty.
 	 * @return the current Navigator instance
 	 */
-	abstract Navigator verifyNotEmpty()
+	Navigator verifyNotEmpty()
 
 	/**
 	 * Returns an adapter for calling jQuery methods on the elements in this navigator.
 	 */
-	JQueryAdapter getJquery() {
-		new JQueryAdapter(this)
-	}
+	JQueryAdapter getJquery()
 
 	/**
 	 * Returns the height of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
 	 * To get the height of all matched elements you can use the spread operator {@code navigator*.height}
 	 */
-	int getHeight() {
-		firstElement()?.size?.height ?: 0
-	}
+	int getHeight()
 
 	/**
 	 * Returns the width of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
 	 * To get the width of all matched elements you can use the spread operator {@code navigator*.width}
 	 */
-	int getWidth() {
-		firstElement()?.size?.width ?: 0
-	}
+	int getWidth()
 
 	/**
 	 * Returns the x coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
 	 * To get the x coordinate of all matched elements you can use the spread operator {@code navigator*.x}
 	 */	
-	int getX() {
-		firstElement()?.location?.x ?: 0
-	}
+	int getX()
 
 	/**
 	 * Returns the y coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
 	 * To get the y coordinate of all matched elements you can use the spread operator {@code navigator*.y}
 	 */
-	int getY() {
-		firstElement()?.location?.y ?: 0
-	}
-
-	/**
-	 * Iterator for looping over the context elements of a Navigator instance.
-	 */
-	class NavigatorIterator implements Iterator<Navigator> {
-
-		private int index
-
-		boolean hasNext() {
-			return index < Navigator.this.size()
-		}
-
-		Navigator next() {
-			return Navigator.this[index++]
-		}
-
-		void remove() {
-			throw new UnsupportedOperationException()
-		}
-	}
+	int getY()
 
 	/**
 	 * Creates a new Navigator instance containing all elements of this instance with duplicate elements removed
 	 */
-	abstract Navigator unique()
+	Navigator unique()
 }
 
 

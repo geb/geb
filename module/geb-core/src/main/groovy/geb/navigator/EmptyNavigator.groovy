@@ -1,27 +1,25 @@
 package geb.navigator
 
-import org.openqa.selenium.WebElement
-import static java.util.Collections.EMPTY_LIST
-
 import geb.Browser
 import geb.Page
+import org.openqa.selenium.WebElement
+
+import static java.util.Collections.EMPTY_LIST
 
 /**
  * Implementation of an empty Navigator object - helps keep the other code simple.
  */
-class EmptyNavigator extends Navigator {
+class EmptyNavigator extends AbstractNavigator {
 
 	static {
 		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(EmptyNavigator))
 		mc.initialize()
 		EmptyNavigator.metaClass = mc
 	}
-	
+
 	EmptyNavigator(Browser browser) {
 		super(browser)
 	}
-
-	private static final String[] EMPTY_STRING_ARRAY = new String[0]
 
 	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) { this }
 
@@ -43,12 +41,12 @@ class EmptyNavigator extends Navigator {
 
 	Navigator not(String selector) { this }
 
-	Navigator click() { }
+	Navigator click() { this }
 
 	Navigator click(Class<? extends Page> pageClass) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
-	
+
 	Navigator click(List<Class<? extends Page>> pageClasses) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
@@ -114,13 +112,13 @@ class EmptyNavigator extends Navigator {
 	Navigator siblings() { this }
 
 	Navigator siblings(String selector) { this }
-	
+
 	Navigator remove(int index) { this }
 
 	int size() { 0 }
 
 	boolean isDisplayed() { false }
-	
+
 	String tag() { null }
 
 	String text() { null }
