@@ -45,8 +45,8 @@ dependencies {
 		exclude module: "groovy-all"
 	}
 	
-	test "org.grails.plugins:spock:0.6"
-	test "org.spockframework:spock-grails-support:0.6-groovy-1.8"
+	test "org.grails.plugins:spock:0.7"
+	test "org.spockframework:spock-grails-support:0.7-groovy-1.8"
 	test "org.grails:grails-test:$grails.grailsVersion"
 
 	[hibernate: grails.grailsVersion, tomcat: grails.grailsVersion].collect { name, version ->

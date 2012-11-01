@@ -117,8 +117,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 		to PageOrientedSpecPageA
 		def content = notPresentNotRequiredWithWait
 		then:
-		notThrown(RequiredPageContentNotPresent)
-		notThrown(WaitTimeoutException)
+		notThrown(Exception)
 		!content
 		content in SimplePageContent
 	}
