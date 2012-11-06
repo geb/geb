@@ -8,11 +8,13 @@ allprojects { project ->
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")
 
-		seleniumVersion = "2.25.0"
+		seleniumVersion = "2.26.0"
 		groovyVersion = "1.8.6"
 		spockVersion = "0.7-groovy-1.8"
 
-		spockDependency = "org.spockframework:spock-core:$spockVersion"
+		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
+			exclude module: "groovy-all"
+		}
 
 		seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
 		seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
@@ -53,7 +55,7 @@ subprojects {
 		apply plugin: 'idea'
 
 		if (path != ":test-support") {
-			apply from: "file:${rootDir}/clover.gradle"
+			// apply from: "file:${rootDir}/clover.gradle"
 		}
 
 		dependencies {

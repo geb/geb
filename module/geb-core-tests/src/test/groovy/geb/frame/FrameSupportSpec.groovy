@@ -75,7 +75,7 @@ class FrameSupportSpec extends GebSpecWithServer {
 		where:
 		message                          | selector
 		''                               | 'span'
-		'No elements for given content:' | ''
+		'No elements for given content:' | 'foo'
 	}
 
 	def "expect withFrame to fail if called for an empty navigator"() {

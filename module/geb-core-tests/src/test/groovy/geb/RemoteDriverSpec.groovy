@@ -14,16 +14,13 @@
  */
 package geb
 
-import geb.test.*
-import spock.lang.*
-
-import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
 
-import org.openqa.selenium.TakesScreenshot
+import geb.test.WebDriverServer
+import org.openqa.selenium.remote.DesiredCapabilities
+import spock.lang.Specification
 
 class RemoteDriverSpec extends Specification {
 
