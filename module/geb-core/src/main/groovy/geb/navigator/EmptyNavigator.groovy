@@ -22,31 +22,13 @@ class EmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
-	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) { this }
-
-	@Override
-	Navigator find(Map<String, Object> predicates, String selector, Integer index) { this }
-
-	@Override
-	Navigator find(Map<String, Object> predicates, Integer index) { this }
-
-	@Override
 	Navigator find(String selector) { this }
-
-	@Override
-	Navigator find(Map<String, Object> predicates) { this }
-
-	@Override
-	Navigator find(Map<String, Object> predicates, String selector) { this }
 
 	@Override
 	Navigator filter(String selector) { this }
 
 	@Override
 	Navigator filter(Map<String, Object> predicates) { this }
-
-	@Override
-	Navigator filter(Map<String, Object> predicates, String selector) { this }
 
 	@Override
 	Navigator not(String selector) { this }

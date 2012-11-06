@@ -38,21 +38,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
-	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
-		find(predicates, selector)[range]
-	}
-
-	@Override
-	Navigator find(Map<String, Object> predicates, String selector, Integer index) {
-		find(predicates, selector, index..index)
-	}
-
-	@Override
-	Navigator find(Map<String, Object> predicates, Integer index) {
-		find(predicates, null, index)
-	}
-
-	@Override
 	Navigator find(String selectorString) {
 		if (contextElements.head() instanceof FindsByCssSelector) {
 			List<WebElement> list = []
@@ -63,11 +48,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 		} else {
 			navigatorFor CssSelector.findByCssSelector(allElements(), selectorString)
 		}
-	}
-
-	@Override
-	Navigator find(Map<String, Object> predicates) {
-		find predicates, "*"
 	}
 
 	@Override
@@ -90,11 +70,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 	@Override
 	Navigator filter(Map<String, Object> predicates) {
 		navigatorFor contextElements.findAll { matches(it, predicates) }
-	}
-
-	@Override
-	Navigator filter(Map<String, Object> predicates, String selector) {
-		filter(selector).filter(predicates)
 	}
 
 	@Override
