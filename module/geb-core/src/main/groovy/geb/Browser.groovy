@@ -25,8 +25,7 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
 import org.openqa.selenium.NoSuchWindowException
 import geb.navigator.factory.NavigatorFactory
-import geb.navigator.factory.BrowserBackedNavigatorFactory
-import geb.navigator.factory.DefaultInnerNavigatorFactory
+import geb.error.NoNewWindowException
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
@@ -574,31 +573,66 @@ class Browser {
 
 	/**
 	 * Expects the first closure argument to open a new window and calls the second closure argument in the context
+	 * of the newly opened window. A map of options can also be specified that allows to close the new window, switch to a
+	 * different page for closure executed in the context of the new window and also to wait for the window opening if the
+	 * window opening is asynchronous.
+	 *
+	 * @param options a map that can be used to pass additional options
+	 * @param windowOpeningBlock a closure that should open a new window
+	 * @param block closure to be executed in the new window context
+	 * @return The return value of {@code block}
+	 * @throws geb.error.NoNewWindowException if the window opening closure doesn't open one or opens more
+	 * than one new window
+	 */
+	def withNewWindow(Map options, Closure windowOpeningBlock, Closure block) {
+		def originalWindow = currentWindow
+		def originalPage = page
+
+		def newWindow = executeNewWindowOpening(windowOpeningBlock, options.wait)
+		try {
+			switchToWindow(newWindow)
+			if (options.page) {
+				page(options.page)
+			}
+			block.call()
+		} finally {
+			if (options.close) {
+				driver.close()
+			}
+			switchToWindow(originalWindow)
+			page originalPage
+		}
+	}
+
+	private String executeNewWindowOpening(Closure windowOpeningBlock, wait) {
+		def originalWindows = availableWindows
+		windowOpeningBlock.call()
+
+		if (wait) {
+			config.getWaitForParam(wait).waitFor { (availableWindows - originalWindows).size() == 1 }
+		}
+
+		def newWindows = (availableWindows - originalWindows) as List
+
+		if (newWindows.size() != 1) {
+			def message = newWindows ? 'There has been more than one window opened' : 'No new window has been opened'
+			throw new NoNewWindowException(message)
+		}
+		newWindows.first()
+	}
+
+	/**
+	 * Expects the first closure argument to open a new window and calls the second closure argument in the context
 	 * of the newly opened window.
 	 *
 	 * @param windowOpeningBlock a closure that should open a new window
 	 * @param block closure to be executed in the new window context
 	 * @return The return value of {@code block}
-	 * @throws org.openqa.selenium.NoSuchWindowException if the window opening closure doesn't open one or opens more
+	 * @throws geb.error.NoNewWindowException if the window opening closure doesn't open one or opens more
 	 * than one new window
 	 */
 	def withNewWindow(Closure windowOpeningBlock, Closure block) {
-		def originalWindows = availableWindows
-		def originalWindow = currentWindow
-
-		windowOpeningBlock.call()
-		def newWindow = (availableWindows - originalWindows) as List
-
-		if (newWindow.size() != 1) {
-			def message = newWindow ? 'There has been more than one window opened' : 'No new window has been opened'
-			throw new NoSuchWindowException(message)
-		}
-		try {
-			switchToWindow(newWindow.first())
-			block.call()
-		} finally {
-			switchToWindow(originalWindow)
-		}
+		withNewWindow([:], windowOpeningBlock, block)
 	}
 	
 	/**

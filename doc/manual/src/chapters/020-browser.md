@@ -259,6 +259,9 @@ Listeners cannot be registered twice. If an attempt is made to register a listen
 
 When you're working with an application that opens new windows or tabs, for example when clicking on a link with a target attribute set, you can use `withWindow()` and `withNewWindow()` methods to execute code in the context of other windows.
 
+If you really need to know the name of the current window or all the names of open windows use [`getCurrentWindow()`](api/geb/Browser.html#getCurrentWindow(\)) and [`getAvailableWindows()`](api/geb/Browser.html#getAvailableWindows(\)) methods but `withWindow()` and `withNewWindow()` are the preferred methods when it comes to dealing with multiple windows.
+
+### Switching context to already opened windows
 If you know the name of the window in which context you want to execute the code you can use [`withWindow(String windowName, Closure block)`](api/geb/Browser.html#withWindow(java.lang.String, groovy.lang.Closure\)). Given this html:
 
     <a href="http://www.gebish.org" target="myWindow">Geb</a>
@@ -281,15 +284,60 @@ This code passes:
         assert $('#slogan').text() == 'very groovy browser automation… web testing, screen scraping and more'
     }
 
-Finally if you want to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. Given html as above the following will pass:
+### Switching context to newly opened windows
+
+If you wish to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. Given html as above the following will pass:
 
     withNewWindow({ $('a').click() }) {
         assert $('title').text() == 'Geb - Very Groovy Browser Automation'
     }
 
-Note that if the first parameter opens none or more than one window then [`NoSuchWindowException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html) is thrown.
+Note that if the first parameter opens none or more than one window then [`NoNewWindowException`](api/geb/error/NoNewWindowException.html) is thrown.
 
-If you really need to know the name of the current window or all the names of open windows use [`getCurrentWindow()`](api/geb/Browser.html#getCurrentWindow(\)) and [`getAvailableWindows()`](api/geb/Browser.html#getAvailableWindows(\)) methods but `withWindow()` and `withNewWindow()` are the preferred methods when it comes to dealing with multiple windows.
+#### Passing options when working with newly opened windows
+
+There are several options that can be passed to a [`withNewWindow()`](api/geb/Browser.html#withNewWindow(java.util.Map, groovy.lang.Closure, groovy.lang.Closure\)) call which make working with newly opened windows even simpler. The general syntax is:
+
+	withNewWindow({ «window opening action» }, «option name»: «option value», ...) { «action executed within the context of the window» }
+
+##### close
+
+Default value: `true`
+
+If you pass any truly value as `close` option then the newly opened window will be closed after the execution of the closure passed as the last argument to the `withNewWindow()` call.
+
+##### page
+
+Default value: `null`
+
+If you pass a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to it's original value afterwards.
+
+##### wait
+
+Default value: `null`
+
+You can specify `wait` option if the action defined in the window opening closure passed as the first argument is asynchronous and you need to wait for the new window to be opened. The possible values for the `wait` option are consistent with the ones for content definition and can be one of the following:
+
+* **`true`** - wait for the content using the _default wait_ configuration
+* **a string** - wait for the content using the _wait preset_ with this name from the configuration
+* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
+* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+
+Given the following html:
+
+	<a href="http://www.gebish.org" target="_blank" id="new-window-link">Geb</a>
+
+the following will pass:
+
+	withNewWindow({
+		js.exec """
+				setTimeout(function() {
+					document.getElementById('new-window-link').click();
+				}, 200);
+			"""
+	}, wait: true) {
+        assert $('title').text() == 'Geb - Very Groovy Browser Automation'
+    }
 
 ## Quitting the browser
 
