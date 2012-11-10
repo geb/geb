@@ -304,6 +304,8 @@ class Browser {
 	/**
 	 * Checks if the browser is at the given page by running the at checker for this page type, suppressing assertion errors.
 	 *
+	 * If the at checker is successful, this browser object's page instance is updated the one the method is called with.
+	 *
 	 * If the at check throws an {@link AssertionError}
 	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
 	 * are enabled) this method will suppress the exception and return false.
@@ -317,6 +319,8 @@ class Browser {
 	/**
 	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it, suppressing assertion errors.
 	 *
+	 * If the at checker is successful, this browser object's page instance is updated to the new instance of the given page type.
+	 *
 	 * If the at check throws an {@link AssertionError}
 	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
 	 * are enabled) this method will suppress the exception and return false.
@@ -325,7 +329,11 @@ class Browser {
 	 */
 	boolean isAt(Page page) {
 		initialisePage(page)
-		page.verifyAtSafely()
+		def isAt = page.verifyAtSafely()
+		if (isAt) {
+			makeCurrentPage(page)
+		}
+		isAt
 	}
 
 	/**
@@ -358,8 +366,12 @@ class Browser {
 	private Page doAt(Page page) {
 		initialisePage(page)
 		def atResult = page.verifyAt()
-		makeCurrentPage(page)
-		atResult ? page : null
+		if (atResult) {
+			makeCurrentPage(page)
+			page
+		} else {
+			null
+		}
 	}
 
 	/**

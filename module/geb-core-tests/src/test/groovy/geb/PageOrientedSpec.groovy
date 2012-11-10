@@ -71,14 +71,12 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 		then:
 		at PageOrientedSpecPageB
-		page.class == PageOrientedSpecPageB
 
 		when:
 		link.click()
 
 		then:
 		at PageOrientedSpecPageA
-		page.class == PageOrientedSpecPageA
 	}
 
 	def "check accessing non navigator content"() {

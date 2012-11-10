@@ -62,6 +62,17 @@ class ToAndAtSpec extends GebSpecWithServer {
 		error.message.contains('div')
 	}
 
+	def "successful at verification modifies browser's page instance"() {
+		given:
+		go ''
+
+		when:
+		at ToAndAtSpecPageA
+
+		then:
+		page.getClass() == ToAndAtSpecPageA
+	}
+
 	def "verify isAt() works"() {
 		when:
 		to ToAndAtSpecPageA
@@ -71,6 +82,20 @@ class ToAndAtSpec extends GebSpecWithServer {
 		!isAt(ToAndAtSpecPageB)
 		!isAt(ToAndAtSpecPageB)
 	}
+
+	def "when isAt() returns true it also modifies browser's page instance"() {
+		given:
+		go ''
+
+		expect:
+		isAt ToAndAtSpecPageA
+		page.getClass() == ToAndAtSpecPageA
+
+		and:
+		!isAt(ToAndAtSpecPageB)
+		page.getClass() == ToAndAtSpecPageA
+	}
+
 
 	@Unroll
 	def "verify toAt() asserts that we are at the expected page - #scenario"() {
