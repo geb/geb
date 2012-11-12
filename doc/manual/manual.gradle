@@ -27,7 +27,7 @@ task tokeniseManual(type: Copy) {
 	ext.substitutionProperties = [
 		"geb-version": project.version,
 		"geb-group": project.group,
-		"spock-version": "0.5-groovy-1.7",
+		"spock-version": "0.7",
 		"selenium-version": seleniumVersion,
 		"groovy-version": groovyVersion,
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
