@@ -19,13 +19,13 @@ import org.openqa.selenium.WebDriver
 class CachingDriverFactory implements DriverFactory {
 
 	private static interface Cache<T> {
-		T get(Closure factory)
+		T get(Closure<? extends T> factory)
 		T clear()
 	}
 
 	static private class SimpleCache<T> implements Cache<T> {
 		private T cached
-		synchronized T get(Closure factory) {
+		synchronized T get(Closure<? extends T> factory) {
 			if (cached == null) {
 				cached = factory()
 			}
@@ -40,7 +40,7 @@ class CachingDriverFactory implements DriverFactory {
 
 	static private class ThreadLocalCache<T> implements Cache<T> {
 		private ThreadLocal<T> threadLocal = new ThreadLocal()
-		synchronized T get(Closure factory) {
+		synchronized T get(Closure<? extends T> factory) {
 			def cached = threadLocal.get()
 			if (cached == null) {
 				cached = factory()
@@ -55,24 +55,24 @@ class CachingDriverFactory implements DriverFactory {
 		}
 	}
 
-	static private CACHE = new SimpleCache<Cache<DriverFactory>>()
+	static private CACHE = new SimpleCache<Cache<WebDriver>>()
 
-	private final Cache<DriverFactory> cache
+	private final Cache<WebDriver> cache
 	private final DriverFactory innerFactory
 	private final boolean quitOnShutdown
 
-	private CachingDriverFactory(Cache<DriverFactory> cache, DriverFactory innerFactory, boolean quitOnShutdown) {
+	private CachingDriverFactory(Cache<WebDriver> cache, DriverFactory innerFactory, boolean quitOnShutdown) {
 		this.cache = cache
 		this.innerFactory = innerFactory
 		this.quitOnShutdown = quitOnShutdown
 	}
 
 	static CachingDriverFactory global(DriverFactory innerFactory, boolean quitOnShutdown) {
-		new CachingDriverFactory(CACHE.get {  new SimpleCache() }, innerFactory, quitOnShutdown)
+		new CachingDriverFactory(CACHE.get { new SimpleCache<WebDriver>() }, innerFactory, quitOnShutdown)
 	}
 
 	static CachingDriverFactory perThread(DriverFactory innerFactory, boolean quitOnShutdown) {
-		new CachingDriverFactory(CACHE.get { new ThreadLocalCache() }, innerFactory, quitOnShutdown)
+		new CachingDriverFactory(CACHE.get { new ThreadLocalCache<WebDriver>() }, innerFactory, quitOnShutdown)
 	}
 
 	WebDriver getDriver() {
