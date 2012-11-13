@@ -4,6 +4,7 @@ import geb.Browser
 import geb.Page
 import geb.textmatching.TextMatcher
 import org.openqa.selenium.By
+import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByCssSelector
 
@@ -584,31 +585,33 @@ class NonEmptyNavigator extends AbstractNavigator {
 			return
 		}
 
+		def multiple = select.multiple
 		def valueStrings
-		if (select.multiple) {
+		if (multiple) {
 			valueStrings = (value instanceof Collection ? new LinkedList(value) : [value])*.toString()
 		} else {
 			valueStrings = [value.toString()]
 		}
 
-		select.options.each { WebElement option ->
-			def optionValue = getValue(option)
-			if (optionValue in valueStrings) {
-				valueStrings.remove(optionValue)
-				select.selectByValue(optionValue)
-			} else if (option.text in valueStrings) {
-				valueStrings.remove(option.text)
-				select.selectByVisibleText(option.text)
-			} else if (select.multiple && option.isSelected()) {
-				select.deselectByValue(optionValue)
+		for (valueString in valueStrings) {
+			try {
+				select.selectByValue(valueString)
+			} catch (NoSuchElementException e1) {
+				try {
+					select.selectByVisibleText(valueString)
+				} catch (NoSuchElementException e2) {
+					throw new IllegalArgumentException("couldn't select option with text or value: $valueString")
+				}
 			}
 		}
 
-		if (!valueStrings.empty) {
-			if (select.multiple) {
-				throw new IllegalArgumentException("couldn't select options with text or values: $valueStrings")
-			} else {
-				throw new IllegalArgumentException("couldn't select option with text or value: ${valueStrings[0]}")
+		if (multiple) {
+			def selectedOptions = element.findElements(By.cssSelector("option[selected]"))
+			for (selectedOption in selectedOptions) {
+				if (!valueStrings.contains(selectedOption.getAttribute("value")) && !valueStrings.contains(selectedOption.text)) {
+					selectedOption.click()
+					assert !selectedOption.isSelected()
+				}
 			}
 		}
 	}
