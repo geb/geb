@@ -46,3 +46,4 @@
 [implicit-assertions]: implicit-assertions.html
 [page-option]: pages.html#page
 [switch-frame-and-page]: pages.html#switching_pages_and_frames_at_once
+[groovy-truth]: http://docs.codehaus.org/display/GROOVY/Groovy+Truth

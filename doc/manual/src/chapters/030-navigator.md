@@ -443,6 +443,24 @@ You can select dogs as your pet type, as follows:
 
     $("checkbox", name: "pet").value("dogs")
 
+Calling `value()` on a checked checkbox will return the value of its `value` attribute, i.e:
+
+    <input type="checkbox" name="pet" value="dogs" checked="checked"/>
+
+    assert $("checkbox", name: "pet").value() == "dogs"
+
+Calling `value()` on an unchecked checkbox will return `false`, i.e:
+
+    <input type="checkbox" name="pet" value="dogs"/>
+
+    assert $("checkbox", name: "pet").value() == false
+
+In general you should use [Groovy Truth][groovy-truth] when checking if a checkbox is checked:
+
+    if ($("checkbox", name: "pet").value()) {
+        //evaluated only if "pet" checkbox is checked
+    }
+
 #### radio
 
 Radio values are set by assigning the value of the radio button that is to be selected or the label text associated with a radio button.
