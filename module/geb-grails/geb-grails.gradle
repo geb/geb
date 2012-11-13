@@ -49,7 +49,7 @@ dependencies {
 	test "org.spockframework:spock-grails-support:0.7-groovy-1.8"
 	test "org.grails:grails-test:$grails.grailsVersion"
 
-	[hibernate: grails.grailsVersion, tomcat: grails.grailsVersion].collect { name, version ->
+	[hibernate: grails.grailsVersion, tomcat: grails.grailsVersion, release: "2.0.4"].collect { name, version ->
 		bootstrap "org.grails.plugins:$name:$version"
 	}
 	
@@ -61,8 +61,6 @@ dependencies {
 		exclude module: "httpcore"
 		exclude module: "groovy"
 	}
-	
-	releaseBootstrap "org.grails.plugins:release:2.0.4"
 }
 
 
