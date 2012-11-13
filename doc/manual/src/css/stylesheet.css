@@ -57,6 +57,10 @@ span.center {
 }
 .toc h2 {
 	font-size: 180%;
+	margin-bottom: -10px;
+}
+.toc .manual-links {
+	font-size: 80%;
 }
 .toc a {
 	color: #4C4C4C;

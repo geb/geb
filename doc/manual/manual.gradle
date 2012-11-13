@@ -31,7 +31,8 @@ task tokeniseManual(type: Copy) {
 		"selenium-version": seleniumVersion,
 		"groovy-version": groovyVersion,
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
-		"home-page": "www.gebish.org"
+		"home-page": "www.gebish.org",
+		"manual-url": "https://oss.sonatype.org/content/repositories/${isSnapshot ? 'snapshots' : 'releases'}/org/gebish/geb-manual/$version/geb-manual-${version}.zip".toString()
 	]
 
 	inputs.properties(substitutionProperties)
