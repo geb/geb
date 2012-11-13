@@ -4,17 +4,6 @@ import org.apache.tools.ant.filters.*
 apply plugin: "gaelyk"
 
 buildscript {
-	ext.gitHub = {
-		def resolver = new URLResolver()
-
-		resolver.with {
-			name = 'GitHub'
-			addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
-		}
-
-		resolver
-	}
-
 	repositories {
 		mavenCentral()
 		maven {
@@ -27,18 +16,12 @@ buildscript {
 	}
 }
 
-repositories {
-	add gitHub()
-}
-
 ext.appEngineVersion = "1.7.1"
 
 dependencies {
 	groovy "org.codehaus.groovy:groovy-all:1.8.0"
 	
-	compile "com.google.appengine:appengine-api-1.0-sdk:$appEngineVersion",
-	        "com.google.appengine:appengine-api-labs:$appEngineVersion",
-	        "glaforge:gaelyk:0.7"
+	compile "org.gaelyk:gaelyk:1.1"
 
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
 }
