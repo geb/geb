@@ -6,12 +6,7 @@ request['pages'] = [
 		async: "Asynchronous Pages",
 		testing: "Testing",
 		integration: "Build Integration"
-	],
-	"Talk": [
-		twitter: "Twitter about Geb",
-		articles: "Articles about Geb"
 	]
-
 ]
 
 def manualPropertiesStream = context.getResourceAsStream("/WEB-INF/manual.properties")

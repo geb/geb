@@ -38,8 +38,7 @@ dependencies {
 	compile "com.google.appengine:appengine-api-1.0-sdk:$appEngineVersion",
 	        "com.google.appengine:appengine-api-labs:$appEngineVersion",
 	        "glaforge:gaelyk:0.7"
-	
-	compile "oauth.signpost:signpost-core:1.2.1.1"
+
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
 }
 
@@ -129,11 +128,6 @@ war {
 
 	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : project.version.replace(".", "-").toLowerCase()
 	def properties = [version: siteVersion]
-
-	["consumerKey", "consumerSecret", "accessToken", "secretToken"].each {
-		def propertyName = "geb.twitter.$it"
-		properties[propertyName] = project.hasProperty(propertyName) ? project.getProperty(propertyName) : ""
-	}
 
 	properties["geb.manual.oldManualVersions"] = oldManualVersions.reverse().join(',')
 	properties["geb.manual.currentManualVersion"] = stableVersion

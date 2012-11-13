@@ -10,6 +10,5 @@ all "/css/**", ignore: true, cache: cacheFor
 all "/js/**", ignore: true, cache: cacheFor
 
 all "/clearcaches", forward: "clearcaches.groovy"
-get "/feed/@feed", forward: "/feedproxy.groovy?feed=@feed"
 all "/@page", forward: "site.groovy?page=@page", cache: cacheFor
 all "/", forward: "site.groovy?page=index", cache: cacheFor
