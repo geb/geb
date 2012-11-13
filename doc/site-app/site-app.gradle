@@ -1,8 +1,7 @@
 import org.apache.ivy.plugins.resolver.URLResolver
 import org.apache.tools.ant.filters.*
 
-apply plugin: "groovy"
-apply plugin: "gae"
+apply plugin: "gaelyk"
 
 buildscript {
 	ext.gitHub = {
@@ -17,12 +16,14 @@ buildscript {
 	}
 
 	repositories {
-		add gitHub()
+		mavenCentral()
+		maven {
+			url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+		}
 	}
 
 	dependencies {
-		classpath 'bmuschko:gradle-gae-plugin:0.5.2'
-		classpath 'bmuschko:gradle-gaelyk-plugin:0.1'
+		classpath 'org.gradle.api.plugins:gradle-gaelyk-plugin:0.4.1-SNAPSHOT'
 	}
 }
 
@@ -42,15 +43,18 @@ dependencies {
 	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
 }
 
-gaeDownloadSdk.doLast {
-	copy {
-		def sdk = configurations.gaeSdk.singleFile
-		def dest = file("build/exploded-gae-sdk/$sdk.name" - ".zip")
-		from zipTree(sdk)
-		into dest
-		
-		System.setProperty("appengine.sdk.root", dest.canonicalPath)
+gae {
+	optimizeWar = false
+	downloadSdk = true
+	appcfg {
+		if (project.hasProperty('gaeEmail')) {
+			email = gaeEmail
+		}
 	}
+}
+
+gaelyk {
+	rad = false
 }
 
 ext {
@@ -140,15 +144,6 @@ war {
 	eachFile { file ->
 		if (filterableExtensions.any { file.name.endsWith(it) }) {
 			file.filter(ReplaceTokens, tokens: properties)
-		}
-	}
-}
-
-gae {
-	downloadSdk = true
-	appcfg {
-		if (project.hasProperty('gaeEmail')) {
-			email = gaeEmail
 		}
 	}
 }
