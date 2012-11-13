@@ -40,6 +40,8 @@ gaelyk {
 	rad = false
 }
 
+check.dependsOn = check.dependsOn.findAll { !(it in Test && it.name == 'gaeFunctionalTest') }
+
 ext {
 	// The version of manual to put under the “current” label
 	stableVersion = "0.7.2"
