@@ -45,6 +45,7 @@ This page lists the high level changes between versions of Geb.
 * Fixed an issue where waitFor would throw a WaitTimeoutException even if the last evaluation before timeout returned a truthy value \[[GEB-215](http://jira.codehaus.org/browse/GEB-215)\].
 * Fixed taking screenshots for reporting when the browser is not on a HTML page (e.g. XML file) \[[GEB-126](http://jira.codehaus.org/browse/GEB-126)\].
 * Return the last evaluation value for a `(wait: true, required: false)` content instead of always returning null \[[GEB-216](http://jira.codehaus.org/browse/GEB-216)\].
+* `isAt()` behaves the same as `at()` in regards to updating the browser's page instance to the given page type if its at checker is successful \[[GEB-227](http://jira.codehaus.org/browse/GEB-227)\].
 * Handling of `select` elements has been reworked to be far more efficient \[[GEB-229](http://jira.codehaus.org/browse/GEB-229)\].
 
 #### Breaking Changes
