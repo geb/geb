@@ -17,9 +17,9 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 ### Committers
 
 * [Luke Daley](http://ldaley.com)
+* [Marcin Erdmann](http://blog.proxerd.pl)
 * [Robert Fletcher](http://adhockery.blogspot.com/)
 * [Peter Niederwieser](http://pniederw.wordpress.com/)
-* [Marcin Erdmann](http://blog.proxerd.pl)
 
 ### Contributors
 
