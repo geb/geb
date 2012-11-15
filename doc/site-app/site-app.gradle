@@ -6,13 +6,10 @@ apply plugin: "gaelyk"
 buildscript {
 	repositories {
 		mavenCentral()
-		maven {
-			url = 'https://oss.sonatype.org/content/repositories/snapshots/'
-		}
 	}
 
 	dependencies {
-		classpath 'org.gradle.api.plugins:gradle-gaelyk-plugin:0.4.1-SNAPSHOT'
+		classpath 'org.gradle.api.plugins:gradle-gaelyk-plugin:0.4.1'
 	}
 }
 
