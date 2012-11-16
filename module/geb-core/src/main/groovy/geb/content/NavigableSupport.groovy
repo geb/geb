@@ -131,7 +131,7 @@ class NavigableSupport implements Navigable {
 			try {
 				getNavigator()."$name"
 			} catch (MissingPropertyException e2) {
-				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as content for ${owner}, or as a property on it's Navigator context")
+				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as content for ${owner}, or as a property on its Navigator context")
 			}
 		}
 	}
