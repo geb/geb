@@ -26,6 +26,7 @@ import org.openqa.selenium.WebElement
 import geb.navigator.factory.InnerNavigatorFactory
 import geb.navigator.Navigator
 import geb.error.InvalidGebConfiguration
+import groovy.transform.InheritConstructors
 
 class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 
@@ -48,11 +49,11 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 	def "can use closure based inner"() {
 		when:
 		raw.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
-			new CustomNavigator(browser, elements)
+			new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
 		}
 
 		then:
-		$("p").class == CustomNavigator
+		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
 	}
 
 	def "can use inner impl"() {
@@ -60,14 +61,14 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 		def impl = new InnerNavigatorFactory() {
 			@Override
 			Navigator createNavigator(Browser browser, List<WebElement> elements) {
-				new CustomNavigator(browser, elements)
+				new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
 			}
 		}
 
 		raw.innerNavigatorFactory = impl
 
 		then:
-		$("p").class == CustomNavigator
+		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
 	}
 
 	def "error when invalid factory type"() {
@@ -107,18 +108,16 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 		when:
 		raw.innerNavigatorFactory = new InnerNavigatorFactory() {
 			Navigator createNavigator(Browser browser, List<WebElement> elements) {
-				new CustomNavigator(browser, elements)
+				new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
 			}
 		}
 
 		then:
-		$("p").class == CustomNavigator
+		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
 	}
 
 }
 
-class CustomNavigator extends NonEmptyNavigator {
-	CustomNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
-		super(browser, contextElements)
-	}
+@InheritConstructors
+class ConfigurationNavigatorFactorySpecCustomNavigator extends NonEmptyNavigator {
 }
