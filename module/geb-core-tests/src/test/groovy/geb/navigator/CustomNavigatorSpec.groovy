@@ -21,8 +21,6 @@ import geb.test.GebSpecWithServer
 import groovy.transform.InheritConstructors
 import org.openqa.selenium.WebElement
 
-import javax.servlet.http.HttpServletRequest
-
 class CustomNavigatorSpec extends GebSpecWithServer {
 
 	def setup() {
@@ -49,6 +47,11 @@ class CustomNavigatorSpec extends GebSpecWithServer {
 
 		then:
 		input.value() == 'some other text'
+	}
+
+	def "can use field access notation to access attributes"() {
+		expect:
+		$('input').@type == 'text'
 	}
 }
 

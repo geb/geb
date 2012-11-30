@@ -6,6 +6,7 @@ dependencies {
 	// making it available at compile time of client code, assuming that their dependency mangement
 	// system makes transitive compile dependencies first class compile dependencies.
 	compile project(":module:geb-implicit-assertions")
+	compile project(":module:geb-ast")
 }
 
 modifyPom { pom ->

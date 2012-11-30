@@ -1,0 +1,6 @@
+modifyPom { pom ->
+	pom.project {
+		name "Geb AST"
+		description "Geb (pronounced \"jeb\") AST transformations module."
+	}
+}

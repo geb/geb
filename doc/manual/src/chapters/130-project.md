@@ -47,6 +47,7 @@ This page lists the high level changes between versions of Geb.
 * Return the last evaluation value for a `(wait: true, required: false)` content instead of always returning null \[[GEB-216](http://jira.codehaus.org/browse/GEB-216)\].
 * `isAt()` behaves the same as `at()` in regards to updating the browser's page instance to the given page type if its at checker is successful \[[GEB-227](http://jira.codehaus.org/browse/GEB-227)\].
 * Handling of `select` elements has been reworked to be far more efficient \[[GEB-229](http://jira.codehaus.org/browse/GEB-229)\].
+* Modules support accessing base attributes' values using @attributeName notation \[[GEB-237](http://jira.codehaus.org/browse/GEB-237)\].
 
 #### Breaking Changes
 

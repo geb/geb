@@ -140,6 +140,14 @@ class ModulesSpec extends GebSpecWithServer {
 		InvalidPageContent e = thrown()
 		e.message == "class '${DoesNotExtendFromModule}' should extend from ${Module} to be allowed to be a part of a module definition with name 'invalid'"
 	}
+
+	def 'can access an attribute of a module base'() {
+		when:
+		to ModulesSpecPage
+
+		then:
+		divA.@class == 'a'
+	}
 }
 
 class ModulesSpecPage extends Page {

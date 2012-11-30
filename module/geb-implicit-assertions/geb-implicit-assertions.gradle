@@ -4,7 +4,7 @@ dependencies {
 
 modifyPom { pom ->
 	pom.project {
-		name "Geb Core"
+		name "Geb Implicit Assertions"
 		description "Geb (pronounced \"jeb\") implicit assertion transform (used in conjunction with geb-core)."
 	}
 }

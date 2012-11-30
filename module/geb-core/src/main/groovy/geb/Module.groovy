@@ -14,24 +14,21 @@
  */
 package geb
 
-import geb.js.*
-import geb.content.*
-import geb.navigator.Navigator
-import geb.navigator.AttributeAccessingMetaClass
-import geb.textmatching.TextMatchingSupport
+import geb.content.NavigableSupport
+import geb.content.PageContentTemplate
+import geb.content.PageContentTemplateBuilder
+import geb.content.TemplateDerivedPageContent
 import geb.download.DownloadSupport
-import geb.waiting.WaitingSupport
 import geb.frame.FrameSupport
+import geb.js.AlertAndConfirmSupport
+import geb.js.JavascriptInterface
+import geb.navigator.Navigator
+import geb.textmatching.TextMatchingSupport
+import geb.waiting.WaitingSupport
 
 class Module extends TemplateDerivedPageContent {
 
 	static base = null
-	
-	static {
-		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(Module))
-		mc.initialize()
-		Module.metaClass = mc
-	}
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private DownloadSupport _downloadSupport

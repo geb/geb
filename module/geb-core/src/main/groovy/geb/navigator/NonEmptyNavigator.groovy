@@ -14,12 +14,6 @@ import static java.util.Collections.EMPTY_LIST
 
 class NonEmptyNavigator extends AbstractNavigator {
 
-	static {
-		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(NonEmptyNavigator))
-		mc.initialize()
-		NonEmptyNavigator.metaClass = mc
-	}
-
 	protected final static BOOLEAN_ATTRIBUTES = ['async', 'autofocus', 'autoplay', 'checked', 'compact', 'complete',
 		'controls', 'declare', 'defaultchecked', 'defaultselected', 'defer', 'disabled', 'draggable', 'ended',
 		'formnovalidate', 'hidden', 'indeterminate', 'iscontenteditable', 'ismap', 'itemscope', 'loop',

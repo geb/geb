@@ -1,10 +1,8 @@
 package geb.navigator
 
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import geb.Browser
 import spock.lang.Shared
 import spock.lang.Specification
-import geb.Browser
 
 class NavigatorGroovySpec extends Specification {
 

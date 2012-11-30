@@ -11,12 +11,6 @@ import static java.util.Collections.EMPTY_LIST
  */
 class EmptyNavigator extends AbstractNavigator {
 
-	static {
-		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(EmptyNavigator))
-		mc.initialize()
-		EmptyNavigator.metaClass = mc
-	}
-
 	EmptyNavigator(Browser browser) {
 		super(browser)
 	}
