@@ -104,9 +104,10 @@ class NavigableSupportSpec extends GebSpecWithServer {
 
 	def "invalid property access throws unresolvable exception"() {
 		when:
-		z
+		SomePage
 		then:
-		thrown(UnresolvablePropertyException)
+		UnresolvablePropertyException e = thrown()
+		e.message.endsWith('Is SomePage a class you forgot to import?')
 	}
 
 	def "invalid property assignment throws unresolvable exception"() {
