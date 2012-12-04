@@ -28,6 +28,7 @@ class ModulesSpec extends GebSpecWithServer {
 				div('class': 'c') {
 					div('class': 'd') { p('d') }
 				}
+				div { p('some text') }
 			}
 		}
 	}
@@ -83,9 +84,9 @@ class ModulesSpec extends GebSpecWithServer {
 		to ModulesSpecPage
 
 		then:
-		repeating.size() == 4
+		repeating.size() == 5
 		repeating.every { it.class == ModulesSpecDivModuleNoLocator }
-		repeatingWithParam.size() == 4
+		repeatingWithParam.size() == 5
 		repeatingWithParam.every { it.class == ModulesSpecDivModuleWithLocator }
 	}
 
@@ -148,6 +149,14 @@ class ModulesSpec extends GebSpecWithServer {
 		then:
 		divA.@class == 'a'
 	}
+
+	def 'base definitions have access to Geb text matchers'() {
+		when:
+		to ModulesSpecPage
+
+		then:
+		baseUsingMatcher
+	}
 }
 
 class ModulesSpecPage extends Page {
@@ -181,6 +190,8 @@ class ModulesSpecPage extends Page {
 		repeatingWithParam(required: false) { index ->
 			moduleList ModulesSpecDivModuleWithLocator, $('div'), index, className: 'd'
 		}
+
+		baseUsingMatcher { module ModulesSpecBaseUsingTextMatcher }
 	}
 }
 
@@ -217,6 +228,10 @@ class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, $(), className: "d" }
 	}
+}
+
+class ModulesSpecBaseUsingTextMatcher extends Module {
+	static base = { $("div", text: startsWith('some')) }
 }
 
 class ModulesSpecBadBase extends Module {
