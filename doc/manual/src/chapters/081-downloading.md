@@ -44,9 +44,19 @@ For example, we could test what happens when we send gibberish in the `Accept-En
 
 > Before doing something like the above, it's worth considering whether doing such testing via Geb (a browser automation tool) is the right thing to do. You may find that it's more appropriate to directly use HttpURLConnection without Geb. That said, there are scenarios where such fine grained request control can be useful.
 
-## Default configuration
+## Default Configuration
 
-In the [configuration][configuration-api], the default behaviour of the [java.net.HttpURLConnection][httpurlconnection] object can be specified by providing a closure as the `defaultDownloadConfig` property.
+In the [configuration](configuration.html), the default behaviour of the HttpURLConnection object can be specified by providing a closure as the `defaultDownloadConfig` property.
+
+A common use case for this is to accept self-signed certificates used in development environments which would cause exceptions otherwise.
+The SelfSignedCertificateHelper class can be used to achieve this by providing the path to your keystore file and it's password:
+
+    defaultDownloadConfig = { HttpURLConnection connection ->
+        if (connection instanceof HttpsURLConnection) {
+            def helper = new SelfSignedCertificateHelper('keystore.jks', 'changeit')
+            helper.configureHttpsURLConnectionSSLFactory(connection as HttpsURLConnection)
+        }
+    }
 
 ## Errors
 
