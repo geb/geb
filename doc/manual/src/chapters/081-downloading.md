@@ -44,6 +44,10 @@ For example, we could test what happens when we send gibberish in the `Accept-En
 
 > Before doing something like the above, it's worth considering whether doing such testing via Geb (a browser automation tool) is the right thing to do. You may find that it's more appropriate to directly use HttpURLConnection without Geb. That said, there are scenarios where such fine grained request control can be useful.
 
+## Default configuration
+
+In the [configuration][configuration-api], the default behaviour of the [java.net.HttpURLConnection][httpurlconnection] object can be specified by providing a closure as the `defaultDownloadConfig` property.
+
 ## Errors
 
 Any IO type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a [`DownloadException`](api/geb/download/DownloadException.html) being thrown that wraps the original exception and provides access to the HttpURLConnection used to make the request.
