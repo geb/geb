@@ -54,7 +54,7 @@ The SelfSignedCertificateHelper class can be used to achieve this by providing t
     defaultDownloadConfig = { HttpURLConnection connection ->
         if (connection instanceof HttpsURLConnection) {
             def helper = new SelfSignedCertificateHelper('keystore.jks', 'changeit')
-            helper.configureHttpsURLConnectionSSLFactory(connection as HttpsURLConnection)
+            helper.acceptCertificatesFor(connection as HttpsURLConnection)
         }
     }
 
