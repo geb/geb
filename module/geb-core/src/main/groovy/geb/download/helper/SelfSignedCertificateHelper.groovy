@@ -30,7 +30,7 @@ class SelfSignedCertificateHelper {
 	private HostnameVerifier getHostnameVerifier() {
 		return new HostnameVerifier() {
 			boolean verify(String hostname, SSLSession sslSession) {
-				return hostname == 'localhost'
+				return true
 			}
 		}
 	}
