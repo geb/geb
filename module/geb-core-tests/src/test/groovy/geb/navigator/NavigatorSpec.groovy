@@ -831,7 +831,7 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		fieldName         | newValue  | expectedValue
-		"keywords"        | true      | "tru"
+		"keywords"        | true      | "true"
 		"keywords"        | 123       | "123"
 		"checker1"        | 123       | "123"
 		"plain_select"    | 3         | "3"
