@@ -2,6 +2,8 @@ Geb (pronounced “jeb”) is a browser automation solution. It brings together 
 
 For more information about the project, see the [http://www.gebish.org](http://www.gebish.org/).
 
+[![Build Status](https://travis-ci.org/geb/geb.png)](https://travis-ci.org/geb/geb)
+
 ## How to contribute
 
 ### Build Environment
