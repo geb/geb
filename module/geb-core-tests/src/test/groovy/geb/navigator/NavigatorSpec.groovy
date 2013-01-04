@@ -820,7 +820,7 @@ class NavigatorSpec extends GebSpec {
 	}
 
 	@Issue("http://jira.codehaus.org/browse/GEB-29")
-	def "setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element"() {
+	def "setting the value of '#fieldName' to '#newValue' using property access sets the value of the input element with #expectedValue"() {
 		given:
 		def form = $("form")
 		def initialValue = form."$fieldName"
@@ -831,7 +831,7 @@ class NavigatorSpec extends GebSpec {
 
 		where:
 		fieldName         | newValue  | expectedValue
-		"keywords"        | true      | "true"
+		"keywords"        | true      | "tru"
 		"keywords"        | 123       | "123"
 		"checker1"        | 123       | "123"
 		"plain_select"    | 3         | "3"
