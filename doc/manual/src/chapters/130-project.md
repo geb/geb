@@ -39,6 +39,7 @@ This page lists the high level changes between versions of Geb.
 * It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom [`NavigatorFactory`](api/geb/navigator/factory/NavigatorFactory.html), see [this manual section](configuration.html#navigator_factory) for more information \[[GEB-96](http://jira.codehaus.org/browse/GEB-96)\].
 * New variants of `withFrame()` method that allow to switch into frame context and change the page in one go and also automatically change it back to the original page after the call, see [switching pages and frames at once][switch-frame-and-page] in the manual \[[GEB-213](http://jira.codehaus.org/browse/GEB-213)\].
 * `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_newly_opened_windows) for more information \[[GEB-167](http://jira.codehaus.org/browse/GEB-167)\].
+* Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class \[[GEB-240](http://jira.codehaus.org/browse/GEB-240)\].
 
 #### Fixes
 
@@ -47,6 +48,8 @@ This page lists the high level changes between versions of Geb.
 * Return the last evaluation value for a `(wait: true, required: false)` content instead of always returning null \[[GEB-216](http://jira.codehaus.org/browse/GEB-216)\].
 * `isAt()` behaves the same as `at()` in regards to updating the browser's page instance to the given page type if its at checker is successful \[[GEB-227](http://jira.codehaus.org/browse/GEB-227)\].
 * Handling of `select` elements has been reworked to be far more efficient \[[GEB-229](http://jira.codehaus.org/browse/GEB-229)\].
+* Modules support accessing base attributes' values using @attributeName notation \[[GEB-237](http://jira.codehaus.org/browse/GEB-237)\].
+* Use of text matchers in module base definitions is supported \[[GEB-241](http://jira.codehaus.org/browse/GEB-241)\].
 
 #### Breaking Changes
 

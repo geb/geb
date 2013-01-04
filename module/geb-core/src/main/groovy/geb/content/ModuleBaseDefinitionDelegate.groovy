@@ -15,6 +15,7 @@
 package geb.content
 
 import geb.navigator.Navigator
+import geb.textmatching.TextMatchingSupport
 
 class ModuleBaseDefinitionDelegate {
 
@@ -22,6 +23,7 @@ class ModuleBaseDefinitionDelegate {
 	private params
 	
 	@Delegate private NavigableSupport navigableSupport
+	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	
 	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
 		this.startingBase = startingBase

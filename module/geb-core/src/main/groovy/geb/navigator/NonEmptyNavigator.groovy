@@ -14,20 +14,14 @@ import static java.util.Collections.EMPTY_LIST
 
 class NonEmptyNavigator extends AbstractNavigator {
 
-	static {
-		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(NonEmptyNavigator))
-		mc.initialize()
-		NonEmptyNavigator.metaClass = mc
-	}
-
-	private final static BOOLEAN_ATTRIBUTES = ['async', 'autofocus', 'autoplay', 'checked', 'compact', 'complete',
+	protected final static BOOLEAN_ATTRIBUTES = ['async', 'autofocus', 'autoplay', 'checked', 'compact', 'complete',
 		'controls', 'declare', 'defaultchecked', 'defaultselected', 'defer', 'disabled', 'draggable', 'ended',
 		'formnovalidate', 'hidden', 'indeterminate', 'iscontenteditable', 'ismap', 'itemscope', 'loop',
 		'multiple', 'muted', 'nohref', 'noresize', 'noshade', 'novalidate', 'nowrap', 'open', 'paused',
 		'pubdate', 'readonly', 'required', 'reversed', 'scoped', 'seamless', 'seeking', 'selected',
 		'spellcheck', 'truespeed', 'willvalidate']
 
-	private final List<WebElement> contextElements
+	protected final List<WebElement> contextElements
 
 	NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
 		super(browser)
@@ -447,7 +441,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 	 * Optimizes the selector if the predicates contains `class` or `id` keys that map to strings. Note this method has
 	 * a side-effect in that it _removes_ those keys from the predicates map.
 	 */
-	private String optimizeSelector(String selector, Map<String, Object> predicates) {
+	protected String optimizeSelector(String selector, Map<String, Object> predicates) {
 		if (!selector) {
 			return selector
 		}
@@ -465,7 +459,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		return buffer.toString()
 	}
 
-	private boolean matches(WebElement element, Map<String, Object> predicates) {
+	protected boolean matches(WebElement element, Map<String, Object> predicates) {
 		def result = predicates.every { name, requiredValue ->
 			def actualValue
 			switch (name) {
@@ -478,31 +472,31 @@ class NonEmptyNavigator extends AbstractNavigator {
 		result
 	}
 
-	private boolean matches(String actualValue, String requiredValue) {
+	protected boolean matches(String actualValue, String requiredValue) {
 		actualValue == requiredValue
 	}
 
-	private boolean matches(String actualValue, Pattern requiredValue) {
+	protected boolean matches(String actualValue, Pattern requiredValue) {
 		actualValue ==~ requiredValue
 	}
 
-	private boolean matches(String actualValue, TextMatcher matcher) {
+	protected boolean matches(String actualValue, TextMatcher matcher) {
 		matcher.matches(actualValue)
 	}
 
-	private boolean matches(Collection<String> actualValue, String requiredValue) {
+	protected boolean matches(Collection<String> actualValue, String requiredValue) {
 		requiredValue in actualValue
 	}
 
-	private boolean matches(Collection<String> actualValue, Pattern requiredValue) {
+	protected boolean matches(Collection<String> actualValue, Pattern requiredValue) {
 		actualValue.any { it ==~ requiredValue }
 	}
 
-	private boolean matches(Collection<String> actualValue, TextMatcher matcher) {
+	protected boolean matches(Collection<String> actualValue, TextMatcher matcher) {
 		actualValue.any { matcher.matches(it) }
 	}
 
-	private getInputValues(Collection<WebElement> inputs) {
+	protected getInputValues(Collection<WebElement> inputs) {
 		def values = []
 		inputs.each { WebElement input ->
 			def value = getInputValue(input)
@@ -511,7 +505,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		return values.size() < 2 ? values[0] : values
 	}
 
-	private getInputValue(WebElement input) {
+	protected getInputValue(WebElement input) {
 		def value = null
 		def type = input.getAttribute("type")
 		if (input.tagName == "select") {
@@ -535,13 +529,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 		value
 	}
 
-	private void setInputValues(Collection<WebElement> inputs, value) {
+	protected void setInputValues(Collection<WebElement> inputs, value) {
 		inputs.each { WebElement input ->
 			setInputValue(input, value)
 		}
 	}
 
-	private void setInputValue(WebElement input, value) {
+	protected void setInputValue(WebElement input, value) {
 		if (input.tagName == "select") {
 			setSelectValue(input, value)
 		} else if (input.getAttribute("type") == "checkbox") {
@@ -564,7 +558,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
-	private getValue(WebElement input) {
+	protected getValue(WebElement input) {
 		if (input == null) {
 			return null
 		}
@@ -577,7 +571,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
-	private setSelectValue(WebElement element, value) {
+	protected setSelectValue(WebElement element, value) {
 		def select = new SelectFactory().createSelectFor(element)
 
 		if (value == null || (value instanceof Collection && value.empty)) {
@@ -616,7 +610,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 	}
 
-	private String labelFor(WebElement input) {
+	protected String labelFor(WebElement input) {
 		def id = input.getAttribute("id")
 		def labels = browser.driver.findElements(By.xpath("//label[@for='$id']"))
 		if (!labels) {
@@ -630,11 +624,11 @@ class NonEmptyNavigator extends AbstractNavigator {
 	 * According to the spec WebElement.getAttribute should return the Strings "true" or "false"
 	 * however ChromeDriver and HtmlUnitDriver will return "" or null.
 	 */
-	private boolean getBooleanAttribute(WebElement input, String attribute) {
+	protected boolean getBooleanAttribute(WebElement input, String attribute) {
 		!(input.getAttribute(attribute) in [null, false, "false"])
 	}
 
-	private WebElement firstElementInContext(Closure closure) {
+	protected WebElement firstElementInContext(Closure closure) {
 		def result = null
 		for (int i = 0; !result && i < contextElements.size(); i++) {
 			try {
@@ -644,7 +638,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		result
 	}
 
-	private List<WebElement> collectElements(Closure closure) {
+	protected List<WebElement> collectElements(Closure closure) {
 		List<WebElement> list = []
 		contextElements.each {
 			try {
@@ -661,7 +655,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		list
 	}
 
-	private Collection<WebElement> collectUntil(Collection<WebElement> elements, String selectorString) {
+	protected Collection<WebElement> collectUntil(Collection<WebElement> elements, String selectorString) {
 		int index = elements.findIndexOf { CssSelector.matches(it, selectorString) }
 		index == -1 ? elements : elements[0..<index]
 	}

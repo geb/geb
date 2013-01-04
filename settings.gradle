@@ -8,6 +8,7 @@ include "module:geb-core",
         "module:geb-testng",
         "module:geb-easyb",
         "module:geb-implicit-assertions",
+        "module:geb-ast",
         "doc:manual",
         "doc:site-app"
 
