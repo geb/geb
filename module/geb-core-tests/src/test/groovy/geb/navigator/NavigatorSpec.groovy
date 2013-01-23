@@ -748,6 +748,28 @@ class NavigatorSpec extends GebSpec {
 		"multiple_select" | ["2", "4"]
 	}
 
+	def "the value of a textarea should be its current value after the user changed it"() {
+		expect: "text() and value() to be the same on load"
+		$(form).textext == initialContent
+		$(textarea).text() == initialContent
+		$(textarea).value() == initialContent
+
+		when: 'the user changes the contents'
+		$(textarea).value(newContent)
+
+		// Note that text() at this point returns $newContent in HtmlUnit, but still
+		// $initialContent at least in Firefox and Chrome.
+		then: "the value() has changed"
+		$(form).textext == newContent
+		$(textarea).value() == newContent
+
+		where:
+		form = "form"
+		textarea = "textarea[name=textext]"
+		initialContent = "The textarea content."
+		newContent = "New textarea content."
+	}
+
 	@Issue("http://jira.codehaus.org/browse/GEB-57")
 	def "the value of '#fieldName' when empty should be '#expectedValue'"() {
 		given: "the input has an empty value"

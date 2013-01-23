@@ -482,7 +482,7 @@ We can select the radios with…
 
 #### text inputs and textareas
 
-In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` becomes the text.
+In the case of a text `input` or `textarea`, the assigned value becomes the input's *value* attribute.
 
 It is also possible to append text by using the send keys shorthand…
 
@@ -501,7 +501,9 @@ Which an also be used for non character keys…
     $("form").postcode() << Keys.BACK_SPACE
     assert $("form").postcode == "1234"
 
-> Note that WebDriver has some issues with textareas and surrounding whitespace. Namely, some drivers implicit trim whitespace from the beginning and end of the value. You can track this issue here: http://code.google.com/p/selenium/issues/detail?id=2131
+> Note that WebDriver has some inconsistencies regarding textareas:
+>  1. Some drivers implicitly trim whitespace from the beginning and end of the value. You can track this issue here: http://code.google.com/p/selenium/issues/detail?id=2131
+>  2. Some drivers return the initial value (i.e. the contents of the HTML tag) when calling `getText()` while others return the value attribute.
 
 #### file upload
 
