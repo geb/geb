@@ -7,7 +7,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath "markdown2book:markdown2book:1.0-SNAPSHOT"
+		classpath "org.gebish:markdown2book:1.0"
 	}
 }
 
