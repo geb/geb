@@ -50,6 +50,7 @@ This page lists the high level changes between versions of Geb.
 * Handling of `select` elements has been reworked to be far more efficient \[[GEB-229](http://jira.codehaus.org/browse/GEB-229)\].
 * Modules support accessing base attributes' values using @attributeName notation \[[GEB-237](http://jira.codehaus.org/browse/GEB-237)\].
 * Use of text matchers in module base definitions is supported \[[GEB-241](http://jira.codehaus.org/browse/GEB-241)\].
+* the `value` for a textarea used to be specially handled to return the same as `.text()`. This did not take into account changes made after DOM load, i.e. input by the user or changed through JavaScript, depending on the driver used.
 
 #### Breaking Changes
 
