@@ -1,13 +1,9 @@
 buildscript {
 	repositories {
-		mavenRepo (name: "Alkemist's GitHub", url: "http://cloud.github.com/downloads/alkemist") {
-			pattern = "[organisation]/[module]-[revision].[ext]"
-		}
-		mavenRepo name: "scala-tools", url: "http://scala-tools.org/repo-releases"
 		mavenCentral()
 	}
 	dependencies {
-		classpath "markdown2book:markdown2book:1.0-SNAPSHOT"
+		classpath "org.gebish:markdown2book:1.0"
 	}
 }
 
