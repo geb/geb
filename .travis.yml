@@ -1,4 +1,4 @@
 language: groovy
 jdk:
   - oraclejdk7
-script: "./gradlew check | tee"
+script: "./gradlew check -s"
