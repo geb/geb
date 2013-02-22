@@ -99,7 +99,7 @@ There is a Gradle example project available.
 
 ## Maven
 
-Using Geb with Gradle simply involves pulling in the appropriate dependencies, and configuring the base URL and reports dir in the build script if they are necessary.
+Using Geb with Maven simply involves pulling in the appropriate dependencies, and configuring the base URL and reports dir in the build script if they are necessary.
 
 Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
 
