@@ -97,10 +97,10 @@ class Wait {
 	 * again after the {@code retryInterval} has expired. If the last invocation of {@code block} throws an exception
 	 * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
 	 */
-	def waitFor(Closure block) {
+	public <T> T waitFor(Closure<T> block) {
 		def stopAt = calculateTimeoutFromNow()
 		def pass
-		def thrown
+		def thrown = null
 		
 		try {
 			pass = block()
@@ -127,8 +127,8 @@ class Wait {
 		if (!pass && timedOut) {
 			throw new WaitTimeoutException(this, thrown, pass)
 		}
-		
-		pass
+
+		pass as T
 	}
 	
 	/**
