@@ -14,9 +14,9 @@
  */
 package geb.content
 
+import geb.Module
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
-import geb.Module
 
 class PageContentTemplateFactoryDelegate {
 
@@ -25,7 +25,7 @@ class PageContentTemplateFactoryDelegate {
 	private template
 	private args
 	
-	private PageContentTemplateFactoryDelegate(PageContentTemplate template, Object[] args) {
+	PageContentTemplateFactoryDelegate(PageContentTemplate template, Object[] args) {
 		this.template = template
 		this.args = args
 	}
