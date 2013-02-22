@@ -14,18 +14,15 @@
  */
 package geb
 
-import geb.js.JavascriptInterface
 import geb.driver.RemoteDriverOperations
-
+import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
-
 import geb.error.UnexpectedPageException
-
+import geb.js.JavascriptInterface
+import geb.navigator.factory.NavigatorFactory
+import org.openqa.selenium.NoSuchWindowException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
-import org.openqa.selenium.NoSuchWindowException
-import geb.navigator.factory.NavigatorFactory
-import geb.error.NoNewWindowException
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
@@ -46,19 +43,19 @@ class Browser {
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
 	 */
 	@Lazy WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
-	
+
 	/**
 	 * Create a new browser with a default configuration loader, loading the default configuration file.
-	 * 
+	 *
 	 * @see geb.ConfigurationLoader
 	 */
 	Browser() {
 		this(new ConfigurationLoader().conf)
 	}
-	
+
 	/**
 	 * Create a new browser backed by the given configuration.
-	 * 
+	 *
 	 * @see geb.Configuration
 	 */
 	Browser(Configuration config) {
@@ -67,7 +64,7 @@ class Browser {
 
 	/**
 	 * Creates a new browser instance backed by the given configuration, then applies {@code props} as property overrides on the browser.
-	 * 
+	 *
 	 * @see geb.Configuration
 	 */
 	Browser(Map props, Configuration config) {
@@ -87,19 +84,19 @@ class Browser {
 
 		this.page
 	}
-	
+
 	/**
 	 * Provides access to the configuration object assoicated with this browser.
 	 */
 	Configuration getConfig() {
 		this.config
 	}
-	
+
 	/**
 	 * The driver implementation used to automate the actual browser.
 	 * <p>
 	 * The driver implementation to use is determined by the configuration.
-	 * 
+	 *
 	 * @see geb.Configuration#getDriver()
 	 */
 	WebDriver getDriver() {
@@ -140,19 +137,19 @@ class Browser {
 	void setDriver(WebDriver driver) {
 		config.driver = driver
 	}
-	
+
 	/**
 	 * The url to resolve all relative urls against. Typically the root of the application or system
 	 * Geb is interacting with.
 	 * <p>
 	 * The base url is determined by the configuration.
-	 * 
+	 *
 	 * @see geb.Configuration#getBaseUrl()
 	 */
 	String getBaseUrl() {
 		config.baseUrl
 	}
-	
+
 	/**
 	 * Changes the base url used for resolving relative urls.
 	 * <p>
@@ -161,13 +158,13 @@ class Browser {
 	void setBaseUrl(String baseUrl) {
 		config.baseUrl = baseUrl
 	}
-	
+
 	/**
 	 * Allows new page change listeners to be registered with this browser.
 	 * <p>
 	 * This method will immediately call the {@link geb.PageChangeListener#pageWillChange(geb.Browser, geb.Page, geb.Page)} method on
 	 * {@code listener} with the current page as the {@code newPage} argument and {@code null} for the {@code oldPage} argument.
-	 * 
+	 *
 	 * @throws geb.error.PageChangeListenerAlreadyRegisteredException if the listener is already registered.
 	 * @see geb.PageChangeListener
 	 */
@@ -178,16 +175,16 @@ class Browser {
 			throw new PageChangeListenerAlreadyRegisteredException(this, listener)
 		}
 	}
-	
+
 	/**
 	 * Removes the given page change listener.
-	 * 
+	 *
 	 * @return whether or not the listener was actually registered or not.
 	 */
 	boolean removePageChangeListener(PageChangeListener listener) {
 		pageChangeListeners.remove(listener)
 	}
-	
+
 	/**
 	 * Delegates the method call directly to the current page object.
 	 */
@@ -201,14 +198,14 @@ class Browser {
 	def propertyMissing(String name) {
 		getPage()."$name"
 	}
-	
+
 	/**
 	 * Delegates the property assignment directly to the current page object.
 	 */
 	def propertyMissing(String name, value) {
 		getPage()."$name" = value
-	}	
-	
+	}
+
 	/**
 	 * Changes the browser's page to be an instance of the given class.
 	 * <p>
@@ -242,7 +239,7 @@ class Browser {
 	 *	 <li>If the page's at checker is not successful:
 	 *	 <ul>
 	 *	   <li>Try the next potential
-	 */ 
+	 */
 	void page(Class<? extends Page>[] potentialPageClasses) {
 		def potentialPageClassesClone = potentialPageClasses.toList()
 		def match = null
@@ -252,7 +249,7 @@ class Browser {
 				match = potential
 			}
 		}
-		
+
 		if (match) {
 			makeCurrentPage(match)
 		} else {
@@ -262,8 +259,8 @@ class Browser {
 
 	/**
 	 * Sets this browser's page to be the given page after initializing it.
-	 * 
-	 * 
+	 *
+	 *
 	 * @see #page(Class)
 	 */
 	void page(Page page) {
@@ -281,7 +278,7 @@ class Browser {
 	 *
 	 * @return a page instance of the given page type when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
-	Page at(Class<? extends Page> pageType) {
+	public <T extends Page> T at(Class<T> pageType) {
 		doAt(createPage(pageType))
 	}
 
@@ -297,7 +294,7 @@ class Browser {
 	 *
 	 * @return the page instance the method is called with when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
-	Page at(Page page) {
+	public <T extends Page> T at(T page) {
 		doAt(page)
 	}
 
@@ -353,7 +350,7 @@ class Browser {
 		}
 	}
 
-	private Page initialisePage(Page page) {
+	private <T extends Page> T initialisePage(T page) {
 		if (!page.browser.is(this)) {
 			page.init(this)
 		}
@@ -363,7 +360,7 @@ class Browser {
 	/**
 	 * Runs a page's at checker, expecting the page to be initialised with this browser instance.
 	 */
-	private Page doAt(Page page) {
+	private <T extends Page> T doAt(T page) {
 		initialisePage(page)
 		def atResult = page.verifyAt()
 		if (atResult) {
@@ -380,7 +377,7 @@ class Browser {
 	void go() {
 		go([:], null)
 	}
-	
+
 	/**
 	 * Sends the browser to the configured {@link #getBaseUrl() base url}, appending {@code params} as
 	 * query parameters.
@@ -388,14 +385,14 @@ class Browser {
 	void go(Map params) {
 		go(params, null)
 	}
-	
+
 	/**
 	 * Sends the browser to the given url. If it is relative it is resolved against the {@link #getBaseUrl() base url}.
 	 */
 	void go(String url) {
 		go([:], url)
 	}
-	
+
 	/**
 	 * Sends the browser to the given url. If it is relative it is resolved against the {@link #getBaseUrl() base url}.
 	 */
@@ -415,7 +412,7 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	Page toAt(Class<? extends Page> pageType, Object[] args) {
+	public <T extends Page> T toAt(Class<T> pageType, Object[] args) {
 		toAt([:], pageType, args)
 	}
 
@@ -427,7 +424,7 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	Page toAt(Map params, Class<? extends Page> pageType) {
+	public <T extends Page> T toAt(Map params, Class<T> pageType) {
 		toAt(params, pageType, null)
 	}
 
@@ -439,12 +436,12 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	Page toAt(Map params, Class<? extends Page> pageType, Object[] args) {
+	public <T extends Page> T toAt(Map params, Class<T> pageType, Object[] args) {
 		to(params, pageType, args)
 		at(pageType)
 	}
 
-	
+
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 *
@@ -452,7 +449,7 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	Page to(Class<? extends Page> pageType, Object[] args) {
+	public <T extends Page> T to(Class<T> pageType, Object[] args) {
 		to([:], pageType, *args)
 	}
 
@@ -463,7 +460,7 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	Page to(Map params, Class<? extends Page> pageType) {
+	public <T extends Page> T to(Map params, Class<T> pageType) {
 		to(params, pageType, null)
 	}
 
@@ -474,12 +471,12 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	Page to(Map params, Class<? extends Page> pageType, Object[] args) {
+	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
 		def page = createPage(pageType)
 		page.to(params, *args)
 		page
 	}
-	
+
 	/**
 	 * Clears all cookies that the browser currently has.
 	 */
@@ -497,10 +494,10 @@ class Browser {
 			// ignore
 		}
 	}
-	
+
 	/**
 	 * Quits the driver.
-	 * 
+	 *
 	 * @see org.openqa.selenium.WebDriver#quit()
 	 */
 	void quit() {
@@ -509,9 +506,9 @@ class Browser {
 
 	/**
 	 * Closes the current driver window.
-	 * 
+	 *
 	 * @see org.openqa.selenium.WebDriver#close()
-	 */ 
+	 */
 	void close() {
 		driver.close()
 	}
@@ -646,26 +643,26 @@ class Browser {
 	def withNewWindow(Closure windowOpeningBlock, Closure block) {
 		withNewWindow([:], windowOpeningBlock, block)
 	}
-	
+
 	/**
 	 * Creates a new instance of the given page type and initialises it.
-	 * 
+	 *
 	 * @return The newly created page instance
 	 */
-	Page createPage(Class<? extends Page> pageType) {
+	public <T extends Page> T createPage(Class<T> pageType) {
 		if (!Page.isAssignableFrom(pageType)) {
 			throw new IllegalArgumentException("$pageType is not a subclass of ${Page}")
 		}
 		pageType.newInstance().init(this)
 	}
-	
+
 	/**
 	 * Returns a newly created javascript interface connected to this browser.
 	 */
 	JavascriptInterface getJs() {
 		new JavascriptInterface(this)
 	}
-	
+
 	/**
 	 * The directory that will be used for the {@link #report(java.lang.String) method}.
 	 * <p>
@@ -673,7 +670,7 @@ class Browser {
 	 * appending the current report group. The returned file object is guaranteed to exist on the filesystem.
 	 * <p>
 	 * If the current report group is {@code null}, this method returns the same as {@code config.reportsDir}.
-	 * 
+	 *
 	 * @see #reportGroup(java.lang.String)
 	 * @see #report(java.lang.String)
 	 */
@@ -682,33 +679,33 @@ class Browser {
 		if (reportsDir == null) {
 			throw new IllegalStateException("No reports dir has been configured, you need to set in the config file or via the build adapter.")
 		}
-		
+
 		def reportGroupDir = reportGroup ? new File(reportsDir, reportGroup) : reportsDir
 		if (!(reportGroupDir.mkdirs() || reportGroupDir.exists())) {
 			throw new IllegalStateException("Could not create report group dir '${reportGroupDir}'")
 		}
-		
+
 		reportGroupDir
 	}
-	
+
 	/**
 	 * Sets the "group" for all subsequent reports, which is the relative path inside the reports dir that reports will be written to.
-	 * 
+	 *
 	 * @param path a <strong>relative</strong> path, or {@code null} to have reports written to the base reports dir
 	 */
 	void reportGroup(String path) {
 		reportGroup = path
 	}
-	
+
 	/**
 	 * Sets the report group to be the full name of the class, replacing "." with "/".
-	 * 
+	 *
 	 * @see #reportGroup(String)
 	 */
 	void reportGroup(Class clazz) {
 		reportGroup(clazz.name.replace('.', '/'))
 	}
-	
+
 	/**
 	 * Removes the directory returned by {@link #getReportGroupDir()} from the filesystem if it exists.
 	 */
@@ -720,34 +717,34 @@ class Browser {
 			}
 		}
 	}
-	
+
 	/**
 	 * Writes a snapshot of the browser's state to the current {@link #getReportGroupDir()} using
 	 * the {@link geb.Configuration#getReporter() config's reporter}.
-	 * 
+	 *
 	 * @param label The name for the report file (should not include a file extension)
 	 */
 	void report(String label) {
 		config.reporter.writeReport(this, label, getReportGroupDir())
 	}
-	
+
 	private informPageChangeListeners(Page oldPage, Page newPage) {
 		pageChangeListeners*.pageWillChange(this, oldPage, newPage)
 	}
-	
+
 	private String toQueryString(Map params) {
 		if (params) {
 			params.collect { name, value ->
 				def values = value instanceof Collection ? value : [value]
 				values.collect { v ->
-					"${URLEncoder.encode(name.toString(), "UTF-8")}=${URLEncoder.encode(v.toString(), "UTF-8")}" 
+					"${URLEncoder.encode(name.toString(), "UTF-8")}=${URLEncoder.encode(v.toString(), "UTF-8")}"
 				}
 			}.flatten().join("&")
 		} else {
 			""
 		}
 	}
-	
+
 	private String getBaseUrlRequired() {
 		def baseUrl = getBaseUrl()
 		if (baseUrl == null) {
@@ -755,7 +752,7 @@ class Browser {
 		}
 		baseUrl
 	}
-	
+
 	private String calculateUri(String path, Map params) {
 		def uri
 		if (path) {
@@ -766,7 +763,7 @@ class Browser {
 		} else {
 			uri = new URI(getBaseUrlRequired())
 		}
-		
+
 		def queryString = toQueryString(params)
 		if (queryString) {
 			def joiner = uri.query ? '&' : '?'
@@ -779,7 +776,7 @@ class Browser {
 	/**
 	 * Creates a new browser object via the default constructor and executes the closure
 	 * with the browser instance as the closure's delegate.
-	 * 
+	 *
 	 * @return the created browser
 	 */
 	static Browser drive(Closure script) {
@@ -789,26 +786,26 @@ class Browser {
 	/**
 	 * Creates a new browser with the configuration and executes the closure
 	 * with the browser instance as the closure's delegate.
-	 * 
+	 *
 	 * @return the created browser
 	 */
 	static Browser drive(Configuration conf, Closure script) {
 		drive(new Browser(conf), script)
 	}
-	
+
 	/**
 	 * Creates a new browser with the properties and executes the closure
 	 * with the browser instance as the closure's delegate.
-	 * 
+	 *
 	 * @return the created browser
 	 */
 	static Browser drive(Map browserProperties, Closure script) {
 		drive(new Browser(browserProperties), script)
 	}
-	
+
 	/**
 	 * Executes the closure with browser as its delegate.
-	 * 
+	 *
 	 * @return browser
 	 */
 	static Browser drive(Browser browser, Closure script) {
