@@ -2,7 +2,7 @@ apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
 
 allprojects { project ->
-	version = '1.0.0-SNAPSHOT'
+	version = '0.9.0-SNAPSHOT'
 	group = 'org.gebish'
 	
 	ext {
