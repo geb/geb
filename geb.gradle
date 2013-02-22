@@ -8,8 +8,8 @@ allprojects { project ->
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")
 
-		seleniumVersion = "2.26.0"
-		groovyVersion = "1.8.6"
+		seleniumVersion = "2.29.1"
+		groovyVersion = "1.8.9"
 		spockVersion = "0.7-groovy-1.8"
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
@@ -137,10 +137,8 @@ subprojects {
 			}
 		}
 		
-		ext.poms = [project.install.repositories.mavenInstaller.pom]
-
 		uploadArchives { task ->
-			project.poms << repositories.mavenDeployer {
+			repositories.mavenDeployer {
 				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 				uniqueVersion = false
 				gradle.taskGraph.whenReady { taskGraph ->
@@ -153,10 +151,8 @@ subprojects {
 						}
 					}
 				}
-			}.pom
+			}
 		}
-		
-		project.poms*.whenConfigured { applyPomMods(it) }
 	}
 }
 
