@@ -26,6 +26,8 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Alexander Zolotov](http://github.com/zolotov) - TestNG Integration
 * [Christoph Neuroth](http://c089.wordpress.com/) - Various fixes and patches
 * [Antony Jones](http://www.desirableobjects.co.uk/) - Various fixes and patches, doc improvements
+* [Jan-Hendrik Peters](http://hennr.name/imprint/) - Doc improvements
+* [Tomás Lin](http://fbflex.wordpress.com/) - Doc improvements
 
 ## History
 
