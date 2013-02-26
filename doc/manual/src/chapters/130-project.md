@@ -42,6 +42,7 @@ This page lists the high level changes between versions of Geb.
 * New variants of `withFrame()` method that allow to switch into frame context and change the page in one go and also automatically change it back to the original page after the call, see [switching pages and frames at once][switch-frame-and-page] in the manual \[[GEB-213](http://jira.codehaus.org/browse/GEB-213)\].
 * `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_newly_opened_windows) for more information \[[GEB-167](http://jira.codehaus.org/browse/GEB-167)\].
 * Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class \[[GEB-240](http://jira.codehaus.org/browse/GEB-240)\].
+* Improved signature of `Browser.at()` and `Browser.to()` to return the exact type of the page that was asserted to be at / was navigated to.
 
 #### Fixes
 
