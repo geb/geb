@@ -24,6 +24,7 @@ task tokeniseManual(type: Copy) {
 		"geb-version": project.version,
 		"geb-group": project.group,
 		"spock-version": "0.7",
+		"spock-core-version": "0.7-groovy-1.8",
 		"selenium-version": seleniumVersion,
 		"groovy-version": groovyVersion,
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
