@@ -96,7 +96,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 
 ### Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to(java.lang.Class, Object[]\)) and [`via()`](api/geb/Browser.html#via(java.lang.Class, Object[]\)) methods.
 
     class SignupPage extends Page {
         static url = "signup"
@@ -108,7 +108,7 @@ Page objects (discussed further shortly) can define a url that will be used when
         assert page instanceof SignupPage
     }
 
-The `to()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` call.
+The `to()` and `via()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` or `via()` call.
 
 > See the section on [Advanced Page Navigation][page-navigation] for more information on how to use more complicated URL resolution for pages.
 
@@ -173,9 +173,7 @@ These methods are not typically used explicitly but are used by the `to()` metho
 
 ## At checking
 
-Browser objects have an [`at(Class pageType)`](api/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type.
-
-Pages define an [“at checker”][page-at] that the browser uses for this test.
+Pages define an [“at checker”][page-at] that the browser uses for checking if it is pointing at a given page.
 
     class SignupPage extends Page {
         static at = {
@@ -185,23 +183,22 @@ Pages define an [“at checker”][page-at] that the browser uses for this test.
     
     Browser.drive {
         to SignupPage
-        at SignupPage
     }
-
-The `at SignupPage` method call will either return true or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
 
 > Not using explicit `return` statements in “at” checkers is preffered. Geb transforms all “at” checkers so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see evaluated values of your “at” checker if it fails. See the [“at checker”][page-at] section for more details.
 
-It's a good idea to use an at check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
+The `to()` method that takes a single page type **verifies** that the the browser ends up at the given type. If the request may initiate a redirect and take the browser to a different page you should use `via()` method:
 
-The `to()` method that takes a single page type **does not** verify that the the browser ends up at the given type. This is because the request may initiate a redirect and take the browser to a different page. For example…
-
-    Browser.drive {
-        to SecurePage
+	Browser.drive {
+        via SecurePage
         at AccessDeniedPage
     }
 
-It's very common to see an at check directly after a `to()` call. If you wish to go to a page and verify it's at checker in one go you can use [`toAt()`](api/geb/Browser.html#toAt(java.lang.Class, java.lang.Object\)) method.
+Browser objects have an [`at(Class pageType)`](api/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type.
+
+The `at AccessDeniedPage` method call will either return a page instance or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
+
+It's a good idea to always use `to()` method or use `via()` together an `at()` check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
 
 Pages can also define content that declares what the browser's page type should change to when that content is clicked. It's advised to use an at check after clicking on such content (see the DSL reference for the [`to`](pages.html#to) parameter).
 
@@ -219,12 +216,11 @@ Pages can also define content that declares what the browser's page type should 
     
     Browser.drive {
         to LoginPage
-        at LoginPage
         loginButton.click()
         at AdminPage
     }
 
-The `at()` method will also update the browser's page instance to the given page type (or the given page instance, depending on which version of the method is used) if its at checker is successful.
+The `at()` method will also update the browser's page instance to the given page type if its at checker is successful.
  
 ## Page change listening
 

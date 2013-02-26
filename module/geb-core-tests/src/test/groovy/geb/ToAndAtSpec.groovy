@@ -53,7 +53,7 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 	def "verify at checking works"() {
 		when:
-		to ToAndAtSpecPageA
+		via ToAndAtSpecPageA
 		and:
 		at ToAndAtSpecPageB
 
@@ -75,7 +75,7 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 	def "verify isAt() works"() {
 		when:
-		to ToAndAtSpecPageA
+		via ToAndAtSpecPageA
 
 		then:
 		isAt ToAndAtSpecPageA
@@ -98,9 +98,9 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 
 	@Unroll
-	def "verify toAt() asserts that we are at the expected page - #scenario"() {
+	def "verify to() asserts that we are at the expected page - #scenario"() {
 		when:
-		toAt(*args)
+		to(*args)
 
 		then:
 		PowerAssertionError error = thrown()
@@ -115,9 +115,9 @@ class ToAndAtSpec extends GebSpecWithServer {
 	}
 
 	@Unroll
-	def "verify toAt() succeeds when we are at the expected page - #scenario"() {
+	def "verify to() succeeds when we are at the expected page - #scenario"() {
 		when:
-		def newPage = toAt(*args)
+		def newPage = to(*args)
 
 		then:
 		notThrown(PowerAssertionError)
@@ -132,9 +132,9 @@ class ToAndAtSpec extends GebSpecWithServer {
 	}
 
 	@Unroll
-	def "to() returns a page instance - #scenario"() {
+	def "via() returns a page instance - #scenario"() {
 		expect:
-		to(*args) in args.find { it instanceof Class }
+		via(*args) in args.find { it instanceof Class }
 
 		where:
 		scenario      | args
@@ -146,7 +146,7 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 	def 'at() returns an instance of a page if it succeeds'() {
 		when:
-		to ToAndAtSpecPageA
+		via ToAndAtSpecPageA
 
 		then:
 		at(ToAndAtSpecPageA) in ToAndAtSpecPageA

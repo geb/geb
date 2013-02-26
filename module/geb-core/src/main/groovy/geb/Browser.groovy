@@ -381,8 +381,8 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	public <T extends Page> T toAt(Class<T> pageType, Object[] args) {
-		toAt([:], pageType, args)
+	public <T extends Page> T to(Class<T> pageType, Object[] args) {
+		to([:], pageType, args)
 	}
 
 	/**
@@ -393,8 +393,8 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	public <T extends Page> T toAt(Map params, Class<T> pageType) {
-		toAt(params, pageType, null)
+	public <T extends Page> T to(Map params, Class<T> pageType) {
+		to(params, pageType, null)
 	}
 
 	/**
@@ -405,8 +405,8 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 * @see #at(geb.Page)
 	 */
-	public <T extends Page> T toAt(Map params, Class<T> pageType, Object[] args) {
-		to(params, pageType, args)
+	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
+		via(params, pageType, args)
 		at(pageType)
 	}
 
@@ -418,8 +418,8 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	public <T extends Page> T to(Class<T> pageType, Object[] args) {
-		to([:], pageType, *args)
+	public <T extends Page> T via(Class<T> pageType, Object[] args) {
+		via([:], pageType, *args)
 	}
 
 	/**
@@ -429,8 +429,8 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	public <T extends Page> T to(Map params, Class<T> pageType) {
-		to(params, pageType, null)
+	public <T extends Page> T via(Map params, Class<T> pageType) {
+		via(params, pageType, null)
 	}
 
 	/**
@@ -440,7 +440,7 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(Map, Object[])
 	 */
-	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
+	public <T extends Page> T via(Map params, Class<T> pageType, Object[] args) {
 		def page = createPage(pageType)
 		page.to(params, *args)
 		page

@@ -61,7 +61,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 	def "verify the Page API works"() {
 		when:
-		to PageOrientedSpecPageA
+		via PageOrientedSpecPageA
 
 		then:
 		at PageOrientedSpecPageA
@@ -177,11 +177,11 @@ class PageOrientedSpec extends GebSpecWithServer {
 	@Issue("http://jira.codehaus.org/browse/GEB-139")
 	def "convertToPath should not introduce slashes were it should not"() {
 		when: 'we go to the page by specifying the parameter manually'
-		to ConvertPage, theParam: "foo"
+		via ConvertPage, theParam: "foo"
 		def manual = $('#uri').text()
 
 		and: 'using the convertToPath method'
-		to ConvertPage, 'foo'
+		via ConvertPage, 'foo'
 		def converted = $('#uri').text()
 
 		then: 'the results are the same'

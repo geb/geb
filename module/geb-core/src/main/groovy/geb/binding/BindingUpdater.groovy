@@ -28,7 +28,7 @@ class BindingUpdater {
 	protected final PageChangeListener pageChangeListener
 	
 	static public final FORWARDED_BROWSER_METHODS = [
-		"go", "to", "at", 
+		"go", "to", "via", "at",
 		"waitFor",
 		"withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
 		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
