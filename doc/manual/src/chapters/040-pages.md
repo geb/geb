@@ -413,7 +413,7 @@ The `verifyAt()` method is used by the browser `at()` method which also returns 
 
 At checkers are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
-If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely(\)), [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt(java.lang.Class\)) and [`Browser#isAt(Page)`](api/geb/Browser.html#isAt(geb.Page\))
+If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely(\)) and [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt(java.lang.Class\)).
 
 As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
 

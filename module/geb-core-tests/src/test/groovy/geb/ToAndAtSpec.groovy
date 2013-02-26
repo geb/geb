@@ -144,18 +144,12 @@ class ToAndAtSpec extends GebSpecWithServer {
 		'call with parameter and map' | [[showB: true], ToAndAtSpecPageB, true]
 	}
 
-	@Unroll
-	def 'at( #scenario ) returns an instance of a page if it succeeds'() {
+	def 'at() returns an instance of a page if it succeeds'() {
 		when:
 		to ToAndAtSpecPageA
 
 		then:
-		at(page) in ToAndAtSpecPageA
-
-		where:
-		scenario | page
-		'Class'  | ToAndAtSpecPageA
-		'Page'   | new ToAndAtSpecPageA()
+		at(ToAndAtSpecPageA) in ToAndAtSpecPageA
 	}
 }
 

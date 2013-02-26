@@ -283,22 +283,6 @@ class Browser {
 	}
 
 	/**
-	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it
-	 * and throws an AssertionError if not.
-	 *
-	 * If the given page at checker is successful, this browser object's page instance is updated
-	 * to the one the method is called with and that page instance is also returned.
-	 * <p>
-	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
-	 * are enabled (which they are by default). This method will only ever return the page instance the method is called with or throw an {@link AssertionError}.
-	 *
-	 * @return the page instance the method is called with when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
-	 */
-	public <T extends Page> T at(T page) {
-		doAt(page)
-	}
-
-	/**
 	 * Checks if the browser is at the given page by running the at checker for this page type, suppressing assertion errors.
 	 *
 	 * If the at checker is successful, this browser object's page instance is updated the one the method is called with.
@@ -310,22 +294,7 @@ class Browser {
 	 * @return true if browser is at the given page otherwise false
 	 */
 	boolean isAt(Class<? extends Page> pageType) {
-		isAt(createPage(pageType))
-	}
-
-	/**
-	 * Checks if the browser is at the current page by running the at checker for the given page after initializing it, suppressing assertion errors.
-	 *
-	 * If the at checker is successful, this browser object's page instance is updated to the new instance of the given page type.
-	 *
-	 * If the at check throws an {@link AssertionError}
-	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
-	 * are enabled) this method will suppress the exception and return false.
-
-	 * @return true if browser is at the given page otherwise false
-	 */
-	boolean isAt(Page page) {
-		initialisePage(page)
+		def page = initialisePage(createPage(pageType))
 		def isAt = page.verifyAtSafely()
 		if (isAt) {
 			makeCurrentPage(page)
@@ -341,7 +310,7 @@ class Browser {
 	 * <p>
 	 */
 	private void makeCurrentPage(Page page) {
-		if (!page.is(getPage())) {
+		if (page.getClass() != getPage().getClass()) {
 			informPageChangeListeners(getPage(), page)
 			getPage().onUnload(page)
 			def previousPage = getPage()

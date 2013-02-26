@@ -59,6 +59,7 @@ This page lists the high level changes between versions of Geb.
 * `at()` and `toAt()` methods on `Browser` now return a page instance if they succeed and `to()` method always returns a page instance \[[GEB-217](http://jira.codehaus.org/browse/GEB-217)\].
 * `withFrame()` calls that don't take a page argument now change the browser page to what it was before the call, after the call \[[GEB-222](http://jira.codehaus.org/browse/GEB-222)\].
 * due to performance improvements duplicate elements are not removed when creating new `Navigator`s anymore; the new `unique()` method on `Navigator` can be used to remove duplicates if needed \[[GEB-223](http://jira.codehaus.org/browse/GEB-223)\].
+* `at(Page)` and `isAt(Page)` methods on `Browser` have been removed as they were inconsistent with the rest of the API \[[GEB-242](http://jira.codehaus.org/browse/GEB-242)\].
 
 ### 0.7.2
 
