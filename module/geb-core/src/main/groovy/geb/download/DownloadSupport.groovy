@@ -56,6 +56,7 @@ class DownloadSupport {
 		def url = resolveUrl(options)
 		def connection = url.openConnection()
 		applyCookies(connection, browser)
+		browser.config.getDownloadConfig()?.call(connection)
 		connection
 	}
 
