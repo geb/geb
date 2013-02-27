@@ -2,7 +2,7 @@
 
 Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time. Reporters are implementations of the [`Reporter`](api/geb/report/Reporter.html) interface. Geb ships with two implementations; [`PageSourceReporter`](api/geb/report/PageSourceReporter.html) and [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotAndPageSourceReporter.html) (the default). There are three bits of configuration that pertain to reporting; the [reporter](configuration.html#reporter) implementation, the [reports directory](configuration.html#reports_dir) and whether to [only report test failures](configuration.html#report_test_failures_only) or not.
 
-You take a report by calling the [`report(String label)`](api/geb/Browser.html#report(java.lang.String\)) method on the browser object.
+You take a report by calling the [`report(String label)`](api/geb/Browser.html#report\(java.lang.String\)) method on the browser object.
 
     Browser.drive {
         go "http://google.com"
@@ -20,7 +20,7 @@ Assuming that we configured a `reportsDir` of “`reports/geb`”, after running
 
 ## The report group
 
-The configuration mechanism allows you to specify the base `reportsDir` which is where reports are written to by default. It is also possible to change the [report group](api/geb/Browser.html#reportGroup(java.lang.String\)) to a relative path inside this directory.
+The configuration mechanism allows you to specify the base `reportsDir` which is where reports are written to by default. It is also possible to change the [report group](api/geb/Browser.html#reportGroup\(java.lang.String\)) to a relative path inside this directory.
 
     Browser.drive {
         reportGroup "google"
@@ -53,6 +53,6 @@ Geb does not automatically clean the reports dir for you. It does however provid
         report "home page"
     }
 
-The [`cleanReportGroupDir()`](api/geb/Browser.html#cleanReportGroupDir(\)) method will remove whatever the reports group dir is set to at the time. If it cannot do this it will throw an exception.
+The [`cleanReportGroupDir()`](api/geb/Browser.html#cleanReportGroupDir\(\)) method will remove whatever the reports group dir is set to at the time. If it cannot do this it will throw an exception.
 
 > The Spock, JUnit and TestNG test integrations **do** automatically clean the reports dir for you, see the [section in the testing chapter](testing.html#reporting) on these integrations.
