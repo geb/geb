@@ -563,12 +563,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 			return null
 		}
 
-		def tag = input.tagName
-		if (tag == "textarea") {
-			input.text
-		} else {
-			input.getAttribute('value')
-		}
+		input.getAttribute('value')
 	}
 
 	protected setSelectValue(WebElement element, value) {
