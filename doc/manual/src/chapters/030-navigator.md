@@ -511,9 +511,13 @@ It's currently not possible with WebDriver to simulate the process of a user cli
     
     $("form").csvFile = "/path/to/my/file.csv"
 
-## WebElements, Actions, and Interact Closures
+## Complex Interactions
 
-A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the contained WebElements via the following methods on navigator objects:
+WebDriver supports interactions that are more complex than simply clicking or typing into items, such as dragging. You can use this API from Geb, or use the more Geb friendly `interact {}` DSL (explained below).
+
+### Using the WebDriver API directly
+
+A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the contained `WebElement`s via the following methods on navigator objects:
 
     WebElement firstElement()
     WebElement lastElement()
@@ -529,6 +533,8 @@ Create an Actions instance after obtaining the WebDriver driver:
 
 Next, use methods of Actions to compose a series of UI actions, then call build() to create a concrete Action:
 
+    import org.openqa.selenium.Keys
+    
     WebElement someItem = $('li.clicky').firstElement()
     def shiftDoubleClickAction = actions.keyDown(Keys.SHIFT).doubleClick(someItem).keyUp(Keys.SHIFT).build()
 
@@ -538,18 +544,19 @@ Finally, call perform() to actually trigger the desired mouse or keyboard behavi
 
 ### Using Interact Closures
 
-To cut down on the amount of typing required, use an interact closure instead of using class Actions explicitly.  When using an interact closure, an Actions instance is implicitly created, built into an Action, and performed.
-As an added bonus, Geb Navigators can be passed directly to Actions methods within an interact closure.
+To cut down on the amount of typing required, use an interact closure instead of using class `Actions` explicitly.  When using an interact closure, an `Actions` instance is implicitly created, built into an Action, and performed. As an added bonus, Geb navigators can be passed directly to `Actions` methods within an interact closure.
 
 This interact closure performs the same work as the calls in the 'Using Actions' section:
 
+    import org.openqa.selenium.Keys
+    
     interact {
         keyDown(Keys.SHIFT)
         doubleClick($('li.clicky'))
         keyUp(Keys.SHIFT)
     }
 
-This method creates code that is more readable than using Actions directly.
+This method creates code that is more readable than using `Actions` directly.
 
 For the full list of available interactions, see the documentation for the WebDriver [Actions](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html) class.
 
@@ -567,7 +574,7 @@ clickAndHold, moveByOffset, and then release will drag and drop an element on th
         release()
     }
 
-Drag-and-dropping can also be accomplished using the dragAndDropBy convenience method from the Actions API:
+Drag-and-dropping can also be accomplished using the `dragAndDropBy` convenience method from the Actions API:
 
     interact {
         dragAndDropBy($('#element'), 400, -150)
@@ -581,11 +588,13 @@ In this particular example the element will be clicked then dragged 400 pixels t
 
 Control-clicking several elements, such as items in a list, is performed the same way as shift-clicking.
 
+    import org.openqa.selenium.Keys
+    
     interact {
         keyDown(Keys.CONTROL)
-        click($('ul.multiselect li', text:'Order 1'))
-        click($('ul.multiselect li', text:'Order 2'))
-        click($('ul.multiselect li', text:'Order 3'))
+        click($('ul.multiselect li', text: 'Order 1'))
+        click($('ul.multiselect li', text: 'Order 2'))
+        click($('ul.multiselect li', text: 'Order 3'))
         keyUp(Keys.CONTROL)
     }
 
