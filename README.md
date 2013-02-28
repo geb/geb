@@ -1,4 +1,4 @@
-Geb (pronounced “jeb”) is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
+Geb (pronounced “jeb”) is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language.
 
 For more information about the project, see the [http://www.gebish.org](http://www.gebish.org/).
 
@@ -22,7 +22,7 @@ Geb documentation comes in two forms; the manual and the api (i.e. the Groovydoc
 
 #### The Manual
 
-The manual project can be found at `doc/manual` within the project tree. The [Markdown](http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown") source files, HTML templates, CSS and Javascript that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [markdown2book](https://github.com/alkemist/markdown2book)).
+The manual project can be found at `doc/manual` within the project tree. The [Markdown](http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown") source files, HTML templates, CSS and Javascript that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [markdown2book](https://github.com/geb/markdown2book)).
 
 Most documentation contributions are simply modifications to these files.
 
