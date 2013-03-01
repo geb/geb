@@ -2,6 +2,8 @@ Geb (pronounced “jeb”) is a browser automation solution. It brings together 
 
 For more information about the project, see the [http://www.gebish.org](http://www.gebish.org/).
 
+[![Build Status](https://drone.io/github.com/geb/geb/status.png)](https://drone.io/github.com/geb/geb/latest)
+
 ## How to contribute
 
 ### Build Environment

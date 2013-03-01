@@ -26,6 +26,8 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Alexander Zolotov](http://github.com/zolotov) - TestNG Integration
 * [Christoph Neuroth](http://c089.wordpress.com/) - Various fixes and patches
 * [Antony Jones](http://www.desirableobjects.co.uk/) - Various fixes and patches, doc improvements
+* [Jan-Hendrik Peters](http://hennr.name/imprint/) - Doc improvements
+* [Tomás Lin](http://fbflex.wordpress.com/) - Doc improvements
 
 ## History
 
@@ -35,11 +37,12 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
-* New `toAt()` method that changes the page on the browser and verifies the at checker of that page in one method call \[[GEB-1](http://jira.codehaus.org/browse/GEB-1)\].
+* New `via()` method that behaves the same way as `to()` behaved previously - it sets the page on the browser and does not verify the at checker of that page\[[GEB-249](http://jira.codehaus.org/browse/GEB-249)\].
 * It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom [`NavigatorFactory`](api/geb/navigator/factory/NavigatorFactory.html), see [this manual section](configuration.html#navigator_factory) for more information \[[GEB-96](http://jira.codehaus.org/browse/GEB-96)\].
 * New variants of `withFrame()` method that allow to switch into frame context and change the page in one go and also automatically change it back to the original page after the call, see [switching pages and frames at once][switch-frame-and-page] in the manual \[[GEB-213](http://jira.codehaus.org/browse/GEB-213)\].
 * `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_newly_opened_windows) for more information \[[GEB-167](http://jira.codehaus.org/browse/GEB-167)\].
 * Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class \[[GEB-240](http://jira.codehaus.org/browse/GEB-240)\].
+* Improved signature of `Browser.at()` and `Browser.to()` to return the exact type of the page that was asserted to be at / was navigated to.
 
 #### Fixes
 
@@ -53,10 +56,12 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking Changes
 
+* `to()` method now changes the page on the browser and verifies the at checker of that page in one method call \[[GEB-1](http://jira.codehaus.org/browse/GEB-1)\], \[[GEB-249](http://jira.codehaus.org/browse/GEB-249)\]; use `via()` if you need the old behaviour
 * `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present.
-* `at()` and `toAt()` methods on `Browser` now return a page instance if they succeed and `to()` method always returns a page instance \[[GEB-217](http://jira.codehaus.org/browse/GEB-217)\].
+* `at()` and `to()` methods on `Browser` now return a page instance if they succeed and `via()` method always returns a page instance \[[GEB-217](http://jira.codehaus.org/browse/GEB-217)\].
 * `withFrame()` calls that don't take a page argument now change the browser page to what it was before the call, after the call \[[GEB-222](http://jira.codehaus.org/browse/GEB-222)\].
 * due to performance improvements duplicate elements are not removed when creating new `Navigator`s anymore; the new `unique()` method on `Navigator` can be used to remove duplicates if needed \[[GEB-223](http://jira.codehaus.org/browse/GEB-223)\].
+* `at(Page)` and `isAt(Page)` methods on `Browser` have been removed as they were inconsistent with the rest of the API \[[GEB-242](http://jira.codehaus.org/browse/GEB-242)\].
 
 ### 0.7.2
 

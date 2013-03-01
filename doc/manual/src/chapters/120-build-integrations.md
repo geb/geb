@@ -78,7 +78,7 @@ Below is a valid Gradle `build.gradle` file for working with Geb for testing.
 
         // If using Spock, need to depend on geb-spock
         testCompile "@geb-group@:geb-spock:$gebVersion"
-        testCompile "org.spockframework:spock-core:@spock-version@"
+        testCompile "org.spockframework:spock-core:@spock-core-version@"
 
         // If using JUnit, need to depend on geb-junit (3 or 4)
         testCompile "@geb-group@:geb-junit4:$gebVersion"
@@ -99,7 +99,7 @@ There is a Gradle example project available.
 
 ## Maven
 
-Using Geb with Gradle simply involves pulling in the appropriate dependencies, and configuring the base URL and reports dir in the build script if they are necessary.
+Using Geb with Maven simply involves pulling in the appropriate dependencies, and configuring the base URL and reports dir in the build script if they are necessary.
 
 Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
 
@@ -127,7 +127,7 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-          <version>@spock-version@</version>
+          <version>@spock-core-version@</version>
           <scope>test</scope>
         </dependency>
         <dependency>

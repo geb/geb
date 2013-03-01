@@ -43,7 +43,7 @@ Wherever possible, you should strive to use the no-arg constructor and manage Ge
 
 ## The drive() method
 
-The Browser class features a static method, [`drive()`](api/geb/Browser.html#drive(groovy.lang.Closure\)), that makes Geb scripting a little more convenient.
+The Browser class features a static method, [`drive()`](api/geb/Browser.html#drive\(groovy.lang.Closure\)), that makes Geb scripting a little more convenient.
 
     Browser.drive {
         go "signup"
@@ -73,9 +73,9 @@ The `drive()` method always returns the browser object that was used, so if you 
 
 ### The base URL
 
-Browser instances maintain a [`baseUrl`](api/geb/Browser.html#getBaseUrl(\)) property that is used to resolve all non absolute URLs. 
+Browser instances maintain a [`baseUrl`](api/geb/Browser.html#getBaseUrl\(\)) property that is used to resolve all non absolute URLs.
 This value can come from [configuration](configuration.html#base_url) or can be 
-[explicitly set](api/geb/Browser.html#setBaseUrl(java.lang.String\)) on the browser.
+[explicitly set](api/geb/Browser.html#setBaseUrl\(java.lang.String\)) on the browser.
 
 Care must be taken with slashes when specifying both the base URL and the relative URL as trailing and leading slashes have significant meaning. The following table illustrates the resolution of different types of URLs.
 
@@ -96,7 +96,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 
 ### Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to(java.lang.Class, Object[]\)) methods.
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to\(java.lang.Class,%20Object[]\)) and [`via()`](api/geb/Browser.html#via\(java.lang.Class,%20Object[]\)) methods.
 
     class SignupPage extends Page {
         static url = "signup"
@@ -108,13 +108,13 @@ Page objects (discussed further shortly) can define a url that will be used when
         assert page instanceof SignupPage
     }
 
-The `to()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` call.
+The `to()` and `via()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` or `via()` call.
 
 > See the section on [Advanced Page Navigation][page-navigation] for more information on how to use more complicated URL resolution for pages.
 
 ### Direct
 
-You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb/Browser.html#go(\)) methods. The following examples use a baseUrl of “`http://myapp.com/`”.
+You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb/Browser.html#go\(\)) methods. The following examples use a baseUrl of “`http://myapp.com/`”.
 
     Browser.drive {
         // Go to the Base URL
@@ -129,7 +129,7 @@ You can also make a new request to a URL without setting or changing the page us
 
 ## The Page
 
-Browser instances hold a reference to a _page_. This page instance is retrievable via the [`page`](api/geb/Browser.html#getPage(\)) property. Initially, all browser instances have a page of type [`Page`](api/geb/Page.html) which provides the basic navigation functions and is the super class for all page objects. 
+Browser instances hold a reference to a _page_. This page instance is retrievable via the [`page`](api/geb/Browser.html#getPage\(\)) property. Initially, all browser instances have a page of type [`Page`](api/geb/Page.html) which provides the basic navigation functions and is the super class for all page objects.
 
 However, the page property is rarely accessed directly. The browser object will *forward* any method calls or property read/writes that it can't handle to the current page instance. 
 
@@ -165,19 +165,15 @@ Page objects are discussed in depth in the [pages](pages.html) chapter, which al
 
 We have already seen that that `to()` methods change the browser's page instance. It is also possible to change the page instance without initiating a new request with the `page()` methods.
 
-The [`page(Class pageType)`](api/geb/Browser.html#page(java.lang.Class\)) method allows you to change the page to a new instance of the given class. The class must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
+The [`page(Class pageType)`](api/geb/Browser.html#page\(java.lang.Class\)) method allows you to change the page to a new instance of the given class. The class must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
 
-The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker.
-
-The [`page(Page pageInstance)`](api/geb/Browser.html#page(geb.Page\)) method allows you to change the page to an already created \(most probably with parameters\) page instance. It is useful when you have a lot of just slightly different pages, you don't want to create a subclass for every one of them and you can express the difference in those pages by passing different parameters to the constructor of your [`Page`](api/geb/Page.html) subclass.
+The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker.
 
 These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the [`to` attribute of the Content DSL](pages.html#to) for more information about this). However, should you need to manually change the page type they are there.
 
 ## At checking
 
-Browser objects have an [`at(Class pageType)`](api/geb/Browser.html#at(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type. There is also an [`at(Page pageInstance)`](api/geb/Browser.html#at(geb.Page\)) version of the `at()` method available if you want to use page instances.
-
-Pages define an [“at checker”][page-at] that the browser uses for this test.
+Pages define an [“at checker”][page-at] that the browser uses for checking if it is pointing at a given page.
 
     class SignupPage extends Page {
         static at = {
@@ -187,23 +183,22 @@ Pages define an [“at checker”][page-at] that the browser uses for this test.
     
     Browser.drive {
         to SignupPage
-        at SignupPage
     }
-
-The `at SignupPage` method call will either return true or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
 
 > Not using explicit `return` statements in “at” checkers is preffered. Geb transforms all “at” checkers so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see evaluated values of your “at” checker if it fails. See the [“at checker”][page-at] section for more details.
 
-It's a good idea to use an at check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
+The `to()` method that takes a single page type **verifies** that the the browser ends up at the given type. If the request may initiate a redirect and take the browser to a different page you should use `via()` method:
 
-The `to()` method that takes a single page type **does not** verify that the the browser ends up at the given type. This is because the request may initiate a redirect and take the browser to a different page. For example…
-
-    Browser.drive {
-        to SecurePage
+	Browser.drive {
+        via SecurePage
         at AccessDeniedPage
     }
 
-It's very common to see an at check directly after a `to()` call. If you wish to go to a page and verify it's at checker in one go you can use [`toAt()`](api/geb/Browser.html#toAt(java.lang.Class, java.lang.Object\)) method.
+Browser objects have an [`at(Class pageType)`](api/geb/Browser.html#at\(java.lang.Class\)) method that tests whether or not the browser is currently at the type of page modeled by the given page object type.
+
+The `at AccessDeniedPage` method call will either return a page instance or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
+
+It's a good idea to always use `to()` method or use `via()` together an `at()` check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
 
 Pages can also define content that declares what the browser's page type should change to when that content is clicked. It's advised to use an at check after clicking on such content (see the DSL reference for the [`to`](pages.html#to) parameter).
 
@@ -221,12 +216,11 @@ Pages can also define content that declares what the browser's page type should 
     
     Browser.drive {
         to LoginPage
-        at LoginPage
         loginButton.click()
         at AdminPage
     }
 
-The `at()` method will also update the browser's page instance to the given page type (or the given page instance, depending on which version of the method is used) if its at checker is successful.
+The `at()` method will also update the browser's page instance to the given page type if its at checker is successful.
  
 ## Page change listening
 
@@ -251,7 +245,7 @@ You can remove remove a listener at any time…
 
     browser.removePageChangeListener(listener)
 
-The [`removePageChangeListener(PageChangeListener listener)`](api/geb/Browser.html#removePageChangeListener(geb.PageChangeListener\)) returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
+The [`removePageChangeListener(PageChangeListener listener)`](api/geb/Browser.html#removePageChangeListener\(geb.PageChangeListener\)) returns `true` if `listener` was registered and has now been removed, otherwise it returns `false`.
 
 Listeners cannot be registered twice. If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener trying to register, based on their `equals()` implementation) then a [`PageChangeListenerAlreadyRegisteredException`](api/geb/error/PageChangeListenerAlreadyRegisteredException.html) will be raised.
 
@@ -259,10 +253,10 @@ Listeners cannot be registered twice. If an attempt is made to register a listen
 
 When you're working with an application that opens new windows or tabs, for example when clicking on a link with a target attribute set, you can use `withWindow()` and `withNewWindow()` methods to execute code in the context of other windows.
 
-If you really need to know the name of the current window or all the names of open windows use [`getCurrentWindow()`](api/geb/Browser.html#getCurrentWindow(\)) and [`getAvailableWindows()`](api/geb/Browser.html#getAvailableWindows(\)) methods but `withWindow()` and `withNewWindow()` are the preferred methods when it comes to dealing with multiple windows.
+If you really need to know the name of the current window or all the names of open windows use [`getCurrentWindow()`](api/geb/Browser.html#getCurrentWindow\(\)) and [`getAvailableWindows()`](api/geb/Browser.html#getAvailableWindows\(\)) methods but `withWindow()` and `withNewWindow()` are the preferred methods when it comes to dealing with multiple windows.
 
 ### Switching context to already opened windows
-If you know the name of the window in which context you want to execute the code you can use [`withWindow(String windowName, Closure block)`](api/geb/Browser.html#withWindow(java.lang.String, groovy.lang.Closure\)). Given this html:
+If you know the name of the window in which context you want to execute the code you can use [`withWindow(String windowName, Closure block)`](api/geb/Browser.html#withWindow\(java.lang.String,%20groovy.lang.Closure\)). Given this html:
 
     <a href="http://www.gebish.org" target="myWindow">Geb</a>
 
@@ -273,7 +267,7 @@ This code passes:
         assert $('title').text() == 'Geb - Very Groovy Browser Automation'
     }
 
-If you don't know the name of the window but you know something about the content of the window you can use the [`withWindow(Closure specification, Closure block)`](api/geb/Browser.html#withWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. The first closure passed should return true for the window, or windows, you want to use as context. Note that if there is no window for which the window specification closure returns true then [`NoSuchWindowException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html) is thrown. So given:
+If you don't know the name of the window but you know something about the content of the window you can use the [`withWindow(Closure specification, Closure block)`](api/geb/Browser.html#withWindow\(groovy.lang.Closure,%20groovy.lang.Closure\)) method. The first closure passed should return true for the window, or windows, you want to use as context. Note that if there is no window for which the window specification closure returns true then [`NoSuchWindowException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html) is thrown. So given:
 
     <a href="http://www.gebish.org" target="_blank">Geb</a>
 
@@ -286,7 +280,7 @@ This code passes:
 
 ### Switching context to newly opened windows
 
-If you wish to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow(groovy.lang.Closure, groovy.lang.Closure\)) method. Given html as above the following will pass:
+If you wish to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow\(groovy.lang.Closure,%20groovy.lang.Closure\)) method. Given html as above the following will pass:
 
     withNewWindow({ $('a').click() }) {
         assert $('title').text() == 'Geb - Very Groovy Browser Automation'
@@ -296,7 +290,7 @@ Note that if the first parameter opens none or more than one window then [`NoNew
 
 #### Passing options when working with newly opened windows
 
-There are several options that can be passed to a [`withNewWindow()`](api/geb/Browser.html#withNewWindow(java.util.Map, groovy.lang.Closure, groovy.lang.Closure\)) call which make working with newly opened windows even simpler. The general syntax is:
+There are several options that can be passed to a [`withNewWindow()`](api/geb/Browser.html#withNewWindow\(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure\)) call which make working with newly opened windows even simpler. The general syntax is:
 
 	withNewWindow({ «window opening action» }, «option name»: «option value», ...) { «action executed within the context of the window» }
 
@@ -341,5 +335,5 @@ the following will pass:
 
 ## Quitting the browser
 
-The browser object has [`quit()`](api/geb/Browser.html#quit(\)) 
-and [`close()`](api/geb/Browser.html#close(\)) methods (that simply delegate to the underlying driver). See the section on [driver management](driver.html) for more information on when and why you need to quit the browser.
+The browser object has [`quit()`](api/geb/Browser.html#quit\(\))
+and [`close()`](api/geb/Browser.html#close\(\)) methods (that simply delegate to the underlying driver). See the section on [driver management](driver.html) for more information on when and why you need to quit the browser.

@@ -15,17 +15,21 @@
  */
 
 ext {
-	pomModifications = []
-	modifyPom = { pomModifications << it }
-	applyPomMods = { poms ->
-		poms.each { pom ->
-			pomModifications.each { mod ->
-				mod = mod.clone()
-				mod.delegate = pom
-				mod.resolveStrategy = Closure.DELEGATE_FIRST
-				mod(pom)
+	ext.poms = []
+	afterEvaluate {
+		poms*.whenConfigured { pom ->
+			pomModifications.each {
+				configure(pom, it)
 			}
 		}
+	}
+	pomModifications = []
+	modifyPom = { pomModifications << it }
+}
+
+tasks.withType(Upload) {
+	repositories.withType(org.gradle.api.artifacts.maven.MavenResolver) {
+		poms << it.pom
 	}
 }
 

@@ -2,14 +2,14 @@ apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
 
 allprojects { project ->
-	version = '1.0.0-SNAPSHOT'
+	version = '0.9.0-SNAPSHOT'
 	group = 'org.gebish'
 	
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")
 
 		seleniumVersion = "2.26.0"
-		groovyVersion = "1.8.6"
+		groovyVersion = "1.8.9"
 		spockVersion = "0.7-groovy-1.8"
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
@@ -137,10 +137,8 @@ subprojects {
 			}
 		}
 		
-		ext.poms = [project.install.repositories.mavenInstaller.pom]
-
 		uploadArchives { task ->
-			project.poms << repositories.mavenDeployer {
+			repositories.mavenDeployer {
 				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 				uniqueVersion = false
 				gradle.taskGraph.whenReady { taskGraph ->
@@ -153,14 +151,12 @@ subprojects {
 						}
 					}
 				}
-			}.pom
+			}
 		}
-		
-		project.poms*.whenConfigured { applyPomMods(it) }
 	}
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion "1.2"
+	gradleVersion "1.4"
 }
 

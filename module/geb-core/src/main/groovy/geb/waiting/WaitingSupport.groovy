@@ -21,6 +21,7 @@ import geb.Configuration
  * 
  * This is mixed into {@link geb.Page} and {@link geb.Module}.
  */
+@SuppressWarnings("GrMethodMayBeStatic")
 class WaitingSupport {
 
 	private final Configuration config
@@ -40,11 +41,11 @@ class WaitingSupport {
  	 * @see geb.Configuration#getWaitPreset(java.lang.String)
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
-	def waitFor(String waitPreset, Closure block) {
+	public <T> T waitFor(String waitPreset, Closure<T> block) {
 		waitFor([:], waitPreset, block)
 	}
 
-	def waitFor(Map params, String waitPreset, Closure block) {
+	public <T> T waitFor(Map params, String waitPreset, Closure<T> block) {
 		doWaitFor(params.message, config.getWaitPreset(waitPreset), block)
 	}
 	
@@ -58,11 +59,11 @@ class WaitingSupport {
 	 * @see geb.Configuration#getDefaultWait()
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
   	 */
-	def waitFor(Closure block) {
+	public <T> T waitFor(Closure<T> block) {
 		waitFor([:], block)
 	}
 
-	def waitFor(Map params, Closure block) {
+	public <T> T waitFor(Map params, Closure<T> block) {
 		doWaitFor(params.message, config.defaultWait, block)
 	}
 
@@ -76,11 +77,11 @@ class WaitingSupport {
 	 * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
-	def waitFor(Double timeout, Closure block) {
+	public <T> T waitFor(Double timeout, Closure<T> block) {
 		waitFor([:], timeout, block)
 	}
 
-	def waitFor(Map params, Double timeout, Closure block) {
+	public <T> T waitFor(Map params, Double timeout, Closure<T> block) {
 		doWaitFor(params.message, config.getWait(timeout), block)
 	}
 
@@ -95,15 +96,15 @@ class WaitingSupport {
 	 * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
 	 * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
 	 */
-	def waitFor(Double timeout, Double interval, Closure block) {
+	public <T> T waitFor(Double timeout, Double interval, Closure<T> block) {
 		waitFor([:], timeout, interval, block)
 	}
 
-	def waitFor(Map params, Double timeout, Double interval, Closure block) {
+	public <T> T waitFor(Map params, Double timeout, Double interval, Closure<T> block) {
 		doWaitFor(params.message, new Wait(timeout, interval), block)
 	}
 	
-	private doWaitFor(String customMessage, Wait wait, Closure block) {
+	private <T> T doWaitFor(String customMessage, Wait wait, Closure<T> block) {
 		wait.customMessage = customMessage
 		wait.waitFor(block)
 	}

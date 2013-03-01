@@ -1,13 +1,9 @@
 buildscript {
 	repositories {
-		mavenRepo (name: "Alkemist's GitHub", url: "http://cloud.github.com/downloads/alkemist") {
-			pattern = "[organisation]/[module]-[revision].[ext]"
-		}
-		mavenRepo name: "scala-tools", url: "http://scala-tools.org/repo-releases"
 		mavenCentral()
 	}
 	dependencies {
-		classpath "markdown2book:markdown2book:1.0-SNAPSHOT"
+		classpath "org.gebish:markdown2book:1.0"
 	}
 }
 
@@ -27,7 +23,8 @@ task tokeniseManual(type: Copy) {
 	ext.substitutionProperties = [
 		"geb-version": project.version,
 		"geb-group": project.group,
-		"spock-version": "0.5-groovy-1.7",
+		"spock-version": "0.7",
+		"spock-core-version": "0.7-groovy-1.8",
 		"selenium-version": seleniumVersion,
 		"groovy-version": groovyVersion,
 		"created-at": new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
@@ -93,7 +90,7 @@ task packageManual(type: Sync) {
 
 task openManual() {
 	doLast {
-		new java.awt.Desktop().browse(file("$compileManual.destination/index.html").toURI())
+		new java.awt.Desktop().browse(file("$packageManual.destinationDir/index.html").toURI())
 	}
 }
 
