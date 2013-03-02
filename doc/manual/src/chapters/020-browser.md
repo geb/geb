@@ -200,7 +200,7 @@ The `at AccessDeniedPage` method call will either return a page instance or thro
 
 It's a good idea to always use `to()` method or use `via()` together an `at()` check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
 
-Pages can also define content that declares what the browser's page type should change to when that content is clicked. It's advised to use an at check after clicking on such content (see the DSL reference for the [`to`](pages.html#to) parameter).
+Pages can also define content that declares what the browser's page type should change to when that content is clicked. After clicking on such content page is automatically at verified (see the DSL reference for the [`to`](pages.html#to) parameter).
 
     class LoginPage extends Page {
         static content = {

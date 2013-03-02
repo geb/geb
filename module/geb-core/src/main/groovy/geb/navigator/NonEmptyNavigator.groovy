@@ -2,6 +2,7 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
@@ -341,6 +342,17 @@ class NonEmptyNavigator extends AbstractNavigator {
 	Navigator click(Class<? extends Page> pageClass) {
 		click()
 		browser.page(pageClass)
+		def at = false
+		def error = null
+		try {
+			at = browser.verifyAt()
+		} catch (AssertionError e) {
+			error = e
+		} finally {
+			if (!at) {
+				throw new UnexpectedPageException(pageClass, error)
+			}
+		}
 		this
 	}
 

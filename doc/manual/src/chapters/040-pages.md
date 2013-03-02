@@ -252,7 +252,7 @@ The `to` option allows the definition of which page the browser will be sent to 
         assert at(HelpPage)
     }
 
-The `to` value will be implictly used as an argument to the content's `click()` method, effectively setting the new page type. See the section on [clicking content][clicking] for how this changes the browser's page object.
+The `to` value will be implicitly used as an argument to the content's `click()` method, effectively setting the new page type and verifying its at checker. See the section on [clicking content][clicking] for how this changes the browser's page object.
 
 The list variant can also be used…
 

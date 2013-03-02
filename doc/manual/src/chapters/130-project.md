@@ -56,12 +56,13 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking Changes
 
-* `to()` method now changes the page on the browser and verifies the at checker of that page in one method call \[[GEB-1](http://jira.codehaus.org/browse/GEB-1)\], \[[GEB-249](http://jira.codehaus.org/browse/GEB-249)\]; use `via()` if you need the old behaviour
+* `to(Class<? extends Page>)` method now changes the page on the browser and verifies the at checker of that page in one method call \[[GEB-1](http://jira.codehaus.org/browse/GEB-1)\], \[[GEB-249](http://jira.codehaus.org/browse/GEB-249)\]; use `via()` if you need the old behaviour
 * `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present.
 * `at()` and `to()` methods on `Browser` now return a page instance if they succeed and `via()` method always returns a page instance \[[GEB-217](http://jira.codehaus.org/browse/GEB-217)\].
 * `withFrame()` calls that don't take a page argument now change the browser page to what it was before the call, after the call \[[GEB-222](http://jira.codehaus.org/browse/GEB-222)\].
 * due to performance improvements duplicate elements are not removed when creating new `Navigator`s anymore; the new `unique()` method on `Navigator` can be used to remove duplicates if needed \[[GEB-223](http://jira.codehaus.org/browse/GEB-223)\].
 * `at(Page)` and `isAt(Page)` methods on `Browser` have been removed as they were inconsistent with the rest of the API \[[GEB-242](http://jira.codehaus.org/browse/GEB-242)\].
+* Navigator's `click(Class<? extends Page>)` and `to:` content option now verify page after switching to the new one to stay consistent with the new behaviour of `to(Class<? extends Page>)` \[[GEB-250](http://jira.codehaus.org/browse/GEB-250)\].
 
 ### 0.7.2
 

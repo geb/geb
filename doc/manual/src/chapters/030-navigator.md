@@ -256,7 +256,7 @@ For example…
 
     $("input.loginButton").click(LoginPage)
 
-Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)`.
+Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
 
 ## Determining Visibility
 

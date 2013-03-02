@@ -136,12 +136,31 @@ class PageOrientedSpec extends GebSpecWithServer {
 		notThrown(RequiredPageContentNotPresent)
 	}
 
+	def "clicking on content with to specified changes the page"() {
+		when:
+		to PageOrientedSpecPageA
+		link.click()
+		then:
+		page in PageOrientedSpecPageB
+	}
+
 	def "variant to should cycle through and select match"() {
 		when:
 		to PageOrientedSpecPageA
 		linkWithVariantTo.click()
 		then:
 		at PageOrientedSpecPageB
+	}
+
+	def "exception should be thrown when page specified in to is not the page we end up at"() {
+		when:
+		to PageOrientedSpecPageA
+		linkWithNotMatchingTo.click()
+
+		then:
+		UnexpectedPageException e = thrown()
+		e.message == "Page verification failed for page geb.PageOrientedSpecPageC after clicking an element"
+		e.cause in AssertionError
 	}
 
 	def "exception should be thrown when no to values match"() {
@@ -221,6 +240,7 @@ class PageOrientedSpecPageA extends Page {
 	static at = { link }
 	static content = {
 		link(to: PageOrientedSpecPageB) { $("#a") }
+		linkWithNotMatchingTo(to: PageOrientedSpecPageC) { $("#a") }
 		linkWithVariantTo(to: [PageOrientedSpecPageD, PageOrientedSpecPageC, PageOrientedSpecPageB]) { link }
 		linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
 		linkText { link.text().trim() }
