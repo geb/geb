@@ -35,7 +35,8 @@ class SauceConnect {
 			throw new InvalidUserDataException("No sauce labs username or passwords set")
 		}
 
-		tunnelProcess = new ProcessBuilder("java", "-jar", sauceConnectJar.absolutePath, account.username, account.accessKey).
+		def jvm = org.gradle.internal.jvm.Jvm.current()
+		tunnelProcess = new ProcessBuilder(jvm.javaExecutable.absolutePath, "-jar", sauceConnectJar.absolutePath, account.username, account.accessKey).
 			redirectErrorStream(true).
 			directory(workingDir).
 			start()
