@@ -1,131 +1,131 @@
 package geb.navigator
 
-import geb.textmatching.TextMatchingSupport
+import geb.test.CrossBrowser
+import geb.test.GebSpecWithServer
 import spock.lang.Issue
-import spock.lang.Shared
-import spock.lang.Unroll
 
-@Unroll
-class FindNavigatorSpec extends AbstractNavigatorSpec {
+@CrossBrowser
+class FindNavigatorSpec extends GebSpecWithServer {
 
-	@Shared textmatching = new TextMatchingSupport()
-
-	def "find('#selector') should return elements with #property of '#expected'"() {
+	def "find by selector"() {
 		given:
-		def navigator = $(selector)
-		expect: navigator*.@id == expected
+		html {
+			div(id: "idA", 'class': 'classA', "a")
+			div(id: "idB", 'class': 'classB', "b")
+		}
 
-		where:
-		selector                  | expected
-		"#sidebar form input"     | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"div#sidebar form input"  | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		".col-1 form input"       | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"div.col-1 form input"    | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"div#sidebar.col-1 input" | ["keywords", "site-1", "site-2", "site-3", "checker1", "checker2"]
-		"#header"                 | ["header"]
-		".col-3.module"           | ["navigation"]
-		".module.col-3"           | ["navigation"]
-		"#THIS_ID_DOES_NOT_EXIST" | []
-	}
-
-	def "find('#selector1').find('#selector2') should find #expectedSize elements"() {
 		expect:
-		$(selector1).find(selector2).size() == expectedSize
-
-		where:
-		selector1    | selector2 | expectedSize
-		"#container" | "#header" | 1
-		"#footer"    | "#header" | 0
+		$("#idA").text() == "a"
+		$(".classA").text() == "a"
+		$("#idB").text() == "b"
+		$(".classB").text() == "b"
+		$(".dontexist").empty
 	}
 
-	def "find('#selector') should find #expectedSize elements"() {
+	def "nested find"() {
+		given:
+		html {
+			div(id: "a") {
+				div(id: "b", "b")
+				div(id: "c", "c")
+			}
+		}
+
 		expect:
-		$(selector).size() == expectedSize
-
-		where:
-		selector                                | expectedSize
-		"#header  , #sidebar, #footer"          | 3
-		"div ol  , #sidebar   , blockquote,bdo" | 5 + 1 + 1 + 0
+		$("#a").find("#b").text() == "b"
+		$("#a").find("#c").text() == "c"
+		$("#a").find("#d").empty
 	}
 
-	def "find(#attributes) should find elements with the ids #expectedIds"() {
-		expect: $(attributes)*.@id == expectedIds
+	def "find by attributes"() {
+		given:
+		html {
+			div(a: "1", id: "id1")
+			div(a: "2", id: "id2")
+		}
 
-		where:
-		attributes                          | expectedIds
-		[name: "keywords"]                  | ["keywords"]
-		[name: ~/checker\d/]                | ["checker1", "checker2"]
-		[name: "site", value: "google"]     | ["site-1"]
-		[name: "DOES-NOT-EXIST"]            | []
-		[id: "container"]                   | ["container"]
-		[class: "article"]                  | ["article-1", "article-2", "article-3"]
-		[id: "article-1", class: "article"] | ["article-1"]
-		[id: "main", class: "article"]      | []
-		[class: "col-3 module"]             | ["navigation"]
-		[class: "module col-3"]             | ["navigation"]
-		[class: ~/col-\d/]                  | ["navigation", "content", "main", "sidebar"]
+		expect:
+		$(a: "1")*.@id == ["id1"]
+		$(a: "2")*.@id == ["id2"]
+		$(a: ~/\d/)*.@id == ["id1", "id2"]
+		$(a: ~/\d/, id: "id1")*.@id == ["id1"]
 	}
 
 	@Issue("http://jira.codehaus.org/browse/GEB-14")
 	def "find by attributes passing a class pattern should match any of the classes on an element"() {
-		expect: $(class: ~/col-\d/)*.@id == ["navigation", "content", "main", "sidebar"]
+		given:
+		html {
+			(1..3).each {
+				div('class': "col-$it", it)
+			}
+		}
+
+		expect:
+		$(class: ~/col-\d/)*.text() == ["1", "2", "3"]
 	}
 
-	def "find(text: '#text') should find #expectedSize elements"() {
-		expect: $(text: text).size() == expectedSize
+	def "find by node text"() {
+		given:
+		html {
+			p "a"
+			p "b"
+			p "c"
+		}
 
-		where:
-		text                            | expectedSize
-		"First paragraph of article 2." | 1
-		~/.*article 1\./                | 2
-		"DOES NOT EXIST"                | 0
+		expect:
+		$(text: "a")*.text() == ["a"]
+		$(text: "b")*.text() == ["b"]
+		$(text: ~/\w/)*.text() == ["a", "b", "c"]
 	}
 
-	def "find('#selector', #index) should find the element with the id '#expectedId'"() {
-		when:
-		def navigator = $(selector, index)
-		then:
-		navigator.size() == 1
-		navigator.@id == expectedId
+	def "selecting with index"() {
+		given:
+		html {
+			div('class': 'a', id: 'a')
+			div('class': 'b', id: 'b')
+			div('class': 'b', id: 'c')
+		}
 
-		where:
-		selector   | index | expectedId
-		".article" | 0     | "article-1"
-		".article" | 1     | "article-2"
-		".article" | 2     | "article-3"
-		".article" | -1    | "article-3"
+		expect:
+		$("div", 0)*.@id == ["a"]
+		$("div", 1)*.@id == ["b"]
+		$("div", -1)*.@id == ["c"]
 	}
 
-	def "find('#selector', #attributes) should find elements with the ids #expectedIds"() {
-		expect: $(attributes, selector)*.@id == expectedIds
+	def "find by selector and attribute"() {
+		given:
+		html {
+			div('class': 'a', name: 'a1', id: 'a1')
+			div('class': 'a', name: 'a2', id: 'a2')
+			div('class': 'b', name: 'b1', id: 'b1')
+			div('class': 'b', name: 'b2', id: 'b2')
+			div('class': 'c', name: 'c1', id: 'c1')
+			div('class': 'c', name: 'c2', id: 'c2')
+		}
 
-		where:
-		selector   | attributes                          | expectedIds
-		"input"    | [type: "checkbox"]                  | ["checker1", "checker2"]
-		"input"    | [name: "site"]                      | ["site-1", "site-2", "site-3"]
-		"input"    | [name: "site", value: "google"]     | ["site-1"]
-		"input"    | [name: ~/checker\d/]                | ["checker1", "checker2"]
-		"bdo"      | [name: "whatever"]                  | []
-		".article" | [:]                                 | ["article-1", "article-2", "article-3"]
-		"div"      | [id: "container"]                   | ["container"]
-		"div"      | [class: "article"]                  | ["article-1", "article-2", "article-3"]
-		"div"      | [id: "article-1", class: "article"] | ["article-1"]
-		"div"      | [id: "main", class: "article"]      | []
-		"div"      | [class: "col-3 module"]             | ["navigation"]
-		"div"      | [class: "module col-3"]             | ["navigation"]
-		"div"      | [class: ~/col-\d/]                  | ["navigation", "content", "main", "sidebar"]
+		expect:
+		$(".a", name: "a1")*.@id == ["a1"]
+		$(".b", name: "b2")*.@id == ["b2"]
+		$(".c", name: ~/c\d/)*.@id == ["c1", "c2"]
+		$(".c", name: "d")*.@id == []
 	}
 
-	def "find('#selector', text: '#text') should find #expectedSize elements"() {
-		expect: $(selector, text: text).size() == expectedSize
+	def "find by selector and text"() {
+		given:
+		html {
+			div('class': 'a', id: 'a1', 'a1')
+			div('class': 'a', id: 'a2', 'a2')
+			div('class': 'b', id: 'b1', 'b1')
+			div('class': 'b', id: 'b2', 'b2')
+			div('class': 'c', id: 'c1', 'c1')
+			div('class': 'c', id: 'c2', 'c2')
+		}
 
-		where:
-		selector | text                                   | expectedSize
-		"p"      | "First paragraph of article 2."        | 1
-		"p"      | ~/.*article 1\./                       | 2
-		"p"      | "DOES NOT EXIST"                       | 0
-		"p"      | textmatching.iContains("copyright")    | 1
-		"p"      | textmatching.iNotContains("copyright") | 9
+		expect:
+		$(".a", text: "a1")*.@id == ["a1"]
+		$(".b", text: "b2")*.@id == ["b2"]
+		$(".c", text: ~/c\d/)*.@id == ["c1", "c2"]
+		$(".c", text: "d")*.@id == []
 	}
 
 }

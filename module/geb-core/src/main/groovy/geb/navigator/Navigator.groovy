@@ -353,6 +353,10 @@ interface Navigator extends Iterable<Navigator> {
 
 	Navigator children(String selector)
 
+	/**
+	 * Selects the
+	 * @return
+	 */
 	Navigator siblings()
 
 	Navigator siblings(String selector)

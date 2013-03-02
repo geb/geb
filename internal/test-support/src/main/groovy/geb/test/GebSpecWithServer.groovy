@@ -67,4 +67,10 @@ class GebSpecWithServer extends GebSpec {
 			response.writer << html
 		}
 	}
+
+	void html(Closure html) {
+		responseHtml(html)
+		go server.baseUrl
+	}
+
 }

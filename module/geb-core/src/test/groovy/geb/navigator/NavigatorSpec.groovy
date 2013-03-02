@@ -325,4 +325,19 @@ class NavigatorSpec extends AbstractNavigatorSpec {
 		cleanup: navigator.value(initialValue)
 	}
 
+	def "size method"() {
+		given:
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
+
+		expect:
+		$("#a").size() == 1
+		$("#a,#b").size() == 2
+		$("#d").size() == 0
+	}
+
+
 }
