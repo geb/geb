@@ -14,8 +14,8 @@
  */
 package geb
 
-import geb.test.*
-import geb.page.error.*
+import geb.test.GebSpecWithServer
+import spock.lang.Unroll
 
 class UrlCalculationSpec extends GebSpecWithServer {
 
@@ -88,9 +88,5 @@ class UrlCalculationSpecPage extends Page {
 		requestPath(dynamic: true) { $("div.path").text() }
 		requestParams(dynamic: true) { $("div.params").text() }
 	}
-
-}
-
-class UrlCalculationSpecPageNoUrl extends UrlCalculationSpecPage {
 
 }

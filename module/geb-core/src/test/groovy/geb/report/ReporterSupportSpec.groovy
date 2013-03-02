@@ -16,6 +16,7 @@
 package geb.report
 
 import geb.Browser
+import spock.lang.Specification
 
 class ReporterSupportSpec extends Specification {
 	

@@ -14,8 +14,10 @@
  */
 package geb
 
-import geb.test.*
+import geb.test.CallbackHttpServer
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import spock.lang.Shared
+import spock.lang.Specification
 
 class DriveSpec extends Specification {
 

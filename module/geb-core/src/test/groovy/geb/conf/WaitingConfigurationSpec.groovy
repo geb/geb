@@ -18,6 +18,8 @@ package geb.conf
 
 import geb.Configuration
 import geb.waiting.Wait
+import spock.lang.Specification
+import spock.lang.Unroll
 
 class WaitingConfigurationSpec extends Specification {
 	

@@ -14,7 +14,9 @@
  */
 package geb.driver
 
-import org.openqa.selenium.remote.RemoteWebDriver
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.lang.Unroll
 
 class RemoteDriverOperationsSpec extends Specification {
 	

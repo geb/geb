@@ -14,7 +14,8 @@
  */
 package geb.textmatching
 
-import geb.test.GebSpec
+import spock.lang.Specification
+import spock.lang.Unroll
 
 class TextMatchingSupportSpec extends Specification {
 

@@ -15,7 +15,9 @@
 package geb
 
 import geb.error.InvalidPageContent
-import geb.test.*
+import geb.test.GebSpecWithServer
+import spock.lang.Issue
+import spock.lang.Unroll
 
 class ModulesSpec extends GebSpecWithServer {
 

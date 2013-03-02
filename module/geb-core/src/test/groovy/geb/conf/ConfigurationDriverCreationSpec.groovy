@@ -18,6 +18,8 @@ import geb.Configuration
 import geb.error.UnableToLoadAnyDriversException
 import geb.error.UnknownDriverShortNameException
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import spock.lang.Shared
+import spock.lang.Specification
 
 class ConfigurationDriverCreationSpec extends Specification {
 

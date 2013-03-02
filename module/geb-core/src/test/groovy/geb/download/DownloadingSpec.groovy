@@ -15,7 +15,8 @@
  */
 package geb.download
 
-import geb.test.*
+import geb.test.GebSpecWithServer
+import spock.lang.Unroll
 
 import javax.servlet.http.Cookie
 

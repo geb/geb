@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 package geb.waiting
+
+import spock.lang.Specification
+import spock.lang.Timeout
+
 /**
  * Tests the waiting algorithm, note that WaitingSupportSpec also tests Wait and covers many cases.
  */

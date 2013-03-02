@@ -19,6 +19,7 @@ import geb.BuildAdapter
 import geb.Configuration
 import geb.driver.CachingDriverFactory
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import spock.lang.Specification
 import spock.util.concurrent.BlockingVariable
 
 class DriverCachingSpec extends Specification {

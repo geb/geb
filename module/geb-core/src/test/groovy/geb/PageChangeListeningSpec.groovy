@@ -15,7 +15,9 @@
 package geb
 
 import geb.error.PageChangeListenerAlreadyRegisteredException
-import geb.test.*
+import geb.test.GebSpecWithServer
+import spock.lang.Shared
+import spock.lang.Stepwise
 
 @Stepwise
 class PageChangeListeningSpec extends GebSpecWithServer {

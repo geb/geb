@@ -18,6 +18,7 @@ package geb.conf
 import geb.ConfigurationLoader
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import spock.lang.Specification
 
 class ConfigurationLoaderSpec extends Specification {
 	

@@ -14,7 +14,8 @@
  */
 package geb
 
-import geb.test.*
+import geb.test.GebSpecWithServer
+import spock.lang.Stepwise
 
 @Stepwise
 class PageChangeCallbacksSpec extends GebSpecWithServer {

@@ -1,6 +1,7 @@
 package geb
 
 import geb.test.GebSpecWithServer
+import spock.lang.Unroll
 
 class ContentAccessShortcutsSpec extends GebSpecWithServer {
 

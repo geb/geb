@@ -17,6 +17,8 @@ package geb.conf
 
 import geb.Browser
 import geb.Configuration
+import spock.lang.Specification
+import spock.lang.Unroll
 
 class BaseUrlConfigurationSpec extends Specification {
 		
