@@ -1,7 +1,7 @@
 package geb.navigator
 
 import geb.Page
-import geb.test.GebSpec
+import geb.test.GebSpecWithServer
 import geb.textmatching.TextMatchingSupport
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -12,16 +12,18 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 @Unroll
-class NavigatorSpec extends GebSpec {
+class NavigatorSpec extends GebSpecWithServer {
 
-	@Shared testPageUrlString = getClass().getResource("/test.html") as String
 	@Shared textmatching = new TextMatchingSupport()
 
 	WebDriver driver
 
+	def setupSpec() {
+		responseHtml(getClass().getResource("/test.html").text)
+	}
 	def setup() {
 		driver = browser.driver
-		go testPageUrlString
+		go server.baseUrl
 	}
 
 	def "navigator with content coerces to true"() {
@@ -623,7 +625,7 @@ class NavigatorSpec extends GebSpec {
 		["div", 0]         | "id"      | "container"
 		["div div", 1]     | "id"      | "navigation"
 		["#article-1 div"] | "id"      | null
-		["#navigation a"]  | "href"    | testPageUrlString + "#home"
+		["#navigation a"]  | "href"    | server.baseUrl + "#home"
 		["bdo"]            | "id"      | null
 	}
 
@@ -635,7 +637,7 @@ class NavigatorSpec extends GebSpec {
 		["div", 0]         | "id"      | "container"
 		["div div", 1]     | "id"      | "navigation"
 		["#article-1 div"] | "id"      | null
-		["#navigation a"]  | "href"    | testPageUrlString + "#home"
+		["#navigation a"]  | "href"    | server.baseUrl + "#home"
 		["bdo"]            | "id"      | null
 	}
 
@@ -645,7 +647,7 @@ class NavigatorSpec extends GebSpec {
 		where:
 		selector        | mod          | attribute | expectedValue
 		"div"           | { it[0..4] } | "id"      | ["container", "header", "navigation", "content", "main"]
-		"#navigation a" | { it }       | "href"    | ["#home", "#about", "#contact"].collect { testPageUrlString + it }
+		"#navigation a" | { it }       | "href"    | ["#home", "#about", "#contact"].collect { server.baseUrl + it }
 		"bdo"           | { it }       | "id"      | []
 	}
 

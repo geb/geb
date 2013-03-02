@@ -16,13 +16,15 @@
 package geb.test
 
 import geb.Browser
-import spock.lang.*
-import javax.servlet.http.HttpServletResponse
 import groovy.xml.MarkupBuilder
+import spock.lang.Shared
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 class GebSpecWithServer extends GebSpec {
 
-	@Shared server
+	@Shared TestHttpServer server
 	
 	def setupSpec() {
 		server = new CallbackHttpServer()
@@ -43,7 +45,7 @@ class GebSpecWithServer extends GebSpec {
 	}
 
 	def responseHtml(Closure htmlMarkup) {
-		server.get = { request, response ->
+		server.get = { HttpServletRequest request, HttpServletResponse response ->
 			synchronized(this) { // MarkupBuilder has some static state, so protect
 				def writer = new OutputStreamWriter(response.outputStream)
 				new MarkupBuilder(writer).html {
@@ -57,6 +59,12 @@ class GebSpecWithServer extends GebSpec {
 				}
 				writer.flush()
 			}
+		}
+	}
+
+	def responseHtml(String html) {
+		server.get = { HttpServletRequest request, HttpServletResponse response ->
+			response.writer << html
 		}
 	}
 }
