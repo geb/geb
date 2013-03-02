@@ -1,19 +1,17 @@
 include "module:geb-core", 
-        "module:geb-core-tests", 
-        "module:test-support", 
         "module:geb-spock", 
         "module:geb-junit3", 
         "module:geb-junit4",
-        "module:geb-grails",
         "module:geb-testng",
         "module:geb-easyb",
         "module:geb-implicit-assertions",
         "module:geb-ast",
+		"internal:test-support",
+		"integration:geb-grails",
         "doc:manual",
-        "doc:site-app"
+        "doc:site"
 
 rootProject.name = 'geb'
-
 
 def setBuildFile(project) {
 	project.buildFileName = "${project.name}.gradle"

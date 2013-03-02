@@ -42,7 +42,7 @@ allprojects { project ->
 		}
 
 		groovyModules = [
-			":module:geb-core", ":module:geb-core-tests", ":module:test-support",
+			":module:geb-core", ":module:geb-core-tests", ":internal:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 			":module:geb-easyb", ":module:geb-testng", ":module:geb-implicit-assertions",
 			":module:geb-ast"
@@ -57,7 +57,7 @@ allprojects { project ->
 		publishedGroovyModules = groovyModules.findAll { it in publishedModules }
 		apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions"
 
-		grailsPluginModule = ":module:geb-grails"
+		grailsPluginModule = ":integration:geb-grails"
 	}
 }
 

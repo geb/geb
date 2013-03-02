@@ -1,0 +1,130 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: "gaelyk"
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'org.gradle.api.plugins:gradle-gaelyk-plugin:0.4.1'
+	}
+}
+
+ext.appEngineVersion = "1.7.1"
+
+dependencies {
+	groovy "org.codehaus.groovy:groovy-all:1.8.0"
+	
+	compile "org.gaelyk:gaelyk:1.1"
+
+	gaeSdk "com.google.appengine:appengine-java-sdk:$appEngineVersion"
+}
+
+gae {
+	optimizeWar = false
+	downloadSdk = true
+	appcfg {
+		if (project.hasProperty('gaeEmail')) {
+			email = gaeEmail
+		}
+	}
+}
+
+gaelyk {
+	rad = false
+}
+
+check.dependsOn = check.dependsOn.findAll { !(it in Test && it.name == 'gaeFunctionalTest') }
+
+ext {
+	// The version of manual to put under the “current” label
+	stableVersion = "0.7.2"
+
+	// The old versions of Geb we are including manuals for
+	oldManualVersions = ["0.6.0.RC1", "0.6.0", "0.6.1", "0.6.2", "0.6.3", "0.7.0", "0.7.1", "0.9.0-RC-1"]
+}
+
+def manualDependency = {
+	def versionMinor = it.split("\\.")[1].toInteger()
+	def group = versionMinor <= 7 ? "org.codehaus.geb" : "org.gebish"
+	"$group:geb-manual:$it@zip"
+}
+
+configurations {
+	currentManual
+	
+	oldManualVersions.each {
+		delegate."manual-$it"
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+	maven { url "https://oss.sonatype.org/content/repositories/releases" }
+}
+
+dependencies {
+	currentManual manualDependency(stableVersion)
+	
+	oldManualVersions.each {
+		delegate."manual-$it" manualDependency(it)
+	}
+}
+
+task configureWarManuals << {
+	configure(war) {
+		ext.explodeManual = { configuration, label ->
+			def artifacts = configuration.resolvedConfiguration.resolvedArtifacts.findAll {
+				it.name == "geb-manual" && it.type == "zip"
+			}.unique {
+				// sometimes there are two of the same artifact in the configuration
+				it.name
+			}
+
+			def size = artifacts.size()
+			assert size == 1 : "$configuration should have one manual artifact, not $size"
+			def artifactFile = artifacts.toList().first().file
+
+			assert artifactFile.exists()
+			into ("manual/$label") {
+				from zipTree(artifactFile)
+			}
+		}
+
+		oldManualVersions.each {
+			explodeManual(configurations["manual-$it"], it)
+		}
+		explodeManual(configurations.currentManual, stableVersion)
+		explodeManual(configurations.currentManual, "current")
+	}
+}
+
+evaluationDependsOn ":doc:manual"
+
+war {
+	dependsOn configureWarManuals
+
+	from (project(":doc:manual").packageManual) {
+		into("manual/snapshot")
+	}
+
+	def siteVersion = project.hasProperty("liveSite") ? stableVersion.replace(".", "-") : project.version.replace(".", "-").toLowerCase()
+	def properties = [version: siteVersion]
+
+	properties["geb.manual.oldManualVersions"] = oldManualVersions.reverse().join(',')
+	properties["geb.manual.currentManualVersion"] = stableVersion
+	properties["geb.manual.snapshotManualVersion"] = project.version
+
+	def filterableExtensions = ["xml", "properties"]
+	inputs.properties(properties)
+	inputs.property('filterableExtensions', filterableExtensions)
+	
+	eachFile { file ->
+		if (filterableExtensions.any { file.name.endsWith(it) }) {
+			file.filter(ReplaceTokens, tokens: properties)
+		}
+	}
+}

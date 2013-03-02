@@ -9,6 +9,18 @@ dependencies {
 	compile project(":module:geb-ast")
 }
 
+test {
+	maxParallelForks 2
+	if (driver == "htmlunit") {
+		exclude "**/ExoticAttributeValuesSpec.class"
+	}
+	crossBrowser.enable it
+}
+
+tasks.withType(Test).matching { it.hasProperty("crossBrowser") }.all {
+	maxParallelForks 3
+}
+
 modifyPom { pom ->
 	pom.project {
 		name "Geb Core"

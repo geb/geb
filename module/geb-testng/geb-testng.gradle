@@ -1,7 +1,5 @@
 dependencies {
-	compile project(':module:geb-core')
 	compile "org.testng:testng:6.0.1"
-	testCompile project(":module:test-support")
 }
 
 test {

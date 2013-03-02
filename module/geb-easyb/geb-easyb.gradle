@@ -1,11 +1,6 @@
 dependencies {
-	compile project(':module:geb-core')
 	compile ("org.easyb:easyb:0.9.7") {
 		exclude module: "groovy-all"
-	}
-	
-	testCompile(project(":module:test-support")) {
-		exclude module: "spock-core" // only need the test server
 	}
 }
 
