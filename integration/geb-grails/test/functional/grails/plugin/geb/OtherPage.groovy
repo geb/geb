@@ -15,6 +15,8 @@
  */
 package grails.plugin.geb
 
+import geb.*
+
 class OtherPage extends Page {
 	static url = "the/page"
 	static at = { div.text() == "page" }

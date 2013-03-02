@@ -15,6 +15,8 @@
  */
 package grails.plugin.geb
 
+import geb.*
+
 class IndexPage extends Page {
 	static url = "index"
 	static at = { div.text() == "index" }

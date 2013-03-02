@@ -15,6 +15,8 @@
  */
 package grails.plugin.geb
 
+import geb.Module
+
 class DivModule extends Module {
 
 	static base = { $() }
