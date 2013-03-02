@@ -1,0 +1,8 @@
+subprojects {
+	dependencies {
+		testCompile project(":internal:test-support")
+		if (!["geb-core", "geb-ast", "geb-implicit-assertions"].contains(project.name)) {
+			compile project(':module:geb-core')
+		}
+	}
+}
