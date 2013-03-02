@@ -125,6 +125,7 @@ class CrossBrowser {
 
 		browsers.all { BrowserSpec browser ->
 			project.task("${browser.displayName}Test", type: Test) { task ->
+				ext.crossBrowser = true
 				group crossBrowserTask.group
 				dependsOn openSauceTunnel
 				crossBrowserTask.dependsOn task

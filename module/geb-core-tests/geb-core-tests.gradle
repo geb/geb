@@ -25,3 +25,7 @@ test {
 	}
 	crossBrowser.enable it
 }
+
+tasks.withType(Test).matching { it.hasProperty("crossBrowser") }.all {
+	maxParallelForks 3
+}

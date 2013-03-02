@@ -15,14 +15,16 @@
  */
 package geb.test
 
-import geb.*
-import geb.report.*
-import spock.lang.*
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
-
+import geb.Browser
+import geb.Configuration
+import geb.ConfigurationLoader
+import geb.report.ReporterSupport
 import org.junit.Rule
 import org.junit.rules.TestName
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.lang.Stepwise
 
 class GebSpec extends Specification {
 
@@ -30,6 +32,7 @@ class GebSpec extends Specification {
 	String gebConfScript = null
 	
 	@Shared Browser _browser
+	@Shared boolean takeReports = true
 
 	// Ridiculous name to avoid name clashes
 	@Rule TestName _gebReportingSpecTestName
@@ -73,7 +76,9 @@ class GebSpec extends Specification {
 	}
 	
 	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter++, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
+		if (takeReports) {
+			browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter++, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
+		}
 	}
 	
 	def methodMissing(String name, args) {

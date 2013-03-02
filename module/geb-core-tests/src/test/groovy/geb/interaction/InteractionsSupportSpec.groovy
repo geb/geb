@@ -1,10 +1,11 @@
 package geb.interaction
 
-import geb.test.GebSpec
-import org.openqa.selenium.Keys
 import geb.Page
+import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
+import org.openqa.selenium.Keys
 
+@CrossBrowser
 class InteractionsSupportSpec extends GebSpecWithServer {
 
 	def setupSpec() {
