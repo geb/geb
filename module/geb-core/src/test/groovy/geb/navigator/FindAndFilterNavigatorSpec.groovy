@@ -5,7 +5,7 @@ import geb.test.GebSpecWithServer
 import spock.lang.Issue
 
 @CrossBrowser
-class FindNavigatorSpec extends GebSpecWithServer {
+class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 
 	def "find by selector"() {
 		given:
@@ -126,6 +126,22 @@ class FindNavigatorSpec extends GebSpecWithServer {
 		$(".b", text: "b2")*.@id == ["b2"]
 		$(".c", text: ~/c\d/)*.@id == ["c1", "c2"]
 		$(".c", text: "d")*.@id == []
+	}
+
+	def filter() {
+		given:
+		html {
+			div(id: "a", "a")
+			div(id: "b", "b")
+			div(id: "c", "c")
+		}
+
+		expect:
+		$("div").filter("#a")*.@id == ["a"]
+		$("div").filter("#a,#b")*.@id == ["a", "b"]
+		$("div").filter(id: "a")*.@id == ["a"]
+		$("div").filter(text: "a")*.@id == ["a"]
+		$("div").filter(text: ~/\w/)*.@id == ["a", "b", "c"]
 	}
 
 }
