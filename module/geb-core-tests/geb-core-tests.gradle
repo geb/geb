@@ -19,7 +19,7 @@ dependencies {
 }
 
 test {
-	maxParallelForks Math.max(2, (int) (Runtime.runtime.availableProcessors() / 2))
+	maxParallelForks Math.max(2, (int) Math.min(4, Math.ceil(Runtime.runtime.availableProcessors() / 2)))
 	if (driver == "htmlunit") {
 		exclude "**/ExoticAttributeValuesSpec.class"
 	}
