@@ -36,6 +36,7 @@ class SauceConnect {
 		}
 
 		def jvm = org.gradle.internal.jvm.Jvm.current()
+		workingDir.mkdirs()
 		tunnelProcess = new ProcessBuilder(jvm.javaExecutable.absolutePath, "-jar", sauceConnectJar.absolutePath, account.username, account.accessKey).
 			redirectErrorStream(true).
 			directory(workingDir).
