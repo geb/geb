@@ -1,9 +1,13 @@
+import geb.buildadapter.BuildAdapterFactory
 import org.openqa.selenium.Platform
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 
 testValue = true // used in a test in geb-core
-reportsDir = "build/geb"
+
+if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
+	reportsDir = "build/geb"
+}
 
 def sauceBrowserName = System.getProperty("geb.sauce.browser.name")
 if (sauceBrowserName) {

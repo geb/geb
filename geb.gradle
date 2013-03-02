@@ -3,6 +3,14 @@ apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
 apply from: "gradle/crossbrowser.gradle"
 
+if (project.hasProperty("ci")) {
+	allprojects {
+		plugins.withType(ReportingBasePlugin) {
+			reporting.baseDir = rootProject.file("$rootProject.buildDir/reports/$project.name")
+		}
+	}
+}
+
 allprojects { project ->
 	version = '0.9.0-SNAPSHOT'
 	group = 'org.gebish'
@@ -72,6 +80,7 @@ subprojects {
 		test {
 			ext.driver = project.properties["driver"] ?: "htmlunit"
 			systemProperty 'geb.dev.driver', driver
+			systemProperty 'geb.build.reportsDir', reporting.file("$name-geb")
 		}
 	}
 
