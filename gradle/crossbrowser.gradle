@@ -138,6 +138,8 @@ class CrossBrowser {
 				testResultsDir = project.reporting.file("crossBrowser/testResults/${browser.displayName}")
 				binResultsDir = project.reporting.file("crossBrowser/binResults/${browser.displayName}")
 
+				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
+
 				sauceAccount.configure(task)
 				browser.configure(task)
 			}

@@ -1,4 +1,4 @@
-
+apply plugin: 'base'
 apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
 apply from: "gradle/crossbrowser.gradle"
@@ -77,10 +77,15 @@ subprojects {
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 
-		test {
+		tasks.withType(Test) {
+			testResultsDir = reporting.file("test-results/$name")
+			testReportDir = reporting.file("test-reports/$name")
+			binResultsDir = reporting.file("$buildDir/test-results-bin/$name")
+
 			ext.driver = project.properties["driver"] ?: "htmlunit"
 			systemProperty 'geb.dev.driver', driver
-			systemProperty 'geb.build.reportsDir', reporting.file("$name-geb")
+
+			systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
 		}
 	}
 
