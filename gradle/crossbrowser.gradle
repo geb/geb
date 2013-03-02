@@ -1,0 +1,177 @@
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
+class SauceAccount {
+	public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
+	public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_KEY"
+
+	String getUsername() {
+		System.getenv(USER_ENV_VAR)
+	}
+
+	String getAccessKey() {
+		System.getenv(ACCESS_KEY_ENV_VAR)
+	}
+
+	void configure(Test test) {
+		test.environment USER_ENV_VAR, username
+		test.environment ACCESS_KEY_ENV_VAR, accessKey
+	}
+}
+
+class SauceConnect {
+	final protected SauceAccount account
+	final protected Logger logger
+
+	protected Process tunnelProcess
+
+	SauceConnect(SauceAccount account, Logger logger) {
+		this.account = account
+		this.logger = logger
+	}
+
+	void startTunnel(File sauceConnectJar, File workingDir) {
+		if (!account.username || !account.accessKey) {
+			throw new InvalidUserDataException("No sauce labs username or passwords set")
+		}
+
+		tunnelProcess = new ProcessBuilder("java", "-jar", sauceConnectJar.absolutePath, account.username, account.accessKey).
+			redirectErrorStream(true).
+			directory(workingDir).
+			start()
+
+		def latch = new CountDownLatch(1)
+		Thread.start {
+			tunnelProcess.inputStream.eachLine { String line ->
+				if (latch.count) {
+					logger.info "sauce-connect: $line"
+					if (line.endsWith("Connected! You may start your tests.")) {
+						latch.countDown()
+					}
+				} else {
+					logger.debug "sauce-connect: $line"
+				}
+			}
+		}
+
+		if (!latch.await(3, TimeUnit.MINUTES)) {
+			throw new RuntimeException("Timeout waiting for sauce tunnel to open (run with ")
+		}
+
+		addShutdownHook {
+			stopTunnel()
+		}
+	}
+
+	void stopTunnel() {
+		if (tunnelProcess) {
+			logger.info "disconnecting sauce labs tunnel"
+			tunnelProcess.destroy()
+		}
+	}
+}
+
+class BrowserSpec {
+	String name
+	
+	String browser
+	String platform
+	String version
+	
+	BrowserSpec(String name) {
+		this.name = name
+		String browserSpec = name
+		if (browserSpec) {
+			String[] split = browserSpec.split("_", 3)
+			browser = split[0]
+			if (split.size() > 1) {
+				platform = split[1]
+			}
+			if (split.size() > 2) {
+				version = split[2]
+			}
+		}
+	}
+	
+	String getDisplayName() {
+		"$browser${platform?.capitalize() ?: ""}${version?.capitalize() ?: ""}"
+	}
+
+	void configure(Test test) {
+		test.systemProperty "geb.sauce.browser.name", browser
+		test.systemProperty "geb.sauce.browser.platform", platform
+		test.systemProperty "geb.sauce.browser.version", version
+	}
+}
+
+class CrossBrowser {
+	SauceAccount sauceAccount
+	NamedDomainObjectContainer<BrowserSpec> browsers
+	Task openSauceTunnel
+
+	CrossBrowser(SauceAccount sauceAccount, NamedDomainObjectContainer<BrowserSpec> browsers, Task openSauceTunnel) {
+		this.sauceAccount = sauceAccount
+		this.browsers = browsers
+		this.openSauceTunnel = openSauceTunnel
+	}
+
+	void enable(Test test) {
+		Project project = test.project
+		def crossBrowserTask = project.task("allCrossBrowserTests") {
+			group "cross Browser Test"
+		}
+
+		browsers.all { BrowserSpec browser ->
+			project.task("${browser.displayName}Test", type: Test) { task ->
+				group crossBrowserTask.group
+				dependsOn openSauceTunnel
+				crossBrowserTask.dependsOn task
+
+				testClassesDir = test.testClassesDir
+				testSrcDirs = test.testSrcDirs
+				classpath = test.classpath
+
+				testReportDir = project.reporting.file("crossBrowser/testReport/${browser.displayName}")
+				testResultsDir = project.reporting.file("crossBrowser/testResults/${browser.displayName}")
+				binResultsDir = project.reporting.file("crossBrowser/binResults/${browser.displayName}")
+
+				sauceAccount.configure(task)
+				browser.configure(task)
+			}
+		}
+	}
+}
+
+repositories {
+	maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
+}
+
+configurations {
+	sauceConnect
+}
+
+dependencies {
+	sauceConnect "com.saucelabs:sauce-connect:3.0.24"
+}
+
+extensions.create("sauceAccount", SauceAccount)
+extensions.create("sauceConnect", SauceConnect, sauceAccount, logger)
+
+task openSauceTunnel << {
+	sauceConnect.startTunnel(configurations.sauceConnect.singleFile, buildDir)
+}
+
+gradle.addListener([buildFinished: { sauceConnect.stopTunnel() }] as BuildAdapter)
+
+extensions.browsers = container(BrowserSpec)
+extensions.create("crossBrowser", CrossBrowser, sauceAccount, browsers, openSauceTunnel)
+
+browsers {
+	firefox_linux {}
+	firefox_windows {}
+	firefox_mac {}
+	chrome_linux {}
+	chrome_windows {}
+	chrome_mac {}
+	internetExplorer_windows {}
+}

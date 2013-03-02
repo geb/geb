@@ -1,5 +1,7 @@
+
 apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
+apply from: "gradle/crossbrowser.gradle"
 
 allprojects { project ->
 	version = '0.9.0-SNAPSHOT'
@@ -11,6 +13,7 @@ allprojects { project ->
 		seleniumVersion = "2.26.0"
 		groovyVersion = "1.8.9"
 		spockVersion = "0.7-groovy-1.8"
+		usingSauce =
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
 			exclude module: "groovy-all"
@@ -66,10 +69,9 @@ subprojects {
 		sourceCompatibility = 1.5
 		targetCompatibility = 1.5
 
-		ext.driver = project.hasProperty("driver") ? driver : "htmlunit"
 		test {
-			systemProperties['geb.driver'] = driver
-			maxParallelForks Math.max(2, (int) (Runtime.runtime.availableProcessors() / 2))
+			ext.driver = project.properties["driver"] ?: "htmlunit"
+			systemProperty 'geb.dev.driver', driver
 		}
 	}
 

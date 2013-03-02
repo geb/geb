@@ -1,6 +1,7 @@
 package geb.navigator
 
 import geb.Page
+import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 import geb.textmatching.TextMatchingSupport
 import org.openqa.selenium.By
@@ -12,6 +13,7 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 @Unroll
+@CrossBrowser
 class NavigatorSpec extends GebSpecWithServer {
 
 	@Shared textmatching = new TextMatchingSupport()
