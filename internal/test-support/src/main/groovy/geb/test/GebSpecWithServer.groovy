@@ -47,17 +47,24 @@ class GebSpecWithServer extends GebSpec {
 	def responseHtml(Closure htmlMarkup) {
 		server.get = { HttpServletRequest request, HttpServletResponse response ->
 			synchronized(this) { // MarkupBuilder has some static state, so protect
-				def writer = new OutputStreamWriter(response.outputStream)
-				new MarkupBuilder(writer).html {
-					htmlMarkup.delegate = delegate
-					htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
-					if (htmlMarkup.maximumNumberOfParameters < 2) {
-						htmlMarkup(request)
-					} else {
-						htmlMarkup(request, response)
+				try {
+					response.setContentType("text/html")
+					response.setCharacterEncoding("utf8")
+					def writer = new OutputStreamWriter(response.outputStream, "utf8")
+					writer << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
+					new MarkupBuilder(writer).html {
+						htmlMarkup.delegate = delegate
+						htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
+						if (htmlMarkup.maximumNumberOfParameters < 2) {
+							htmlMarkup(request)
+						} else {
+							htmlMarkup(request, response)
+						}
 					}
+					writer.flush()
+				} catch (Exception e) {
+					e.printStackTrace()
 				}
-				writer.flush()
 			}
 		}
 	}
@@ -71,6 +78,17 @@ class GebSpecWithServer extends GebSpec {
 	void html(Closure html) {
 		responseHtml(html)
 		go server.baseUrl
+	}
+
+	void body(Closure bodyClosure) {
+		html {
+			head {}
+			delegate.body {
+				bodyClosure.delegate = delegate
+				bodyClosure.resolveStrategy = Closure.DELEGATE_FIRST
+				bodyClosure()
+			}
+		}
 	}
 
 }

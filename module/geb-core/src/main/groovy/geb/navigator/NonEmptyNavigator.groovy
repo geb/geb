@@ -571,16 +571,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	protected getValue(WebElement input) {
-		if (input == null) {
-			return null
-		}
-
-		def tag = input.tagName
-		if (tag == "textarea") {
-			input.text
-		} else {
-			input.getAttribute('value')
-		}
+		input?.getAttribute("value")
 	}
 
 	protected setSelectValue(WebElement element, value) {
@@ -612,7 +603,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		}
 
 		if (multiple) {
-			def selectedOptions = element.findElements(By.cssSelector("option[selected]"))
+			def selectedOptions = select.getAllSelectedOptions()
 			for (selectedOption in selectedOptions) {
 				if (!valueStrings.contains(selectedOption.getAttribute("value")) && !valueStrings.contains(selectedOption.text)) {
 					selectedOption.click()

@@ -371,5 +371,21 @@ class NavigatorSpec extends GebSpecWithServer {
 		$("#d").size() == 0
 	}
 
+	def "cannot read or set value of non existent control"() {
+		given:
+		html {}
+
+		when:
+		$().someFieldThatDoesNotExist
+
+		then:
+		thrown(MissingPropertyException)
+
+		when:
+		$().someFieldThatDoesNotExist = "foo"
+
+		then:
+		thrown(MissingPropertyException)
+	}
 
 }
