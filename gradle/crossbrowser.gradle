@@ -139,7 +139,7 @@ class CrossBrowser {
 			def testTask = project.task("${browser.displayName}Test", type: Test) { task ->
 				ext.crossBrowser = true
 				group crossBrowserTask.group
-				dependsOn openSauceTunnelInBackground
+				dependsOn openSauceTunnel
 				crossBrowserTask.dependsOn task
 
 				testClassesDir = test.testClassesDir
@@ -196,7 +196,7 @@ task openSauceTunnel << {
 gradle.addListener([buildFinished: { sauceConnect.stopTunnel() }] as BuildAdapter)
 
 extensions.browsers = container(BrowserSpec)
-extensions.create("crossBrowser", CrossBrowser, sauceAccount, browsers, openSauceTunnel)
+extensions.create("crossBrowser", CrossBrowser, sauceAccount, browsers, openSauceTunnelInBackground)
 
 browsers {
 	firefox_linux {}
