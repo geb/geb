@@ -15,11 +15,13 @@
  */
 package geb.navigator
 
+import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 
 /**
  * This test fails with htmlunit as it has issues with css selectors with special chars
  */
+@CrossBrowser
 class ExoticAttributeValuesSpec extends GebSpecWithServer {
 
 	def setupSpec() {

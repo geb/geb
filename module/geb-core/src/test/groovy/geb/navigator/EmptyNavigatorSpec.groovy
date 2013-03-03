@@ -17,8 +17,10 @@
 package geb.navigator
 
 import geb.Browser
+import geb.test.CrossBrowser
 import spock.lang.Specification
 
+@CrossBrowser
 class EmptyNavigatorSpec extends Specification {
 
 	EmptyNavigator navigator
@@ -28,7 +30,7 @@ class EmptyNavigatorSpec extends Specification {
 		navigator = new EmptyNavigator(browser)
 	}
 
-	def "find"() {
+	def find() {
 		expect:
 		navigator.find("foo").is(navigator)
 		navigator.find("foo", 0).is(navigator)
@@ -42,7 +44,7 @@ class EmptyNavigatorSpec extends Specification {
 		navigator.find(a: "b").is(navigator)
 	}
 
-	def "getAt"() {
+	def getAt() {
 		navigator[1].is(navigator)
 		navigator[1..10].is(navigator)
 		navigator[0..<0].is(navigator)
