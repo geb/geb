@@ -44,16 +44,18 @@ class SauceConnect {
 
 		def latch = new CountDownLatch(1)
 		Thread.start {
-			tunnelProcess.inputStream.eachLine { String line ->
-				if (latch.count) {
-					logger.info "sauce-connect: $line"
-					if (line.endsWith("Connected! You may start your tests.")) {
-						latch.countDown()
+			try {
+				tunnelProcess.inputStream.eachLine { String line ->
+					if (latch.count) {
+						logger.info "sauce-connect: $line"
+						if (line.endsWith("Connected! You may start your tests.")) {
+							latch.countDown()
+						}
+					} else {
+						logger.debug "sauce-connect: $line"
 					}
-				} else {
-					logger.debug "sauce-connect: $line"
-				}
-			}
+				}				
+			} catch (IOException ignore) {}
 		}
 
 		if (!latch.await(3, TimeUnit.MINUTES)) {
