@@ -145,7 +145,7 @@ class FormControlSpec extends GebSpecWithServer {
 
 	def "multiSelect - read"() {
 		given:
-		body {
+		html {
 			select(name: "s1", multiple: "multiple") {
 				option(value: "o1", "o1")
 				option(value: "o2", "o2")
@@ -195,7 +195,7 @@ class FormControlSpec extends GebSpecWithServer {
 
 	def "multiSelect - set by value"() {
 		given:
-		body {
+		html {
 			select(name: "s1", multiple: "multiple") {
 				option(value: "o1", "t1")
 				option(value: "o2", "t2")
@@ -229,7 +229,7 @@ class FormControlSpec extends GebSpecWithServer {
 
 	def "multiSelect - set by text"() {
 		given:
-		body {
+		html {
 			select(name: "s1", multiple: "multiple") {
 				option(value: "o1", "t1")
 				option(value: "o2", "t2")
@@ -275,7 +275,7 @@ class FormControlSpec extends GebSpecWithServer {
 
 	def "radio - by value"() {
 		when:
-		body {
+		html {
 			input(type: "radio", name: "r", value: "r1", checked: "checked")
 			input(type: "radio", name: "r", value: "r2")
 			input(type: "radio", name: "r", value: "r3")
@@ -301,7 +301,7 @@ class FormControlSpec extends GebSpecWithServer {
 	@Issue("http://jira.codehaus.org/browse/GEB-37")
 	def "radio - by label text"() {
 		when:
-		body {
+		html {
 			input(type: "radio", name: "r", value: "r1", id: "r1", "")
 			label(for: "r1", "r1 label")
 			input(type: "radio", name: "r", value: "r2", id: "r2")
@@ -328,7 +328,7 @@ class FormControlSpec extends GebSpecWithServer {
 
 	def "appending"() {
 		given:
-		body {
+		html {
 			input(name: "i", "")
 			textarea(name: "t", "")
 		}

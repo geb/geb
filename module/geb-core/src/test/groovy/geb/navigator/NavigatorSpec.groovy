@@ -30,10 +30,10 @@ class NavigatorSpec extends GebSpecWithServer {
 		expect:
 	    $("select").getAttribute("id") == "single"
 	    $("select").attr("id") == "single"
-		$("#single").getAttribute("multiple") == null
-		$("#single").attr("multiple") == null
-		$("#single").@multiple == null
-		$("#single").attr('multiple') == null
+		$("#single").getAttribute("multiple") == ""
+		$("#single").attr("multiple") == ""
+		$("#single").@multiple == ""
+		$("#single").attr('multiple') == ""
 		$("#multi").getAttribute("multiple") == "true"
 		$("#multi").attr("multiple") == "true"
 		$("#multi").@multiple == "true"

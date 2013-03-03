@@ -80,15 +80,4 @@ class GebSpecWithServer extends GebSpec {
 		go server.baseUrl
 	}
 
-	void body(Closure bodyClosure) {
-		html {
-			head {}
-			delegate.body {
-				bodyClosure.delegate = delegate
-				bodyClosure.resolveStrategy = Closure.DELEGATE_FIRST
-				bodyClosure()
-			}
-		}
-	}
-
 }

@@ -127,7 +127,6 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		}
 
 		expect:
-		println driver.pageSource
 		$("#a-b-a").parentsUntil("#a")*.@id == ["a-b"]
 		$("#b-a").parentsUntil("html")*.@id == ["b", ""]
 		$("foo").parentsUntil("div")*.@id == []
