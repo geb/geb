@@ -1,5 +1,6 @@
 import geb.buildadapter.BuildAdapterFactory
 import org.openqa.selenium.Platform
+import org.openqa.selenium.remote.CapabilityType
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 
@@ -24,9 +25,14 @@ if (sauceBrowser) {
 		def platform = parts.size() > 1 ? parts[1] : null
 		def version = parts.size() > 2 ? parts[2] : null
 
-		def browser = DesiredCapabilities."$name"();
+		DesiredCapabilities browser = DesiredCapabilities."$name"();
 		if (platform) {
-			browser.setCapability("platform", Platform."${platform.toUpperCase()}")
+			try {
+				platform = Platform."${platform.toUpperCase()}"
+			} catch (MissingPropertyException ignore) {
+
+			}
+			browser.setCapability("platform", platform )
 		}
 		if (version != null) {
 			browser.setCapability("version", version.toString())
