@@ -53,7 +53,6 @@ This page lists the high level changes between versions of Geb.
 * Handling of `select` elements has been reworked to be far more efficient \[[GEB-229](http://jira.codehaus.org/browse/GEB-229)\].
 * Modules support accessing base attributes' values using @attributeName notation \[[GEB-237](http://jira.codehaus.org/browse/GEB-237)\].
 * Use of text matchers in module base definitions is supported \[[GEB-241](http://jira.codehaus.org/browse/GEB-241)\].
-* Reading an attribute that is not set on a navigator now returns an empty string across all drivers \[[GEB-251](http://jira.codehaus.org/browse/GEB-251)\].
 
 #### Breaking Changes
 
@@ -64,6 +63,7 @@ This page lists the high level changes between versions of Geb.
 * due to performance improvements duplicate elements are not removed when creating new `Navigator`s anymore; the new `unique()` method on `Navigator` can be used to remove duplicates if needed \[[GEB-223](http://jira.codehaus.org/browse/GEB-223)\].
 * `at(Page)` and `isAt(Page)` methods on `Browser` have been removed as they were inconsistent with the rest of the API \[[GEB-242](http://jira.codehaus.org/browse/GEB-242)\].
 * Navigator's `click(Class<? extends Page>)` and `to:` content option now verify page after switching to the new one to stay consistent with the new behaviour of `to(Class<? extends Page>)` \[[GEB-250](http://jira.codehaus.org/browse/GEB-250)\].
+* Reading an attribute that is not set on a navigator now returns an empty string across all drivers \[[GEB-251](http://jira.codehaus.org/browse/GEB-251)\].
 
 ### 0.7.2
 
