@@ -9,8 +9,8 @@ if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
 	reportsDir = "build/geb"
 }
 
-def sauceBrowserName = System.getProperty("geb.sauce.browser.name")
-if (sauceBrowserName) {
+def sauceBrowser = System.getProperty("geb.sauce.browser")
+if (sauceBrowser) {
 	driver = {
 		def username = System.getenv("GEB_SAUCE_LABS_USER")
 		assert username
@@ -19,16 +19,17 @@ if (sauceBrowserName) {
 
 		def url = new URL("http://$username:$accessKey@ondemand.saucelabs.com:80/wd/hub")
 
-		def browser = DesiredCapabilities."$sauceBrowserName"();
+		def parts = sauceBrowser.split(":", 3)
+		def name = parts[0]
+		def platform = parts.size() > 1 ? parts[1] : null
+		def version = parts.size() > 2 ? parts[2] : null
 
-		def browserVersion = System.getProperty("geb.sauce.browser.version")
-		if (browserVersion != null) {
-			browser.setCapability("version", browserVersion.toString());
+		def browser = DesiredCapabilities."$name"();
+		if (platform) {
+			browser.setCapability("platform", Platform."${platform.toUpperCase()}")
 		}
-
-		def browserPlatform = System.getProperty("geb.sauce.browser.platform")
-		if (browserPlatform) {
-			browser.setCapability("platform", Platform."${browserPlatform.toUpperCase()}");
+		if (version != null) {
+			browser.setCapability("version", version.toString())
 		}
 
 		new RemoteWebDriver(url, browser)

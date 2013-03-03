@@ -114,9 +114,7 @@ class BrowserSpec {
 	}
 
 	void configure(Test test) {
-		test.systemProperty "geb.sauce.browser.name", browser
-		test.systemProperty "geb.sauce.browser.platform", platform
-		test.systemProperty "geb.sauce.browser.version", version
+		test.systemProperty "geb.sauce.browser", "$browser:$platform:$version"
 	}
 }
 

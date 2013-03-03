@@ -1,6 +1,6 @@
 import geb.test.CrossBrowser
 
-def sauceBrowserName = System.getProperty("geb.sauce.browser.name")
-if (sauceBrowserName) {
+def usingSauce = System.getProperty("geb.sauce.browser")
+if (usingSauce) {
 	runner { include CrossBrowser }
 }
