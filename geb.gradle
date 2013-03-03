@@ -80,7 +80,7 @@ subprojects {
 		tasks.withType(Test) {
 			testResultsDir = reporting.file("test-results/$name")
 			testReportDir = reporting.file("test-reports/$name")
-			binResultsDir = reporting.file("$buildDir/test-results-bin/$name")
+			binResultsDir = file("$buildDir/test-results-bin/$name")
 
 			ext.driver = project.properties["driver"] ?: "htmlunit"
 			systemProperty 'geb.dev.driver', driver
