@@ -202,6 +202,6 @@ browsers {
 	chrome_linux {}
 	chrome_windows {}
 	chrome_mac {}
-	internetExplorer_windows_8 {}
-	internetExplorer_windows_9 {}
+	internetExplorer_vista_8 {}
+	internetExplorer_vista_9 {}
 }
