@@ -39,7 +39,7 @@ class SauceConnect {
 
 		def jvm = org.gradle.internal.jvm.Jvm.current()
 		def javaBinary = jvm.javaExecutable.absolutePath
-		
+
 		if (background) {
 
 			workingDir.mkdirs()
@@ -60,7 +60,7 @@ class SauceConnect {
 						} else {
 							logger.debug "sauce-connect: $line"
 						}
-					}				
+					}
 				} catch (IOException ignore) {}
 			}
 
@@ -70,7 +70,7 @@ class SauceConnect {
 
 			addShutdownHook {
 				stopTunnel()
-			}			
+			}
 		} else {
 			project.exec {
 				executable javaBinary
@@ -89,26 +89,22 @@ class SauceConnect {
 
 class BrowserSpec {
 	String name
-	
+
 	String browser
 	String platform
 	String version
-	
+
 	BrowserSpec(String name) {
 		this.name = name
 		String browserSpec = name
 		if (browserSpec) {
 			String[] split = browserSpec.split("_", 3)
 			browser = split[0]
-			if (split.size() > 1) {
-				platform = split[1]
-			}
-			if (split.size() > 2) {
-				version = split[2]
-			}
+			platform = split.size() > 1 ? split[1] : ""
+			version = split.size() > 2 ? split[2] : ""
 		}
 	}
-	
+
 	String getDisplayName() {
 		"$browser${platform?.capitalize() ?: ""}${version?.capitalize() ?: ""}"
 	}
@@ -151,20 +147,21 @@ class CrossBrowser {
 				sauceAccount.configure(task)
 				browser.configure(task)
 			}
-			
+
 			project.gradle.addListener(new TaskExecutionListener() {
 				void beforeExecute(Task task) {}
+
 				void afterExecute(Task task, TaskState taskState) {
 					if (task != testTask) {
 						return
 					}
-					
+
 					project.copy {
 						from testTask.testResultsDir
 						into "$testTask.testResultsDir-decorated"
 						filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
 					}
-				}	
+				}
 			})
 		}
 	}
