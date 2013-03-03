@@ -26,10 +26,6 @@ class CssSelector {
 	final Type type
 	final String value
 
-	CssSelector() {
-		super()
-	}
-
 	CssSelector(Type type, String value) {
 		this.type = type
 		this.value = value
@@ -61,7 +57,7 @@ class CssSelector {
 	static String escape(String value) {
 		value.replaceAll("($CSS_SELECTOR_SPECIAL_CHARS_PATTERN)", '\\\\$1')
 	}
-	
+
 	static boolean matches(WebElement element, String selectorString) {
 		def selectors = compile(selectorString)
 		selectors.any { List<CssSelector> selectorGroup ->

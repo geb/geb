@@ -7,7 +7,6 @@ import geb.textmatching.TextMatcher
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.internal.FindsByCssSelector
 
 import java.util.regex.Pattern
 
@@ -35,15 +34,11 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator find(String selectorString) {
-		if (contextElements.head() instanceof FindsByCssSelector) {
-			List<WebElement> list = []
-			contextElements.each {
-				list.addAll it.findElements(By.cssSelector(selectorString))
-			}
-			navigatorFor list
-		} else {
-			navigatorFor CssSelector.findByCssSelector(allElements(), selectorString)
+		List<WebElement> list = []
+		for (contextElement in contextElements) {
+			list.addAll contextElement.findElements(By.cssSelector(selectorString))
 		}
+		navigatorFor list
 	}
 
 	@Override
