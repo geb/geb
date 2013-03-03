@@ -10,154 +10,155 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		given:
 		html {
 			div(id: "a") {
-				div('class': '1', id: "a1", "a1")
-				div('class': '2', id: "a2", "a2")
+				div('class': 'a', id: "aa", "aa")
+				div('class': 'b', id: "ab", "ab")
 			}
 			div(id: "b") {
-				div('class': '1', id: "b1", "b1")
-				div('class': '2', id: "b2", "b2")
+				div('class': 'a', id: "ba", "ba")
+				div('class': 'b', id: "bb", "bb")
 			}
 		}
 
 		expect:
-		$("#a").children("#a2")*.text() == ["a2"]
-		$("#a").children()*.text() == ["a1", "a2"]
-		$("div").children(".1")*.text() == ["a1", "b1"]
-		$("#a,#b").children()*.@id == ["a1", "a2", "b1", "b2"]
+		$("#a").children("#ab")*.text() == ["ab"]
+		$("#a").children()*.text() == ["aa", "ab"]
+		$("div").children(".a")*.text() == ["aa", "ba"]
+		$("#a,#b").children()*.@id == ["aa", "ab", "ba", "bb"]
 	}
 
 	def siblings() {
 		given:
 		html {
-			div(id: "1") {
-				div(id: "a1", class: '1', "")
-				div(id: "b1", class: '1', "")
-				div(id: "c1", class: '2', "")
-				div(id: "d1", class: '2', "")
+			div(id: "a") {
+				div(id: "aa", class: 'a', "")
+				div(id: "ba", class: 'a', "")
+				div(id: "ca", class: 'b', "")
+				div(id: "da", class: 'b', "")
 			}
-			div(id: "2") {
-				div(id: "a2", class: '1', "")
-				div(id: "b2", class: '1', "")
-				div(id: "c2", class: '2', "")
-				div(id: "d2", class: '2', "")
+			div(id: "b") {
+				div(id: "ab", class: 'a', "")
+				div(id: "bb", class: 'a', "")
+				div(id: "cb", class: 'b', "")
+				div(id: "db", class: 'b', "")
 			}
 		}
 
 		expect:
-		$("#c1").siblings()*.@id == ["a1", "b1", "d1"]
-		$("#1 div").siblings("#a1").unique()*.@id == ["a1"]
-		$("#c1,#c2").siblings().unique()*.@id == ["a1", "b1", "d1", "a2", "b2", "d2"]
+		$("#ca").siblings()*.@id == ["aa", "ba", "da"]
+		$("#a div").siblings("#aa").unique()*.@id == ["aa"]
+		$("#ca,#cb").siblings().unique()*.@id == ["aa", "ba", "da", "ab", "bb", "db"]
 	}
 
 	def parent() {
 		given:
 		html {
-			div(id: "1") {
-				div(id: "1-1") {
-					div(id: "1-1-1", "")
+			div(id: "a") {
+				div(id: "a-a") {
+					div(id: "a-a-a", "")
 				}
-				div(id: "1-2") {
-					div(id: "1-2-1", "")
+				div(id: "a-b") {
+					div(id: "a-b-a", "")
 				}
 			}
-			div(id: "2") {
-				div(id: "2-1") {
-					div(id: "2-1-1", "")
+			div(id: "b") {
+				div(id: "b-a") {
+					div(id: "b-a-a", "")
 				}
-				div(id: "2-2") {
-					div(id: "2-2-1", "")
+				div(id: "b-b") {
+					div(id: "b-b-a", "")
 				}
 			}
 		}
 
 		expect:
-		$("#1-2-1").parent()*.@id == ["1-2"]
-		$("#2-1").parent()*.@id == ["2"]
-		$("#1-2-1").parent("div")*.@id == ["1-2"]
-		$("#1-2-1").parent("p")*.@id == []
+		$("#a-b-a").parent()*.@id == ["a-b"]
+		$("#b-a").parent()*.@id == ["b"]
+		$("#a-b-a").parent("div")*.@id == ["a-b"]
+		$("#a-b-a").parent("p")*.@id == []
 	}
 
 	def parents() {
 		given:
 		html {
-			div(id: "1") {
-				div(id: "1-1") {
-					div(id: "1-1-1", "")
+			div(id: "a") {
+				div(id: "a-a") {
+					div(id: "a-a-a", "")
 				}
-				div(id: "1-2") {
-					div(id: "1-2-1", "")
+				div(id: "a-b") {
+					div(id: "a-b-a", "")
 				}
 			}
-			div(id: "2") {
-				div(id: "2-1") {
-					div(id: "2-1-1", "")
+			div(id: "b") {
+				div(id: "b-a") {
+					div(id: "b-a-a", "")
 				}
-				div(id: "2-2") {
-					div(id: "2-2-1", "")
+				div(id: "b-b") {
+					div(id: "b-b-a", "")
 				}
 			}
 		}
 
 		expect:
-		$("#1-2-1").parents()*.@id == ["1-2", "1", null, null]
-		$("#2-1").parents()*.@id == ["2", null, null]
-		$("#1-2-1").parents("div")*.@id == ["1-2", "1"]
-		$("#1-2-1").parents("p")*.@id == []
+		$("#a-b-a").parents()*.@id == ["a-b", "a", "", ""]
+		$("#b-a").parents()*.@id == ["b", "", ""]
+		$("#a-b-a").parents("div")*.@id == ["a-b", "a"]
+		$("#a-b-a").parents("p")*.@id == []
 	}
 
 	def parentsUntil() {
 		given:
 		html {
-			div(id: "1") {
-				div(id: "1-1") {
-					div(id: "1-1-1", "")
+			div(id: "a") {
+				div(id: "a-a") {
+					div(id: "a-a-a", "")
 				}
-				div(id: "1-2") {
-					div(id: "1-2-1", "")
+				div(id: "a-b") {
+					div(id: "a-b-a", "")
 				}
 			}
-			div(id: "2") {
-				div(id: "2-1") {
-					div(id: "2-1-1", "")
+			div(id: "b") {
+				div(id: "b-a") {
+					div(id: "b-a-a", "")
 				}
-				div(id: "2-2") {
-					div(id: "2-2-1", "")
+				div(id: "b-b") {
+					div(id: "b-b-a", "")
 				}
 			}
 		}
 
 		expect:
-		$("#1-2-1").parentsUntil("#1")*.@id == ["1-2"]
-		$("#2-1").parentsUntil("html")*.@id == ["2", null]
+		println driver.pageSource
+		$("#a-b-a").parentsUntil("#a")*.@id == ["a-b"]
+		$("#b-a").parentsUntil("html")*.@id == ["b", ""]
 		$("foo").parentsUntil("div")*.@id == []
 	}
 
 	def closest() {
 		given:
 		html {
-			div(id: "1") {
-				div(id: "1-1") {
-					div(id: "1-1-1", "")
+			div(id: "a") {
+				div(id: "a-a") {
+					div(id: "a-a-a", "")
 				}
-				div(id: "1-2") {
-					div(id: "1-2-1", "")
+				div(id: "a-b") {
+					div(id: "a-b-a", "")
 				}
 			}
-			div(id: "2") {
-				div(id: "2-1") {
-					div(id: "2-1-1", "")
+			div(id: "b") {
+				div(id: "b-a") {
+					div(id: "b-a-a", "")
 				}
-				div(id: "2-2") {
-					div(id: "2-2-1", "")
+				div(id: "b-b") {
+					div(id: "b-b-a", "")
 				}
 			}
 		}
 
 		expect:
-		$("#1-1-1").closest("#1")*.@id == ["1"]
-		$("#1-1-1").closest("#1-1")*.@id == ["1-1"]
-		$("#2-1-1").closest("#2")*.@id == ["2"]
-		$("#1-1-1,#2-1-1").closest("div")*.@id == ["1-1", "2-1"]
+		$("#a-a-a").closest("#a")*.@id == ["a"]
+		$("#a-a-a").closest("#a-a")*.@id == ["a-a"]
+		$("#b-a-a").closest("#b")*.@id == ["b"]
+		$("#a-a-a,#b-a-a").closest("div")*.@id == ["a-a", "b-a"]
 	}
 
 	def next() {
@@ -194,98 +195,98 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 	def nextUntil() {
 		given:
 		html {
-			div(id: "1") {
-				div(id:  "a1", "")
-				div(id:  "b1", "")
-				div(id:  "c1", "")
-				div(id:  "d1", 'class': 'end', "")
+			div(id: "a") {
+				div(id:  "aa", "")
+				div(id:  "ba", "")
+				div(id:  "ca", "")
+				div(id:  "da", 'class': 'end', "")
 			}
-			div(id: "2") {
-				div(id:  "a2", "")
-				div(id:  "b2", "")
-				div(id:  "c2", "")
-				div(id:  "d2", 'class': 'end', "")
+			div(id: "b") {
+				div(id:  "ab", "")
+				div(id:  "bb", "")
+				div(id:  "cb", "")
+				div(id:  "db", 'class': 'end', "")
 			}
 		}
 
 		expect:
-		$("#b1").nextUntil("#d1")*.@id == ["c1"]
-		$("#a2").nextUntil("#d2")*.@id == ["b2", "c2"]
-		$("#a1,#a2").nextUntil(".end")*.@id == ["b1", "c1", "b2", "c2"]
+		$("#ba").nextUntil("#da")*.@id == ["ca"]
+		$("#ab").nextUntil("#db")*.@id == ["bb", "cb"]
+		$("#aa,#ab").nextUntil(".end")*.@id == ["ba", "ca", "bb", "cb"]
 	}
 
 	def previous() {
 		given:
 		html {
-			div(id: "1") {
-				div(id:  "a1", "")
-				div(id:  "b1", "")
-				div(id:  "c1", "")
-				div(id:  "d1", 'class': 'end', "")
+			div(id: "a") {
+				div(id:  "aa", "")
+				div(id:  "ba", "")
+				div(id:  "ca", "")
+				div(id:  "da", 'class': 'end', "")
 			}
-			div(id: "2") {
-				div(id:  "a2", "")
-				div(id:  "b2", "")
-				div(id:  "c2", "")
-				div(id:  "d2", 'class': 'end', "")
+			div(id: "b") {
+				div(id:  "ab", "")
+				div(id:  "bb", "")
+				div(id:  "cb", "")
+				div(id:  "db", 'class': 'end', "")
 			}
 		}
 
 		expect:
-		$("#2").previous()*.@id == ["1"]
-		$("#a1").previous()*.@id == []
-		$("#b1").previous()*.@id == ["a1"]
-		$("#d2").previous()*.@id == ["c2"]
-		$("#d2").previous("#c2")*.@id == ["c2"]
-		$("foo").previous("#c2")*.@id == []
+		$("#b").previous()*.@id == ["a"]
+		$("#aa").previous()*.@id == []
+		$("#ba").previous()*.@id == ["aa"]
+		$("#db").previous()*.@id == ["cb"]
+		$("#db").previous("#cb")*.@id == ["cb"]
+		$("foo").previous("#cb")*.@id == []
 	}
 
 	def prevAll() {
 		given:
 		html {
-			div(id: "1") {
-				div(id:  "a1", "")
-				div(id:  "b1", "")
-				div(id:  "c1", "")
-				div(id:  "d1", 'class': 'end', "")
+			div(id: "a") {
+				div(id:  "aa", "")
+				div(id:  "ba", "")
+				div(id:  "ca", "")
+				div(id:  "da", 'class': 'end', "")
 			}
-			div(id: "2") {
-				div(id:  "a2", "")
-				div(id:  "b2", "")
-				div(id:  "c2", "")
-				div(id:  "d2", 'class': 'end', "")
+			div(id: "b") {
+				div(id:  "ab", "")
+				div(id:  "bb", "")
+				div(id:  "cb", "")
+				div(id:  "db", 'class': 'end', "")
 			}
 		}
 
 		expect:
-		$("#2").prevAll()*.@id == ["1"]
-		$("#a1").prevAll()*.@id == []
-		$("#b1").prevAll()*.@id == ["a1"]
-		$("#d2").prevAll()*.@id == ["a2", "b2", "c2"]
-		$("#d2").prevAll("#b2")*.@id == ["b2"]
-		$("foo").prevAll("#b2")*.@id == []
+		$("#b").prevAll()*.@id == ["a"]
+		$("#aa").prevAll()*.@id == []
+		$("#ba").prevAll()*.@id == ["aa"]
+		$("#db").prevAll()*.@id == ["ab", "bb", "cb"]
+		$("#db").prevAll("#bb")*.@id == ["bb"]
+		$("foo").prevAll("#bb")*.@id == []
 	}
 
 	def prevUntil() {
 		given:
 		html {
-			div(id: "1") {
-				div(id:  "a1", "")
-				div(id:  "b1", "")
-				div(id:  "c1", "")
-				div(id:  "d1", 'class': 'end', "")
+			div(id: "a") {
+				div(id:  "aa", "")
+				div(id:  "ba", "")
+				div(id:  "ca", "")
+				div(id:  "da", 'class': 'end', "")
 			}
-			div(id: "2") {
-				div(id:  "a2", "")
-				div(id:  "b2", "")
-				div(id:  "c2", "")
-				div(id:  "d2", 'class': 'end', "")
+			div(id: "b") {
+				div(id:  "ab", "")
+				div(id:  "bb", "")
+				div(id:  "cb", "")
+				div(id:  "db", 'class': 'end', "")
 			}
 		}
 
 		expect:
-		$("#d2").prevUntil("#a2")*.@id == ["c2", "b2"]
-		$("#d2").prevUntil("foo")*.@id == ["c2", "b2", "a2"]
+		$("#db").prevUntil("#ab")*.@id == ["cb", "bb"]
+		$("#db").prevUntil("foo")*.@id == ["cb", "bb", "ab"]
 		$("foo").prevUntil("foo")*.@id == []
 	}
 

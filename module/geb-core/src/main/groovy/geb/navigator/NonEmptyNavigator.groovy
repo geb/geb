@@ -305,7 +305,8 @@ class NonEmptyNavigator extends AbstractNavigator {
 		if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
 			attribute = null
 		}
-		attribute
+
+		attribute == null ? "" : attribute
 	}
 
 	@Override
