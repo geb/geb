@@ -53,6 +53,7 @@ This page lists the high level changes between versions of Geb.
 * Handling of `select` elements has been reworked to be far more efficient \[[GEB-229](http://jira.codehaus.org/browse/GEB-229)\].
 * Modules support accessing base attributes' values using @attributeName notation \[[GEB-237](http://jira.codehaus.org/browse/GEB-237)\].
 * Use of text matchers in module base definitions is supported \[[GEB-241](http://jira.codehaus.org/browse/GEB-241)\].
+* Reading an attribute that is not set on a navigator now returns an empty string across all drivers \[[GEB-251](http://jira.codehaus.org/browse/GEB-251)\].
 
 #### Breaking Changes
 
