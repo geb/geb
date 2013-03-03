@@ -1,267 +1,294 @@
 package geb.navigator
 
 import geb.Page
+import geb.test.CrossBrowser
+import geb.test.GebSpecWithServer
 import org.openqa.selenium.WebElement
 import spock.lang.Issue
 import spock.lang.Unroll
 
 @Unroll
-class NavigatorSpec extends AbstractNavigatorSpec {
+@CrossBrowser
+class NavigatorSpec extends GebSpecWithServer {
 
-	def "navigator with content coerces to true"() {
+	def truthiness() {
 		given:
-		def navigator = $("div")
-		expect: navigator
+		html { div() }
+
+		expect:
+		$("div")
+		!$("foo")
 	}
 
-	def "empty navigator coerces to false"() {
+	def "reading attributes"() {
 		given:
-		def navigator = $("bdo")
-		expect: !navigator
-	}
+		html {
+			select(id: "single", "")
+			select(id: "multi", multiple: "multiple", "")
+		}
 
-	def "getAtttribute returns null for boolean attributes that are not present"() {
 		expect:
-		def element = $("#the_plain_select")
-		element.getAttribute("multiple") == null
-		element.@multiple == null
+	    $("select").getAttribute("id") == "single"
+	    $("select").attr("id") == "single"
+		$("#single").getAttribute("multiple") == null
+		$("#single").attr("multiple") == null
+		$("#single").@multiple == null
+		$("#single").attr('multiple') == null
+		$("#multi").getAttribute("multiple") == "true"
+		$("#multi").attr("multiple") == "true"
+		$("#multi").@multiple == "true"
+		$("#multi").attr('multiple') == "true"
 	}
 
-	def "getElement by index"() {
+	def getElement() {
+		given:
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
+
 		expect:
-		$("div").getElement(1).getAttribute("id") == "header"
-		$("bdo").getElement(0) == null
+		$("div").getElement(0).getAttribute("id") == "a"
+		$("div").getElement(1).getAttribute("id") == "b"
+		$("foo").getElement(0) == null
+		$("foo").getElement(10) == null
 	}
 
-	def "\$('#selector1').add('#selector2') should result in the elements #expectedContent"() {
+	def add() {
 		when:
-		def navigator = $(selector1).add(selector2).unique()
-
-		then:
-		navigator*.@id == expectedIds
-
-		where:
-		selector1    | selector2  | expectedIds
-		"#header"    | ".article" | ["header", "article-1", "article-2", "article-3"]
-		"#header"    | "bdo"      | ["header"]
-		"bdo"        | "#header"  | ["header"]
-		"#article-1" | ".article" | ["article-1", "article-2", "article-3"]
-	}
-
-	def "calling remove(#index) on the navigator should leave #expectedSize elements"() {
-		when:
-		def navigator = $(selector)
-		iterations.times {
-			navigator = navigator.remove(index)
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
 		}
 
 		then:
-		navigator.size() == expectedSize
-
-		where:
-		selector | index | iterations | expectedSize
-		"li"     | 5     | 1          | 22
-		"li"     | 0     | 1          | 22
-		"li"     | -1    | 1          | 22
-		"li"     | 1     | 1          | 22
-		"li"     | 23    | 1          | 23
-		"li"     | 0     | 2          | 21
-		"li bdo" | 0     | 1          | 0
+		$("#a").add("#c")*.@id == ["a", "c"]
+		$("#c").add("#a")*.@id == ["c", "a"]
+		$("foo").add("#a")*.@id == ["a"]
 	}
 
-	def "\$('#selector1').has('#selector2') should return #expected"() {
-		given:
-		def navigator = $(selector1)
-		expect:
-		navigator.has(selector2).collect {
-			it.@id ? "${it.tag()}#${it.@id}" : it.tag()
-		} == expected
-
-		where:
-		selector1 | selector2 | expected
-		"div"     | "h1"      | ["div#container", "div#header"]
-//		"div"     | ".article" | ["div#container", "div#content", "div#main"] // TODO: this fails due to http://code.google.com/p/selenium/issues/detail?id=1498
-		"div" | "h3" | []
-	}
-
-	def "not('#selector') should select elements with the ids #expectedIds"() {
-		expect: $(".article").not(selector)*.@id == expectedIds
-
-		where:
-		selector      | expectedIds
-		"#article-2"  | ["article-1", "article-3"]
-		"#no-such-id" | ["article-1", "article-2", "article-3"]
-	}
-
-	def "adding two navigators results in a new navigator with all of the elements"() {
+	def remove() {
 		when:
-		def navigator = $(navigator1) + $(navigator2)
-
-		then: navigator*.@id == expectedIds
-
-		where:
-		navigator1   | navigator2 | expectedIds
-		"#article-1" | ".article" | ["article-1", "article-1", "article-2", "article-3"]
-	}
-
-	def "navigator can contain duplicate elements"() {
-		when:
-		def navigator = $("div").find("ol")
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
 
 		then:
-		navigator.size() == expectedSize
-
-		where:
-		expectedSize = 15
+		$("div").remove(1)*.@id == ["a", "c"]
+		$("div").remove(5)*.@id == ["a", "b", "c"]
+		$("foo").remove(5)*.@id == []
 	}
 
-	def "the value of text() on #selector should be '#expectedText'"() {
-		given:
-		def navigator = $(selector)
-		expect: navigator.text() == expectedText
+	def has() {
+		when:
+		html {
+			div(id: "a") {
+				div("class": "a-1 z-1", "")
+			}
+			div(id: "b") {
+				div("class": "b-1 z-1", "")
+			}
+			div(id: "c") {
+				div("class": "c-1 z-1", "")
+			}
+		}
 
-		where:
-		selector | expectedText
-		"p"      | "First paragraph of article 1."
-		"hr"     | ""
-		"bdo"    | null
+		then:
+		$("div").has(".z-1")*.@id == ["a", "b", "c"]
+		$("div").has(".b-1")*.@id == ["b"]
 	}
 
-	def "the value of tag() on #selector should be '#expectedTag'"() {
-		given:
-		def navigator = $(selector)
-		expect: navigator.tag() == expectedTag
+	def not() {
+		when:
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
 
-		where:
-		selector        | expectedTag
-		"p"             | "p"
-		".article"      | "div"
-		"input, select" | "input"
-		"bdo"           | null
+		then:
+		$("div").not("#b")*.@id == ["a", "c"]
+		$("div").not("foo")*.@id == ["a", "b", "c"]
+		$("foo").not("foo")*.@id == []
 	}
 
-	def "navigator.attr('#attribute') should return '#expectedValue'"() {
-		expect: $(* selector).attr("$attribute") == expectedValue
+	def plus() {
+		when:
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
 
-		where:
-		selector           | attribute | expectedValue
-		["div", 0]         | "id"      | "container"
-		["div div", 1]     | "id"      | "navigation"
-		["#article-1 div"] | "id"      | null
-		["#navigation a"]  | "href"    | server.baseUrl + "#home"
-		["bdo"]            | "id"      | null
-	}
-
-	def "navigator.@#attribute should return '#expectedValue'"() {
-		expect: $(* selector).@"$attribute" == expectedValue
-
-		where:
-		selector           | attribute | expectedValue
-		["div", 0]         | "id"      | "container"
-		["div div", 1]     | "id"      | "navigation"
-		["#article-1 div"] | "id"      | null
-		["#navigation a"]  | "href"    | server.baseUrl + "#home"
-		["bdo"]            | "id"      | null
-	}
-
-	def "navigator*.@#attribute"() {
-		expect: mod.call($(selector))*.@"$attribute" == expectedValue
-
-		where:
-		selector        | mod          | attribute | expectedValue
-		"div"           | { it[0..4] } | "id"      | ["container", "header", "navigation", "content", "main"]
-		"#navigation a" | { it }       | "href"    | ["#home", "#about", "#contact"].collect { server.baseUrl + it }
-		"bdo"           | { it }       | "id"      | []
-	}
-
-	def "the class names on #selector are #expected"() {
-		given:
-		def navigator = $(selector)
-		expect: navigator.classes() == expected
-
-		where:
-		selector      | expected
-		"#article-1"  | ["article"]
-		"#navigation" | ["col-3", "module"]
-		"ol"          | []
-		"bdo"         | []
-	}
-
-	def "the result of findClass('#className') on #selector should be #expectedResult"() {
-		given:
-		def navigator = $(selector)
-		expect: navigator.hasClass(className) == expectedResult
-
-		where:
-		selector   | className | expectedResult
-		".article" | "article" | true
-		"div"      | "module"  | true
-		"#content" | "col-3"   | true
-		"#content" | "col-2"   | false
-		"#content" | "col"     | false
-	}
-
-	def is() {
-		expect:
-		mod.call($(selector)).is(expectedTag) == expectedResult
-
-		where:
-		selector       | mod                | expectedTag  | expectedResult
-		"div"          | { it }             | "div"        | true
-		"#article-1 p" | { it.parent() }    | "div"        | true
-		"#article-1 p" | { it.parent() }    | "blockquote" | true
-		"#article-1 p" | { it.parent()[0] } | "blockquote" | false
+		then:
+		($("#a") + $("#b"))*.@id == ["a", "b"]
+		($("#a") + $("foo"))*.@id == ["a"]
+		($("foo") + $("#a"))*.@id == ["a"]
 	}
 
 	def text() {
-		expect:
-		(selector == null ? $() : $(selector)).text().contains(expectedText) == expectedResult
+		given:
+		html {
+			a "a"
+			b "b"
+			div {
+				c "c"
+				d "d"
+			}
+		}
 
-		where:
-		selector     | expectedText      | expectedResult
-		null         | "Article title 2" | true
-		"#article-2" | "Article title 2" | true
-		"#article-3" | "Article title 2" | false
+		expect:
+		$("a").text() == "a"
+		$("a,b").text() == "a"
+		$("a,b")*.text() == ["a", "b"]
+		$("div").text() == "cd"
+		$("div")*.text() == ["cd"]
+		$("foo")*.text() == []
+	}
+
+	def tag() {
+		given:
+		html {
+			a "a"
+			b "b"
+			div {
+				c "c"
+				d "d"
+			}
+		}
+
+		expect:
+		$("a").tag() == "a"
+		$("a,b").tag() == "a"
+		$("a,b")*.tag() == ["a", "b"]
+		$("div").tag() == "div"
+		$("div")*.tag() == ["div"]
+		$("foo")*.tag() == []
+	}
+
+	def classes() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
+		expect:
+		$("#a").classes() == ["a1", "a2", "a3"]
+		$("#b").classes() == ["b1"]
+		$("div").classes() == ["a1", "a2", "a3"]
+		$("#b,#a").classes() == ["a1", "a2", "a3"]
+		$("foo").classes() == []
+	}
+
+	def hasClass() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
+		expect:
+		$("#a").hasClass("a2")
+		!$("#a").hasClass("a4")
+		$("#b").hasClass("b1")
+		$("#a,#b").hasClass("b1")
+		$("#b,#a").hasClass("a1")
+	}
+
+	def is() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
+		expect:
+		$("#a").is("div")
+		!$("#a").is("foo")
+		!$("foo").is("foo")
 	}
 
 	def first() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
 		expect:
-		$(".article").first().size() == 1
-		$(".article").first().@id == "article-1"
+		$("div").first()*.@id == ["a"]
+		$("foo").first()*.@id == []
 	}
 
 	def firstElement() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
 		expect:
-		$(".article").firstElement().getAttribute("id") == "article-1"
+		$("div").firstElement().getAttribute("id") == "a"
+		$("foo").firstElement() == null
 	}
 
 	def last() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
 		expect:
-		$(".article").last().size() == 1
-		$(".article").last().@id == "article-3"
+		$("div").last()*.@id == ["b"]
+		$("foo").last()*.@id == []
 	}
 
 	def lastElement() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
 		expect:
-		$(".article").lastElement().getAttribute("id") == "article-3"
+		$("div").lastElement().getAttribute("id") == "b"
+		$("foo").lastElement() == null
 	}
 
 	def verifyNotEmpty() {
+		given:
+		html {
+			div(id: "a", 'class': "a1 a2 a3")
+			div(id: "b", 'class': "b1")
+		}
+
 		expect:
-		$("#container").verifyNotEmpty()
-		$("#container").find("div").verifyNotEmpty()
+		$("div").verifyNotEmpty()
+
+		when:
+		$("foo").verifyNotEmpty()
+
+		then:
+		thrown(EmptyNavigatorException)
 	}
 
-	def "verifyNotEmtpy on empty Navigator"() {
-		when: $("#does_not_exist").verifyNotEmpty()
-		then: thrown(EmptyNavigatorException)
-	}
+	def displayed() {
+		given:
+		html {
+			div(id: "a")
+			div(id: "b", style: "display: none;")
+		}
 
-	def "displayed property"() {
 		expect:
-		$("p").displayed // first p in page is displayed
-		$("#hidden-paragraph").displayed == false
-		$(".non-existant").displayed == false
+		$("#a").displayed
+		!$("#b").displayed
+		!$("foo").displayed
 	}
 
 	def "click is called only on the first element of the navigator"() {
@@ -279,7 +306,10 @@ class NavigatorSpec extends AbstractNavigatorSpec {
 	}
 
 	@Issue('GEB-160')
-	def 'click call returns reciever for parameters: #clickParams'() {
+	def 'click call returns receiver for parameters: #clickParams'() {
+		given:
+		html { p() }
+
 		when:
 		def navigator = $('p')
 
@@ -290,42 +320,44 @@ class NavigatorSpec extends AbstractNavigatorSpec {
 		clickParams << [[], [Page], [[Page]]]
 	}
 
-	def accessingWebElements() {
+	def allElements() {
 		when:
-		def articles = $("div.article")
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
 
 		then:
-		articles.size() == 3
-		articles.firstElement().getAttribute("id") == "article-1"
-		articles.allElements()*.getAttribute("id") == ["article-1", "article-2", "article-3"]
-		articles.lastElement().getAttribute("id") == "article-3"
+		$("div").allElements()*.getAttribute("id") == ["a", "b", "c"]
 	}
 
-	def "can use eq(int) on \$(#selector)"() {
-		expect: $(selector).eq(index).@id == expectedId
-		where:
-		selector   | index | expectedId
-		"div"      | 0     | "container"
-		"div"      | 1     | "header"
-		"div"      | -1    | "footer"
-		".article" | 0     | "article-1"
-		".article" | 1     | "article-2"
-		".article" | -1    | "article-3"
-		"bdo"      | 0     | null
+	def eq() {
+		when:
+		html {
+			div(id: "a")
+			div(id: "b")
+			div(id: "c")
+		}
+
+		then:
+		$("div").allElements()*.getAttribute("id") == ["a", "b", "c"]
 	}
 
 	def "leftShift returns the navigator so appends can be chained"() {
 		given:
-		def navigator = page.keywords()
-		def initialValue = navigator.value()
+		html {
+			input(type: "text")
+		}
 
-		when: navigator << "a" << "b" << "c"
-		then: navigator.value().endsWith("abc")
+		when:
+		$("input") << "a" << "b" << "c"
 
-		cleanup: navigator.value(initialValue)
+		then:
+		$("input").value() == "abc"
 	}
 
-	def "size method"() {
+	def size() {
 		given:
 		html {
 			div(id: "a")
