@@ -196,11 +196,12 @@ extensions.browsers = container(BrowserSpec)
 extensions.create("crossBrowser", CrossBrowser, sauceAccount, browsers, openSauceTunnelInBackground)
 
 browsers {
-	firefox_linux {}
-	firefox_windows {}
-	firefox_mac {}
+	firefox_linux_19 {}
+	firefox_windows_19 {}
+	firefox_mac_19 {}
 	chrome_linux {}
 	chrome_windows {}
 	chrome_mac {}
-	internetExplorer_windows {}
+	internetExplorer_windows_8 {}
+	internetExplorer_windows_9 {}
 }
