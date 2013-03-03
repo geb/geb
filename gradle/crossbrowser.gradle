@@ -124,7 +124,7 @@ class CrossBrowser {
 		}
 
 		browsers.all { BrowserSpec browser ->
-			project.task("${browser.displayName}Test", type: Test) { task ->
+			def testTask = project.task("${browser.displayName}Test", type: Test) { task ->
 				ext.crossBrowser = true
 				group crossBrowserTask.group
 				dependsOn openSauceTunnel
@@ -139,6 +139,21 @@ class CrossBrowser {
 				sauceAccount.configure(task)
 				browser.configure(task)
 			}
+			
+			project.gradle.addListener(new TaskExecutionListener() {
+				void beforeExecute(Task task) {}
+				void afterExecute(Task task, TaskState taskState) {
+					if (task != testTask) {
+						return
+					}
+					
+					project.copy {
+						from testTask.testResultsDir
+						into "$testTask.testResultsDir-decorated"
+						filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
+					}
+				}	
+			})
 		}
 	}
 }
