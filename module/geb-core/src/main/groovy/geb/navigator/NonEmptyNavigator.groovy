@@ -559,11 +559,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	protected getValue(WebElement input) {
-		if (input == null) {
-			return null
-		}
-
-		input.getAttribute('value')
+		input?.getAttribute('value')
 	}
 
 	protected setSelectValue(WebElement element, value) {
