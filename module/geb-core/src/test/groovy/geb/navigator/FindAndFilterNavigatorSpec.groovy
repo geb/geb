@@ -95,12 +95,12 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 	def "find by selector and attribute"() {
 		given:
 		html {
-			div('class': 'a', name: 'a1', id: 'a1')
-			div('class': 'a', name: 'a2', id: 'a2')
-			div('class': 'b', name: 'b1', id: 'b1')
-			div('class': 'b', name: 'b2', id: 'b2')
-			div('class': 'c', name: 'c1', id: 'c1')
-			div('class': 'c', name: 'c2', id: 'c2')
+			div('class': 'a', name: 'a1', id: 'a1', "")
+			div('class': 'a', name: 'a2', id: 'a2', "")
+			div('class': 'b', name: 'b1', id: 'b1', "")
+			div('class': 'b', name: 'b2', id: 'b2', "")
+			div('class': 'c', name: 'c1', id: 'c1', "")
+			div('class': 'c', name: 'c2', id: 'c2', "")
 		}
 
 		expect:
