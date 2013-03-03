@@ -23,7 +23,7 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a").children("#ab")*.text() == ["ab"]
 		$("#a").children()*.text() == ["aa", "ab"]
 		$("div").children(".a")*.text() == ["aa", "ba"]
-		$("#a,#b").children()*.@id == ["aa", "ab", "ba", "bb"]
+		$("#a").add("#b").children()*.@id == ["aa", "ab", "ba", "bb"]
 	}
 
 	def siblings() {
@@ -46,7 +46,7 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		expect:
 		$("#ca").siblings()*.@id == ["aa", "ba", "da"]
 		$("#a div").siblings("#aa").unique()*.@id == ["aa"]
-		$("#ca,#cb").siblings().unique()*.@id == ["aa", "ba", "da", "ab", "bb", "db"]
+		$("#ca").add("#cb").siblings().unique()*.@id == ["aa", "ba", "da", "ab", "bb", "db"]
 	}
 
 	def parent() {
@@ -157,7 +157,7 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a-a-a").closest("#a")*.@id == ["a"]
 		$("#a-a-a").closest("#a-a")*.@id == ["a-a"]
 		$("#b-a-a").closest("#b")*.@id == ["b"]
-		$("#a-a-a,#b-a-a").closest("div")*.@id == ["a-a", "b-a"]
+		$("#a-a-a").add("#b-a-a").closest("div")*.@id == ["a-a", "b-a"]
 	}
 
 	def next() {
@@ -211,7 +211,7 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		expect:
 		$("#ba").nextUntil("#da")*.@id == ["ca"]
 		$("#ab").nextUntil("#db")*.@id == ["bb", "cb"]
-		$("#aa,#ab").nextUntil(".end")*.@id == ["ba", "ca", "bb", "cb"]
+		$("#aa").add("#ab").nextUntil(".end")*.@id == ["ba", "ca", "bb", "cb"]
 	}
 
 	def previous() {

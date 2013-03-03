@@ -143,10 +143,10 @@ class NavigatorSpec extends GebSpecWithServer {
 
 		expect:
 		$("a").text() == "a"
-		$("a,b").text() == "a"
-		$("a,b")*.text() == ["a", "b"]
-		$("div").text() == "cd"
-		$("div")*.text() == ["cd"]
+		$("a").add("b").text() == "a"
+		$("a").add("b")*.text() == ["a", "b"]
+		$("div").text() in ["cd", "c d"] // this is not consistent across drivers
+		$("div")*.text() in [["cd"], ["c d"]] // this is not consistent across drivers
 		$("foo")*.text() == []
 	}
 
@@ -163,8 +163,8 @@ class NavigatorSpec extends GebSpecWithServer {
 
 		expect:
 		$("a").tag() == "a"
-		$("a,b").tag() == "a"
-		$("a,b")*.tag() == ["a", "b"]
+		$("a").add("b").tag() == "a"
+		$("a").add("b")*.tag() == ["a", "b"]
 		$("div").tag() == "div"
 		$("div")*.tag() == ["div"]
 		$("foo")*.tag() == []
@@ -181,7 +181,7 @@ class NavigatorSpec extends GebSpecWithServer {
 		$("#a").classes() == ["a1", "a2", "a3"]
 		$("#b").classes() == ["b1"]
 		$("div").classes() == ["a1", "a2", "a3"]
-		$("#b,#a").classes() == ["a1", "a2", "a3"]
+		$("#b").add("#a").classes() == ["b1"]
 		$("foo").classes() == []
 	}
 
@@ -196,8 +196,8 @@ class NavigatorSpec extends GebSpecWithServer {
 		$("#a").hasClass("a2")
 		!$("#a").hasClass("a4")
 		$("#b").hasClass("b1")
-		$("#a,#b").hasClass("b1")
-		$("#b,#a").hasClass("a1")
+		$("#a").add("#b").hasClass("b1")
+		$("#b").add("#a").hasClass("a1")
 	}
 
 	def is() {
@@ -308,13 +308,13 @@ class NavigatorSpec extends GebSpecWithServer {
 	@Issue('GEB-160')
 	def 'click call returns receiver for parameters: #clickParams'() {
 		given:
-		html { p() }
+		html { button("") }
 
 		when:
-		def navigator = $('p')
+		def navigator = $('button')
 
 		then:
-		navigator.click(* clickParams).tag() == 'p'
+		navigator.click(* clickParams).is(navigator)
 
 		where:
 		clickParams << [[], [Page], [[Page]]]
@@ -367,7 +367,7 @@ class NavigatorSpec extends GebSpecWithServer {
 
 		expect:
 		$("#a").size() == 1
-		$("#a,#b").size() == 2
+		$("#a").add("#b").size() == 2
 		$("#d").size() == 0
 	}
 
