@@ -18,7 +18,7 @@ import geb.test.GebSpecWithServer
 import spock.lang.Stepwise
 
 @Stepwise
-class PageChangeCallbacksSpec extends GebSpecWithServer {
+class PageLoadUnloadListeningSpec extends GebSpecWithServer {
 
 	def previousPage
 	
@@ -27,30 +27,30 @@ class PageChangeCallbacksSpec extends GebSpecWithServer {
 		page instanceof Page
 
 		when:
-		page(PageChangeCallbacksSpecPage1)
+		page(PageLoadUnloadListeningSpecPage1)
 
 		then:
-		page instanceof PageChangeCallbacksSpecPage1
+		page instanceof PageLoadUnloadListeningSpecPage1
 		arg.class == Page
 		method == "onLoad"
 
 		when:
 		previousPage = page
-		page(PageChangeCallbacksSpecPage2)
+		page(PageLoadUnloadListeningSpecPage2)
 
 		then:
-		previousPage.arg.class == PageChangeCallbacksSpecPage2
+		previousPage.arg.class == PageLoadUnloadListeningSpecPage2
 		previousPage.method == 'onUnload'
 
 		and:
-		page instanceof PageChangeCallbacksSpecPage2
-		page.arg.class == PageChangeCallbacksSpecPage1
+		page instanceof PageLoadUnloadListeningSpecPage2
+		page.arg.class == PageLoadUnloadListeningSpecPage1
 		page.method == 'onLoad'
 	}
 
 }
 
-class PageChangeCallbacksSpecPage1 extends Page {
+class PageLoadUnloadListeningSpecPage1 extends Page {
 	def arg
 	def method
 	
@@ -65,4 +65,4 @@ class PageChangeCallbacksSpecPage1 extends Page {
 	}
 }
 
-class PageChangeCallbacksSpecPage2 extends PageChangeCallbacksSpecPage1 {}
+class PageLoadUnloadListeningSpecPage2 extends PageLoadUnloadListeningSpecPage1 {}
