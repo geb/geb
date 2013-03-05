@@ -16,27 +16,30 @@ package geb
 
 import geb.test.GebSpecWithServer
 import spock.lang.Stepwise
+import spock.lang.Unroll
 
 @Stepwise
 class PageLoadUnloadListeningSpec extends GebSpecWithServer {
 
 	def previousPage
-	
-	def "change callbacks"() {
-		expect:
-		page instanceof Page
 
+	def setup() {
+		html {
+			button()
+		}
+	}
+
+	@Unroll
+	def "change callbacks via #method"(String method, Closure toPage) {
 		when:
-		page(PageLoadUnloadListeningSpecPage1)
+		to PageLoadUnloadListeningSpecPage1
 
 		then:
 		page instanceof PageLoadUnloadListeningSpecPage1
-		arg.class == Page
-		method == "onLoad"
 
 		when:
 		previousPage = page
-		page(PageLoadUnloadListeningSpecPage2)
+		fire(toPage, PageLoadUnloadListeningSpecPage2)
 
 		then:
 		previousPage.arg.class == PageLoadUnloadListeningSpecPage2
@@ -46,23 +49,49 @@ class PageLoadUnloadListeningSpec extends GebSpecWithServer {
 		page instanceof PageLoadUnloadListeningSpecPage2
 		page.arg.class == PageLoadUnloadListeningSpecPage1
 		page.method == 'onLoad'
+
+		where:
+		method                     | toPage
+		"page method"              | { page(it) }
+		"content click"            | { link.click() }
+		"to method"                | { to(it) }
+		"click with explicit page" | { button.click(it) }
+		"click with page list"     | { button.click([PageLoadUnloadListeningSpecPage3, it]) }
 	}
 
+	protected fire(Closure closure, Class<? extends Page> pageClass) {
+		closure.delegate = this
+		closure.call(pageClass)
+	}
 }
 
 class PageLoadUnloadListeningSpecPage1 extends Page {
 	def arg
 	def method
-	
+
+	static content = {
+		link(to: PageLoadUnloadListeningSpecPage2) { $("button") }
+		button { $("button") }
+	}
+
 	void onLoad(Page previousPage) {
 		method = 'onLoad'
 		arg = previousPage
 	}
-	
+
 	void onUnload(Page nextPage) {
 		method = 'onUnload'
 		arg = nextPage
 	}
 }
 
-class PageLoadUnloadListeningSpecPage2 extends PageLoadUnloadListeningSpecPage1 {}
+class PageLoadUnloadListeningSpecPage2 extends PageLoadUnloadListeningSpecPage1 {
+	static content = {
+		link(to: PageLoadUnloadListeningSpecPage1) { $("button") }
+		button { $("button") }
+	}
+}
+
+class PageLoadUnloadListeningSpecPage3 extends Page {
+	static at = { false }
+}
