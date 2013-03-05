@@ -21,7 +21,7 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 import javax.servlet.http.HttpServletRequest
 
-class ToAndAtSpec extends GebSpecWithServer {
+class ViaSpec extends GebSpecWithServer {
 	def setupSpec() {
 		responseHtml { HttpServletRequest request ->
 			body {
@@ -53,9 +53,9 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 	def "verify at checking works"() {
 		when:
-		via ToAndAtSpecPageA
+		via ViaSpecPageA
 		and:
-		at ToAndAtSpecPageB
+		at ViaSpecPageB
 
 		then:
 		PowerAssertionError error = thrown()
@@ -67,20 +67,20 @@ class ToAndAtSpec extends GebSpecWithServer {
 		go ''
 
 		when:
-		at ToAndAtSpecPageA
+		at ViaSpecPageA
 
 		then:
-		page.getClass() == ToAndAtSpecPageA
+		page.getClass() == ViaSpecPageA
 	}
 
 	def "verify isAt() works"() {
 		when:
-		via ToAndAtSpecPageA
+		via ViaSpecPageA
 
 		then:
-		isAt ToAndAtSpecPageA
-		!isAt(ToAndAtSpecPageB)
-		!isAt(ToAndAtSpecPageB)
+		isAt ViaSpecPageA
+		!isAt(ViaSpecPageB)
+		!isAt(ViaSpecPageB)
 	}
 
 	def "when isAt() returns true it also modifies browser's page instance"() {
@@ -88,12 +88,12 @@ class ToAndAtSpec extends GebSpecWithServer {
 		go ''
 
 		expect:
-		isAt ToAndAtSpecPageA
-		page.getClass() == ToAndAtSpecPageA
+		isAt ViaSpecPageA
+		page.getClass() == ViaSpecPageA
 
 		and:
-		!isAt(ToAndAtSpecPageB)
-		page.getClass() == ToAndAtSpecPageA
+		!isAt(ViaSpecPageB)
+		page.getClass() == ViaSpecPageA
 	}
 
 
@@ -108,10 +108,10 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 		where:
 		scenario      | args
-		'simple call' | [ToAndAtSpecPageB]
-		'call with map' | [[hideA: true], ToAndAtSpecPageA]
-		'call with parameter' | [ToAndAtSpecPageA, true]
-		'call with parameter and map' | [[hideA: true], ToAndAtSpecPageA, true]
+		'simple call' | [ViaSpecPageB]
+		'call with map' | [[hideA: true], ViaSpecPageA]
+		'call with parameter' | [ViaSpecPageA, true]
+		'call with parameter and map' | [[hideA: true], ViaSpecPageA, true]
 	}
 
 	@Unroll
@@ -125,10 +125,10 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 		where:
 		scenario      | args
-		'simple call' | [ToAndAtSpecPageA]
-		'call with map' | [[showB: true], ToAndAtSpecPageB]
-		'call with parameter' | [ToAndAtSpecPageB, true]
-		'call with parameter and map' | [[showB: true], ToAndAtSpecPageB, true]
+		'simple call' | [ViaSpecPageA]
+		'call with map' | [[showB: true], ViaSpecPageB]
+		'call with parameter' | [ViaSpecPageB, true]
+		'call with parameter and map' | [[showB: true], ViaSpecPageB, true]
 	}
 
 	@Unroll
@@ -138,22 +138,22 @@ class ToAndAtSpec extends GebSpecWithServer {
 
 		where:
 		scenario      | args
-		'simple call' | [ToAndAtSpecPageA]
-		'call with map' | [[showB: true], ToAndAtSpecPageB]
-		'call with parameter' | [ToAndAtSpecPageB, true]
-		'call with parameter and map' | [[showB: true], ToAndAtSpecPageB, true]
+		'simple call' | [ViaSpecPageA]
+		'call with map' | [[showB: true], ViaSpecPageB]
+		'call with parameter' | [ViaSpecPageB, true]
+		'call with parameter and map' | [[showB: true], ViaSpecPageB, true]
 	}
 
 	def 'at() returns an instance of a page if it succeeds'() {
 		when:
-		via ToAndAtSpecPageA
+		via ViaSpecPageA
 
 		then:
-		at(ToAndAtSpecPageA) in ToAndAtSpecPageA
+		at(ViaSpecPageA) in ViaSpecPageA
 	}
 }
 
-class ToAndAtSpecPageA extends Page {
+class ViaSpecPageA extends Page {
 	static at = { div }
 	static content = {
 		div(required: false) { $("#a") }
@@ -164,7 +164,7 @@ class ToAndAtSpecPageA extends Page {
 	}
 }
 
-class ToAndAtSpecPageB extends Page {
+class ViaSpecPageB extends Page {
 	static at = { div }
 	static content = {
 		div(required: false) { $("#b") }
@@ -175,6 +175,6 @@ class ToAndAtSpecPageB extends Page {
 	}
 }
 
-class ToAndAtSpecPageC extends Page {
+class ViaSpecPageC extends Page {
 	static at = { false }
 }
