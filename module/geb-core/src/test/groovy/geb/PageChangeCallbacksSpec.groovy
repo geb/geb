@@ -25,18 +25,23 @@ class PageChangeCallbacksSpec extends GebSpecWithServer {
 	def "change callbacks"() {
 		expect:
 		page instanceof Page
+
 		when:
 		page(PageChangeCallbacksSpecPage1)
+
 		then:
 		page instanceof PageChangeCallbacksSpecPage1
 		arg.class == Page
 		method == "onLoad"
+
 		when:
 		previousPage = page
 		page(PageChangeCallbacksSpecPage2)
+
 		then:
 		previousPage.arg.class == PageChangeCallbacksSpecPage2
 		previousPage.method == 'onUnload'
+
 		and:
 		page instanceof PageChangeCallbacksSpecPage2
 		page.arg.class == PageChangeCallbacksSpecPage1
