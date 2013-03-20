@@ -16,11 +16,12 @@
 package geb.testng
 
 import geb.report.ReporterSupport
-import java.lang.reflect.Method
 import org.testng.ITestResult
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.BeforeMethod
+
+import java.lang.reflect.Method
 
 class GebReportingTest extends GebTest {
 
@@ -33,12 +34,14 @@ class GebReportingTest extends GebTest {
 		browser.report(ReporterSupport.toTestReportLabel(testMethodNumber, reportNumberInTestMethod++, testMethodName, label))
 	}
 
+	@SuppressWarnings("GroovyUnusedDeclaration")
 	@BeforeClass
 	void initReportGroupDir() {
-		reportGroup getClass()
-		cleanReportGroupDir()
+		browser.reportGroup getClass()
+		browser.cleanReportGroupDir()
 	}
 
+	@SuppressWarnings("GroovyUnusedDeclaration")
 	@BeforeMethod
 	void setupReporting(Method method) {
 		reportNumberInTestMethod = 1
@@ -48,8 +51,9 @@ class GebReportingTest extends GebTest {
 
 	@AfterMethod
 	void reportingAfter(ITestResult testResult) {
-		if(!config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status)
+		if (!browser.config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status) {
 			report(END_OF_METHOD_REPORT_LABEL)
+		}
 	}
 
 }
