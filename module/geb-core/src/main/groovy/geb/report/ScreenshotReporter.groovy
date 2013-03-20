@@ -27,9 +27,9 @@ import org.openqa.selenium.WebDriverException
  */
 class ScreenshotReporter extends ReporterSupport {
 	
-	void writeReport(Browser browser, String label, File outputDir) {
+	void writeReport(ReportState reportState) {
 		// note - this is not covered by tests unless using a driver that can take screenshots
-		def screenshotDriver = determineScreenshotDriver(browser)
+		def screenshotDriver = determineScreenshotDriver(reportState.browser)
 		if (screenshotDriver) {
 			def decoded
 			try {
@@ -44,7 +44,7 @@ class ScreenshotReporter extends ReporterSupport {
 				decoded = new ExceptionToPngConverter(e).convert('An exception has been thrown while getting the screenshot:')
 			}
 			
-			saveScreenshotPngBytes(outputDir, label, decoded)
+			saveScreenshotPngBytes(reportState.outputDir, reportState.label, decoded)
 		}
 	}
 	

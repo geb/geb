@@ -14,27 +14,18 @@
  */
 package geb.report
 
-/**
- * Delegates to one or more other reporters.
- */
-class CompositeReporter implements Reporter {
+import geb.Browser
 
-	private final List<Reporter> reporters
+class ReportState {
 
-	CompositeReporter(Reporter... reporters) {
-		this.reporters = reporters.toList()
-	}
+	final Browser browser
+	final String label
+	final File outputDir
 
-	@Override
-	void writeReport(ReportState reportState) {
-		for (reporter in reporters) {
-			reporter.writeReport(reportState)
-		}
-	}
-
-	@Override
-	void addListener(ReportingListener listener) {
-		reporters*.addListener(listener)
+	ReportState(Browser browser, String label, File outputDir) {
+		this.browser = browser
+		this.label = label
+		this.outputDir = outputDir
 	}
 
 }

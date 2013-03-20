@@ -20,6 +20,7 @@ import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UnexpectedPageException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
+import geb.report.ReportState
 import org.openqa.selenium.NoSuchWindowException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
@@ -694,7 +695,7 @@ class Browser {
 	 * @param label The name for the report file (should not include a file extension)
 	 */
 	void report(String label) {
-		config.reporter.writeReport(this, label, getReportGroupDir())
+		config.reporter.writeReport(new ReportState(this, label, getReportGroupDir()))
 	}
 
 	private informPageChangeListeners(Page oldPage, Page newPage) {

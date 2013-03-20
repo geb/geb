@@ -15,35 +15,36 @@
  */
 package geb.report
 
-import geb.Browser
 import spock.lang.Specification
 
 class ReporterSupportSpec extends Specification {
-	
+
 	def reportDir = new File("build/tmp/ReporterSupportSpec")
-	
+
 	def setup() {
 		assert (!reportDir.exists() || reportDir.deleteDir()) && reportDir.mkdirs()
 	}
-	
+
 	def "report filename escaping"() {
 		given:
 		def reporter = new ReporterSupport() {
-			void writeReport(Browser browser, String label, File outputDir) {
-				getFile(outputDir, label, "12 | 34") << "content"
+			void writeReport(ReportState reportState) {
+				getFile(reportState.outputDir, reportState.label, "12 | 34") << "content"
 			}
+
+
 		}
-		
+
 		when:
-		reporter.writeReport(null, "12 | 34", reportDir)
-		
+		reporter.writeReport(new ReportState(null, "12 | 34", reportDir))
+
 		then:
 		new File(reportDir, "12 _ 34.12 _ 34").exists()
 	}
-	
+
 	def cleanup() {
 		reportDir.deleteDir()
 	}
-	
-	
+
+
 }

@@ -18,21 +18,33 @@ package geb.report
  * Common support for reporter implemenations.
  */
 abstract class ReporterSupport implements Reporter {
-	
+
+	private final List<ReportingListener> listeners = []
+
 	/**
 	 * Gets a file reference for the object with the given name and extension within the dir.
 	 */
 	protected getFile(File dir, String name, String extension) {
 		new File(dir, "${escapeFileName(name)}.${escapeFileName(extension)}")
 	}
-	
+
 	/**
 	 * Replaces all non word chars with underscores to avoid using reserved characters in file paths
 	 */
 	protected escapeFileName(String name) {
 		name.replaceAll("[^\\w\\s-]", "_")
 	}
-	
+
+	void addListener(ReportingListener listener) {
+		listeners << listener
+	}
+
+	protected void notifyListeners(ReportState reportState, List<File> reportFiles) {
+		for (listener in listeners) {
+			listener.onReport(this, reportState, reportFiles)
+		}
+	}
+
 	static String toTestReportLabel(int testCounter, int reportCounter, String methodName, String label) {
 		def numberFormat = "%03d"
 		"${String.format(numberFormat, testCounter)}-${String.format(numberFormat, reportCounter)}-$methodName-$label"
