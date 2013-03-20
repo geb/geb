@@ -16,8 +16,10 @@
 package geb
 
 import geb.buildadapter.SystemPropertiesBuildAdapter
+import geb.report.CompositeReporter
+import geb.report.PageSourceReporter
 import geb.report.Reporter
-import geb.report.ScreenshotAndPageSourceReporter
+import geb.report.ScreenshotReporter
 import geb.waiting.Wait
 import org.openqa.selenium.WebDriver
 import geb.driver.*
@@ -273,15 +275,18 @@ class Configuration {
 	/**
 	 * Returns the reporter implementation to use for taking snapshots of the browser's state.
 	 * <p>
-	 * Returns the config value {@code reporter}, or an instance of {@link geb.report.ScreenshotAndPageSourceReporter} if not explicitly set.
+	 * Returns the config value {@code reporter}, or reporter that records page source and screen shots if not explicitly set.
 	 */
 	Reporter getReporter() {
 		def reporter = readValue("reporter", null)
 		if (reporter == null) {
-			reporter = new ScreenshotAndPageSourceReporter()
+			reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
 			setReporter(reporter)
+		} else if (!(reporter instanceof Reporter)) {
+			throw new InvalidGebConfiguration("The specified reporter ($reporter) is not an implementation of ${Reporter.name}")
 		}
-		reporter
+
+		reporter as Reporter
 	}
 	
 	/**

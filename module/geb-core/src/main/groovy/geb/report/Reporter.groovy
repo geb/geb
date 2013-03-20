@@ -22,7 +22,7 @@ import geb.Browser
  * before and after test methods.
  * 
  * @see geb.report.ReporterSupport
- * @see geb.report.ScreenshotAndPageSourceReporter
+ * @see ScreenshotReporter
  */
 interface Reporter {
 	

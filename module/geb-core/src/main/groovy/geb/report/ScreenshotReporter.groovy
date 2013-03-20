@@ -25,11 +25,9 @@ import org.openqa.selenium.WebDriverException
  * Writes the source of the browser's current page as html and takes a PNG screenshot
  * if the underlying driver implementation supports it.
  */
-class ScreenshotAndPageSourceReporter extends PageSourceReporter {
+class ScreenshotReporter extends ReporterSupport {
 	
 	void writeReport(Browser browser, String label, File outputDir) {
-		super.writeReport(browser, label, outputDir)
-
 		// note - this is not covered by tests unless using a driver that can take screenshots
 		def screenshotDriver = determineScreenshotDriver(browser)
 		if (screenshotDriver) {
@@ -54,11 +52,11 @@ class ScreenshotAndPageSourceReporter extends PageSourceReporter {
 		getFile(outputDir, label, 'png').withOutputStream { it << bytes }
 	}
 
-	protected determineScreenshotDriver(Browser browser) {
+	protected static TakesScreenshot determineScreenshotDriver(Browser browser) {
 		if (browser.driver instanceof TakesScreenshot) {
-			browser.driver
+			browser.driver as TakesScreenshot
 		} else if (browser.augmentedDriver instanceof TakesScreenshot) {
-			browser.augmentedDriver
+			browser.augmentedDriver as TakesScreenshot
 		} else {
 			null
 		}
