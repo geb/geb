@@ -116,7 +116,7 @@ It is possible to specify your own implementation of [`NavigatorFactory`](api/ge
 Rather than inject your own `NavigatorFactory`, it is simpler to inject a custom [`InnerNavigatorFactory`](api/geb/navigatory/factory/NavigatorFactory.html) which is a much simpler interface. To do this, you can specify a closure for the config key `innerNavigatorFactory`…
 
     innerNavigatorFactory = { Browser browser, List<org.openqa.selenium.WebElement> elements
-        if (elements) ? new MyCustomNavigator(browser, elements) : new geb.navigator.EmptyNavigator()
+        elements ? new MyCustomNavigator(browser, elements) : new geb.navigator.EmptyNavigator()
     }
 
 This is a rather advanced use case. If you need to do this, check out the source code or get in touch via the mailing list if you need help.
