@@ -168,7 +168,7 @@ Here we have defined two presets, `slow` and `quick`. Notice that the `quick` pr
 
 ### Reporter
 
-The *reporter* is the object responsible for snapshotting the state of the browser (see the [reporting](reporting.html) chapter for details). All reporters are implemenations of the [`Reporter`](api/geb/report/Reporter.html) interface. By default, Geb uses the [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotAndPageSourceReporter.html) implementation that dumps the page source as html and attempts to take a screenshot as a png file. This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
+The *reporter* is the object responsible for snapshotting the state of the browser (see the [reporting](reporting.html) chapter for details). All reporters are implemenations of the [`Reporter`](api/geb/report/Reporter.html) interface. If no reporter is explicitly defined, a [composite reporter](api/geb/report/CompositeReporter.html) will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current DOM state as HTML). This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
 
     reporter = new CustomReporter()
 
