@@ -19,6 +19,7 @@ import geb.buildadapter.SystemPropertiesBuildAdapter
 import geb.report.CompositeReporter
 import geb.report.PageSourceReporter
 import geb.report.Reporter
+import geb.report.ReportingListener
 import geb.report.ScreenshotReporter
 import geb.waiting.Wait
 import org.openqa.selenium.WebDriver
@@ -280,15 +281,27 @@ class Configuration {
 	Reporter getReporter() {
 		def reporter = readValue("reporter", null)
 		if (reporter == null) {
-			reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
+			reporter = createDefaultReporter()
 			setReporter(reporter)
 		} else if (!(reporter instanceof Reporter)) {
 			throw new InvalidGebConfiguration("The specified reporter ($reporter) is not an implementation of ${Reporter.name}")
 		}
 
-		reporter as Reporter
+		def typedReporter = reporter as Reporter
+
+		def reportingListener = getReportingListener()
+		if (reportingListener) {
+			// Adding is idempotent
+			typedReporter.addListener(reportingListener)
+		}
+
+		typedReporter
 	}
-	
+
+	protected Reporter createDefaultReporter() {
+		new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
+	}
+
 	/**
 	 * Updates the {@code reporter} config entry.
 	 * 
@@ -297,7 +310,15 @@ class Configuration {
 	void setReporter(Reporter reporter) {
 		rawConfig.reporter = reporter
 	}
-	
+
+	void setReportingListener(ReportingListener reportingListener) {
+		rawConfig.reportingListener = reportingListener
+	}
+
+	ReportingListener getReportingListener() {
+		readValue("reportingListener", null)
+	}
+
 	/**
 	 * 
 	 */

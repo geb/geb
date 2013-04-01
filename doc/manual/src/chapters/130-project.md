@@ -43,6 +43,7 @@ This page lists the high level changes between versions of Geb.
 * `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_newly_opened_windows) for more information \[[GEB-167](http://jira.codehaus.org/browse/GEB-167)\].
 * Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class \[[GEB-240](http://jira.codehaus.org/browse/GEB-240)\].
 * Improved signature of `Browser.at()` and `Browser.to()` to return the exact type of the page that was asserted to be at / was navigated to.
+* [`ReportingListener`](api/geb/report/ReportingListener.html) objects can be registered to observe reporting (see: [reporting.html#listening_to_reporting](reporting.html#listening_to_reporting)
 
 #### Fixes
 

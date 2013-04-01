@@ -199,6 +199,10 @@ By default Geb will take a report at the end of each test method, regardless of 
 
 > Currently this flag is only supported by the TestNG adapter. Support for JUnit, Spock and other frameworks is forthcoming.
 
+### Reporting listener
+
+It is possible to specify a listener that will be notified when reports are taken. See the section on [listening to reporting](reporting.html#listening_to_reporting) for details.
+
 ### Auto Clearing Cookies
 
 Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an [implicit driver](driver.html#implicit_lifecycle). This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
