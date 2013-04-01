@@ -36,7 +36,9 @@ abstract class ReporterSupport implements Reporter {
 	}
 
 	void addListener(ReportingListener listener) {
-		listeners << listener
+		if (!listeners.contains(listener)) {
+			listeners << listener
+		}
 	}
 
 	protected void notifyListeners(ReportState reportState, List<File> reportFiles) {

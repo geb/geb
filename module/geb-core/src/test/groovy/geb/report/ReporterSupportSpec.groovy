@@ -31,8 +31,6 @@ class ReporterSupportSpec extends Specification {
 			void writeReport(ReportState reportState) {
 				getFile(reportState.outputDir, reportState.label, "12 | 34") << "content"
 			}
-
-
 		}
 
 		when:
@@ -40,6 +38,29 @@ class ReporterSupportSpec extends Specification {
 
 		then:
 		new File(reportDir, "12 _ 34.12 _ 34").exists()
+	}
+
+	def "listener added more than once is not called twice"() {
+		given:
+		def l1 = Mock(ReportingListener)
+		def l2 = Mock(ReportingListener)
+		def f = new File("foo")
+		def files = [f]
+		def state = new ReportState(null, "foo", reportDir)
+		def reporter = new ReporterSupport() {
+			void writeReport(ReportState reportState) {
+				notifyListeners(reportState, files)
+			}
+		}
+
+		when:
+		2.times { reporter.addListener(l1) }
+		2.times { reporter.addListener(l2) }
+		reporter.writeReport(state)
+
+		then:
+		1 * l1.onReport(reporter, state, files)
+		1 * l2.onReport(reporter, state, files)
 	}
 
 	def cleanup() {
