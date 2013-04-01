@@ -326,7 +326,7 @@ See the documentation for [Keys](http://selenium.googlecode.com/svn/trunk/docs/a
 
 ## Accessing input values
 
-The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a String if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection of values.
+The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a `String` if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection of values.
 
 ## Form Control Shortcuts
 
@@ -482,7 +482,7 @@ We can select the radios with…
 
 #### text inputs and textareas
 
-In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` becomes the text.
+In the case of a text `input`, the assigned value becomes the input's *value* attribute and for a `textarea` effectively becomes the text.
 
 It is also possible to append text by using the send keys shorthand…
 
