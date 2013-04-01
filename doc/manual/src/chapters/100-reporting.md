@@ -15,8 +15,8 @@ You take a report by calling the [`report(String label)`](api/geb/Browser.html#r
 
 Assuming that we configured a `reportsDir` of “`reports/geb`”, after running this script we will find two files in this directory:
 
-* `google home page.html` - A html dump of the page source
-* `google home page.png` - A screenshot of the browser as a PNG file (if the driver implementation supports this)
+* `001-google home page.html` - A html dump of the page source
+* `001-google home page.png` - A screenshot of the browser as a PNG file (if the driver implementation supports this)
 
 > To avoid issues with reserved characters in filenames, Geb replaces any character in the report name that is not an alphanumeric, a space or a hyphen with an underscore.
 
