@@ -18,6 +18,10 @@ import geb.error.GebException;
 
 public class DriverCreationException extends GebException {
 
+	public DriverCreationException(Object message) {
+		super(message);
+	}
+
 	public DriverCreationException(Object message, Throwable cause) {
 		super(message, cause);
 	}
