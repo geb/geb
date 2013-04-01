@@ -1,6 +1,8 @@
 # Reporting
 
-Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time. Reporters are implementations of the [`Reporter`](api/geb/report/Reporter.html) interface. Geb ships with two implementations; [`PageSourceReporter`](api/geb/report/PageSourceReporter.html) and [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotAndPageSourceReporter.html) (the default). There are three bits of configuration that pertain to reporting; the [reporter](configuration.html#reporter) implementation, the [reports directory](configuration.html#reports_dir) and whether to [only report test failures](configuration.html#report_test_failures_only) or not.
+Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time. Reporters are implementations of the [`Reporter`](api/geb/report/Reporter.html) interface. Geb ships with two implementations; [`PageSourceReporter`](api/geb/report/PageSourceReporter.html) and [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotReporter.html). There are three bits of configuration that pertain to reporting; the [reporter](configuration.html#reporter) implementation, the [reports directory](configuration.html#reports_dir) and whether to [only report test failures](configuration.html#report_test_failures_only) or not.
+
+If no reporter is explicitly defined, a [composite reporter](api/geb/report/CompositeReporter.html) will be created from a `ScreenshotReporter` and `PageSourceReporter`.
 
 You take a report by calling the [`report(String label)`](api/geb/Browser.html#report\(java.lang.String\)) method on the browser object.
 
