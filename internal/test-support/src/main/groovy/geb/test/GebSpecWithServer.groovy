@@ -26,11 +26,11 @@ class GebSpecWithServer extends GebSpec {
 
 	@Shared TestHttpServer server
 
-	private static final List<Integer> SAUCE_PORTS = [
+	private static final List<Integer> SAUCE_PORTS = Collections.shuffle([
 		2000, 2001, 2020, 2222, 3000, 3001, 3030, 3333, 4000, 4001, 4040, 4502, 4503, 5000, 5001, 5050,
 		5555, 6000, 6001, 6060, 6666, 7000, 7070, 7777, 8000, 8001, 8003, 8031, 8080, 8081, 8888, 9000,
 		9001, 9080, 9090, 9999, 49221
-	]
+	])
 
 	def setupSpec() {
 		server = new CallbackHttpServer()
