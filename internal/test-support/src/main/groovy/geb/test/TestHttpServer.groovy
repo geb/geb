@@ -18,15 +18,14 @@ package geb.test
 
 import org.mortbay.jetty.Server
 import org.mortbay.jetty.servlet.Context
-import org.mortbay.jetty.servlet.ServletHolder
 
 abstract class TestHttpServer {
 	protected server
 	boolean started
 
-	void start() {
+	void start(int port = 0) {
 		if (!started) {
-			server = new Server(0)
+			server = new Server(port)
 			def context = new Context(server, "/")
 			addServlets(context)
 			server.start()

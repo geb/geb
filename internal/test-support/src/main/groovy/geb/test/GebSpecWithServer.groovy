@@ -25,13 +25,23 @@ import javax.servlet.http.HttpServletResponse
 class GebSpecWithServer extends GebSpec {
 
 	@Shared TestHttpServer server
-	
+
 	def setupSpec() {
 		server = new CallbackHttpServer()
-		server.start()
+		server.start(getTestPort())
 		browser.baseUrl = server.baseUrl
 	}
-	
+
+	int getTestPort() {
+		if (System.getProperty("geb.sauce.browser")) {
+			// the sauce connect tunnel only supports a limited set of ports if using
+			// localhost, as we do. Therefore hard code it in this case.
+			4503
+		} else {
+			0 // ephemeral, use whatever is available.
+		}
+	}
+
 	Browser createBrowser() {
 		def browser = super.createBrowser()
 		if (server) {
@@ -39,14 +49,14 @@ class GebSpecWithServer extends GebSpec {
 		}
 		browser
 	}
-	
+
 	def cleanupSpec() {
 		server?.stop()
 	}
 
 	def responseHtml(Closure htmlMarkup) {
 		server.get = { HttpServletRequest request, HttpServletResponse response ->
-			synchronized(this) { // MarkupBuilder has some static state, so protect
+			synchronized (this) { // MarkupBuilder has some static state, so protect
 				try {
 					response.setContentType("text/html")
 					response.setCharacterEncoding("utf8")
