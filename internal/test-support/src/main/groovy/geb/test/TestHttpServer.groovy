@@ -23,12 +23,24 @@ abstract class TestHttpServer {
 	protected server
 	boolean started
 
-	void start(int port = 0) {
+	void start(List<Integer> ports = [0]) {
 		if (!started) {
-			server = new Server(port)
-			def context = new Context(server, "/")
-			addServlets(context)
-			server.start()
+			def remainingPorts = new LinkedList(ports)
+			while (server == null && !remainingPorts.isEmpty()) {
+				int port = remainingPorts.removeFirst()
+				def tryServer = new Server(port)
+				def context = new Context(tryServer, "/")
+				addServlets(context)
+				try {
+					tryServer.start()
+					server = tryServer
+				} catch (BindException ignore) {
+					if (!remainingPorts) {
+						throw new RuntimeException("Could not bind to any given ports: $ports")
+					}
+				}
+			}
+
 			started = true
 		}
 	}
@@ -47,11 +59,11 @@ abstract class TestHttpServer {
 	def getBaseUrl() {
 		"http://localhost:$port/"
 	}
-	
+
 	def getBaseUrlAsUrl() {
 		new URL(getBaseUrl())
 	}
 
 	abstract protected addServlets(Context context)
-	
+
 }
