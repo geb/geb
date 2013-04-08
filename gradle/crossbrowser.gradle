@@ -176,7 +176,7 @@ configurations {
 }
 
 dependencies {
-	sauceConnect "com.saucelabs:sauce-connect:3.0.24"
+	sauceConnect "com.saucelabs:sauce-connect:3.0.26"
 }
 
 extensions.create("sauceAccount", SauceAccount)
