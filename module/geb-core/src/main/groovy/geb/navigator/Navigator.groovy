@@ -390,10 +390,22 @@ interface Navigator extends Iterable<Navigator> {
 	boolean isDisabled()
 
 	/**
+	 * Shorthand for <code>!hasAttribute("disabled")</code>.
+	 * @return true when the first element is not disabled
+	 */
+	boolean isEnabled()
+
+	/**
 	 * Shorthand for <code>hasAttribute("readonly")</code>.
 	 * @return true when the first element is readonly
 	 */
 	boolean isReadOnly()
+
+	/**
+	 * Shorthand for <code>!hasAttribute("readonly")</code>.
+	 * @return true when the first element is editable
+	 */
+	boolean isEditable()
 
 	/**
 	 * Returns the tag name of the first context element.

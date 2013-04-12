@@ -291,6 +291,44 @@ class NavigatorSpec extends GebSpecWithServer {
 		!$("foo").displayed
 	}
 
+	def disabled() {
+
+		given:
+			html {
+				input(id: "en")
+				input(id: "di", disabled: 'disabled')
+				input(id: "arb", disabled: 'xyz')
+			}	
+
+		expect:
+			$("#en").enabled
+			!$("#en").disabled
+			$("#di").disabled
+			!$("#di").enabled
+			$("#arb").disabled
+			!$("#arb").enabled
+
+	}
+
+	def readOnly() {
+
+		given:
+			html {
+				input(id: "wr")
+				input(id: "ro", readonly: 'readonly')
+				input(id: "arb", readonly: 'xyz')
+			}	
+
+		expect:
+			$("#wr").editable
+			!$("#wr").readOnly
+			$("#ro").readOnly
+			!$("#ro").editable
+			$("#arb").readOnly
+			!$("#arb").editable
+
+	}
+
 	def "click is called only on the first element of the navigator"() {
 		given:
 		def element1 = Mock(WebElement)
