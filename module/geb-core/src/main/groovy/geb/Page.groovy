@@ -176,7 +176,16 @@ class Page {
 	 * This implementation returns the static url property of the class.
 	 */
 	String getPageUrl() {
-		this.class.url
+		def subdomainPresent = this.class.declaredFields.find {
+            it.name == 'subdomain' && isStatic(it.modifiers)
+        }
+        if( subdomainPresent ) {
+            def baseURL = getBrowser().getConfig().getBaseUrl()
+            def splicePoint = baseURL.indexOf('//') + 1
+
+            pageUrl = baseURL[0..splicePoint] + this.class.subdomain + "." + baseURL[splicePoint+1..-1] + pageUrl
+        }
+		pageUrl
 	}
 	
 	/**
