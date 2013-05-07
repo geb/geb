@@ -3,6 +3,16 @@ apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
 apply from: "gradle/crossbrowser.gradle"
 
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.6.1'
+	}
+}
+
 if (project.hasProperty("ci")) {
 	allprojects {
 		plugins.withType(ReportingBasePlugin) {
@@ -169,6 +179,12 @@ subprojects {
 				}
 			}
 		}
+	}
+}
+
+if (hasProperty('enableClover')) {
+	configure(subprojects.findAll { it.parent == project(':module') } + rootProject) {
+		apply from: rootProject.file("gradle/clover.gradle")
 	}
 }
 
