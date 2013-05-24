@@ -125,7 +125,10 @@ task dumpClassloaders(type: GrailsTask) {
 	command "dump-classloaders"
 }
 
-test.dependsOn packagePlugin
+task test(type: GrailsTask) {
+	dependsOn packagePlugin
+	command "test-app"
+}
 
 task release(type: GrailsTask, dependsOn: packagePlugin) {
 	bootstrapClasspath = configurations.releaseBootstrap
