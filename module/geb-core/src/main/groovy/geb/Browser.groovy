@@ -680,10 +680,12 @@ class Browser {
 	 * Removes the directory returned by {@link #getReportGroupDir()} from the filesystem if it exists.
 	 */
 	void cleanReportGroupDir() {
-		def dir = getReportGroupDir()
-		if (dir != null) {
-			if (dir.exists() && !dir.deleteDir()) {
-				throw new IllegalStateException("Could not clean report dir '${dir}'")
+		synchronized (this.class) {
+			def dir = getReportGroupDir()
+			if (dir != null) {
+				if (dir.exists() && !dir.deleteDir()) {
+					throw new IllegalStateException("Could not clean report dir '${dir}'")
+				}
 			}
 		}
 	}
