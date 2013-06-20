@@ -386,7 +386,6 @@ class Browser {
 	 * @return a page instance of the passed page type when the at checker succeeded
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
-	 * @see #at(geb.Page)
 	 */
 	public <T extends Page> T to(Class<T> pageType, Object[] args) {
 		to([:], pageType, args)
@@ -398,7 +397,6 @@ class Browser {
 	 * @return a page instance of the passed page type when the at checker succeeded
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
-	 * @see #at(geb.Page)
 	 */
 	public <T extends Page> T to(Map params, Class<T> pageType) {
 		to(params, pageType, null)
@@ -410,7 +408,6 @@ class Browser {
 	 * @return a page instance of the passed page type when the at checker succeeded
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
-	 * @see #at(geb.Page)
 	 */
 	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
 		via(params, pageType, args)
