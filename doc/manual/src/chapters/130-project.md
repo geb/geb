@@ -37,7 +37,7 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking Changes
 
-* Explicitly calling `at()` with a page object will throw an exception insteadof silently passing if the page object does not define an at checker.
+* Explicitly calling `at()` with a page object will throw an exception instead of silently passing if the page object does not define an at checker.
 
 ### 0.9.0
 
