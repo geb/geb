@@ -17,6 +17,7 @@ package geb
 import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
+import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
@@ -408,7 +409,12 @@ class Browser {
 	 */
 	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
 		via(params, pageType, args)
-		at(pageType)
+		try {
+			at(pageType)
+		} catch (UndefinedAtCheckerException e) {
+			// that's okay, we don't want to force users to define at checkers unless they explicitly use "at"
+			createPage(pageType)
+		}
 	}
 
 

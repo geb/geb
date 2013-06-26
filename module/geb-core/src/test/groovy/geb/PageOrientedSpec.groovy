@@ -18,6 +18,7 @@ import geb.content.SimplePageContent
 import geb.error.InvalidPageContent
 import geb.error.RequiredPageContentNotPresent
 import geb.error.RequiredPageValueNotPresent
+import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.test.GebSpecWithServer
 import spock.lang.Issue
@@ -219,6 +220,16 @@ class PageOrientedSpec extends GebSpecWithServer {
 		linkTextAlias == 'b'
 	}
 
+
+	def 'at check should fail when no at checker is defined on the page object class'() {
+		when:
+		at PageWithoutAtChecker
+
+		then:
+		def e = thrown UndefinedAtCheckerException
+		e.message == "No at checker has been defined for class geb.PageWithoutAtChecker."
+	}
+
 	@Unroll
 	def "invalid page parameter ( #pageParameter ) for content throws an informative exception"() {
 		when:
@@ -294,3 +305,5 @@ class PageContentStringPageParam extends Page {
 		wrongClass(page: String) { $('a') }
 	}
 }
+
+class PageWithoutAtChecker extends Page { }

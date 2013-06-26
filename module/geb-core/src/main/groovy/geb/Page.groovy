@@ -18,6 +18,7 @@ import geb.content.NavigableSupport
 import geb.content.PageContentTemplateBuilder
 import geb.download.DownloadSupport
 import geb.error.RequiredPageContentNotPresent
+import geb.error.UndefinedAtCheckerException
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
 import geb.js.AlertAndConfirmSupport
@@ -132,7 +133,7 @@ class Page {
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
 			verifier()
 		} else {
-			true
+			throw new UndefinedAtCheckerException(this.class.name)
 		}
 	}
 	
@@ -150,6 +151,8 @@ class Page {
 			false
 		} catch (RequiredPageContentNotPresent e) {
 			false
+		} catch (UndefinedAtCheckerException e) {
+			true
 		}
 	}
 	
