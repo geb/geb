@@ -230,6 +230,16 @@ class PageOrientedSpec extends GebSpecWithServer {
 		e.message == "No at checker has been defined for class geb.PageWithoutAtChecker."
 	}
 
+	def "exception should be thrown when no at checker is defined for one of the to pages"() {
+		when:
+		to PageWithLinkToPageWithoutAtChecker
+		link.click()
+
+		then:
+		def e = thrown UnexpectedPageException
+		e.cause in UndefinedAtCheckerException
+	}
+
 	@Unroll
 	def "invalid page parameter ( #pageParameter ) for content throws an informative exception"() {
 		when:
@@ -307,3 +317,8 @@ class PageContentStringPageParam extends Page {
 }
 
 class PageWithoutAtChecker extends Page { }
+class PageWithLinkToPageWithoutAtChecker extends Page {
+	static content = {
+		gilink(to: PageWithoutAtChecker) { $("#a") }
+	}
+}

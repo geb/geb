@@ -151,8 +151,6 @@ class Page {
 			false
 		} catch (RequiredPageContentNotPresent e) {
 			false
-		} catch (UndefinedAtCheckerException e) {
-			true
 		}
 	}
 	

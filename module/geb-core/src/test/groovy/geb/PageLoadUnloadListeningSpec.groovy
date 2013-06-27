@@ -86,6 +86,7 @@ class PageLoadUnloadListeningSpecPage1 extends Page {
 }
 
 class PageLoadUnloadListeningSpecPage2 extends PageLoadUnloadListeningSpecPage1 {
+	static at = { true }
 	static content = {
 		link(to: PageLoadUnloadListeningSpecPage1) { $("button") }
 		button { $("button") }
