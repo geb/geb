@@ -346,7 +346,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		} catch (AssertionError e) {
 			error = e
 		} catch (UndefinedAtCheckerException e) {
-			error = e
+			at = true
 		}
 		finally {
 			if (!at) {

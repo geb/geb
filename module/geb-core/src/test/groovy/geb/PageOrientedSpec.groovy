@@ -236,8 +236,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 		link.click()
 
 		then:
-		def e = thrown UnexpectedPageException
-		e.cause in UndefinedAtCheckerException
+		def e = thrown UndefinedAtCheckerException
 	}
 
 	@Unroll
@@ -316,9 +315,10 @@ class PageContentStringPageParam extends Page {
 	}
 }
 
+class PageWithAtChecker extends Page { static at = { false } }
 class PageWithoutAtChecker extends Page { }
 class PageWithLinkToPageWithoutAtChecker extends Page {
 	static content = {
-		link(to: PageWithoutAtChecker) { $("#a") }
+		link(to: [PageWithAtChecker, PageWithoutAtChecker]) { $("#a") }
 	}
 }

@@ -1,6 +1,8 @@
 package geb.navigator
 
 import geb.Page
+import geb.PageWithoutAtChecker
+import geb.error.UndefinedAtCheckerException
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 import org.openqa.selenium.WebElement
@@ -317,7 +319,29 @@ class NavigatorSpec extends GebSpecWithServer {
 		navigator.click(* clickParams).is(navigator)
 
 		where:
-		clickParams << [[], [PageWithAtChecker], [[PageWithAtChecker]]]
+		clickParams << [[], [Page], [[Page]]]
+	}
+
+	def 'click can be used with pages without at checker'() {
+		given:
+		def navigator = new NonEmptyNavigator(browser, [Mock(WebElement)])
+
+		when:
+		navigator.click(Page)
+
+		then:
+		notThrown(UndefinedAtCheckerException)
+	}
+
+	def 'click fails when used with a list of pages, one of which does not have an at checker'() {
+		given:
+		def navigator = new NonEmptyNavigator(browser, [Mock(WebElement)])
+
+		when: // the at check for the first one would always return true
+		navigator.click([PageWithoutAtChecker, PageWithAtChecker])
+
+		then: // therefore we expect it to fail
+		thrown(UndefinedAtCheckerException)
 	}
 
 	def allElements() {
@@ -390,6 +414,7 @@ class NavigatorSpec extends GebSpecWithServer {
 
 }
 
+class PageWithoutAtChecker extends Page { }
 class PageWithAtChecker extends Page {
 	static at = { true }
 }
