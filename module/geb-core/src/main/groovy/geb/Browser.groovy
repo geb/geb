@@ -274,6 +274,9 @@ class Browser {
 	 *
 	 * A new instance of the page is created for the at check. If the at checker is successful,
 	 * this browser object's page instance is updated to the new instance of the given page type and the new instance is returned.
+	 *
+	 * If the given pageType does not define an at checker, UndefinedAtCheckerException is thrown.
+	 *
 	 * <p>
 	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
 	 * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
@@ -288,6 +291,8 @@ class Browser {
 	 * Checks if the browser is at the given page by running the at checker for this page type, suppressing assertion errors.
 	 *
 	 * If the at checker is successful, this browser object's page instance is updated the one the method is called with.
+	 *
+	 * If the given pageType does not define an at checker, UndefinedAtCheckerException is thrown.
 	 *
 	 * If the at check throws an {@link AssertionError}
 	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
