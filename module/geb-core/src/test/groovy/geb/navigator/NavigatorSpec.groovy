@@ -317,7 +317,7 @@ class NavigatorSpec extends GebSpecWithServer {
 		navigator.click(* clickParams).is(navigator)
 
 		where:
-		clickParams << [[], [Page], [[Page]]]
+		clickParams << [[], [PageWithAtChecker], [[PageWithAtChecker]]]
 	}
 
 	def allElements() {
@@ -388,4 +388,8 @@ class NavigatorSpec extends GebSpecWithServer {
 		thrown(MissingPropertyException)
 	}
 
+}
+
+class PageWithAtChecker extends Page {
+	static at = { true }
 }
