@@ -319,6 +319,6 @@ class PageContentStringPageParam extends Page {
 class PageWithoutAtChecker extends Page { }
 class PageWithLinkToPageWithoutAtChecker extends Page {
 	static content = {
-		gilink(to: PageWithoutAtChecker) { $("#a") }
+		link(to: PageWithoutAtChecker) { $("#a") }
 	}
 }
