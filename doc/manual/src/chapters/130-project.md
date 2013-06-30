@@ -35,6 +35,12 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### Breaking Changes
+
+* Explicitly calling `at()` with a page object will throw an exception instead of silently passing if the page object does not define an at checker.
+
+### 0.9.0
+
 #### New Features
 
 * New `via()` method that behaves the same way as `to()` behaved previously - it sets the page on the browser and does not verify the at checker of that page\[[GEB-249](http://jira.codehaus.org/browse/GEB-249)\].
