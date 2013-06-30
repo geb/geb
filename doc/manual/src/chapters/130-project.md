@@ -37,7 +37,8 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking Changes
 
-* Explicitly calling `at()` with a page object will throw an exception instead of silently passing if the page object does not define an at checker.
+* Explicitly calling `at()` with a page object will throw `UndefinedAtCheckerException` instead of silently passing if the page object does not define an at checker.
+* Passing a page with no at checker to `click(List<Class<? extends Page>>)` or as one of the pages in `to` template option will throw `UndefinedAtCheckerException`.
 
 ### 0.9.0
 

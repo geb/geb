@@ -227,7 +227,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 		then:
 		def e = thrown UndefinedAtCheckerException
-		e.message == "No at checker has been defined for class geb.PageWithoutAtChecker."
+		e.message == "No at checker has been defined for page class geb.PageWithoutAtChecker."
 	}
 
 	def "exception should be thrown when no at checker is defined for one of the to pages"() {

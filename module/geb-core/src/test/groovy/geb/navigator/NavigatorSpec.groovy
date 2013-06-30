@@ -319,15 +319,15 @@ class NavigatorSpec extends GebSpecWithServer {
 		navigator.click(* clickParams).is(navigator)
 
 		where:
-		clickParams << [[], [Page], [[Page]]]
+		clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]]]
 	}
 
 	def 'click can be used with pages without at checker'() {
 		given:
-		def navigator = new NonEmptyNavigator(browser, [Mock(WebElement)])
+		html { div() }
 
 		when:
-		navigator.click(Page)
+		$('div').click(Page)
 
 		then:
 		notThrown(UndefinedAtCheckerException)
@@ -335,12 +335,12 @@ class NavigatorSpec extends GebSpecWithServer {
 
 	def 'click fails when used with a list of pages, one of which does not have an at checker'() {
 		given:
-		def navigator = new NonEmptyNavigator(browser, [Mock(WebElement)])
+		html { div() }
 
-		when: // the at check for the first one would always return true
-		navigator.click([PageWithoutAtChecker, PageWithAtChecker])
+		when:
+		$('div').click([PageWithoutAtChecker, PageWithAtChecker])
 
-		then: // therefore we expect it to fail
+		then:
 		thrown(UndefinedAtCheckerException)
 	}
 

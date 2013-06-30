@@ -347,8 +347,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 			error = e
 		} catch (UndefinedAtCheckerException e) {
 			at = true
-		}
-		finally {
+		} finally {
 			if (!at) {
 				throw new UnexpectedPageException(pageClass, error)
 			}
