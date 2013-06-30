@@ -55,12 +55,12 @@ allprojects { project ->
 			":module:geb-core", ":module:geb-core-tests", ":internal:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 			":module:geb-easyb", ":module:geb-testng", ":module:geb-implicit-assertions",
-			":module:geb-ast"
+			":module:geb-ast", ":module:geb-waiting"
 		]
 
 		publishedModules = [
-			":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-spock",
-			":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
+			":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
+			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
 			":module:geb-testng", ":doc:manual"
 		]
 

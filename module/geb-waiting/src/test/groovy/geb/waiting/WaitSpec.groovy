@@ -15,6 +15,7 @@
  */
 package geb.waiting
 
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Specification
 import spock.lang.Timeout
 
@@ -33,6 +34,19 @@ class WaitSpec extends Specification {
 		
 		then:
 		thrown WaitTimeoutException
+	}
+
+	def "waitFor block contents are implicitly asserted"() {
+		given:
+		def wait = new Wait(0.5)
+
+		when:
+		wait.waitFor { 'not empty'.empty }
+
+		then:
+		WaitTimeoutException exception = thrown()
+		exception.cause in PowerAssertionError
+		exception.cause.message.contains("'not empty'.empty")
 	}
 
 }
