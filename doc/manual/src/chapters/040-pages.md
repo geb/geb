@@ -26,6 +26,11 @@ Here is the same script, utilising page objects…
             searchField { $("input[name=q]") }
             searchButton(to: GoogleResultsPage) { $("input[value='Google Search']") }
         }
+
+        void search(String searchTerm) {
+            searchField.value searchTerm
+            searchButton.click()
+        }
     }
 
     class GoogleResultsPage extends Page {
@@ -40,8 +45,7 @@ Here is the same script, utilising page objects…
     // Now the script
     Browser.drive {
         to GoogleHomePage
-        searchField().value "Chuck Norris"
-        searchButton().click()
+        search "Chuck Norris"
         at GoogleResultsPage
         resultLink(0).text().contains("Chuck")
     }
