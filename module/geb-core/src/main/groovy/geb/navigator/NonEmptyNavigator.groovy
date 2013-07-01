@@ -2,6 +2,7 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
 import org.openqa.selenium.By
@@ -344,7 +345,10 @@ class NonEmptyNavigator extends AbstractNavigator {
 			at = browser.verifyAt()
 		} catch (AssertionError e) {
 			error = e
-		} finally {
+		} catch (UndefinedAtCheckerException e) {
+			at = true
+		}
+		finally {
 			if (!at) {
 				throw new UnexpectedPageException(pageClass, error)
 			}

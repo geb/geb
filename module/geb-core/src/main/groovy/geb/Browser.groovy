@@ -17,6 +17,7 @@ package geb
 import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
+import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
@@ -273,6 +274,9 @@ class Browser {
 	 *
 	 * A new instance of the page is created for the at check. If the at checker is successful,
 	 * this browser object's page instance is updated to the new instance of the given page type and the new instance is returned.
+	 *
+	 * If the given pageType does not define an at checker, UndefinedAtCheckerException is thrown.
+	 *
 	 * <p>
 	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
 	 * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
@@ -287,6 +291,8 @@ class Browser {
 	 * Checks if the browser is at the given page by running the at checker for this page type, suppressing assertion errors.
 	 *
 	 * If the at checker is successful, this browser object's page instance is updated the one the method is called with.
+	 *
+	 * If the given pageType does not define an at checker, UndefinedAtCheckerException is thrown.
 	 *
 	 * If the at check throws an {@link AssertionError}
 	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
@@ -408,7 +414,12 @@ class Browser {
 	 */
 	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
 		via(params, pageType, args)
-		at(pageType)
+		try {
+			at(pageType)
+		} catch (UndefinedAtCheckerException e) {
+			// that's okay, we don't want to force users to define at checkers unless they explicitly use "at"
+			createPage(pageType)
+		}
 	}
 
 
