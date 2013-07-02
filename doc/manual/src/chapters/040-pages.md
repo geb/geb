@@ -264,8 +264,10 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
+Which on click sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
 [changing pages][changing-pages].
+
+All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 #### wait
 
@@ -430,7 +432,7 @@ The “at” checker is evaluated against the page instance, and can access defi
         }
     }
 
-If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
+If a page does not have an “at” checker, the `verifyAt()` method will throw an `UndefinedAtCheckerException`. The same will happen if any of the pages in a list passed to content template “to” option doesn't define an “at” checker.
 
 ## Page URLs
 

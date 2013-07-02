@@ -167,7 +167,7 @@ We have already seen that that `to()` methods change the browser's page instance
 
 The [`page(Class pageType)`](api/geb/Browser.html#page\(java.lang.Class\)) method allows you to change the page to a new instance of the given class. The class must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
 
-The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker.
+The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the [`to` attribute of the Content DSL](pages.html#to) for more information about this). However, should you need to manually change the page type they are there.
 
@@ -199,6 +199,8 @@ Browser objects have an [`at(Class pageType)`](api/geb/Browser.html#at\(java.lan
 The `at AccessDeniedPage` method call will either return a page instance or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
 
 It's a good idea to always use `to()` method or use `via()` together an `at()` check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
+
+If you pass a page class that doesn't define an “at” checker to `at()` you will get an `UndefinedAtCheckerException` - “at” checkers are mandatory when doing explicit at checks. This is not the case when implicit at checks are being performed, like when using `to()`. This is done to make you aware that you probably want to define an “at” checker when explicitly verifing if you're at a given page but not forcing you to do so when using implicit at checking.
 
 Pages can also define content that declares what the browser's page type should change to when that content is clicked. After clicking on such content page is automatically at verified (see the DSL reference for the [`to`](pages.html#to) parameter).
 
