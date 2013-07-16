@@ -258,6 +258,8 @@ For example…
 
 Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
 
+All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+
 ## Determining Visibility
 
 Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not. The `displayed` property of a navigator object that doesn't match anything is always `false`
