@@ -1,5 +1,6 @@
 package geb.navigator
 
+import groovy.json.StringEscapeUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
@@ -159,12 +160,14 @@ class CssSelector {
 		int max = selector.length()
 		for (int index = 0; index < max; ++index) {
 			char character = selector.charAt(index)
-			if (index > 0 && (character == '.' || character == '#')) {
-				tokens << selector.substring(previous, index)
+			boolean escaped = index-1 >= 0 && selector[index-1]=="\\"
+			if (index > 0 && !escaped && (character == '.' || character == '#')) {
+				tokens << StringEscapeUtils.unescapeJava(selector.substring(previous, index))
 				previous = index
 			}
 		}
-		tokens << selector.substring(previous)
+		tokens << StringEscapeUtils.unescapeJava(selector.substring(previous))
+
 		return tokens
 	}
 }
