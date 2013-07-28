@@ -442,6 +442,19 @@ class Configuration {
 		}
 	}
 
+	/**
+	 * Returns the default configuration closure to be applied before the user-
+	 * supplied config closure when using the download support.
+	 */
+	Closure getDownloadConfig() {
+		readValue("defaultDownloadConfig", { HttpURLConnection con -> } )
+	}
+
+	void setDownloadConfig(Closure config) {
+		rawConfig.defaultDownloadConfig = config
+	}
+
+
 	protected readValue(String name, defaultValue) {
 		readValue(rawConfig, name, defaultValue)
 	}
