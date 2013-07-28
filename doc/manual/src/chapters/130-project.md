@@ -29,6 +29,11 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Jan-Hendrik Peters](http://hennr.name/imprint/) - Doc improvements
 * [Tomás Lin](http://fbflex.wordpress.com/) - Doc improvements
 * [Jason Cahoon](https://github.com/measlyweasel) - Bug fix around text matchers
+* [Tomasz Kalkosiński](http://refaktor.blogspot.com/) - Doc improvements
+* [Rich Douglas Evans](https://github.com/richdouglasevans) - Doc improvements
+* [idurkan](https://github.com/idurkan) - Doc improvements
+* [Colin Harrington](http://colinharrington.net/) - Doc improvements
+* [Bob Herrmann](http://jadn.com/bob/) - Doc improvements
 
 ## History
 
