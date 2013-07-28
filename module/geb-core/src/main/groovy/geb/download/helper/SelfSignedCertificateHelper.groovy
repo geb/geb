@@ -4,11 +4,11 @@ import javax.net.ssl.*
 import java.security.KeyStore
 
 class SelfSignedCertificateHelper {
-	String keystoreFileName
+	URL keystoreUrl
 	String keystoreFilePassword
 
-	SelfSignedCertificateHelper(String keystoreFileName, String keystoreFilePassword) {
-		this.keystoreFileName = keystoreFileName
+	SelfSignedCertificateHelper(URL keystoreUrl, String keystoreFilePassword) {
+		this.keystoreUrl = keystoreUrl
 		this.keystoreFilePassword = keystoreFilePassword
 	}
 
@@ -19,7 +19,7 @@ class SelfSignedCertificateHelper {
 
 	private SSLSocketFactory getSocketFactory() {
 		def keyStore = KeyStore.getInstance(KeyStore.defaultType)
-		keyStore.load(ClassLoader.getResourceAsStream(keystoreFileName), keystoreFilePassword.toCharArray())
+		keyStore.load(keystoreUrl.openStream(), keystoreFilePassword.toCharArray())
 		TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.defaultAlgorithm);
 		tmf.init(keyStore);
 		SSLContext ctx = SSLContext.getInstance('TLS');

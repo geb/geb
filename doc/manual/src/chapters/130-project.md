@@ -40,6 +40,11 @@ This page lists the high level changes between versions of Geb.
 * Explicitly calling `at()` with a page object will throw `UndefinedAtCheckerException` instead of silently passing if the page object does not define an at checker.
 * Passing a page with no at checker to `click(List<Class<? extends Page>>)` or as one of the pages in `to` template option will throw `UndefinedAtCheckerException`.
 
+#### New Features
+
+* Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`.
+* Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
+
 ### 0.9.0
 
 #### New Features

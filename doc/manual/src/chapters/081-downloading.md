@@ -50,7 +50,7 @@ When facing web applications using untrusted (e.g. self-signed) SSL certificates
     import geb.download.helper.SelfSignedCertificateHelper
     downloadText { HttpURLConnection connection ->
         if (connection instanceof HttpsURLConnection) {
-            def helper = new SelfSignedCertificateHelper('keystore.jks', 'changeit')
+            def helper = new SelfSignedCertificateHelper(getClass().getResource('/keystore.jks'), 'changeit')
             helper.acceptCertificatesFor(connection as HttpsURLConnection)
         }
     }
