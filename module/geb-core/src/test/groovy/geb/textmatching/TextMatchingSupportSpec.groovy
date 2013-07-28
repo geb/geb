@@ -87,19 +87,21 @@ class TextMatchingSupportSpec extends Specification {
 		matchers."$method"(input).matches(text) == expected
 
 		where:
-		method              | input    | expected  | text
-		"contains"          | "Verbum" | true      |"Geb\'sVerbumEstLegis"
-		"iContains"         | "WorD"   | true      |"blasdf \t\n\nwORd"
-        "iContainsWord"     | "Button" | true      |"    \n\n\nbutton"
-        "iContainsWord"     | ~"Button"| true      |"    \n\n\nbutton"
-        "iContainsWord"     | "verbum" | true      |"Geb\'s Verbum Est Legis"
-        "iContainsWord"     | ~"verbum"| true      |"Geb\'s Verbum Est Legis"
-        "iContainsWord"     | ~"verbum"| false     |"i dont know latin"
-		"containsWord"      | "noun"   | true      |"adjective noun verb"
-		"containsWord"      | "noun"   | true      |"adjective noun"
-		"containsWord"      | "noun"   | true      |"noun verb"
-		"containsWord"      | ~"noun"  | true      |"noun verb"
-		"containsWord"      | ~"noun"  | false     |"non-noun verb"
-		"containsWord"      | "noun"   | false     |"noune verb"
+		method          | input     | expected | text
+		"contains"      | "Verbum"  | true     | "Geb'sVerbumEstLegis"
+		"contains"      | ~"Verbum" | true     | "Geb'sVerbumEstLegis"
+		"iContains"     | "WorD"    | true     | "blasdf \t\n\nwORdsdfd"
+		"iContains"     | ~"WorD"   | true     | "blasdf \t\n\nwORdsdfd"
+		"iContainsWord" | "Button"  | true     | "    \n\n\nbutton"
+		"iContainsWord" | ~"Button" | true     | "    \n\n\nbutton"
+		"iContainsWord" | "verbum"  | true     | "Geb's Verbum Est Legis"
+		"iContainsWord" | ~"verbum" | true     | "Geb's Verbum Est Legis"
+		"iContainsWord" | ~"verbum" | false    | "i dont know latin"
+		"containsWord"  | "noun"    | true     | "adjective noun verb"
+		"containsWord"  | "noun"    | true     | "adjective noun"
+		"containsWord"  | "noun"    | true     | "noun verb"
+		"containsWord"  | ~"noun"   | true     | "noun verb"
+		"containsWord"  | ~"noun"   | false    | "non-noun verb"
+		"containsWord"  | "noun"    | false    | "noune verb"
 	}
 }

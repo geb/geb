@@ -28,6 +28,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Antony Jones](http://www.desirableobjects.co.uk/) - Various fixes and patches, doc improvements
 * [Jan-Hendrik Peters](http://hennr.name/imprint/) - Doc improvements
 * [Tomás Lin](http://fbflex.wordpress.com/) - Doc improvements
+* [Jason Cahoon](https://github.com/measlyweasel) - Bug fix around text matchers
 
 ## History
 
@@ -44,6 +45,9 @@ This page lists the high level changes between versions of Geb.
 
 * Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`.
 * Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
+
+#### Fixes
+* `containsWord()` and `iContainsWord()` now return expected results when matching against text that contains spaces \[[GEB-254](http://jira.codehaus.org/browse/GEB-254)\]
 
 ### 0.9.0
 
