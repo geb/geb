@@ -19,7 +19,7 @@ class CssSelectorSpec extends Specification {
 		browser.go(getClass().getResource("/test.html") as String)
 		onPage = browser.navigatorFactory.base
 	}
-	
+
 	def "selector type matching rules"() {
 		expect: selector.matches(element) == expectedMatch
 
@@ -53,6 +53,10 @@ class CssSelectorSpec extends Specification {
 		"blockquote#the_id.the_class p.last.wow.oh-yeah a  , div.totally p.rocks.your, div#socks a.off" | 0     | ["blockquote", "#the_id", ".the_class", " ", "p", ".last", ".wow", ".oh-yeah", " ", "a"]
 		"blockquote#the_id.the_class p.last.wow.oh-yeah a  , div.totally p.rocks.your, div#socks a.off" | 1     | ["div", ".totally", " ", "p", ".rocks", ".your"]
 		"blockquote#the_id.the_class p.last.wow.oh-yeah a  , div.totally p.rocks.your, div#socks a.off" | 2     | ["div", "#socks", " ", "a", ".off"]
+		"div#escapedPeriodInThe\\.Id"                                                                   | 0		| ["div", "#escapedPeriodInThe.Id"]
+		"#lots\\.Of\\.Periods\\.Id"                                                                     | 0		| ["#lots.Of.Periods.Id"]
+		".hash\\#Tags\\#Too"                                                                            | 0		| [".hash#Tags#Too"]
+		"#escapedBackslashesAre\\\\Ok.here\\\\ItIs"                                                     | 0		| ["#escapedBackslashesAre\\Ok", ".here\\ItIs"]
 	}
 
 	@Unroll("the CSS expression '#selector' should find #expectedIds")
@@ -71,6 +75,7 @@ class CssSelectorSpec extends Specification {
 		".aClassThatDoesNotExist" | []
 		"#anIdThatDoesNotExist"   | []
 		"#main div"               | ["article-1", null, "article-2", null, "article-3", null]
+		"input#domain\\.property" | ["domain.property"]
 	}
 
 }
