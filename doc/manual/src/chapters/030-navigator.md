@@ -135,7 +135,7 @@ Consider the following html…
         <p class="b">geb</p>
     </div>
     <div class="b">
-        <span name="n">goodness</span>
+        <input type="text"/>
     </div>
 
 We can select `p.b` by…
@@ -154,9 +154,9 @@ We can select the `div` containing the `p` with…
 
     $("div").has("p")
 
-Or select the `div` containing the `span` with a name attribute of "n" like so…
+Or select the `div` containing the `input` with a type attribute of "text" like so…
 
-    $("div").has("span", name:"n")
+    $("div").has("input", type: "text")
 
 The `find` and `filter` methods support the **exact same options as the $ function**.
 

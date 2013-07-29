@@ -120,16 +120,24 @@ interface Navigator extends Iterable<Navigator> {
 	 */
 	Navigator has(String selector)
 
-    /**
-     * Filters the set of elements represented by this Navigator to include only that have one or more descendants
-     * that match the selector and attributes as defined in the predicate.
-     * @param selector a CSS selector
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
-     * @return a new Navigator instance
-     */
-    Navigator has(Map<String, Object> predicates, String selector)
+	/**
+	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
+	 * that match the selector and attributes as defined in the predicate.
+	 * @param selector a CSS selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance
+	 */
+	Navigator has(Map<String, Object> predicates, String selector)
 
-    /**
+	/**
+	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
+	 * that match the attributes as defined in the predicate.
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance
+	 */
+	Navigator has(Map<String, Object> predicates)
+
+	/**
 	 * Filters the set of elements represented by this Navigator to include only those that match
 	 * the selector. Note that unlike find only tag, id and class based selectors are supported for this method
 	 * regardless of the capabilities of the underlying WebDriver instance.

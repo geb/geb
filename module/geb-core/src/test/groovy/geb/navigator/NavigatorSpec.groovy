@@ -89,26 +89,26 @@ class NavigatorSpec extends GebSpecWithServer {
 		when:
 		html {
 			div(id: "a") {
-				div("class": "a-1 z-1", "")
-                input("whizbang":"v1")
+				div("class": "a-1 z-1", "a")
+				input(type: "text")
 			}
 			div(id: "b") {
-				div("class": "b-1 z-1", "")
-                input("attr":"someAttribute")
-                p("whizbang":"v1")
+				div("class": "b-1 z-1", "b")
+				input(name: "someName", type: "checkbox")
 			}
 			div(id: "c") {
-				div("class": "c-1 z-1", "")
-                input("whizbang":"v1")
+				div("class": "c-1 z-1", "c")
+				input(type: "text")
 			}
 		}
 
 		then:
 		$("div").has(".z-1")*.@id == ["a", "b", "c"]
 		$("div").has(".b-1")*.@id == ["b"]
-        $("div").has("input", attr: "someAttribute")*.@id == ["b"]
-        $("div").has("input", whizbang: "v1")*.@id == ["a", "c"]
-        $("div").has("", whizbang: "v1")*.@id == ["a", "b", "c"]
+		$("div").has("input", name: "someName")*.@id == ["b"]
+		$("div").has("div", text: "b")*.@id == ["b"]
+		$("div").has("input", type: "text")*.@id == ["a", "c"]
+		$("div").has(text: ~/[abc]/)*.@id == ["a", "b", "c"]
 	}
 
 	def not() {

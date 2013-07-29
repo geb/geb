@@ -53,6 +53,7 @@ This page lists the high level changes between versions of Geb.
 
 #### Fixes
 * `containsWord()` and `iContainsWord()` now return expected results when matching against text that contains spaces \[[GEB-254](http://jira.codehaus.org/browse/GEB-254)\]
+* `has(Map<String, Object> predicates, String selector)` and `has(Map<String, Object> predicates)` were added to Navigator for consistency with `find()` and `filter()` \[[GEB-256](http://jira.codehaus.org/browse/GEB-256)\]
 
 ### 0.9.0
 
