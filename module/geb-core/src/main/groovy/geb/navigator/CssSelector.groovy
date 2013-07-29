@@ -33,27 +33,6 @@ class CssSelector {
 
 	// TODO: better name
 
-	static List<WebElement> findByCssSelector(Collection<WebElement> elements, String selectorString) {
-		def result = []
-		CssSelector.compile(selectorString).each { List<CssSelector> selectorGroup ->
-			def context = elements
-			boolean descend = true
-			selectorGroup.each { CssSelector selector ->
-				if (selector.type == Type.DESCENDANT) {
-					descend = true
-				} else {
-					context = context.inject([]) { list, element ->
-						list.addAll selector.apply(element, descend)
-						list
-					}
-					descend = false
-				}
-			}
-			result += context
-		}
-		return result
-	}
-
 	static String escape(String value) {
 		value.replaceAll("($CSS_SELECTOR_SPECIAL_CHARS_PATTERN)", '\\\\$1')
 	}
@@ -64,14 +43,6 @@ class CssSelector {
 			selectorGroup.every { CssSelector selector ->
 				selector.matches(element)
 			}
-		}
-	}
-
-	List<WebElement> apply(WebElement element, boolean descend) {
-		if (descend) {
-			return select(element)
-		} else {
-			return matches(element) ? [element] : EMPTY_LIST
 		}
 	}
 

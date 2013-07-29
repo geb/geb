@@ -54,23 +54,4 @@ class CssSelectorSpec extends Specification {
 		"blockquote#the_id.the_class p.last.wow.oh-yeah a  , div.totally p.rocks.your, div#socks a.off" | 1     | ["div", ".totally", " ", "p", ".rocks", ".your"]
 		"blockquote#the_id.the_class p.last.wow.oh-yeah a  , div.totally p.rocks.your, div#socks a.off" | 2     | ["div", "#socks", " ", "a", ".off"]
 	}
-
-	@Unroll("the CSS expression '#selector' should find #expectedIds")
-	def "find elements using css selectors"() {
-		expect: CssSelector.findByCssSelector(onPage.allElements(), selector)*.getAttribute("id") == expectedIds
-
-		where:
-		selector                  | expectedIds
-		"div"                     | ["container", "header", "navigation", "content", "main", "article-1", null, "article-2", null, "article-3", null, "sidebar", "footer"]
-		".article"                | ["article-1", "article-2", "article-3"]
-		"#article-1"              | ["article-1"]
-		"#article-1, #article-2"  | ["article-1", "article-2"]
-		"div.article"             | ["article-1", "article-2", "article-3"]
-		"div#article-1"           | ["article-1"]
-		"bdo"                     | []
-		".aClassThatDoesNotExist" | []
-		"#anIdThatDoesNotExist"   | []
-		"#main div"               | ["article-1", null, "article-2", null, "article-3", null]
-	}
-
 }
