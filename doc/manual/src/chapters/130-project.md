@@ -50,6 +50,7 @@ This page lists the high level changes between versions of Geb.
 
 * Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`.
 * Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
+* New `waitForAtCheck` configuration option allowing to implictly wrap ”at“ checkers in `waitFor` calls. \[[GEB-253](http://jira.codehaus.org/browse/GEB-253)\]
 
 #### Fixes
 * `containsWord()` and `iContainsWord()` now return expected results when matching against text that contains spaces \[[GEB-254](http://jira.codehaus.org/browse/GEB-254)\]

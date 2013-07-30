@@ -434,6 +434,8 @@ The “at” checker is evaluated against the page instance, and can access defi
 
 If a page does not have an “at” checker, the `verifyAt()` method will throw an `UndefinedAtCheckerException`. The same will happen if any of the pages in a list passed to content template “to” option doesn't define an “at” checker.
 
+It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after url change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via [`waitForAtCheck`](configuration.html#waiting_in_at_checkers) option.
+
 ## Page URLs
 
 Pages can define URLs via the `static` `url` property.

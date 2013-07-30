@@ -17,35 +17,14 @@ package geb.waiting
 
 import geb.Page
 import geb.error.RequiredPageContentNotPresent
-import geb.test.GebSpecWithServer
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
-class WaitingContentSpec extends GebSpecWithServer {
+class WaitingContentSpec extends WaitingSpec {
 
 	def params = [:]
 	def factory = { $("div") }
 	def showDelay = 1
-	
-	def setupSpec() {
-		server.get = { req, res ->
-			res.outputStream << """
-				<html>
-				<head>
-				  <script type="text/javascript" charset="utf-8">
-				    function showIn(i) {
-				      setTimeout(function() {
-				        document.body.innerHTML = "<div>a</div>";
-				      }, i * 1000);
-				    }
-				  </script>
-				</head>
-				<body>
-				</body>
-				</html>
-			"""
-		}
-	}
 	
 	protected getContent() {
 		DynamicallySpecifiedContentPage.content = {
