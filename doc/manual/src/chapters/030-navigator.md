@@ -158,7 +158,9 @@ Or select the `div` containing the `input` with a type attribute of "text" like 
 
     $("div").has("input", type: "text")
 
-The `find` and `filter` methods support the **exact same options as the $ function**.
+The `find` and method supports the **exact same argument types as the $ function**.
+
+The `filter`, `not` and `has` methods have the same signatures - they accept: a selector string, a predicates map or both.
 
 These methods return a new navigator object that represents the new content.
 

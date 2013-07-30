@@ -114,15 +114,17 @@ class NavigatorSpec extends GebSpecWithServer {
 	def not() {
 		when:
 		html {
-			div(id: "a")
-			div(id: "b")
-			div(id: "c")
+			div(id: "a", 'class': 'z', 'hello')
+			div(id: "b", 'class': 'x', 'hello')
+			div(id: "c", 'class': 'z')
 		}
 
 		then:
 		$("div").not("#b")*.@id == ["a", "c"]
 		$("div").not("foo")*.@id == ["a", "b", "c"]
 		$("foo").not("foo")*.@id == []
+		$("div").not(text: ~/.+/)*.@id == ["c"]
+		$("div").not(".z", text: 'hello')*.@id == ["b", "c"]
 	}
 
 	def plus() {

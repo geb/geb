@@ -73,6 +73,20 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
+	Navigator not(Map<String, Object> predicates, String selectorString) {
+		navigatorFor contextElements.findAll { element ->
+			!(CssSelector.matches(element, selectorString) && matches(element, predicates))
+		}
+	}
+
+	@Override
+	Navigator not(Map<String, Object> predicates) {
+		navigatorFor contextElements.findAll { element ->
+			!matches(element, predicates)
+		}
+	}
+
+	@Override
 	Navigator getAt(int index) {
 		navigatorFor(Collections.singleton(getElement(index)))
 	}
