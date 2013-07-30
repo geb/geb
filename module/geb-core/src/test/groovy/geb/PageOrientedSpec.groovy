@@ -21,6 +21,7 @@ import geb.error.RequiredPageValueNotPresent
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.test.GebSpecWithServer
+import geb.waiting.WaitTimeoutException
 import spock.lang.Issue
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -152,15 +153,21 @@ class PageOrientedSpec extends GebSpecWithServer {
 		at PageOrientedSpecPageB
 	}
 
-	def "exception should be thrown when page specified in to is not the page we end up at"() {
+	@Unroll
+	def "exception should be thrown when page specified in to is not the page we end up at - clicking on #clicked"() {
 		when:
 		to PageOrientedSpecPageA
-		linkWithNotMatchingTo.click()
+		page[clicked].click()
 
 		then:
 		UnexpectedPageException e = thrown()
-		e.message == "Page verification failed for page geb.PageOrientedSpecPageC after clicking an element"
-		e.cause in AssertionError
+		e.message ==~ "Page verification failed for page .* after clicking an element"
+		e.cause in cause
+
+		where:
+		clicked                        | cause
+		'linkWithNotMatchingTo'        | AssertionError
+		'linkWithToClassThatWaitsInAt' | WaitTimeoutException
 	}
 
 	def "exception should be thrown when no to values match"() {
@@ -260,6 +267,7 @@ class PageOrientedSpecPageA extends Page {
 	static content = {
 		link(to: PageOrientedSpecPageB) { $("#a") }
 		linkWithNotMatchingTo(to: PageOrientedSpecPageC) { $("#a") }
+		linkWithToClassThatWaitsInAt(to: PageOrientedSpecPageE) { $("#a") }
 		linkWithVariantTo(to: [PageOrientedSpecPageD, PageOrientedSpecPageC, PageOrientedSpecPageB]) { link }
 		linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
 		linkText { link.text().trim() }
@@ -285,6 +293,10 @@ class PageOrientedSpecPageC extends Page {
 
 class PageOrientedSpecPageD extends Page {
 	static at = { assert 1 == 2 }
+}
+
+class PageOrientedSpecPageE extends Page {
+	static at = { waitFor(0) { false } }
 }
 
 class ConvertPage extends Page {

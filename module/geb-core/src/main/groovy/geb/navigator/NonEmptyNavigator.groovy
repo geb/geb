@@ -5,6 +5,7 @@ import geb.Page
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
+import geb.waiting.WaitTimeoutException
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebElement
@@ -344,6 +345,8 @@ class NonEmptyNavigator extends AbstractNavigator {
 		try {
 			at = browser.verifyAt()
 		} catch (AssertionError e) {
+			error = e
+		} catch (WaitTimeoutException e) {
 			error = e
 		} catch (UndefinedAtCheckerException e) {
 			at = true
