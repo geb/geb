@@ -5,3 +5,10 @@ dependencies {
 	// system makes transitive compile dependencies first class compile dependencies.
 	compile project(":module:geb-implicit-assertions")
 }
+
+modifyPom { pom ->
+	pom.project {
+		name "Geb Waiting"
+		description "Geb (pronounced \"jeb\") waiting module."
+	}
+}
