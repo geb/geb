@@ -4,7 +4,7 @@ import geb.Configuration
 import geb.Page
 import spock.lang.Unroll
 
-class WaitForAtCheckSpec extends WaitingSpec {
+class AtCheckWaitingSpec extends WaitingSpec {
 
 	Configuration config
 	ConfigObject rawConfig
@@ -18,26 +18,26 @@ class WaitForAtCheckSpec extends WaitingSpec {
 
 	void 'by default at checking does not wait'() {
 		given:
-		via WaitForAtCheckSpecPage
+		via AtCheckWaitingSpecPage
 
 		when:
 		js.showIn(1)
 
 		then:
-		!isAt(WaitForAtCheckSpecPage)
+		!isAt(AtCheckWaitingSpecPage)
 	}
 
 	@Unroll
 	void 'at checking can be configured via config file to wait with waitFor parameter: #waitFor'() {
 		given:
-		rawConfig.waitForAtCheck = waitFor
-		via WaitForAtCheckSpecPage
+		rawConfig.atCheckWaiting = waitFor
+		via AtCheckWaitingSpecPage
 
 		when:
 		js.showIn(0.3)
 
 		then:
-		at WaitForAtCheckSpecPage
+		at AtCheckWaitingSpecPage
 
 		where:
 		waitFor << [true, 1, 'forAtCheck']
@@ -45,24 +45,24 @@ class WaitForAtCheckSpec extends WaitingSpec {
 
 	void 'at checking can be configured programmatically to wait'() {
 		given:
-		config.waitForAtCheck = true
-		via WaitForAtCheckSpecPage
+		config.atCheckWaiting = true
+		via AtCheckWaitingSpecPage
 
 		when:
 		js.showIn(0.3)
 
 		then:
-		at WaitForAtCheckSpecPage
+		at AtCheckWaitingSpecPage
 	}
 
 
 	void 'if at checker fails with waiting enabled it should provide assertion verification output'() {
 		given:
-		rawConfig.waitForAtCheck = 0.1
-		via WaitForAtCheckSpecPage
+		rawConfig.atCheckWaiting = 0.1
+		via AtCheckWaitingSpecPage
 
 		when:
-		at WaitForAtCheckSpecPage
+		at AtCheckWaitingSpecPage
 
 		then:
 		WaitTimeoutException e = thrown()
@@ -70,6 +70,6 @@ class WaitForAtCheckSpec extends WaitingSpec {
 	}
 }
 
-class WaitForAtCheckSpecPage extends Page {
+class AtCheckWaitingSpecPage extends Page {
 	static at = { $("div", text: "a") }
 }

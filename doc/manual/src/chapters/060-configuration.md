@@ -170,9 +170,9 @@ Here we have defined two presets, `slow` and `quick`. Notice that the `quick` pr
 
 At checkers can be configured to be implictly wrapped with `waitFor` calls. This can be set with:
 
-	waitForAtCheck = true
+	atCheckWaiting = true
 
-The possible values for the `waitForAtCheck` option are consistent with the ones for content definition and can be one of the following:
+The possible values for the `atCheckWaiting` option are consistent with the ones for content definition and can be one of the following:
 
 	* **`true`** - wait for the content using the _default wait_ configuration
 	* **a string** - wait for the content using the _wait preset_ with this name from the configuration

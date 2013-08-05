@@ -151,12 +151,12 @@ class Configuration {
 		readValue(rawConfig.waiting, 'retryInterval', Wait.DEFAULT_RETRY_INTERVAL)
 	}
 
-	Wait getWaitForAtCheck() {
-		getWaitForParam(rawConfig.waitForAtCheck)
+	Wait getAtCheckWaiting() {
+		getWaitForParam(rawConfig.atCheckWaiting)
 	}
 
-	void setWaitForAtCheck(Object waitForParam) {
-		rawConfig.waitForAtCheck = waitForParam
+	void setAtCheckWaiting(Object waitForParam) {
+		rawConfig.atCheckWaiting = waitForParam
 	}
 
 	/**

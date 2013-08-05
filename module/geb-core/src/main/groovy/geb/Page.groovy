@@ -131,8 +131,8 @@ class Page {
 		if (verifier) {
 			verifier.delegate = this
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
-			def waitForAtCheck = browser.config.waitForAtCheck
-			waitForAtCheck ? waitForAtCheck.waitFor(verifier) : verifier()
+			def atCheckWaiting = browser.config.atCheckWaiting
+			atCheckWaiting ? atCheckWaiting.waitFor(verifier) : verifier()
 		} else {
 			throw new UndefinedAtCheckerException(this.class.name)
 		}
