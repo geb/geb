@@ -45,7 +45,9 @@
             <% request.oldManuals.each { %>
               <li><a href="manual/$it/">${it}</a></li>
             <% } %>
-            <li><a href="manual/snapshot/">${request.snapshotManual}</a></li>
+            <% if (request.snapshotManual) { %>
+              <li><a href="manual/snapshot/">${request.snapshotManual}</a></li>
+            <% } %>
           </ul>
         </li>
         <li>
@@ -55,7 +57,9 @@
             <% request.oldManuals.each { %>
 	          <li><a href="manual/$it/api/">${it}</a></li>
             <% } %>
-            <li><a href="manual/snapshot/api/">${request.snapshotManual}</a></li>
+            <% if (request.snapshotManual) { %>
+              <li><a href="manual/snapshot/api/">${request.snapshotManual}</a></li>
+            <% } %>
           </ul>
         </li>
         <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
