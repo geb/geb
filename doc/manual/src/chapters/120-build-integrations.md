@@ -77,16 +77,16 @@ Below is a valid Gradle `build.gradle` file for working with Geb for testing.
         def seleniumVersion = "@selenium-version@"
 
         // If using Spock, need to depend on geb-spock
-        testCompile "@geb-group@:geb-spock:$gebVersion"
+        testCompile "@geb-group@:geb-spock:@geb-version@"
         testCompile "org.spockframework:spock-core:@spock-core-version@"
 
         // If using JUnit, need to depend on geb-junit (3 or 4)
-        testCompile "@geb-group@:geb-junit4:$gebVersion"
+        testCompile "@geb-group@:geb-junit4:@geb-version@"
         testCompile "junit:junit-dep:4.8.2"
 
         // Need a driver implementation
-        testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-        testRuntime "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+        testCompile "org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@"
+        testRuntime "org.seleniumhq.selenium:selenium-support:@selenium-version@"
     }
 
     test {
