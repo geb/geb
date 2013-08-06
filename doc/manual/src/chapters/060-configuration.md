@@ -174,10 +174,10 @@ At checkers can be configured to be implictly wrapped with `waitFor` calls. This
 
 The possible values for the `atCheckWaiting` option are consistent with the ones for content definition and can be one of the following:
 
-	* **`true`** - wait for the content using the _default wait_ configuration
-	* **a string** - wait for the content using the _wait preset_ with this name from the configuration
-	* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
-	* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+* **`true`** - wait for the content using the _default wait_ configuration
+* **a string** - wait for the content using the _wait preset_ with this name from the configuration
+* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
+* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
 
 ### Reporter
 
