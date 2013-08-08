@@ -130,25 +130,6 @@ abstract class AbstractNavigator implements Navigator {
 		add navigator.allElements()
 	}
 
-	boolean isDisabled() {
-		def value = getAttribute("disabled")
-		// Different drivers return different values here
-		(value == "disabled" || value == "true")
-	}
-
-	boolean isEnabled() {
-		return !disabled
-	}
-
-	boolean isReadOnly() {
-		def value = getAttribute("readonly")
-		(value == "readonly" || value == "true")
-	}
-
-	boolean isEditable() {
-		return !readOnly
-	}
-
 	String attr(String name) {
 		getAttribute(name)
 	}

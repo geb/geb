@@ -2,6 +2,7 @@ package geb.navigator
 
 import geb.Page
 import geb.PageWithoutAtChecker
+import geb.error.GebAssertionError
 import geb.error.UndefinedAtCheckerException
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
@@ -321,6 +322,32 @@ class NavigatorSpec extends GebSpecWithServer {
 
 	}
 
+    def 'disabled on unsuitable element'() {
+
+        given:
+            html {
+                input(id: "ip")
+                textarea(id: "ta")
+                password(id: "pw")
+                button(id: "bt")
+                select(id: "sl")
+                div(id: "dv")
+            }
+
+        expect:
+            ['ip', 'ta', 'pw', 'bt', 'sl'].each {
+                assert $('#'+it).enabled
+            }
+
+        when:
+            $("#dv").enabled
+
+        then:
+            GebAssertionError gae = thrown GebAssertionError
+            gae.message == 'You can only use the disabled assertion on input, textarea, password, select, button elements'
+
+    }
+
 	def readOnly() {
 
 		given:
@@ -339,6 +366,31 @@ class NavigatorSpec extends GebSpecWithServer {
 			!$("#arb").editable
 
 	}
+
+    def 'readOnly on unsuitable element'() {
+
+        given:
+            html {
+                input(id: "ip")
+                textarea(id: "ta")
+                password(id: "pw")
+                button(id: "dv")
+            }
+
+        expect:
+            ['ip', 'ta', 'pw'].each {
+                assert $('#'+it).editable
+                assert !$('#'+it).readOnly
+            }
+
+        when:
+            $("#dv").editable
+
+        then:
+            GebAssertionError gae = thrown GebAssertionError
+            gae.message == 'You can only use the editable/readOnly assertion on input, textarea, password elements'
+
+    }
 
 	def "click is called only on the first element of the navigator"() {
 		given:
