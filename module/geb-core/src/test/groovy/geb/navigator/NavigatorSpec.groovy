@@ -1,6 +1,8 @@
 package geb.navigator
 
 import geb.Page
+import geb.PageWithoutAtChecker
+import geb.error.UndefinedAtCheckerException
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 import org.openqa.selenium.WebElement
@@ -87,33 +89,42 @@ class NavigatorSpec extends GebSpecWithServer {
 		when:
 		html {
 			div(id: "a") {
-				div("class": "a-1 z-1", "")
+				div("class": "a-1 z-1", "a")
+				input(type: "text")
 			}
 			div(id: "b") {
-				div("class": "b-1 z-1", "")
+				div("class": "b-1 z-1", "b")
+				input(name: "someName", type: "checkbox")
 			}
 			div(id: "c") {
-				div("class": "c-1 z-1", "")
+				div("class": "c-1 z-1", "c")
+				input(type: "text")
 			}
 		}
 
 		then:
 		$("div").has(".z-1")*.@id == ["a", "b", "c"]
 		$("div").has(".b-1")*.@id == ["b"]
+		$("div").has("input", name: "someName")*.@id == ["b"]
+		$("div").has("div", text: "b")*.@id == ["b"]
+		$("div").has("input", type: "text")*.@id == ["a", "c"]
+		$("div").has(text: ~/[abc]/)*.@id == ["a", "b", "c"]
 	}
 
 	def not() {
 		when:
 		html {
-			div(id: "a")
-			div(id: "b")
-			div(id: "c")
+			div(id: "a", 'class': 'z', 'hello')
+			div(id: "b", 'class': 'x', 'hello')
+			div(id: "c", 'class': 'z')
 		}
 
 		then:
 		$("div").not("#b")*.@id == ["a", "c"]
 		$("div").not("foo")*.@id == ["a", "b", "c"]
 		$("foo").not("foo")*.@id == []
+		$("div").not(text: ~/.+/)*.@id == ["c"]
+		$("div").not(".z", text: 'hello')*.@id == ["b", "c"]
 	}
 
 	def plus() {
@@ -355,7 +366,29 @@ class NavigatorSpec extends GebSpecWithServer {
 		navigator.click(* clickParams).is(navigator)
 
 		where:
-		clickParams << [[], [Page], [[Page]]]
+		clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]]]
+	}
+
+	def 'click can be used with pages without at checker'() {
+		given:
+		html { div() }
+
+		when:
+		$('div').click(Page)
+
+		then:
+		notThrown(UndefinedAtCheckerException)
+	}
+
+	def 'click fails when used with a list of pages, one of which does not have an at checker'() {
+		given:
+		html { div() }
+
+		when:
+		$('div').click([PageWithoutAtChecker, PageWithAtChecker])
+
+		then:
+		thrown(UndefinedAtCheckerException)
 	}
 
 	def allElements() {
@@ -426,4 +459,9 @@ class NavigatorSpec extends GebSpecWithServer {
 		thrown(MissingPropertyException)
 	}
 
+}
+
+class PageWithoutAtChecker extends Page { }
+class PageWithAtChecker extends Page {
+	static at = { true }
 }

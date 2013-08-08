@@ -17,31 +17,10 @@ package geb.waiting
 import geb.Module
 import geb.Page
 import geb.navigator.EmptyNavigator
-import geb.test.GebSpecWithServer
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
-class WaitingSupportSpec extends GebSpecWithServer {
-
-	def setupSpec() {
-		server.get = { req, res ->
-			res.outputStream << """
-				<html>
-				<head>
-				  <script type="text/javascript" charset="utf-8">
-				    function showIn(i) {
-				      setTimeout(function() {
-				        document.body.innerHTML = "<div>a</div>";
-				      }, i * 1000);
-				    }
-				  </script>
-				</head>
-				<body>
-				</body>
-				</html>
-			"""
-		}
-	}
+class WaitingSupportSpec extends WaitingSpec {
 
 	def setup() {
 		go()

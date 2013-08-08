@@ -26,6 +26,11 @@ Here is the same script, utilising page objects…
             searchField { $("input[name=q]") }
             searchButton(to: GoogleResultsPage) { $("input[value='Google Search']") }
         }
+
+        void search(String searchTerm) {
+            searchField.value searchTerm
+            searchButton.click()
+        }
     }
 
     class GoogleResultsPage extends Page {
@@ -40,8 +45,7 @@ Here is the same script, utilising page objects…
     // Now the script
     Browser.drive {
         to GoogleHomePage
-        searchField().value "Chuck Norris"
-        searchButton().click()
+        search "Chuck Norris"
         at GoogleResultsPage
         resultLink(0).text().contains("Chuck")
     }
@@ -260,8 +264,10 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which on click sets the brower's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
+Which on click sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
 [changing pages][changing-pages].
+
+All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 #### wait
 
@@ -426,7 +432,9 @@ The “at” checker is evaluated against the page instance, and can access defi
         }
     }
 
-If a page does not verify an “at” checker, the `verifyAt()` method will always return `true`.
+If a page does not have an “at” checker, the `verifyAt()` method will throw an `UndefinedAtCheckerException`. The same will happen if any of the pages in a list passed to content template “to” option doesn't define an “at” checker.
+
+It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after url change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via [`atCheckWaiting`](configuration.html#waiting_in_at_checkers) option.
 
 ## Page URLs
 

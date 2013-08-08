@@ -37,10 +37,11 @@ class GebReportingSpec extends GebSpec {
 	
 	def cleanup() {
 		report "end" 
+		++_gebReportingSpecTestCounter
 	}
 
 	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter++, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
+		browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
 	}
 
 }

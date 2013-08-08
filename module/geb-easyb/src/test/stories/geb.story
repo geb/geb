@@ -47,6 +47,7 @@ scenario "using geb", {
 }
 
 class SomePage extends geb.Page {
+	static at = { true }
 	static content = {
 		div { $("#d1") }
 	}

@@ -44,12 +44,15 @@ class ScreenshotReporter extends ReporterSupport {
 				decoded = new ExceptionToPngConverter(e).convert('An exception has been thrown while getting the screenshot:')
 			}
 			
-			saveScreenshotPngBytes(reportState.outputDir, reportState.label, decoded)
+			def file = saveScreenshotPngBytes(reportState.outputDir, reportState.label, decoded)
+			notifyListeners(reportState, [file])
 		}
 	}
 	
-	protected saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
-		getFile(outputDir, label, 'png').withOutputStream { it << bytes }
+	protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
+		def file = getFile(outputDir, label, 'png')
+		file.withOutputStream { it << bytes }
+		file
 	}
 
 	protected static TakesScreenshot determineScreenshotDriver(Browser browser) {

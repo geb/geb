@@ -53,6 +53,7 @@ class InteractionsSupportSpec extends GebSpecWithServer {
 }
 
 class InteractionPage extends geb.Page {
+	static at = { true }
 	static content = {
 		first { $('#first-input') }
 		second { $('#second-input') }

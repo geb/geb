@@ -67,7 +67,7 @@ class TextMatchingSupport {
 	}
 
 	TextMatcher containsWord(CharSequence str) {
-		new PatternTextMatcher("(\$|\\s)" + Pattern.quote(str) + "(^|\\s)")
+		new PatternTextMatcher("(^|.+\\s)" + Pattern.quote(str) + "(\$|\\s.+)")
 	}
 
 	TextMatcher notContainsWord(CharSequence str) {
@@ -75,7 +75,7 @@ class TextMatchingSupport {
 	}
 	
 	TextMatcher iContainsWord(CharSequence str) {
-		new PatternTextMatcher("(?i)(\$|\\s)" + Pattern.quote(str) + "(^|\\s)")
+		new PatternTextMatcher("(?i)(^|.+\\s)" + Pattern.quote(str) + "(\$|\\s.+)")
 	}
 
 	TextMatcher iNotContainsWord(CharSequence str) {
@@ -131,7 +131,7 @@ class TextMatchingSupport {
 	}
 
 	TextMatcher containsWord(Pattern pattern) {
-		new PatternTextMatcher("(\$|\\s)" + pattern.pattern() + "(^|\\s)")
+		new PatternTextMatcher("(^|.+\\s)" + pattern.pattern() + "(\$|\\s.+)")
 	}
 
 	TextMatcher notContainsWord(Pattern pattern) {
@@ -139,7 +139,7 @@ class TextMatchingSupport {
 	}
 	
 	TextMatcher iContainsWord(Pattern pattern) {
-		new PatternTextMatcher("(?i)(\$|\\s)" + pattern.pattern() + "(^|\\s)")
+		new PatternTextMatcher("(?i)(^|.+\\s)" + pattern.pattern() + "(\$|\\s.+)")
 	}
 
 	TextMatcher iNotContainsWord(Pattern pattern) {

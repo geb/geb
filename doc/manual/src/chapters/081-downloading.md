@@ -44,6 +44,28 @@ For example, we could test what happens when we send gibberish in the `Accept-En
 
 > Before doing something like the above, it's worth considering whether doing such testing via Geb (a browser automation tool) is the right thing to do. You may find that it's more appropriate to directly use HttpURLConnection without Geb. That said, there are scenarios where such fine grained request control can be useful.
 
+## Dealing with untrusted certificates
+When facing web applications using untrusted (e.g. self-signed) SSL certificates, you will likely get exceptions when trying to use Geb's download API. By overriding the behavior of the request you can get around this kind of problem. Using the following code will allow running requests agains a server which uses a certificate from the given keystore:
+
+    import geb.download.helper.SelfSignedCertificateHelper
+    downloadText { HttpURLConnection connection ->
+        if (connection instanceof HttpsURLConnection) {
+            def helper = new SelfSignedCertificateHelper(getClass().getResource('/keystore.jks'), 'changeit')
+            helper.acceptCertificatesFor(connection as HttpsURLConnection)
+        }
+    }
+
+
+## Default Configuration
+
+In the [configuration](configuration.html), the default behaviour of the HttpURLConnection object can be specified by providing a closure as the `defaultDownloadConfig` property.
+
+    defaultDownloadConfig = { HttpURLConnection connection ->
+        // configure the connection
+    }
+
+This config closure will be run first, so anything set here can be overriden using the fine grained request configuration shown above.
+
 ## Errors
 
 Any IO type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a [`DownloadException`](api/geb/download/DownloadException.html) being thrown that wraps the original exception and provides access to the HttpURLConnection used to make the request.

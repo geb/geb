@@ -134,7 +134,9 @@ Consider the following html…
     <div class="a">
         <p class="b">geb</p>
     </div>
-    <div class="b">goodness</div>
+    <div class="b">
+        <input type="text"/>
+    </div>
 
 We can select `p.b` by…
 
@@ -152,7 +154,13 @@ We can select the `div` containing the `p` with…
 
     $("div").has("p")
 
-The `find` and `filter` methods support the **exact same options as the $ function**.
+Or select the `div` containing the `input` with a type attribute of "text" like so…
+
+    $("div").has("input", type: "text")
+
+The `find` and method supports the **exact same argument types as the $ function**.
+
+The `filter`, `not` and `has` methods have the same signatures - they accept: a selector string, a predicates map or both.
 
 These methods return a new navigator object that represents the new content.
 
@@ -257,6 +265,8 @@ For example…
     $("input.loginButton").click(LoginPage)
 
 Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
+
+All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 ## Determining Visibility
 

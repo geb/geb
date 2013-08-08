@@ -16,7 +16,9 @@
 
 package geb.test
 
+import org.mortbay.jetty.Connector
 import org.mortbay.jetty.Server
+import org.mortbay.jetty.bio.SocketConnector
 import org.mortbay.jetty.servlet.Context
 
 abstract class TestHttpServer {
@@ -28,7 +30,8 @@ abstract class TestHttpServer {
 			def remainingPorts = new LinkedList(ports)
 			while (server == null && !remainingPorts.isEmpty()) {
 				int port = remainingPorts.removeFirst()
-				def tryServer = new Server(port)
+				def tryServer = new Server()
+				tryServer.addConnector(createConnector(port))
 				def context = new Context(tryServer, "/")
 				addServlets(context)
 				try {
@@ -56,8 +59,12 @@ abstract class TestHttpServer {
 		server?.connectors[0].localPort
 	}
 
+	String getProtocol() {
+		'http'
+	}
+
 	def getBaseUrl() {
-		"http://localhost:$port/"
+		"$protocol://localhost:$port/"
 	}
 
 	def getBaseUrlAsUrl() {
@@ -66,4 +73,9 @@ abstract class TestHttpServer {
 
 	abstract protected addServlets(Context context)
 
+	protected Connector createConnector(int port) {
+		def connector = new SocketConnector()
+		connector.port = port
+		connector
+	}
 }

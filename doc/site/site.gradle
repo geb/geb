@@ -40,10 +40,10 @@ check.dependsOn = check.dependsOn.findAll { !(it in Test && it.name == 'gaeFunct
 
 ext {
 	// The version of manual to put under the “current” label
-	stableVersion = "0.9.0"
+	stableVersion = "0.9.1"
 
 	// The old versions of Geb we are including manuals for
-	oldManualVersions = ["0.6.0", "0.6.1", "0.6.2", "0.6.3", "0.7.0", "0.7.1", "0.7.2"]
+	oldManualVersions = ["0.6.0", "0.6.1", "0.6.2", "0.6.3", "0.7.0", "0.7.1", "0.7.2", "0.9.0"]
 }
 
 def manualDependency = {
@@ -116,7 +116,7 @@ war {
 
 	properties["geb.manual.oldManualVersions"] = oldManualVersions.reverse().join(',')
 	properties["geb.manual.currentManualVersion"] = stableVersion
-	properties["geb.manual.snapshotManualVersion"] = project.version
+	properties["geb.manual.snapshotManualVersion"] = isSnapshot ? project.version : ''
 
 	def filterableExtensions = ["xml", "properties"]
 	inputs.properties(properties)

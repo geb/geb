@@ -28,12 +28,37 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Antony Jones](http://www.desirableobjects.co.uk/) - Various fixes and patches, doc improvements
 * [Jan-Hendrik Peters](http://hennr.name/imprint/) - Doc improvements
 * [Tomás Lin](http://fbflex.wordpress.com/) - Doc improvements
+* [Jason Cahoon](https://github.com/measlyweasel) - Bug fix around text matchers
+* [Tomasz Kalkosiński](http://refaktor.blogspot.com/) - Doc improvements
+* [Rich Douglas Evans](https://github.com/richdouglasevans) - Doc improvements
+* [Ian Durkan](https://github.com/idurkan) - Doc improvements
+* [Colin Harrington](http://colinharrington.net/) - Doc improvements
+* [Bob Herrmann](http://jadn.com/bob/) - Doc improvements
 
 ## History
 
 This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
+
+#### Breaking Changes
+
+* Explicitly calling `at()` with a page object will throw `UndefinedAtCheckerException` instead of silently passing if the page object does not define an at checker.
+* Passing a page with no at checker to `click(List<Class<? extends Page>>)` or as one of the pages in `to` template option will throw `UndefinedAtCheckerException`.
+
+#### New Features
+
+* Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`.
+* Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
+* New `atCheckWaiting` configuration option allowing to implictly wrap ”at“ checkers in `waitFor` calls. \[[GEB-253](http://jira.codehaus.org/browse/GEB-253)\]
+
+#### Fixes
+* `containsWord()` and `iContainsWord()` now return expected results when matching against text that contains spaces \[[GEB-254](http://jira.codehaus.org/browse/GEB-254)\]
+* `has(Map<String, Object> predicates, String selector)` and `has(Map<String, Object> predicates)` were added to Navigator for consistency with `find()` and `filter()` \[[GEB-256](http://jira.codehaus.org/browse/GEB-256)\]
+*  Also catch WaitTimeoutException when page verification has failed following a `click()` call \[[GEB-255](http://jira.codehaus.org/browse/GEB-255)\]
+* `not(Map<String, Object> predicates, String selector)` and `not(Map<String, Object> predicates)` were added to Navigator for consistency with `find()` and `filter()` \[[GEB-257](http://jira.codehaus.org/browse/GEB-257)\]
+
+### 0.9.0
 
 #### New Features
 

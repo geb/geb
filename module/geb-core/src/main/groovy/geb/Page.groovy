@@ -18,6 +18,7 @@ import geb.content.NavigableSupport
 import geb.content.PageContentTemplateBuilder
 import geb.download.DownloadSupport
 import geb.error.RequiredPageContentNotPresent
+import geb.error.UndefinedAtCheckerException
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
 import geb.js.AlertAndConfirmSupport
@@ -130,9 +131,10 @@ class Page {
 		if (verifier) {
 			verifier.delegate = this
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
-			verifier()
+			def atCheckWaiting = browser.config.atCheckWaiting
+			atCheckWaiting ? atCheckWaiting.waitFor(verifier) : verifier()
 		} else {
-			true
+			throw new UndefinedAtCheckerException(this.class.name)
 		}
 	}
 	

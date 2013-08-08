@@ -2,8 +2,10 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
+import geb.waiting.WaitTimeoutException
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebElement
@@ -67,6 +69,20 @@ class NonEmptyNavigator extends AbstractNavigator {
 	Navigator not(String selectorString) {
 		navigatorFor contextElements.findAll { element ->
 			!CssSelector.matches(element, selectorString)
+		}
+	}
+
+	@Override
+	Navigator not(Map<String, Object> predicates, String selectorString) {
+		navigatorFor contextElements.findAll { element ->
+			!(CssSelector.matches(element, selectorString) && matches(element, predicates))
+		}
+	}
+
+	@Override
+	Navigator not(Map<String, Object> predicates) {
+		navigatorFor contextElements.findAll { element ->
+			!matches(element, predicates)
 		}
 	}
 
@@ -344,6 +360,10 @@ class NonEmptyNavigator extends AbstractNavigator {
 			at = browser.verifyAt()
 		} catch (AssertionError e) {
 			error = e
+		} catch (WaitTimeoutException e) {
+			error = e
+		} catch (UndefinedAtCheckerException e) {
+			at = true
 		} finally {
 			if (!at) {
 				throw new UnexpectedPageException(pageClass, error)

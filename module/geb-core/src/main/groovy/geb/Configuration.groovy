@@ -150,7 +150,15 @@ class Configuration {
 	Double getDefaultWaitRetryInterval() {
 		readValue(rawConfig.waiting, 'retryInterval', Wait.DEFAULT_RETRY_INTERVAL)
 	}
-	
+
+	Wait getAtCheckWaiting() {
+		getWaitForParam(rawConfig.atCheckWaiting)
+	}
+
+	void setAtCheckWaiting(Object waitForParam) {
+		rawConfig.atCheckWaiting = waitForParam
+	}
+
 	/**
 	 * Should the created driver be cached if there is no existing cached driver, of if there
 	 * is a cached driver should it be used instead of creating a new one.
@@ -441,6 +449,19 @@ class Configuration {
 			factory
 		}
 	}
+
+	/**
+	 * Returns the default configuration closure to be applied before the user-
+	 * supplied config closure when using the download support.
+	 */
+	Closure getDownloadConfig() {
+		readValue("defaultDownloadConfig", { HttpURLConnection con -> } )
+	}
+
+	void setDownloadConfig(Closure config) {
+		rawConfig.defaultDownloadConfig = config
+	}
+
 
 	protected readValue(String name, defaultValue) {
 		readValue(rawConfig, name, defaultValue)

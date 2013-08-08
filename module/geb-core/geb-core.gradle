@@ -1,12 +1,8 @@
 dependencies {
 	compile seleniumDependency, seleniumSupportDependency
 	
-	// This is not strictly a compile dependency.
-	// We list it as one so that it becomes a transitive dependency of geb-core and therefore
-	// making it available at compile time of client code, assuming that their dependency mangement
-	// system makes transitive compile dependencies first class compile dependencies.
-	compile project(":module:geb-implicit-assertions")
 	compile project(":module:geb-ast")
+	compile project(":module:geb-waiting")
 }
 
 test {

@@ -33,9 +33,13 @@ class GebSpecWithServer extends GebSpec {
 	].asImmutable()
 
 	def setupSpec() {
-		server = new CallbackHttpServer()
+		server = serverInstance
 		server.start(getTestPorts())
 		browser.baseUrl = server.baseUrl
+	}
+
+	TestHttpServer getServerInstance() {
+		new CallbackHttpServer()
 	}
 
 	List<Integer> getTestPorts() {
