@@ -559,6 +559,66 @@ class Browser {
 	}
 
 	/**
+	 * Executes a closure within the context of all windows for which the specification
+	 * closure returns groovy truth.
+	 *
+	 * @param options a map that can be used to pass additional options
+	 * @param specification closure executed once in context of each window, if it returns groovy truth for a given
+	 * window then also the block closure is executed in the context of that window
+	 * @param block closure to be executed in the window context
+	 * @return The return value of {@code block}
+	 */
+	def withWindow(Map options, Closure specification, Closure block) {
+		def anyMatching = false
+		def original = currentWindow
+		def originalPage = page
+
+		try {
+			availableWindows.each {
+				switchToWindow(it)
+				if (options.page) {
+					page(options.page)
+				}
+
+				if (specification.call()) {
+					block.call()
+					anyMatching = true
+				}
+			}
+		} finally {
+			switchToWindow(original)
+			page originalPage
+		}
+		if (!anyMatching) {
+			throw new NoSuchWindowException('Could not find a window that would match the specification')
+		}
+	}
+
+	/**
+	 * Executes a closure within the context of a window specified by a name
+	 *
+	 * @param window name of the window to use as context
+	 * @param block closure to be executed in the window context
+	 * @return The return value of {@code block}
+	 */
+	def withWindow(Map options, String window, Closure block) {
+		def original = currentWindow
+		def originalPage = page
+
+		switchToWindow(window)
+		if (options.page) {
+			page(options.page)
+		}
+
+		try {
+			block.call()
+		} finally {
+			switchToWindow(original)
+			page originalPage
+		}
+	}
+
+	/**
 	 * Expects the first closure argument to open a new window and calls the second closure argument in the context
 	 * of the newly opened window. A map of options can also be specified that allows to close the new window, switch to a
 	 * different page for closure executed in the context of the new window and also to wait for the window opening if the
