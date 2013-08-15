@@ -130,6 +130,33 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		2              | { title in [windowTitle(1), windowTitle(2)] }
 	}
 
+	@Unroll
+	def "withWindow block closure is called in the context of the page passed as the 'page' option"() {
+		given:
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+		allWindowsOpened()
+
+		when:
+		withWindow(page: WindowHandlingSpecNewWindowPage, specification) {
+			assert page.getClass() == WindowHandlingSpecNewWindowPage
+		}
+
+		then:
+		page.getClass() == WindowHandlingSpecMainPage
+
+		where:
+		specification << [
+			{ true },
+			{ title == windowTitle() },
+			{ title in [windowTitle(1), windowTitle(2)] },
+			windowName(1),
+			windowName(2)
+		]
+	}
+
+
+
 	@Unroll("ensure withNewWindow throws an exception when: '#message'")
 	def "ensure withNewWindow throws exception if there was none or more than one windows opened"() {
 		when:
