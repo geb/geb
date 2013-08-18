@@ -46,6 +46,10 @@ This page lists the high level changes between versions of Geb.
 
 * `page` and `close` options can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
 
+#### Fixes
+
+* Default value of `close` option for `withNewWindow()` is set to `true` as specified in the documentation. \[[GEB-258](http://jira.codehaus.org/browse/GEB-258)\]
+
 ### 0.9.1
 
 #### Breaking Changes

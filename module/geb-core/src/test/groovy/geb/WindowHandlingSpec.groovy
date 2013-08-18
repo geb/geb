@@ -259,12 +259,12 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		windowTitle(2) | 2
 	}
 
-	def "withNewWindow closes the new window if 'close' option is passed"() {
+	def "withNewWindow closes the new window by default"() {
 		given:
 		go MAIN_PAGE_URL
 
 		when:
-		withNewWindow({ openWindow(1) }, close: true) {}
+		withNewWindow({ openWindow(1) }) {}
 
 		then:
 		availableWindows.size() == 1
@@ -272,16 +272,28 @@ class WindowHandlingSpec extends GebSpecWithServer {
 
 	}
 
-	def "withNewWindow closes the new window if 'close' option is passed and block closure throws an exception"() {
+	def "withNewWindow closes the new window even if closure throws an exception"() {
 		given:
 		go MAIN_PAGE_URL
 
 		when:
-		withNewWindow({ openWindow(1) }, close: true) { throw new Exception() }
+		withNewWindow({ openWindow(1) }) { throw new Exception() }
 
 		then:
 		thrown(Exception)
 		availableWindows.size() == 1
+	}
+
+	def "withNewWindow does not close the new window if close option is set to false"() {
+		given:
+		go MAIN_PAGE_URL
+
+		when:
+		withNewWindow({ openWindow(1) }, close: false) {}
+
+		then:
+		availableWindows.size() == 2
+		inContextOfMainWindow
 	}
 
 	def "withNewWindow block closure is called in the context of the page passed as the 'page' option"() {

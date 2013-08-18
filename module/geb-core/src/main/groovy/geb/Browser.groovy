@@ -631,7 +631,7 @@ class Browser {
 			}
 			block.call()
 		} finally {
-			if (options.close) {
+			if (!options.containsKey('close') || options.close) {
 				driver.close()
 			}
 			switchToWindow(originalWindow)
