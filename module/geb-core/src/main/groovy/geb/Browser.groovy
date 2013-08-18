@@ -374,7 +374,11 @@ class Browser {
 	 */
 	void go(Map params, String url) {
 		def newUrl = calculateUri(url, params)
-		def newPage = driver.get(newUrl)
+		if (driver.currentUrl == newUrl) {
+			driver.navigate().refresh()
+		} else {
+			driver.get(newUrl)
+		}
 		if (!page) {
 			page(Page)
 		}
