@@ -60,7 +60,7 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
-* Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`.
+* Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`. \[[GEB-150](http://jira.codehaus.org/browse/GEB-150)\]
 * Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
 * New `atCheckWaiting` configuration option allowing to implictly wrap ”at“ checkers in `waitFor` calls. \[[GEB-253](http://jira.codehaus.org/browse/GEB-253)\]
 
