@@ -146,7 +146,27 @@ class EmptyNavigator extends AbstractNavigator {
 	@Override
 	boolean isDisplayed() { false }
 
-	@Override
+    @Override
+    boolean isDisabled() {
+        return false
+    }
+
+    @Override
+    boolean isEnabled() {
+        return true
+    }
+
+    @Override
+    boolean isReadOnly() {
+        return false
+    }
+
+    @Override
+    boolean isEditable() {
+        return true
+    }
+
+    @Override
 	String tag() { null }
 
 	@Override
