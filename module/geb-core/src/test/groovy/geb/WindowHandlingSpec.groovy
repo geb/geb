@@ -148,10 +148,8 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		where:
 		specification << [
 			{ true },
-			{ title == windowTitle() },
 			{ title in [windowTitle(1), windowTitle(2)] },
-			windowName(1),
-			windowName(2)
+			windowName(1)
 		]
 	}
 

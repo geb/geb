@@ -280,6 +280,18 @@ This code passes:
         assert $('#slogan').text() == 'very groovy browser automation… web testing, screen scraping and more'
     }
 
+#### Passing options when working with already opened windows
+
+Currently there is only one option that can be passed to a [`withWindow()`](api/geb/Browser.html#withWindow\(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure\)) call which make working with already opened windows even simpler. The general syntax is:
+
+	withWindow({ «window specification» }, «option name»: «option value», ...) { «action executed within the context of the window» }
+
+##### page
+
+Default value: `null`
+
+If you pass a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to it's original value afterwards.
+
 ### Switching context to newly opened windows
 
 If you wish to execute code in a window that is newly opened by some of your actions use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow\(groovy.lang.Closure,%20groovy.lang.Closure\)) method. Given html as above the following will pass:

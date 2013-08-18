@@ -34,12 +34,19 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Ian Durkan](https://github.com/idurkan) - Doc improvements
 * [Colin Harrington](http://colinharrington.net/) - Doc improvements
 * [Bob Herrmann](http://jadn.com/bob/) - Doc improvements
+* [George T Walters II](https://github.com/walterg2) - Page option support for `withWindow()`
 
 ## History
 
 This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
+
+#### New Features
+
+* `page` option can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
+
+### 0.9.1
 
 #### Breaking Changes
 

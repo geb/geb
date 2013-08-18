@@ -597,6 +597,7 @@ class Browser {
 	/**
 	 * Executes a closure within the context of a window specified by a name
 	 *
+	 * @param options a map that can be used to pass additional options
 	 * @param window name of the window to use as context
 	 * @param block closure to be executed in the window context
 	 * @return The return value of {@code block}
