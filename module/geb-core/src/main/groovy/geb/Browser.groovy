@@ -560,8 +560,14 @@ class Browser {
 				}
 
 				if (specification.call()) {
-					block.call()
-					anyMatching = true
+					try {
+						block.call()
+					} finally {
+						if (options.close) {
+							driver.close()
+						}
+						anyMatching = true
+					}
 				}
 			}
 		} finally {
@@ -586,13 +592,15 @@ class Browser {
 		def originalPage = getPage()
 
 		switchToWindow(window)
-		if (options.page) {
-			page(options.page)
-		}
-
 		try {
+			if (options.page) {
+				page(options.page)
+			}
 			block.call()
 		} finally {
+			if (options.close) {
+				driver.close()
+			}
 			switchToWindow(original)
 			page originalPage
 		}

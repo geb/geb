@@ -153,7 +153,64 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		]
 	}
 
+	@Unroll
+	def "withWindow by default does not close the matching windows"() {
+		go MAIN_PAGE_URL
+		allWindowsOpened()
 
+		when:
+		withWindow(specification) {}
+
+		then:
+		availableWindows.size() == 3
+
+		where:
+		specification << [
+			{ true },
+			windowName(1)
+		]
+	}
+
+	@Unroll
+	def "withWindow closes matching windows if 'close' option is passed"() {
+		given:
+		go MAIN_PAGE_URL
+		allWindowsOpened()
+
+		when:
+		withWindow(specification, close: true) {}
+
+		then:
+		availableWindows.size() == windowsLeft
+
+		where:
+		where:
+		windowsLeft | specification
+		2           | { title == windowTitle(1) }
+		2           | windowName(1)
+		1           | { title in [windowTitle(1), windowTitle(2)] }
+	}
+
+	@Unroll
+	def "withWindow closes matching windows if 'close' option is passed and block closure throws an exception"() {
+		given:
+		go MAIN_PAGE_URL
+		allWindowsOpened()
+
+		when:
+		withWindow(specification, close: true) { throw Exception() }
+
+		then:
+		thrown(Exception)
+		availableWindows.size() == 2
+
+		where:
+		specification << [
+			{ title == windowTitle(1) },
+			windowName(1),
+			{ title in [windowTitle(1), windowTitle(2)] }
+		]
+	}
 
 	@Unroll("ensure withNewWindow throws an exception when: '#message'")
 	def "ensure withNewWindow throws exception if there was none or more than one windows opened"() {

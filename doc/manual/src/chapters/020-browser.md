@@ -286,6 +286,12 @@ Currently there is only one option that can be passed to a [`withWindow()`](api/
 
 	withWindow({ «window specification» }, «option name»: «option value», ...) { «action executed within the context of the window» }
 
+##### close
+
+Default value: `false`
+
+If you pass any truly value as `close` option then all matching windows will be closed after the execution of the closure passed as the last argument to the `withWindow()` call.
+
 ##### page
 
 Default value: `null`

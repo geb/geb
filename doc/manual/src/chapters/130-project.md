@@ -44,7 +44,7 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
-* `page` option can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
+* `page` and `close` options can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
 
 ### 0.9.1
 
