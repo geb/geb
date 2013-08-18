@@ -715,7 +715,7 @@ The encapsulated page object actions are especially handy when interacting with 
         }
     }
 
-Each page object action also returns a reference to the current page by returning `browser.page`. That allows the test to easily keep a reference to the current page.
+Each page object action also returns a reference to the current page by returning `browser.page`. That allows the test to easily keep a reference to the current page which means that your IDE will be able to provide you with autocomplete hints for your code.
 
 Returning the current page also allows the test to chain page calls together for more concise test code that resembles a builder:
 
