@@ -521,13 +521,7 @@ class Browser {
 	 * @return The return value of {@code block}
 	 */
 	def withWindow(String window, Closure block) {
-		def original = currentWindow
-		switchToWindow(window)
-		try {
-			block.call()
-		} finally {
-			switchToWindow(original)
-		}
+		withWindow([:], window, block)
 	}
 
 	/**
@@ -540,22 +534,7 @@ class Browser {
 	 * @return The return value of {@code block}
 	 */
 	def withWindow(Closure specification, Closure block) {
-		def anyMatching = false
-		def original = currentWindow
-		try {
-			availableWindows.each {
-				switchToWindow(it)
-				if (specification.call()) {
-					block.call()
-					anyMatching = true
-				}
-			}
-		} finally {
-			switchToWindow(original)
-		}
-		if (!anyMatching) {
-			throw new NoSuchWindowException('Could not find a window that would match the specification')
-		}
+		withWindow([:], specification, block)
 	}
 
 	/**
@@ -571,7 +550,7 @@ class Browser {
 	def withWindow(Map options, Closure specification, Closure block) {
 		def anyMatching = false
 		def original = currentWindow
-		def originalPage = page
+		def originalPage = getPage()
 
 		try {
 			availableWindows.each {
@@ -604,7 +583,7 @@ class Browser {
 	 */
 	def withWindow(Map options, String window, Closure block) {
 		def original = currentWindow
-		def originalPage = page
+		def originalPage = getPage()
 
 		switchToWindow(window)
 		if (options.page) {
@@ -634,7 +613,7 @@ class Browser {
 	 */
 	def withNewWindow(Map options, Closure windowOpeningBlock, Closure block) {
 		def originalWindow = currentWindow
-		def originalPage = page
+		def originalPage = getPage()
 
 		def newWindow = executeNewWindowOpening(windowOpeningBlock, options.wait)
 		try {
