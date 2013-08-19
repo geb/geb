@@ -1,7 +1,6 @@
 package geb.navigator
 
 import geb.Page
-import geb.PageWithoutAtChecker
 import geb.error.UndefinedAtCheckerException
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
@@ -292,8 +291,8 @@ class NavigatorSpec extends GebSpecWithServer {
 	def displayed() {
 		given:
 		html {
-			div(id: "a")
-			div(id: "b", style: "display: none;")
+			div(id: "a", "a")
+			div(id: "b", style: "display: none;", "b")
 		}
 
 		expect:
@@ -333,7 +332,7 @@ class NavigatorSpec extends GebSpecWithServer {
 
 	def 'click can be used with pages without at checker'() {
 		given:
-		html { div() }
+		html { div('some text') }
 
 		when:
 		$('div').click(Page)
@@ -344,7 +343,7 @@ class NavigatorSpec extends GebSpecWithServer {
 
 	def 'click fails when used with a list of pages, one of which does not have an at checker'() {
 		given:
-		html { div() }
+		html { div('some text') }
 
 		when:
 		$('div').click([PageWithoutAtChecker, PageWithAtChecker])
