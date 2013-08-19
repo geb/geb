@@ -7,10 +7,14 @@ import spock.lang.Unroll
 @CrossBrowser
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
+	def setup() {
+		go MAIN_PAGE_URL
+	}
+
 	@Unroll
 	def "withWindow changes focus to window with given name and returns closure return value"() {
 		when:
-		openAllWindows()
+		openWindow(index)
 
 		then:
 		withWindow(windowName(index)) { title } == windowTitle(index)
@@ -22,7 +26,7 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "ensure original context is preserved after a call to withWindow"() {
 		given:
-		openAllWindows()
+		openWindow(1)
 
 		when:
 		withWindow(specification) {}
@@ -56,27 +60,19 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "withWindow closes matching windows if 'close' option is passed"() {
 		given:
-		go MAIN_PAGE_URL
-		openAllWindows()
+		openWindow(1)
 
 		when:
 		withWindow(specification, close: true) {}
 
 		then:
-		availableWindows.size() == windowsLeft
+		availableWindows.size() == old(availableWindows.size() - 1)
 
 		where:
-		where:
-		windowsLeft | specification
-		2           | { title == windowTitle(1) }
-		2           | windowName(1)
-		1           | { title in [windowTitle(1), windowTitle(2)] }
+		specification << [{ title == windowTitle(1) }, windowName(1)]
 	}
 
 	def "ensure original context is preserved after a call to withNewWindow"() {
-		given:
-		go MAIN_PAGE_URL
-
 		when:
 		withNewWindow({ openWindow(1) }) {}
 
@@ -93,10 +89,7 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
 	@Unroll
 	def "ensure withNewWindow block closure called in the context of the newly opened window"() {
-		when:
-		go MAIN_PAGE_URL
-
-		then:
+		expect:
 		withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
 
 		where:
@@ -106,15 +99,11 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	def "withNewWindow closes the new window by default"() {
-		given:
-		go MAIN_PAGE_URL
-
 		when:
 		withNewWindow({ openWindow(1) }) {}
 
 		then:
-		availableWindows.size() == 1
+		availableWindows.size() == old(availableWindows.size())
 		inContextOfMainWindow
-
 	}
 }
