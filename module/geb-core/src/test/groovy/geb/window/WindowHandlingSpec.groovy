@@ -1,120 +1,15 @@
-package geb
+package geb.window
 
-import geb.driver.CachingDriverFactory
+import geb.Page
 import geb.error.NoNewWindowException
-import geb.test.GebSpecWithServer
-import org.openqa.selenium.NoSuchWindowException
 import spock.lang.Unroll
 
-class WindowHandlingSpec extends GebSpecWithServer {
-
-	private final static String MAIN_PAGE_URL = '/main'
-
-	def cleanup() {
-		/*
-		 * set the browser instance to null as we're going to quit the driver and otherwise parent's cleanup will
-		 * want to do some work on that closed driver which will fail
-		 */
-		resetBrowser()
-		// make sure that driver is recreated for the next test so that there is only one browser window opened
-		CachingDriverFactory.clearCacheAndQuitDriver()
-	}
-
-	def setupSpec() {
-		responseHtml { request ->
-			def page = (~'/(.*)').matcher(request.requestURI)[0][1]
-			head {
-				title("Window $page")
-			}
-			body {
-				[1, 2].each {
-					def label = "$page-$it"
-					a(id: label, target: "window-$label", href: "/$label")
-				}
-			}
-		}
-	}
-
-	private void allWindowsOpened() {
-		go MAIN_PAGE_URL
-		$('a')*.click()
-		assert availableWindows.size() == 3
-	}
-
-	private boolean isInContextOfMainWindow() {
-		title == windowTitle()
-	}
-
-	private String windowTitle(int[] indexes = []) {
-		def name = "Window main"
-		if (indexes) {
-			name += "-" + indexes*.toString().join("-")
-		}
-		name
-	}
-
-	private String windowName(int[] indexes = []) {
-		def name = "window-main"
-		if (indexes) {
-			name += "-" + indexes*.toString().join("-")
-		}
-		name
-	}
-
-	private void openWindow(int index) {
-		$("a", index - 1).click()
-	}
-	
-	@Unroll
-	def "withWindow changes focus to window with given name and returns closure return value"() {
-		when:
-		allWindowsOpened()
-
-		then:
-		withWindow(windowName(index)) { title } == windowTitle(index)
-
-		where:
-		index << [1,2]
-	}
-
-	@Unroll
-	def "ensure original context is preserved after a call to withWindow"() {
-		given:
-		allWindowsOpened()
-
-		when:
-		withWindow(specification) {}
-
-		then:
-		inContextOfMainWindow
-
-		when:
-		withWindow(specification) { throw new Exception() }
-
-		then:
-		thrown(Exception)
-		inContextOfMainWindow
-
-		where:
-		specification << [windowName(1), { title == windowTitle(1) }]
-	}
-
-	@Unroll
-	def "ensure exception is thrown for a non existing window passed to withWindow"() {
-		when:
-		withWindow(specification) {}
-
-		then:
-		thrown(NoSuchWindowException)
-
-		where:
-		specification << ['nonexisting', { false }]
-	}
+class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 	@Unroll
 	def "ensure withWindow block closure parameter called for all windows for which specification closure returns true"() {
 		given:
-		allWindowsOpened()
+		openAllWindows()
 
 		when:
 		def called = 0
@@ -135,7 +30,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		given:
 		go MAIN_PAGE_URL
 		page WindowHandlingSpecMainPage
-		allWindowsOpened()
+		openAllWindows()
 
 		when:
 		withWindow(page: WindowHandlingSpecNewWindowPage, specification) {
@@ -156,7 +51,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 	@Unroll
 	def "withWindow by default does not close the matching windows"() {
 		go MAIN_PAGE_URL
-		allWindowsOpened()
+		openAllWindows()
 
 		when:
 		withWindow(specification) {}
@@ -172,30 +67,10 @@ class WindowHandlingSpec extends GebSpecWithServer {
 	}
 
 	@Unroll
-	def "withWindow closes matching windows if 'close' option is passed"() {
-		given:
-		go MAIN_PAGE_URL
-		allWindowsOpened()
-
-		when:
-		withWindow(specification, close: true) {}
-
-		then:
-		availableWindows.size() == windowsLeft
-
-		where:
-		where:
-		windowsLeft | specification
-		2           | { title == windowTitle(1) }
-		2           | windowName(1)
-		1           | { title in [windowTitle(1), windowTitle(2)] }
-	}
-
-	@Unroll
 	def "withWindow closes matching windows if 'close' option is passed and block closure throws an exception"() {
 		given:
 		go MAIN_PAGE_URL
-		allWindowsOpened()
+		openAllWindows()
 
 		when:
 		withWindow(specification, close: true) { throw Exception() }
@@ -224,52 +99,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 		where:
 		message                                      | newWindowBlock
 		'No new window has been opened'              | {}
-		'There has been more than one window opened' | { allWindowsOpened() }
-	}
-
-	def "ensure original context is preserved after a call to withNewWindow"() {
-		given:
-		go MAIN_PAGE_URL
-
-		when:
-		withNewWindow({ openWindow(1) }) {}
-
-		then:
-		inContextOfMainWindow
-
-		when:
-		withNewWindow({ openWindow(2) }) { throw new Exception() }
-
-		then:
-		thrown(Exception)
-		inContextOfMainWindow
-	}
-
-	@Unroll
-	def "ensure withNewWindow block closure called in the context of the newly opened window"() {
-		when:
-		go MAIN_PAGE_URL
-
-		then:
-		withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
-
-		where:
-		expectedTitle  | windowNum
-		windowTitle(1) | 1
-		windowTitle(2) | 2
-	}
-
-	def "withNewWindow closes the new window by default"() {
-		given:
-		go MAIN_PAGE_URL
-
-		when:
-		withNewWindow({ openWindow(1) }) {}
-
-		then:
-		availableWindows.size() == 1
-		inContextOfMainWindow
-
+		'There has been more than one window opened' | { openAllWindows() }
 	}
 
 	def "withNewWindow closes the new window even if closure throws an exception"() {
@@ -345,7 +175,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 	
 	def "withWindow methods can be nested"() {
 		given:
-		allWindowsOpened()
+		openAllWindows()
 		
 		when: // can't put this in an expect block, some spock bug
 		withWindow(windowName(1)) {
@@ -368,7 +198,7 @@ class WindowHandlingSpec extends GebSpecWithServer {
 
 	def "withNewWindow methods can be nested"() {
 		given:
-		allWindowsOpened()
+		openAllWindows()
 		
 		when: // can't put this in an expect block, some spock bug
 		withWindow(windowName(1)) {
