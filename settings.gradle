@@ -9,6 +9,7 @@ include "module:geb-core",
 		"module:geb-waiting",
 		"internal:test-support",
 		"integration:geb-grails",
+		"integration:geb-gradle",
         "doc:manual",
         "doc:site"
 

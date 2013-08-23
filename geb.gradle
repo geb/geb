@@ -1,7 +1,6 @@
 apply plugin: 'base'
 apply plugin: 'idea'
 apply from: "gradle/idea.gradle"
-apply from: "gradle/crossbrowser.gradle"
 
 buildscript {
 	repositories {
@@ -55,13 +54,13 @@ allprojects { project ->
 			":module:geb-core", ":module:geb-core-tests", ":internal:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 			":module:geb-easyb", ":module:geb-testng", ":module:geb-implicit-assertions",
-			":module:geb-ast", ":module:geb-waiting"
+			":module:geb-ast", ":module:geb-waiting", ":integration:geb-gradle"
 		]
 
 		publishedModules = [
 			":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-easyb",
-			":module:geb-testng", ":doc:manual"
+			":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
 		]
 
 		publishedGroovyModules = groovyModules.findAll { it in publishedModules }
@@ -88,8 +87,8 @@ subprojects {
 		targetCompatibility = 1.5
 
 		tasks.withType(Test) {
-			testResultsDir = reporting.file("test-results/$name")
-			testReportDir = reporting.file("test-reports/$name")
+			reports.junitXml.destination = reporting.file("test-results/$name")
+			reports.html.destination = reporting.file("test-reports/$name")
 			binResultsDir = file("$buildDir/test-results-bin/$name")
 
 			ext.driver = project.properties["driver"] ?: "htmlunit"

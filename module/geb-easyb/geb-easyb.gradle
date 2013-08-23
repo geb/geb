@@ -5,12 +5,12 @@ dependencies {
 }
 
 test.doLast {
-	assert testReportDir.exists() || testReportDir.mkdirs()
+	assert reports.html.destination || reports.html.destination.mkdirs()
 	ant.java(
 		classname: 'org.easyb.BehaviorRunner', 
 		fork: true,
 		classpath: sourceSets.test.runtimeClasspath.asPath,
-		output: "$testReportDir.absolutePath/easyb-output.txt",
+		output: "$reports.html.destination.absolutePath/easyb-output.txt",
 		failonerror: false,
 		dir: projectDir,
 		resultproperty: 'easybresult'
@@ -19,7 +19,7 @@ test.doLast {
 			arg(value: it.absolutePath) 
 		}
 		arg(value: "-txtstory")
-		arg(value: "$testReportDir.absolutePath/easyb.txt")
+		arg(value: "$reports.html.destination.absolutePath/easyb.txt")
 	}
 	
 	if (ant.easybresult != "0") System.err.println ">> Easyb Failed ($ant.easybresult)"

@@ -1,8 +1,18 @@
+import geb.gradle.saucelabs.SauceTest
+
+apply plugin: "geb-saucelabs"
+
+repositories {
+	maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
+}
+
 dependencies {
 	compile seleniumDependency, seleniumSupportDependency
 	
 	compile project(":module:geb-ast")
 	compile project(":module:geb-waiting")
+
+	sauceConnect "com.saucelabs:sauce-connect:3.0.28"
 }
 
 test {
@@ -10,11 +20,26 @@ test {
 	if (driver == "htmlunit") {
 		exclude "**/ExoticAttributeValuesSpec.class"
 	}
-	crossBrowser.enable it
+	sauceTasksBuilder.build it
 }
 
-tasks.withType(Test).matching { it.hasProperty("crossBrowser") }.all {
+tasks.withType(SauceTest).matching { it.hasProperty("crossBrowser") }.all {
 	maxParallelForks 3
+}
+
+task allCrossBrowserTests {
+	dependsOn 'allSauceTests'
+}
+
+sauceBrowsers {
+	firefox_linux_19 {}
+	firefox_windows_19 {}
+	firefox_mac_19 {}
+	chrome_linux {}
+	chrome_windows {}
+	chrome_mac {}
+	internetExplorer_vista_8 {}
+	internetExplorer_vista_9 {}
 }
 
 modifyPom { pom ->

@@ -20,7 +20,7 @@ import org.openqa.selenium.WebDriver
  * Wraps the operations on remote drivers to avoid a hard dependency on selenium-remote-client.
  */
 class RemoteDriverOperations {
-	
+
 	final ClassLoader classLoader
 	
 	RemoteDriverOperations(ClassLoader classLoader) {
@@ -41,10 +41,14 @@ class RemoteDriverOperations {
 	}
 	
 	boolean isRemoteDriverAvailable() {
-		softLoadRemoteDriverClass("RemoteWebDriver") != null
+		remoteWebDriverClass != null
+	}
+
+	Class<? extends WebDriver> getRemoteWebDriverClass() {
+		softLoadRemoteDriverClass("RemoteWebDriver")
 	}
 	
-	private Class softLoadRemoteDriverClass(String name) {
+	public Class softLoadRemoteDriverClass(String name) {
 		try {
 			classLoader.loadClass("org.openqa.selenium.remote.$name")
 		} catch (ClassNotFoundException e) {
