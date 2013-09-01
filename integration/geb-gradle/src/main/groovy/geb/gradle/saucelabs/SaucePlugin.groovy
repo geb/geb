@@ -16,8 +16,12 @@
 
 package geb.gradle.saucelabs
 
+import geb.gradle.saucelabs.task.StartSauceConnect
+import geb.gradle.saucelabs.task.StopSauceConnect
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.testing.Test
 
 class SaucePlugin implements Plugin<Project> {
 
@@ -29,37 +33,60 @@ class SaucePlugin implements Plugin<Project> {
 
 		project.configurations.create('sauceConnect')
 
-		project.extensions.sauceBrowsers = project.container(BrowserSpec)
-
-		project.extensions.create('sauceAccount', SauceAccount)
-		project.extensions.create('sauceConnect', SauceConnect, project, project.sauceAccount, project.logger)
+		project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
 
 		addTunnelTasks()
-		project.extensions.create('sauceTasksBuilder', SauceTasksBuilder, project.sauceAccount, project.sauceBrowsers, project.openSauceTunnelInBackground)
+		project.afterEvaluate { addSauceTasks() }
+	}
+
+	void addSauceTasks() {
+		def allSauceTests = project.task("allSauceTests") {
+			group "Sauce Test"
+		}
+
+		project.sauceLabs.browsers.all { BrowserSpec browser ->
+			def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
+				group allSauceTests.group
+				task.dependsOn 'openSauceTunnelInBackground'
+				allSauceTests.dependsOn task
+				finalizedBy 'closeSauceTunnel'
+
+				task.configure project.sauceLabs.taskConfiguration
+
+				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
+
+				project.sauceLabs.account.configure(task)
+				browser.configure(task)
+			}
+
+			def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {
+				from testTask.reports.junitXml.destination
+				into "${testTask.reports.junitXml.destination}-decorated"
+				filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
+			}
+
+			testTask.finalizedBy decorateReportsTask
+		}
 	}
 
 	void addTunnelTasks() {
-		project.tasks.create('closeSauceTunnel') {
-			doLast {
-				project.sauceConnect.stopTunnel()
-			}
+		project.task('closeSauceTunnel', type: StopSauceConnect) {
+			sauceConnect = project.sauceLabs.connect
 		}
 
-		project.tasks.create('openSauceTunnel') {
-			doLast {
-				project.sauceConnect.startTunnel(project.configurations.sauceConnect.singleFile, project.buildDir, false)
-			}
+		def openSauceTunnel = project.task('openSauceTunnel', type: StartSauceConnect)
+
+		def openSauceTunnelInBackground = project.task('openSauceTunnelInBackground', type: StartSauceConnect) {
+			inBackground = true
+			finalizedBy 'closeSauceTunnel'
 		}
 
-		project.tasks.create('openSauceTunnelInBackground') {
-			doLast {
-				project.sauceConnect.startTunnel(project.configurations.sauceConnect.singleFile, project.buildDir, true)
+		[openSauceTunnel, openSauceTunnelInBackground].each {
+			it.configure {
+				sauceConnect = project.sauceLabs.connect
+				workingDir = project.buildDir
+				conventionMapping.sauceConnectJar = { project.configurations.sauceConnect.singleFile }
 			}
-			finalizedBy project.tasks.closeSauceTunnel
-		}
-
-		project.tasks.withType(SauceTest) {
-			finalizedBy project.tasks.closeSauceTunnel
 		}
 	}
 }

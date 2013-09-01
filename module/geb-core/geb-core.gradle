@@ -1,4 +1,4 @@
-import geb.gradle.saucelabs.SauceTest
+import geb.gradle.saucelabs.SauceAccount
 
 apply plugin: "geb-saucelabs"
 
@@ -20,26 +20,33 @@ test {
 	if (driver == "htmlunit") {
 		exclude "**/ExoticAttributeValuesSpec.class"
 	}
-	sauceTasksBuilder.build it
-}
-
-tasks.withType(SauceTest).matching { it.hasProperty("crossBrowser") }.all {
-	maxParallelForks 3
 }
 
 task allCrossBrowserTests {
 	dependsOn 'allSauceTests'
 }
 
-sauceBrowsers {
-	firefox_linux_19 {}
-	firefox_windows_19 {}
-	firefox_mac_19 {}
-	chrome_linux {}
-	chrome_windows {}
-	chrome_mac {}
-	internetExplorer_vista_8 {}
-	internetExplorer_vista_9 {}
+sauceLabs {
+	browsers {
+		firefox_linux_19
+		firefox_windows_19
+		firefox_mac_19
+		chrome_linux
+		chrome_windows
+		chrome_mac
+		internetExplorer_vista_8
+		internetExplorer_vista_9
+	}
+	task {
+		testClassesDir = test.testClassesDir
+		testSrcDirs = test.testSrcDirs
+		classpath = test.classpath
+		maxParallelForks 3
+	}
+	account {
+		username = System.getenv(SauceAccount.USER_ENV_VAR)
+		accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
+	}
 }
 
 modifyPom { pom ->

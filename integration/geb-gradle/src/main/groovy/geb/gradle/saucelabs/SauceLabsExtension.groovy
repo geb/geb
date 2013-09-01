@@ -16,17 +16,24 @@
 
 package geb.gradle.saucelabs
 
-import org.gradle.api.tasks.testing.Test
+import org.gradle.api.Project
 
-class SauceAccount {
-	public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
-	public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_PASSWORD"
+class SauceLabsExtension {
 
-	String username
-	String accessKey
+	Project project
+	Closure taskConfiguration
 
-	void configure(Test test) {
-		test.environment(USER_ENV_VAR, username)
-		test.environment(ACCESS_KEY_ENV_VAR, accessKey)
+	SauceLabsExtension(Project project) {
+		this.project = project
+	}
+
+	void addExtensions() {
+		extensions.browsers = project.container(BrowserSpec)
+		def account = extensions.create('account', SauceAccount)
+		extensions.create('connect', SauceConnect, project, account, project.logger)
+	}
+
+	void task(Closure configuration) {
+		taskConfiguration = configuration
 	}
 }

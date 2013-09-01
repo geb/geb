@@ -30,6 +30,9 @@ class SauceConnect {
 
 	protected Process tunnelProcess
 
+	long timeout = 3
+	TimeUnit timeoutUnit = TimeUnit.MINUTES
+
 	SauceConnect(Project project, SauceAccount account, Logger logger) {
 		this.project = project
 		this.account = account
@@ -68,7 +71,7 @@ class SauceConnect {
 				} catch (IOException ignore) {}
 			}
 
-			if (!latch.await(3, TimeUnit.MINUTES)) {
+			if (!latch.await(timeout, timeoutUnit)) {
 				throw new RuntimeException("Timeout waiting for sauce tunnel to open")
 			}
 		} else {
