@@ -36,7 +36,7 @@ class SaucePlugin implements Plugin<Project> {
 		project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
 
 		addTunnelTasks()
-		project.afterEvaluate { addSauceTasks() }
+		addSauceTasks()
 	}
 
 	void addSauceTasks() {
@@ -51,11 +51,8 @@ class SaucePlugin implements Plugin<Project> {
 				allSauceTests.dependsOn task
 				finalizedBy 'closeSauceTunnel'
 
-				task.configure project.sauceLabs.taskConfiguration
-
 				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
 
-				project.sauceLabs.account.configure(task)
 				browser.configure(task)
 			}
 

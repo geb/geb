@@ -21,7 +21,7 @@ import org.gradle.api.Project
 class SauceLabsExtension {
 
 	Project project
-	Closure taskConfiguration
+	SauceAccount account
 
 	SauceLabsExtension(Project project) {
 		this.project = project
@@ -29,11 +29,20 @@ class SauceLabsExtension {
 
 	void addExtensions() {
 		extensions.browsers = project.container(BrowserSpec)
-		def account = extensions.create('account', SauceAccount)
+		account = new SauceAccount()
 		extensions.create('connect', SauceConnect, project, account, project.logger)
 	}
 
 	void task(Closure configuration) {
-		taskConfiguration = configuration
+		extensions.browsers.all { BrowserSpec browser ->
+			project.tasks["${browser.displayName}Test"].configure configuration
+		}
+	}
+
+	void account(Closure configuration) {
+		project.configure(account, configuration)
+		extensions.browsers.all { BrowserSpec browser ->
+			account.configure project.tasks["${browser.displayName}Test"]
+		}
 	}
 }
