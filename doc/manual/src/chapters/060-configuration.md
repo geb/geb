@@ -179,6 +179,14 @@ The possible values for the `atCheckWaiting` option are consistent with the ones
 * **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
 * **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
 
+### Unexpected pages
+
+The `unexpectedPages` option allows to specify a list of unexpected `Page` classes that will be checked for when ”at“ checks are performed. Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined:
+
+	unexpectedPages = [PageNotFoundPage, InternalServerErrorPage]
+
+See [this section](pages.html#unexpected_pages) for more information.
+
 ### Reporter
 
 The *reporter* is the object responsible for snapshotting the state of the browser (see the [reporting](reporting.html) chapter for details). All reporters are implemenations of the [`Reporter`](api/geb/report/Reporter.html) interface. If no reporter is explicitly defined, a [composite reporter](api/geb/report/CompositeReporter.html) will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current DOM state as HTML). This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.

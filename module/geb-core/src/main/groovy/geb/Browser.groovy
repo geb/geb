@@ -228,6 +228,7 @@ class Browser {
 	 * <p>
 	 * This method performs the following:
 	 * <ul>
+	 *   <li>Check if not at an unexpected page
 	 *	 <li>For each given page type:
 	 *	 <ul>
 	 *	 <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
@@ -245,6 +246,7 @@ class Browser {
 	void page(Class<? extends Page>[] potentialPageClasses) {
 		def potentialPageClassesClone = potentialPageClasses.toList()
 		def match = null
+		checkIfAtAnUnexpectedPage(potentialPageClasses)
 		while (match == null && !potentialPageClassesClone.empty) {
 			def potential = createPage(potentialPageClassesClone.remove(0))
 			if (potential.verifyAtSafely()) {
@@ -307,6 +309,21 @@ class Browser {
 			makeCurrentPage(page)
 		}
 		isAt
+	}
+
+	/**
+	 * Check if at one of the pages configured to be unexpected.
+	 *
+	 * @param expectedPages allows to specify which of the unexpected pages to ignore for the check
+	 * @throws UnexpectedPageException when at an unexpected page
+	 */
+	void checkIfAtAnUnexpectedPage(Class<? extends Page>[] expectedPages) {
+		def unexpectedPages = config.unexpectedPages - expectedPages.toList()
+		unexpectedPages.each {
+			if (isAt(it)) {
+				throw new UnexpectedPageException(it, *expectedPages)
+			}
+		}
 	}
 
 	/**

@@ -36,6 +36,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Bob Herrmann](http://jadn.com/bob/) - Doc improvements
 * [George T Walters II](https://github.com/walterg2) - Page option support for `withWindow()`
 * [Craig Atkinson][https://github.com/craigatk] - Doc improvements
+* [Andy Duncan][https://github.com/andyjduncan] - Fail fast when unexpected pages are encountered
 
 ## History
 
@@ -46,6 +47,7 @@ This page lists the high level changes between versions of Geb.
 #### New Features
 
 * `page` and `close` options can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
+* Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See [this manual section](pages.html#unexpected_pages) for details. \[[GEB-70](http://jira.codehaus.org/browse/GEB-70)\]
 
 #### Fixes
 

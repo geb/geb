@@ -19,6 +19,7 @@ import geb.content.PageContentTemplateBuilder
 import geb.download.DownloadSupport
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UndefinedAtCheckerException
+import geb.error.UnexpectedPageException
 import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
 import geb.js.AlertAndConfirmSupport
@@ -120,13 +121,42 @@ class Page {
 	}
 	
 	/**
-	 * Executes this page's "at checker".
+	 * Checks if the browser is not at an unexpected page and then executes this page's "at checker".
 	 * 
 	 * @return whether the at checker succeeded or not.
 	 * @see #verifyAtSafely()
 	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
+	 * @throws UnexpectedPageException when at an unexpected page
 	 */
 	boolean verifyAt() {
+		browser.checkIfAtAnUnexpectedPage(getClass())
+		verifyThisPageAtOnly()
+	}
+
+	/**
+	 * Executes this page's "at checker", suppressing any AssertionError that is thrown
+	 * and returning false.
+	 * 
+	 * @return whether the at checker succeeded or not.
+	 * @see #verifyAt()
+	 */
+	boolean verifyAtSafely() {
+		try {
+			verifyThisPageAtOnly()
+		} catch (AssertionError e) {
+			false
+		} catch (RequiredPageContentNotPresent e) {
+			false
+		}
+	}
+
+	/**
+	 * Executes this page's "at checker".
+	 *
+	 * @return whether the at checker succeeded or not.
+	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
+	 */
+	private boolean verifyThisPageAtOnly() {
 		def verifier = this.class.at?.clone()
 		if (verifier) {
 			verifier.delegate = this
@@ -137,24 +167,7 @@ class Page {
 			throw new UndefinedAtCheckerException(this.class.name)
 		}
 	}
-	
-	/**
-	 * Executes this page's "at checker", suppressing any AssertionError that is thrown
-	 * and returning false.
-	 * 
-	 * @return whether the at checker succeeded or not.
-	 * @see #verifyAt()
-	 */
-	boolean verifyAtSafely() {
-		try {
-			verifyAt()
-		} catch (AssertionError e) {
-			false
-		} catch (RequiredPageContentNotPresent e) {
-			false
-		}
-	}
-	
+
 	/**
 	 * Sends the browser to this page's url.
 	 * 

@@ -159,6 +159,14 @@ class Configuration {
 		rawConfig.atCheckWaiting = waitForParam
 	}
 
+	Collection<Class<? extends Page>> getUnexpectedPages() {
+		rawConfig.unexpectedPages ?: []
+	}
+
+	void setUnexpectedPages(Collection<Class<? extends Page>> pages) {
+		rawConfig.unexpectedPages = pages
+	}
+
 	/**
 	 * Should the created driver be cached if there is no existing cached driver, of if there
 	 * is a cached driver should it be used instead of creating a new one.

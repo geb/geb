@@ -436,6 +436,37 @@ If a page does not have an “at” checker, the `verifyAt()` method will throw 
 
 It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after url change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via [`atCheckWaiting`](configuration.html#waiting_in_at_checkers) option.
 
+### Unexpected pages
+
+A list of unexpected pages can be provided via [`unexpectedPages` configuration option](configuration.html#unexpected_pages).
+
+> Note that this feature does not operate on HTTP response codes as these are not exposed by WebDriver thus Geb does not have access to them. To use this feature your application has to render custom error pages that can be modeled as `Page` classes and detected by an `at` checker.
+
+If configured, the classes from the `unexpectedPages` list will be checked for first when ”at“ checking is performed for any page and an `UnexpectedPageException` with an appropriate message will be raised if any of them is encountered.
+
+Given that your application renders a custom error page when a page is not found and a 404 HTTP response code is returned with a text like "Sorry but we could not find that page" you can model that page with a class:
+
+    class PageNotFoundPage extends Page {
+
+        static at = { $('#errorMessage').text() == 'Sorry but we could not find that page' }
+    }
+
+Then register that page in configuration:
+
+    unexpectedPages = [PageNotFoundPage]
+
+When checking if the browser is at a page...
+
+    at ExpectedPage
+
+..but the `at` checker for `PageNotFoundPage` matches an `UnexpectedPageException` will be raised with the following message: "An unexpected page PageNotFoundPage was encountered when expected to be at ExpectedPage".
+
+Unexpected pages will be checked for whenever ”at“ checking is performed, even implicitly like when using `to` content template option or passing one or many `Page` classes to `Navigator`'s `click()` method.
+
+Finally you can still explicitly check if the browser is at an unexpected page if you need to. Following will pass without throwing an `UnexpectedPageException` if ”at“ checking for `PageNotFoundPage` succeeds:
+
+    at PageNotFoundPage
+
 ## Page URLs
 
 Pages can define URLs via the `static` `url` property.
