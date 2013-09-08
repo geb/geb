@@ -35,8 +35,8 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Colin Harrington](http://colinharrington.net/) - Doc improvements
 * [Bob Herrmann](http://jadn.com/bob/) - Doc improvements
 * [George T Walters II](https://github.com/walterg2) - Page option support for `withWindow()`
-* [Craig Atkinson][https://github.com/craigatk] - Doc improvements
-* [Andy Duncan][https://github.com/andyjduncan] - Fail fast when unexpected pages are encountered
+* [Craig Atkinson](https://github.com/craigatk) - Doc improvements
+* [Andy Duncan](https://github.com/andyjduncan) - Fail fast when unexpected pages are encountered
 
 ## History
 
