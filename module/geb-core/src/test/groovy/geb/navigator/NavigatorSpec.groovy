@@ -303,52 +303,49 @@ class NavigatorSpec extends GebSpecWithServer {
 	}
 
 	def disabled() {
-
 		given:
-			html {
-				input(id: "en")
-				input(id: "di", disabled: 'disabled')
-				input(id: "arb", disabled: 'xyz')
-			}	
+		html {
+			input(id: "en")
+			input(id: "di", disabled: 'disabled')
+			input(id: "arb", disabled: 'xyz')
+		}
 
 		expect:
-			$("#en").enabled
-			!$("#en").disabled
-			$("#di").disabled
-			!$("#di").enabled
-			$("#arb").disabled
-			!$("#arb").enabled
+		$("#en").enabled
+		!$("#en").disabled
+		$("#di").disabled
+		!$("#di").enabled
+		$("#arb").disabled
+		!$("#arb").enabled
 
 	}
 
-    def 'disabled on unsuitable element'() {
+	def 'disabled on unsuitable element'() {
+		given:
+		html {
+			input(id: "ip")
+			textarea(id: "ta")
+			password(id: "pw")
+			button(id: "bt")
+			select(id: "sl")
+			div(id: "dv")
+		}
 
-        given:
-            html {
-                input(id: "ip")
-                textarea(id: "ta")
-                password(id: "pw")
-                button(id: "bt")
-                select(id: "sl")
-                div(id: "dv")
-            }
+		expect:
+		['ip', 'ta', 'pw', 'bt', 'sl'].each {
+			assert $('#' + it).enabled
+		}
 
-        expect:
-            ['ip', 'ta', 'pw', 'bt', 'sl'].each {
-                assert $('#'+it).enabled
-            }
+		when:
+		$("#dv").enabled
 
-        when:
-            $("#dv").enabled
+		then:
+		GebAssertionError gae = thrown GebAssertionError
+		gae.message == 'You can only use the disabled assertion on input, textarea, password, select, button elements'
 
-        then:
-            GebAssertionError gae = thrown GebAssertionError
-            gae.message == 'You can only use the disabled assertion on input, textarea, password, select, button elements'
-
-    }
+	}
 
 	def readOnly() {
-
 		given:
 			html {
 				input(id: "wr")
@@ -366,30 +363,29 @@ class NavigatorSpec extends GebSpecWithServer {
 
 	}
 
-    def 'readOnly on unsuitable element'() {
+	def 'readOnly on unsuitable element'() {
+		given:
+		html {
+			input(id: "ip")
+			textarea(id: "ta")
+			password(id: "pw")
+			button(id: "dv")
+		}
 
-        given:
-            html {
-                input(id: "ip")
-                textarea(id: "ta")
-                password(id: "pw")
-                button(id: "dv")
-            }
+		expect:
+		['ip', 'ta', 'pw'].each {
+			assert $('#' + it).editable
+			assert !$('#' + it).readOnly
+		}
 
-        expect:
-            ['ip', 'ta', 'pw'].each {
-                assert $('#'+it).editable
-                assert !$('#'+it).readOnly
-            }
+		when:
+		$("#dv").editable
 
-        when:
-            $("#dv").editable
+		then:
+		GebAssertionError gae = thrown GebAssertionError
+		gae.message == 'You can only use the editable/readOnly assertion on input, textarea, password elements'
 
-        then:
-            GebAssertionError gae = thrown GebAssertionError
-            gae.message == 'You can only use the editable/readOnly assertion on input, textarea, password elements'
-
-    }
+	}
 
 	def "click is called only on the first element of the navigator"() {
 		given:
