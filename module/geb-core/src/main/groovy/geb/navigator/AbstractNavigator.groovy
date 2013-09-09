@@ -111,7 +111,6 @@ abstract class AbstractNavigator implements Navigator {
 		this[index]
 	}
 
-
 	Navigator add(String selector) {
 		add browser.driver.findElements(By.cssSelector(selector))
 	}
@@ -129,17 +128,6 @@ abstract class AbstractNavigator implements Navigator {
 
 	Navigator plus(Navigator navigator) {
 		add navigator.allElements()
-	}
-
-	boolean isDisabled() {
-		def value = getAttribute("disabled")
-		// Different drivers return different values here
-		(value == "disabled" || value == "true")
-	}
-
-	boolean isReadOnly() {
-		def value = getAttribute("readonly")
-		(value == "readonly" || value == "true")
 	}
 
 	String attr(String name) {

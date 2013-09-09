@@ -2,6 +2,7 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.error.GebAssertionError
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
@@ -288,7 +289,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 	@Override
 	boolean hasClass(String valueToContain) {
 		any { valueToContain in it.classes() }
-	}
+    }
 
 	@Override
 	boolean is(String tag) {
@@ -299,6 +300,35 @@ class NonEmptyNavigator extends AbstractNavigator {
 	boolean isDisplayed() {
 		firstElement()?.displayed ?: false
 	}
+
+    @Override
+    boolean isDisabled() {
+
+        checkAssertionSuitability('disabled', firstElement().tagName, ['input', 'textarea', 'password', 'select', 'button'])
+
+        def value = getAttribute("disabled")
+        // Different drivers return different values here
+        (value == "disabled" || value == "true")
+    }
+
+    @Override
+    boolean isEnabled() {
+        return !disabled
+    }
+
+    @Override
+    boolean isReadOnly() {
+
+        checkAssertionSuitability('editable/readOnly', firstElement().tagName, ['input', 'textarea', 'password'])
+
+        def value = getAttribute("readonly")
+        (value == "readonly" || value == "true")
+    }
+
+    @Override
+    boolean isEditable() {
+        return !readOnly
+    }
 
 	@Override
 	String tag() {
@@ -678,5 +708,15 @@ class NonEmptyNavigator extends AbstractNavigator {
 		int index = elements.findIndexOf { CssSelector.matches(it, selectorString) }
 		index == -1 ? elements : elements[0..<index]
 	}
+
+    protected void checkAssertionSuitability(String assertionName, String tagName, List<String> suitableElements) {
+
+        if (!suitableElements.contains(tagName)) {
+
+            String validElements = suitableElements.join(', ');
+            throw new GebAssertionError("You can only use the ${assertionName} assertion on ${validElements} elements")
+        }
+
+    }
 
 }
