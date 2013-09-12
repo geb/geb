@@ -49,10 +49,16 @@ This page lists the high level changes between versions of Geb.
 * `page` and `close` options can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
 * Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See [this manual section](pages.html#unexpected_pages) for details. \[[GEB-70](http://jira.codehaus.org/browse/GEB-70)\]
 * Support for running Geb using SauceLabs provided browsers, see [this manual section](sauce-labs.html) for details.
+* New [`isEnabled()`](api/geb/navigator/Navigator.html#isEnabled\(\)) and [`isEditable()`](api/geb/navigator/Navigator.html#isEditable\(\)) methods on `Navigator`.
 
 #### Fixes
 
 * Default value of `close` option for `withNewWindow()` is set to `true` as specified in the documentation. \[[GEB-258](http://jira.codehaus.org/browse/GEB-258)\]
+
+#### Breaking Changes
+
+* `isDisabled()` now throws `UnsupportedOperationException` if called on an `EmptyNavigator` or on a `Navigator` that contains anything else than a button, input, option, select or textarea.
+* `isReadOnly()` now throws `UnsupportedOperationException` if called on an `EmptyNavigator` or on a `Navigator` that contains anything else than an input or a textarea.
 
 ### 0.9.1
 

@@ -420,24 +420,28 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>hasAttribute("disabled")</code>.
 	 * @return true when the first element is disabled
+	 * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
 	 */
 	boolean isDisabled()
 
 	/**
 	 * Shorthand for <code>!hasAttribute("disabled")</code>.
-	 * @return true when the first element is not disabled
+	 * @return true when the first element is enabled
+	 * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
 	 */
 	boolean isEnabled()
 
 	/**
 	 * Shorthand for <code>hasAttribute("readonly")</code>.
 	 * @return true when the first element is readonly
+	 * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
 	 */
 	boolean isReadOnly()
 
 	/**
 	 * Shorthand for <code>!hasAttribute("readonly")</code>.
 	 * @return true when the first element is editable
+	 * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
 	 */
 	boolean isEditable()
 

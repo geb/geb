@@ -19,6 +19,7 @@ package geb.navigator
 import geb.Browser
 import geb.test.CrossBrowser
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @CrossBrowser
 class EmptyNavigatorSpec extends Specification {
@@ -50,4 +51,20 @@ class EmptyNavigatorSpec extends Specification {
 		navigator[0..<0].is(navigator)
 	}
 
+	@Unroll
+	def 'does not support checking of the #property property'() {
+		when:
+		navigator.getProperty(property)
+
+		then:
+		UnsupportedOperationException e = thrown()
+		e.message == "Cannot check value of '$attribute' attribute for an EmptyNavigator"
+
+		where:
+		property   | attribute
+		'readOnly' | 'readonly'
+		'editable' | 'readonly'
+		'enabled'  | 'disabled'
+		'disabled' | 'disabled'
+	}
 }

@@ -2,7 +2,6 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
-import geb.error.GebAssertionError
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
@@ -303,7 +302,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	boolean isDisabled() {
-		checkAssertionSuitability('disabled', firstElement().tagName, ['input', 'textarea', 'password', 'select', 'button'])
+		ensureTagIn(['button', 'input', 'option', 'select', 'textarea'], 'disabled')
 
 		def value = getAttribute("disabled")
 		// Different drivers return different values here
@@ -317,7 +316,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	boolean isReadOnly() {
-		checkAssertionSuitability('editable/readOnly', firstElement().tagName, ['input', 'textarea', 'password'])
+		ensureTagIn(['input', 'textarea'], 'readonly')
 
 		def value = getAttribute("readonly")
 		(value == "readonly" || value == "true")
@@ -707,11 +706,11 @@ class NonEmptyNavigator extends AbstractNavigator {
 		index == -1 ? elements : elements[0..<index]
 	}
 
-	protected void checkAssertionSuitability(String assertionName, String tagName, List<String> suitableElements) {
-		if (!suitableElements.contains(tagName)) {
+	protected void ensureTagIn(List<String> allowedTags, String attribute) {
+		if (!allowedTags.contains(firstElement().tagName)) {
 
-			String validElements = suitableElements.join(', ');
-			throw new GebAssertionError("You can only use the ${assertionName} assertion on ${validElements} elements")
+			String joinedValidTags = allowedTags.join(', ');
+			throw new UnsupportedOperationException("Value of '$attribute' attribute can only be checked for the following elements: $joinedValidTags.")
 		}
 	}
 

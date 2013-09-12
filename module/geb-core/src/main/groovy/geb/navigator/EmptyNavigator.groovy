@@ -148,22 +148,22 @@ class EmptyNavigator extends AbstractNavigator {
 
 	@Override
 	boolean isDisabled() {
-		return false
+		throw new UnsupportedOperationException("Cannot check value of 'disabled' attribute for an EmptyNavigator")
 	}
 
 	@Override
 	boolean isEnabled() {
-		return true
+		throw new UnsupportedOperationException("Cannot check value of 'disabled' attribute for an EmptyNavigator")
 	}
 
 	@Override
 	boolean isReadOnly() {
-		return false
+		throw new UnsupportedOperationException("Cannot check value of 'readonly' attribute for an EmptyNavigator")
 	}
 
 	@Override
 	boolean isEditable() {
-		return true
+		throw new UnsupportedOperationException("Cannot check value of 'readonly' attribute for an EmptyNavigator")
 	}
 
 	@Override
