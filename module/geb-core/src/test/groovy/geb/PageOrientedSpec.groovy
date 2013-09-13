@@ -165,9 +165,19 @@ class PageOrientedSpec extends GebSpecWithServer {
 		e.cause in cause
 
 		where:
-		clicked                        | cause
-		'linkWithNotMatchingTo'        | AssertionError
-		'linkWithToClassThatWaitsInAt' | WaitTimeoutException
+		clicked                           | cause
+		'linkWithNotMatchingTo'           | AssertionError
+		'linkWithToClassWithPlainFalseAt' | null
+	}
+
+	def "unexpected exceptions thrown in at checkers should bubble up from click"() {
+		when:
+		to PageOrientedSpecPageA
+		page.linkWithToClassThrowingExceptionInAt.click()
+
+		then:
+		Throwable e = thrown()
+		e.message == "from at checker"
 	}
 
 	def "exception should be thrown when no to values match"() {
@@ -267,7 +277,8 @@ class PageOrientedSpecPageA extends Page {
 	static content = {
 		link(to: PageOrientedSpecPageB) { $("#a") }
 		linkWithNotMatchingTo(to: PageOrientedSpecPageC) { $("#a") }
-		linkWithToClassThatWaitsInAt(to: PageOrientedSpecPageE) { $("#a") }
+		linkWithToClassThrowingExceptionInAt(to: PageWithAtCheckerThrowingException) { $("#a") }
+		linkWithToClassWithPlainFalseAt(to: PageWithAtCheckerReturningFalse) { $("#a") }
 		linkWithVariantTo(to: [PageOrientedSpecPageD, PageOrientedSpecPageC, PageOrientedSpecPageB]) { link }
 		linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
 		linkText { link.text().trim() }
@@ -293,10 +304,6 @@ class PageOrientedSpecPageC extends Page {
 
 class PageOrientedSpecPageD extends Page {
 	static at = { assert 1 == 2 }
-}
-
-class PageOrientedSpecPageE extends Page {
-	static at = { waitFor(0) { false } }
 }
 
 class ConvertPage extends Page {
@@ -327,10 +334,24 @@ class PageContentStringPageParam extends Page {
 	}
 }
 
-class PageWithAtChecker extends Page { static at = { false } }
-class PageWithoutAtChecker extends Page { }
+class PageWithAtChecker extends Page {
+	static at = { false }
+}
+
+class PageWithoutAtChecker extends Page {}
+
 class PageWithLinkToPageWithoutAtChecker extends Page {
 	static content = {
 		link(to: [PageWithAtChecker, PageWithoutAtChecker]) { $("#a") }
 	}
+}
+
+class PageWithAtCheckerThrowingException extends Page {
+	static at = { throw new Throwable('from at checker') }
+}
+
+class PageWithAtCheckerReturningFalse extends Page {
+	//this circumvents implicit assertion AST transformation
+	static atChecker = { false }
+	static at = atChecker
 }

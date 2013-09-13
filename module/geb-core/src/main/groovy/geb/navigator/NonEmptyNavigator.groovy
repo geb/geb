@@ -382,18 +382,20 @@ class NonEmptyNavigator extends AbstractNavigator {
 		click()
 		browser.page(pageClass)
 		def at = false
-		def error = null
+		def assertionError = null
+		def throwable = null
 		try {
 			at = browser.verifyAt()
 		} catch (AssertionError e) {
-			error = e
-		} catch (WaitTimeoutException e) {
-			error = e
+			assertionError = e
 		} catch (UndefinedAtCheckerException e) {
 			at = true
+		} catch (Throwable e) {
+			throwable = e
+			throw e
 		} finally {
-			if (!at) {
-				throw new UnexpectedPageException(pageClass, error)
+			if (!at && !throwable) {
+				throw new UnexpectedPageException(pageClass, (Throwable) assertionError)
 			}
 		}
 		this
