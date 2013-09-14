@@ -321,7 +321,7 @@ class NavigatorSpec extends GebSpecWithServer {
 	def 'disabled/enabled can be called on selected tags'() {
 		given:
 		html {
-			button(id: 'button')
+			button(id: 'button', 'button')
 			input(id: 'input')
 			select(id: 'select') {
 				option(id: 'option')
