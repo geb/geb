@@ -56,8 +56,8 @@ class WaitingContentSpec extends WaitingSpec {
 	
 	def "wait timeout"() {
 		when:
-		showDelay = 2
-		params = [wait: 1]
+		showDelay = 4
+		params = [wait: 0.5]
 		
 		and:
 		content
