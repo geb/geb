@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-def specTestTypeClassName = "grails.plugin.spock.test.GrailsSpecTestType"
+def pluginSpecTestTypeClassName = "grails.plugin.spock.test.GrailsSpecTestType"
+def coreSpecTestTypeClassName = "org.codehaus.groovy.grails.test.spock.GrailsSpecTestType"
 def junit3TestTypeClassName = "org.codehaus.groovy.grails.test.junit3.JUnit3GrailsTestType"
 def junit4TestTypeClassName = "org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType"
 def buildAdapterClassName = "geb.buildadapter.SystemPropertiesBuildAdapter"
@@ -22,8 +23,12 @@ def buildAdapterClassName = "geb.buildadapter.SystemPropertiesBuildAdapter"
 def loadedTestTypes = []
 def runningTests = false
 
+// For Grails 2.3 spock is part of core so the spock plugin should no
+// longer be used. Try to support both configurations.
 tryToLoadTestTypes = {
-	tryToLoadTestType("spock", specTestTypeClassName)
+	if(!tryToLoadTestType("spock", coreSpecTestTypeClassName)) {
+		tryToLoadTestType("spock", pluginSpecTestTypeClassName)
+	}
 }
 
 tryToLoadTestType = { name, typeClassName ->
