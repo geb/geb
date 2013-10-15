@@ -16,6 +16,7 @@
 package geb
 
 import geb.buildadapter.BuildAdapterFactory
+import geb.error.GebException
 
 /**
  * Manages the process of creating {@link geb.Configuration} objects, which control the runtime behaviour of Geb.
@@ -262,7 +263,7 @@ class ConfigurationLoader {
 		'GebConfig'
 	}
 
-	static class UnableToLoadException extends geb.error.GebException {
+	static class UnableToLoadException extends GebException {
 		UnableToLoadException(URL configLocation, String environment, Throwable cause) {
 			super("Unable to load configuration @ '$configLocation' (with environment: $environment)", cause)
 		}

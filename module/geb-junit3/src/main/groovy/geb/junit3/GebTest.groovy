@@ -25,7 +25,7 @@ class GebTest extends GroovyTestCase {
 	private Browser _browser
 
 	Configuration createConf() {
-		new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
+		new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)
 	}
 	
 	Browser createBrowser() {
