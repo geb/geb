@@ -130,6 +130,17 @@ eventTestPhaseStart = { phaseName ->
 	}
 }
 
+eventTestPhasePrepared = { phaseName ->
+    if (phaseName == 'functional') {
+        //reset the base URL based on actual server port (starting with Grails 2.2.5, 2.3.1)
+        //this event gets called after Tomcat has started and actual local port as been assigned
+        def buildAdapterClass = loadGebBuildAdapterClass()
+        def baseUrl = argsMap["baseUrl"] ?:
+            "http://${serverHost ?: 'localhost'}:${getServerPort()}${serverContextPath == "/" ? "" : serverContextPath}/"
+        System.setProperty(buildAdapterClass.BASE_URL_PROPERTY_NAME, baseUrl)
+    }
+}
+
 // Just upgrade plugins without user input when building this plugin
 // Has no effect for clients of this plugin
 if (grailsAppName == 'geb') {
