@@ -120,7 +120,7 @@ eventTestPhasesStart = { phases ->
 eventTestPhaseStart = { phaseName ->
 	if (phaseName == 'functional') {
 		// GRAILS-7563
-		if (!binding.hasProperty('serverContextPath')) {
+		if (!binding.hasVariable('serverContextPath')) {
 			includeTargets << grailsScript("_GrailsPackage") 
 			createConfig() // GRAILS-7562
 			configureServerContextPath()
