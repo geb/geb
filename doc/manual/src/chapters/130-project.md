@@ -38,6 +38,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Craig Atkinson](https://github.com/craigatk) - Doc improvements
 * [Andy Duncan](https://github.com/andyjduncan) - Fail fast when unexpected pages are encountered
 * [John Engelman](https://github.com/johnrengelman) - Grails integration improvements
+* [Michael Legart](https://github.com/legart) - Grails integration improvements
 
 ## History
 
@@ -52,6 +53,7 @@ This page lists the high level changes between versions of Geb.
 * Support for running Geb using SauceLabs provided browsers, see [this manual section](sauce-labs.html) for details.
 * New [`isEnabled()`](api/geb/navigator/Navigator.html#isEnabled\(\)) and [`isEditable()`](api/geb/navigator/Navigator.html#isEditable\(\)) methods on `Navigator`.
 * Support for ephemeral port allocation with Grails integration
+* Compatibility with Grails 2.3
 
 #### Fixes
 
