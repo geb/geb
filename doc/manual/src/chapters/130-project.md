@@ -37,6 +37,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [George T Walters II](https://github.com/walterg2) - Page option support for `withWindow()`
 * [Craig Atkinson](https://github.com/craigatk) - Doc improvements
 * [Andy Duncan](https://github.com/andyjduncan) - Fail fast when unexpected pages are encountered
+* [John Engelman](https://github.com/johnrengelman) - Grails integration improvements
 
 ## History
 
@@ -50,6 +51,7 @@ This page lists the high level changes between versions of Geb.
 * Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See [this manual section](pages.html#unexpected_pages) for details. \[[GEB-70](http://jira.codehaus.org/browse/GEB-70)\]
 * Support for running Geb using SauceLabs provided browsers, see [this manual section](sauce-labs.html) for details.
 * New [`isEnabled()`](api/geb/navigator/Navigator.html#isEnabled\(\)) and [`isEditable()`](api/geb/navigator/Navigator.html#isEditable\(\)) methods on `Navigator`.
+* Support for ephemeral port allocation with Grails integration
 
 #### Fixes
 
