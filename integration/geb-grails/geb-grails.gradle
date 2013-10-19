@@ -130,7 +130,7 @@ task test(type: GrailsTask) {
 	command "test-app"
 }
 
-task release(type: GrailsTask, dependsOn: packagePlugin) {
+task publish(type: GrailsTask, dependsOn: packagePlugin) {
 	bootstrapClasspath = configurations.releaseBootstrap
 	command "publish-plugin"
 
