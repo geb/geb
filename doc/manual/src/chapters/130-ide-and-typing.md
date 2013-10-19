@@ -34,15 +34,15 @@ Here's an example of idiomatic (untyped) Geb code.
     password = "password1"
     loginButton.click()
 
+    at SecurePage
+
 The same code written with types would look like:
 
 	HomePage homePage = browser.to HomePage
 	homePage.loginButton.click()
 
     LoginPage loginPage = browser.at LoginPage
-	loginPage.username = "user1"
-	loginPage.password = "password1"
-	loginPage.loginButton.click()
+    SecurePage securePage = loginPage.login("user1", "password1")
 
 Where the page objects are:
 
@@ -56,16 +56,11 @@ Where the page objects are:
 
 		static at = { title == "Login Page" }
 
-		void setUsername(String username) {
-			$("#username").value username
-		}
-
-		void setPassword(String username) {
-			$("#password").value username
-		}
-
-		Navigator getLoginButton() {
-			$("#loginButton")
+		SecurePage login(String username, String password) {
+		    $("#username").value username
+		    $("#password").value username
+		    $("#loginButton").click()
+		    browser.at SecurePage
 		}
 	}
 
