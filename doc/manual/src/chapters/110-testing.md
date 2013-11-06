@@ -6,7 +6,7 @@ Geb provides first class support for functional web testing via integration with
 
 The Spock, JUnit and TestNG integrations work fundamentally the same way. They provide subclasses that setup a [browser][browser-api] instance that all method calls and property accesses/references resolve against via Groovy's `methodMissing` and `propertyMissing` mechanism.
 
-> Recall that the browser instance also forwards any method calls or property accesses/references that it can't handle to it's current page object, which helps to remove a lot of noise from the test.
+> Recall that the browser instance also forwards any method calls or property accesses/references that it can't handle to its current page object, which helps to remove a lot of noise from the test.
 
 Consider the following Spock spec…
 
