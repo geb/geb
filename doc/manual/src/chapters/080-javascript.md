@@ -268,7 +268,7 @@ A side effect of the way that this is implemented is that we aren't able to defi
 
 ### About prompt()
 
-Geb does not provide any support for prompt() due to it's infrequent and generally discouraged use.
+Geb does not provide any support for prompt() due to its infrequent and generally discouraged use.
 
 ## jQuery Integration
 
