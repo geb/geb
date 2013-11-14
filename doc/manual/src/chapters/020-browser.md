@@ -205,6 +205,7 @@ If you pass a page class that doesn't define an “at” checker to `at()` you w
 Pages can also define content that declares what the browser's page type should change to when that content is clicked. After clicking on such content page is automatically at verified (see the DSL reference for the [`to`](pages.html#to) parameter).
 
     class LoginPage extends Page {
+    	static url = "/login"
         static content = {
             loginButton(to: AdminPage) { $("input", type: "submit", name: "login") }
         }
