@@ -44,6 +44,10 @@ class GebSpec extends Specification {
 		if (_browser?.config?.autoClearCookies) {
 			_browser.clearCookiesQuietly()
 		}
+		hardResetBrowser()
+	}
+
+	void hardResetBrowser() {
 		_browser = null
 	}
 
