@@ -148,6 +148,16 @@ Defaults can be specified via:
 
 Both values are optional and in seconds. If unspecified, the values of `5` for `timeout` and `0.1` for `retryInterval`.
 
+#### Enabled by Default
+
+You can turn on waiting on all elements by default. This is equivalent to adding `(wait: true)` to all page object content elements.
+
+    waiting {
+        enabledByDefault = true
+    }
+
+If you want to disable waiting on a specific element, set `(wait: false)` on an individual page object content element will override this default.
+
 #### Presets
 
 Presets can be specified via:
