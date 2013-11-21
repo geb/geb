@@ -53,6 +53,18 @@ class WaitingContentSpec extends WaitingSpec {
 		then:
 		content.text() == "a"
 	}
+
+	def "waiting by default is enabled"() {
+		given:
+		gebConfScript = 'geb/conf/waiting-enabled-by-default-config.groovy'
+		resetBrowser()
+
+		when:
+		content
+
+		then:
+		content.text() == "a"
+	}
 	
 	def "wait timeout"() {
 		when:
@@ -142,7 +154,6 @@ class WaitingContentSpec extends WaitingSpec {
 		then:
 		waitContent.text() == "a"
 	}
-
 }
 
 class DynamicallySpecifiedContentPage extends Page {

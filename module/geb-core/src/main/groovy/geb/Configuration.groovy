@@ -81,7 +81,7 @@ class Configuration {
 		
 		new Wait(timeout, retryInterval)
 	}
-	
+
 	Wait getDefaultWait() {
 		new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval())
 	}
@@ -90,7 +90,7 @@ class Configuration {
 		new Wait(timeout, getDefaultWaitRetryInterval())
 	}
 
-	Wait getWaitForParam(waitingParam) {
+	Wait parseWaitForParam(waitingParam) {
 		if (waitingParam == true) {
 			defaultWait
 		} else if (waitingParam instanceof CharSequence) {
@@ -116,6 +116,20 @@ class Configuration {
 	}
 
 	/**
+	 * Parses and returns the waiting value if the param is not null or returns the default wait value
+	 * if waiting is enabled by default with the config value.
+	 */
+	Wait getWaitForParam(waitingParam) {
+		if (waitingParam != null) {
+			parseWaitForParam(waitingParam)
+		} else if (getWaitEnabledByDefault()) {
+			defaultWait
+		} else {
+			null
+		}
+	}
+
+	/**
 	 * Updates the {@code waiting.timeout} config entry.
 	 *
 	 * @see #getDefaultWaitTimeout()
@@ -131,6 +145,13 @@ class Configuration {
 	 */
 	Double getDefaultWaitTimeout() {
 		readValue(rawConfig.waiting, 'timeout', Wait.DEFAULT_TIMEOUT)
+	}
+
+	/**
+	 * Whether or not all content elements wait by default
+	 */
+	boolean getWaitEnabledByDefault() {
+		readValue(rawConfig.waiting, 'enabledByDefault', false)
 	}
 
 	/**
@@ -152,7 +173,7 @@ class Configuration {
 	}
 
 	Wait getAtCheckWaiting() {
-		getWaitForParam(rawConfig.atCheckWaiting)
+		parseWaitForParam(rawConfig.atCheckWaiting)
 	}
 
 	void setAtCheckWaiting(Object waitForParam) {

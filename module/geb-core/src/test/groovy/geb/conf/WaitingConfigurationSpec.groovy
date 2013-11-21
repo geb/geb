@@ -130,4 +130,50 @@ class WaitingConfigurationSpec extends Specification {
 		getWaitPreset("slow") == new Wait(30, 1)
 		getWaitPreset("partial") == new Wait(3, 5)
 	}
+
+	def "when 'wait' is true should get default wait"() {
+		given:
+		userConf = """
+			waiting {
+				timeout = 30
+			}
+		"""
+
+		when:
+		Wait waitForValue = getWaitForParam(true)
+
+		then:
+		assert waitForValue.timeout.toInteger() == 30
+	}
+
+	def "when 'wait' is false should get null wait"() {
+		given:
+		userConf = """
+			waiting {
+				timeout = 30
+			}
+		"""
+
+		when:
+		Wait waitForValue = getWaitForParam(false)
+
+		then:
+		assert waitForValue == null
+	}
+
+	def "when default wait enabled should get default wait value"() {
+		given:
+		userConf = """
+			waiting {
+				timeout = 30
+				enabledByDefault = true
+			}
+		"""
+
+		when:
+		Wait waitForValue = getWaitForParam(null)
+
+		then:
+		assert waitForValue?.timeout?.toInteger() == 30
+	}
 }
