@@ -47,6 +47,11 @@ class GebSpec extends Specification {
 		_browser = null
 	}
 
+	void hardResetBrowser() {
+		_browser.clearCookiesQuietly()
+		_browser = null
+	}
+
 	def methodMissing(String name, args) {
 		getBrowser()."$name"(*args)
 	}

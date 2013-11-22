@@ -14,6 +14,7 @@
  */
 package geb.spock
 
+import geb.Browser
 import geb.Page
 import spock.lang.*
 import geb.test.CallbackHttpServer
@@ -63,6 +64,18 @@ class GebSpecSpec extends GebSpec {
 		prop = 2
 		then:
 		notThrown(Exception)
+	}
+
+	def "removing the browser results in a new browser instance being used"() {
+		given:
+		def oldBrowser = browser
+
+		when:
+		hardResetBrowser()
+
+		then:
+		browser instanceof Browser
+		oldBrowser != browser
 	}
 
 	def cleanupSpec() {
