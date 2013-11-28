@@ -238,5 +238,4 @@ Via Gradle…
 
 Alternatively, if using an integration such as `geb-spock` or `geb-junit` you can depend on that instead of `geb-core`.
 
-> Be sure to check the chapter on [build integrations](build-integrations.html) for information on using Geb with particular environments
-, like [Grails][grails].
+> Be sure to check the chapter on [build integrations](build-integrations.html) for information on using Geb with particular environments, like [Grails][grails].
