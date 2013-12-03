@@ -1,9 +1,17 @@
+apply plugin: 'asciidoctor'
+
 buildscript {
 	repositories {
+		maven {
+			name 'Bintray Asciidoctor repo'
+			url  'http://dl.bintray.com/content/aalmiray/asciidoctor'
+		}
+		jcenter()
 		mavenCentral()
 	}
 	dependencies {
-		classpath "org.gebish:markdown2book:1.0"
+//		classpath "org.gebish:markdown2book:1.0"
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.0'
 	}
 }
 
@@ -74,9 +82,9 @@ task compileManual {
 	ext.encoding = "UTF-8"
 	inputs.property("encoding", encoding)
 
-	doLast {
-		new markdown2book.Generator(source, destination, encoding).generate()
-	}
+//	doLast {
+//		new markdown2book.Generator(source, destination, encoding).generate()
+//	}
 }
 
 task packageManual(type: Sync) {
