@@ -140,9 +140,9 @@ class Page {
 	 * @return whether the at checker succeeded or not.
 	 * @see #verifyAt()
 	 */
-	boolean verifyAtSafely() {
+	boolean verifyAtSafely(boolean allowAtCheckWaiting = true) {
 		try {
-			verifyThisPageAtOnly()
+			verifyThisPageAtOnly(allowAtCheckWaiting)
 		} catch (AssertionError e) {
 			false
 		} catch (RequiredPageContentNotPresent e) {
@@ -156,13 +156,13 @@ class Page {
 	 * @return whether the at checker succeeded or not.
 	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
 	 */
-	private boolean verifyThisPageAtOnly() {
+	private boolean verifyThisPageAtOnly(boolean allowAtCheckWaiting = true) {
 		def verifier = this.class.at?.clone()
 		if (verifier) {
 			verifier.delegate = this
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
 			def atCheckWaiting = browser.config.atCheckWaiting
-			atCheckWaiting ? atCheckWaiting.waitFor(verifier) : verifier()
+            (atCheckWaiting && allowAtCheckWaiting) ? atCheckWaiting.waitFor(verifier) : verifier()
 		} else {
 			throw new UndefinedAtCheckerException(this.class.name)
 		}
