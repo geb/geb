@@ -130,4 +130,16 @@ class WaitingConfigurationSpec extends Specification {
 		getWaitPreset("slow") == new Wait(30, 1)
 		getWaitPreset("partial") == new Wait(3, 5)
 	}
+
+    def "html parse waiting config values"() {
+        when:
+        userConf = """
+            htmlParseWaitEnabled = true
+            htmlParseWaitTimeout = 10
+        """
+
+        then:
+        assert config.htmlParseWaitEnabled == true
+        assert config.htmlParseWaitTimeout == 10
+    }
 }

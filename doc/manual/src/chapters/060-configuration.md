@@ -168,7 +168,7 @@ Here we have defined two presets, `slow` and `quick`. Notice that the `quick` pr
 
 ### Waiting in “at” checkers
 
-At checkers can be configured to be implictly wrapped with `waitFor` calls. This can be set with:
+At checkers can be configured to be implicitly wrapped with `waitFor` calls. This can be set with:
 
 	atCheckWaiting = true
 
@@ -178,6 +178,24 @@ The possible values for the `atCheckWaiting` option are consistent with the ones
 * **a string** - wait for the content using the _wait preset_ with this name from the configuration
 * **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
 * **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+
+### Waiting during HTML parsing
+
+Sometimes the driver times out when trying to find the root HTML element when parsing the page. This manifests itself in an error similar to:
+
+    org.openqa.selenium.NoSuchElementException: Unable to locate element: {"method":"tag name","selector":"html"}
+    Command duration or timeout: 576 milliseconds
+    For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+
+You can prevent this error from happening by configuring a wait timeout to use when the driver is locating the root HTML element.
+
+To enable waiting for the root HTML element when parsing the page, set:
+
+    htmlParseWaitEnabled = true
+
+By default, the parse wait timeout is the same as the default wait timeout of `5` seconds. To specify a different wait timeout, use the `htmlParseWaitTimeout` config value:
+
+    htmlParseWaitTimeout = 10
 
 ### Unexpected pages
 

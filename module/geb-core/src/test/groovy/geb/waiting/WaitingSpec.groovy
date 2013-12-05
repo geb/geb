@@ -12,7 +12,7 @@ class WaitingSpec extends GebSpecWithServer {
 				  <script type="text/javascript" charset="utf-8">
 				    function showIn(i) {
 				      setTimeout(function() {
-				        document.body.innerHTML = "<div>a</div>";
+				        document.body.innerHTML = "<div><span>a</span></div>";
 				      }, i * 1000);
 				    }
 				  </script>
