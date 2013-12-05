@@ -302,9 +302,9 @@ class Browser {
 	 *
 	 * @return true if browser is at the given page otherwise false
 	 */
-	boolean isAt(Class<? extends Page> pageType) {
+	boolean isAt(Class<? extends Page> pageType, boolean allowAtCheckWaiting = true) {
 		def page = initialisePage(createPage(pageType))
-		def isAt = page.verifyAtSafely()
+		def isAt = page.verifyAtSafely(allowAtCheckWaiting)
 		if (isAt) {
 			makeCurrentPage(page)
 		}
@@ -319,8 +319,10 @@ class Browser {
 	 */
 	void checkIfAtAnUnexpectedPage(Class<? extends Page>[] expectedPages) {
 		def unexpectedPages = config.unexpectedPages - expectedPages.toList()
+        boolean allowAtCheckWaiting = false
+
 		unexpectedPages.each {
-			if (isAt(it)) {
+			if (isAt(it, allowAtCheckWaiting)) {
 				throw new UnexpectedPageException(it, *expectedPages)
 			}
 		}
