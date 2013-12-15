@@ -125,17 +125,17 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 		!isAt(ExpectedPage)
 	}
 
-    void 'when at-check-waiting enabled should not wait for unexpected pages'() {
-        given:
-        defineUnexpectedPages()
-        browser.config.atCheckWaiting = true
+	void 'when at-check-waiting enabled should not wait for unexpected pages'() {
+		given:
+		defineUnexpectedPages()
+		browser.config.atCheckWaiting = true
 
-        when:
-        via ExpectedPage
+		when:
+		via ExpectedPage
 
-        then:
-        at(ExpectedPage)
-    }
+		then:
+		at(ExpectedPage)
+	}
 }
 
 class UnexpectedPage extends Page {

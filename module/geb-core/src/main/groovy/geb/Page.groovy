@@ -130,7 +130,7 @@ class Page {
 	 */
 	boolean verifyAt() {
 		browser.checkIfAtAnUnexpectedPage(getClass())
-		verifyThisPageAtOnly()
+		verifyThisPageAtOnly(true)
 	}
 
 	/**
@@ -156,13 +156,13 @@ class Page {
 	 * @return whether the at checker succeeded or not.
 	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
 	 */
-	private boolean verifyThisPageAtOnly(boolean allowAtCheckWaiting = true) {
+	private boolean verifyThisPageAtOnly(boolean allowAtCheckWaiting) {
 		def verifier = this.class.at?.clone()
 		if (verifier) {
 			verifier.delegate = this
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
 			def atCheckWaiting = browser.config.atCheckWaiting
-            (atCheckWaiting && allowAtCheckWaiting) ? atCheckWaiting.waitFor(verifier) : verifier()
+			(atCheckWaiting && allowAtCheckWaiting) ? atCheckWaiting.waitFor(verifier) : verifier()
 		} else {
 			throw new UndefinedAtCheckerException(this.class.name)
 		}

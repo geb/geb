@@ -319,10 +319,8 @@ class Browser {
 	 */
 	void checkIfAtAnUnexpectedPage(Class<? extends Page>[] expectedPages) {
 		def unexpectedPages = config.unexpectedPages - expectedPages.toList()
-        boolean allowAtCheckWaiting = false
-
 		unexpectedPages.each {
-			if (isAt(it, allowAtCheckWaiting)) {
+			if (isAt(it, false)) {
 				throw new UnexpectedPageException(it, *expectedPages)
 			}
 		}
