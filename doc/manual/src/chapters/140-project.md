@@ -48,6 +48,12 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### Fixes
+
+* Ignore `atCheckWaiting` setting when checking for unexpected pages. \[[GEB-258](http://jira.codehaus.org/browse/GEB-267)\]
+
+### 0.9.2
+
 #### New Features
 
 * `page` and `close` options can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
