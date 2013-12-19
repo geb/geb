@@ -1,0 +1,115 @@
+/*
+ * Copyright 2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+	repositories {
+		maven { url "http://oss.jfrog.org/artifactory/repo" }
+		jcenter()
+	}
+	dependencies {
+		classpath 'io.ratpack:ratpack-gradle:0.9.0-SNAPSHOT'
+	}
+}
+
+apply plugin: "ratpack-groovy"
+apply plugin: "idea"
+
+ext {
+	// The old versions of Geb we are including manuals for
+	oldManualVersions = ["0.6.0", "0.6.1", "0.6.2", "0.6.3", "0.7.0", "0.7.1", "0.7.2", "0.9.0", "0.9.1", "0.9.2"]
+
+	currentVersion = isSnapshot ? oldManualVersions.last() : version
+	manualsMetadata = [
+		'old': (oldManualVersions - currentVersion).reverse().join(','),
+		'current': currentVersion,
+		'snapshot': isSnapshot ? project.version : ''
+	]
+}
+
+repositories {
+	maven { url "http://oss.jfrog.org/artifactory/repo" }
+	jcenter()
+	maven { url "http://repo.springsource.org/repo" }
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+	maven { url "https://oss.sonatype.org/content/repositories/releases" }
+}
+
+configurations {
+	currentManual
+
+	oldManualVersions.each {
+		delegate."manual-$it"
+	}
+}
+
+dependencies {
+	def manualDependency = {
+		def versionMinor = it.split("\\.")[1].toInteger()
+		def group = versionMinor <= 7 ? "org.codehaus.geb" : "org.gebish"
+		"$group:geb-manual:$it@zip"
+	}
+
+	springloaded "org.springsource.springloaded:springloaded-core:1.1.4"
+	compile "io.ratpack:ratpack-groovy:0.9.0-SNAPSHOT"
+	testCompile "io.ratpack:ratpack-groovy-test:0.9.0-SNAPSHOT",
+		"org.spockframework:spock-core:0.7-groovy-2.0",
+		"org.jsoup:jsoup:1.7.3",
+		project(':module:geb-spock'),
+		htmlUnitDriverDependency
+
+	currentManual project(":doc:manual")
+	oldManualVersions.each {
+		delegate."manual-$it" manualDependency(it)
+	}
+}
+
+task gatherManuals(type: Sync) {
+	inputs.properties(manualsMetadata)
+
+	def configureManualExtraction = { configuration, label ->
+		inputs.files configuration
+		into "src/ratpack/public/manual"
+		into label, {
+			from { zipTree(configuration.singleFile) }
+		}
+	}
+
+	oldManualVersions.each {
+		configureManualExtraction(configurations["manual-$it"], it)
+	}
+	configureManualExtraction(configurations.currentManual, isSnapshot ? 'snapshot' : version)
+	def latestStableManualConfiguration = isSnapshot ? configurations["manual-${oldManualVersions.last()}"] : configurations.currentManual
+	configureManualExtraction(latestStableManualConfiguration, "current")
+}
+
+task generateConfigProperties() {
+	def propertiesFile = file('src/ratpack/ratpack.properties')
+	outputs.file(propertiesFile)
+
+	inputs.properties(manualsMetadata)
+
+	doLast {
+		def properties = new Properties()
+		manualsMetadata.each { key, value ->
+			properties.setProperty("other.${key}", value)
+		}
+		propertiesFile.withWriter { Writer writer ->
+			properties.store(writer, null)
+		}
+	}
+}
+
+processResources.inputs.files gatherManuals, generateConfigProperties

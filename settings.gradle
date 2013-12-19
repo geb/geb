@@ -1,17 +1,18 @@
-include "module:geb-core", 
-        "module:geb-spock", 
-        "module:geb-junit3", 
-        "module:geb-junit4",
-        "module:geb-testng",
-        "module:geb-easyb",
-        "module:geb-implicit-assertions",
-        "module:geb-ast",
-		"module:geb-waiting",
-		"internal:test-support",
-		"integration:geb-grails",
-		"integration:geb-gradle",
-        "doc:manual",
-        "doc:site"
+include "module:geb-core",
+	"module:geb-spock",
+	"module:geb-junit3",
+	"module:geb-junit4",
+	"module:geb-testng",
+	"module:geb-easyb",
+	"module:geb-implicit-assertions",
+	"module:geb-ast",
+	"module:geb-waiting",
+	"internal:test-support",
+	"integration:geb-grails",
+	"integration:geb-gradle",
+	"doc:manual",
+	"doc:site",
+	"doc:ratpack-site"
 
 rootProject.name = 'geb'
 

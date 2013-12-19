@@ -46,6 +46,7 @@ task tokeniseManual(type: Copy) {
 
 configurations {
 	groovydoc
+	archives.extendsFrom delegate.default
 }
 
 dependencies {
@@ -99,7 +100,7 @@ task manualZip(type: Zip) {
 }
 
 artifacts {
-	archives manualZip
+	delegate.default manualZip
 }
 
 task build(dependsOn: manualZip)
