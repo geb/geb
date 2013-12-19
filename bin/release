@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# bin/release <build-dir>
+
+BUILD_DIR=$1
+
+cat <<EOF
+---
+EOF
+if [ ! -f $BUILD_DIR/Procfile ]; then
+cat <<EOF
+default_process_types:
+  web: doc/ratpack-site/build/install/ratpack-site/bin/ratpack-site doc/ratpack-site/build/install/ratpack-site/ratpack.groovy
+EOF
+fi
