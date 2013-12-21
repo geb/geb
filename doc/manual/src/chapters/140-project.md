@@ -48,9 +48,13 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### New Features
+
+* Documentation site has been migrated to [Ratpack](http://ratpack.io). \[[GEB-261](http://jira.codehaus.org/browse/GEB-261)\]
+
 #### Fixes
 
-* Ignore `atCheckWaiting` setting when checking for unexpected pages. \[[GEB-258](http://jira.codehaus.org/browse/GEB-267)\]
+* Ignore `atCheckWaiting` setting when checking for unexpected pages. \[[GEB-267](http://jira.codehaus.org/browse/GEB-267)\]
 
 ### 0.9.2
 
