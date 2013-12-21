@@ -25,7 +25,6 @@ buildscript {
 }
 
 apply plugin: "ratpack-groovy"
-apply plugin: "idea"
 
 ext {
 	// The old versions of Geb we are including manuals for
