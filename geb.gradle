@@ -181,7 +181,7 @@ subprojects {
 
 task release {
 	dependsOn ':integration:geb-grails:publish',
-		allprojects.find { it.path in publishedModules}*.uploadArchives,
+		{ allprojects.findAll { it.path in publishedModules }*.uploadArchives },
 		':doc:site:publish'
 }
 
