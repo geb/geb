@@ -9,6 +9,6 @@ EOF
 if [ ! -f $BUILD_DIR/Procfile ]; then
 cat <<EOF
 default_process_types:
-  web: doc/ratpack-site/build/install/ratpack-site/bin/ratpack-site doc/ratpack-site/build/install/ratpack-site/ratpack.groovy
+  web: doc/site/build/install/site/bin/site doc/site/build/install/site/ratpack.groovy
 EOF
 fi
