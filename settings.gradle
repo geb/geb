@@ -11,7 +11,7 @@ include "module:geb-core",
 	"integration:geb-grails",
 	"integration:geb-gradle",
 	"doc:manual",
-	"doc:ratpack-site"
+	"doc:site"
 
 rootProject.name = 'geb'
 
