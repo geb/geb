@@ -148,8 +148,6 @@ subprojects {
 			required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
 		}
 		
-		task release(dependsOn: uploadArchives)
-
 		apply from: "$rootDir/gradle/pom.gradle"
 		
 		if (path == ":doc:manual") {
@@ -182,7 +180,9 @@ subprojects {
 }
 
 task release {
-	dependsOn ':integration:geb-grails:publish', publishedModules.collect { project(it) }*.uploadArchives
+	dependsOn ':integration:geb-grails:publish',
+		allprojects.find { it.path in publishedModules}*.uploadArchives,
+		':doc:site:publish'
 }
 
 if (hasProperty('enableClover')) {
