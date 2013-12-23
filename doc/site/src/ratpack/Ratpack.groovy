@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
+
+import ratpack.groovy.templating.TemplatingModule
+
 import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
 
 ratpack {
+	modules {
+		get(TemplatingModule).staticallyCompile = true
+	}
+
 	handlers {
 		assets 'public', 'index.html'
 
