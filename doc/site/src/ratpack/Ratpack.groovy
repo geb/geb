@@ -23,8 +23,8 @@ import static ratpack.groovy.Groovy.ratpack
 ratpack {
 	modules {
 		get(TemplatingModule).staticallyCompile = true
+		bind new StartupTime()
 	}
-
 	handlers {
 		assets 'public', 'index.html'
 
@@ -36,30 +36,36 @@ ratpack {
 			}
 		}
 
-		get(':page?') {
-			def highlightPages = [
-				crossbrowser: "Cross Browser",
-				content: "jQuery-like API",
-				pages: "Page Objects",
-				async: "Asynchronous Pages",
-				testing: "Testing",
-				integration: "Build Integration"
-			]
-
-			def page = pathTokens.page ?: 'index'
-			if (page in (highlightPages.keySet() + 'index')) {
-				def model = [
-					oldManuals: launchConfig.getOther('old', '').tokenize(','),
-					currentManual: launchConfig.getOther('current', ''),
-					snapshotManual: launchConfig.getOther('snapshot', ''),
-					pages: [Highlights: highlightPages],
-					page: page
+		get(':page?') { StartupTime startupTime ->
+			lastModified(startupTime.time) {
+				def highlightPages = [
+					crossbrowser: "Cross Browser",
+					content: "jQuery-like API",
+					pages: "Page Objects",
+					async: "Asynchronous Pages",
+					testing: "Testing",
+					integration: "Build Integration"
 				]
-				render groovyTemplate(model, 'main.html')
-			} else {
-				clientError(404)
+
+				def page = pathTokens.page ?: 'index'
+				if (page in (highlightPages.keySet() + 'index')) {
+					def model = [
+						oldManuals: launchConfig.getOther('old', '').tokenize(','),
+						currentManual: launchConfig.getOther('current', ''),
+						snapshotManual: launchConfig.getOther('snapshot', ''),
+						pages: [Highlights: highlightPages],
+						page: page
+					]
+
+					render groovyTemplate(model, 'main.html')
+				} else {
+					clientError(404)
+				}
 			}
 		}
-
 	}
+}
+
+class StartupTime {
+	final Date time = new Date()
 }
