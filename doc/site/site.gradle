@@ -119,3 +119,9 @@ task publish(type: Exec) {
 	mustRunAfter ':integration:geb-grails:publish', rootProject.allprojects*.tasks*.withType(Upload)
 }
 
+idea {
+	module {
+		excludeDirs += gatherManuals.destinationDir
+	}
+}
+
