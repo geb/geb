@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver
 
 class SauceLabsDriverFactory {
 
-	WebDriver create(String specification, String user, String accessKey, Map capabilities = [:]) {
+	WebDriver create(String specification, String user, String accessKey, Map<String, Object> capabilities = [:]) {
 		def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
 		Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
 		if (!remoteWebDriverClass) {
@@ -21,7 +21,7 @@ class SauceLabsDriverFactory {
 		def version = parts.size() > 2 ? parts[2] : null
 
 		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities')."$name"();
-        capabilities.each{ key, value ->
+        capabilities.each{ String key, Object value ->
         	browser.setCapability(key, value)
         }
 		if (platform) {
