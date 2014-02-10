@@ -4,22 +4,22 @@ This section discusses how to deal with some of the challenges in testing and/or
 
 ## The “js” object
 
-The browser instance exposes a “[`js`](api/geb/Browser.html#getJs\(\))” object that provides support for working with Javascript over and above what WebDriver provides.
-It's important to understand how WebDriver does handle Javascript, which is through a driver's implementation of [`JavascriptExecutor`][javascriptexecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) method. 
+The browser instance exposes a “[`js`](api/geb/Browser.html#getJs\(\))” object that provides support for working with JavaScript over and above what WebDriver provides.
+It's important to understand how WebDriver does handle JavaScript, which is through a driver's implementation of [`JavascriptExecutor`][javascriptexecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) method. 
 
 > Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) in order to understand how type conversion works between the two worlds.
 
-You can execute Javascript like you would with straight WebDriver using the driver instance via the browser…
+You can execute JavaScript like you would with straight WebDriver using the driver instance via the browser…
 
     assert browser.driver.executeScript("return arguments[0];", 1) == 1
 
 This is a bit long winded, and as you would expect Geb uses the dynamism of Groovy to make life easier.
 
-> The [JavascriptExecutor][javascriptexecutor] interface does not define any contract in regards to the driver's responsibility when there is some issue executing Javascript. All drivers however throw _some kind_ of exception when this happens.
+> The [JavascriptExecutor][javascriptexecutor] interface does not define any contract in regards to the driver's responsibility when there is some issue executing JavaScript. All drivers however throw _some kind_ of exception when this happens.
 
 ### Accessing Variables
 
-Any _global_ javascript variables inside the browser can be read as _properties_ of the `js` object.
+Any _global_ JavaScript variables inside the browser can be read as _properties_ of the `js` object.
 
 Given the following page…
 
@@ -31,7 +31,7 @@ Given the following page…
     </body>
     </html>
 
-We could access the javascript variable “`aVariable`” with…
+We could access the JavaScript variable “`aVariable`” with…
 
     Browser.drive {
         assert js.aVariable == 1
@@ -56,7 +56,7 @@ We can even access _nested_ variables…
 
 ### Calling Methods
 
-Any _global_ javascript functions can be called as methods on the `js` object.
+Any _global_ JavaScript functions can be called as methods on the `js` object.
 
 Given the following page…
 
@@ -86,11 +86,11 @@ To call _nested_ methods, we use the same syntax as properties…
 
 ### Executing Arbitrary Code
 
-The `js` object also has an `exec()` method that can be used to run snippets of Javascript. It is identical to the [JavascriptExecutor.executeScript()](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) method, except that it takes its arguments in the other order…
+The `js` object also has an `exec()` method that can be used to run snippets of JavaScript. It is identical to the [JavascriptExecutor.executeScript()](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String, java.lang.Object[]\)) method, except that it takes its arguments in the other order…
 
     assert js.exec(1, 2, "return arguments[0] + arguments[1];") == 3
 
-You might be wondering why the order has been changed (i.e. the arguments go _before_ the script). It makes writing multiline javascript more convenient…
+You might be wondering why the order has been changed (i.e. the arguments go _before_ the script). It makes writing multiline JavaScript more convenient…
 
     js.exec 1, 2, """
         someJsMethod();
@@ -176,7 +176,7 @@ If you wish to add a custom message to `WaitTimeoutException` that is being thro
 
 ## Alert and Confirm Dialogs
 
-WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some Javascript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the [`AlertAndConfirmSupport`](api/geb/js/AlertAndConfirmSupport.html) class that is mixed into 
+WebDriver currently [does not handle](http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?) the [`alert()` and `confirm()` dialog windows](http://www.w3schools.com/JS/js_popup.asp). However, we can fake it through some JavaScript magic as [discussed on the WebDriver issue for this](http://code.google.com/p/selenium/issues/detail?id=27#c17). Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the [`AlertAndConfirmSupport`](api/geb/js/AlertAndConfirmSupport.html) class that is mixed into 
 [`Page`][page-api] and 
 [`Module`][module-api].
 
@@ -262,9 +262,9 @@ The `withNoConfirm()` method is used like so…
 
     withNoConfirm { $("input", name: "dontShowConfirm").click() }
 
-> It's a good idea to use `withNoConfirm()` when doing something that _might_ raise a a confirmation. If you don't, the browser is going to raise a real confirmation dialog and sit there waiting for someone to click it which means your test is going to hang. Using `withNoConfirm()` prevents this.
+> It's a good idea to use `withNoConfirm()` when doing something that _might_ raise a a confirmation. If you don't, the browser is going to raise a real confirmation dialog and sit there waiting for someone to click it, which means your test is going to hang. Using `withNoConfirm()` prevents this.
 
-A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withConfirm()`/`withNoConfirm()`). We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change. If a page change was detected the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
+A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withConfirm()`/`withNoConfirm()`). We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change. If a page change was detected, the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
 
 ### About prompt()
 
@@ -343,4 +343,4 @@ The return value of methods called on the `jquery` property depends on what the 
 
 ### Why?
 
-This functionality was developed to make triggering mouse related events easier. Some applications are very sensitive to mouse events and triggering these events in an automated environment is a challenge. jQuery provides a good API for faking these events which makes for a good solution.
+This functionality was developed to make triggering mouse related events easier. Some applications are very sensitive to mouse events, and triggering these events in an automated environment is a challenge. jQuery provides a good API for faking these events, which makes for a good solution.
