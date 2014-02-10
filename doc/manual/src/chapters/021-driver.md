@@ -20,9 +20,9 @@ If a driver is not given when a `Browser` object is constructed, one will be cre
 
 ### Implicit Lifecycle
 
-By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver. This avoids the overhead of creating a new driver each time which can be significant when working with a real browser.
+By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver. This avoids the overhead of creating a new driver each time, which can be significant when working with a real browser.
 
-This means that you may need to call the `clearCookies()` method on the browser in order to not get strange results due to cookies from previous executions.
+This means that you may need to call the `clearCookies()` method on the browser in order not to get strange results due to cookies from previous executions.
 
 > Note that some of the integrations (e.g. Spock, JUnit) automatically clear the browser cookies at appropriate times such as after each test. Consult the section on [testing](testing.html#cookie_management) for specifics.
 
