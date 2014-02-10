@@ -6,7 +6,7 @@ For more information about the project, see the [http://www.gebish.org](http://w
 
 ### Build Environment
 
-Geb builds with [Gradle](http://www.gradle.org/ "Home - Gradle"). You do not need to have Gradle installed to work with the Geb build as gradle provides an executable wrapper that you use to drive the build.
+Geb builds with [Gradle](http://www.gradle.org/ "Home - Gradle"). You do not need to have Gradle installed to work with the Geb build as Gradle provides an executable wrapper that you use to drive the build.
 
 On UNIX type environments this is `gradlew` and is `gradlew.bat` on Windows.
 
@@ -16,11 +16,11 @@ For example to run the Geb test suite for the entire project you would run…
 
 ### Contributing Documentation
 
-Geb documentation comes in two forms; the manual and the api (i.e. the Groovydoc amongst the source).
+Geb documentation comes in two forms: the manual and the API (i.e. the Groovydoc amongst the source).
 
 #### The Manual
 
-The manual project can be found at `doc/manual` within the project tree. The [Markdown](http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown") source files, HTML templates, CSS and Javascript that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [markdown2book](https://github.com/geb/markdown2book)).
+The manual project can be found at `doc/manual` within the project tree. The [Markdown](http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown") source files, HTML templates, CSS and JavaScript that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [markdown2book](https://github.com/geb/markdown2book)).
 
 Most documentation contributions are simply modifications to these files.
 
@@ -32,7 +32,7 @@ You will then find the compiled HTML in the directory `doc/manual/build/manual`
 
 #### The API reference
 
-The API reference is made up of the Groovydoc (like Javadoc) that annotates the groovy files for the different modules in `module/`. To make a change to the reference API documentation, find the corresponding file in `module/«module»/src/main/groovy` and make the change.
+The API reference is made up of the Groovydoc (like Javadoc) that annotates the Groovy files for the different modules in `module/`. To make a change to the reference API documentation, find the corresponding file in `module/«module»/src/main/groovy` and make the change.
 
 You can then generate the API reference HTML by running…
 
