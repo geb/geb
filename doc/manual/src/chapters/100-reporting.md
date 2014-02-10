@@ -1,6 +1,6 @@
 # Reporting
 
-Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time. Reporters are implementations of the [`Reporter`](api/geb/report/Reporter.html) interface. Geb ships with two implementations; [`PageSourceReporter`](api/geb/report/PageSourceReporter.html) and [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotReporter.html). There are three bits of configuration that pertain to reporting; the [reporter](configuration.html#reporter) implementation, the [reports directory](configuration.html#reports_dir) and whether to [only report test failures](configuration.html#report_test_failures_only) or not.
+Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time. Reporters are implementations of the [`Reporter`](api/geb/report/Reporter.html) interface. Geb ships with two implementations: [`PageSourceReporter`](api/geb/report/PageSourceReporter.html) and [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotReporter.html). There are three bits of configuration that pertain to reporting: the [reporter](configuration.html#reporter) implementation, the [reports directory](configuration.html#reports_dir) and whether to [only report test failures](configuration.html#report_test_failures_only) or not.
 
 If no reporter is explicitly defined, a [composite reporter](api/geb/report/CompositeReporter.html) will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current DOM state as HTML).
 
@@ -15,7 +15,7 @@ You take a report by calling the [`report(String label)`](api/geb/Browser.html#r
 
 Assuming that we configured a `reportsDir` of “`reports/geb`”, after running this script we will find two files in this directory:
 
-* `001-google home page.html` - A html dump of the page source
+* `001-google home page.html` - A HTML dump of the page source
 * `001-google home page.png` - A screenshot of the browser as a PNG file (if the driver implementation supports this)
 
 > To avoid issues with reserved characters in filenames, Geb replaces any character in the report name that is not an alphanumeric, a space or a hyphen with an underscore.
