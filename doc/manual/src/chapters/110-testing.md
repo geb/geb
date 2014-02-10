@@ -38,7 +38,7 @@ Which is equivalent to…
 
 ### Configuration
 
-The browser instance is created by the testing integration. The [configuration mechanism](configuration.html) allows you to control aspects such as the driver implementation and base url.
+The browser instance is created by the testing integration. The [configuration mechanism](configuration.html) allows you to control aspects such as the driver implementation and base URL.
 
 ### Reporting
 
@@ -75,7 +75,7 @@ The report file name format is:
 
     «test method number»-«report number in test method»-«test method name»-«label».«extension»
 
-Reporting is an extremely useful feature and can help you diagnose test failures much easier. Wherever possible, favour the use of the auto reporting base classes.
+Reporting is an extremely useful feature and can help you diagnose test failures much easier. Wherever possible, favour the use of the auto-reporting base classes.
 
 ### Cookie management
 
@@ -83,11 +83,11 @@ The Spock, JUnit and TestNG integrations will automatically clear the browser's 
 
 The `geb.spock.GebSpec` class will clear the cookies in the `cleanup()` method unless the spec is `@Stepwise`, in which case they are cleared in `cleanupSpec()` (meaning that all feature methods in a stepwise spec share the same browser state).
 
-This auto clearing of cookies can be [disabled via configuration](configuration.html#auto_clearing_cookies).
+This auto-clearing of cookies can be [disabled via configuration](configuration.html#auto_clearing_cookies).
 
-### Jar and class names
+### JAR and class names
 
-The following table illustrates the specific jars and class names for Spock and JUnit.
+The following table illustrates the specific JARs and class names for Spock and JUnit.
 
 <table class="graybox" border="0" cellspacing="0" cellpadding="5">
     <tr>
@@ -178,9 +178,9 @@ Configuration is done in the `given` block of a scenario or story. Here you can 
 
 You can set the `driver` property to the driver instance that you want to implicitly created browser instance to use. However, using the [configuration mechanism for driver implementation](configuration.html#driver_implementation) is preferred.
 
-You can set the `baseUrl` property to the base url that you want to implicitly created browser instance to use. However, using the [configuration mechanism for base url](configuration.html#base_url) is preferred.
+You can set the `baseUrl` property to the base URL that you want to implicitly created browser instance to use. However, using the [configuration mechanism for base url](configuration.html#base_url) is preferred.
 
-For fine grained control, you can create your own [browser][browser-api] instance and assign it to the `browser` property. Otherwise, an implicit browser object is created using `driver` and/or `baseUrl` if they were explicitly set (otherwise the configuration mechanism is used.)
+For fine-grained control, you can create your own [browser][browser-api] instance and assign it to the `browser` property. Otherwise, an implicit browser object is created using `driver` and/or `baseUrl` if they were explicitly set (otherwise the configuration mechanism is used.)
 
 ## Cucumber (Cuke4Duke)
 
