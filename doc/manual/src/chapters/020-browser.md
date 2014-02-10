@@ -291,7 +291,7 @@ Currently there is only one option that can be passed to a [`withWindow()`](api/
 
 Default value: `false`
 
-If you pass any truly value as `close` option then all matching windows will be closed after the execution of the closure passed as the last argument to the `withWindow()` call.
+If you pass any *truish* value as `close` option then all matching windows will be closed after the execution of the closure passed as the last argument to the `withWindow()` call.
 
 ##### page
 
