@@ -1,6 +1,6 @@
 # Build System & Framework Integrations
 
-This kind of integration for Geb is typically focussed on managing the base url and reports dir as build systems tend to be able to provide this configuration (via the [build adapter](configuration.html#build_adapter) mechanism).
+This kind of integration for Geb is typically focused on managing the base URL and reports dir, as build systems tend to be able to provide this configuration (via the [build adapter](configuration.html#build_adapter) mechanism).
 
 ## Grails
 
@@ -31,7 +31,7 @@ As Grails provides JUnit support out of the box, you only need to pull in the `g
         test ":geb:@geb-version@"
     }
 
-You only need the appropriate Geb test integration jar, as it will depend on `geb-core` and Grails' dependency management will take care of getting that for you.
+You only need the appropriate Geb test integration JAR, as it will depend on `geb-core` and Grails' dependency management will take care of getting that for you.
 
 You will also of course need a driver and the `selenium-support` dependency, which you can also specify in `BuildConfig.groovy`.
 
