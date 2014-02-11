@@ -41,6 +41,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Michael Legart](https://github.com/legart) - Grails integration improvements
 * [Graeme Rocher](https://github.com/graemerocher) - Grails integration improvements
 * [Craig Atkinson](https://github.com/craigatk) - Bug fix around unexpected pages
+* [Ken Geis](https://github.com/kgeis) - Doc improvements
 
 ## History
 

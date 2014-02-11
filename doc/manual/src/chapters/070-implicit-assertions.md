@@ -1,6 +1,6 @@
 # Implicit Assertions
 
-As of Geb 0.7.0, certain parts of Geb utilise “*implicit assertions*”. This sole goal of this feature is to provide more informative error messages. Put simply it means that for a given block of code, all *expressions* are automatically turned into assertions. So the following code:
+As of Geb 0.7.0, certain parts of Geb utilise “*implicit assertions*”. This sole goal of this feature is to provide more informative error messages. Put simply, it means that for a given block of code, all *expressions* are automatically turned into assertions. So the following code:
 
     1 == 1
 
@@ -131,7 +131,7 @@ Any content definitions that declare a `wait` parameter have implicit assertions
 
 The “implicit assertions” feature is implemented as a [Groovy compile time transformation](http://groovy.codehaus.org/Compile-time+Metaprogramming+-+AST+Transformations), which literally turns all *expressions* in a candidate block of code into assertions.
 
-This transform is packaged as a separate jar named `geb-implicit-assertions`. This jar needs to be on the compilation classpath of your Geb test/pages/modules (and any other code that you want to use implicit assertions) in order for this feature to work.
+This transform is packaged as a separate JAR named `geb-implicit-assertions`. This JAR needs to be on the compilation classpath of your Geb test/pages/modules (and any other code that you want to use implicit assertions) in order for this feature to work.
 
 If you are obtaining Geb via a dependency management system, this is typically not something you need to be concerned about as it will happen automatically. Geb is distributed via the Maven Central repository in Apache Maven format (i.e. via POM files). The main Geb module, `geb-core` depends on the `geb-implicit-assertions` module as a `compile` dependency. 
 

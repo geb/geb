@@ -264,7 +264,7 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which on click sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
+Which, on click, sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
 [changing pages][changing-pages].
 
 All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
@@ -310,7 +310,7 @@ The value for the `wait` option can be one of the following:
 
 Any other value will be interpreted as `false`.
 
-It is also possible to use `wait` when defining non element content, such as a string or number. Geb will wait until the content definition returns a value that conforms to the Groovy Truth.
+It is also possible to use `wait` when defining non-element content, such as a string or number. Geb will wait until the content definition returns a value that conforms to the Groovy Truth.
 
     class DynamicPage extends Page {
         static content = {
@@ -332,7 +332,7 @@ You can modify the behaviour of content with `wait` option set to true if you us
         dynamicallyAdded(wait: true, required: false) { $("p.dynamic") }
     }
 
-Then if wait timeout expires when retrieving `dynamicallyAdded` there will be no `WaitTimeoutException` thrown and the last closure evaluation value will be returned. If there is an exception thrown during closure evaluation it will be wrapped in an [`UnknownWaitForEvaluationResult`](api/geb/waiting/UnknownWaitForEvaluationResult.html) instance and returned.
+Then if wait timeout expires when retrieving `dynamicallyAdded`, there will be no `WaitTimeoutException` thrown, and the last closure evaluation value will be returned. If there is an exception thrown during closure evaluation, it will be wrapped in an [`UnknownWaitForEvaluationResult`](api/geb/waiting/UnknownWaitForEvaluationResult.html) instance and returned.
 
 Waiting content blocks are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
@@ -342,7 +342,7 @@ Default value: `null`
 
 The `page` option allows the definition of a page the browser will be set to if the content describes a frame and is used in a `withFrame()` call.
 
-Given the following html...
+Given the following HTML...
 
     <html>
         <body>
@@ -379,7 +379,7 @@ Given the following html...
 
 ### Aliasing
 
-If you wish to have the same content definitions available under diferent names you can create a content definition that specifies `aliases` parameter:
+If you wish to have the same content definitions available under different names you can create a content definition that specifies `aliases` parameter:
 
 	class AliasingPage extends Page {
 		static content = {
@@ -397,7 +397,7 @@ Remember that the aliased content has to be defined before the aliasing content,
 
 ## “At” Verification
 
-Each page can define a way to check whether the underling browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
+Each page can define a way to check whether the underlying browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
 
     class ExamplePage extends Page {
         static at = { $("h1").text() == "Example" }
@@ -434,7 +434,7 @@ The “at” checker is evaluated against the page instance, and can access defi
 
 If a page does not have an “at” checker, the `verifyAt()` method will throw an `UndefinedAtCheckerException`. The same will happen if any of the pages in a list passed to content template “to” option doesn't define an “at” checker.
 
-It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after url change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via [`atCheckWaiting`](configuration.html#waiting_in_at_checkers) option.
+It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after URL change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via [`atCheckWaiting`](configuration.html#waiting_in_at_checkers) option.
 
 ### Unexpected pages
 
@@ -442,9 +442,9 @@ A list of unexpected pages can be provided via [`unexpectedPages` configuration 
 
 > Note that this feature does not operate on HTTP response codes as these are not exposed by WebDriver thus Geb does not have access to them. To use this feature your application has to render custom error pages that can be modeled as `Page` classes and detected by an `at` checker.
 
-If configured, the classes from the `unexpectedPages` list will be checked for first when ”at“ checking is performed for any page and an `UnexpectedPageException` with an appropriate message will be raised if any of them is encountered.
+If configured, the classes from the `unexpectedPages` list will be checked for first when ”at“ checking is performed for any page, and an `UnexpectedPageException` with an appropriate message will be raised if any of them is encountered.
 
-Given that your application renders a custom error page when a page is not found and a 404 HTTP response code is returned with a text like "Sorry but we could not find that page" you can model that page with a class:
+Given that your application renders a custom error page when a page is not found and a 404 HTTP response code is returned with a text like "Sorry but we could not find that page", you can model that page with a class:
 
     class PageNotFoundPage extends Page {
 
@@ -459,11 +459,11 @@ When checking if the browser is at a page...
 
     at ExpectedPage
 
-..but the `at` checker for `PageNotFoundPage` matches an `UnexpectedPageException` will be raised with the following message: "An unexpected page PageNotFoundPage was encountered when expected to be at ExpectedPage".
+..but the `at` checker for `PageNotFoundPage` matches, an `UnexpectedPageException` will be raised with the following message: "An unexpected page PageNotFoundPage was encountered when expected to be at ExpectedPage".
 
 Unexpected pages will be checked for whenever ”at“ checking is performed, even implicitly like when using `to` content template option or passing one or many `Page` classes to `Navigator`'s `click()` method.
 
-Finally you can still explicitly check if the browser is at an unexpected page if you need to. Following will pass without throwing an `UnexpectedPageException` if ”at“ checking for `PageNotFoundPage` succeeds:
+Finally, you can still explicitly check if the browser is at an unexpected page if you need to. Following will pass without throwing an `UnexpectedPageException` if ”at“ checking for `PageNotFoundPage` succeeds:
 
     at PageNotFoundPage
 
@@ -482,7 +482,7 @@ The url is used when using the browser `to()` method.
         to ExamplePage
     }
 
-See the section on [the base url](browser.html#the_base_url) for notes about urls and slashes.
+See the section on [the base url](browser.html#the_base_url) for notes about URLs and slashes.
 
 ## Advanced Page Navigation
 
@@ -517,7 +517,7 @@ The [`Page`][page-api] implementation of this method looks like this…
         args ? '/' + args*.toString().join('/') : ""
     }
 
-You can either overwrite this catch all method control path conversion for all invocations, or provide an overloaded version for a specific type signature. Consider the following…
+You can either overwrite this catchall method to control path conversion for all invocations or provide an overloaded version for a specific type signature. Consider the following…
 
     class Person {
         Long id
@@ -607,18 +607,18 @@ The `onUnload()` method is called with next page object instance when the page i
 
 ## Dealing with frames
 
-Frames might seem a thing of the past but if you're accessing or testing some legacy application with Geb you might still need to deal with them. Thankfully Geb makes working with them groovier thanks to the `withFrame()` method which is available on Browser, Page and Module.
+Frames might seem a thing of the past, but if you're accessing or testing some legacy application with Geb, you might still need to deal with them. Thankfully, Geb makes working with them groovier thanks to the `withFrame()` method which is available on Browser, Page and Module.
 
 ### Executing code in the context of a frame
 
-There are multiple flavours of the `withFrame()` method, but the for all of them the closure parameter is executed in the context of a frame specified by the first parameter and after the execution the browser page is restored to what it was before the call:
+There are multiple flavours of the `withFrame()` method, but for all of them the closure parameter is executed in the context of a frame specified by the first parameter, and after the execution the browser page is restored to what it was before the call:
 
 * `withFrame(String, Closure)` - String parameter contains the name or id of a frame element
 * `withFrame(int, Closure)` - int parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index “0”, the second at index “1” and the third at index “2”
 * `withFrame(Navigator, Closure)` - Navigator parameter should point to a frame element
 * `withFrame(SimplePageContent, Closure)` - SimplePageContent should contain a frame element
 
-Given the following html...
+Given the following HTML...
 
     <html>
         <body>
@@ -651,7 +651,7 @@ Given the following html...
 
     assert $('span') == 'main'
     
-If a frame cannot be found for a given first argument of the `withFrame()` call then [`NoSuchFrameException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchFrameException.html) is thrown.
+If a frame cannot be found for a given first argument of the `withFrame()` call, then [`NoSuchFrameException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchFrameException.html) is thrown.
 
 ### Switching pages and frames at once
 
