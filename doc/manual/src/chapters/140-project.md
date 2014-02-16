@@ -42,6 +42,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Graeme Rocher](https://github.com/graemerocher) - Grails integration improvements
 * [Craig Atkinson](https://github.com/craigatk) - Bug fix around unexpected pages
 * [Ken Geis](https://github.com/kgeis) - Doc improvements
+* [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
 
 ## History
 

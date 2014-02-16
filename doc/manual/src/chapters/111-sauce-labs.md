@@ -17,7 +17,9 @@ First, there is the `SauceLabsDriverFactory` that given a browser specification 
 		}
 	}
 
-This will configure Geb to run in SauceLabs if `geb.sauce.browser` system property is set, and if not it will use whatever driver that is configured. This is useful if you want to run the code in local browser for development. In theory, you could use any system property to pass the browser specification but `geb.sauce.browser` is also used by [Gradle geb-saucelabs plugin](#gradle_geb_saucelabs_plugin), so it's a good idea to stick with that property name. The example also uses two environment variables to pass the username and access key to the factory, as it's usually the easiest way of passing something secret to your build in open CI services like [drone.io](https://drone.io/) or [Travis CI](https://travis-ci.org/) if your code is public, but you could use any other mechanism if desired.
+This will configure Geb to run in SauceLabs if `geb.sauce.browser` system property is set, and if not it will use whatever driver that is configured. This is useful if you want to run the code in local browser for development. In theory you could use any system property to pass the browser specification but `geb.sauce.browser` is also used by [Gradle geb-saucelabs plugin](#gradle_geb_saucelabs_plugin), so it's a good idea to stick with that property name. The example also uses two environment variables to pass the username and access key to the factory, as it's usually the easiest way of passing something secret to your build in open CI services like [drone.io](https://drone.io/) or [Travis CI](https://travis-ci.org/) if your code is public, but you could use any other mechanism if desired.
+
+You can optionally pass additional configuration settings by providing a Map to the`create()` method. The configuration options available are described on the [SauceLabs additional config page](https://saucelabs.com/docs/additional-config).
 
 The first parameter passed to the `create()` method is a ”browser specification“ and it should have the following format:
 
