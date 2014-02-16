@@ -21,9 +21,9 @@ class SauceLabsDriverFactory {
 		def version = parts.size() > 2 ? parts[2] : null
 
 		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities')."$name"();
-        capabilities.each{ String key, Object value ->
-        	browser.setCapability(key, value)
-        }
+		capabilities.each { key, value ->
+			browser.setCapability(key, value)
+		}
 		if (platform) {
 			try {
 				platform = Platform."${platform.toUpperCase()}"
