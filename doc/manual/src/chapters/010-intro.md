@@ -100,11 +100,11 @@ This time let us define our content up front using the Page Object pattern…
     import geb.Page
     import geb.Module
     
-    // modules are reusable fragments that can be used across pages that can be paramaterised
+    // modules are reusable fragments that can be used across pages that can be parameterised
     // here we are using a module to model the search function on the home and results pages
     class GoogleSearchModule extends Module {
         
-        // a paramaterised value set when the module is included
+        // a parameterised value set when the module is included
         def buttonValue
         
         // the content DSL

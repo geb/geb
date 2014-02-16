@@ -205,7 +205,7 @@ We can also access the cart items like this:
 
     assert cartItems[0].productName == "The Book Of Geb"
 
-Unfortunatelly this has a perfromance penalty of creating all modules in the list. You can get around it and add support for ranges by changing your content definition to:
+Unfortunately, this has a performance penalty of creating all modules in the list. You can get around it and add support for ranges by changing your content definition to:
 
 	class CheckoutPage extends Page {
 		static content = {
@@ -213,7 +213,7 @@ Unfortunatelly this has a perfromance penalty of creating all modules in the lis
 		}
 	}
 
-Now the all of the following will pass and is more efficient:
+Now all of the following will pass and is more efficient:
 
 	assert cartItems.every { it.price > 0.0 }
 	assert cartItems(0).productName == "The Book Of Geb"

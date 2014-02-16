@@ -30,9 +30,9 @@ Some config options can be specified by system properties. In general, config op
 
 ### Build Adapter
 
-The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options. For example, Grails dictates what the base url and directory for reports should be set to and the Geb plugin for Grails uses the build adapter mechanism to set this up.
+The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options. For example, Grails dictates what the base URL and directory for reports should be set to and the Geb plugin for Grails uses the build adapter mechanism to set this up.
 
-This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb/BuildAdapter.html) interface. Currently, the build adapter can only influence the base url to use, and the location of the reports directory.
+This mechanism works by loading the name of the class (fully qualified) by the system property `geb.build.adapter` that must implement the [BuildAdapter](api/geb/BuildAdapter.html) interface. Currently, the build adapter can only influence the base URL to use, and the location of the reports directory.
 
 If the `geb.build.adapter` system property is not explicitly set, it defaults to [`SystemPropertiesBuildAdapter`](api/geb/buildadapter/SystemPropertiesBuildAdapter.html). As you can probably deduce, this default implementation uses system properties to specify values, so is usable in most circumstances. See the linked API doc for the details of the specific system properties it looks for.
 
@@ -125,7 +125,7 @@ This is a rather advanced use case. If you need to do this, check out the source
 
 Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. [the implicit driver lifecycle](driver.html#implicit_lifecycle)) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become [responsible for quitting](driver.html#explicit_lifecycle) every driver that is created at the appropriate time.
 
-The default caching behavior is to cache the driver globally across the JVM. If you are using Geb in multiple threads this may not be what you want as neither Geb `Browser` objects nor WebDriver at the core is thread safe. To remedy this, you can instruct Geb to cache the driver instance per thread by setting the config option `cacheDriverPerThread` to true.
+The default caching behavior is to cache the driver globally across the JVM. If you are using Geb in multiple threads this may not be what you want, as neither Geb `Browser` objects nor WebDriver at the core is thread safe. To remedy this, you can instruct Geb to cache the driver instance per thread by setting the config option `cacheDriverPerThread` to true.
 
 Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits. You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
 
@@ -236,11 +236,11 @@ The [Configuration][configuration-api] object also has setters for all of the co
 
 For example, you may have one Spock spec that requires the `autoClearCookies` property to be disabled. You could disable it for just this spec by doing something like…
 
-	import geb.spock.GebReportingSpec
-	
-	class FunctionalSpec extends GebReportingSpec {
-		def setup() {
-			browser.config.autoClearCookies = false
-		}
-	}
+    import geb.spock.GebReportingSpec
+    
+    class FunctionalSpec extends GebReportingSpec {
+        def setup() {
+            browser.config.autoClearCookies = false
+        }
+    }
 	

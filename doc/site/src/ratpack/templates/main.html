@@ -80,7 +80,7 @@
 			<% render "includes/${model.page}.html" %>
 		</div>
 		<div id="sidebar">
-			<% model.pages.each { section, pages -> %>
+			<% model.map('pages').each { String section, Map<String, String> pages -> %>
 			<h1>${section}</h1>
 			<ul class="sidemenu">
 				<% pages.each { label, name -> %>

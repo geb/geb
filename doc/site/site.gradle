@@ -105,6 +105,7 @@ task generateConfigProperties() {
 		manualsMetadata.each { key, value ->
 			properties.setProperty("other.${key}", value)
 		}
+		properties.setProperty("other.groovy.compileStatic", "true")
 		propertiesFile.withWriter { Writer writer ->
 			properties.store(writer, null)
 		}

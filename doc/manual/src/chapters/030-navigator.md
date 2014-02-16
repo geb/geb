@@ -23,7 +23,7 @@ All arguments are optional, meaning the following calls are all valid:
     $(0)
     $(title: "something")
 
-> There is an alias for the dollar function named “find” if a method named “$” is not to your test (a current limitation of Groovy prevents us supporting a `find()` method like `$()` though, this will be fixed in later versions).
+> There is an alias for the dollar function named “find” if a method named “$” is not to your taste (a current limitation of Groovy prevents us supporting a `find()` method like `$()` though, this will be fixed in later versions).
 
 ### CSS Selectors
 
@@ -129,7 +129,7 @@ When treating a navigator as `Iterable`, the iterated over content is always the
 
 Navigator objects have a `find` method for finding descendants, and `filter` and `not` methods for reducing the matched content.
 
-Consider the following html…
+Consider the following HTML…
 
     <div class="a">
         <p class="b">geb</p>
@@ -168,7 +168,7 @@ These methods return a new navigator object that represents the new content.
 
 Navigators also have methods for selecting content _around_ the matched content.
 
-Consider the following html…
+Consider the following HTML…
 
     <div class="a">
         <div class="b">
@@ -189,7 +189,7 @@ You can select content _around_ `p.d` by…
     $("p.c").siblings() // 'p.d' & 'p.e'
     $("div.a").children() // 'div.b' & 'div.f'
 
-Consider the following html…
+Consider the following HTML…
 
     <p class="a"></p>
     <p class="b"></p>
@@ -199,13 +199,13 @@ The following code will select `p.b` & `p.c`…
 
     $("p").next()
 
-The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `parents`, `closest`, `siblings` and `children` methods can also take css selectors and attribute matchers.
+The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `parents`, `closest`, `siblings` and `children` methods can also take CSS selectors and attribute matchers.
 
 Using the same html, the following code will select `p.c`…
 
     $("p").next(".c")
 
-Likewise, consider the following html…
+Likewise, consider the following HTML…
 
     <div class="a">
         <div class="b">
@@ -236,7 +236,7 @@ The following code will select `div.b` and `div.c`:
 
 ## Composition
 
-It is also to compose navigator objects from other navigator objects, for situations where you can't express a content set in one query. To do this, simply call the $ function with the navigators to use…
+It is also possible to compose navigator objects from other navigator objects, for situations where you can't express a content set in one query. To do this, simply call the $ function with the navigators to use…
 
     $($("div.a"), $("div.d"))
 
@@ -266,7 +266,7 @@ For example…
 
 Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
 
-All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+All of the page classes passed in when using the list variant have to have an “at” checker defined, otherwise an `UndefinedAtCheckerException` will be thrown.
 
 ## Determining Visibility
 
@@ -324,7 +324,7 @@ How content responds to the keystrokes depends on what the content is.
 
 ### Non characters (e.g. delete key)
 
-It is possible to send non textual characters to content by using the WebDriver [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") enumeration…
+It is possible to send non-textual characters to content by using the WebDriver [Keys](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html "Keys") enumeration…
 
     import org.openqa.selenium.Keys
     
@@ -372,32 +372,32 @@ Which is literally a shortcut for…
 
 > In the above and below examples with form controls we are using code like `$("form").someInput` where we could be using just `someInput` as long as there is only one control with the *name* `someInput` on the page. In the examples we are using `$("form").someInput` to hopefully be clearer.
 
-If your content definition (either a page or a module) describes content which is an `input`, `select` or `textarea` you can access and set its value the same way as described above for forms. Given a page and module definitions for the above mentioned html:
+If your content definition (either a page or a module) describes content which is an `input`, `select` or `textarea`, you can access and set its value the same way as described above for forms. Given a page and module definitions for the above mentioned HTML:
 
-	class ShortcutModule extends Module {
-		static content = {
-			geb { $('form').geb() }
-		}
-	}
+    class ShortcutModule extends Module {
+        static content = {
+            geb { $('form').geb() }
+        }
+    }
 
-	static content = {
-		geb { $('form').geb() }
-		shortcutModule { module ShortcutModule }
-	}
+    static content = {
+        geb { $('form').geb() }
+        shortcutModule { module ShortcutModule }
+    }
 
 The following will pass:
 
-	assert geb == "testing"
+    assert geb == "testing"
     geb = "goodness"
     assert geb == "goodness"
 
 As well as:
 
-	assert shortcutModule.geb == "testing"
+    assert shortcutModule.geb == "testing"
     shortcutModule.geb = "goodness"
     assert shortcutModule.geb == "goodness"
 
-> The following examples describe usage of form controls only using code like `$("form").someInput`. Given a content definition `myContent { $("form").someInput }` you can substitute `$("form").someInput` in the examples with `myContent`.
+> The following examples describe usage of form controls only using code like `$("form").someInput`. Given a content definition `myContent { $("form").someInput }`, you can substitute `$("form").someInput` in the examples with `myContent`.
 
 ### Setting Values
 
@@ -501,7 +501,7 @@ It is also possible to append text by using the send keys shorthand…
     $("form").language() << "ovy"
     assert $("form").language == "groovy"
 
-Which an also be used for non character keys…
+Which an also be used for non-character keys…
 
     <input name="postcode" />
 
@@ -511,7 +511,7 @@ Which an also be used for non character keys…
     $("form").postcode() << Keys.BACK_SPACE
     assert $("form").postcode == "1234"
 
-> Note that WebDriver has some issues with textareas and surrounding whitespace. Namely, some drivers implicit trim whitespace from the beginning and end of the value. You can track this issue here: http://code.google.com/p/selenium/issues/detail?id=2131
+> Note that WebDriver has some issues with textareas and surrounding whitespace. Namely, some drivers implicitly trim whitespace from the beginning and end of the value. You can track this issue here: http://code.google.com/p/selenium/issues/detail?id=2131
 
 #### file upload
 
@@ -590,7 +590,7 @@ Drag-and-dropping can also be accomplished using the `dragAndDropBy` convenience
         dragAndDropBy($('#element'), 400, -150)
     }
 
-In this particular example the element will be clicked then dragged 400 pixels to the right and 150 pixels upward before being released.
+In this particular example, the element will be clicked then dragged 400 pixels to the right and 150 pixels upward before being released.
 
 > Note that moving to arbitrary locations with the mouse is currently not supported by the HTMLUnit driver, but moving directly to elements is.
 
