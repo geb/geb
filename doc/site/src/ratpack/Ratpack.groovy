@@ -30,7 +30,7 @@ ratpack {
 
 		get('manual/:version/api/') {
 			background {
-				context.file("public/${request.path}").listFiles()*.name
+				context.file("public/${request.path}").toFile().listFiles()*.name
 			} then { List<String> files ->
 				render groovyTemplate('fileListing.html', files: files, title: "Groovy API for Geb ${pathTokens.get('version')}")
 			}
