@@ -535,6 +535,22 @@ class NavigatorSpec extends GebSpecWithServer {
 		thrown(MissingPropertyException)
 	}
 
+	def ranges() {
+		when:
+		html {
+			p(a: 1, "1")
+			p(a: 2, "2")
+			p(a: 3, "3")
+			p(a: 4, "4")
+		}
+
+		then:
+		$("p", 1..2)*.text() == ["2", "3"]
+		$(a: ~/\d+/, 1..2)*.text() == ["2", "3"]
+		$("p")[1..2]*.text() == ["2", "3"]
+		$("p", a: ~/[234]/, 1..2)*.text() == ["3", "4"]
+	}
+
 }
 
 class PageWithoutAtChecker extends Page { }

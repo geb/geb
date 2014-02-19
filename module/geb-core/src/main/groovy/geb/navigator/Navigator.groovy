@@ -26,6 +26,60 @@ import org.openqa.selenium.WebElement
 interface Navigator extends Iterable<Navigator> {
 
 	/**
+	 * Creates a new Navigator instance containing the elements whose attributes match the specified values or patterns.
+	 * The key 'text' can be used to match the text contained in elements. Regular expression Pattern objects may be
+	 * used as values. Note that for selecting by class it is better to use a CSS selector.
+	 * <p>Examples:</p>
+	 * <dl>
+	 * <dt>find(name: "firstName")</dt>
+	 * <dd>selects all elements with the name "firstName"</dd>
+	 * <dt>find(name: "firstName", readonly: "readonly")</dt>
+	 * <dd>selects all elements with the name "firstName" that are read-only</dd>
+	 * <dt>find(text: "I can has cheezburger")</dt>
+	 * <dd>selects all elements containing the exact text</dd>
+	 * <dt>find(text: ~/I can has.+/)</dt>
+	 * <dd>selects all elements whose text matches a regular expression</dd>
+	 * </dl>
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
+	Navigator find(Map<String, Object> predicates)
+
+	/**
+	 * Shorthand for <code>find(predicates, null, index..index)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	Navigator find(Map<String, Object> predicates, int index)
+
+	/**
+	 * Shorthand for <code>find(predicates, null, range)</code>
+	 *
+	 * @param predicates attribute predicates
+	 * @param predicates range the range of matches to select
+	 * @return new Navigator
+	 */
+	Navigator find(Map<String, Object> predicates, Range<Integer> range)
+
+	/**
+	 * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
+	 * all input elements with the name "firstName".
+	 * @param selector a CSS selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
+	Navigator find(Map<String, Object> predicates, String selector)
+
+	/**
+	 * Shorthand for <code>find(predicates, selector, index..index)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	Navigator find(Map<String, Object> predicates, String selector, int index)
+
+	/**
 	 * Creates a new Navigator instance containing the elements matching the given
 	 * CSS selector. Any CSS capabilities supported by the underlying WebDriver instance are supported.
 	 * If the underlying WebDriver instance does not natively support finding elements by CSS selectors then tag, id
@@ -52,22 +106,6 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range)
 
 	/**
-	 * Shorthand for <code>find(predicates, selector, index..index)</code>
-	 *
-	 * @param selector
-	 * @return new Navigator
-	 */
-	Navigator find(Map<String, Object> predicates, String selector, Integer index)
-
-	/**
-	 * Shorthand for <code>find(predicates, null, index..index)</code>
-	 *
-	 * @param selector
-	 * @return new Navigator
-	 */
-	Navigator find(Map<String, Object> predicates, Integer index)
-
-	/**
 	 * Shorthand for <code>find(null, selector, null)</code>
 	 *
 	 * @param selector
@@ -84,33 +122,12 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(String selector, int index)
 
 	/**
-	 * Creates a new Navigator instance containing the elements whose attributes match the specified values or patterns.
-	 * The key 'text' can be used to match the text contained in elements. Regular expression Pattern objects may be
-	 * used as values. Note that for selecting by class it is better to use a CSS selector.
-	 * <p>Examples:</p>
-	 * <dl>
-	 * <dt>find(name: "firstName")</dt>
-	 * <dd>selects all elements with the name "firstName"</dd>
-	 * <dt>find(name: "firstName", readonly: "readonly")</dt>
-	 * <dd>selects all elements with the name "firstName" that are read-only</dd>
-	 * <dt>find(text: "I can has cheezburger")</dt>
-	 * <dd>selects all elements containing the exact text</dd>
-	 * <dt>find(text: ~/I can has.+/)</dt>
-	 * <dd>selects all elements whose text matches a regular expression</dd>
-	 * </dl>
-	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
-	 * @return a new Navigator instance containing the matched elements
+	 * Shorthand for <code>find(null, selector, range)</code>
+	 *
+	 * @param selector The css selector
+	 * @return new Navigator
 	 */
-	Navigator find(Map<String, Object> predicates)
-
-	/**
-	 * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
-	 * all input elements with the name "firstName".
-	 * @param selector a CSS selector
-	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
-	 * @return a new Navigator instance containing the matched elements
-	 */
-	Navigator find(Map<String, Object> predicates, String selector)
+	Navigator find(String selector, Range<Integer> range)
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants

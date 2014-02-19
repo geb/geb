@@ -5,7 +5,6 @@ import geb.Page
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
-import geb.waiting.WaitTimeoutException
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebElement
@@ -512,7 +511,9 @@ class NonEmptyNavigator extends AbstractNavigator {
 				buffer << "." << CssSelector.escape(className)
 			}
 		}
-		if (buffer[0] == "*" && buffer.length() > 1) buffer.deleteCharAt(0)
+		if (buffer[0] == "*" && buffer.length() > 1) {
+			buffer.deleteCharAt(0)
+		}
 		return buffer.toString()
 	}
 
@@ -557,7 +558,9 @@ class NonEmptyNavigator extends AbstractNavigator {
 		def values = []
 		inputs.each { WebElement input ->
 			def value = getInputValue(input)
-			if (value != null) values << value
+			if (value != null) {
+				values << value
+			}
 		}
 		return values.size() < 2 ? values[0] : values
 	}
@@ -568,7 +571,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		if (input.tagName == "select") {
 			def select = new SelectFactory().createSelectFor(input)
 			if (select.multiple) {
-				value = select.allSelectedOptions.collect { getValue(it)}
+				value = select.allSelectedOptions.collect { getValue(it) }
 			} else {
 				value = getValue(select.firstSelectedOption)
 			}
@@ -681,7 +684,8 @@ class NonEmptyNavigator extends AbstractNavigator {
 		for (int i = 0; !result && i < contextElements.size(); i++) {
 			try {
 				result = closure(contextElements[i])
-			} catch (org.openqa.selenium.NoSuchElementException e) { }
+			} catch (org.openqa.selenium.NoSuchElementException e) {
+			}
 		}
 		result
 	}
@@ -696,9 +700,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 						list.addAll value
 						break
 					default:
-						if (value) list << value
+						if (value) {
+							list << value
+						}
 				}
-			} catch (org.openqa.selenium.NoSuchElementException e) { }
+			} catch (org.openqa.selenium.NoSuchElementException e) {
+			}
 		}
 		list
 	}

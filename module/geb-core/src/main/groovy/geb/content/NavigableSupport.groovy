@@ -42,7 +42,7 @@ class NavigableSupport implements Navigable {
 	private getContent(String name, Object[] args) {
 		def contentTemplate = contentTemplates[name]
 		if (contentTemplate) {
-			contentTemplate.get(*args)
+			contentTemplate.get(* args)
 		} else {
 			throw new UndefinedPageContentException(this, name)
 		}
@@ -60,8 +60,16 @@ class NavigableSupport implements Navigable {
 		getNavigator()[index]
 	}
 
+	Navigator find(Range<Integer> range) {
+		getNavigator()[range]
+	}
+
 	Navigator $(int index) {
 		getNavigator()[index]
+	}
+
+	Navigator $(Range<Integer> range) {
+		getNavigator()[range]
 	}
 
 	Navigator find(String selector) {
@@ -72,28 +80,68 @@ class NavigableSupport implements Navigable {
 		getNavigator().find(selector)
 	}
 
-	Navigator find(Map attributes) {
-		getNavigator().find(attributes)
-	}
-
-	Navigator $(Map attributes) {
-		getNavigator().find(attributes)
-	}
-
 	Navigator find(String selector, int index) {
 		getNavigator().find(selector, index)
+	}
+
+	Navigator find(String selector, Range<Integer> range) {
+		getNavigator().find(selector, range)
 	}
 
 	Navigator $(String selector, int index) {
 		getNavigator().find(selector, index)
 	}
 
-	Navigator find(Map attributes, String selector) {
+	Navigator $(String selector, Range<Integer> range) {
+		getNavigator().find(selector, range)
+	}
+
+	Navigator find(Map<String, Object> attributes) {
+		getNavigator().find(attributes)
+	}
+
+	Navigator $(Map<String, Object> attributes) {
+		getNavigator().find(attributes)
+	}
+
+	Navigator find(Map<String, Object> attributes, int index) {
+		getNavigator().find(attributes, index)
+	}
+
+	Navigator find(Map<String, Object> attributes, Range<Integer> range) {
+		getNavigator().find(attributes, range)
+	}
+
+	Navigator $(Map<String, Object> attributes, int index) {
+		getNavigator().find(attributes, index)
+	}
+
+	Navigator $(Map<String, Object> attributes, Range<Integer> range) {
+		getNavigator().find(attributes, null, range)
+	}
+
+	Navigator find(Map<String, Object> attributes, String selector) {
 		getNavigator().find(attributes, selector)
 	}
 
-	Navigator $(Map attributes, String selector) {
+	Navigator $(Map<String, Object> attributes, String selector) {
 		getNavigator().find(attributes, selector)
+	}
+
+	Navigator find(Map<String, Object> attributes, String selector, int index) {
+		getNavigator().find(attributes, selector, index)
+	}
+
+	Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
+		getNavigator().find(attributes, selector, range)
+	}
+
+	Navigator $(Map<String, Object> attributes, String selector, int index) {
+		getNavigator().find(attributes, selector, index)
+	}
+
+	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
+		getNavigator().find(attributes, selector, range)
 	}
 
 	Navigator $(Navigator[] navigators) {
@@ -108,19 +156,11 @@ class NavigableSupport implements Navigable {
 		navigatorFactory.createFromWebElements(Arrays.asList(elements))
 	}
 
-	Navigator $(Map attributes, Integer index) {
-		getNavigator().find(attributes, null, index..index)
-	}
-
-	Navigator $(Map attributes, String selector, Integer index) {
-		getNavigator().find(attributes, selector, index..index)
-	}
-
 	def methodMissing(String name, args) {
 		try {
-			getContent(name, *args)
+			getContent(name, * args)
 		} catch (UndefinedPageContentException e1) {
-			getNavigator()."$name"(*args)
+			getNavigator()."$name"(* args)
 		}
 	}
 

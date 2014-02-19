@@ -55,8 +55,28 @@ abstract class AbstractNavigator implements Navigator {
 	}
 
 	@Override
+	Navigator find(Map<String, Object> predicates, int index) {
+		find(predicates, null, index..index)
+	}
+
+	@Override
+	Navigator find(Map<String, Object> predicates, Range<Integer> range) {
+		find(predicates, null, range)
+	}
+
+	@Override
+	Navigator find(Map<String, Object> predicates, String selector, int index) {
+		find(predicates, selector, index..index)
+	}
+
+	@Override
+	Navigator find(String selector, Range<Integer> range) {
+		find(selector)[range]
+	}
+
+	@Override
 	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
-		find(predicates, selector)[range]
+		find(predicates, (String)selector)[range]
 	}
 
 	@Override
