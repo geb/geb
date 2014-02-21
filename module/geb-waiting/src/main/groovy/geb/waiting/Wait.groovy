@@ -19,34 +19,34 @@ package geb.waiting
  * Represents a particular configuration of waiting, but does not encompass what is to be waited on.
  * <p>
  * Generally not used by user code, but used internally by {@link geb.Configuration} and {@link geb.waiting.WaitingSupport}.
- * 
+ *
  * @see #waitFor(Closure)
  */
 class Wait {
-	
+
 	/**
 	 * 5 seconds
 	 */
 	static public final Double DEFAULT_TIMEOUT = 5
-	
+
 	/**
 	 * 100 milliseconds
 	 */
 	static public final Double DEFAULT_RETRY_INTERVAL = 0.1
-	
+
 	/**
 	 * The maximum amount of seconds that something can be waited on.
 	 */
 	final Double timeout
-	
+
 	/**
 	 * How many seconds to wait before trying something again while waiting.
 	 */
 	final Double retryInterval
 
 	String customMessage
-	
-	
+
+
 	Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL) {
 		this.timeout = timeout
 		this.retryInterval = [timeout, retryInterval].min()
@@ -55,7 +55,7 @@ class Wait {
 	String toString() {
 		"Wait[timeout: $timeout, retryInterval: $retryInterval]"
 	}
-	
+
 	boolean equals(other) {
 		if (this.is(other)) {
 			true
@@ -65,14 +65,14 @@ class Wait {
 			this.timeout == other.timeout && this.retryInterval == other.retryInterval
 		}
 	}
-	
+
 	int hashCode() {
 		int code = 41
 		code = 31 * code + timeout.hashCode()
 		code = 31 * code + retryInterval.hashCode()
 		code
 	}
-	
+
 	Date calculateTimeoutFromNow() {
 		calculateTimeoutFrom(new Date())
 	}
@@ -101,15 +101,14 @@ class Wait {
 		def stopAt = calculateTimeoutFromNow()
 		def pass
 		def thrown = null
-		
+
 		try {
 			pass = block()
 		} catch (Throwable e) {
 			pass = new UnknownWaitForEvaluationResult(e)
 			thrown = e
 		}
-		
-		def i = 0
+
 		def timedOut = new Date() > stopAt
 		while (!pass && !timedOut) {
 			sleepForRetryInterval()
@@ -123,14 +122,14 @@ class Wait {
 				timedOut = new Date() > stopAt
 			}
 		}
-		
+
 		if (!pass && timedOut) {
 			throw new WaitTimeoutException(this, thrown, pass)
 		}
 
 		pass as T
 	}
-	
+
 	/**
 	 * Blocks the caller for the retryInterval
 	 */
