@@ -47,6 +47,9 @@ sauceLabs {
 		username = System.getenv(SauceAccount.USER_ENV_VAR)
 		accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
 	}
+	connect {
+		timeout 15 // minutes
+	}
 }
 
 modifyPom { pom ->
