@@ -114,7 +114,48 @@ The `to()` and `via()` method makes a request to the resolved URL and sets the b
 
 ### Direct
 
-You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb/Browser.html#go\(\)) methods. The following examples use a baseUrl of “`http://myapp.com/`”.
+You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb/Browser.html#go\(\)) methods.
+
+    import geb.Page
+    import geb.spock.GebSpec
+
+    class GoogleSpec extends GebSpec {
+
+        def "go method does not change the URL"() {
+            given:
+            String oldURL = pageUrl
+
+            when:
+            go "http://google.com"
+
+            then:
+            pageUrl == oldURL
+        }
+
+        def "go method does NOT set the page"() {
+            given:
+            Page oldPage = page
+
+            when:
+            go "http://google.com"
+
+            then:
+            oldPage == page
+        }
+
+        def "to method does set the page"() {
+            given:
+            Page oldPage = page
+
+            when:
+            to GoogleHomePage
+
+            then:
+            oldPage != page
+        }
+    }
+
+The following examples use a baseUrl of “`http://myapp.com/`”.
 
     Browser.drive {
         // Go to the Base URL
