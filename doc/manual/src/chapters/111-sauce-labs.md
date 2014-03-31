@@ -32,6 +32,7 @@ Assuming you're using the snippet from the example above in your `GebConfig.groo
 The second part of SauceLabs integration is the `geb-saucelabs` Gradle plugin. You can use it in your Gradle build to easily create multiple `Test` tasks that will have `geb.sauce.browser` property set.  The value of that property can be then passed in configuration file to [SauceLabsDriverFactory](#saucelabsdriverfactory) as the ”browser specification“. What follows is a typical usage example:
 
 	apply plugin: "geb-saucelabs" //1
+	apply plugin: "project-report"
 
 	buildscript { //2
 		repositories {
