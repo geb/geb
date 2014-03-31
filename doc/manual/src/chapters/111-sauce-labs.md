@@ -51,15 +51,14 @@ The second part of SauceLabs integration is the `geb-saucelabs` Gradle plugin. Y
 	}
 
 	sauceLabs {
+	    tasks.withType(Test) {//6
+            reports.junitXml.destination = reporting.file("test-results/$name")
+            reports.html.destination = reporting.file("test-reports/$name")
+        }
 		browsers { //5
 			firefox_linux_19
 			chrome_mac
 			internetExplorer_vista_9
-		}
-		task { //6
-			testClassesDir = test.testClassesDir
-			testSrcDirs = test.testSrcDirs
-			classpath = test.classpath
 		}
 		account { //7
 			username = System.getenv(SauceAccount.USER_ENV_VAR)
