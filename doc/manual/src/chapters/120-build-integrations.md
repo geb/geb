@@ -71,7 +71,7 @@ Below is a valid Gradle `build.gradle` file for working with Geb for testing.
     }
 
     dependencies {
-        groovy "org.codehaus.groovy:groovy-all:@groovy-version@"
+        compile "org.codehaus.groovy:groovy-all:@groovy-version@"
 
         def gebVersion = "@geb-version@"
         def seleniumVersion = "@selenium-version@"
@@ -82,15 +82,51 @@ Below is a valid Gradle `build.gradle` file for working with Geb for testing.
 
         // If using JUnit, need to depend on geb-junit (3 or 4)
         testCompile "@geb-group@:geb-junit4:@geb-version@"
-        testCompile "junit:junit-dep:4.8.2"
+        testCompile "junit:junit-dep:4.11"
 
         // Need a driver implementation
         testCompile "org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@"
         testRuntime "org.seleniumhq.selenium:selenium-support:@selenium-version@"
     }
-
-    test {
-        systemProperties "geb.build.reportsDir": "$reportsDir/geb"
+    
+    drivers.each { driver ->
+        // allows you to run a single test by name:  -DtestSingle=myTest
+    	def testSingle = System.getProperty("test.single")
+    	if (testSingle) System.setProperty("${driver}Test.single", testSingle)
+    	
+    	//Get host URL from System property; use http://my.example.com as default
+    	def hostUrl = System.getProperty("host.url", "http://my.example.com")
+    	
+    	task "${driver}Test"(type: Test) {
+    		reports.html.destination = file("$name/tests")
+    		reports.junitXml.destination = file("$buildDir/test-results/$name")
+    		
+    		testLogging {
+        		// set up logging to filter out groovy-generated reflection calls 
+    			stackTraceFilters "groovy"
+    			// makes the standard streams (err and out) visible at console;
+    			// also will be included in html test result output
+    			showStandardStreams false    
+    		}
+    	  
+            // increase memory as needed    		
+    		maxHeapSize = "2048m"
+    		minHeapSize = "512m"
+    		jvmArgs "-XX:MaxPermSize=1024m" 
+    
+    		systemProperty "geb.build.reportsDir", reporting.file("$name/geb")
+    		systemProperty "geb.env", driver
+    		systemProperty "geb.build.baseUrl", hostUrl
+    	}
+    }
+    
+    test {}
+    
+    task test(overwrite: true, dependsOn: drivers.collect { tasks["${it}Test"] })
+    
+    
+    task wrapper(type: Wrapper) {
+    	gradleVersion = '1.8'
     }
 
 There is a Gradle example project available.
