@@ -113,7 +113,7 @@ If no explicit driver is specified then Geb will look for the following drivers 
 
 It is possible to specify your own implementation of [`NavigatorFactory`](api/geb/navigator/factory/NavigatorFactory.html) via configuration. This is useful if you want to extend the [`Navigator`](api/geb/navigator/Navigator.html) class to provide your own behaviour extensions.
 
-Rather than inject your own `NavigatorFactory`, it is simpler to inject a custom [`InnerNavigatorFactory`](api/geb/navigator/factory/NavigatorFactory.html) which is a much simpler interface. To do this, you can specify a closure for the config key `innerNavigatorFactory`…
+Rather than inject your own `NavigatorFactory`, it is simpler to inject a custom [`InnerNavigatorFactory`](api/geb/navigator/factory/InnerNavigatorFactory.html) which is a much simpler interface. To do this, you can specify a closure for the config key `innerNavigatorFactory`…
 
     innerNavigatorFactory = { Browser browser, List<org.openqa.selenium.WebElement> elements
         elements ? new MyCustomNavigator(browser, elements) : new geb.navigator.EmptyNavigator()
