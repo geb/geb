@@ -121,17 +121,6 @@ You can also make a new request to a URL without setting or changing the page us
 
     class GoogleSpec extends GebSpec {
 
-        def "go method does not change the URL"() {
-            given:
-            String oldURL = pageUrl
-
-            when:
-            go "http://google.com"
-
-            then:
-            pageUrl == oldURL
-        }
-
         def "go method does NOT set the page"() {
             given:
             Page oldPage = page
@@ -141,9 +130,10 @@ You can also make a new request to a URL without setting or changing the page us
 
             then:
             oldPage == page
+            driver.currentUrl == "http://google.com"
         }
 
-        def "to method does set the page"() {
+        def "to method does set the page and change the current url"() {
             given:
             Page oldPage = page
 
@@ -152,6 +142,7 @@ You can also make a new request to a URL without setting or changing the page us
 
             then:
             oldPage != page
+            driver.currentUrl == "http://google.com"
         }
     }
 
