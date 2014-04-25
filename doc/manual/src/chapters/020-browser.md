@@ -114,7 +114,48 @@ The `to()` and `via()` method makes a request to the resolved URL and sets the b
 
 ### Direct
 
-You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb/Browser.html#go\(\)) methods. The following examples use a baseUrl of “`http://myapp.com/`”.
+You can also make a new request to a URL without setting or changing the page using the [`go()`](api/geb/Browser.html#go\(\)) methods.
+
+    import geb.Page
+    import geb.spock.GebSpec
+
+    class GoogleSpec extends GebSpec {
+
+        def "go method does not change the URL"() {
+            given:
+            String oldURL = pageUrl
+
+            when:
+            go "http://google.com"
+
+            then:
+            pageUrl == oldURL
+        }
+
+        def "go method does NOT set the page"() {
+            given:
+            Page oldPage = page
+
+            when:
+            go "http://google.com"
+
+            then:
+            oldPage == page
+        }
+
+        def "to method does set the page"() {
+            given:
+            Page oldPage = page
+
+            when:
+            to GoogleHomePage
+
+            then:
+            oldPage != page
+        }
+    }
+
+The following examples use a baseUrl of “`http://myapp.com/`”.
 
     Browser.drive {
         // Go to the Base URL
@@ -198,7 +239,7 @@ Browser objects have an [`at(Class pageType)`](api/geb/Browser.html#at\(java.lan
 
 The `at AccessDeniedPage` method call will either return a page instance or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
 
-It's a good idea to always use `to()` method or use `via()` together with an `at()` check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
+It's always a good idea to use the `via()` method followed by an `at()` check whenever the page changes in order to *fail fast*. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
 
 If you pass a page class that doesn't define an “at” checker to `at()` you will get an `UndefinedAtCheckerException` - “at” checkers are mandatory when doing explicit at checks. This is not the case when implicit at checks are being performed, like when using `to()`. This is done to make you aware that you probably want to define an “at” checker when explicitly verifing if you're at a given page but not forcing you to do so when using implicit at checking.
 
