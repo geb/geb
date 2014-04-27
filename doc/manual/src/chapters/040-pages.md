@@ -273,6 +273,15 @@ All of the page classes passed in when using the list variant have to have an â€
 
 Default value: `false`
 
+Allowed values:
+
+* **`true`** - wait for the content using the _default wait_ configuration
+* **a string** - wait for the content using the _wait preset_ with this name from the configuration
+* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
+* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+
+Any other value will be interpreted as `false`.
+
 The `wait` option allows Geb to wait an amount of time for content to appear on the page, instead of throwing a [`RequiredPageContentNotPresent`](api/geb/error/RequiredPageContentNotPresent.html) exception if the content is not present when requested.
 
     class DynamicPage extends Page {
@@ -300,15 +309,6 @@ This is equivalent to:
     }
 
 See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a [`WaitTimeoutException`](api/geb/waiting/WaitTimeoutException.html) will be thrown if the wait timeout expires.
-
-The value for the `wait` option can be one of the following:
-
-* **`true`** - wait for the content using the _default wait_ configuration
-* **a string** - wait for the content using the _wait preset_ with this name from the configuration
-* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
-* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
-
-Any other value will be interpreted as `false`.
 
 It is also possible to use `wait` when defining non-element content, such as a string or number. Geb will wait until the content definition returns a value that conforms to the Groovy Truth.
 

@@ -363,12 +363,7 @@ If you pass a class that extends `Page` as `page` option then browser's page wil
 
 Default value: `null`
 
-You can specify `wait` option if the action defined in the window opening closure passed as the first argument is asynchronous and you need to wait for the new window to be opened. The possible values for the `wait` option are consistent with the ones for content definition and can be one of the following:
-
-* **`true`** - wait for the content using the _default wait_ configuration
-* **a string** - wait for the content using the _wait preset_ with this name from the configuration
-* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
-* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+You can specify `wait` option if the action defined in the window opening closure passed as the first argument is asynchronous and you need to wait for the new window to be opened. The possible values for the `wait` option are consistent with the [ones for `wait` option of content definitions](pages.html#wait).
 
 Given the following HTML:
 

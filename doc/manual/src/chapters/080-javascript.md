@@ -207,14 +207,7 @@ The `withAlert()` method also accepts a wait option. It is useful if the code in
 
 	assert withAlert(wait: true) { $("input", name: "showAlert").click() } == "Bang!"
 
-The value for the `wait` option can be one of the following:
-
-* **`true`** - wait for the content using the _default wait_ configuration
-* **a string** - wait for the content using the _wait preset_ with this name from the configuration
-* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
-* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
-
-Any other value will be interpreted as `false`.
+The possible values for the `wait` option are consistent with the [ones for `wait` option of content definitions](pages.html#wait).
 
 The second method, `withNoAlert()`, is used to verify actions that will not produce an `alert()` dialog. If an alert dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
 
