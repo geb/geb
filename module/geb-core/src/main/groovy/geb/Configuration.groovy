@@ -159,6 +159,14 @@ class Configuration {
 		rawConfig.atCheckWaiting = waitForParam
 	}
 
+	Wait getBaseNavigatorWaiting() {
+		getWaitForParam(rawConfig.baseNavigatorWaiting)
+	}
+
+	void setBaseNavigatorWaiting(Object waitForParam) {
+		rawConfig.baseNavigatorWaiting = waitForParam
+	}
+
 	Collection<Class<? extends Page>> getUnexpectedPages() {
 		rawConfig.unexpectedPages ?: []
 	}

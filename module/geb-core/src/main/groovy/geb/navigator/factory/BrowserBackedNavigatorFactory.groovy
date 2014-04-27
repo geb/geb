@@ -24,13 +24,21 @@ import org.openqa.selenium.By
 
 class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
+	protected String getBaseTagName() {
+		"html"
+	}
+
 	BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
 		super(browser, innerNavigatorFactory)
 	}
 
-	@Override
-	Navigator getBase() {
-		createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName("html"))))
+	protected Navigator createBase() {
+		createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName(baseTagName))))
 	}
 
+	@Override
+	Navigator getBase() {
+		def baseNavigatorWaiting = browser.config.baseNavigatorWaiting
+		baseNavigatorWaiting ? baseNavigatorWaiting.waitFor { createBase() } : createBase()
+	}
 }

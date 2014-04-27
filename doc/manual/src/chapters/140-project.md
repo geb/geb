@@ -54,6 +54,7 @@ This page lists the high level changes between versions of Geb.
 #### New Features
 
 * Documentation site has been migrated to [Ratpack](http://ratpack.io). \[[GEB-261](http://jira.codehaus.org/browse/GEB-261)\]
+* Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. \[[GEB-269](http://jira.codehaus.org/browse/GEB-269)\]
 
 #### Fixes
 

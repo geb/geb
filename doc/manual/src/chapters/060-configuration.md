@@ -179,6 +179,25 @@ The possible values for the `atCheckWaiting` option are consistent with the ones
 * **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
 * **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
 
+### Waiting for base navigator
+
+Sometimes Firefox driver times out when trying to find the root HTML element of the page. This manifests itself in an error similar to:
+
+    org.openqa.selenium.NoSuchElementException: Unable to locate element: {"method":"tag name","selector":"html"}
+    Command duration or timeout: 576 milliseconds
+    For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+
+You can prevent this error from happening by configuring a wait timeout to use when the driver is locating the root HTML element, using:
+
+    baseNavigatorWaiting = true
+
+The possible values for the `baseNavigatorWaiting` option are consistent with the ones for content definition and can be one of the following:
+
+* **`true`** - wait for the content using the _default wait_ configuration
+* **a string** - wait for the content using the _wait preset_ with this name from the configuration
+* **a number** - wait for the content for this many seconds, using the _default retry interval_ from the configuration
+* **a 2 element list of numbers** - wait for the content using element 0 as the timeout seconds value, and element 1 as the retry interval seconds value
+
 ### Unexpected pages
 
 The `unexpectedPages` option allows to specify a list of unexpected `Page` classes that will be checked for when ”at“ checks are performed. Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined:
