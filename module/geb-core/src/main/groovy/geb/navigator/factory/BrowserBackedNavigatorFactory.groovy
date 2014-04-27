@@ -14,23 +14,33 @@
  * limitations under the License.
  */
 
-
-
 package geb.navigator.factory
 
 import geb.Browser
 import geb.navigator.Navigator
+import geb.waiting.WebDriverWaitWrapper
 import org.openqa.selenium.By
+import org.openqa.selenium.WebElement
 
 class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
-
 	BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
 		super(browser, innerNavigatorFactory)
 	}
 
 	@Override
 	Navigator getBase() {
-		createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName("html"))))
-	}
+        WebElement rootHtmlElement
 
+        By htmlTagLocator = By.tagName(browser.config.htmlRootTagName)
+
+        if (browser.config.htmlParseWaitEnabled) {
+            WebDriverWaitWrapper waitWrapper = new WebDriverWaitWrapper(browser.driver, browser.config.htmlParseWaitTimeout)
+
+            rootHtmlElement = waitWrapper.waitUntilElementPresent(htmlTagLocator)
+        } else {
+            rootHtmlElement = browser.driver.findElement(htmlTagLocator)
+        }
+
+        createFromWebElements(Collections.singletonList(rootHtmlElement))
+	}
 }

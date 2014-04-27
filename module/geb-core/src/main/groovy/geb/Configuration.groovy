@@ -159,6 +159,22 @@ class Configuration {
 		rawConfig.atCheckWaiting = waitForParam
 	}
 
+    boolean isHtmlParseWaitEnabled() {
+        readValue('htmlParseWaitEnabled', false)
+    }
+
+    void setHtmlParseWaitEnabled(boolean htmlParseWaitEnabled) {
+        rawConfig.htmlParseWaitEnabled = htmlParseWaitEnabled
+    }
+
+    Integer getHtmlParseWaitTimeout() {
+        readValue('htmlParseWaitTimeout', Wait.DEFAULT_TIMEOUT)
+    }
+
+    void setHtmlParseWaitTimeout(Integer htmlParseWaitTimeout) {
+        rawConfig.htmlParseWaitTimeout = htmlParseWaitTimeout
+    }
+
 	Collection<Class<? extends Page>> getUnexpectedPages() {
 		rawConfig.unexpectedPages ?: []
 	}
@@ -469,6 +485,17 @@ class Configuration {
 	void setDownloadConfig(Closure config) {
 		rawConfig.defaultDownloadConfig = config
 	}
+
+    /**
+     * Can get/set the HTML root tag name so we can override this in tests
+     */
+    String getHtmlRootTagName() {
+        readValue('htmlRootTagName', 'html')
+    }
+
+    void setHtmlRootTagName(String rootTagName) {
+        rawConfig.htmlRootTagName = rootTagName
+    }
 
 
 	protected readValue(String name, defaultValue) {
