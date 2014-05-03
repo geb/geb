@@ -1,3 +1,5 @@
+[![Build Status](https://snap-ci.com/geb/geb/branch/master/build_image)](https://snap-ci.com/geb/geb/branch/master)
+
 Geb (pronounced “jeb”) is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language.
 
 For more information about the project, see the [http://www.gebish.org](http://www.gebish.org/).
