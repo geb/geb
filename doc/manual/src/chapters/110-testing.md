@@ -1,6 +1,6 @@
 # Testing
 
-Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [TestNG][testng], [EasyB][easyb] and [Cuke4Duke][cuke4duke].
+Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [TestNG][testng] and [Cuke4Duke][cuke4duke].
 
 ## Spock, JUnit & TestNG
 
@@ -127,50 +127,6 @@ The following table illustrates the specific JARs and class names for Spock and 
 The following projects can be used as starting references:
 
 * [https://github.com/geb/geb-example-gradle](https://github.com/geb/geb-example-gradle)
-
-## EasyB
-
-Geb's [EasyB][easyb] support is based around the [binding management features](binding.html) discussed earlier. 
-EasyB stories are implemented as Groovy scripts with a binding, 
-and the Geb plugin simply integrates Geb's [BindingUpdater][bindingupdater-api] into the EasyB lifecycle.
-
-> The Geb EasyB plugin is currently under-developed and is in need of some attention. If you'd like to see better EasyB integration consider getting involved in its development.
-
-Here's a quick example…
-
-    using "geb" // EasyB syntax for using plugins
-    
-    scenario "using geb", {
-        given "our base url", {
-            baseUrl = "http://my.app"
-        }
-
-        when "we go to the page", {
-            to SomePage
-        }
-
-        then "we arrive at the page", {
-            at SomePage
-        }
-
-        and "can use the javascript interface", {
-            js.someJsVariable.shouldBe 1
-        }
-
-        and "can do some waiting", {
-            waitFor { $("p").text() == "done" }
-        }
-        
-        and "can work with the page", {
-            page.div.text().shouldBe "d1"
-        }
-    }
-    
-    class SomePage extends geb.Page {
-        static content = {
-            div { $("#d1") }
-        }
-    }
 
 ### Configuration
 

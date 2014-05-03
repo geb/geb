@@ -27,7 +27,6 @@
 [testng]: http://testng.org/
 [cuke4duke]: https://github.com/cucumber/cuke4duke/wiki
 [javascriptexecutor]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html
-[easyb]: http://www.easyb.org/
 [remotewebdriver]: http://code.google.com/p/selenium/wiki/RemoteWebDriver
 [remotewebdriver-server]: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer
 [configslurper]: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html

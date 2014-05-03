@@ -61,6 +61,10 @@ This page lists the high level changes between versions of Geb.
 * Ignore `atCheckWaiting` setting when checking for unexpected pages. \[[GEB-267](http://jira.codehaus.org/browse/GEB-267)\]
 * Added missing range variants of find/$ methods. \[[GEB-283](http://jira.codehaus.org/browse/GEB-283)\]
 
+#### Breaking Changes
+
+* Removed easyb support. \[[GEB-277](http://jira.codehaus.org/browse/GEB-277)\]
+
 ### 0.9.2
 
 #### New Features

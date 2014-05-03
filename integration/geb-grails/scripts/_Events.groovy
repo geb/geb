@@ -92,7 +92,6 @@ The available testing adapters are:
 
 - geb-spock (for Spock Framework, requires the grails-spock plugin)
 - geb-junit (for JUnit testing, no other plugins required)
-- geb-easyb (for EasyB, requires the grails-easyb plugin)
 
 
 The Grails specific classes such as grails.plugin.geb.GebSpec have also been removed. You should replace your usage
@@ -100,7 +99,6 @@ of these classes with the equivalent from the relevant testing adapter:
 
 - spock: geb.spock.GebReportingSpec
 - junit: geb.junit4.GebReportingTest
-- easyb: Use 'geb' plugin instead of 'geb-grails'
 
 Please see the Geb website for more information if required.
 """

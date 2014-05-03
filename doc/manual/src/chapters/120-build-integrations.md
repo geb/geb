@@ -6,7 +6,7 @@ This kind of integration for Geb is typically focused on managing the base URL a
 
 [Grails][grails] is a popular web app framework. There is a [grails-geb plugin](http://grails.org/plugin/geb) available that allows you to use Geb for your Grails functional tests. This plugin simply manages the `baseUrl` and `reportsDir` configuration items.
 
-You still need to include the appropriate Geb module for testing (i.e. `geb-junit4`, `geb-spock` or `geb-easyb`) yourself. You may also need to depend on other plugins like the [`grails-spock`](http://grails.org/plugin/spock) plugin to enable those kinds of tests.
+You still need to include the appropriate Geb module for testing (i.e. `geb-junit4` or `geb-spock`) yourself. You may also need to depend on other plugins like the [`grails-spock`](http://grails.org/plugin/spock) plugin to enable those kinds of tests.
 
 For example, if you plan to use Spock with Geb you would need to add the following to the `BuildConfig.groovy`…
 
