@@ -28,14 +28,17 @@ task allCrossBrowserTests {
 
 sauceLabs {
 	browsers {
-		firefox_linux_19
-		firefox_windows_19
-		firefox_mac_19
-		chrome_linux
-		chrome_windows
-		chrome_mac
-		internetExplorer_vista_8
-		internetExplorer_vista_9
+		chrome_linux_34
+		delegate."chrome_Windows 7_34"
+		delegate."chrome_OS X 10.9_34"
+		firefox_linux_28
+		delegate."firefox_Windows 7_28"
+		delegate."firefox_OS X 10.9_28"
+		delegate."internetExplorer_Windows 7_8"
+		delegate."internetExplorer_Windows 7_9"
+		delegate."internetExplorer_Windows 7_10"
+		delegate."internetExplorer_Windows 7_11"
+		delegate."safari_OS X 10.9_7"
 	}
 	task {
 		testClassesDir = test.testClassesDir
