@@ -63,5 +63,12 @@ abstract class BaseWindowHandlingSpec extends GebSpecWithServer {
 
 	protected void openWindow(int index) {
 		$("a", index - 1).click()
+
+		def originalWindowHandle = currentWindow
+		//ensure that we can switch to the new window by name, for some drivers (IE, Safari) it's not instant
+		waitFor(40) {
+			switchToWindow(windowName(index))
+			switchToWindow(originalWindowHandle)
+		}
 	}
 }
