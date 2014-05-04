@@ -2,8 +2,10 @@ package geb.interaction
 
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
+import spock.lang.IgnoreIf
 
 @CrossBrowser
+@IgnoreIf({ System.getProperty("geb.sauce.browser")?.startsWith('safari') })
 class InteractionsSupportSpec extends GebSpecWithServer {
 
 	def setup() {

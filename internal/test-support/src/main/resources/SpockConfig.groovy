@@ -1,12 +1,8 @@
 import geb.test.CrossBrowser
-import geb.interaction.InteractionsSupportSpec
 
-def sauceBrowser = System.getProperty("geb.sauce.browser")
-if (sauceBrowser) {
+def usingSauce = System.getProperty("geb.sauce.browser")
+if (usingSauce) {
 	runner {
 		include CrossBrowser
-		if (sauceBrowser.startsWith('safari')) {
-			exclude InteractionsSupportSpec
-		}
 	}
 }

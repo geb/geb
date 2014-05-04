@@ -223,11 +223,11 @@ class PageOrientedSpec extends GebSpecWithServer {
 		then: 'the results are the same'
 		converted == manual
 
-		and: 'the raw page url does not contain the extra slash'
-		getPageUrl(convertToPath('foo')) == 'http://domain.tld/theview?theParam=foo'
+		then: 'the raw page url does not contain the extra slash'
+		getPageUrl(convertToPath('foo')) == '/theview?theParam=foo'
 
 		and: 'the default convertToPath still works'
-		getPageUrl(convertToPath(1, 2)) == 'http://domain.tld/theview/1/2'
+		getPageUrl(convertToPath(1, 2)) == '/theview/1/2'
 	}
 
 	def "verify content aliasing works"() {
@@ -307,7 +307,7 @@ class PageOrientedSpecPageD extends Page {
 }
 
 class ConvertPage extends Page {
-	static url = 'http://domain.tld/theview'
+	static url = '/theview'
 
 	String convertToPath(param) {
 		return "?theParam=$param"
