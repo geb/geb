@@ -14,6 +14,6 @@ if (sauceBrowser) {
 		assert username
 		def accessKey = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
 		assert accessKey
-		new SauceLabsDriverFactory().create(sauceBrowser, username, accessKey, ['selenium-version': '2.41.0', 'command-timeout': 10])
+		new SauceLabsDriverFactory().create(sauceBrowser, username, accessKey, ['selenium-version': '2.41.0'])
 	}
 }

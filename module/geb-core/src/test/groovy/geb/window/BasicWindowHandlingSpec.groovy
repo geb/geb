@@ -20,7 +20,7 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 		when:
 		openWindow(index)
 		//ensure that we can switch to the new window by name, for some drivers (IE, Safari) it's not instant
-		waitFor(20) {
+		waitFor(40) {
 			switchToWindow(windowName)
 			switchToWindow(originalWindowHandle)
 		}
