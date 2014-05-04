@@ -47,7 +47,10 @@ allprojects { project ->
 
 		repositories {
 			mavenCentral()
-			mavenRepo name: "java.net", url: "http://download.java.net/maven/2"
+			maven {
+				name "java.net"
+				url "http://download.java.net/maven/2"
+			}
 		}
 
 		groovyModules = [
