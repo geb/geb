@@ -23,6 +23,13 @@ configurations {
 	}
 	test {
 		exclude module: "groovy-all"
+		resolutionStrategy {
+			eachDependency {
+				if (it.requested.group == "org.seleniumhq.selenium") {
+					it.useVersion '2.26.0'
+				}
+			}
+		}
 	}
 	releaseBootstrap.extendsFrom bootstrap
 }
@@ -39,7 +46,7 @@ dependencies {
 	bootstrap "org.codehaus.groovy:groovy-all:1.8.6"
 	
 	test project(':module:geb-junit4')
-	test htmlUnitDriverDependency
+	test "org.seleniumhq.selenium:selenium-htmlunit-driver:2.26.0"
 	test project(':module:geb-spock'), {
 		exclude module: "spock-core"
 		exclude module: "groovy-all"
