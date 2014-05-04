@@ -13,11 +13,20 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
 	@Unroll
 	def "withWindow changes focus to window with given name and returns closure return value"() {
+		given:
+		def windowName = windowName(index)
+		def originalWindowHandle = currentWindow
+
 		when:
 		openWindow(index)
+		//ensure that we can switch to the new window by name, for some drivers (IE, Safari) it's not instant
+		waitFor {
+			switchToWindow(windowName)
+			switchToWindow(originalWindowHandle)
+		}
 
 		then:
-		withWindow(windowName(index)) { title } == windowTitle(index)
+		withWindow(windowName) { title } == windowTitle(index)
 
 		where:
 		index << [1,2]
