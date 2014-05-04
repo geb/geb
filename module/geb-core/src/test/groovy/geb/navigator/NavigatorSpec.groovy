@@ -1,11 +1,8 @@
 package geb.navigator
 
 import geb.Page
-import geb.error.UndefinedAtCheckerException
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
-import org.openqa.selenium.WebElement
-import spock.lang.Issue
 import spock.lang.Unroll
 
 @Unroll
@@ -39,21 +36,6 @@ class NavigatorSpec extends GebSpecWithServer {
 		$("#multi").attr("multiple") == "true"
 		$("#multi").@multiple == "true"
 		$("#multi").attr('multiple') == "true"
-	}
-
-	def getElement() {
-		given:
-		html {
-			div(id: "a")
-			div(id: "b")
-			div(id: "c")
-		}
-
-		expect:
-		$("div").getElement(0).getAttribute("id") == "a"
-		$("div").getElement(1).getAttribute("id") == "b"
-		$("foo").getElement(0) == null
-		$("foo").getElement(10) == null
 	}
 
 	def add() {
@@ -235,18 +217,6 @@ class NavigatorSpec extends GebSpecWithServer {
 		$("foo").first()*.@id == []
 	}
 
-	def firstElement() {
-		given:
-		html {
-			div(id: "a", 'class': "a1 a2 a3")
-			div(id: "b", 'class': "b1")
-		}
-
-		expect:
-		$("div").firstElement().getAttribute("id") == "a"
-		$("foo").firstElement() == null
-	}
-
 	def last() {
 		given:
 		html {
@@ -257,18 +227,6 @@ class NavigatorSpec extends GebSpecWithServer {
 		expect:
 		$("div").last()*.@id == ["b"]
 		$("foo").last()*.@id == []
-	}
-
-	def lastElement() {
-		given:
-		html {
-			div(id: "a", 'class': "a1 a2 a3")
-			div(id: "b", 'class': "b1")
-		}
-
-		expect:
-		$("div").lastElement().getAttribute("id") == "b"
-		$("foo").lastElement() == null
 	}
 
 	def verifyNotEmpty() {
@@ -414,69 +372,6 @@ class NavigatorSpec extends GebSpecWithServer {
 		then:
 		UnsupportedOperationException e2 = thrown()
 		e2.message == "Value of 'readonly' attribute can only be checked for the following elements: input, textarea."
-	}
-
-	def "click is called only on the first element of the navigator"() {
-		given:
-		def element1 = Mock(WebElement)
-		def element2 = Mock(WebElement)
-		def navigator = new NonEmptyNavigator(browser, [element1, element2])
-
-		when: navigator.click()
-
-		then:
-		1 * element1.click()
-		0 * element2.click()
-		0 * _
-	}
-
-	@Issue('GEB-160')
-	def 'click call returns receiver for parameters: #clickParams'() {
-		given:
-		html { button("") }
-
-		when:
-		def navigator = $('button')
-
-		then:
-		navigator.click(* clickParams).is(navigator)
-
-		where:
-		clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]]]
-	}
-
-	def 'click can be used with pages without at checker'() {
-		given:
-		html { div('some text') }
-
-		when:
-		$('div').click(Page)
-
-		then:
-		notThrown(UndefinedAtCheckerException)
-	}
-
-	def 'click fails when used with a list of pages, one of which does not have an at checker'() {
-		given:
-		html { div('some text') }
-
-		when:
-		$('div').click([PageWithoutAtChecker, PageWithAtChecker])
-
-		then:
-		thrown(UndefinedAtCheckerException)
-	}
-
-	def allElements() {
-		when:
-		html {
-			div(id: "a")
-			div(id: "b")
-			div(id: "c")
-		}
-
-		then:
-		$("div").allElements()*.getAttribute("id") == ["a", "b", "c"]
 	}
 
 	def eq() {

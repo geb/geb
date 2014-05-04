@@ -7,7 +7,7 @@ import spock.lang.Specification
 class NavigatorGroovySpec extends Specification {
 
 	@Shared Browser browser
-	@Shared geb.navigator.Navigator onPage
+	@Shared Navigator onPage
 
 	def setupSpec() {
 		browser = new Browser()
