@@ -178,6 +178,8 @@ subprojects {
 					}
 				}
 			}
+
+			onlyIf { isSnapshot || !project.hasProperty("ci") }
 		}
 	}
 }
