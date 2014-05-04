@@ -28,9 +28,9 @@ task allCrossBrowserTests {
 
 sauceLabs {
 	browsers {
-		chrome_linux_34
-		delegate."chrome_Windows 7_34"
-		delegate."chrome_OS X 10.9_34"
+		chrome_linux
+		delegate."chrome_Windows 7"
+		delegate."chrome_OS X 10.9"
 		firefox_linux_28
 		delegate."firefox_Windows 7_28"
 		delegate."firefox_OS X 10.9_28"
