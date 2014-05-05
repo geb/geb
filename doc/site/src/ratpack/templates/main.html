@@ -18,8 +18,8 @@
 		})();
 	</script>
 
-	<link type="text/css" rel="stylesheet" href="css/shCore.css"></link>
-	<link type="text/css" rel="stylesheet" href="css/shThemeEclipse.css"></link>
+	<link type="text/css" rel="stylesheet" href="css/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="css/shThemeEclipse.css"/>
 	<script language="javascript" src="js/jquery.js"></script>
 	<script language="javascript" src="js/shCore.js"></script>
 	<script language="javascript" src="js/shBrushGroovy.js"></script>
@@ -80,13 +80,16 @@
 			<% render "includes/${model.page}.html" %>
 		</div>
 		<div id="sidebar">
-			<% model.map('pages').each { String section, Map<String, String> pages -> %>
-			<h1>${section}</h1>
-			<ul class="sidemenu">
-				<% pages.each { label, name -> %>
-				<li class="${label} ${label == model.page ? 'selected' : ''}"><a href="$label">${name}</a></li>
-				<% } %>
-			</ul>
+			<%
+				def sections = (Map<String, Map<String, String>>) model.map('pages')
+				sections.each { String section, pages ->
+			%>
+				<h1>${section}</h1>
+				<ul class="sidemenu">
+					<% pages.each { String label, String name -> %>
+					<li class="${label} ${label == model.page ? 'selected' : ''}"><a href="$label">${name}</a></li>
+					<% } %>
+				</ul>
 			<% } %>
 		</div>
 	</div>
