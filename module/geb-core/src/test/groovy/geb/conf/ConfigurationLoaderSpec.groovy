@@ -16,6 +16,7 @@
 package geb.conf
 
 import geb.ConfigurationLoader
+import geb.error.UnableToLoadException
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -68,7 +69,7 @@ class ConfigurationLoaderSpec extends Specification {
 		load new URL("file:///idontexist")
 		
 		then:
-		thrown ConfigurationLoader.UnableToLoadException
+		thrown UnableToLoadException
 	}
 
 	def "verify default config class name"() {

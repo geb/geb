@@ -16,7 +16,7 @@
 package geb
 
 import geb.buildadapter.BuildAdapterFactory
-import geb.error.GebException
+import geb.error.UnableToLoadException
 
 /**
  * Manages the process of creating {@link geb.Configuration} objects, which control the runtime behaviour of Geb.
@@ -27,7 +27,7 @@ import geb.error.GebException
  * with that.
  * <p>
  * Another avenue for custom configuration is usage of the {@link geb.BuildAdapter build adapter}. The build adapter that
- * will be used with any loaded configurations will be what is provided by {@link #createBuildAdapter()}
+ * will be used with any loaded configurations will be what is provided by {@link geb.ConfigurationLoader#createBuildAdapter(groovy.lang.GroovyClassLoader)}.
  *
  * @see geb.Configuration
  * @see geb.Browser
@@ -62,7 +62,8 @@ class ConfigurationLoader {
 	 * <p>
 	 * If any of the parameters are {@code null}, the appropriate {@code getDefault«something»()} method will be used to supply the value.
 	 *
-	 * @param classLoader The loader to use to find classpath resources and to {@link #createBuildAdapter() load the build adapter}
+	 * @param classLoader The loader to use to find classpath resources and to
+	 * {@link #createBuildAdapter(groovy.lang.GroovyClassLoader) load the build adapter}
 	 * @param environment If loading a config script, the environment to load it with
 	 * @param properties The properties given to created {@link geb.Configuration} objects
 	 * @see #getDefaultEnvironment()
@@ -88,7 +89,7 @@ class ConfigurationLoader {
 	 * <p>
 	 * Uses {@link #getDefaultConfigScriptResourcePath()} for the path and {@link #getDefaultConfigClassName()} for the class name.
 	 *
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script or class exists but could not be read or parsed.
+	 * @throws geb.error.UnableToLoadException if the config script or class exists but could not be read or parsed.
 	 * @see #getConf(String)
 	 * @see #getConfFromClass(String)
 	 */
@@ -106,7 +107,7 @@ class ConfigurationLoader {
 	 * the same copy of the Geb classes as this class loader and any other classes Geb depends on.</p>
 	 *
 	 * @param configFileResourcePath the classpath relative path to the config script to use (if {@code null}, {@link #getDefaultConfigScriptResourcePath() default} will be used).
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script exists but could not be read or parsed.
+	 * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
 	 * @see #getConf(URL, GroovyClassLoader)
 	 * @see #getConfFromClass(String)
 	 */
@@ -128,7 +129,7 @@ class ConfigurationLoader {
 	 * the same copy of the Geb classes as this class loader and any other classes Geb depends on.</p>
 	 *
 	 * @param configFileResourcePath the classpath relative path to the config script to use (if {@code null}, {@link #getDefaultConfigScriptResourcePath() default} will be used).
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script exists but could not be read or parsed.
+	 * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
 	 * @see #getConf(URL, GroovyClassLoader)
 	 * @see #getConf(String)
 	 */
@@ -152,7 +153,7 @@ class ConfigurationLoader {
 	 *
 	 * @param configLocation The absolute URL to the config script to use for the config (cannot be {@code null})
 	 * @param classLoader The class loader to load the config script with (must be the same or a child of the class loader of this class)
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script exists but could not be read or parsed.
+	 * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
 	 */
 	Configuration getConf(URL configLocation, GroovyClassLoader classLoader) throws UnableToLoadException {
 		if (configLocation == null) {
@@ -172,7 +173,7 @@ class ConfigurationLoader {
 	 * the same copy of the Geb classes as this class loader and any other classes Geb depends on.</p>
 	 *
 	 * @param configFileResourcePath the classpath relative path to the config script to use (if {@code null}, {@link #getDefaultConfigScriptResourcePath() default} will be used).
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script exists but could not be read or parsed.
+	 * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
 	 * @see #getConf(Class, GroovyClassLoader)
 	 * @see #getConf(String)
 	 */
@@ -190,7 +191,7 @@ class ConfigurationLoader {
 	 * the same copy of the Geb classes as this class loader and any other classes Geb depends on.</p>
 	 *
 	 * @param configFileResourcePath the classpath relative path to the config script to use (if {@code null}, {@link #getDefaultConfigScriptResourcePath() default} will be used).
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script exists but could not be read or parsed.
+	 * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
 	 * @see #getConfFromClass(String)
 	 * @see #getConf(Class, GroovyClassLoader)
 	 */
@@ -221,7 +222,7 @@ class ConfigurationLoader {
 	 *
 	 * @param configClass Class that contains configuration
 	 * @param classLoader The class loader to load the config script with (must be the same or a child of the class loader of this class)
-	 * @throws geb.ConfigurationLoader.UnableToLoadException when config class cannot be read
+	 * @throws geb.error.UnableToLoadException when config class cannot be read
 	 */
 	Configuration getConf(Class configClass, GroovyClassLoader classLoader) throws UnableToLoadException {
 		createConf(loadRawConfig(configClass), classLoader)
@@ -263,20 +264,10 @@ class ConfigurationLoader {
 		'GebConfig'
 	}
 
-	static class UnableToLoadException extends GebException {
-		UnableToLoadException(URL configLocation, String environment, Throwable cause) {
-			super("Unable to load configuration @ '$configLocation' (with environment: $environment)", cause)
-		}
-
-		UnableToLoadException(Class configClass, String environment, Throwable cause) {
-			super("Unable to load configuration from class '$configClass' (with environment: $environment)", cause)
-		}
-	}
-
 	/**
 	 * Reads the config scripts at {@code configLocation} with the {@link #createSlurper()}
 	 *
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config script could not be read.
+	 * @throws geb.error.UnableToLoadException if the config script could not be read.
 	 */
 	protected ConfigObject loadRawConfig(URL configLocation, GroovyClassLoader classLoader) throws UnableToLoadException {
 		loadRawConfig(createSlurper(classLoader), configLocation)
@@ -285,7 +276,7 @@ class ConfigurationLoader {
 	/**
 	 * Reads the config class with the {@link #createSlurper()}
 	 *
-	 * @throws geb.ConfigurationLoader.UnableToLoadException if the config class could not be read.
+	 * @throws geb.error.UnableToLoadException if the config class could not be read.
 	 */
 	protected ConfigObject loadRawConfig(Class configClass) throws UnableToLoadException {
 		loadRawConfig(createSlurper(), configClass)
