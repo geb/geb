@@ -55,7 +55,8 @@ This page lists the high level changes between versions of Geb.
 
 * Documentation site has been migrated to [Ratpack](http://ratpack.io). \[[GEB-261](http://jira.codehaus.org/browse/GEB-261)\]
 * Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. \[[GEB-269](http://jira.codehaus.org/browse/GEB-269)\]
-* Cross browser tests are now also executed using Safari driver \[[GEB-261](http://jira.codehaus.org/browse/GEB-276)\]
+* Cross browser tests are now also executed using Safari driver \[[GEB-276](http://jira.codehaus.org/browse/GEB-276)\]
+* Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI \[[GEB-295](http://jira.codehaus.org/browse/GEB-295)\]
 
 #### Fixes
 
