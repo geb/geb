@@ -15,9 +15,11 @@
 package geb.conf
 
 import geb.Configuration
+import geb.driver.DriverCreationException
 import geb.error.UnableToLoadAnyDriversException
 import geb.error.UnknownDriverShortNameException
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -158,5 +160,18 @@ class ConfigurationDriverCreationSpec extends Specification {
 		then:
 		d instanceof HtmlUnitDriver
 	}
-	
+
+	@Issue('http://jira.codehaus.org/browse/GEB-231')
+	def "DriverCreationException is thrown when creation closure returns something that is not a driver instance"() {
+		given:
+		def config = new ConfigObject()
+		config.cacheDriver = false
+		config.driver = { 'not a driver' }
+
+		when:
+		new Configuration(config).driver
+
+		then:
+		thrown(DriverCreationException)
+	}
 }
