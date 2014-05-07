@@ -4,7 +4,7 @@ import geb.gradle.saucelabs.SauceConnect
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
-class StopSauceConnect extends DefaultTask{
+class StopSauceConnect extends DefaultTask {
 
 	SauceConnect sauceConnect
 

@@ -4,7 +4,7 @@ Geb comes with some tools that make configuring your Geb code to run in SauceLab
 
 ## SauceLabsDriverFactory
 
-First, there is the `SauceLabsDriverFactory` that given a browser specification as well as an username and access key creates an instance of `RemoteWebDriver` configured to use a browser in SauceLabs cloud. One would typically use it in `GebConfig.groovy` like this:
+First, there is the `SauceLabsDriverFactory` that given a browser specification as well as an username and access key creates an instance of `RemoteWebDriver` configured to use a browser in the SauceLabs cloud. One would typically use it in `GebConfig.groovy` like this:
 
 	def sauceBrowser = System.getProperty("geb.sauce.browser")
 	if (sauceBrowser) {
@@ -17,7 +17,7 @@ First, there is the `SauceLabsDriverFactory` that given a browser specification 
 		}
 	}
 
-This will configure Geb to run in SauceLabs if `geb.sauce.browser` system property is set, and if not it will use whatever driver that is configured. This is useful if you want to run the code in local browser for development. In theory you could use any system property to pass the browser specification but `geb.sauce.browser` is also used by [Gradle geb-saucelabs plugin](#gradle_geb_saucelabs_plugin), so it's a good idea to stick with that property name. The example also uses two environment variables to pass the username and access key to the factory, as it's usually the easiest way of passing something secret to your build in open CI services like [drone.io](https://drone.io/) or [Travis CI](https://travis-ci.org/) if your code is public, but you could use any other mechanism if desired.
+This will configure Geb to run in SauceLabs if the `geb.sauce.browser` system property is set, and if not it will use whatever driver that is configured. This is useful if you want to run the code in local browser for development. In theory you could use any system property to pass the browser specification but `geb.sauce.browser` is also used by [Gradle geb-saucelabs plugin](#gradle_geb_saucelabs_plugin), so it's a good idea to stick with that property name. The example also uses two environment variables to pass the username and access key to the factory, as it's usually the easiest way of passing something secret to your build in open CI services like [drone.io](https://drone.io/) or [Travis CI](https://travis-ci.org/) if your code is public, but you could use any other mechanism if desired.
 
 You can optionally pass additional configuration settings by providing a Map to the`create()` method as the last parameter. The configuration options available are described on the [SauceLabs additional config page](https://saucelabs.com/docs/additional-config).
 
