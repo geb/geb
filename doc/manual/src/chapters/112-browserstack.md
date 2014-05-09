@@ -45,9 +45,9 @@ The second part of BrowserStack integration is the `geb-browserstack` Gradle plu
 	browserStack {
 		application 'http://localhost:8080' //3
 		browsers { //4
-			firefox_linux_19
+			firefox_mac_19
 			chrome_mac
-			internetExplorer_vista_9
+			internetExplorer_windows_9
 		}
 		task { //5
 			testClassesDir = test.testClassesDir
@@ -60,4 +60,4 @@ The second part of BrowserStack integration is the `geb-browserstack` Gradle plu
 		}
 	}
 
-In (1) we apply the plugin to the build and in (2) we're specifying how to resolve the plugin. In (3) we're what applications the BrowserStack Tunnel will be able to access.  Multiple applications can be specified. In (4) we're saying that we want our tests to run in 3 different browsers; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and `internetExplorerVista9Test`. You can use `allBrowserStackTests` task that will depend on all of the generated test tasks to run all of them during a build. The configuration closure specified at (5) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured. Finally in (6) we pass credentials for BrowserStack.
+In (1) we apply the plugin to the build and in (2) we're specifying how to resolve the plugin. In (3) we're what applications the BrowserStack Tunnel will be able to access.  Multiple applications can be specified. In (4) we're saying that we want our tests to run in 3 different browsers; this will generate the following `Test` tasks: `firefoxMac19Test`, `chromeMacTest` and `internetExplorerWindows9Test`. You can use `allBrowserStackTests` task that will depend on all of the generated test tasks to run all of them during a build. The configuration closure specified at (5) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured. Finally in (6) we pass credentials for BrowserStack.
