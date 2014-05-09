@@ -33,7 +33,7 @@ class BrowserStackExtension {
 	void addExtensions() {
 		extensions.browsers = project.container(BrowserSpec)
 		account = new BrowserStackAccount()
-		extensions.create('tunnel', BrowserStackTunnel, project, account, project.logger, tunnelJarUrl, tunnelJar)
+		extensions.create('tunnel', BrowserStackTunnel, project, account, project.logger, tunnelJar)
 	}
 
 	void task(Closure configuration) {

@@ -16,6 +16,7 @@
 
 package geb.gradle.browserstack
 
+import geb.gradle.browserstack.task.DownloadBrowserStackTunnel
 import geb.gradle.browserstack.task.StartBrowserStackTunnel
 import geb.gradle.browserstack.task.StopBrowserStackTunnel
 import org.gradle.api.Plugin
@@ -65,6 +66,11 @@ class BrowserStackPlugin implements Plugin<Project> {
 	}
 
 	void addTunnelTasks() {
+		project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel) {
+			conventionMapping.tunnelJarUrl = { project.browserStack.tunnelJarUrl }
+			conventionMapping.tunnelJar = { project.browserStack.tunnelJar }
+		}
+
 		project.task('closeBrowserStackTunnel', type: StopBrowserStackTunnel) {
 			browserStackTunnel = project.browserStack.tunnel
 		}
@@ -73,6 +79,7 @@ class BrowserStackPlugin implements Plugin<Project> {
 
 		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartBrowserStackTunnel) {
 			inBackground = true
+			dependsOn 'downloadBrowserStackTunnel'
 			finalizedBy 'closeBrowserStackTunnel'
 		}
 

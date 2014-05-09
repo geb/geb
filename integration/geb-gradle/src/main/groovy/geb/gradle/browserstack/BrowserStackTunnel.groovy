@@ -27,7 +27,6 @@ class BrowserStackTunnel {
 	final protected Project project
 	final protected BrowserStackAccount account
 	final protected Logger logger
-	final protected String tunnelJarUrl
 	final protected File tunnelJar
 
 	protected Process tunnelProcess
@@ -35,28 +34,17 @@ class BrowserStackTunnel {
 	long timeout = 3
 	TimeUnit timeoutUnit = TimeUnit.MINUTES
 
-	BrowserStackTunnel(Project project, BrowserStackAccount account, Logger logger, String tunnelJarUrl, File tunnelJar) {
+	BrowserStackTunnel(Project project, BrowserStackAccount account, Logger logger, File tunnelJar) {
 		this.project = project
 		this.account = account
 		this.logger = logger
-		this.tunnelJarUrl = tunnelJarUrl
 		this.tunnelJar = tunnelJar
-	}
-
-	void ensureJarAvailable() {
-		tunnelJar.parentFile.mkdirs()
-		if (tunnelJar.exists()) {
-			logger.info("Downloading {} to {}", tunnelJarUrl, tunnelJar.path)
-			tunnelJar << new URL(tunnelJarUrl).bytes
-		}
 	}
 
 	void startTunnel(File workingDir, boolean background, List<URL> applicationUrls) {
 		if (!account.accessKey) {
 			throw new InvalidUserDataException("No BrowserStack access key set")
 		}
-
-		ensureJarAvailable()
 
 		def jvm = org.gradle.internal.jvm.Jvm.current()
 		def javaBinary = jvm.javaExecutable.absolutePath
