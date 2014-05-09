@@ -105,6 +105,10 @@ class BrowserStackTunnel {
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {
-		return applicationUrls.collect { "${it.host}:${it.port}:${it.protocol=='https'?'1':'0'}" }.join(",")
+		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol=='https'?'1':'0'}" }.join(",")
+	}
+
+	static int determinePort(URL url) {
+		url.port > 0 ? url.port : (url.protocol == "https" ? 443 : 80)
 	}
 }
