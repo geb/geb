@@ -23,7 +23,7 @@ class BrowserStackExtension {
 	Project project
 	BrowserStackAccount account
     String tunnelJarUrl = "http://www.browserstack.com/BrowserStackTunnel.jar"
-	File tunnelJar = new File(System.getProperty("user.home"), ".browserstack/BrowserStackTunnel.jar")
+	File tunnelJar = project.rootProject.file('.gradle/browserstack/BrowserStackTunnel.jar')
 	List<URL> applicationUrls = []
 
 	BrowserStackExtension(Project project) {

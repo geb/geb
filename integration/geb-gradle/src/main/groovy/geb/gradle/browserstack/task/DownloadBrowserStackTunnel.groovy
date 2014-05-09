@@ -33,8 +33,6 @@ class DownloadBrowserStackTunnel extends DefaultTask {
 	void start() {
 		def tunnelJarUrl = getTunnelJarUrl()
 		def tunnelJar = getTunnelJar()
-		logger.info("tunnelJarUrl: {}", tunnelJarUrl)
-		logger.info("tunnelJar: {}", tunnelJar)
 		tunnelJar.parentFile.mkdirs()
 		if (!tunnelJar.exists()) {
 			logger.info("Downloading {} to {}", tunnelJarUrl, tunnelJar.path)
