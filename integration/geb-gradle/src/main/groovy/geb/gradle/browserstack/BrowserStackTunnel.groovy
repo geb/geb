@@ -53,6 +53,7 @@ class BrowserStackTunnel {
 
 			workingDir.mkdirs()
 			def command = [javaBinary] + assembleTunnelArgs(applicationUrls) as List<String>
+			logger.debug("running {}", command)
 			tunnelProcess = new ProcessBuilder(command).
 				redirectErrorStream(true).
 				directory(workingDir).
@@ -64,7 +65,7 @@ class BrowserStackTunnel {
 					tunnelProcess.inputStream.eachLine { String line ->
 						if (latch.count) {
 							logger.info "browserstack-tunnel: $line"
-							if (line.endsWith("You can now access your local server(s) in our remote browser:")) {
+							if (line.contains("You can now access your local server(s) in our remote browser:")) {
 								latch.countDown()
 							}
 						} else {
@@ -78,9 +79,11 @@ class BrowserStackTunnel {
 				throw new RuntimeException("Timeout waiting for BrowserStack tunnel to open")
 			}
 		} else {
+			def javaArgs = assembleTunnelArgs(applicationUrls)
+			logger.debug("running {} {}", javaBinary, javaArgs)
 			project.exec {
 				executable javaBinary
-				args assembleTunnelArgs(applicationUrls)
+				args javaArgs
 			}
 		}
 	}
@@ -98,7 +101,7 @@ class BrowserStackTunnel {
 			args << "-localIdentifier" << account.localId
 		}
 		args << account.accessKey << assembleAppSpecifier(applicationUrls)
-		return args
+		args
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {
