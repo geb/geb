@@ -68,6 +68,7 @@ This page lists the high level changes between versions of Geb.
 #### Breaking Changes
 
 * Removed easyb support. \[[GEB-277](http://jira.codehaus.org/browse/GEB-277)\]
+* `MissingMethodException` is now thrown when using shortcut for obtaining a navigator based on a control name and the returned navigator is empty. \[[GEB-239](http://jira.codehaus.org/browse/GEB-239)\]
 
 ### 0.9.2
 

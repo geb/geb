@@ -117,9 +117,11 @@ class NavigableSpec extends GebSpecWithServer {
 		thrown(UnresolvablePropertyException)
 	}
 
-	def "dynamic method call returns empty navigator"() {
-		expect:
-		z().empty
+	def "dynamic method call that resolves to an empty navigator throws missing method exception"() {
+		when:
+		z()
+		then:
+		thrown(MissingMethodException)
 	}
 
 	def "composition with navigators"() {

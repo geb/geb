@@ -72,6 +72,5 @@ class GebReportingTestTest extends GebReportingTest {
 	@After
 	void tearDown() {
 		server.stop()
-		super.tearDown()
 	}
 }

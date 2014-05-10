@@ -62,7 +62,6 @@ class GebTestTest extends GebTest {
 	@After
 	void tearDown() {
 		server.stop()
-		super.tearDown()
 	}
 }
 

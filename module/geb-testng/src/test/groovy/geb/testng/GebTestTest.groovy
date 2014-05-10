@@ -37,7 +37,6 @@ class GebTestTest extends GebTest {
 			</html>"""
 		}
 		browser.baseUrl = server.baseUrl
-		super.setUp()
 	}
 
 	@Test
@@ -62,7 +61,6 @@ class GebTestTest extends GebTest {
 	@AfterMethod
 	void tearDown() {
 		server.stop()
-		super.tearDown()
 	}
 }
 

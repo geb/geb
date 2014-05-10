@@ -455,12 +455,14 @@ class NonEmptyNavigator extends AbstractNavigator {
 	@Override
 	def methodMissing(String name, arguments) {
 		if (!arguments) {
-			navigatorFor collectElements {
+			def navigator = navigatorFor collectElements {
 				it.findElements By.name(name)
 			}
-		} else {
-			throw new MissingMethodException(name, getClass(), arguments)
+			if (!navigator.empty) {
+				return navigator
+			}
 		}
+		throw new MissingMethodException(name, getClass(), arguments)
 	}
 
 	@Override
