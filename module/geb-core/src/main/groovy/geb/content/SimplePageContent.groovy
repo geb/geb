@@ -18,27 +18,17 @@ import geb.navigator.Navigator
 
 class SimplePageContent extends TemplateDerivedPageContent implements Iterable<Navigator> {
 
-	@Delegate private NavigableSupport navigableSupport
-
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		navigableSupport = new NavigableSupport(this, null, navigator.browser.navigatorFactory.relativeTo(navigator))
 		super.init(template, navigator, *args)
-	}
-
-	private Navigator getNavigator() {
-		navigableSupport.find()
-	}
-
-	Iterator<Navigator> iterator() {
-		navigator.iterator()
 	}
 
 	@Override
 	boolean equals(Object o) {
 		if (o in SimplePageContent) {
 			super.equals(o)
+			false
 		} else {
-			def values = navigator*.value().findAll() { it != null }
+			def values = iterator()*.value().findAll() { it != null }
 			def value
 			switch (values.size()) {
 				case 0:
@@ -53,6 +43,4 @@ class SimplePageContent extends TemplateDerivedPageContent implements Iterable<N
 			value == o
 		}
 	}
-
-
 }

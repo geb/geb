@@ -14,7 +14,8 @@
  */
 package geb
 
-import geb.content.NavigableSupport
+import geb.content.PageContentContainer
+import geb.content.PageContentSupport
 import geb.content.PageContentTemplate
 import geb.content.PageContentTemplateBuilder
 import geb.content.TemplateDerivedPageContent
@@ -22,15 +23,15 @@ import geb.download.DownloadSupport
 import geb.frame.FrameSupport
 import geb.js.AlertAndConfirmSupport
 import geb.js.JavascriptInterface
-import geb.navigator.Navigator
+import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.WaitingSupport
 
-class Module extends TemplateDerivedPageContent {
+class Module extends TemplateDerivedPageContent implements PageContentContainer {
 
 	static base = null
 	
-	@Delegate private NavigableSupport navigableSupport
+	@Delegate private PageContentSupport pageContentSupport
 	@Delegate private DownloadSupport _downloadSupport
 	@Delegate private WaitingSupport _waitingSupport
 	@Delegate private FrameSupport frameSupport
@@ -38,10 +39,10 @@ class Module extends TemplateDerivedPageContent {
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
 	
-	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, 'content', this.class, Module)
-		navigableSupport = new NavigableSupport(this, contentTemplates, navigator.browser.navigatorFactory.relativeTo(navigator))
-		super.init(template, navigator, *args)
+	void init(PageContentTemplate template, NavigatorFactory navigatorFactory, Object[] args) {
+		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, navigatorFactory, 'content', this.class, Module)
+		pageContentSupport = new PageContentSupport(this, contentTemplates, navigatorFactory)
+		super.init(template, navigatorFactory.base, args)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport  = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)
@@ -52,4 +53,15 @@ class Module extends TemplateDerivedPageContent {
 		page.js
 	}
 
+	def methodMissing(String name, args) {
+		pageContentSupport.methodMissing(name, args)
+	}
+
+	def propertyMissing(String name) {
+		pageContentSupport.propertyMissing(name)
+	}
+
+	def propertyMissing(String name, val) {
+		pageContentSupport.propertyMissing(name, val)
+	}
 }

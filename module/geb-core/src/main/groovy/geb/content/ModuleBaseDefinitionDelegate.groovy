@@ -14,32 +14,26 @@
  */
 package geb.content
 
-import geb.navigator.Navigator
+import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
 
 class ModuleBaseDefinitionDelegate {
 
-	private startingBase
 	private params
 	
 	@Delegate private NavigableSupport navigableSupport
 	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	
-	ModuleBaseDefinitionDelegate(Navigator startingBase, Map params) {
-		this.startingBase = startingBase
+	ModuleBaseDefinitionDelegate(NavigatorFactory navigatorFactory, Map params) {
 		this.params = params
-		navigableSupport = new NavigableSupport(this, null, startingBase.browser.navigatorFactory.relativeTo(startingBase))
-	}
-	
-	def methodMissing(String name, args) {
-		startingBase."$name"(*args)
+		navigableSupport = new NavigableSupport(navigatorFactory)
 	}
 	
 	def propertyMissing(String name) {
 		if (params.containsKey(name)) {
 			params[name]
 		} else {
-			navigableSupport."$name"
+			throw new MissingPropertyException(name, ModuleBaseDefinitionDelegate)
 		}
 	}
 

@@ -17,7 +17,7 @@ package geb
 import geb.error.UnresolvablePropertyException
 import geb.test.GebSpecWithServer
 
-class NavigableSupportSpec extends GebSpecWithServer {
+class NavigableSpec extends GebSpecWithServer {
 
 	def setupSpec() {
 		responseHtml {

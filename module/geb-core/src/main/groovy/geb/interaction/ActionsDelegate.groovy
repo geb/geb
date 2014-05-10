@@ -21,7 +21,7 @@ class ActionsDelegate {
 			def argument = arg
 
 			try {
-				argument = arg.getElement(0)
+				argument = arg.firstElement()
 			} catch (MissingMethodException ex) {
 				// Empty exception block where WebDriver element has already been extracted
 			}

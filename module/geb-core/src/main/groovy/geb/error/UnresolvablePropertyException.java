@@ -14,20 +14,20 @@
  */
 package geb.error;
 
-import geb.content.Navigable;
+import geb.content.PageContentContainer;
 
 public class UnresolvablePropertyException extends GebException {
 
-	final private Navigable container;
+	final private PageContentContainer container;
 	final private String name;
 
-	public UnresolvablePropertyException(Navigable container, String name, String message) {
+	public UnresolvablePropertyException(PageContentContainer container, String name, String message) {
 		super(message);
 		this.container = container;
 		this.name = name;
 	}
 
-	public Navigable getContainer() {
+	public PageContentContainer getContainer() {
 		return container;
 	}
 

@@ -16,26 +16,27 @@ package geb.content
 
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
+import geb.navigator.factory.NavigatorFactory
 
 class ModuleBaseCalculator {
 
-	static Navigator calculate(Class moduleClass, Navigator startingBase, Map params) {
+	static NavigatorFactory calculate(Class moduleClass, NavigatorFactory navigatorFactory, Map params) {
 		def moduleBaseDefinition = moduleClass.base
 		if (!moduleBaseDefinition) {
-			startingBase
+			navigatorFactory
 		} else {
 			// Clone it because the same closure may be used
 			// via through a subclass and have a different base
 			def moduleBaseDefinitionClone = moduleBaseDefinition.clone()
-			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(startingBase, params)
+			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(navigatorFactory, params)
 			moduleBaseDefinitionClone.resolveStrategy = Closure.DELEGATE_FIRST
 			def moduleBase = moduleBaseDefinitionClone()
-			
+
 			if (!(moduleBase instanceof Navigator)) {
 				throw new InvalidPageContent("The static 'base' parameter of module class $moduleClass did not return a Navigator")
 			}
-			
-			moduleBase
+
+			navigatorFactory.relativeTo(moduleBase)
 		}
 	}
 	

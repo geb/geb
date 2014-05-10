@@ -16,11 +16,13 @@ package geb.content
 
 import geb.Configuration
 import geb.error.InvalidPageContent
+import geb.navigator.factory.NavigatorFactory
 
 class PageContentTemplateBuilder {
 
 	Configuration config
-	Navigable container
+	PageContentContainer container
+	NavigatorFactory navigatorFactory
 
 	final Map<String, PageContentTemplate> templates = [:]
 
@@ -71,12 +73,12 @@ class PageContentTemplateBuilder {
 			}
 			templates[aliasedName]
 		} else {
-			new PageContentTemplate(config, container, name, params, definition)
+			new PageContentTemplate(config, container, name, params, definition, navigatorFactory)
 		}
 	}
 
-	static Map<String, PageContentTemplate> build(Configuration config, Navigable container, List<Closure> templatesDefinitions) {
-		PageContentTemplateBuilder builder = newInstance(config: config, container: container)
+	static Map<String, PageContentTemplate> build(Configuration config, PageContentContainer container, NavigatorFactory navigatorFactory, List<Closure> templatesDefinitions) {
+		PageContentTemplateBuilder builder = newInstance(config: config, container: container, navigatorFactory: navigatorFactory)
 		for (templatesDefinition in templatesDefinitions) {
 			templatesDefinition.delegate = builder
 			templatesDefinition()
@@ -84,7 +86,7 @@ class PageContentTemplateBuilder {
 		builder.templates
 	}
 
-	static Map<String, PageContentTemplate> build(Configuration config, Navigable container, String property, Class startAt, Class stopAt = Object) {
+	static Map<String, PageContentTemplate> build(Configuration config, PageContentContainer container, NavigatorFactory navigatorFactory, String property, Class startAt, Class stopAt = Object) {
 		if (!stopAt.isAssignableFrom(startAt)) {
 			throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
 		}
@@ -111,6 +113,6 @@ class PageContentTemplateBuilder {
 			clazz = clazz.superclass
 		}
 
-		PageContentTemplateBuilder.build(config, container, templatesDefinitions.reverse())
+		build(config, container, navigatorFactory, templatesDefinitions.reverse())
 	}
 }

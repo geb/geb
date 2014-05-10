@@ -14,13 +14,60 @@
  */
 package geb.content
 
-/**
- * Marker interface to denote something that implements the dollar function for navigation.
- * 
- * This interface doesn't actually specify the methods to facilitate using a mixin.
- * 
- * @See geb.content.NavigableSupport
- */
+import geb.navigator.Navigator
+import org.openqa.selenium.WebElement
+
 interface Navigable {
 
+	Navigator find()
+
+	Navigator $()
+
+	Navigator find(int index)
+
+	Navigator find(Range<Integer> range)
+
+	Navigator $(int index)
+
+	Navigator $(Range<Integer> range)
+
+	Navigator find(String selector)
+
+	Navigator $(String selector)
+
+	Navigator find(String selector, int index)
+
+	Navigator find(String selector, Range<Integer> range)
+
+	Navigator $(String selector, int index)
+
+	Navigator $(String selector, Range<Integer> range)
+
+	Navigator find(Map<String, Object> attributes)
+
+	Navigator $(Map<String, Object> attributes)
+
+	Navigator find(Map<String, Object> attributes, int index)
+
+	Navigator find(Map<String, Object> attributes, Range<Integer> range)
+
+	Navigator $(Map<String, Object> attributes, int index)
+
+	Navigator $(Map<String, Object> attributes, Range<Integer> range)
+
+	Navigator find(Map<String, Object> attributes, String selector)
+
+	Navigator $(Map<String, Object> attributes, String selector)
+
+	Navigator find(Map<String, Object> attributes, String selector, int index)
+
+	Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range)
+
+	Navigator $(Map<String, Object> attributes, String selector, int index)
+
+	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range)
+
+	Navigator $(Navigator[] navigators)
+
+	Navigator $(WebElement[] elements)
 }

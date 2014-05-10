@@ -14,8 +14,7 @@
  */
 package geb
 
-import geb.content.NavigableSupport
-import geb.content.PageContentTemplateBuilder
+import geb.content.*
 import geb.download.DownloadSupport
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UndefinedAtCheckerException
@@ -24,9 +23,11 @@ import geb.frame.FrameSupport
 import geb.interaction.InteractionsSupport
 import geb.js.AlertAndConfirmSupport
 import geb.js.JavascriptInterface
+import geb.navigator.Navigator
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.WaitingSupport
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 
 /**
  * The Page type is the basis of the Page Object pattern in Geb.
@@ -38,7 +39,7 @@ import org.openqa.selenium.WebDriver
  * <p>
  * The following classes are also mixed in to this class:
  * <ul>
- * <li>{@link geb.content.NavigableSupport}
+ * <li>{@link geb.content.PageContentSupport}
  * <li>{@link geb.download.DownloadSupport}
  * <li>{@link geb.waiting.WaitingSupport}
  * <li>{@link geb.textmatching.TextMatchingSupport}
@@ -47,7 +48,7 @@ import org.openqa.selenium.WebDriver
  * <p>
  * See the chapter in the Geb manual on pages for more information on writing subclasses.
  */
-class Page {
+class Page implements Navigable, PageContentContainer {
 
 	/**
 	 * The "at checker" for this page.
@@ -71,15 +72,16 @@ class Page {
 	
 	private Browser browser
 	
-	@Delegate private NavigableSupport navigableSupport
-	@Delegate private DownloadSupport _downloadSupport 
+	@Delegate private PageContentSupport pageContentSupport
+	@Delegate private DownloadSupport _downloadSupport
 	@Delegate private WaitingSupport _waitingSupport
 	@Delegate private FrameSupport frameSupport
 	@Delegate private InteractionsSupport interactionsSupport
-	
 	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
-	
+
+	private NavigableSupport navigableSupport
+
 	/**
 	 * Initialises this page instance, connecting it to the browser.
 	 * <p>
@@ -87,8 +89,9 @@ class Page {
 	 */
 	Page init(Browser browser) {
 		this.browser = browser
-		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, 'content', this.class, Page)
-		navigableSupport = new NavigableSupport(this, contentTemplates, browser.navigatorFactory)
+		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, browser.navigatorFactory, 'content', this.class, Page)
+		pageContentSupport = new PageContentSupport(this, contentTemplates, browser.navigatorFactory)
+		navigableSupport = new NavigableSupport(browser.navigatorFactory)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)
@@ -96,7 +99,7 @@ class Page {
 		_alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }, browser.config)
 		this
 	}
-	
+
 	/**
 	 * The browser that the page is connected to.
 	 */
@@ -253,5 +256,109 @@ class Page {
 	 */
 	void onUnload(Page nextPage) {
 		
+	}
+
+	Navigator find() {
+		navigableSupport.find()
+	}
+
+	Navigator $() {
+		navigableSupport.$()
+	}
+
+	Navigator find(int index) {
+		navigableSupport.find(index)
+	}
+
+	Navigator find(Range<Integer> range) {
+		navigableSupport.find(range)
+	}
+
+	Navigator $(int index) {
+		navigableSupport.$(index)
+	}
+
+	Navigator $(Range<Integer> range) {
+		navigableSupport.$(range)
+	}
+
+	Navigator find(String selector) {
+		navigableSupport.find(selector)
+	}
+
+	Navigator $(String selector) {
+		navigableSupport.$(selector)
+	}
+
+	Navigator find(String selector, int index) {
+		navigableSupport.find(selector, index)
+	}
+
+	Navigator find(String selector, Range<Integer> range) {
+		navigableSupport.find(selector, range)
+	}
+
+	Navigator $(String selector, int index) {
+		navigableSupport.$(selector, index)
+	}
+
+	Navigator $(String selector, Range<Integer> range) {
+		navigableSupport.$(selector, range)
+	}
+
+	Navigator find(Map<String, Object> attributes) {
+		navigableSupport.find(attributes)
+	}
+
+	Navigator $(Map<String, Object> attributes) {
+		navigableSupport.$(attributes)
+	}
+
+	Navigator find(Map<String, Object> attributes, int index) {
+		navigableSupport.find(attributes, index)
+	}
+
+	Navigator find(Map<String, Object> attributes, Range<Integer> range) {
+		navigableSupport.find(attributes, range)
+	}
+
+	Navigator $(Map<String, Object> attributes, int index) {
+		navigableSupport.$(attributes, index)
+	}
+
+	Navigator $(Map<String, Object> attributes, Range<Integer> range) {
+		navigableSupport.$(attributes, range)
+	}
+
+	Navigator find(Map<String, Object> attributes, String selector) {
+		navigableSupport.find(attributes, selector)
+	}
+
+	Navigator $(Map<String, Object> attributes, String selector) {
+		navigableSupport.$(attributes, selector)
+	}
+
+	Navigator find(Map<String, Object> attributes, String selector, int index) {
+		navigableSupport.$(attributes, selector, index)
+	}
+
+	Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
+		navigableSupport.find(attributes, selector, range)
+	}
+
+	Navigator $(Map<String, Object> attributes, String selector, int index) {
+		navigableSupport.$(attributes, selector, index)
+	}
+
+	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
+		navigableSupport.$(attributes, selector, range)
+	}
+
+	Navigator $(Navigator[] navigators) {
+		navigableSupport.$(navigators)
+	}
+
+	Navigator $(WebElement[] elements) {
+		navigableSupport.$(elements)
 	}
 }

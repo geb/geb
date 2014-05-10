@@ -162,6 +162,6 @@ class WaitingSupportSpecPage extends Page {
 
 class WaitingSupportSpecModule extends Module {
 	def waitForDiv() {
-		waitFor { !$("div").empty }
+		waitFor { !find("div").empty }
 	}
 }

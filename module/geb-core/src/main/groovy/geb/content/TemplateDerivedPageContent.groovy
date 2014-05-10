@@ -19,11 +19,13 @@ import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
 import org.openqa.selenium.WebDriver
 
-abstract class TemplateDerivedPageContent implements PageContent {
+abstract class TemplateDerivedPageContent implements Navigator {
 
 	private PageContentTemplate _template
 	private Object[] _args
-	private Navigator _navigator
+
+	@Delegate
+	protected Navigator _navigator
 	
 	/**
 	 * Called by the template when created (i.e. is not public).
@@ -39,7 +41,10 @@ abstract class TemplateDerivedPageContent implements PageContent {
 	String toString() {
 		"${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args, value: ${_navigator.value()})"
 	}
-		
+
+	/**
+	 * The page that this content is part of
+	 */
 	Page getPage() {
 		_template.page
 	}
@@ -115,5 +120,17 @@ abstract class TemplateDerivedPageContent implements PageContent {
 
 	boolean asBoolean() {
 		_navigator.asBoolean()
+	}
+
+	def methodMissing(String name, args) {
+		_navigator.methodMissing(name, args)
+	}
+
+	def propertyMissing(String name) {
+		_navigator.propertyMissing(name)
+	}
+
+	def propertyMissing(String name, val) {
+		_navigator.propertyMissing(name, val)
 	}
 }

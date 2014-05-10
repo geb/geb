@@ -146,7 +146,7 @@ class FrameSupportSpecModule extends Module {
 		def block = { count++ }
 		withFrame(0, block)
 		withFrame('header', block)
-		withFrame($('#footer'), block)
+		withFrame(find('#footer'), block)
 		count
 	}
 }
