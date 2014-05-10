@@ -16,7 +16,7 @@ package geb.content
 
 import geb.navigator.Navigator
 
-class SimplePageContent extends TemplateDerivedPageContent implements Iterable<Navigator> {
+class SimplePageContent extends TemplateDerivedPageContent {
 
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
 		super.init(template, navigator, *args)

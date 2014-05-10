@@ -49,10 +49,6 @@ class FrameSupport {
 		withFrame(frame, null, block)
 	}
 
-	def withFrame(SimplePageContent frame, Class<? extends Page> page, Closure block) {
-		withFrameForContent(frame, page, block)
-	}
-
 	def withFrame(SimplePageContent frame, Closure block) {
 		withFrame(frame, frame.templateParams.page, block)
 	}
