@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package geb.gradle.browserstack
+package geb.gradle.cloud
 
 import org.gradle.api.tasks.testing.Test
 
 class BrowserSpec {
-	String name
+	final String cloudProvider
+	final String name
 
 	String browser
 	String platform
 	String version
 
-	BrowserSpec(String name) {
+	BrowserSpec(String cloudProvider, String name) {
+		this.cloudProvider = cloudProvider
 		this.name = name
 		String browserSpec = name
 		if (browserSpec) {
@@ -41,6 +43,6 @@ class BrowserSpec {
 	}
 
 	void configure(Test test) {
-		test.systemProperty "geb.browserstack.browser", "$browser:$platform:$version"
+		test.systemProperty "geb.${cloudProvider}.browser", "$browser:$platform:$version"
 	}
 }

@@ -16,6 +16,7 @@
 
 package geb.gradle.saucelabs
 
+import geb.gradle.cloud.BrowserSpec
 import org.gradle.api.Project
 
 class SauceLabsExtension {
@@ -28,9 +29,9 @@ class SauceLabsExtension {
 	}
 
 	void addExtensions() {
-		extensions.browsers = project.container(BrowserSpec)
+		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("sauce", it) }
 		account = new SauceAccount()
-		extensions.create('connect', SauceConnect, project, account, project.logger)
+		extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect)
 	}
 
 	void task(Closure configuration) {

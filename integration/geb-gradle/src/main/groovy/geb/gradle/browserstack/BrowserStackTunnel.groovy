@@ -16,99 +16,48 @@
 
 package geb.gradle.browserstack
 
+import geb.gradle.cloud.ExternalJavaTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.slf4j.Logger
 
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-
-class BrowserStackTunnel {
-	final protected Project project
+class BrowserStackTunnel extends ExternalJavaTunnel {
 	final protected BrowserStackAccount account
-	final protected Logger logger
 	final protected File tunnelJar
+	final protected List<URL> applicationUrls
 
-	protected Process tunnelProcess
+	final String outputPrefix = 'browserstack-tunnel'
+	final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser:'
 
-	long timeout = 3
-	TimeUnit timeoutUnit = TimeUnit.MINUTES
-
-	BrowserStackTunnel(Project project, BrowserStackAccount account, Logger logger, File tunnelJar) {
-		this.project = project
+	BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, File tunnelJar, List<URL> applicationUrls) {
+		super(project, logger)
 		this.account = account
-		this.logger = logger
 		this.tunnelJar = tunnelJar
+		this.applicationUrls = applicationUrls
 	}
 
-	void startTunnel(File workingDir, boolean background, List<URL> applicationUrls) {
+	@Override
+	void validateState() {
 		if (!account.accessKey) {
-			throw new InvalidUserDataException("No BrowserStack access key set")
-		}
-
-		def jvm = org.gradle.internal.jvm.Jvm.current()
-		def javaBinary = jvm.javaExecutable.absolutePath
-
-		if (background) {
-
-			workingDir.mkdirs()
-			def command = [javaBinary] + assembleTunnelArgs(applicationUrls) as List<String>
-			logger.debug("running {}", command)
-			tunnelProcess = new ProcessBuilder(command).
-				redirectErrorStream(true).
-				directory(workingDir).
-				start()
-
-			def latch = new CountDownLatch(1)
-			Thread.start {
-				try {
-					tunnelProcess.inputStream.eachLine { String line ->
-						if (latch.count) {
-							logger.info "browserstack-tunnel: $line"
-							if (line.contains("You can now access your local server(s) in our remote browser:")) {
-								latch.countDown()
-							}
-						} else {
-							logger.debug "browserstack-tunnel: $line"
-						}
-					}
-				} catch (IOException ignore) {}
-			}
-
-			if (!latch.await(timeout, timeoutUnit)) {
-				throw new RuntimeException("Timeout waiting for BrowserStack tunnel to open")
-			}
-		} else {
-			def javaArgs = assembleTunnelArgs(applicationUrls)
-			logger.debug("running {} {}", javaBinary, javaArgs)
-			project.exec {
-				executable javaBinary
-				args javaArgs
-			}
+			throw new InvalidUserDataException('No BrowserStack access key set')
 		}
 	}
 
-	void stopTunnel() {
-		if (tunnelProcess) {
-			logger.info "disconnecting BrowserStack tunnel"
-			tunnelProcess.destroy()
-		}
-	}
-
-	List<String> assembleTunnelArgs(List<URL> applicationUrls) {
-		def args = ["-jar", tunnelJar.absolutePath]
+	@Override
+	List<String> assembleArguments() {
+		def args = ['-jar', tunnelJar.absolutePath]
 		if (account.localId) {
-			args << "-localIdentifier" << account.localId
+			args << '-localIdentifier' << account.localId
 		}
 		args << account.accessKey << assembleAppSpecifier(applicationUrls)
 		args
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {
-		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol=='https'?'1':'0'}" }.join(",")
+		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol=='https'?'1':'0'}" }.join(',')
 	}
 
 	static int determinePort(URL url) {
-		url.port > 0 ? url.port : (url.protocol == "https" ? 443 : 80)
+		url.port > 0 ? url.port : (url.protocol == 'https' ? 443 : 80)
 	}
 }

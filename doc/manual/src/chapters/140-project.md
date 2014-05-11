@@ -44,6 +44,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Ken Geis](https://github.com/kgeis) - Doc improvements
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
 * [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements
+* [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
 
 ## History
 
@@ -57,6 +58,7 @@ This page lists the high level changes between versions of Geb.
 * Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. \[[GEB-269](http://jira.codehaus.org/browse/GEB-269)\]
 * Cross browser tests are now also executed using Safari driver \[[GEB-276](http://jira.codehaus.org/browse/GEB-276)\]
 * Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI \[[GEB-295](http://jira.codehaus.org/browse/GEB-295)\]
+* Added [BrowserStack](http://www.browserstack.com) integration
 
 #### Fixes
 

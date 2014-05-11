@@ -17,8 +17,9 @@
 package geb.gradle.browserstack
 
 import geb.gradle.browserstack.task.DownloadBrowserStackTunnel
-import geb.gradle.browserstack.task.StartBrowserStackTunnel
-import geb.gradle.browserstack.task.StopBrowserStackTunnel
+import geb.gradle.cloud.BrowserSpec
+import geb.gradle.cloud.task.StartExternalJavaTunnel
+import geb.gradle.cloud.task.StopExternalJavaTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
@@ -71,13 +72,13 @@ class BrowserStackPlugin implements Plugin<Project> {
 			conventionMapping.tunnelJar = { project.browserStack.tunnelJar }
 		}
 
-		project.task('closeBrowserStackTunnel', type: StopBrowserStackTunnel) {
-			browserStackTunnel = project.browserStack.tunnel
+		project.task('closeBrowserStackTunnel', type: StopExternalJavaTunnel) {
+			tunnel = project.browserStack.tunnel
 		}
 
-		def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartBrowserStackTunnel)
+		def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartExternalJavaTunnel)
 
-		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartBrowserStackTunnel) {
+		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartExternalJavaTunnel) {
 			inBackground = true
 			dependsOn 'downloadBrowserStackTunnel'
 			finalizedBy 'closeBrowserStackTunnel'
@@ -85,9 +86,8 @@ class BrowserStackPlugin implements Plugin<Project> {
 
 		[openBrowserStackTunnel, openBrowserStackTunnelInBackground].each {
 			it.configure {
-				browserStackTunnel = project.browserStack.tunnel
+				tunnel = project.browserStack.tunnel
 				workingDir = project.buildDir
-				applicationUrls = project.browserStack.applicationUrls
 			}
 		}
 	}

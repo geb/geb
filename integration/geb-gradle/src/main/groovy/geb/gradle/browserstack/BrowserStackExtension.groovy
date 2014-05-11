@@ -16,6 +16,7 @@
 
 package geb.gradle.browserstack
 
+import geb.gradle.cloud.BrowserSpec
 import org.gradle.api.Project
 
 class BrowserStackExtension {
@@ -31,9 +32,9 @@ class BrowserStackExtension {
 	}
 
 	void addExtensions() {
-		extensions.browsers = project.container(BrowserSpec)
+		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
 		account = new BrowserStackAccount()
-		extensions.create('tunnel', BrowserStackTunnel, project, account, project.logger, tunnelJar)
+		extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, tunnelJar, applicationUrls)
 	}
 
 	void task(Closure configuration) {

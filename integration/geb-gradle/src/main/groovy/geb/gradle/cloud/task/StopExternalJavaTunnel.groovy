@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package geb.gradle.browserstack.task
+package geb.gradle.cloud.task
 
-import geb.gradle.browserstack.BrowserStackTunnel
+import geb.gradle.cloud.ExternalJavaTunnel
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
-class StartBrowserStackTunnel extends DefaultTask {
-
-	boolean inBackground = false
-	File workingDir
-	List<URL> applicationUrls = []
-	BrowserStackTunnel browserStackTunnel
+class StopExternalJavaTunnel extends DefaultTask {
+	ExternalJavaTunnel tunnel
 
 	@TaskAction
-	void start() {
-		browserStackTunnel.startTunnel(workingDir, inBackground, applicationUrls)
+	void stop() {
+		tunnel.stopTunnel()
 	}
 }
