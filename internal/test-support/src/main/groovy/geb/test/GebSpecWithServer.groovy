@@ -43,7 +43,7 @@ class GebSpecWithServer extends GebSpec {
 	}
 
 	List<Integer> getTestPorts() {
-		if (System.getProperty("geb.sauce.browser")) {
+		if (System.getProperty("geb.saucelabs.browser")) {
 			// the sauce connect tunnel only supports a limited set of ports if using
 			// localhost, as we do. Therefore hard code it in this case.
 			def ports = new LinkedList(SAUCE_PORTS)

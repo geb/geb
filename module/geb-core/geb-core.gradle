@@ -23,7 +23,7 @@ test {
 }
 
 task allCrossBrowserTests {
-	dependsOn 'allSauceTests'
+	dependsOn 'allSauceLabsTests'
 }
 
 sauceLabs {

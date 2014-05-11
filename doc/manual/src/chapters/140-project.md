@@ -69,6 +69,8 @@ This page lists the high level changes between versions of Geb.
 #### Breaking Changes
 
 * Removed easyb support. \[[GEB-277](http://jira.codehaus.org/browse/GEB-277)\]
+* When using SauceLabs integration, the `allSauceTests` task was renamed to`allSauceLabsTests`
+* When using SauceLabs integration, the `geb.sauce.browser` system property was renamed to `geb.saucelabs.browser`
 
 ### 0.9.2
 

@@ -41,15 +41,15 @@ class SaucePlugin implements Plugin<Project> {
 	}
 
 	void addSauceTasks() {
-		def allSauceTests = project.task("allSauceTests") {
+		def allSauceLabsTests = project.task("allSauceLabsTests") {
 			group "Sauce Test"
 		}
 
 		project.sauceLabs.browsers.all { BrowserSpec browser ->
 			def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
-				group allSauceTests.group
+				group allSauceLabsTests.group
 				task.dependsOn 'openSauceTunnelInBackground'
-				allSauceTests.dependsOn task
+				allSauceLabsTests.dependsOn task
 				finalizedBy 'closeSauceTunnel'
 
 				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")

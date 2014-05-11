@@ -29,7 +29,7 @@ class SauceLabsExtension {
 	}
 
 	void addExtensions() {
-		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("sauce", it) }
+		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
 		account = new SauceAccount()
 		extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect)
 	}
