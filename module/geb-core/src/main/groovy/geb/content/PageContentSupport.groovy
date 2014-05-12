@@ -16,6 +16,7 @@ package geb.content
 
 import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
+import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 
 class PageContentSupport {
@@ -23,15 +24,17 @@ class PageContentSupport {
 	private final PageContentContainer owner
 	private final Map<String, PageContentTemplate> contentTemplates
 	private final NavigatorFactory navigatorFactory
+	private final Navigator navigator
 
-	PageContentSupport(PageContentContainer owner, Map<String, PageContentTemplate> contentTemplates, NavigatorFactory navigatorFactory) {
+	PageContentSupport(PageContentContainer owner, Map<String, PageContentTemplate> contentTemplates, NavigatorFactory navigatorFactory, Navigator navigator = null) {
 		this.owner = owner
 		this.contentTemplates = contentTemplates ?: [:]
 		this.navigatorFactory = navigatorFactory
+		this.navigator = navigator
 	}
 
-	private getNavigator() {
-		navigatorFactory.base
+	private Navigator getNavigator() {
+		navigator ?: navigatorFactory.base
 	}
 
 	def getContent(String name, Object[] args) {
@@ -47,7 +50,7 @@ class PageContentSupport {
 		try {
 			getContent(name, * args)
 		} catch (UndefinedPageContentException e1) {
-			navigator.methodMissing(name, args)
+			getNavigator().methodMissing(name, args)
 		}
 	}
 
@@ -56,7 +59,7 @@ class PageContentSupport {
 			getContent(name)
 		} catch (UndefinedPageContentException e1) {
 			try {
-				navigator.propertyMissing(name)
+				getNavigator().propertyMissing(name)
 			} catch (MissingPropertyException e2) {
 				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as content for ${owner}, or as a property on its Navigator context. Is $name a class you forgot to import?")
 			}
@@ -68,7 +71,7 @@ class PageContentSupport {
 			getContent(name).value(val)
 		} catch (UndefinedPageContentException e) {
 			try {
-				navigator.propertyMissing(name, val)
+				getNavigator().propertyMissing(name, val)
 			} catch (MissingPropertyException e1) {
 				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as a property to set on ${owner}'s Navigator context")
 			}

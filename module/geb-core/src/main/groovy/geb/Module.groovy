@@ -41,8 +41,9 @@ class Module extends TemplateDerivedPageContent implements PageContentContainer 
 	
 	void init(PageContentTemplate template, NavigatorFactory navigatorFactory, Object[] args) {
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, navigatorFactory, 'content', this.class, Module)
-		pageContentSupport = new PageContentSupport(this, contentTemplates, navigatorFactory)
-		super.init(template, navigatorFactory.base, args)
+		def navigator = navigatorFactory.base
+		pageContentSupport = new PageContentSupport(this, contentTemplates, navigatorFactory, navigator)
+		super.init(template, navigator, args)
 		_downloadSupport = new DownloadSupport(browser)
 		_waitingSupport  = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)

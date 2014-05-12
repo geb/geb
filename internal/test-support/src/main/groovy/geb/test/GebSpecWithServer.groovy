@@ -99,7 +99,7 @@ class GebSpecWithServer extends GebSpec {
 
 	void html(Closure html) {
 		responseHtml(html)
-		go server.baseUrl
+		go()
 	}
 
 }
