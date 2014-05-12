@@ -44,6 +44,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Ken Geis](https://github.com/kgeis) - Doc improvements
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
 * [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements
+* [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
 
 ## History
 
@@ -59,6 +60,7 @@ This page lists the high level changes between versions of Geb.
 * Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI \[[GEB-295](http://jira.codehaus.org/browse/GEB-295)\]
 * Page content classes including `Module` now implement `Navigator` interface \[[GEB-181](http://jira.codehaus.org/browse/GEB-181)\]
 * Added some tests that guard performance by verifying which WebDriver commands are executed \[[GEB-302](http://jira.codehaus.org/browse/GEB-302)\]
+* Added [BrowserStack](http://www.browserstack.com) integration \[[GEB-307](http://jira.codehaus.org/browse/GEB-307)\]
 
 #### Fixes
 
@@ -70,6 +72,8 @@ This page lists the high level changes between versions of Geb.
 
 * Removed easyb support. \[[GEB-277](http://jira.codehaus.org/browse/GEB-277)\]
 * `MissingMethodException` is now thrown when using shortcut for obtaining a navigator based on a control name and the returned navigator is empty. \[[GEB-239](http://jira.codehaus.org/browse/GEB-239)\]
+* When using SauceLabs integration, the `allSauceTests` task was renamed to`allSauceLabsTests`
+* When using SauceLabs integration, the `geb.sauce.browser` system property was renamed to `geb.saucelabs.browser`
 
 ### 0.9.2
 

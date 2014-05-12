@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package geb.gradle.saucelabs
+package geb.gradle.browserstack
 
 import org.gradle.api.tasks.testing.Test
 
-class BrowserSpec {
-	String name
+class BrowserStackAccount {
+	public static final String USER_ENV_VAR = "GEB_BROWSERSTACK_USERNAME"
+	public static final String ACCESS_KEY_ENV_VAR = "GEB_BROWSERSTACK_AUTHKEY"
+	public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
 
-	String browser
-	String platform
-	String version
-
-	BrowserSpec(String name) {
-		this.name = name
-		String browserSpec = name
-		if (browserSpec) {
-			String[] split = browserSpec.split("_", 3)
-			browser = split[0]
-			platform = split.size() > 1 ? split[1] : ""
-			version = split.size() > 2 ? split[2] : ""
-		}
-	}
-
-	String getDisplayName() {
-		"$browser${platform?.capitalize() ?: ""}${version?.capitalize() ?: ""}"
-	}
+	String username
+	String accessKey
+	String localId
 
 	void configure(Test test) {
-		test.systemProperty "geb.sauce.browser", "$browser:$platform:$version"
+		if (username) {
+			test.environment(USER_ENV_VAR, username)
+		}
+		if (accessKey) {
+			test.environment(ACCESS_KEY_ENV_VAR, accessKey)
+		}
+		if (localId) {
+			test.environment(LOCAL_ID_ENV_VAR, localId)
+		}
 	}
 }

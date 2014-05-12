@@ -16,76 +16,41 @@
 
 package geb.gradle.saucelabs
 
+import geb.gradle.cloud.ExternalJavaTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
 import org.slf4j.Logger
 
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-
-class SauceConnect {
-	final protected Project project
+class SauceConnect extends ExternalJavaTunnel {
 	final protected SauceAccount account
-	final protected Logger logger
+	final protected Configuration connectConfiguration
 
-	protected Process tunnelProcess
+	final String outputPrefix = 'sauce-connect'
+	final String tunnelReadyMessage = 'Connected! You may start your tests.'
 
-	long timeout = 3
-	TimeUnit timeoutUnit = TimeUnit.MINUTES
-
-	SauceConnect(Project project, SauceAccount account, Logger logger) {
-		this.project = project
+	SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration) {
+		super(project, logger)
 		this.account = account
-		this.logger = logger
+		this.connectConfiguration = connectConfiguration
 	}
 
-	void startTunnel(File sauceConnectJar, File workingDir, boolean background) {
+	@Override
+	void validateState() {
 		if (!account.username || !account.accessKey) {
-			throw new InvalidUserDataException("No sauce labs username or passwords set")
+			throw new InvalidUserDataException('No sauce labs username or passwords set')
 		}
-
-		def jvm = org.gradle.internal.jvm.Jvm.current()
-		def javaBinary = jvm.javaExecutable.absolutePath
-
-		if (background) {
-
-			workingDir.mkdirs()
-			tunnelProcess = new ProcessBuilder(javaBinary, "-jar", sauceConnectJar.absolutePath, account.username, account.accessKey).
-				redirectErrorStream(true).
-				directory(workingDir).
-				start()
-
-			def latch = new CountDownLatch(1)
-			Thread.start {
-				try {
-					tunnelProcess.inputStream.eachLine { String line ->
-						if (latch.count) {
-							logger.info "sauce-connect: $line"
-							if (line.endsWith("Connected! You may start your tests.")) {
-								latch.countDown()
-							}
-						} else {
-							logger.debug "sauce-connect: $line"
-						}
-					}
-				} catch (IOException ignore) {}
-			}
-
-			if (!latch.await(timeout, timeoutUnit)) {
-				throw new RuntimeException("Timeout waiting for sauce tunnel to open")
-			}
-		} else {
-			project.exec {
-				executable javaBinary
-				args "-jar", sauceConnectJar.absolutePath, account.username, account.accessKey
-			}
+		if (!sauceConnectJar.exists()) {
+			throw new InvalidUserDataException('No sauce connect jar set')
 		}
 	}
 
-	void stopTunnel() {
-		if (tunnelProcess) {
-			logger.info "disconnecting sauce labs tunnel"
-			tunnelProcess.destroy()
-		}
+	@Override
+	List<String> assembleArguments() {
+		['-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]
+	}
+
+	File getSauceConnectJar() {
+		connectConfiguration.singleFile
 	}
 }

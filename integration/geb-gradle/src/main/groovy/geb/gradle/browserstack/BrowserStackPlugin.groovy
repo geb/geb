@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package geb.gradle.saucelabs
+package geb.gradle.browserstack
 
+import geb.gradle.browserstack.task.DownloadBrowserStackTunnel
 import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.task.StartExternalJavaTunnel
 import geb.gradle.cloud.task.StopExternalJavaTunnel
@@ -24,7 +25,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.testing.Test
 
-class SaucePlugin implements Plugin<Project> {
+class BrowserStackPlugin implements Plugin<Project> {
 
 	Project project
 
@@ -32,25 +33,23 @@ class SaucePlugin implements Plugin<Project> {
 	void apply(Project project) {
 		this.project = project
 
-		project.configurations.create('sauceConnect')
-
-		project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
+		project.extensions.create('browserStack', BrowserStackExtension, project).addExtensions()
 
 		addTunnelTasks()
-		addSauceTasks()
+		addBrowserStackTasks()
 	}
 
-	void addSauceTasks() {
-		def allSauceLabsTests = project.task("allSauceLabsTests") {
-			group "Sauce Test"
+	void addBrowserStackTasks() {
+		def allBrowserStackTests = project.task("allBrowserStackTests") {
+			group "BrowserStack Test"
 		}
 
-		project.sauceLabs.browsers.all { BrowserSpec browser ->
+		project.browserStack.browsers.all { BrowserSpec browser ->
 			def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
-				group allSauceLabsTests.group
-				task.dependsOn 'openSauceTunnelInBackground'
-				allSauceLabsTests.dependsOn task
-				finalizedBy 'closeSauceTunnel'
+				group allBrowserStackTests.group
+				task.dependsOn 'openBrowserStackTunnelInBackground'
+				allBrowserStackTests.dependsOn task
+				finalizedBy 'closeBrowserStackTunnel'
 
 				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
 
@@ -68,20 +67,26 @@ class SaucePlugin implements Plugin<Project> {
 	}
 
 	void addTunnelTasks() {
-		project.task('closeSauceTunnel', type: StopExternalJavaTunnel) {
-			tunnel = project.sauceLabs.connect
+		project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel) {
+			conventionMapping.tunnelJarUrl = { project.browserStack.tunnelJarUrl }
+			conventionMapping.tunnelJar = { project.browserStack.tunnelJar }
 		}
 
-		def openSauceTunnel = project.task('openSauceTunnel', type: StartExternalJavaTunnel)
+		project.task('closeBrowserStackTunnel', type: StopExternalJavaTunnel) {
+			tunnel = project.browserStack.tunnel
+		}
 
-		def openSauceTunnelInBackground = project.task('openSauceTunnelInBackground', type: StartExternalJavaTunnel) {
+		def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartExternalJavaTunnel)
+
+		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartExternalJavaTunnel) {
 			inBackground = true
-			finalizedBy 'closeSauceTunnel'
+			dependsOn 'downloadBrowserStackTunnel'
+			finalizedBy 'closeBrowserStackTunnel'
 		}
 
-		[openSauceTunnel, openSauceTunnelInBackground].each {
+		[openBrowserStackTunnel, openBrowserStackTunnelInBackground].each {
 			it.configure {
-				tunnel = project.sauceLabs.connect
+				tunnel = project.browserStack.tunnel
 				workingDir = project.buildDir
 			}
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package geb.gradle.saucelabs
+package geb.gradle.browserstack
 
 import geb.gradle.cloud.BrowserSpec
 import org.gradle.api.Project
 
-class SauceLabsExtension {
+class BrowserStackExtension {
 
 	Project project
-	SauceAccount account
+	BrowserStackAccount account
+    String tunnelJarUrl = "http://www.browserstack.com/BrowserStackTunnel.jar"
+	File tunnelJar = project.rootProject.file('.gradle/browserstack/BrowserStackTunnel.jar')
+	List<URL> applicationUrls = []
 
-	SauceLabsExtension(Project project) {
+	BrowserStackExtension(Project project) {
 		this.project = project
 	}
 
 	void addExtensions() {
-		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
-		account = new SauceAccount()
-		extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect)
+		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
+		account = new BrowserStackAccount()
+		extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, tunnelJar, applicationUrls)
 	}
 
 	void task(Closure configuration) {
@@ -45,5 +48,13 @@ class SauceLabsExtension {
 		extensions.browsers.all { BrowserSpec browser ->
 			account.configure project.tasks["${browser.displayName}Test"]
 		}
+	}
+
+	void application(String... urls) {
+		applicationUrls.addAll(urls.collect {new URL(it)})
+	}
+
+	void application(URL... urls) {
+		applicationUrls.addAll(urls)
 	}
 }
