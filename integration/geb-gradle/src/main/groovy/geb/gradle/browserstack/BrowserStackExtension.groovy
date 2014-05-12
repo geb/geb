@@ -23,7 +23,7 @@ class BrowserStackExtension {
 
 	Project project
 	BrowserStackAccount account
-    String tunnelJarUrl = "http://www.browserstack.com/BrowserStackTunnel.jar"
+	String tunnelJarUrl = "http://www.browserstack.com/BrowserStackTunnel.jar"
 	File tunnelJar = project.rootProject.file('.gradle/browserstack/BrowserStackTunnel.jar')
 	List<URL> applicationUrls = []
 
@@ -51,7 +51,7 @@ class BrowserStackExtension {
 	}
 
 	void application(String... urls) {
-		applicationUrls.addAll(urls.collect {new URL(it)})
+		applicationUrls.addAll(urls.collect { new URL(it) })
 	}
 
 	void application(URL... urls) {
