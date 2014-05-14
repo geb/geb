@@ -44,13 +44,17 @@ class BrowserStackTunnel extends ExternalJavaTunnel {
 	}
 
 	@Override
-	List<String> assembleArguments() {
-		def args = ['-jar', tunnelJar.absolutePath]
-		if (account.localId) {
-			args << '-localIdentifier' << account.localId
+	List<List<String>> assembleArgumentLists() {
+		def localIds = account.localIds ? account.localIds : [null]
+		localIds.collect { id ->
+			def args = ['-jar', tunnelJar.absolutePath]
+			if (id) {
+				args << '-localIdentifier' << id
+			}
+			args << '-skipCheck'
+			args << account.accessKey << assembleAppSpecifier(applicationUrls)
+			args
 		}
-		args << account.accessKey << assembleAppSpecifier(applicationUrls)
-		args
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {

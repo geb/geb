@@ -1,6 +1,8 @@
 import geb.gradle.saucelabs.SauceAccount
+import geb.gradle.browserstack.BrowserStackAccount
 
 apply plugin: "geb-saucelabs"
+apply plugin: "geb-browserstack"
 
 repositories {
 	maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
@@ -23,21 +25,13 @@ test {
 }
 
 task allCrossBrowserTests {
-	dependsOn 'allSauceLabsTests'
+	dependsOn 'allSauceLabsTests', 'allBrowserStackTests'
 }
 
 sauceLabs {
 	browsers {
 		chrome_linux
-		delegate."chrome_Windows 7"
-		delegate."chrome_OS X 10.9"
-		firefox_linux_28
-		delegate."firefox_Windows 7_28"
-		delegate."firefox_OS X 10.9_28"
-		delegate."internetExplorer_Windows 7_8"
-		delegate."internetExplorer_Windows 7_9"
-		delegate."internetExplorer_Windows 7_10"
-		delegate."internetExplorer_Windows 7_11"
+		firefox_linux
 		delegate."safari_OS X 10.9_7"
 	}
 	task {
@@ -52,6 +46,33 @@ sauceLabs {
 	}
 	connect {
 		timeout 15 // minutes
+	}
+}
+
+browserStack {
+	def applicationAddresses = [5555, 8000, 8080, 8888, 9000].collect { "http://localhost:$it" }
+	application(*applicationAddresses)
+	browsers {
+		chrome_mac
+		chrome_windows
+		firefox_windows
+		firefox_mac
+		internetExplorer_windows_8
+		internetExplorer_windows_9
+		internetExplorer_windows_10
+		internetExplorer_windows_11
+
+	}
+	task {
+		testClassesDir = test.testClassesDir
+		testSrcDirs = test.testSrcDirs
+		classpath = test.classpath
+		maxParallelForks 5
+	}
+	account {
+		username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
+		accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
+		localIds = (0..4)*.toString()
 	}
 }
 

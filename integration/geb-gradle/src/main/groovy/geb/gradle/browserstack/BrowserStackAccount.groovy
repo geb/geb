@@ -25,7 +25,15 @@ class BrowserStackAccount {
 
 	String username
 	String accessKey
-	String localId
+	List<String> localIds = []
+
+	void setLocalId(String localId) {
+		localIds = [localId]
+	}
+
+	void setLocalIds(List<String> localIds) {
+		this.localIds = localIds
+	}
 
 	void configure(Test test) {
 		if (username) {
@@ -34,8 +42,8 @@ class BrowserStackAccount {
 		if (accessKey) {
 			test.environment(ACCESS_KEY_ENV_VAR, accessKey)
 		}
-		if (localId) {
-			test.environment(LOCAL_ID_ENV_VAR, localId)
+		if (localIds.size() == 1) {
+			test.environment(LOCAL_ID_ENV_VAR, localIds.first())
 		}
 	}
 }

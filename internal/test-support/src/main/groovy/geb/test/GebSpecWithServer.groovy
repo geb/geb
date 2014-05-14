@@ -26,15 +26,11 @@ class GebSpecWithServer extends GebSpec {
 
 	@Shared TestHttpServer server
 
-	private static final List<Integer> SAUCE_PORTS = [
-		2000, 2001, 2020, 2222, 3000, 3001, 3030, 3333, 4000, 4001, 4040, 4502, 4503, 5000, 5001, 5050,
-		5555, 6001, 6060, 7000, 7070, 7777, 8000, 8001, 8003, 8031, 8080, 8081, 8888, 9000,
-		9001, 9080, 9090, 9999, 49221
-	].asImmutable()
+	private static final List<Integer> CROSS_BROWSER_PORTS = [5555, 8000, 8080, 8888, 9000]
 
 	def setupSpec() {
 		server = serverInstance
-		server.start(getTestPorts())
+		server.start(testPort)
 		browser.baseUrl = server.baseUrl
 	}
 
@@ -42,16 +38,9 @@ class GebSpecWithServer extends GebSpec {
 		new CallbackHttpServer()
 	}
 
-	List<Integer> getTestPorts() {
-		if (System.getProperty("geb.saucelabs.browser")) {
-			// the sauce connect tunnel only supports a limited set of ports if using
-			// localhost, as we do. Therefore hard code it in this case.
-			def ports = new LinkedList(SAUCE_PORTS)
-			Collections.shuffle(ports)
-			ports
-		} else {
-			[0] // ephemeral, use whatever is available.
-		}
+	int getTestPort() {
+		def portIndex = System.getProperty("geb.port.index")
+		portIndex ?  CROSS_BROWSER_PORTS[portIndex.toInteger()] : 0
 	}
 
 	Browser createBrowser() {

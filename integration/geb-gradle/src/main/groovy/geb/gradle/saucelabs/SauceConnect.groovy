@@ -46,8 +46,8 @@ class SauceConnect extends ExternalJavaTunnel {
 	}
 
 	@Override
-	List<String> assembleArguments() {
-		['-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]
+	List<List<String>> assembleArgumentLists() {
+		[['-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]]
 	}
 
 	File getSauceConnectJar() {

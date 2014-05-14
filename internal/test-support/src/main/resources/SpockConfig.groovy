@@ -1,7 +1,7 @@
 import geb.test.CrossBrowser
 
-def usingSauce = System.getProperty("geb.saucelabs.browser")
-if (usingSauce) {
+def crossBrowser = System.getProperty("geb.saucelabs.browser") || System.getProperty("geb.browserstack.browser")
+if (crossBrowser) {
 	runner {
 		include CrossBrowser
 	}
