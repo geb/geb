@@ -54,10 +54,7 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
-* Documentation site has been migrated to [Ratpack](http://ratpack.io). \[[GEB-261](http://jira.codehaus.org/browse/GEB-261)\]
 * Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. \[[GEB-269](http://jira.codehaus.org/browse/GEB-269)\]
-* Cross browser tests are now also executed using Safari driver \[[GEB-276](http://jira.codehaus.org/browse/GEB-276)\]
-* Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI \[[GEB-295](http://jira.codehaus.org/browse/GEB-295)\]
 * Page content classes including `Module` now implement `Navigator` interface \[[GEB-181](http://jira.codehaus.org/browse/GEB-181)\]
 * Added some tests that guard performance by verifying which WebDriver commands are executed \[[GEB-302](http://jira.codehaus.org/browse/GEB-302)\]
 * Added [BrowserStack](http://www.browserstack.com) integration \[[GEB-307](http://jira.codehaus.org/browse/GEB-307)\]
@@ -74,6 +71,14 @@ This page lists the high level changes between versions of Geb.
 * `MissingMethodException` is now thrown when using shortcut for obtaining a navigator based on a control name and the returned navigator is empty. \[[GEB-239](http://jira.codehaus.org/browse/GEB-239)\]
 * When using SauceLabs integration, the `allSauceTests` task was renamed to`allSauceLabsTests`
 * When using SauceLabs integration, the `geb.sauce.browser` system property was renamed to `geb.saucelabs.browser`
+
+#### Project Related Changes
+
+* Documentation site has been migrated to [Ratpack](http://ratpack.io). \[[GEB-261](http://jira.codehaus.org/browse/GEB-261)\]
+* Cross browser tests are now also executed using Safari driver \[[GEB-276](http://jira.codehaus.org/browse/GEB-276)\]
+* Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI \[[GEB-295](http://jira.codehaus.org/browse/GEB-295)\]
+* Migrated continuous integration build to [Snap CI](https://snap-ci.com/geb/geb/branch/master)
+* Added a [Travis CI build](https://travis-ci.org/geb/geb) that runs tests on submitted pull requests \[[GEB-309](http://jira.codehaus.org/browse/GEB-309)\]
 
 ### 0.9.2
 
