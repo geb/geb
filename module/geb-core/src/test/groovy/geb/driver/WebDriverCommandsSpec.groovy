@@ -1,5 +1,7 @@
-package geb
+package geb.driver
 
+import geb.Module
+import geb.Page
 import geb.test.CallbackAndWebDriverServer
 import geb.test.GebSpecWithServer
 import geb.test.RemoteWebDriverWithExpectations

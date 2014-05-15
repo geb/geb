@@ -383,5 +383,4 @@ the following will pass:
 
 ## Quitting the browser
 
-The browser object has [`quit()`](api/geb/Browser.html#quit\(\))
-and [`close()`](api/geb/Browser.html#close\(\)) methods (that simply delegate to the underlying driver). See the section on [driver management](driver.html) for more information on when and why you need to quit the browser.
+The browser object has [`quit()`](api/geb/Browser.html#quit\(\)) and [`close()`](api/geb/Browser.html#close\(\)) methods (that simply delegate to the underlying driver). See the section on [driver management](driver.html) for more information on when and why you need to quit the browser.

@@ -118,6 +118,7 @@ This page lists the high level changes between versions of Geb.
 * `has(Map<String, Object> predicates, String selector)` and `has(Map<String, Object> predicates)` were added to Navigator for consistency with `find()` and `filter()` \[[GEB-256](http://jira.codehaus.org/browse/GEB-256)\]
 *  Also catch WaitTimeoutException when page verification has failed following a `click()` call \[[GEB-255](http://jira.codehaus.org/browse/GEB-255)\]
 * `not(Map<String, Object> predicates, String selector)` and `not(Map<String, Object> predicates)` were added to Navigator for consistency with `find()` and `filter()` \[[GEB-257](http://jira.codehaus.org/browse/GEB-257)\]
+* Make sure that `NullPointerException` is not thrown for incorrect driver implementations of getting current url without previously driving the browser to a url \[[GEB-291](http://jira.codehaus.org/browse/GEB-291)\]
 
 ### 0.9.0
 

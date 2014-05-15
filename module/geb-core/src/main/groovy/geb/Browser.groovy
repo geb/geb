@@ -391,7 +391,12 @@ class Browser {
 	 */
 	void go(Map params, String url) {
 		def newUrl = calculateUri(url, params)
-		if (driver.currentUrl == newUrl) {
+		def currentUrl = null
+		try {
+			currentUrl = driver.currentUrl
+		} catch (NullPointerException npe) {
+		}
+		if (currentUrl == newUrl) {
 			driver.navigate().refresh()
 		} else {
 			driver.get(newUrl)
