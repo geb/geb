@@ -14,8 +14,9 @@
  */
 package geb.junit4
 
-import geb.*
-import org.openqa.selenium.WebDriver
+import geb.Browser
+import geb.Configuration
+import geb.ConfigurationLoader
 import org.junit.After
 
 class GebTest {

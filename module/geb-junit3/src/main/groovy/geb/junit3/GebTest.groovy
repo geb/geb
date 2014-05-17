@@ -14,8 +14,9 @@
  */
 package geb.junit3
 
-import geb.*
-import org.openqa.selenium.WebDriver
+import geb.Browser
+import geb.Configuration
+import geb.ConfigurationLoader
 
 class GebTest extends GroovyTestCase {
 

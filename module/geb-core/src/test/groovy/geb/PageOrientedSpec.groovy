@@ -15,13 +15,8 @@
 package geb
 
 import geb.content.SimplePageContent
-import geb.error.InvalidPageContent
-import geb.error.RequiredPageContentNotPresent
-import geb.error.RequiredPageValueNotPresent
-import geb.error.UndefinedAtCheckerException
-import geb.error.UnexpectedPageException
+import geb.error.*
 import geb.test.GebSpecWithServer
-import geb.waiting.WaitTimeoutException
 import spock.lang.Issue
 import spock.lang.Stepwise
 import spock.lang.Unroll

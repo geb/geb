@@ -14,8 +14,6 @@
  */
 package geb.report
 
-import geb.Browser
-
 /**
  * A reporter can take a snapshot of the browser state, using a given name as the
  * base for whatever it produces. A common usage of a reporter is to take snapshots

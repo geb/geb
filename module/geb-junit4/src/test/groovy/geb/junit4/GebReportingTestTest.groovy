@@ -16,8 +16,9 @@
 package geb.junit4
 
 import geb.test.CallbackHttpServer
-import geb.Page
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 

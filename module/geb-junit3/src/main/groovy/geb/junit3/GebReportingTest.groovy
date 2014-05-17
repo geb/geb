@@ -14,9 +14,7 @@
  */
 package geb.junit3
 
-import geb.Browser
 import geb.report.ReporterSupport
-import org.openqa.selenium.WebDriver
 
 class GebReportingTest extends GebTest {
 

@@ -16,7 +16,6 @@ package geb.js
 
 import geb.Configuration
 import geb.waiting.Wait
-import geb.waiting.WaitTimeoutException
 
 class AlertAndConfirmSupport {
 

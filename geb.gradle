@@ -54,7 +54,7 @@ allprojects { project ->
 		}
 
 		groovyModules = [
-			":module:geb-core", ":module:geb-core-tests", ":internal:test-support",
+			":module:geb-core", ":internal:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 			":module:geb-testng", ":module:geb-implicit-assertions",
 			":module:geb-ast", ":module:geb-waiting", ":integration:geb-gradle", ":doc:site"
@@ -73,10 +73,13 @@ allprojects { project ->
 	}
 }
 
+tasks.create('codenarc')
+
 subprojects {
 	if (path in groovyModules) {
 		apply plugin: "groovy"
-		apply plugin: 'idea'
+		apply plugin: "idea"
+		apply plugin: "codenarc"
 
 		if (path != ":test-support") {
 			// apply from: "file:${rootDir}/clover.gradle"
@@ -84,6 +87,7 @@ subprojects {
 
 		dependencies {
 			groovy groovyDependency
+			codenarc 'org.codenarc:CodeNarc:0.21'
 		}
 
 		sourceCompatibility = 1.5
@@ -99,6 +103,18 @@ subprojects {
 
 			systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
 		}
+
+		codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
+
+		project.tasks.withType(CodeNarc) { codenarcSourceSetTask ->
+			rootProject.tasks.codenarc.dependsOn codenarcSourceSetTask
+			rootProject.allprojects {
+				tasks.withType(Test) {
+					mustRunAfter codenarcSourceSetTask
+				}
+			}
+		}
+
 	}
 
 	if (path in publishedGroovyModules) {

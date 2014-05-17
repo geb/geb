@@ -4,7 +4,6 @@ import geb.Browser
 import org.openqa.selenium.WebDriver
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import static geb.navigator.CssSelector.Type.*
 

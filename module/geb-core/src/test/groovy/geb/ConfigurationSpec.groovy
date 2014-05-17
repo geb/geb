@@ -1,7 +1,6 @@
 package geb
 
 import geb.report.CompositeReporter
-import geb.report.ReportState
 import geb.report.Reporter
 import geb.report.ReportingListener
 import spock.lang.Specification

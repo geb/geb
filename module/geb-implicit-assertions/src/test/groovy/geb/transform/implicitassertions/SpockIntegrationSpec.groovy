@@ -16,14 +16,15 @@
 
 package geb.transform.implicitassertions
 
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import org.junit.runner.JUnitCore
-import org.spockframework.compiler.SpockTransform
-import spock.lang.Specification
-import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
-import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
 import org.junit.runner.Result
 import org.junit.runner.notification.Failure
-import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+import org.spockframework.compiler.SpockTransform
+import spock.lang.Specification
+
+import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
+import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
 
 class SpockIntegrationSpec extends Specification {
 	
