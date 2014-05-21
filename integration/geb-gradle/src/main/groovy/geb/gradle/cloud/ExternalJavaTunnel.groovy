@@ -27,7 +27,7 @@ abstract class ExternalJavaTunnel {
 	final protected Project project
 	final protected Logger logger
 
-	protected List<Process> tunnelProcesses = []
+	protected Process tunnelProcess
 
 	long timeout = 3
 	TimeUnit timeoutUnit = TimeUnit.MINUTES
@@ -39,7 +39,7 @@ abstract class ExternalJavaTunnel {
 
 	void validateState() { }
 	abstract String getOutputPrefix()
-	abstract List<List<String>> assembleArgumentLists()
+	abstract List<String> assembleArguments()
 	abstract String getTunnelReadyMessage()
 
 	void startTunnel(File workingDir, boolean background) {
@@ -48,48 +48,44 @@ abstract class ExternalJavaTunnel {
 		def javaBinary = Jvm.current().javaExecutable.absolutePath
 
 		if (background) {
-			assembleArgumentLists().each { List<String> arguments ->
-				workingDir.mkdirs()
-				List<String> command = [javaBinary] + arguments
-				def tunnelProcess = new ProcessBuilder(command).
-					redirectErrorStream(true).
-					directory(workingDir).
-					start()
+			workingDir.mkdirs()
+			def command = [javaBinary] + assembleArguments() as List<String>
+			tunnelProcess = new ProcessBuilder(command).
+				redirectErrorStream(true).
+				directory(workingDir).
+				start()
 
-				tunnelProcesses << tunnelProcess
-
-				def latch = new CountDownLatch(1)
-				Thread.start {
-					try {
-						tunnelProcess.inputStream.eachLine { String line ->
-							if (latch.count) {
-								logger.info "$outputPrefix: $line"
-								if (line.contains(tunnelReadyMessage)) {
-									latch.countDown()
-								}
-							} else {
-								logger.debug "$outputPrefix: $line"
+			def latch = new CountDownLatch(1)
+			Thread.start {
+				try {
+					tunnelProcess.inputStream.eachLine { String line ->
+						if (latch.count) {
+							logger.info "$outputPrefix: $line"
+							if (line.contains(tunnelReadyMessage)) {
+								latch.countDown()
 							}
+						} else {
+							logger.debug "$outputPrefix: $line"
 						}
-					} catch (IOException ignore) {}
-				}
+					}
+				} catch (IOException ignore) {}
+			}
 
-				if (!latch.await(timeout, timeoutUnit)) {
-					throw new RuntimeException("Timeout waiting for tunnel to open")
-				}
+			if (!latch.await(timeout, timeoutUnit)) {
+				throw new RuntimeException("Timeout waiting for tunnel to open")
 			}
 		} else {
 			project.exec {
 				executable javaBinary
-				args assembleArgumentLists().first()
+				args assembleArguments()
 			}
 		}
 	}
 
 	void stopTunnel() {
-		if (tunnelProcesses) {
+		if (tunnelProcess) {
 			logger.info "disconnecting tunnel"
-			tunnelProcesses*.destroy()
+			tunnelProcess.destroy()
 		}
 	}
 }

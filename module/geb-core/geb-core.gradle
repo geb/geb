@@ -72,7 +72,6 @@ browserStack {
 	account {
 		username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
 		accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
-		localIds = (0..4)*.toString()
 	}
 }
 

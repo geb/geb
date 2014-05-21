@@ -39,6 +39,6 @@ if (browserStackBrowser) {
 		assert username
 		def accessKey = System.getenv("GEB_BROWSERSTACK_AUTHKEY")
 		assert accessKey
-		new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, ['browserstack.localIdentifier': forkIndex])
+		new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey)
 	}
 }
