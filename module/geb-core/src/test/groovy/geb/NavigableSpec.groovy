@@ -14,6 +14,7 @@
  */
 package geb
 
+import geb.error.UnableToSetElementException
 import geb.error.UnresolvablePropertyException
 import geb.test.GebSpecWithServer
 
@@ -26,6 +27,9 @@ class NavigableSpec extends GebSpecWithServer {
 					p(it, 'class': it)
 				}
 				input(type: "text", name: "e", value: "val")
+				img(name: "notAControl")
+				span(name: "alsoNotAControl")
+				img(name: "alsoNotAControl")
 			}
 		}
 	}
@@ -122,6 +126,22 @@ class NavigableSpec extends GebSpecWithServer {
 		z()
 		then:
 		thrown(MissingMethodException)
+	}
+
+	def "trying to set a value on an element that does not support it throws unable to set element exception"() {
+		when:
+		notAControl = 'testValue'
+		then:
+		UnableToSetElementException ex = thrown(UnableToSetElementException)
+		ex.message == 'Unable to set the value of element img as it is not a valid form element'
+	}
+
+	def "trying to set a value on multiple elements that do not support it throws unable to set element exception"() {
+		when:
+		alsoNotAControl = 'testValue'
+		then:
+		UnableToSetElementException ex = thrown(UnableToSetElementException)
+		ex.message == 'Unable to set the value of elements span, img as they are not valid form elements'
 	}
 
 	def "composition with navigators"() {

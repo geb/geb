@@ -401,6 +401,8 @@ As well as:
 
 ### Setting Values
 
+> Trying to set a value on an element which is not one of `input`, `select` or `textarea` will cause an `UnableToSetElementException` to be thrown.
+
 #### select
 
 Select values are set by assigning the value or text of the required option. Assigned values are automatically coerced to String. For example…

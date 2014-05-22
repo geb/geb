@@ -45,6 +45,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
 * [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
+* [Chris Prior](https://github.com/chris-prior) - Bug fix around setting invalid elements
 
 ## History
 
@@ -67,6 +68,7 @@ This page lists the high level changes between versions of Geb.
 * Ignore `atCheckWaiting` setting when checking for unexpected pages. \[[GEB-267](http://jira.codehaus.org/browse/GEB-267)\]
 * Added missing range variants of find/$ methods. \[[GEB-283](http://jira.codehaus.org/browse/GEB-283)\]
 * Migrated `UnableToLoadException` to java. \[[GEB-263](http://jira.codehaus.org/browse/GEB-263)\]
+* Exception thrown when trying to set value on an invalid element (non form control). \[[GEB-286](http://jira.codehaus.org/browse/GEB-286)\]
 
 #### Breaking Changes
 
