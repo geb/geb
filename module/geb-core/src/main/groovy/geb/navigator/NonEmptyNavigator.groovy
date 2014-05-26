@@ -2,6 +2,7 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.error.UnableToSetElementException
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
@@ -21,6 +22,8 @@ class NonEmptyNavigator extends AbstractNavigator {
 		'multiple', 'muted', 'nohref', 'noresize', 'noshade', 'novalidate', 'nowrap', 'open', 'paused',
 		'pubdate', 'readonly', 'required', 'reversed', 'scoped', 'seamless', 'seeking', 'selected',
 		'spellcheck', 'truespeed', 'willvalidate']
+
+	protected final static ELEMENTS_WITH_MUTABLE_VALUE = ['input', 'select', 'textarea']
 
 	protected final List<WebElement> contextElements
 
@@ -592,6 +595,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	protected void setInputValues(Collection<WebElement> inputs, value) {
+		def unsupportedElements = (inputs*.tagName ?: []) - ELEMENTS_WITH_MUTABLE_VALUE
+
+		if (unsupportedElements) {
+			throw new UnableToSetElementException(*unsupportedElements)
+		}
+
 		inputs.each { WebElement input ->
 			setInputValue(input, value)
 		}
