@@ -28,13 +28,13 @@ class ExoticAttributeValuesSpec extends GebSpecWithServer {
 		responseHtml {
 			div(id: "a:b", "foo")
 		}
-		
+
 		go()
 	}
-	
+
 	def "jsf style ids"() {
 		expect:
 		$(id: "a:b").text() == "foo"
 	}
-	
+
 }

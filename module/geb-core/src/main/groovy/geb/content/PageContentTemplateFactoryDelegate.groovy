@@ -22,23 +22,23 @@ import geb.navigator.factory.NavigatorFactory
 class PageContentTemplateFactoryDelegate {
 
 	static DISALLOWED_MODULE_PARAMS = ['_template', '_navigator', '_args']
-	
+
 	private PageContentTemplate template
 	private Object[] args
 
 	@Delegate
 	private final NavigableSupport navigableSupport
-	
+
 	PageContentTemplateFactoryDelegate(PageContentTemplate template, Object[] args) {
 		this.template = template
 		this.navigableSupport = new NavigableSupport(template.navigatorFactory)
 		this.args = args
 	}
-	
+
 	def methodMissing(String name, args) {
-		template.owner."$name"(*args)
+		template.owner."$name"(* args)
 	}
-	
+
 	def propertyMissing(String name) {
 		template.owner."$name"
 	}
@@ -69,18 +69,18 @@ class PageContentTemplateFactoryDelegate {
 			def disallowed = DISALLOWED_MODULE_PARAMS.join(', ')
 			throw new InvalidPageContent("params for module $moduleClass with name ${template.name} contains one or more disallowed params (${disallowed})")
 		}
-		
+
 		def baseNavigatorFactory = base != null ? template.navigatorFactory.relativeTo(base) : template.navigatorFactory
-		
+
 		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory, params)
-		
+
 		def module = moduleClass.newInstance()
-		module.init(template, moduleBaseNavigatorFactory, *args)
+		module.init(template, moduleBaseNavigatorFactory, * args)
 		params.each { name, value ->
 			// TODO - catch MPE and provide better error message
 			module."$name" = value
 		}
-		
+
 		module
 	}
 

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.gradle.cloud
 
 import org.gradle.api.Project
@@ -37,9 +36,13 @@ abstract class ExternalJavaTunnel {
 		this.logger = logger
 	}
 
-	void validateState() { }
+	void validateState() {
+	}
+
 	abstract String getOutputPrefix()
+
 	abstract List<String> assembleArguments()
+
 	abstract String getTunnelReadyMessage()
 
 	void startTunnel(File workingDir, boolean background) {
@@ -68,7 +71,8 @@ abstract class ExternalJavaTunnel {
 							logger.debug "$outputPrefix: $line"
 						}
 					}
-				} catch (IOException ignore) {}
+				} catch (IOException ignore) {
+				}
 			}
 
 			if (!latch.await(timeout, timeoutUnit)) {

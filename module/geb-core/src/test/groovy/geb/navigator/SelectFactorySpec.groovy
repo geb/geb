@@ -34,21 +34,21 @@ class SelectFactorySpec extends GebSpecWithServer {
 	def setup() {
 		go()
 	}
-	
+
 	def factory
-	
+
 	def getSelect() {
 		factory.createSelectFor(s().firstElement())
 	}
-	
+
 	def "will load successfully when select is available"() {
 		when:
 		factory = new SelectFactory()
-		
+
 		then:
 		select instanceof Select
 	}
-	
+
 	def "will give nice error message when select is not available"() {
 		given:
 		factory = new SelectFactory() {
@@ -64,13 +64,13 @@ class SelectFactorySpec extends GebSpecWithServer {
 				}
 			}
 		}
-		
+
 		when:
 		getSelect()
-		
+
 		then:
 		def e = thrown(ClassNotFoundException)
-		e.message.contains "This class is part of the selenium-support jar" 
+		e.message.contains "This class is part of the selenium-support jar"
 	}
 
 }

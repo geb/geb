@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.driver
 
 import geb.error.UnknownDriverShortNameException
 
 class DriverRegistry {
-	
+
 	private static final Map<String, String> DRIVERS = [
 		htmlunit: "org.openqa.selenium.htmlunit.HtmlUnitDriver",
 		firefox: "org.openqa.selenium.firefox.FirefoxDriver",
 		ie: "org.openqa.selenium.ie.InternetExplorerDriver",
 		chrome: "org.openqa.selenium.chrome.ChromeDriver"
 	]
-	
+
 	static String translateFromShortNameIfRequired(String name) {
 		if (!name.contains(".")) {
 			if (DRIVERS.containsKey(name)) {

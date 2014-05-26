@@ -19,9 +19,9 @@ import geb.test.CallbackHttpServer
 
 @Stepwise
 class GebReportingSpecSpec extends GebReportingSpec {
-	
+
 	@Shared server = new CallbackHttpServer()
-	
+
 	static responseText = """
 		<html>
 		<body>
@@ -29,28 +29,28 @@ class GebReportingSpecSpec extends GebReportingSpec {
 		</body>
 		</html>
 	"""
-	
+
 	def setupSpec() {
 		server.start()
 		server.get = { req, res ->
 			res.outputStream << responseText
 		}
 	}
-	
+
 	def setup() {
 		baseUrl = server.baseUrl
 		go()
 	}
-		
+
 	def getFirstOutputFile() {
 		new File(reportGroupDir, "001-001-a request is made-end.html")
 	}
-	
+
 	def "a request is made"() {
 		given:
 		go("/") // make a request
 	}
-	
+
 	def "a report should have been created with the response text"() {
 		given:
 		def report = getFirstOutputFile()
@@ -63,10 +63,8 @@ class GebReportingSpecSpec extends GebReportingSpec {
 		expect:
 		reportGroupDir.listFiles().any { it.name.startsWith("002") }
 	}
-	
+
 	def cleanupSpec() {
 		server.stop()
 	}
-	
-	
 }

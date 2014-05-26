@@ -14,8 +14,7 @@
  */
 package geb
 
-import geb.test.*
-import geb.conf.*
+import geb.test.GebSpec
 
 class BrowserSpec extends GebSpec {
 
@@ -30,5 +29,4 @@ class BrowserSpec extends GebSpec {
 		expect:
 		browser.config.rawConfig.testValue == true
 	}
-	
 }

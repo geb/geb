@@ -31,7 +31,7 @@ class UrlCalculationSpec extends GebSpecWithServer {
 			</html>"""
 		}
 	}
-	
+
 	protected toRequestParameterMapString(map) {
 		def requestMap = [:]
 		map.each { k, v ->
@@ -44,42 +44,40 @@ class UrlCalculationSpec extends GebSpecWithServer {
 		}
 		requestMap.toString()
 	}
-	
+
 	@Unroll("to page: page = #page, args = #args, params = #params, path = #path")
 	def "t1"() {
 		when:
-		to(page, *:params, *args)
+		to(page, *: params, * args)
 		then:
 		requestPath == path
 		requestParams == toRequestParameterMapString(params)
 		where:
-		page                        | params      | args       | path
-		UrlCalculationSpecPage      | [:]         | []         | "/"
-		UrlCalculationSpecPage      | [a: 1]      | []         | "/"
-		UrlCalculationSpecPage      | [:]         | ["a"]      | "/a"
-		UrlCalculationSpecPage      | [:]         | ["a", "b"] | "/a/b"
-		UrlCalculationSpecPage      | [a: [1,2]]  | []         | "/"
+		page                   | params      | args       | path
+		UrlCalculationSpecPage | [:]         | []         | "/"
+		UrlCalculationSpecPage | [a: 1]      | []         | "/"
+		UrlCalculationSpecPage | [:]         | ["a"]      | "/a"
+		UrlCalculationSpecPage | [:]         | ["a", "b"] | "/a/b"
+		UrlCalculationSpecPage | [a: [1, 2]] | []         | "/"
 	}
 
 	@Unroll("go: baseUrl = #baseUrl, params = #params, path = #path, expectedRequestPath = #expectedRequestPath")
 	def "t2"() {
 		when:
 		browser.baseUrl = base
-		go(path, *:params)
+		go(path, *: params)
 		page UrlCalculationSpecPage
-		
+
 		then:
 		requestUrl == expectedRequestURL
 
 		where:
-		base           | params     | path       | expectedRequestURL
-		server.baseUrl | [:]        | ""         | server.baseUrl
-		server.baseUrl | [a:1]      | ""         | server.baseUrl + "?a=1"
-		server.baseUrl | [:]        | "a/b"      | server.baseUrl + "a/b"
+		base           | params | path  | expectedRequestURL
+		server.baseUrl | [:]    | ""    | server.baseUrl
+		server.baseUrl | [a: 1] | ""    | server.baseUrl + "?a=1"
+		server.baseUrl | [:]    | "a/b" | server.baseUrl + "a/b"
 	}
-
 }
-
 
 class UrlCalculationSpecPage extends Page {
 
@@ -88,5 +86,4 @@ class UrlCalculationSpecPage extends Page {
 		requestPath(dynamic: true) { $("div.path").text() }
 		requestParams(dynamic: true) { $("div.params").text() }
 	}
-
 }

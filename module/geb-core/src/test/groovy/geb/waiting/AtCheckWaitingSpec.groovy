@@ -55,7 +55,6 @@ class AtCheckWaitingSpec extends WaitingSpec {
 		at AtCheckWaitingSpecPage
 	}
 
-
 	void 'if at checker fails with waiting enabled it should provide assertion verification output'() {
 		given:
 		rawConfig.atCheckWaiting = 0.1

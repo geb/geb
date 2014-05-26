@@ -19,9 +19,9 @@ import spock.lang.*
 import geb.test.CallbackHttpServer
 
 class GebSpecSpec extends GebSpec {
-	
+
 	@Shared server = new CallbackHttpServer()
-	
+
 	def setupSpec() {
 		server.start()
 		server.get = { req, res ->
@@ -33,12 +33,12 @@ class GebSpecSpec extends GebSpec {
 			</html>"""
 		}
 	}
-	
+
 	def setup() {
 		baseUrl = server.baseUrl
 		go()
 	}
-	
+
 	def "missing methods are invoked on the driver instance"() {
 		// This also verifies that the driver instance is instantiated correctly
 		when:
@@ -46,7 +46,7 @@ class GebSpecSpec extends GebSpec {
 		then:
 		notThrown(Exception)
 	}
-	
+
 	def "missing property access are requested on the driver instance"() {
 		given:
 		page SomePage
@@ -68,7 +68,7 @@ class GebSpecSpec extends GebSpec {
 	def cleanupSpec() {
 		server.stop()
 	}
-	
+
 }
 
 class SomePage extends Page {

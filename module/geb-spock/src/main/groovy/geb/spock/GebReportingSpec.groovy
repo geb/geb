@@ -30,13 +30,13 @@ class GebReportingSpec extends GebSpec {
 		reportGroup getClass()
 		cleanReportGroupDir()
 	}
-	
+
 	def setup() {
 		reportGroup getClass()
 	}
-	
+
 	def cleanup() {
-		report "end" 
+		report "end"
 		++_gebReportingSpecTestCounter
 	}
 

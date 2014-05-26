@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ class ConfigurationLoader {
 	/**
 	 * Configures the loader using the defaults.
 	 *
-	 * @see ConfigurationLoader(ClassLoader, String, Properties)
+	 * @see ConfigurationLoader ( ClassLoader , String , Properties )
 	 */
 	ConfigurationLoader() {
 		this(null, null, null)
@@ -51,7 +51,7 @@ class ConfigurationLoader {
 	/**
 	 * Configures the loader with the given environment for parsing config scripts, and defaults for everything else.
 	 *
-	 * @see ConfigurationLoader(String, Properties, ClassLoader)
+	 * @see ConfigurationLoader ( String , Properties , ClassLoader )
 	 */
 	ConfigurationLoader(String environment) {
 		this(environment, null, null)
@@ -100,7 +100,7 @@ class ConfigurationLoader {
 	/**
 	 * <p>Creates a config backed by the classpath config script resource at the given path.</p>
 	 *
-	 * <p>The resource is first searched for using the special class loader (thread context loader by default), and then the class loader of this class if it wasn't found. 
+	 * <p>The resource is first searched for using the special class loader (thread context loader by default), and then the class loader of this class if it wasn't found.
 	 * If no classpath resource can be found at the given path, an empty config object will be used with the class loader of this class.</p>
 	 *
 	 * <p>The class loader that is used is then propagated to the created configuration object. This means that if it is the special loader it <strong>must</strong> have
@@ -230,7 +230,7 @@ class ConfigurationLoader {
 
 	/**
 	 * This implementation returns a new {@link groovy.lang.GroovyClassLoader} which uses the
-	 * {@code Thread.currentThread().contextClassLoader} as the parent.
+	 * {@code Thread.currentThread ( ) .contextClassLoader} as the parent.
 	 */
 	protected GroovyClassLoader getDefaultSpecialClassLoader() {
 		new GroovyClassLoader()

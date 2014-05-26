@@ -17,10 +17,10 @@ package geb.js
 import geb.test.*
 
 class JQueryAdapterSpec extends GebSpecWithServer {
-	
+
 	def setupSpec() {
 		def jquery = getClass().getResource("/jquery-1.4.2.min.js")
-		
+
 		server.get = { req, res ->
 			res.outputStream << """
 				<html>
@@ -31,7 +31,7 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 					<script type="text/javascript">
 						var i = false;
 						\$(function() {
-							\$("#a").click(function() { 
+							\$("#a").click(function() {
 								i = true;
 							})
 						});
@@ -45,11 +45,11 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 			"""
 		}
 	}
-		
+
 	def setup() {
 		go()
 	}
-	
+
 	def "simple method"() {
 		expect:
 		js.i == false
@@ -59,7 +59,6 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 		js.i == true
 	}
 
-
 	def "method with arg"() {
 		expect:
 		js.i == false
@@ -68,26 +67,26 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 		then:
 		js.i == true
 	}
-	
+
 	def "String return value"() {
 		expect:
 		$("#a").jquery.attr("id") == "a"
 	}
-	
+
 	def "Navigator return value"() {
 		expect:
 		$("#a").jquery.next().@id == "b"
 	}
-	
+
 	def "boolean return value"() {
 		expect:
 		$("#a").jquery.hasClass("x") == false
 		$("#b").jquery.hasClass("x") == true
 	}
-	
+
 	def "int return value"() {
 		expect:
 		$("div").jquery.size() == 2
 	}
-	
+
 }

@@ -232,9 +232,9 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator getAt(Collection indexes)
 
 	Navigator add(String selector)
-	
+
 	Navigator add(WebElement[] elements)
-	
+
 	Navigator add(Collection<WebElement> elements)
 
 	/**
@@ -297,7 +297,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
 	 * current context elements up to, but not including, the first to match the selector.
-	 * 
+	 *
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
@@ -332,7 +332,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
 	 * current context elements, matching the selector.
-	 * 
+	 *
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
@@ -341,7 +341,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
 	 * current context elements up to, but not including the first matching the selector.
-	 * 
+	 *
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
@@ -542,7 +542,7 @@ interface Navigator extends Iterable<Navigator> {
 	 */
 	Navigator head()
 
-	 /**
+	/**
 	 * Creates a new Navigator instance containing only the first context element (wrapped).
 	 * @return new Navigator instance
 	 */
@@ -614,7 +614,7 @@ interface Navigator extends Iterable<Navigator> {
 	 * Returns the x coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
 	 * To get the x coordinate of all matched elements you can use the spread operator {@code navigator*.x}
-	 */	
+	 */
 	int getX()
 
 	/**
@@ -629,8 +629,3 @@ interface Navigator extends Iterable<Navigator> {
 	 */
 	Navigator unique()
 }
-
-
-
-
-

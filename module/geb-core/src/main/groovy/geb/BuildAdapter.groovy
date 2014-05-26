@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,31 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb
 
 /**
- * Used to supply default configuration type values to allow a build system (or anything else) 
+ * Used to supply default configuration type values to allow a build system (or anything else)
  * to configure the Geb runtime from the outside.
  */
 interface BuildAdapter {
-	
+
 	/**
 	 * Provides the default baseUrl to use when no value has been configured.
 	 * <p>
 	 * This method may return {@code null}.
-	 * 
+	 *
 	 * @see geb.Configuration#getBaseUrl()
 	 */
 	String getBaseUrl()
-	
+
 	/**
 	 * Provides the default location to write report files.
 	 * <p>
 	 * This method may return {@code null}.
-	 * 
+	 *
 	 * @see geb.Configuration#getReportsDir()
 	 */
 	File getReportsDir()
-	
+
 }

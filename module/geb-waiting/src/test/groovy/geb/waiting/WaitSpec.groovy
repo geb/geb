@@ -28,10 +28,10 @@ class WaitSpec extends Specification {
 	def "wait algorithm handles cases where the block takes a long time"() {
 		given:
 		def wait = new Wait(2, 0.5)
-		
+
 		when:
 		wait.waitFor { sleep 3000 }
-		
+
 		then:
 		thrown WaitTimeoutException
 	}

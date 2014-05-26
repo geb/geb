@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.gradle.browserstack.task
 
 import org.gradle.api.DefaultTask

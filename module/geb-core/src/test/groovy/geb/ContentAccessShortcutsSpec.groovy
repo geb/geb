@@ -28,7 +28,8 @@ class ContentAccessShortcutsSpec extends GebSpecWithServer {
 		}
 	}
 
-	@Unroll()
+	@Unroll
+	@SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
 	def "content values can be read using equals"() {
 		when:
 		to ContentAccessShortcutsPage
@@ -46,7 +47,8 @@ class ContentAccessShortcutsSpec extends GebSpecWithServer {
 		contentContainerFactory << [{ page }, { wholePageModule }]
 	}
 
-	@Unroll()
+	@Unroll
+	@SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
 	def "content values can be set using assignment"() {
 		given:
 		to ContentAccessShortcutsPage

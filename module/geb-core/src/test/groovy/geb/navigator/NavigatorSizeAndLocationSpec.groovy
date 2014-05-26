@@ -20,7 +20,7 @@ import geb.Page
 import geb.test.*
 
 class NavigatorSizeAndLocationSpec extends GebSpecWithServer {
-	
+
 	def setupSpec() {
 		server.get = { req, res ->
 			res.outputStream << """
@@ -50,11 +50,11 @@ class NavigatorSizeAndLocationSpec extends GebSpecWithServer {
 			</html>"""
 		}
 	}
-	
+
 	def setup() {
 		go()
 	}
-	
+
 	def "size"() {
 		expect:
 		$(".a").height == 40
@@ -76,15 +76,15 @@ class NavigatorSizeAndLocationSpec extends GebSpecWithServer {
 		$(".b").y == 50
 		$("div")*.y == [10, 50]
 	}
-	
+
 	def "available on page content"() {
 		when:
 		page TestPage
-		
+
 		then:
 		div("a").height == 40
 		div("a").width == 30
-		
+
 		and:
 		div("b").height == 80
 		div("b").width == 70
@@ -93,19 +93,21 @@ class NavigatorSizeAndLocationSpec extends GebSpecWithServer {
 	def "available on module"() {
 		when:
 		page TestPage
-		
+
 		then:
 		module("a").height == 40
 		module("a").width == 30
-		
+
 		and:
 		module("b").height == 80
 		module("b").width == 70
 	}
-	
+
 }
 
-class TestModule extends Module {}
+class TestModule extends Module {
+}
+
 class TestPage extends Page {
 	static content = {
 		div { $("div.$it") }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.gradle.browserstack
 
 import geb.gradle.cloud.ExternalJavaTunnel
@@ -55,7 +54,7 @@ class BrowserStackTunnel extends ExternalJavaTunnel {
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {
-		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol=='https'?'1':'0'}" }.join(',')
+		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == 'https' ? '1' : '0'}" }.join(',')
 	}
 
 	static int determinePort(URL url) {

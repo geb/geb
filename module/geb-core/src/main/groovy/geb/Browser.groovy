@@ -28,7 +28,7 @@ import org.openqa.selenium.WebDriverException
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
- * a {@link geb.Page} object that provides access to the content. 
+ * a {@link geb.Page} object that provides access to the content.
  * <p>
  * Browser objects dynamically delegate all method calls and property read/writes that it doesn't implement to the current
  * page instance via {@code propertyMissing()} and {@code methodMissing()}.
@@ -444,7 +444,6 @@ class Browser {
 			createPage(pageType)
 		}
 	}
-
 
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.

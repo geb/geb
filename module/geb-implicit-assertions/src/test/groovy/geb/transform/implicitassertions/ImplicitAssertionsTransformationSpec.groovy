@@ -74,7 +74,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
 
 		then:
 		noExceptionThrown()
-		
+
 		and:
 		returnValue == expectedReturnValue
 

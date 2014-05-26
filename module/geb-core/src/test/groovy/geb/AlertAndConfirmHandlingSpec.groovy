@@ -18,7 +18,7 @@ import geb.test.*
 
 /*@Ignore*/
 class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
-	
+
 	def setupSpec() {
 		server.get = { req, res ->
 			res.outputStream << """
@@ -32,7 +32,7 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 					<input type="button" name="noAlert" />
 					<input type="button" name="hasConfirm" onclick="confirmResult = confirm(++i);" />
 					<input type="button" name="noConfirm" />
-					
+
 					<input type="button" name="hasAlertReload" onclick="alert(++i); window.location.reload();" />
 					<input type="button" name="noAlertReload" onclick="window.location.reload();"/>
 					<input type="button" name="hasConfirmReload" onclick="confirmResult = confirm(++i); window.location.reload();" />
@@ -40,33 +40,33 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 
 					<input type="button" name="hasAsynchronousAlert" onclick="setTimeout(function() { alert('asynchronous alert') }, 1000);" />
 					<input type="button" name="hasAsynchronousConfirm" onclick="setTimeout(function() { confirm('asynchronous confirm') }, 1000);" />
-					
+
 				</body>
 				</html>
 			"""
 		}
 	}
-		
+
 	def setup() {
 		go()
 	}
-	
+
 	// HTMLUnit does something strange when converting types
 	// and changes integer '1' to string '1.0' when coercing
 	private rationalise(value) {
 		value[0].toInteger()
 	}
-	
+
 	def "handle alert"() {
 		expect:
 		rationalise(withAlert { hasAlert().click() }) == 1
 	}
-	
+
 	def "expect alert with page change"() {
 		expect:
 		withAlert { hasAlertReload().click() } == true
 	}
-	
+
 	def "expect alert but don't get it"() {
 		when:
 		withAlert { noAlert().click() }
@@ -79,7 +79,7 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		// no way of knowing if alert happened or not
 		withAlert { noAlertReload().click() } == true
 	}
-	
+
 	def "no alert and don't get one"() {
 		when:
 		withNoAlert { noAlert().click() }
@@ -107,11 +107,11 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		then:
 		notThrown(AssertionError)
 	}
-	
+
 	def "nested alerts"() {
 		when:
 		def innerMsg
-		def outerMsg = withAlert { 
+		def outerMsg = withAlert {
 			innerMsg = withAlert { hasAlert().click() }
 			hasAlert().click()
 		}
@@ -124,11 +124,11 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		expect:
 		withAlert(wait: true) { hasAsynchronousAlert().click() } == 'asynchronous alert'
 	}
-	
+
 	private getConfirmResult() {
 		js.confirmResult
 	}
-	
+
 	def "handle confirm"() {
 		expect:
 		rationalise(withConfirm(true) { hasConfirm().click() }) == 1
@@ -143,7 +143,7 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		expect:
 		withConfirm(true) { hasConfirmReload().click() } == true
 	}
-	
+
 	def "expect confirm but don't get it"() {
 		when:
 		withConfirm { noConfirm().click() }
@@ -155,7 +155,7 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		expect:
 		withConfirm { noConfirmReload().click() } == true
 	}
-	
+
 	def "no confirm and don't get one"() {
 		when:
 		withNoConfirm { noConfirm().click() }
@@ -176,13 +176,13 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		then:
 		notThrown(AssertionError)
 	}
-	
+
 	def "nested confirms"() {
 		when:
 		def innerMsg
 		def innerConfirmResult
 		def outerConfirmResult
-		def outerMsg = withConfirm(true) { 
+		def outerMsg = withConfirm(true) {
 			innerMsg = withConfirm(false) { hasConfirm().click() }
 			innerConfirmResult = confirmResult
 			hasConfirm().click()
@@ -199,7 +199,7 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
 		expect:
 		withConfirm(wait: true) { hasAsynchronousConfirm().click() } == 'asynchronous confirm'
 	}
-	
+
 	def "pages and modules have the methods too"() {
 		given:
 		page AlertAndConfirmHandlingSpecPage
@@ -215,7 +215,7 @@ class AlertAndConfirmHandlingSpecPage extends Page {
 	static content = {
 		mod { module AlertAndConfirmHandlingSpecModule }
 	}
-	
+
 	def testOneOfTheMethods() {
 		withNoAlert { true }
 	}

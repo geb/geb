@@ -25,9 +25,10 @@ import spock.util.concurrent.BlockingVariable
 class DriverCachingSpec extends Specification {
 
 	def num = 0
-	
+
 	private static class NullBuildAdapter implements BuildAdapter {
 		String getBaseUrl() { null }
+
 		File getReportsDir() { null }
 	}
 
@@ -35,7 +36,7 @@ class DriverCachingSpec extends Specification {
 		def conf = new Configuration(new ConfigObject(), new Properties(), new NullBuildAdapter())
 		conf.cacheDriverPerThread = cacheDriverPerThread
 		conf.driverConf = { new HtmlUnitDriver() }
-		
+
 		assert conf.cacheDriver
 
 		conf
@@ -44,7 +45,7 @@ class DriverCachingSpec extends Specification {
 	def setupSpec() {
 		CachingDriverFactory.clearCacheCache()
 	}
-	
+
 	def "per thread caching yields a new driver on a different thread"() {
 		given:
 		def conf1 = conf(true)
@@ -55,23 +56,23 @@ class DriverCachingSpec extends Specification {
 
 		when:
 		Thread.start { holder.set(conf2.driver) }
-		
+
 		and:
 		def driver1 = conf1.driver
 		def driver2 = holder.get()
-		
+
 		then:
 		!driver1.is(driver2)
-		
+
 		and:
 		driver1.is conf(true).driver
-		
+
 		when:
 		CachingDriverFactory.clearCacheAndQuitDriver()
-		
+
 		then:
-		! driver1.is (conf(true).driver)
-		
+		!driver1.is(conf(true).driver)
+
 		cleanup:
 		driver1.quit()
 		driver2.quit()
@@ -87,30 +88,30 @@ class DriverCachingSpec extends Specification {
 
 		when:
 		Thread.start { holder.set(conf2.driver) }
-		
+
 		and:
 		def driver1 = conf1.driver
 		def driver2 = holder.get()
-		
+
 		then:
 		driver1.is(driver2)
-		
+
 		and:
 		driver1.is conf().driver
-		
+
 		when:
 		CachingDriverFactory.clearCacheAndQuitDriver()
-		
+
 		then:
-		! driver1.is (conf(true).driver)
-		
+		!driver1.is(conf(true).driver)
+
 		cleanup:
 		driver1.quit()
 		driver2.quit()
 	}
-	
+
 	def cleanup() {
 		CachingDriverFactory.clearCacheCache()
 	}
-	
+
 }

@@ -29,7 +29,7 @@ class JavascriptInterfaceSpec extends GebSpecWithServer {
 					function changeVars(newV1, newV2) {
 						v1 = newV1;
 						v2 = newV2;
-						
+
 						return "coming back";
 					}
 				</script>
@@ -38,17 +38,17 @@ class JavascriptInterfaceSpec extends GebSpecWithServer {
 			</html>"""
 		}
 	}
-	
+
 	def setup() {
 		go() // make sure we have a fresh page
 	}
-	
+
 	def "scripting style"() {
 		expect: "we can read the vars"
 		js.v1 == 1
 		js.v2 == 2
 		when: "we call a javascript method"
-		def r = js.changeVars(3,4)
+		def r = js.changeVars(3, 4)
 		then: "the method result is returned and it changed the vars"
 		r == "coming back"
 		js.v1 == 3
@@ -68,7 +68,7 @@ class JavascriptInterfaceSpec extends GebSpecWithServer {
 		v1 == 1
 		v2 == 2
 		when: "we call a javascript method"
-		def r = changeVars(3,4)
+		def r = changeVars(3, 4)
 		then: "the method result is returned and it changed the vars"
 		r == "coming back"
 		v1 == 3
@@ -88,7 +88,7 @@ class JavascriptInterfaceSpec extends GebSpecWithServer {
 		mod.v1 == 1
 		mod.v2 == 2
 		when: "we call a javascript method"
-		def r = mod.changeVars(3,4)
+		def r = mod.changeVars(3, 4)
 		then: "the method result is returned and it changed the vars"
 		r == "coming back"
 		mod.v1 == 3
@@ -111,7 +111,7 @@ class JavascriptInterfaceSpec extends GebSpecWithServer {
 		then:
 		thrown(Exception)
 	}
-	
+
 	def "nested property"() {
 		expect:
 		js."document.title" == "geb"
@@ -125,7 +125,7 @@ class JavascriptInterfaceSpecPage extends Page {
 		v2 { js.v2 }
 		mod { module JavascriptInterfaceSpecModule }
 	}
-	
+
 	def changeVars(a, b) {
 		js.changeVars(a, b)
 	}
@@ -141,7 +141,7 @@ class JavascriptInterfaceSpecModule extends Module {
 		v1 { js.v1 }
 		v2 { js.v2 }
 	}
-	
+
 	def changeVars(a, b) {
 		js.changeVars(a, b)
 	}

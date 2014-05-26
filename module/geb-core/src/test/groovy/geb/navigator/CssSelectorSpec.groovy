@@ -18,7 +18,7 @@ class CssSelectorSpec extends Specification {
 		browser.go(getClass().getResource("/test.html") as String)
 		onPage = browser.navigatorFactory.base
 	}
-	
+
 	def "selector type matching rules"() {
 		expect: selector.matches(element) == expectedMatch
 
@@ -40,7 +40,7 @@ class CssSelectorSpec extends Specification {
 		selectors[index]*.toString() == expectedSelectors
 
 		where:
-		selector                                                                                       | index | expectedSelectors
+		selector                                                                                        | index | expectedSelectors
 		"div"                                                                                           | 0     | ["div"]
 		".something"                                                                                    | 0     | [".something"]
 		"#id-with-hyphens"                                                                              | 0     | ["#id-with-hyphens"]

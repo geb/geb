@@ -232,7 +232,6 @@ class PageOrientedSpec extends GebSpecWithServer {
 		linkTextAlias == 'b'
 	}
 
-
 	def 'at check should fail when no at checker is defined on the page object class'() {
 		when:
 		at PageWithoutAtChecker
@@ -333,7 +332,8 @@ class PageWithAtChecker extends Page {
 	static at = { false }
 }
 
-class PageWithoutAtChecker extends Page {}
+class PageWithoutAtChecker extends Page {
+}
 
 class PageWithLinkToPageWithoutAtChecker extends Page {
 	static content = {

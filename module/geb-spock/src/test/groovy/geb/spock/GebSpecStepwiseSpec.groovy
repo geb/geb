@@ -22,7 +22,7 @@ import geb.test.CallbackHttpServer
 class GebSpecStepwiseSpec extends GebReportingSpec {
 
 	@Shared server = new CallbackHttpServer()
-	
+
 	def setupSpec() {
 		server.start()
 		server.get = { req, res ->
@@ -46,12 +46,12 @@ class GebSpecStepwiseSpec extends GebReportingSpec {
 		then:
 		at FirstPage
 	}
-	
+
 	def "make sure we are still at the page"() {
 		expect:
 		at FirstPage
 	}
-	
+
 	def cleanupSpec() {
 		server.stop()
 	}

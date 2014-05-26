@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.binding
 
 import geb.Browser
@@ -24,9 +23,9 @@ class BindingUpdater {
 
 	final Browser browser
 	final Binding binding
-	
+
 	protected final PageChangeListener pageChangeListener
-	
+
 	static public final FORWARDED_BROWSER_METHODS = [
 		"go", "to", "via", "at",
 		"waitFor",
@@ -34,7 +33,7 @@ class BindingUpdater {
 		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
 		"report", "reportGroup", "cleanReportGroupDir"
 	].asImmutable()
-	
+
 	protected BindingUpdater(Binding binding, Browser browser) {
 		this.binding = binding
 		this.browser = browser
@@ -46,64 +45,64 @@ class BindingUpdater {
 			binding.setVariable("page", newPage)
 			binding.setVariable("\$", new InvocationForwarding("\$", newPage))
 		}
-		
+
 		void clearBinding() {
 			binding.variables.remove("page")
 			binding.variables.remove("\$")
 		}
 	}
-	
+
 	protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
 		new BindingUpdatingPageChangeListener()
 	}
-	
+
 	private static class InvocationForwarding extends Closure {
 		private final String methodName
 		private final Object target
-		
+
 		InvocationForwarding(String theMethodName, Object theTarget) {
 			super(theTarget)
-			
+
 			methodName = theMethodName
 			target = theTarget
 		}
-		
+
 		protected doCall(Object[] args) {
-			target."$methodName"(*args)
+			target."$methodName"(* args)
 		}
 	}
-	
+
 	/**
 	 * Populates the binding and starts the updater updating the binding as necessary.
 	 */
 	BindingUpdater initialize() {
 		binding.browser = browser
 		binding.js = browser.js
-		
+
 		FORWARDED_BROWSER_METHODS.each {
 			binding.setVariable(it, new InvocationForwarding(it, browser))
 		}
-		
+
 		browser.registerPageChangeListener(pageChangeListener)
-		
+
 		this
 	}
-	
+
 	/**
 	 * Removes everything from the binding and stops updating it.
 	 */
 	BindingUpdater remove() {
 		browser.removePageChangeListener(pageChangeListener)
 		pageChangeListener.clearBinding()
-		
+
 		binding.variables.remove('browser')
 		binding.variables.remove('js')
-		
+
 		FORWARDED_BROWSER_METHODS.each {
 			binding.variables.remove(it)
 		}
 
 		this
 	}
-	
+
 }

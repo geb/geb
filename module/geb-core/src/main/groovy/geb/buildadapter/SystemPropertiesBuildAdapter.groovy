@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.buildadapter
 
 import geb.BuildAdapter
@@ -22,17 +21,17 @@ import geb.BuildAdapter
  * Loads values via system properties.
  */
 class SystemPropertiesBuildAdapter implements BuildAdapter {
-	
+
 	static public final String BASE_URL_PROPERTY_NAME = "geb.build.baseUrl"
 	static public final String REPORTS_DIR_PROPERTY_NAME = "geb.build.reportsDir"
-	
+
 	/**
 	 * Returns the system property {@code geb.build.baseUrl}.
 	 */
 	String getBaseUrl() {
 		System.getProperty(BASE_URL_PROPERTY_NAME)
 	}
-	
+
 	/**
 	 * Returns a {@link java.io.File} constructed with the system property {@code geb.build.reportsDir}, or {@code null} if not set.
 	 */
@@ -40,5 +39,5 @@ class SystemPropertiesBuildAdapter implements BuildAdapter {
 		def value = System.getProperty(REPORTS_DIR_PROPERTY_NAME)
 		value ? new File(value) : null
 	}
-	
+
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.test
 
 import org.mortbay.jetty.servlet.Context
@@ -22,9 +21,9 @@ import org.mortbay.jetty.servlet.ServletHolder
 import org.openqa.selenium.remote.server.DriverServlet
 
 class WebDriverServer extends TestHttpServer {
-	
+
 	protected addServlets(Context context) {
 		context.addServlet(new ServletHolder(new DriverServlet()), "/*")
 	}
-	
+
 }

@@ -5,13 +5,14 @@ ruleset {
 	ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml')
 	ruleset('rulesets/dry.xml')
-	ruleset('rulesets/exceptions.xml')
+	ruleset('rulesets/exceptions.xml')*/
 	ruleset('rulesets/formatting.xml') {
 		ClassJavadoc {
 			enabled = false
 		}
 		SpaceAroundMapEntryColon {
 			characterAfterColonRegex = /\s/
+			doNotApplyToFileNames = 'UrlCalculationSpec.groovy'
 		}
 		FileEndsWithoutNewline {
 			enabled = false
@@ -19,8 +20,11 @@ ruleset {
 		LineLength {
 			length = 200
 		}
+		SpaceBeforeOpeningBrace {
+			doNotApplyToFileNames = 'InteractionsSupportSpec.groovy'
+		}
 	}
-	ruleset('rulesets/generic.xml')
+	/*ruleset('rulesets/generic.xml')
 	ruleset('rulesets/groovyism.xml')*/
 	ruleset('rulesets/imports.xml') {
 		MisorderedStaticImports {

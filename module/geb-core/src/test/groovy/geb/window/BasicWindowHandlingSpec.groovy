@@ -20,16 +20,18 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 		withWindow(windowName(index)) { title } == windowTitle(index)
 
 		where:
-		index << [1,2]
+		index << [1, 2]
 	}
 
 	@Unroll
+	@SuppressWarnings('SpaceAfterClosingBrace')
 	def "ensure original context is preserved after a call to withWindow"() {
 		given:
 		openWindow(1)
 
 		when:
-		withWindow(specification) {}
+		withWindow(specification) {
+		}
 
 		then:
 		inContextOfMainWindow
@@ -46,9 +48,11 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	@Unroll
+	@SuppressWarnings('SpaceAfterClosingBrace')
 	def "ensure exception is thrown for a non existing window passed to withWindow"() {
 		when:
-		withWindow(specification) {}
+		withWindow(specification) {
+		}
 
 		then:
 		thrown(NoSuchWindowException)
@@ -58,12 +62,14 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	@Unroll
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withWindow closes matching windows if 'close' option is passed"() {
 		given:
 		openWindow(1)
 
 		when:
-		withWindow(specification, close: true) {}
+		withWindow(specification, close: true) {
+		}
 
 		then:
 		availableWindows.size() == old(availableWindows.size() - 1)
@@ -72,9 +78,11 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 		specification << [{ title == windowTitle(1) }, windowName(1)]
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "ensure original context is preserved after a call to withNewWindow"() {
 		when:
-		withNewWindow({ openWindow(1) }) {}
+		withNewWindow({ openWindow(1) }) {
+		}
 
 		then:
 		inContextOfMainWindow
@@ -88,6 +96,7 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	@Unroll
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "ensure withNewWindow block closure called in the context of the newly opened window"() {
 		expect:
 		withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
@@ -98,9 +107,11 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 		windowTitle(2) | 2
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow closes the new window by default"() {
 		when:
-		withNewWindow({ openWindow(1) }) {}
+		withNewWindow({ openWindow(1) }) {
+		}
 
 		then:
 		availableWindows.size() == old(availableWindows.size())

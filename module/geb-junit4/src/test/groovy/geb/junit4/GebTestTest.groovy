@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.junit4
 
 import geb.test.CallbackHttpServer
@@ -25,7 +24,7 @@ import org.junit.runners.JUnit4
 class GebTestTest extends GebTest {
 
 	def server = new CallbackHttpServer()
-	
+
 	@Before
 	void setUp() {
 		server.start()
@@ -39,7 +38,7 @@ class GebTestTest extends GebTest {
 		}
 		browser.baseUrl = server.baseUrl
 	}
-	
+
 	@Test
 	void missingMethodsAreInvokedOnTheDriverInstance() {
 		// This also verifies that the driver instance is instantiated correctly

@@ -21,39 +21,39 @@ import org.openqa.selenium.JavascriptExecutor
 class JavascriptInterface {
 
 	final Browser browser
-	
+
 	JavascriptInterface(Browser browser) {
 		this.browser = browser
-		
+
 	}
-	
+
 	private _execjs(String script, Object[] args) {
 		def driver = browser.driver
 		if (!(driver instanceof JavascriptExecutor)) {
 			throw new GebException("driver '$driver' can not execute javascript")
 		}
-		
+
 		// Temporarily disabled due to issues with 2.0rc3
 		//if (!driver.javascriptEnabled) {
 		//	throw new GebException("javascript is disabled for driver '$driver'")
 		//}
-		
-		browser.driver.executeScript(script, *args)
+
+		browser.driver.executeScript(script, * args)
 	}
-	
+
 	def propertyMissing(String name) {
 		_execjs("return $name;")
 	}
-	
+
 	def methodMissing(String name, args) {
-		_execjs("return ${name}.apply(window, arguments)", *args)
+		_execjs("return ${name}.apply(window, arguments)", * args)
 	}
 
 	def exec(Object[] args) {
 		if (args.size() == 0) {
 			throw new IllegalArgumentException("there must be a least one argument")
-		} 
-		
+		}
+
 		def script
 		def jsArgs
 		if (args.size() == 1) {
@@ -63,12 +63,12 @@ class JavascriptInterface {
 			script = args[args.size() - 1]
 			jsArgs = args[0..(args.size() - 2)]
 		}
-		
+
 		if (!(script instanceof CharSequence)) {
 			throw new IllegalArgumentException("The last argument to the js function must be string-like")
 		}
-		
-		_execjs(script.toString(), *jsArgs)
+
+		_execjs(script.toString(), * jsArgs)
 	}
 
 }

@@ -20,20 +20,20 @@ class TextMatchingSupport {
 
 	TextMatcher startsWith(CharSequence str) {
 		new PatternTextMatcher(Pattern.quote(str) + ".*")
-	} 
+	}
 
 	TextMatcher notStartsWith(CharSequence str) {
 		new NegatedTextMatcher(startsWith(str))
-	} 
-	
+	}
+
 	TextMatcher contains(CharSequence str) {
 		new PatternTextMatcher(".*" + Pattern.quote(str) + ".*")
 	}
-	
+
 	TextMatcher notContains(CharSequence str) {
 		new NegatedTextMatcher(contains(str))
 	}
-	
+
 	TextMatcher endsWith(CharSequence str) {
 		new PatternTextMatcher(".*" + Pattern.quote(str))
 	}
@@ -57,7 +57,7 @@ class TextMatchingSupport {
 	TextMatcher iNotContains(CharSequence str) {
 		new NegatedTextMatcher(iContains(str))
 	}
-	
+
 	TextMatcher iEndsWith(CharSequence str) {
 		new PatternTextMatcher("(?i).*" + Pattern.quote(str))
 	}
@@ -73,7 +73,7 @@ class TextMatchingSupport {
 	TextMatcher notContainsWord(CharSequence str) {
 		new NegatedTextMatcher(containsWord(str))
 	}
-	
+
 	TextMatcher iContainsWord(CharSequence str) {
 		new PatternTextMatcher("(?i)(^|.+\\s)" + Pattern.quote(str) + "(\$|\\s.+)")
 	}
@@ -84,12 +84,12 @@ class TextMatchingSupport {
 
 	TextMatcher startsWith(Pattern pattern) {
 		new PatternTextMatcher(pattern.pattern() + ".*")
-	} 
+	}
 
 	TextMatcher notStartsWith(Pattern pattern) {
 		new NegatedTextMatcher(startsWith(pattern))
-	} 
-	
+	}
+
 	TextMatcher contains(Pattern pattern) {
 		new PatternTextMatcher(".*" + pattern.pattern() + ".*")
 	}
@@ -97,7 +97,7 @@ class TextMatchingSupport {
 	TextMatcher notContains(Pattern pattern) {
 		new NegatedTextMatcher(contains(pattern))
 	}
-	
+
 	TextMatcher endsWith(Pattern pattern) {
 		new PatternTextMatcher(".*" + pattern.pattern())
 	}
@@ -121,7 +121,7 @@ class TextMatchingSupport {
 	TextMatcher iNotContains(Pattern pattern) {
 		new NegatedTextMatcher(iContains(pattern))
 	}
-	
+
 	TextMatcher iEndsWith(Pattern pattern) {
 		new PatternTextMatcher("(?i).*" + pattern.pattern())
 	}
@@ -137,7 +137,7 @@ class TextMatchingSupport {
 	TextMatcher notContainsWord(Pattern pattern) {
 		new NegatedTextMatcher(containsWord(pattern))
 	}
-	
+
 	TextMatcher iContainsWord(Pattern pattern) {
 		new PatternTextMatcher("(?i)(^|.+\\s)" + pattern.pattern() + "(\$|\\s.+)")
 	}
@@ -145,5 +145,5 @@ class TextMatchingSupport {
 	TextMatcher iNotContainsWord(Pattern pattern) {
 		new NegatedTextMatcher(iContainsWord(pattern))
 	}
-	
+
 }

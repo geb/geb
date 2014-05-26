@@ -15,7 +15,7 @@
 package geb.driver
 
 class DefaultDriverFactory extends NameBasedDriverFactory {
-	
+
 	DefaultDriverFactory(ClassLoader classLoader) {
 		super(classLoader, DriverRegistry.knownDriverClassNamesInPreferenceOrder.join(NameBasedDriverFactory.DRIVER_SEPARATOR))
 	}

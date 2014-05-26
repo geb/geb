@@ -89,6 +89,7 @@ class WaitingSupportSpec extends WaitingSpec {
 	}
 
 	@Unroll
+	@SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
 	def "lastEvaluationValue is set on WaitTimeoutException when waiting for #waitForTime secs and expected result is #lastEvaluationValueClass.simpleName"() {
 		when:
 		waitFor(waitForTime, evaluatedClosure)
@@ -99,7 +100,7 @@ class WaitingSupportSpec extends WaitingSpec {
 		e.lastEvaluationValue in lastEvaluationValueClass
 
 		where:
-		evaluatedClosure << [{ false }, { $('#not-existing-element') }, { throw new Exception() } ] * 2
+		evaluatedClosure << [{ false }, { $('#not-existing-element') }, { throw new Exception() }] * 2
 		lastEvaluationValueClass << [Boolean, EmptyNavigator, UnknownWaitForEvaluationResult] * 2
 		waitForTime << [0, 0.5].sum { [it] * 3 }
 	}
@@ -115,7 +116,6 @@ class WaitingSupportSpec extends WaitingSpec {
 		then:
 		WaitTimeoutException e = thrown()
 		e.lastEvaluationValue.thrown == exception
-
 
 		where:
 		waitForTime << [0, 0.5]

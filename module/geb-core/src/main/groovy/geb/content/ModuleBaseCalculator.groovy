@@ -39,5 +39,5 @@ class ModuleBaseCalculator {
 			navigatorFactory.relativeTo(moduleBase)
 		}
 	}
-	
+
 }

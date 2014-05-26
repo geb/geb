@@ -25,13 +25,14 @@ class GebReportingTest extends GebTest {
 	static private testCounters = [:]
 	static private testCleanFlags = [:]
 	private instanceTestCounter = 1
-	
-	@Rule public TestName _gebReportingTestTestName = new TestName()
-	
+
+	@Rule
+	public TestName _gebReportingTestTestName = new TestName()
+
 	void report(String label) {
 		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, _gebReportingTestTestName.methodName, label))
 	}
-	
+
 	@Before
 	void setupReporting() {
 		reportGroup getClass()
@@ -45,9 +46,9 @@ class GebReportingTest extends GebTest {
 			cleanReportGroupDir()
 		}
 	}
-	
+
 	@After
- 	void writeGebReport() {
+	void writeGebReport() {
 		report "end"
 	}
 
@@ -63,9 +64,9 @@ class GebReportingTest extends GebTest {
 	private getTestCounterValue() {
 		testCounters[getKeyNameForTracking()] ?: 1
 	}
-	
+
 	private getKeyNameForTracking() {
 		getClass().name
 	}
-	
+
 }

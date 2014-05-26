@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.junit3
 
 import geb.test.CallbackHttpServer
@@ -21,7 +20,7 @@ import geb.Page
 class GebTestTest extends GebTest {
 
 	def server = new CallbackHttpServer()
-	
+
 	void setUp() {
 		server.start()
 		server.get = { req, res ->
@@ -35,7 +34,7 @@ class GebTestTest extends GebTest {
 		super.setUp()
 		browser.baseUrl = server.baseUrl
 	}
-	
+
 	void testMissingMethodsAreInvokedOnTheDriverInstance() {
 		// This also verifies that the driver instance is instantiated correctly
 		go("/")

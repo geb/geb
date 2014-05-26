@@ -14,12 +14,14 @@ class CallbackAndWebDriverServer extends CallbackHttpServer {
 
 	protected addServlets(Context context) {
 		context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
-		context.addServlet(new ServletHolder(new DriverServlet(new Supplier<DriverSessions>() {
+		context.addServlet(new ServletHolder(
+			new DriverServlet(new Supplier<DriverSessions>() {
 
-			DriverSessions get() {
-				new DefaultDriverSessions(new DefaultDriverFactory(), [(DesiredCapabilities.htmlUnit()): HtmlUnitDriver])
+				DriverSessions get() {
+					new DefaultDriverSessions(new DefaultDriverFactory(), [(DesiredCapabilities.htmlUnit()): HtmlUnitDriver])
+				}
 			}
-		})), "/webdriver/*")
+		)), "/webdriver/*")
 	}
 
 	String getApplicationUrl() {

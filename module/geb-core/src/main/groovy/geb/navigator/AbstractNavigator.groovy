@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.navigator
 
 import geb.Browser
@@ -76,7 +75,7 @@ abstract class AbstractNavigator implements Navigator {
 
 	@Override
 	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
-		find(predicates, (String)selector)[range]
+		find(predicates, (String) selector)[range]
 	}
 
 	@Override

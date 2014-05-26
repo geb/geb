@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.conf
 
 import geb.ConfigurationLoader
@@ -22,42 +21,42 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class ConfigurationLoaderSpec extends Specification {
-	
+
 	def env
 	def config
-	
+
 	@Rule TemporaryFolder tmp = new TemporaryFolder()
 
 	protected getLoader() {
 		new ConfigurationLoader(env)
 	}
-	
+
 	protected load(URL location) {
 		config = loader.getConf(location, new GroovyClassLoader(getClass().classLoader))
 	}
-	
+
 	protected getGoodScript() {
 		getClass().getResource("good-conf.groovy")
 	}
-	
+
 	def "load file from classpath with no env"() {
 		when:
 		load goodScript
-		
+
 		then:
 		config.rawConfig.a == 1
 	}
-	
+
 	def "load file from classpath with env"() {
 		given:
 		env = theEnv
-		
+
 		when:
 		load goodScript
-		
+
 		then:
 		config.rawConfig.a == value
-		
+
 		where:
 		theEnv | value
 		"e1"   | 2
@@ -67,7 +66,7 @@ class ConfigurationLoaderSpec extends Specification {
 	def "load non-existent bad url"() {
 		when:
 		load new URL("file:///idontexist")
-		
+
 		then:
 		thrown UnableToLoadException
 	}

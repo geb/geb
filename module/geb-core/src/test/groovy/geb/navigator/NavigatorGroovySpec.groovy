@@ -26,7 +26,8 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use collect(Closure) on Navigator"() {
-		when: def list = navigator.collect { it.@id }
+		when:
+		def list = navigator.collect { it.@id }
 		then: list == expectedList
 		where:
 		navigator                 | expectedList
@@ -36,7 +37,8 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use each(Closure) on Navigator"() {
-		given: def list = []
+		given:
+		def list = []
 		when: navigator = navigator.each { list << it.@id }
 		then: list == expectedList
 		where:
@@ -47,7 +49,8 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use eachWithIndex(Closure) on Navigator"() {
-		given: def map = [:]
+		given:
+		def map = [:]
 		when: navigator = navigator.eachWithIndex { e, i -> map[e.@id] = i }
 		then: map == expectedMap
 		where:
@@ -68,7 +71,8 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use find(Closure) on Navigator"() {
-		when: def result = navigator.find { it.hasClass("article") }
+		when:
+		def result = navigator.find { it.hasClass("article") }
 		then: (result != null) == expectedResult
 		where:
 		navigator               | expectedResult
@@ -79,7 +83,8 @@ class NavigatorGroovySpec extends Specification {
 	}
 
 	def "can use findAll(Closure) on Navigator"() {
-		when: def result = navigator.findAll { it.hasClass("article") }
+		when:
+		def result = navigator.findAll { it.hasClass("article") }
 		then: result.size() == expectedSize
 		and: result instanceof Navigator // findAll should return a Navigator not a Collection<Navigator>
 		where:
@@ -116,7 +121,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use findLastIndexOf(Closure) on Navigator"() {
 		expect: navigator.findLastIndexOf { it.hasClass("article") } == expectedIndex
 		where:
-		navigator                     | expectedIndex
+		navigator               | expectedIndex
 		onPage.find("div")      | 9
 		onPage.find(".article") | 2
 		onPage.find("ol")       | -1
@@ -126,7 +131,7 @@ class NavigatorGroovySpec extends Specification {
 	def "can use findLastIndexOf(int, Closure) on Navigator"() {
 		expect: navigator.findLastIndexOf(startIndex) { it.hasClass("article") } == expectedIndex
 		where:
-		navigator                     | startIndex | expectedIndex
+		navigator               | startIndex | expectedIndex
 		onPage.find("div")      | 5          | 9
 		onPage.find("div")      | 1          | 9
 		onPage.find(".article") | 1          | 2
@@ -161,19 +166,19 @@ class NavigatorGroovySpec extends Specification {
 	def "can use getAt(Range) on Navigator"() {
 		expect: navigator[range]*.@id == expectedIds
 		where:
-		navigator               | range  | expectedIds
-		onPage.find("div")      | 0..1   | ["container", "header"]
-		onPage.find("div")      | 0..<2  | ["container", "header"]
-		onPage.find("div")      | 0..<0  | []
-		onPage.find("div")      | 12..-1 | ["footer"]
+		navigator          | range  | expectedIds
+		onPage.find("div") | 0..1   | ["container", "header"]
+		onPage.find("div") | 0..<2  | ["container", "header"]
+		onPage.find("div") | 0..<0  | []
+		onPage.find("div") | 12..-1 | ["footer"]
 	}
 
 	def "can use getAt(Collection) on Navigator"() {
 		expect: navigator[indexes]*.@id == expectedIds
 		where:
-		navigator               | indexes    | expectedIds
-		onPage.find("div")      | [0, 2, 4]  | ["container", "navigation", "main"]
-		onPage.find("div")      | [0, -1, 4] | ["container", "footer", "main"]
+		navigator          | indexes    | expectedIds
+		onPage.find("div") | [0, 2, 4]  | ["container", "navigation", "main"]
+		onPage.find("div") | [0, -1, 4] | ["container", "footer", "main"]
 	}
 
 	def "can use head() on Navigator"() {
@@ -196,9 +201,10 @@ class NavigatorGroovySpec extends Specification {
 		onPage.find(".article") | 2            | ["article-2", "article-3"]
 		onPage.find("bdo")      | 0            | []
 	}
-	
+
 	def "can use plus(Navigator) on Navigator"() {
-		when: def navigator = (navigator1 + navigator2).unique()
+		when:
+		def navigator = (navigator1 + navigator2).unique()
 		then: navigator.size() == expectedSize
 		and: navigator*.@id == expectedIds
 		where:

@@ -18,7 +18,7 @@ import geb.error.InvalidPageContent
 import geb.test.*
 
 class BadContentDefinitionsSpec extends GebSpecWithServer {
-	
+
 	def "no args"() {
 		when:
 		page BadContentDefinitionsSpecNoArgs
@@ -32,7 +32,7 @@ class BadContentDefinitionsSpec extends GebSpecWithServer {
 		then:
 		thrown(InvalidPageContent)
 	}
-	
+
 	def "non closure factory"() {
 		when:
 		page BadContentDefinitionsSpecNonClosureFactory
@@ -46,7 +46,7 @@ class BadContentDefinitionsSpec extends GebSpecWithServer {
 		then:
 		thrown(InvalidPageContent)
 	}
-	
+
 	def "more than two args"() {
 		when:
 		page BadContentDefinitionsSpecThreeArgs
@@ -61,7 +61,7 @@ class BadContentDefinitionsSpec extends GebSpecWithServer {
 		InvalidPageContent e = thrown()
 		e.message == "Definition of page component template 'foo' of 'BadContentDefinitionsSpecUnknownElementAliased' aliases an unknown element 'bar'"
 	}
-	
+
 }
 
 class BadContentDefinitionsSpecNoArgs extends Page {
@@ -73,16 +73,15 @@ class BadContentDefinitionsSpecNonMap extends Page {
 }
 
 class BadContentDefinitionsSpecNonClosureFactory extends Page {
-	static content = { foo([:], 1)  }
+	static content = { foo([:], 1) }
 }
 
-
 class BadContentDefinitionsSpecNonMapNonClosureFactory extends Page {
-	static content = { foo(1, 1)  }
+	static content = { foo(1, 1) }
 }
 
 class BadContentDefinitionsSpecThreeArgs extends Page {
-	static content = { foo(1, 1, 2)  }
+	static content = { foo(1, 1, 2) }
 }
 
 class BadContentDefinitionsSpecUnknownElementAliased extends Page {

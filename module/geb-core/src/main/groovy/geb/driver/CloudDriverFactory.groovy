@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.driver
 
 import org.openqa.selenium.Capabilities
@@ -25,7 +24,8 @@ abstract class CloudDriverFactory {
 
 	abstract String assembleProviderUrl(String username, String password)
 
-	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) { }
+	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+	}
 
 	WebDriver create(String specification, String username, String password, Map<String, Object> capabilities = [:]) {
 		def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)

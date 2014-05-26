@@ -415,7 +415,8 @@ class NavigatorSpec extends GebSpecWithServer {
 
 	def "cannot read or set value of non existent control"() {
 		given:
-		html {}
+		html {
+		}
 
 		when:
 		$().someFieldThatDoesNotExist

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb
 
 import geb.test.GebSpecWithServer
@@ -96,51 +95,50 @@ class ViaSpec extends GebSpecWithServer {
 		page.getClass() == ViaSpecPageA
 	}
 
-
 	@Unroll
 	def "verify to() asserts that we are at the expected page - #scenario"() {
 		when:
-		to(*args)
+		to(* args)
 
 		then:
 		PowerAssertionError error = thrown()
 		error.message.contains('div')
 
 		where:
-		scenario      | args
-		'simple call' | [ViaSpecPageB]
-		'call with map' | [[hideA: true], ViaSpecPageA]
-		'call with parameter' | [ViaSpecPageA, true]
+		scenario                      | args
+		'simple call'                 | [ViaSpecPageB]
+		'call with map'               | [[hideA: true], ViaSpecPageA]
+		'call with parameter'         | [ViaSpecPageA, true]
 		'call with parameter and map' | [[hideA: true], ViaSpecPageA, true]
 	}
 
 	@Unroll
 	def "verify to() succeeds when we are at the expected page - #scenario"() {
 		when:
-		def newPage = to(*args)
+		def newPage = to(* args)
 
 		then:
 		notThrown(PowerAssertionError)
 		newPage in args.find { it instanceof Class }
 
 		where:
-		scenario      | args
-		'simple call' | [ViaSpecPageA]
-		'call with map' | [[showB: true], ViaSpecPageB]
-		'call with parameter' | [ViaSpecPageB, true]
+		scenario                      | args
+		'simple call'                 | [ViaSpecPageA]
+		'call with map'               | [[showB: true], ViaSpecPageB]
+		'call with parameter'         | [ViaSpecPageB, true]
 		'call with parameter and map' | [[showB: true], ViaSpecPageB, true]
 	}
 
 	@Unroll
 	def "via() returns a page instance - #scenario"() {
 		expect:
-		via(*args) in args.find { it instanceof Class }
+		via(* args) in args.find { it instanceof Class }
 
 		where:
-		scenario      | args
-		'simple call' | [ViaSpecPageA]
-		'call with map' | [[showB: true], ViaSpecPageB]
-		'call with parameter' | [ViaSpecPageB, true]
+		scenario                      | args
+		'simple call'                 | [ViaSpecPageA]
+		'call with map'               | [[showB: true], ViaSpecPageB]
+		'call with parameter'         | [ViaSpecPageB, true]
 		'call with parameter and map' | [[showB: true], ViaSpecPageB, true]
 	}
 

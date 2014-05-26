@@ -20,17 +20,17 @@ import geb.navigator.Navigator
 class JQueryAdapter {
 
 	private final Navigator navigator
-	
+
 	JQueryAdapter(Navigator navigator) {
 		this.navigator = navigator
 	}
-	
+
 	private _callJQueryMethod(String name, args) {
 		def browser = navigator.browser
 		def elements = navigator.allElements()
-		
+
 		if (elements) {
-			browser.js.exec(*elements, "EOE", *args, """
+			browser.js.exec(* elements, "EOE", * args, """
 				var elements = new Array();
 				var callArgs = new Array();
 				var collectingElements = true;
@@ -46,7 +46,7 @@ class JQueryAdapter {
 						callArgs.push(arg);
 					}
 				}
-				
+
 				var o = jQuery(elements);
 				var r = o.${name}.apply(o, callArgs);
 				return (typeof r == "object") ? r.toArray() : r;
@@ -55,12 +55,12 @@ class JQueryAdapter {
 			null
 		}
 	}
-	
+
 	def methodMissing(String name, args) {
 		def result = _callJQueryMethod(name, args)
 		if (result instanceof WebElement) {
 			navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
-		} else  if (result instanceof List) {
+		} else if (result instanceof List) {
 			navigator.browser.navigatorFactory.createFromWebElements(result)
 		} else {
 			result

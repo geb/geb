@@ -39,6 +39,7 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
 	}
 
 	@Unroll
+	@SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
 	def "ensure original context is kept after a withFrame call"() {
 		when:
 		withFrame(frameFactory.call()) {
@@ -62,6 +63,7 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
 	}
 
 	@Unroll
+	@SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
 	def "page is restored to what it was before a withFrame call"() {
 		when:
 		withFrame(frameFactory.call()) {

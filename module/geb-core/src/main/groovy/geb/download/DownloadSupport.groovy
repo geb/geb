@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,25 +28,25 @@ import org.openqa.selenium.Cookie
  * public methods on those objects.
  */
 class DownloadSupport {
-	
+
 	/*
 		NOTE - if public methods are added here, make sure they are also added to the binding updater.
 	*/
-	
+
 	final private Browser browser
-	
+
 	// HTTP 1.1 states that this charset is the default if none was specified
 	static final private DEFAULT_CHARSET = "ISO-8859-1"
-	
+
 	DownloadSupport(Browser browser) {
 		this.browser = browser
 	}
-	
+
 	/**
 	 * Creates a http url connection to a url, that has the same cookies as the browser.
 	 * <p>
 	 * Valid options are:
-	 * 
+	 *
 	 * <ul>
 	 * <li>{@code uri} - <em>optional</em> - the uri to resolve relative to the base option (current browser page used if {@code null})
 	 * <li>{@code base} - <em>optional</em> - what to resolve the uri against (current browser page used if {@code null})
@@ -98,12 +98,12 @@ class DownloadSupport {
 	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
 	 * <p>
 	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
-	 */	
+	 */
 	String downloadText(Map options = [:], Closure connectionConfig = null) {
 		def connection = downloadWithConfig(options, connectionConfig)
 		connection.connect()
 		def contentType = connection.contentType
-		
+
 		if (isTextContentType(contentType)) {
 			def charset = determineCharset(contentType)
 			wrapInDownloadException(connection) { it.inputStream.getText(charset) }
@@ -152,16 +152,16 @@ class DownloadSupport {
 	 * Opens a url connection via {@link #download(String)} and returns the raw bytes.
 	 * <p>
 	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
-	 */	
+	 */
 	byte[] downloadBytes(String uri, Closure connectionConfig = null) {
 		downloadBytes(uri: uri, connectionConfig)
 	}
-	
+
 	/**
 	 * Opens a url connection via {@link #download(Map)} and returns the content object.
 	 * <p>
 	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
-	 * 
+	 *
 	 * @see URLConnection#getContent()
 	 */
 	Object downloadContent(Map options = [:], Closure connectionConfig = null) {
@@ -172,7 +172,7 @@ class DownloadSupport {
 	 * Opens a url connection via {@link #download(String)} and returns the content object.
 	 * <p>
 	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
-	 * 
+	 *
 	 * @see URLConnection#getContent()
 	 */
 	Object downloadContent(String uri, Closure connectionConfig = null) {
@@ -183,19 +183,19 @@ class DownloadSupport {
 	 * Opens a url connection via {@link #download(String)} and returns the content object.
 	 * <p>
 	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
-	 * 
+	 *
 	 * @see URLConnection#getContent()
 	 */
 	Object downloadContent(Closure connectionConfig) {
 		downloadContent([:], connectionConfig)
 	}
-	
+
 	private HttpURLConnection downloadWithConfig(Map options, Closure config) {
 		def connection = download(options)
 		config?.call(connection)
 		connection
 	}
-	
+
 	/**
 	 * Returns a URL for what is to be downloaded.
 	 * <p>
@@ -207,7 +207,7 @@ class DownloadSupport {
 		def base = options.base ?: browser.driver.currentUrl
 		uri ? new URI(base).resolve(uri).toURL() : new URL(base)
 	}
-	
+
 	/**
 	 * Copies the browser's current cookies to the given connection via the "Cookie" header.
 	 */
@@ -217,16 +217,16 @@ class DownloadSupport {
 
 	/**
 	 * Copies the given cookies to the given connection via the "Cookie" header.
-	 */	
+	 */
 	private applyCookies(HttpURLConnection connection, Collection<Cookie> cookies) {
 		def cookieHeader = cookies.collect { "${it.name}=${it.value}" }.join("; ")
 		connection.setRequestProperty("Cookie", cookieHeader)
 	}
-	
+
 	private boolean isTextContentType(String contentType) {
 		contentType?.startsWith("text/")
 	}
-	
+
 	private determineCharset(String contentType) {
 		if (contentType) {
 			def parts = contentType.split(";").collect { it.trim() }
@@ -240,7 +240,7 @@ class DownloadSupport {
 			DEFAULT_CHARSET
 		}
 	}
-	
+
 	private wrapInDownloadException(HttpURLConnection connection, Closure operation) {
 		try {
 			operation(connection)

@@ -20,17 +20,20 @@ class CachingDriverFactory implements DriverFactory {
 
 	private static interface Cache<T> {
 		T get(Closure<? extends T> factory)
+
 		T clear()
 	}
 
 	static private class SimpleCache<T> implements Cache<T> {
 		private T cached
+
 		synchronized T get(Closure<? extends T> factory) {
 			if (cached == null) {
 				cached = factory()
 			}
 			cached
 		}
+
 		synchronized T clear() {
 			def prev = cached
 			cached = null
@@ -40,6 +43,7 @@ class CachingDriverFactory implements DriverFactory {
 
 	static private class ThreadLocalCache<T> implements Cache<T> {
 		private ThreadLocal<T> threadLocal = new ThreadLocal()
+
 		synchronized T get(Closure<? extends T> factory) {
 			def cached = threadLocal.get()
 			if (cached == null) {
@@ -48,6 +52,7 @@ class CachingDriverFactory implements DriverFactory {
 			}
 			cached
 		}
+
 		synchronized T clear() {
 			def prev = threadLocal.get()
 			threadLocal.set(null)
@@ -80,7 +85,8 @@ class CachingDriverFactory implements DriverFactory {
 			def driver = innerFactory.driver
 			if (quitOnShutdown) {
 				addShutdownHook {
-					try { driver.quit() } catch (Throwable e) {}
+					try { driver.quit() } catch (Throwable e) {
+					}
 				}
 			}
 			driver
@@ -96,9 +102,8 @@ class CachingDriverFactory implements DriverFactory {
 		driver?.quit()
 		driver
 	}
-	
+
 	static clearCacheCache() {
 		CACHE.clear()
 	}
-
 }

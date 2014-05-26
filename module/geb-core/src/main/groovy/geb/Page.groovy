@@ -58,27 +58,34 @@ class Page implements Navigable, PageContentContainer {
 	 * This implementation does not have an at checker (i.e. this property is {@code null})
 	 */
 	static at = null
-	
+
 	/**
 	 * Defines the url for this page to be used when navigating directly to this page.
 	 * <p>
 	 * Subclasses can specify either an absolute url, or one relative to the browser's base url.
 	 * <p>
 	 * This implementation returns an empty string.
-	 * 
-	 * @see #to(Map,Object[])
+	 *
+	 * @see #to(Map, Object [])
 	 */
 	static url = ""
-	
+
 	private Browser browser
-	
-	@Delegate private PageContentSupport pageContentSupport
-	@Delegate private DownloadSupport _downloadSupport
-	@Delegate private WaitingSupport _waitingSupport
-	@Delegate private FrameSupport frameSupport
-	@Delegate private InteractionsSupport interactionsSupport
-	@Delegate private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
+
+	@Delegate
+	private PageContentSupport pageContentSupport
+	@Delegate
+	private DownloadSupport _downloadSupport
+	@Delegate
+	private WaitingSupport _waitingSupport
+	@Delegate
+	private FrameSupport frameSupport
+	@Delegate
+	private InteractionsSupport interactionsSupport
+	@Delegate
+	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+	@Delegate
+	private AlertAndConfirmSupport _alertAndConfirmSupport
 
 	private NavigableSupport navigableSupport
 
@@ -87,6 +94,7 @@ class Page implements Navigable, PageContentContainer {
 	 * <p>
 	 * <b>This method is called internally, and should not be called by users of Geb.</b>
 	 */
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	Page init(Browser browser) {
 		this.browser = browser
 		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, browser.navigatorFactory, 'content', this.class, Page)
@@ -113,19 +121,19 @@ class Page implements Navigable, PageContentContainer {
 	WebDriver getDriver() {
 		browser.driver
 	}
-	
+
 	/**
 	 * Returns the simple name of this class.
-	 * 
+	 *
 	 * @see Class#getSimpleName()
 	 */
 	String toString() {
 		this.class.simpleName
 	}
-	
+
 	/**
 	 * Checks if the browser is not at an unexpected page and then executes this page's "at checker".
-	 * 
+	 *
 	 * @return whether the at checker succeeded or not.
 	 * @see #verifyAtSafely()
 	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
@@ -139,7 +147,7 @@ class Page implements Navigable, PageContentContainer {
 	/**
 	 * Executes this page's "at checker", suppressing any AssertionError that is thrown
 	 * and returning false.
-	 * 
+	 *
 	 * @return whether the at checker succeeded or not.
 	 * @see #verifyAt()
 	 */
@@ -173,21 +181,21 @@ class Page implements Navigable, PageContentContainer {
 
 	/**
 	 * Sends the browser to this page's url.
-	 * 
+	 *
 	 * @param params request parameters to be appended to the url
 	 * @param args "things" that can be used to generate an extra path to append to this page's url
-	 * @see #convertToPath(Object[])
+	 * @see #convertToPath(Object [])
 	 * @see #getPageUrl(String)
 	 */
 	void to(Map params, Object[] args) {
-		def path = convertToPath(*args)
+		def path = convertToPath(* args)
 		if (path == null) {
 			path = ""
 		}
 		browser.go(params, getPageUrl(path))
 		browser.page(this)
 	}
-	
+
 	/**
 	 * Returns the constant part of the url to this page.
 	 * <p>
@@ -196,57 +204,57 @@ class Page implements Navigable, PageContentContainer {
 	String getPageUrl() {
 		this.class.url
 	}
-	
+
 	/**
 	 * Returns the url to this page, with path appended to it.
-	 * 
+	 *
 	 * @see #getPageUrl()
 	 */
 	String getPageUrl(String path) {
 		def pageUrl = getPageUrl()
 		path ? (pageUrl ? pageUrl + path : path) : pageUrl
 	}
-	
+
 	/**
 	 * Converts the arguments to a path to be appended to this page's url.
 	 * <p>
-	 * This is called by the {@link #to(Map,Object[])} method and can be used for accessing variants of the page.
+	 * This is called by the {@link #to(Map, Object [])} method and can be used for accessing variants of the page.
 	 * <p>
 	 * This implementation returns the string value of each argument, separated by "/"
 	 */
 	String convertToPath(Object[] args) {
 		args ? '/' + args*.toString().join('/') : ""
 	}
-	
+
 	/**
 	 * Returns the title of the current browser window.
-	 * 
+	 *
 	 * @see org.openqa.selenium.WebDriver#getTitle()
 	 */
 	String getTitle() {
 		browser.driver.title
 	}
-	
+
 	/**
 	 * Provides access to the browser object's JavaScript interface.
-	 * 
+	 *
 	 * @see geb.Browser#getJs()
 	 */
 	JavascriptInterface getJs() {
 		browser.js
 	}
-	
+
 	/**
 	 * Lifecycle method called when the page is connected to the browser.
 	 * <p>
 	 * This implementation does nothing.
-	 * 
+	 *
 	 * @param previousPage The page that was active before this one
 	 */
 	void onLoad(Page previousPage) {
-		
+
 	}
-	
+
 	/**
 	 * Lifecycle method called when this page is being replaced as the browser's page instance.
 	 * <p>
@@ -255,7 +263,7 @@ class Page implements Navigable, PageContentContainer {
 	 * @param nextPage The page that will be active after this one
 	 */
 	void onUnload(Page nextPage) {
-		
+
 	}
 
 	Navigator find() {

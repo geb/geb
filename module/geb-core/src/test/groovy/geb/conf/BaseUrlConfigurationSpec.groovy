@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.conf
 
 import geb.Browser
@@ -21,27 +20,27 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class BaseUrlConfigurationSpec extends Specification {
-		
+
 	def getBaseUrl(String constructorBaseUrl, String configBaseUrl) {
 		def c = new ConfigObject()
 		c.cacheDriver = false
 		if (configBaseUrl) {
 			c.baseUrl = configBaseUrl
 		}
-		
+
 		def args = [:]
 		if (constructorBaseUrl) {
 			args.baseUrl = constructorBaseUrl
 		}
-		
+
 		new Browser(args, new Configuration(c)).baseUrl
 	}
-	
+
 	@Unroll("expectedBaseUrl = #expectedBaseUrl with (#constructor, #config)")
 	def "calculate base url"() {
 		expect:
 		getBaseUrl(constructor, config) == expectedBaseUrl
-		
+
 		where:
 		constructor | config | expectedBaseUrl
 		null        | null   | null
@@ -49,31 +48,31 @@ class BaseUrlConfigurationSpec extends Specification {
 		"abc"       | null   | "abc"
 		"abc"       | "def"  | "abc"
 	}
-	
+
 	def "can set explicit base on configuration"() {
 		given:
 		def c = new Configuration()
 		c.cacheDriver = false
 		c.baseUrl = "abc"
-		
+
 		when:
 		def b = new Browser(c)
-		
+
 		then:
 		b.baseUrl == "abc"
 	}
-	
+
 	def "null base url throws reasonable error message"() {
 		given:
 		def c = new Configuration()
 		c.baseUrl = null
 		def b = new Browser(c)
-		
+
 		when:
 		b.go("abc")
-		
+
 		then:
 		thrown(geb.error.NoBaseUrlDefinedException)
 	}
-	
+
 }

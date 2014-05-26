@@ -26,10 +26,10 @@ abstract class TemplateDerivedPageContent implements Navigator {
 
 	@Delegate
 	protected Navigator _navigator
-	
+
 	/**
 	 * Called by the template when created (i.e. is not public).
-	 * 
+	 *
 	 * We don't use a constructor to prevent users from having to implement them.
 	 */
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
@@ -37,7 +37,7 @@ abstract class TemplateDerivedPageContent implements Navigator {
 		this._navigator = navigator
 		this._args = args
 	}
-	
+
 	String toString() {
 		"${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args, value: ${_navigator.value()})"
 	}
@@ -48,26 +48,26 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	Page getPage() {
 		_template.page
 	}
-	
+
 	Browser getBrowser() {
 		getPage().browser
 	}
-	
+
 	WebDriver getDriver() {
 		getBrowser().driver
 	}
-	
+
 	boolean isPresent() {
 		!_navigator.empty
 	}
-	
+
 	void require() {
 		if (!isPresent()) {
 			throw new RequiredPageContentNotPresent(this)
 		}
 		this
 	}
-	
+
 	/**
 	 * Returns the height of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
@@ -90,7 +90,7 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	 * Returns the x coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
 	 * <p>
 	 * To get the x coordinate of all matched elements you can use the spread operator {@code navigator*.x}
-	 */	
+	 */
 	int getX() {
 		firstElement()?.location?.x ?: 0
 	}
@@ -103,7 +103,7 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	int getY() {
 		firstElement()?.location?.y ?: 0
 	}
-	
+
 	Navigator click() {
 		if (templateParams.toSingle) {
 			_navigator.click(templateParams.toSingle)

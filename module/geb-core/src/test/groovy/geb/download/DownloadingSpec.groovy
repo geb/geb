@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ class DownloadingSpec extends GebSpecWithServer {
 			res.outputStream << "initial"
 		}
 	}
-	
+
 	def "cookies are copied"() {
 		given:
 		server.get = { req, res ->
@@ -37,10 +37,10 @@ class DownloadingSpec extends GebSpecWithServer {
 			res.addCookie(new Cookie("b", "2"))
 			res.outputStream << "cookies set"
 		}
-		
+
 		when:
 		go()
-		
+
 		and:
 		def cookies
 		server.get = { req, res ->
@@ -48,16 +48,16 @@ class DownloadingSpec extends GebSpecWithServer {
 			res.contentType = "text/plain"
 			res.outputStream << "cookies received"
 		}
-		
+
 		then:
 		downloadText() == "cookies received"
-		
+
 		and:
 		cookies.size() == 2
 		cookies.find { it.name == "a" }.value == "1"
 		cookies.find { it.name == "b" }.value == "2"
 	}
-	
+
 	def "links are resolved relative to current page"() {
 		given:
 		go()
@@ -65,15 +65,15 @@ class DownloadingSpec extends GebSpecWithServer {
 			res.contentType = "text/plain"
 			res.outputStream << "${req.requestURI}"
 		}
-		
+
 		expect:
 		downloadText() == "/"
 		downloadText("abc") == "/abc"
 		downloadText("def/ghi") == "/def/ghi"
-		
+
 		when:
 		go "def/ghi"
-		
+
 		then:
 		downloadText("jkl") == "/def/jkl"
 		downloadText("/mno") == "/mno"
@@ -85,14 +85,14 @@ class DownloadingSpec extends GebSpecWithServer {
 		server.get = { req, res ->
 			res.sendError(500, "bang!")
 		}
-		
+
 		when:
 		downloadText("123")
-		
+
 		then:
 		thrown(DownloadException)
 	}
-	
+
 	@Unroll("download variants - method: #method")
 	def "download variants - method: #method"() {
 		given:
@@ -100,19 +100,19 @@ class DownloadingSpec extends GebSpecWithServer {
 			res.contentType = "text/plain"
 			res.outputStream << "123"
 		}
-		
+
 		and:
 		go()
-		
+
 		when:
 		def result = this."$method"()
 		if (resultProcessor instanceof Closure) {
 			result = resultProcessor.call(result)
 		}
-		
+
 		then:
 		result == compareTo
-		
+
 		// Exercise the variants, just by calling them
 		when:
 		this."$method"("abc")
@@ -120,12 +120,12 @@ class DownloadingSpec extends GebSpecWithServer {
 
 		then:
 		notThrown(Exception)
-		
+
 		when:
 		def called = false
-		def callback = { 
+		def callback = {
 			assert it instanceof HttpURLConnection
-			called = true 
+			called = true
 		}
 
 		def wasCalled = {
@@ -134,16 +134,16 @@ class DownloadingSpec extends GebSpecWithServer {
 			assert called
 			true
 		}
-		
+
 		then:
 		wasCalled { this."$method"(callback) }
 		wasCalled { this."$method"("123", callback) }
 		wasCalled { this."$method"([:], callback) }
-		
+
 		where:
-		method            | resultProcessor         | compareTo
-		"downloadBytes"   | null                    | "123" as byte[]
-		"downloadContent" | { it.text }             | "123"
-		"downloadText"    | null                    | "123"
+		method            | resultProcessor | compareTo
+		"downloadBytes"   | null            | "123" as byte[]
+		"downloadContent" | { it.text }     | "123"
+		"downloadText"    | null            | "123"
 	}
 }

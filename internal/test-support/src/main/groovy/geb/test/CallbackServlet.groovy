@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.test
 
 import javax.servlet.ServletException
@@ -30,7 +29,6 @@ class CallbackServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (server.get) {
-/*			server.get.resolveStrategy = Closure.*/
 			server.get?.call(req, res)
 		} else {
 		 super.doGet(req, res)

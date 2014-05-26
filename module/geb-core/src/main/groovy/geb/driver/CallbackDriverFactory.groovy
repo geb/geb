@@ -17,13 +17,13 @@ package geb.driver
 import org.openqa.selenium.WebDriver
 
 class CallbackDriverFactory implements DriverFactory {
-	
+
 	final private Closure callback
-	
+
 	CallbackDriverFactory(Closure callback) {
 		this.callback = callback
 	}
-	
+
 	WebDriver getDriver() {
 		try {
 			def driver = callback()
@@ -35,5 +35,5 @@ class CallbackDriverFactory implements DriverFactory {
 			throw new DriverCreationException("failed to create driver from callback '${callback.toString()}'", e)
 		}
 	}
-	
+
 }

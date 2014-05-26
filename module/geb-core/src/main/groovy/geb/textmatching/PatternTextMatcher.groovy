@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,12 @@ import java.util.regex.Pattern
 
 class PatternTextMatcher implements TextMatcher {
 	final Pattern pattern
-	
+
 	PatternTextMatcher(CharSequence pattern) {
 		this.pattern = Pattern.compile(pattern.toString(), Pattern.DOTALL)
 	}
-	
+
 	boolean matches(String text) {
 		text ==~ pattern
-	} 
+	}
 }

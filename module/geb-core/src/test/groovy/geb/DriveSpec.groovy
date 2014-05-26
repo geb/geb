@@ -22,7 +22,7 @@ import spock.lang.Specification
 class DriveSpec extends Specification {
 
 	@Shared server
-	
+
 	def setupSpec() {
 		server = new CallbackHttpServer()
 		server.start()
@@ -59,7 +59,6 @@ class DriveSpec extends Specification {
 		notThrown(Exception)
 	}
 
-
 	def driveWithDriver() {
 		when:
 		Browser.drive(driver: new HtmlUnitDriver()) {
@@ -89,7 +88,7 @@ class DriveSpec extends Specification {
 		then:
 		notThrown(Exception)
 	}
-	
+
 	def errorsArePropagated() {
 		when:
 		Browser.drive {

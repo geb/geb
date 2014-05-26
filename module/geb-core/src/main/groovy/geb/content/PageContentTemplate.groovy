@@ -30,9 +30,9 @@ class PageContentTemplate {
 	final PageContentTemplateParams params
 	final Closure factory
 	final NavigatorFactory navigatorFactory
-	
+
 	private cache = [:]
-	
+
 	PageContentTemplate(Configuration config, PageContentContainer owner, String name, Map<String, ?> params, Closure factory, NavigatorFactory navigatorFactory) {
 		this.config = config
 		this.owner = owner
@@ -41,7 +41,7 @@ class PageContentTemplate {
 		this.factory = factory
 		this.navigatorFactory = navigatorFactory
 	}
-	
+
 	String toString() {
 		"$name - $owner"
 	}
@@ -49,25 +49,25 @@ class PageContentTemplate {
 	Page getPage() {
 		owner instanceof Page ? owner : owner.getPage()
 	}
-	
+
 	def get(Object[] args) {
-		params.cache ? fromCache(*args) : create(*args)
+		params.cache ? fromCache(* args) : create(* args)
 	}
 
 	private create(Object[] args) {
 		def createAction = {
-			def factoryReturn = invokeFactory(*args)
-			def creation = wrapFactoryReturn(factoryReturn, *args)
+			def factoryReturn = invokeFactory(* args)
+			def creation = wrapFactoryReturn(factoryReturn, * args)
 			if (params.required) {
 				if (creation != null && creation instanceof TemplateDerivedPageContent) {
 					creation.require()
 				} else if (creation == null) {
-					throw new RequiredPageValueNotPresent(this, *args)
+					throw new RequiredPageValueNotPresent(this, * args)
 				}
 			}
 			creation
 		}
-		
+
 		def wait = config.getWaitForParam(params.wait)
 		if (wait) {
 			try {
@@ -82,21 +82,21 @@ class PageContentTemplate {
 			createAction()
 		}
 	}
-	
+
 	private fromCache(Object[] args) {
 		def argsHash = Arrays.deepHashCode(args)
 		if (!cache.containsKey(argsHash)) {
-			cache[argsHash] = create(*args)
+			cache[argsHash] = create(* args)
 		}
 		cache[argsHash]
 	}
-	
+
 	private invokeFactory(Object[] args) {
 		factory.delegate = createFactoryDelegate(args)
 		factory.resolveStrategy = Closure.DELEGATE_FIRST
-		factory(*args)
+		factory(* args)
 	}
-	
+
 	private createFactoryDelegate(Object[] args) {
 		new PageContentTemplateFactoryDelegate(this, args)
 	}
@@ -104,11 +104,11 @@ class PageContentTemplate {
 	private wrapFactoryReturn(factoryReturn, Object[] args) {
 		if (Navigator.isInstance(factoryReturn) && !Module.isInstance(factoryReturn)) {
 			def pageContent = new SimplePageContent()
-			pageContent.init(this, factoryReturn, *args)
+			pageContent.init(this, factoryReturn, * args)
 			pageContent
 		} else {
 			factoryReturn
 		}
 	}
-	
+
 }

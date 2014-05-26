@@ -54,7 +54,8 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		openAllWindows()
 
 		when:
-		withWindow(specification) {}
+		withWindow(specification) {
+		}
 
 		then:
 		availableWindows.size() == 3
@@ -90,7 +91,8 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll("ensure withNewWindow throws an exception when: '#message'")
 	def "ensure withNewWindow throws exception if there was none or more than one windows opened"() {
 		when:
-		withNewWindow(newWindowBlock) {}
+		withNewWindow(newWindowBlock) {
+		}
 
 		then:
 		NoNewWindowException e = thrown()
@@ -98,10 +100,11 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 		where:
 		message                                      | newWindowBlock
-		'No new window has been opened'              | {}
+		'No new window has been opened'              | { }
 		'There has been more than one window opened' | { openAllWindows() }
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow closes the new window even if closure throws an exception"() {
 		given:
 		go MAIN_PAGE_URL
@@ -114,18 +117,21 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		availableWindows.size() == 1
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow does not close the new window if close option is set to false"() {
 		given:
 		go MAIN_PAGE_URL
 
 		when:
-		withNewWindow({ openWindow(1) }, close: false) {}
+		withNewWindow({ openWindow(1) }, close: false) {
+		}
 
 		then:
 		availableWindows.size() == 2
 		inContextOfMainWindow
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow block closure is called in the context of the page passed as the 'page' option"() {
 		given:
 		go MAIN_PAGE_URL
@@ -140,6 +146,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		page.getClass() == WindowHandlingSpecMainPage
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "page context is reverted after a withNewWindow call where block closure throws an exception and 'page' option is present"() {
 		given:
 		go MAIN_PAGE_URL
@@ -155,6 +162,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		page.getClass() == WindowHandlingSpecMainPage
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "'wait' option can be used in withNewWindow call if the new window opens asynchronously"() {
 		given:
 		go MAIN_PAGE_URL
@@ -167,16 +175,17 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 					document.getElementById('main-1').click();
 				}, 200);
 			"""
-		}, wait: true) {}
+		}, wait: true) {
+		}
 
 		then:
 		notThrown(NoNewWindowException)
 	}
-	
+
 	def "withWindow methods can be nested"() {
 		given:
 		openAllWindows()
-		
+
 		when: // can't put this in an expect block, some spock bug
 		withWindow(windowName(1)) {
 			assert title == windowTitle(1)
@@ -191,33 +200,37 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 			}
 			assert title == windowTitle(1)
 		}
-		
+
 		then:
 		true
 	}
 
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow methods can be nested"() {
 		given:
 		openAllWindows()
-		
+
 		when: // can't put this in an expect block, some spock bug
 		withWindow(windowName(1)) {
 			assert title == windowTitle(1)
-			withNewWindow({openWindow(2)}) {
+			withNewWindow({ openWindow(2) }) {
 				assert title == windowTitle(1, 2)
-				withNewWindow({openWindow(1)}) {
+				withNewWindow({ openWindow(1) }) {
 					assert title == windowTitle(1, 2, 1)
 				}
 				assert title == windowTitle(1, 2)
 			}
 			assert title == windowTitle(1)
 		}
-		
+
 		then:
 		true
 	}
-	
+
 }
 
-class WindowHandlingSpecMainPage extends Page {}
-class WindowHandlingSpecNewWindowPage extends Page {}
+class WindowHandlingSpecMainPage extends Page {
+}
+
+class WindowHandlingSpecNewWindowPage extends Page {
+}

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb.conf
 
 import geb.Configuration
@@ -22,17 +21,17 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class WaitingConfigurationSpec extends Specification {
-	
+
 	@Delegate Configuration config
-	
+
 	void setUserConf(String script) {
 		config = new Configuration(new ConfigSlurper().parse(script))
 	}
-	
+
 	def "defaults"() {
 		when:
 		userConf = ""
-		
+
 		then:
 		defaultWait == new Wait()
 		getWaitPreset("anything") == defaultWait
@@ -40,7 +39,7 @@ class WaitingConfigurationSpec extends Specification {
 	}
 
 	@Unroll
-	def "setter for defaultWaitTimeout when #scenario" () {
+	def "setter for defaultWaitTimeout when #scenario"() {
 		given:
 		userConf = userConfiguration
 
@@ -56,7 +55,7 @@ class WaitingConfigurationSpec extends Specification {
 	}
 
 	@Unroll
-	def "setter for defaultWaitRetryInterval when #scenario" () {
+	def "setter for defaultWaitRetryInterval when #scenario"() {
 		given:
 		userConf = userConfiguration
 
@@ -72,7 +71,7 @@ class WaitingConfigurationSpec extends Specification {
 	}
 
 	@Unroll
-	def "setter for waitPreset when #scenario" () {
+	def "setter for waitPreset when #scenario"() {
 		given:
 		userConf = userConfiguration
 
@@ -88,7 +87,7 @@ class WaitingConfigurationSpec extends Specification {
 		userConfiguration << ['', 'waiting { presets { customPreset { timeout = 20; retryInterval = 1 } } }']
 		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
 	}
-	
+
 	def "specified default wait values"() {
 		when:
 		userConf = """
@@ -97,13 +96,13 @@ class WaitingConfigurationSpec extends Specification {
 				retryInterval = 40
 			}
 		"""
-		
+
 		then:
 		defaultWait == new Wait(20, 40)
 		getWaitPreset("anything") == new Wait(20, 40)
 		getWait(10) == new Wait(10, 40)
 	}
-	
+
 	def "presets"() {
 		when:
 		userConf = """
@@ -124,7 +123,7 @@ class WaitingConfigurationSpec extends Specification {
 				}
 			}
 		"""
-		
+
 		then:
 		getWaitPreset("quick") == new Wait(1, 0.1)
 		getWaitPreset("slow") == new Wait(30, 1)

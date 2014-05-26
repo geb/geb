@@ -30,22 +30,29 @@ import geb.waiting.WaitingSupport
 class Module extends TemplateDerivedPageContent implements PageContentContainer {
 
 	static base = null
-	
-	@Delegate private PageContentSupport pageContentSupport
-	@Delegate private DownloadSupport _downloadSupport
-	@Delegate private WaitingSupport _waitingSupport
-	@Delegate private FrameSupport frameSupport
-	
-	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	@Delegate private AlertAndConfirmSupport _alertAndConfirmSupport
-	
+
+	@Delegate
+	private PageContentSupport pageContentSupport
+	@Delegate
+	private DownloadSupport _downloadSupport
+	@Delegate
+	private WaitingSupport _waitingSupport
+	@Delegate
+	private FrameSupport frameSupport
+
+	@Delegate
+	private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+	@Delegate
+	private AlertAndConfirmSupport _alertAndConfirmSupport
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	void init(PageContentTemplate template, NavigatorFactory navigatorFactory, Object[] args) {
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, navigatorFactory, 'content', this.class, Module)
 		def navigator = navigatorFactory.base
 		pageContentSupport = new PageContentSupport(this, contentTemplates, navigatorFactory, navigator)
 		super.init(template, navigator, args)
 		_downloadSupport = new DownloadSupport(browser)
-		_waitingSupport  = new WaitingSupport(browser.config)
+		_waitingSupport = new WaitingSupport(browser.config)
 		frameSupport = new FrameSupport(browser)
 		_alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }, browser.config)
 	}

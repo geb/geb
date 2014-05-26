@@ -22,12 +22,12 @@ class AlertAndConfirmSupport {
 	private final static UNKNOWN = -1
 	private final Closure javascriptInterfaceFactory
 	private final Configuration config
-	
+
 	AlertAndConfirmSupport(Closure javascriptInterfaceFactory, Configuration config) {
 		this.javascriptInterfaceFactory = javascriptInterfaceFactory
 		this.config = config
 	}
-	
+
 	private JavascriptInterface getJavascriptInterface() {
 		def js = javascriptInterfaceFactory()
 		if (js == null) {
@@ -35,7 +35,7 @@ class AlertAndConfirmSupport {
 		} else if (!(js instanceof JavascriptInterface)) {
 			throw new IllegalStateException("javascriptInterfaceFactory did not return a JavascriptInterface")
 		}
-		
+
 		js
 	}
 
@@ -43,14 +43,14 @@ class AlertAndConfirmSupport {
 		"""
 			if (!window.geb) {
 				window.geb = {};
-			} 
+			}
 		"""
 	}
-	
+
 	private getInstallDialogStorageScript() {
 		"""
 			$installGebStorageScript
-			
+
 			if (!window.geb.dialogFunctions) {
 				window.geb.dialogFunctions = new Array();
 			}
@@ -59,7 +59,7 @@ class AlertAndConfirmSupport {
 			}
 		"""
 	}
-	
+
 	private popLastDialogMessage(JavascriptInterface js) {
 		js.exec """
 			if (window.geb) {
@@ -77,14 +77,14 @@ class AlertAndConfirmSupport {
 			}
 		"""
 	}
-	
+
 	private installAlert(JavascriptInterface js) {
 		js.exec """
 			$installDialogStorageScript
-			
+
 			window.geb.dialogFunctions.push(window.alert);
 			window.geb.dialogMessages.push(null);
-			
+
 			window.alert = function(msg) {
 				window.geb.dialogMessages.pop();
 				window.geb.dialogMessages.push(msg);
@@ -92,14 +92,14 @@ class AlertAndConfirmSupport {
 			};
 		"""
 	}
-	
+
 	private installConfirm(boolean ok, JavascriptInterface js) {
 		js.exec """
 			$installDialogStorageScript
-			
+
 			window.geb.dialogFunctions.push(window.confirm);
 			window.geb.dialogMessages.push(null);
-			
+
 			window.confirm = function(msg) {
 				window.geb.dialogMessages.pop();
 				window.geb.dialogMessages.push(msg);
@@ -110,9 +110,9 @@ class AlertAndConfirmSupport {
 
 	private captureDialog(Closure installer, String function, Closure actions, Wait wait = null) {
 		def js = getJavascriptInterface()
-		
+
 		installer(js)
-		
+
 		def actionsError = null
 		try {
 			actions()
@@ -133,7 +133,7 @@ class AlertAndConfirmSupport {
 			message
 		}
 	}
-	
+
 	private captureAlert(Closure actions, waitParam = null) {
 		captureDialog(this.&installAlert, 'alert', actions, config.getWaitForParam(waitParam))
 	}

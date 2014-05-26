@@ -20,15 +20,17 @@ import geb.textmatching.TextMatchingSupport
 class ModuleBaseDefinitionDelegate {
 
 	private params
-	
-	@Delegate private NavigableSupport navigableSupport
-	@Delegate private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
-	
+
+	@Delegate
+	private NavigableSupport navigableSupport
+	@Delegate
+	private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+
 	ModuleBaseDefinitionDelegate(NavigatorFactory navigatorFactory, Map params) {
 		this.params = params
 		navigableSupport = new NavigableSupport(navigatorFactory)
 	}
-	
+
 	def propertyMissing(String name) {
 		if (params.containsKey(name)) {
 			params[name]

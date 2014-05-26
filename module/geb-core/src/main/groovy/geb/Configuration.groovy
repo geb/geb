@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package geb
 
 import geb.buildadapter.SystemPropertiesBuildAdapter
@@ -35,22 +34,22 @@ import geb.navigator.factory.ClosureInnerNavigatorFactory
  * Represents a particular configuration of Geb.
  */
 class Configuration {
-	
+
 	static private final DEFAULT_WAIT_RETRY_SECS = 0.1
-	
+
 	final ClassLoader classLoader
 	final ConfigObject rawConfig
 	final Properties properties
 	final BuildAdapter buildAdapter
-	
+
 	private final Map<String, Wait> waits = null
-	
+
 	private WebDriver driver
-	
+
 	Configuration(Map rawConfig) {
 		this(toConfigObject(rawConfig), null, null, null)
 	}
-		
+
 	Configuration(ConfigObject rawConfig = null, Properties properties = null, BuildAdapter buildAdapter = null, ClassLoader classLoader = null) {
 		this.classLoader = classLoader ?: new GroovyClassLoader()
 		this.properties = properties == null ? System.properties : properties
@@ -73,19 +72,19 @@ class Configuration {
 			retryInterval = presetRetryInterval
 		}
 	}
-	
+
 	Wait getWaitPreset(String name) {
 		def preset = rawConfig.waiting.presets[name]
 		def timeout = readValue(preset, 'timeout', getDefaultWaitTimeout())
 		def retryInterval = readValue(preset, 'retryInterval', getDefaultWaitRetryInterval())
-		
+
 		new Wait(timeout, retryInterval)
 	}
-	
+
 	Wait getDefaultWait() {
 		new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval())
 	}
-	
+
 	Wait getWait(Double timeout) {
 		new Wait(timeout, getDefaultWaitRetryInterval())
 	}
@@ -141,7 +140,7 @@ class Configuration {
 	void setDefaultWaitRetryInterval(Double defaultWaitRetryInterval) {
 		rawConfig.waiting.retryInterval = defaultWaitRetryInterval
 	}
-	
+
 	/**
 	 * The default {@code retryInterval} value to use for waiting (i.e. if unspecified).
 	 * <p>
@@ -187,7 +186,7 @@ class Configuration {
 
 	/**
 	 * Updates the {@code cacheDriver} config entry.
-	 * 
+	 *
 	 * @see #isCacheDriver()
 	 */
 	void setCacheDriver(boolean flag) {
@@ -206,13 +205,13 @@ class Configuration {
 
 	/**
 	 * Updates the {@code cacheDriverPerThread} config entry.
-	 * 
+	 *
 	 * @see #isCacheDriverPerThread()
 	 */
 	void setCacheDriverPerThread(boolean flag) {
 		rawConfig.cacheDriverPerThread = flag
 	}
-	
+
 	/**
 	 * If a cached driver is being used, should it be automatically quit when the JVM exits.
 	 * <p>
@@ -221,32 +220,32 @@ class Configuration {
 	boolean isQuitCachedDriverOnShutdown() {
 		readValue('quitCachedDriverOnShutdown', true)
 	}
-	
+
 	/**
 	 * Sets whether or not the cached driver should be quit when the JVM shuts down.
 	 */
 	void setQuitCacheDriverOnShutdown(boolean flag) {
 		rawConfig.quitCachedDriverOnShutdown = flag
 	}
-	
+
 	/**
 	 * Sets the driver configuration value.
 	 * <p>
-	 * This may be the class name of a driver implementation, a driver short name or a closure 
+	 * This may be the class name of a driver implementation, a driver short name or a closure
 	 * that when invoked with no arguments returns a driver implementation.
-	 * 
+	 *
 	 * @see #getDriver()
 	 */
 	void setDriverConf(value) {
 		rawConfig.driver = value
 	}
-	
+
 	/**
 	 * Returns the configuration value for the driver.
 	 * <p>
 	 * This may be the class name of a driver implementation, a short name, or a closure
 	 * that when invoked returns an actual driver.
-	 * 
+	 *
 	 * @see #getDriver()
 	 */
 	def getDriverConf() {
@@ -254,7 +253,7 @@ class Configuration {
 		if (value instanceof WebDriver) {
 			throw new IllegalStateException(
 				"The 'driver' config value is an instance of WebDriver. " +
-				"You need to wrap the driver instance in a closure."
+					"You need to wrap the driver instance in a closure."
 			)
 		}
 		value
@@ -266,11 +265,11 @@ class Configuration {
 	String getBaseUrl() {
 		readValue("baseUrl", buildAdapter.baseUrl)
 	}
-	
+
 	void setBaseUrl(baseUrl) {
 		rawConfig.baseUrl = baseUrl == null ? null : baseUrl.toString()
 	}
-	
+
 	/**
 	 * Returns the config value {@code reportsDir}, or {@link geb.BuildAdapter#getReportsDir()}.
 	 */
@@ -292,11 +291,11 @@ class Configuration {
 	boolean isReportOnTestFailureOnly() {
 		readValue("reportOnTestFailureOnly", false)
 	}
-	
+
 	void setReportsDir(File reportsDir) {
 		rawConfig.reportsDir = reportsDir
 	}
-	
+
 	/**
 	 * Returns the reporter implementation to use for taking snapshots of the browser's state.
 	 * <p>
@@ -328,7 +327,7 @@ class Configuration {
 
 	/**
 	 * Updates the {@code reporter} config entry.
-	 * 
+	 *
 	 * @see #getReporter()
 	 */
 	void setReporter(Reporter reporter) {
@@ -344,24 +343,24 @@ class Configuration {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	WebDriver getDriver() {
 		if (driver == null) {
 			driver = createDriver()
 		}
-		
+
 		driver
 	}
-	
+
 	void setDriver(WebDriver driver) {
 		this.driver = driver
 	}
-	
+
 	protected WebDriver createDriver() {
 		wrapDriverFactoryInCachingIfNeeded(getDriverFactory(getDriverConf())).driver
 	}
-	
+
 	/**
 	 * Whether or not to automatically clear the browser's cookies automatically.
 	 * <p>
@@ -457,7 +456,7 @@ class Configuration {
 			throw new DriverCreationException("Unable to determine factory for 'driver' config value '$driverValue'")
 		}
 	}
-	
+
 	protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
 		if (isCacheDriver()) {
 			isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
@@ -471,13 +470,12 @@ class Configuration {
 	 * supplied config closure when using the download support.
 	 */
 	Closure getDownloadConfig() {
-		readValue("defaultDownloadConfig", { HttpURLConnection con -> } )
+		readValue("defaultDownloadConfig", { HttpURLConnection con -> })
 	}
 
 	void setDownloadConfig(Closure config) {
 		rawConfig.defaultDownloadConfig = config
 	}
-
 
 	protected readValue(String name, defaultValue) {
 		readValue(rawConfig, name, defaultValue)
@@ -490,7 +488,4 @@ class Configuration {
 			defaultValue
 		}
 	}
-
-
-	
 }

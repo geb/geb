@@ -24,13 +24,13 @@ class GebTest {
 
 	String gebConfEnv = null
 	String gebConfScript = null
-	
+
 	private Browser _browser
 
 	Configuration createConf() {
 		new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
 	}
-	
+
 	Browser createBrowser() {
 		new Browser(createConf())
 	}

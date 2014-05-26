@@ -10,7 +10,8 @@ class BasicFrameSupportSpec extends BaseFrameSupportSpec {
 	@Unroll("expect withFrame to fail if called for a non existing frame '#frame'")
 	def "expect withFrame to fail if called for a non existing frame"() {
 		when:
-		withFrame(frame) {}
+		withFrame(frame) {
+		}
 
 		then:
 		thrown(NoSuchFrameException)
@@ -22,7 +23,8 @@ class BasicFrameSupportSpec extends BaseFrameSupportSpec {
 	@Unroll
 	def "expect withFrame to fail if called for a navigator that doesn't contain a frame"() {
 		when:
-		withFrame($(selector)) {}
+		withFrame($(selector)) {
+		}
 
 		then:
 		NoSuchFrameException e = thrown()
@@ -36,7 +38,8 @@ class BasicFrameSupportSpec extends BaseFrameSupportSpec {
 
 	def "expect withFrame to fail if called for an empty navigator"() {
 		when:
-		withFrame($('nonexistingelem')) {}
+		withFrame($('nonexistingelem')) {
+		}
 
 		then:
 		thrown(NoSuchFrameException)
@@ -72,7 +75,7 @@ class BasicFrameSupportSpec extends BaseFrameSupportSpec {
 		getFrameText(frame) == text
 
 		where:
-		pagePath |frame    | text
+		pagePath | frame    | text
 		"frames" | 'header' | 'header'
 		"frames" | 'footer' | 'footer'
 		"iframe" | 'inline' | 'inline'

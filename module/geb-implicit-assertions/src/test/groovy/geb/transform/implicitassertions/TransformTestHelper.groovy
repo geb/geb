@@ -28,33 +28,36 @@ import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ModuleNode
 
 class TransformTestHelper {
-	
+
 	public Class parse(File input) {
 		new TestHarnessClassLoader().parseClass(input)
 	}
-	
+
 	interface Transforms {
 		void add(ASTTransformation transform, CompilePhase phase)
 	}
-	
+
 	protected configure(Transforms transforms) {
-		
+
 	}
 
+	@SuppressWarnings('SpaceAfterClosingBrace')
 	private class TestHarnessClassLoader extends GroovyClassLoader {
 		protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource codeSource) {
 			CompilationUnit cu = super.createCompilationUnit(config, codeSource)
-			configure(new Transforms() {
-				void add(ASTTransformation transform, CompilePhase phase) {
-					cu.addPhaseOperation(
-						new PrimaryClassNodeOperation() {
-							void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-								transform.visit([new ModuleNode(source)] as ASTNode[], source)
-							}
-						}, phase.phaseNumber
-					)
+			configure(
+				new Transforms() {
+					void add(ASTTransformation transform, CompilePhase phase) {
+						cu.addPhaseOperation(
+							new PrimaryClassNodeOperation() {
+								void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
+									transform.visit([new ModuleNode(source)] as ASTNode[], source)
+								}
+							}, phase.phaseNumber
+						)
+					}
 				}
-			})
+			)
 			return cu
 		}
 	}

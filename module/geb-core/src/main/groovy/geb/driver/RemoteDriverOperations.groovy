@@ -22,11 +22,11 @@ import org.openqa.selenium.WebDriver
 class RemoteDriverOperations {
 
 	final ClassLoader classLoader
-	
+
 	RemoteDriverOperations(ClassLoader classLoader) {
 		this.classLoader = classLoader
 	}
-	
+
 	/**
 	 * If the driver is a remote driver, a proxy will be returned that implements the feature
 	 * interfaces of the actual driver on the remote side. If it is not, the passed in driver
@@ -39,7 +39,7 @@ class RemoteDriverOperations {
 			driver
 		}
 	}
-	
+
 	boolean isRemoteDriverAvailable() {
 		remoteWebDriverClass != null
 	}
@@ -47,7 +47,7 @@ class RemoteDriverOperations {
 	Class<? extends WebDriver> getRemoteWebDriverClass() {
 		softLoadRemoteDriverClass("RemoteWebDriver")
 	}
-	
+
 	public Class softLoadRemoteDriverClass(String name) {
 		try {
 			classLoader.loadClass("org.openqa.selenium.remote.$name")
