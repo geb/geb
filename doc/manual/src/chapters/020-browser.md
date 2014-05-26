@@ -299,7 +299,7 @@ This code passes:
 
     $('a').click()
     withWindow('myWindow') {
-        assert $('title').text() == 'Geb - Very Groovy Browser Automation'
+        assert title == 'Geb - Very Groovy Browser Automation'
     }
 
 If you don't know the name of the window but you know something about the content of the window you can use the [`withWindow(Closure specification, Closure block)`](api/geb/Browser.html#withWindow\(groovy.lang.Closure,%20groovy.lang.Closure\)) method. The first closure passed should return true for the window, or windows, you want to use as context. Note that if there is no window for which the window specification closure returns true then [`NoSuchWindowException`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html) is thrown. So given:
@@ -309,7 +309,7 @@ If you don't know the name of the window but you know something about the conten
 This code passes:
 
     $('a').click()
-    withWindow({ $('title').text() == 'Geb - Very Groovy Browser Automation' }) {
+    withWindow({ title == 'Geb - Very Groovy Browser Automation' }) {
         assert $('#slogan').text() == 'very groovy browser automation… web testing, screen scraping and more'
     }
 
@@ -336,7 +336,7 @@ If you pass a class that extends `Page` as `page` option, then browser's page wi
 If you wish to execute code in a window that is newly opened by some of your actions, use the [`withNewWindow(Closure windowOpeningBlock, Closure block)`](api/geb/Browser.html#withNewWindow\(groovy.lang.Closure,%20groovy.lang.Closure\)) method. Given HTML as above the following will pass:
 
     withNewWindow({ $('a').click() }) {
-        assert $('title').text() == 'Geb - Very Groovy Browser Automation'
+        assert title == 'Geb - Very Groovy Browser Automation'
     }
 
 Note that if the first parameter opens none or more than one window, then [`NoNewWindowException`](api/geb/error/NoNewWindowException.html) is thrown.
@@ -378,7 +378,7 @@ the following will pass:
 				}, 200);
 			"""
 	}, wait: true) {
-        assert $('title').text() == 'Geb - Very Groovy Browser Automation'
+        assert title == 'Geb - Very Groovy Browser Automation'
     }
 
 ## Quitting the browser
