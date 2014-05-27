@@ -45,7 +45,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
 * [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
-* [Chris Prior](https://github.com/chris-prior) - Bug fix around setting invalid elements
+* [Chris Prior](https://github.com/chris-prior) - Various fixes and patches
 
 ## History
 
@@ -59,6 +59,7 @@ This page lists the high level changes between versions of Geb.
 * Page content classes including `Module` now implement `Navigator` interface \[[GEB-181](http://jira.codehaus.org/browse/GEB-181)\]
 * Added some tests that guard performance by verifying which WebDriver commands are executed \[[GEB-302](http://jira.codehaus.org/browse/GEB-302)\]
 * Added [BrowserStack](http://www.browserstack.com) integration \[[GEB-307](http://jira.codehaus.org/browse/GEB-307)\]
+* Added a shortcut to `Browser` for getting current url \[[GEB-294](http://jira.codehaus.org/browse/GEB-294)\]
 
 #### Fixes
 

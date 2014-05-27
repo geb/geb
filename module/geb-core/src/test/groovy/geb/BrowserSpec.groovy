@@ -14,9 +14,16 @@
  */
 package geb
 
-import geb.test.GebSpec
+import geb.test.GebSpecWithServer
 
-class BrowserSpec extends GebSpec {
+class BrowserSpec extends GebSpecWithServer {
+
+	def setupSpec() {
+		responseHtml {
+			body {
+			}
+		}
+	}
 
 	def "clear cookies"() {
 		when:
@@ -28,5 +35,12 @@ class BrowserSpec extends GebSpec {
 	def "load default config"() {
 		expect:
 		browser.config.rawConfig.testValue == true
+	}
+
+	def "current url is returned from browser"() {
+		when:
+		go()
+		then:
+		browser.currentUrl == server.baseUrl
 	}
 }
