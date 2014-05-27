@@ -162,6 +162,15 @@ class Browser {
 	}
 
 	/**
+	 * Retrieves the current url
+	 *
+	 * @see org.openqa.selenium.WebDriver#getCurrentUrl()
+	 */
+	String getCurrentUrl() {
+		driver.currentUrl
+	}
+
+	/**
 	 * Allows new page change listeners to be registered with this browser.
 	 * <p>
 	 * This method will immediately call the {@link geb.PageChangeListener#pageWillChange(geb.Browser, geb.Page, geb.Page)} method on
