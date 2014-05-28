@@ -89,4 +89,8 @@ class JQueryAdapterSpec extends GebSpecWithServer {
 		$("div").jquery.size() == 2
 	}
 
+	def "non jquery object return value"() {
+		expect:
+		$("#a").jquery.offset().top instanceof Number
+	}
 }

@@ -49,7 +49,7 @@ class JQueryAdapter {
 
 				var o = jQuery(elements);
 				var r = o.${name}.apply(o, callArgs);
-				return (typeof r == "object") ? r.toArray() : r;
+				return (r instanceof jQuery) ? r.toArray() : r;
 			""")
 		} else {
 			null
