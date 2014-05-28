@@ -107,6 +107,7 @@ subprojects {
 		codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
 		project.tasks.withType(CodeNarc) { codenarcSourceSetTask ->
+			codenarcSourceSetTask.exclude 'GebConfig*.groovy'
 			rootProject.tasks.codenarc.dependsOn codenarcSourceSetTask
 			rootProject.allprojects {
 				tasks.withType(Test) {
