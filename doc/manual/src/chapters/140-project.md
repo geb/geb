@@ -66,6 +66,7 @@ This page lists the high level changes between versions of Geb.
 * Added missing range variants of find/$ methods. \[[GEB-283](http://jira.codehaus.org/browse/GEB-283)\]
 * Migrated `UnableToLoadException` to java. \[[GEB-263](http://jira.codehaus.org/browse/GEB-263)\]
 * Exception thrown when trying to set value on an invalid element (non form control). \[[GEB-286](http://jira.codehaus.org/browse/GEB-286)\]
+* Find element when passing ids with spaces in the predicates map to the $() method. \[[GEB-308](http://jira.codehaus.org/browse/GEB-308)\]
 
 #### Breaking Changes
 

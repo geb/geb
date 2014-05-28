@@ -15,18 +15,14 @@
  */
 package geb.navigator
 
-import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 
-/**
- * This test fails with htmlunit as it has issues with css selectors with special chars
- */
-@CrossBrowser
 class ExoticAttributeValuesSpec extends GebSpecWithServer {
 
 	def setupSpec() {
 		responseHtml {
 			div(id: "a:b", "foo")
+			div(id: "a b", "bar")
 		}
 
 		go()
@@ -35,6 +31,11 @@ class ExoticAttributeValuesSpec extends GebSpecWithServer {
 	def "jsf style ids"() {
 		expect:
 		$(id: "a:b").text() == "foo"
+	}
+
+	def "ids with spaces"() {
+		expect:
+		$(id: "a b").text() == "bar"
 	}
 
 }
