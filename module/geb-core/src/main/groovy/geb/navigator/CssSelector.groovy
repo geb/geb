@@ -36,7 +36,7 @@ class CssSelector {
 	}
 
 	private static final CssSelector DESCENDANT_SELECTOR = new CssSelector(Type.DESCENDANT, " ")
-	private static final String CSS_SELECTOR_SPECIAL_CHARS_PATTERN = '[!"#$%&\'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|\\}~\\\\]'
+	private static final String CSS_SELECTOR_SPECIAL_CHARS_PATTERN = '[ !"#$%&\'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|\\}~\\\\]'
 
 	final Type type
 	final String value

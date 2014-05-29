@@ -19,9 +19,6 @@ dependencies {
 
 test {
 	maxParallelForks (Math.max(2, Runtime.runtime.availableProcessors().intdiv(2)))
-	if (driver == "htmlunit") {
-		exclude "**/ExoticAttributeValuesSpec.class"
-	}
 }
 
 task allCrossBrowserTests {

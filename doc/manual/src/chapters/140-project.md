@@ -68,6 +68,7 @@ This page lists the high level changes between versions of Geb.
 * Migrated `UnableToLoadException` to java. \[[GEB-263](http://jira.codehaus.org/browse/GEB-263)\]
 * Exception thrown when trying to set value on an invalid element (non form control). \[[GEB-286](http://jira.codehaus.org/browse/GEB-286)\]
 * Support for jQuery methods like offset() and position() which return a native Javascript object. \[[GEB-271](http://jira.codehaus.org/browse/GEB-271)\]
+* Finding elements when passing ids with spaces in the predicates map to the $() method. \[[GEB-308](http://jira.codehaus.org/browse/GEB-308)\]
 
 #### Breaking Changes
 
