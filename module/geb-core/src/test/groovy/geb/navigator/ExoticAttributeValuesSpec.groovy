@@ -15,8 +15,10 @@
  */
 package geb.navigator
 
+import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 
+@CrossBrowser
 class ExoticAttributeValuesSpec extends GebSpecWithServer {
 
 	def setupSpec() {
