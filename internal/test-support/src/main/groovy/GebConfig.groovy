@@ -42,3 +42,8 @@ if (browserStackBrowser) {
 		new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey)
 	}
 }
+
+def devDriver = System.getProperty("geb.dev.driver")
+if (devDriver != "htmlunit") {
+	driver = devDriver
+}
