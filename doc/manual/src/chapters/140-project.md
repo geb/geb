@@ -59,7 +59,7 @@ This page lists the high level changes between versions of Geb.
 * Page content classes including `Module` now implement `Navigator` interface \[[GEB-181](http://jira.codehaus.org/browse/GEB-181)\]
 * Added some tests that guard performance by verifying which WebDriver commands are executed \[[GEB-302](http://jira.codehaus.org/browse/GEB-302)\]
 * Added [BrowserStack](http://www.browserstack.com) integration \[[GEB-307](http://jira.codehaus.org/browse/GEB-307)\]
-*  \[[GVerify pages at checker when passed as an option to open a new window via withWindow, withNewWindowEB-278](http://jira.codehaus.org/browse/GEB-278)\]
+* Verify pages at checker when passed as an option to open a new window via withWindow, withNewWindowEB-278](http://jira.codehaus.org/browse/GEB-278)\]
 
 #### Fixes
 
