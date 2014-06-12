@@ -196,15 +196,14 @@ subprojects {
 				}
 			}
 
-			onlyIf { isSnapshot || !project.hasProperty("ci") }
+			task.onlyIf { isSnapshot || !project.hasProperty("ci") }
 		}
 	}
 }
 
 task release {
 	dependsOn ':integration:geb-grails:publish',
-		{ allprojects.findAll { it.path in publishedModules }*.uploadArchives },
-		':doc:site:publish'
+		{ allprojects.findAll { it.path in publishedModules }*.uploadArchives }
 }
 
 if (hasProperty('enableClover')) {
