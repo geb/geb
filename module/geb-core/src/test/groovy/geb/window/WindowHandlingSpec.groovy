@@ -319,7 +319,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
-	def "withNewWindow doesnt fail if there is no at checker"() {
+	def "withNewWindow does not fail if there is no at checker"() {
 		go MAIN_PAGE_URL
 		page WindowHandlingSpecMainPage
 
