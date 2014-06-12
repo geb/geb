@@ -594,6 +594,8 @@ class Browser {
 				}
 
 				if (specification.call()) {
+					verifyAtIfPresent(options.page)
+
 					try {
 						block.call()
 					} finally {
@@ -627,9 +629,8 @@ class Browser {
 
 		switchToWindow(window)
 		try {
-			if (options.page) {
-				page(options.page)
-			}
+			verifyAtIfPresent(options.page)
+
 			block.call()
 		} finally {
 			if (options.close) {
@@ -660,9 +661,8 @@ class Browser {
 		def newWindow = executeNewWindowOpening(windowOpeningBlock, options.wait)
 		try {
 			switchToWindow(newWindow)
-			if (options.page) {
-				page(options.page)
-			}
+			verifyAtIfPresent(options.page)
+
 			block.call()
 		} finally {
 			if (!options.containsKey('close') || options.close) {
@@ -830,6 +830,17 @@ class Browser {
 			new URL(uri.toString() + joiner + queryString).toString()
 		} else {
 			uri.toString()
+		}
+	}
+
+	private void verifyAtIfPresent(Class<? extends Page> targetPage) {
+		if (targetPage) {
+			try {
+				at(targetPage)
+			}
+			catch (UndefinedAtCheckerException e) {
+				page(targetPage)
+			}
 		}
 	}
 

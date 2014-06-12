@@ -17,6 +17,7 @@ package geb.window
 
 import geb.Page
 import geb.error.NoNewWindowException
+import geb.error.UndefinedAtCheckerException
 import spock.lang.Unroll
 
 class WindowHandlingSpec extends BaseWindowHandlingSpec {
@@ -242,10 +243,117 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		true
 	}
 
+	@Unroll
+	def "withWindow successfully verifies at checker"() {
+		given:
+		go MAIN_PAGE_URL
+		openAllWindows()
+
+		when:
+		withWindow(page: WindowHandlingSpecNewWindowWithAtCheckPage, specification) {
+		}
+
+		then:
+		notThrown(Exception)
+
+		where:
+		specification << [
+			{ title == windowTitle(1) },
+			windowName(1)
+		]
+	}
+
+	@Unroll
+	def "withWindow does not fail if there is no at checker"() {
+		given:
+		go MAIN_PAGE_URL
+		openAllWindows()
+
+		when:
+		withWindow(page: WindowHandlingSpecNewWindowPage, specification) {
+			assert page.getClass() == WindowHandlingSpecNewWindowPage
+		}
+
+		then:
+		notThrown(UndefinedAtCheckerException)
+
+		where:
+		specification << [
+			{ title == windowTitle(1) },
+			windowName(1)
+		]
+	}
+
+	@Unroll
+	def "withWindow verifies at checker"() {
+		given:
+		go MAIN_PAGE_URL
+		openAllWindows()
+
+		when:
+		withWindow(page: WindowHandlingSpecNewWindowWithAtCheckPage, specification) {
+		}
+
+		then:
+		thrown(AssertionError)
+
+		where:
+		specification << [
+			{ title == windowTitle(2) },
+			windowName(2)
+		]
+	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow successfully verifies at checker"() {
+		given:
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowWithAtCheckPage) {
+		}
+
+		then:
+		notThrown(Exception)
+	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow doesnt fail if there is no at checker"() {
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+
+		when:
+		def newWindowPage = withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowPage) {
+			page
+		}
+
+		then:
+		newWindowPage instanceof WindowHandlingSpecNewWindowPage
+		notThrown(UndefinedAtCheckerException)
+	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow verifies at checker"() {
+		given:
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(2) }, page: WindowHandlingSpecNewWindowWithAtCheckPage) {
+		}
+
+		then:
+		thrown(AssertionError)
+	}
 }
 
 class WindowHandlingSpecMainPage extends Page {
 }
 
 class WindowHandlingSpecNewWindowPage extends Page {
+}
+
+class WindowHandlingSpecNewWindowWithAtCheckPage extends Page {
+	static at = { title == "Window main-1" }
 }

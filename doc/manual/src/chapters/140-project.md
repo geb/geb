@@ -60,6 +60,7 @@ This page lists the high level changes between versions of Geb.
 * Added some tests that guard performance by verifying which WebDriver commands are executed \[[GEB-302](http://jira.codehaus.org/browse/GEB-302)\]
 * Added [BrowserStack](http://www.browserstack.com) integration \[[GEB-307](http://jira.codehaus.org/browse/GEB-307)\]
 * Added a shortcut to `Browser` for getting current url \[[GEB-294](http://jira.codehaus.org/browse/GEB-294)\]
+* Verify pages at checker when passed as an option to open a new window via `withWindow()` and `withNewWindow()` \[GEB-278](http://jira.codehaus.org/browse/GEB-278)\]
 
 #### Fixes
 
