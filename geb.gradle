@@ -165,7 +165,7 @@ subprojects {
 
 		signing {
 			sign configurations.archives
-			required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
+			required { !isSnapshot && !project.hasProperty("ci") && gradle.taskGraph.hasTask(uploadArchives) }
 		}
 		
 		apply from: "$rootDir/gradle/pom.gradle"
