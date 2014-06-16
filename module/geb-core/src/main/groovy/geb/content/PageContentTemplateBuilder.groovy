@@ -26,6 +26,10 @@ class PageContentTemplateBuilder {
 
 	final Map<String, PageContentTemplate> templates = [:]
 
+	def propertyMissing(String name) {
+		container[name]
+	}
+
 	def methodMissing(String name, args) {
 		def definition = null
 		def params = null

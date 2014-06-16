@@ -53,6 +53,12 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### Fixes
+
+* Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]
+
+### 0.9.3
+
 #### New Features
 
 * Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. \[[GEB-269](http://jira.codehaus.org/browse/GEB-269)\]
