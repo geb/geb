@@ -27,7 +27,7 @@ allprojects { project ->
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")
 
-		seleniumVersion = "2.41.0"
+		seleniumVersion = "2.42.2"
 		groovyVersion = "1.8.9"
 		spockVersion = "0.7-groovy-1.8"
 		usingSauce =
