@@ -16,12 +16,10 @@ rootProject.name = 'geb'
 
 def setBuildFile(project) {
 	project.buildFileName = "${project.name}.gradle"
+
 	project.children.each {
 		setBuildFile(it)
 	}
 }
 
 setBuildFile(rootProject)
-rootProject.children.each {
-	setBuildFile(it)
-}
