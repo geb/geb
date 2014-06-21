@@ -44,7 +44,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Craig Atkinson](https://github.com/craigatk) - Bug fix around unexpected pages
 * [Ken Geis](https://github.com/kgeis) - Doc improvements
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
-* [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements
+* [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements, Cleaned up settings.gradle
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
 
 ## History
