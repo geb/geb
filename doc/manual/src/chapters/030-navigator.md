@@ -314,6 +314,20 @@ To obtain information about all matched content, you use the Groovy _spread oper
     $("p")*.@title == ["a", "b", "c"]
     $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
 
+## Css properties
+
+Css properties of a navigator can be accessed using the `css()` method.
+
+Consider the following HTML…
+
+    <div style="float: left">text</div>
+
+You can obtain value of the `float` css property in the following way…
+
+    $("div").css("float") == "left"
+
+> There are some limitations when it comes to retrieving css properties of `Navigator` objects. Color values should be returned as rgba strings, so, for example if the `background-color` property is set as `green` in the HTML source, the returned value will be `rgba(0, 255, 0, 1)`. Note that shorthand CSS properties (e.g. `background`, `font`, `border`, `border-top`, `margin`, `margin-top`, `padding`, `padding-top`, `list-style`, `outline`, `pause`, `cue`) are not returned, in accordance with the DOM CSS2 specification - you should directly access the longhand properties (e.g. `background-color`) to access the desired values.
+
 ## Sending keystrokes
 
 Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence...\)) method of WebDriver.

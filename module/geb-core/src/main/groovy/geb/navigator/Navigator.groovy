@@ -628,4 +628,16 @@ interface Navigator extends Iterable<Navigator> {
 	 * Creates a new Navigator instance containing all elements of this instance with duplicate elements removed
 	 */
 	Navigator unique()
+
+	/**
+	 * Gets the value of a given CSS property. Color values should be returned as rgba strings, so, for example if the "background-color"
+	 * property is set as "green" in the HTML source, the returned value will be "rgba(0, 255, 0, 1)". Note that shorthand
+	 * CSS properties (e.g. background, font, border, border-top, margin, margin-top, padding, padding-top, list-style, outline, pause, cue)
+	 * are not returned, in accordance with the DOM CSS2 specification - you should directly access the longhand properties (e.g. background-color)
+	 * to access the desired values.
+	 *
+	 * @param propertyName
+	 * @return The current, computed value of the property or null if the is not specified.
+	 */
+	String css(String propertyName)
 }

@@ -53,6 +53,10 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
+#### New Features
+
+* New `css()` method on `Navigator` that allows to access CSS properties of elements. \[[GEB-141](http://jira.codehaus.org/browse/GEB-141)\]
+
 #### Fixes
 
 * Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]

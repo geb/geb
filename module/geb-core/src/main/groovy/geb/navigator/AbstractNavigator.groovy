@@ -189,6 +189,10 @@ abstract class AbstractNavigator implements Navigator {
 		firstElement()?.location?.y ?: 0
 	}
 
+	String css(String propertyName) {
+		firstElement()?.getCssValue(propertyName)
+	}
+
 	/**
 	 * Iterator for looping over the context elements of a Navigator instance.
 	 */

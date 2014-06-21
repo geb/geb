@@ -232,5 +232,4 @@ class EmptyNavigator extends AbstractNavigator {
 			throw new MissingPropertyException(name, getClass())
 		}
 	}
-
 }
