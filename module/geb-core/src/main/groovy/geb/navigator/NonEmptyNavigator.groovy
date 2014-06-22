@@ -167,101 +167,101 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator next(String selectorString) {
-		collectFollowingSiblings {
+		navigatorFor collectFollowingSiblings {
 			it.find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	@Override
 	Navigator next(Map<String, Object> attributes) {
-		collectFollowingSiblings {
+		navigatorFor collectFollowingSiblings {
 			it.find { matches(it, attributes) }
 		}
 	}
 
 	@Override
 	Navigator nextAll() {
-		collectFollowingSiblings()
+		navigatorFor collectFollowingSiblings()
 	}
 
 	@Override
 	Navigator nextAll(String selectorString) {
-		collectFollowingSiblings {
+		navigatorFor collectFollowingSiblings {
 			it.findAll { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	@Override
 	Navigator nextAll(Map<String, Object> attributes) {
-		collectFollowingSiblings {
+		navigatorFor collectFollowingSiblings {
 			it.findAll { matches(it, attributes) }
 		}
 	}
 
 	@Override
 	Navigator nextUntil(String selectorString) {
-		collectFollowingSiblings {
+		navigatorFor collectFollowingSiblings {
 			collectUntil(it, selectorString)
 		}
 	}
 
 	@Override
 	Navigator nextUntil(Map<String, Object> attributes) {
-		collectFollowingSiblings {
+		navigatorFor collectFollowingSiblings {
 			collectUntil(it, attributes)
 		}
 	}
 
 	@Override
 	Navigator previous() {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			it ? it.last() : EMPTY_LIST
 		}
 	}
 
 	@Override
 	Navigator previous(String selectorString) {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			it.reverse().find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	@Override
 	Navigator previous(Map<String, Object> attributes) {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			it.reverse().find { matches(it, attributes) }
 		}
 	}
 
 	@Override
 	Navigator prevAll() {
-		collectPreviousSiblings()
+		navigatorFor collectPreviousSiblings()
 	}
 
 	@Override
 	Navigator prevAll(String selectorString) {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			it.reverse().findAll { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	@Override
 	Navigator prevAll(Map<String, Object> attributes) {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			it.reverse().findAll { matches(it, attributes) }
 		}
 	}
 
 	@Override
 	Navigator prevUntil(String selectorString) {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			collectUntil(it.reverse(), selectorString)
 		}
 	}
 
 	@Override
 	Navigator prevUntil(Map<String, Object> attributes) {
-		collectPreviousSiblings {
+		navigatorFor collectPreviousSiblings {
 			collectUntil(it.reverse(), attributes)
 		}
 	}
@@ -285,56 +285,56 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator parents() {
-		collectParents {
+		navigatorFor collectParents {
 			it.reverse()
 		}
 	}
 
 	@Override
 	Navigator parents(String selectorString) {
-		collectParents {
+		navigatorFor collectParents {
 			it.reverse().findAll { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	@Override
 	Navigator parents(Map<String, Object> attributes) {
-		collectParents {
+		navigatorFor collectParents {
 			it.reverse().findAll { matches(it, attributes) }
 		}
 	}
 
 	@Override
 	Navigator parentsUntil(String selectorString) {
-		collectParents {
+		navigatorFor collectParents {
 			collectUntil(it.reverse(), selectorString)
 		}
 	}
 
 	@Override
 	Navigator parentsUntil(Map<String, Object> attributes) {
-		collectParents {
+		navigatorFor collectParents {
 			collectUntil(it.reverse(), attributes)
 		}
 	}
 
 	@Override
 	Navigator closest(String selectorString) {
-		collectParents {
+		navigatorFor collectParents {
 			it.reverse().find { CssSelector.matches(it, selectorString) }
 		}
 	}
 
 	@Override
 	Navigator closest(Map<String, Object> attributes) {
-		collectParents {
+		navigatorFor collectParents {
 			it.reverse().find { matches(it, attributes) }
 		}
 	}
 
 	@Override
 	Navigator children() {
-		collectChildren()
+		navigatorFor collectChildren()
 	}
 
 	@Override
@@ -349,7 +349,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator siblings() {
-		collectSiblings()
+		navigatorFor collectSiblings()
 	}
 
 	@Override
@@ -809,31 +809,31 @@ class NonEmptyNavigator extends AbstractNavigator {
 		collectUntil(elements) { matches(it, attributes) }
 	}
 
-	protected Navigator collectRelativeElements(String xpath, Closure filter) {
-		navigatorFor collectElements {
+	protected Collection<WebElement> collectRelativeElements(String xpath, Closure filter) {
+		collectElements {
 			def elements = it.findElements(By.xpath(xpath))
 			filter ? filter(elements) : elements
 		}
 	}
 
-	protected Navigator collectFollowingSiblings(Closure filter) {
+	protected Collection<WebElement> collectFollowingSiblings(Closure filter) {
 		collectRelativeElements("following-sibling::*", filter)
 	}
 
-	protected Navigator collectPreviousSiblings(Closure filter) {
+	protected Collection<WebElement> collectPreviousSiblings(Closure filter) {
 		collectRelativeElements("preceding-sibling::*", filter)
 	}
 
-	protected Navigator collectParents(Closure filter) {
+	protected Collection<WebElement> collectParents(Closure filter) {
 		collectRelativeElements("ancestor::*", filter)
 	}
 
-	protected Navigator collectChildren(Closure filter) {
+	protected Collection<WebElement> collectChildren(Closure filter) {
 		collectRelativeElements("child::*", filter)
 	}
 
-	protected Navigator collectSiblings(Closure filter) {
-		navigatorFor collectElements {
+	protected Collection<WebElement> collectSiblings(Closure filter) {
+		collectElements {
 			def elements = it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
 			filter ? filter(elements) : elements
 		}
