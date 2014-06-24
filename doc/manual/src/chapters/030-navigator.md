@@ -205,6 +205,7 @@ Using the same html, the following examples will select `p.c`…
 
     $("p").next(".c")
     $("p").next(class: "c")
+    $("p").next("p", class: "c")
 
 Likewise, consider the following HTML…
 
@@ -218,11 +219,13 @@ The following examples will select `div.b`…
 
     $("p").parent(".b")
     $("p").parent(class: "b")
+    $("p").parent("div", class: "b")
 
 The `closest` method is a special case in that it will select the first ancestors of the current elements that match a selector. There is no no-argument version of the `closest` method. For example, these will select `div.a`…
 
     $("p").closest(".a")
     $("p").closest(class: "a")
+    $("p").closest("div", class: "a")
 
 These methods do not take indexes as they automatically select the first matching content. To select multiple elements you can use `prevAll`, `nextAll` and `parents` all of which have no-argument versions and versions that filter by a selector.
 
@@ -237,6 +240,7 @@ The following examples will select `div.b` and `div.c`:
 
     $(".a").nextUntil(".d")
     $(".a").nextUntil(class: "d")
+    $(".a").nextUntil("div", class: "d")
 
 ## Composition
 

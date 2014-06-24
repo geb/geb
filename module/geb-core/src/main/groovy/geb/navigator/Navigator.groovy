@@ -288,6 +288,19 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator next(Map<String, Object> attributes)
 
 	/**
+	 * Creates a new Navigator instance containing the next sibling elements of the
+	 * current context elements, matching the selector and given attributes.
+	 * <p>
+	 * Unlike {@link #next()}, this method will keep looking for the first
+	 * matching sibling until it finds a match or is out of siblings.
+	 * </p>
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator next(Map<String, Object> attributes, String selector)
+
+	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
@@ -320,6 +333,19 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing all following sibling elements of the
+	 * current context elements, matching the selector and given attributes.
+	 * <p>
+	 * Unlike {@link #next()}, this method will keep looking for the first
+	 * matching sibling until it finds a match or is out of siblings.
+	 * </p>
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator nextAll(Map<String, Object> attributes, String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all following sibling elements of the
 	 * current context elements up to, but not including, the first to match the selector.
 	 *
 	 * @param selector to match
@@ -337,6 +363,16 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator nextUntil(Map<String, Object> attributes)
 
 	/**
+	 * Creates a new Navigator instance containing all following sibling elements of the
+	 * current context elements up to, but not including, the first to match the selector and given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator nextUntil(Map<String, Object> attributes, String selector)
+
+	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
@@ -352,6 +388,18 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
+	 * current context elements, matching the selector.
+	 * <p>
+	 * Unlike {@link #previous()}, this method will keep looking for the first
+	 * matching sibling until it finds a match or is out of siblings.
+	 * </p>
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator previous(String selector)
+
+	/**
+	 * Creates a new Navigator instance containing the previous sibling elements of the
 	 * current context elements, matching the given attributes.
 	 * <p>
 	 * Unlike {@link #previous()}, this method will keep looking for the first
@@ -364,15 +412,16 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing the previous sibling elements of the
-	 * current context elements, matching the selector.
+	 * current context elements, matching the selector and given attributes.
 	 * <p>
 	 * Unlike {@link #previous()}, this method will keep looking for the first
 	 * matching sibling until it finds a match or is out of siblings.
 	 * </p>
+	 * @param attributes to match
 	 * @param selector to match
 	 * @return new Navigator instance
 	 */
-	Navigator previous(String selector)
+	Navigator previous(Map<String, Object> attributes, String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
@@ -394,6 +443,16 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing all preceding sibling elements of the
+	 * current context elements, matching the selector and given attributes.
+	 *
+	 * @param selector to match
+	 * @param attributes to match
+	 * @return new Navigator instance
+	 */
+	Navigator prevAll(Map<String, Object> attributes, String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all preceding sibling elements of the
 	 * current context elements up to, but not including the first matching the selector.
 	 *
 	 * @param selector to match
@@ -409,6 +468,16 @@ interface Navigator extends Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	Navigator prevUntil(Map<String, Object> attributes)
+
+	/**
+	 * Creates a new Navigator instance containing all preceding sibling elements of the
+	 * current context elements up to, but not including the first matching the selector and given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator prevUntil(Map<String, Object> attributes, String selector)
 
 	/**
 	 * Creates a new Navigator instance containing the direct parent elements of the
@@ -434,6 +503,16 @@ interface Navigator extends Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	Navigator parent(Map<String, Object> attributes)
+
+	/**
+	 * Creates a new Navigator instance containing the direct parent elements of the current
+	 * context elements that match the selector and given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator parent(Map<String, Object> attributes, String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all the ancestor elements of the
@@ -462,6 +541,16 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing all the ancestor elements of the
+	 * current context elements that match the given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator parents(Map<String, Object> attributes, String selector)
+
+	/**
+	 * Creates a new Navigator instance containing all the ancestor elements of the
 	 * current context elements up to but not including the first that matches the selector.
 	 *
 	 * @param selector to match
@@ -479,6 +568,16 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator parentsUntil(Map<String, Object> attributes)
 
 	/**
+	 * Creates a new Navigator instance containing all the ancestor elements of the
+	 * current context elements up to but not including the first that matches the selector and given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator parentsUntil(Map<String, Object> attributes, String selector)
+
+	/**
 	 * Creates a new Navigator instance containing the first ancestor element of each of the current
 	 * context elements that match the selector.
 	 * <p>
@@ -492,15 +591,28 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Creates a new Navigator instance containing the first ancestor element of each of the current
-	 * context elements that match the selector.
+	 * context elements that match the given attributes.
+	 * <p>
+	 * Unlike {@link #parent()}, this method will keep traversing up the DOM
+	 * until a match is found or the top of the DOM has been found
+	 * </p>
+	 * @param attributes to match
+	 * @return new Navigator instance
+	 */
+	Navigator closest(Map<String, Object> attributes)
+
+	/**
+	 * Creates a new Navigator instance containing the first ancestor element of each of the current
+	 * context elements that match the selector and given attributes.
 	 * <p>
 	 * Unlike {@link #parent()}, this method will keep traversing up the DOM
 	 * until a match is found or the top of the DOM has been found
 	 * </p>
 	 * @param selector to match
+	 * @param attributes to match
 	 * @return new Navigator instance
 	 */
-	Navigator closest(Map<String, Object> attributes)
+	Navigator closest(Map<String, Object> attributes, String selector)
 
 	/**
 	 * Creates a new Navigator instance containing all the child elements of the
@@ -528,6 +640,16 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator children(Map<String, Object> attributes)
 
 	/**
+	 * Creates a new Navigator instance containing all the child elements of the
+	 * current context elements that match the selector and given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator children(Map<String, Object> attributes, String selector)
+
+	/**
 	 * Creates a new Navigator instance containing all the sibling elements of the
 	 * current context elements.
 	 * @return new Navigator instance
@@ -551,6 +673,16 @@ interface Navigator extends Iterable<Navigator> {
 	 * @return new Navigator instance
 	 */
 	Navigator siblings(Map<String, Object> attributes)
+
+	/**
+	 * Creates a new Navigator instance containing all the sibling elements of the
+	 * current context elements that match the selector and given attributes.
+	 *
+	 * @param attributes to match
+	 * @param selector to match
+	 * @return new Navigator instance
+	 */
+	Navigator siblings(Map<String, Object> attributes, String selector)
 
 	/**
 	 * Returns true if at least one of the context elements has the given class.
