@@ -201,9 +201,10 @@ The following code will select `p.b` & `p.c`…
 
 The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `parents`, `closest`, `siblings` and `children` methods can also take CSS selectors and attribute matchers.
 
-Using the same html, the following code will select `p.c`…
+Using the same html, the following examples will select `p.c`…
 
     $("p").next(".c")
+    $("p").next(class: "c")
 
 Likewise, consider the following HTML…
 
@@ -213,26 +214,29 @@ Likewise, consider the following HTML…
         </div>
     </div>
 
-The following code will select `div.b`…
+The following examples will select `div.b`…
 
     $("p").parent(".b")
+    $("p").parent(class: "b")
 
-The `closest` method is a special case in that it will select the first ancestors of the current elements that match a selector. There is no no-argument version of the `closest` method. For example, this will select `div.a`…
+The `closest` method is a special case in that it will select the first ancestors of the current elements that match a selector. There is no no-argument version of the `closest` method. For example, these will select `div.a`…
 
     $("p").closest(".a")
+    $("p").closest(class: "a")
 
 These methods do not take indexes as they automatically select the first matching content. To select multiple elements you can use `prevAll`, `nextAll` and `parents` all of which have no-argument versions and versions that filter by a selector.
 
-The `nextUntil`, `prevUntil` and `parentsUntil` methods return all nodes along the relevant axis _until_ the first one that matches a selector. Consider the following markup:
+The `nextUntil`, `prevUntil` and `parentsUntil` methods return all nodes along the relevant axis _until_ the first one that matches a selector or attributes. Consider the following markup:
 
     <div class="a"></div>
     <div class="b"></div>
     <div class="c"></div>
     <div class="d"></div>
 
-The following code will select `div.b` and `div.c`:
+The following examples will select `div.b` and `div.c`:
 
     $(".a").nextUntil(".d")
+    $(".a").nextUntil(class: "d")
 
 ## Composition
 

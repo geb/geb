@@ -44,7 +44,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Craig Atkinson](https://github.com/craigatk) - Bug fix around unexpected pages
 * [Ken Geis](https://github.com/kgeis) - Doc improvements
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
-* [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements
+* [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements, Cleaned up settings.gradle
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
 
 ## History
@@ -60,6 +60,12 @@ This page lists the high level changes between versions of Geb.
 #### Fixes
 
 * Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]
+
+### 0.9.3
+
+#### New Features
+
+* Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
 
 ### 0.9.3
 
