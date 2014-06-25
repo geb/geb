@@ -56,16 +56,11 @@ This page lists the high level changes between versions of Geb.
 #### New Features
 
 * New `css()` method on `Navigator` that allows to access CSS properties of elements. \[[GEB-141](http://jira.codehaus.org/browse/GEB-141)\]
+* Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
 
 #### Fixes
 
 * Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]
-
-### 0.9.3
-
-#### New Features
-
-* Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
 
 ### 0.9.3
 
