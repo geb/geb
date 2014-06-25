@@ -96,133 +96,97 @@ class EmptyNavigator extends AbstractNavigator {
 	Navigator next() { this }
 
 	@Override
-	Navigator next(String selector) { this }
-
-	@Override
 	Navigator next(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator next(Map<String, Object> attributes, String selector) { this }
+	Navigator next(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator nextAll() { this }
 
 	@Override
-	Navigator nextAll(String selector) { this }
-
-	@Override
 	Navigator nextAll(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator nextAll(Map<String, Object> attributes, String selector) { this }
-
-	@Override
-	Navigator nextUntil(String selector) { this }
+	Navigator nextAll(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator nextUntil(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator nextUntil(Map<String, Object> attributes, String selector) { this }
+	Navigator nextUntil(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator previous() { this }
 
 	@Override
-	Navigator previous(String selector) { this }
-
-	@Override
 	Navigator previous(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator previous(Map<String, Object> attributes, String selector) { this }
+	Navigator previous(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator prevAll() { this }
 
 	@Override
-	Navigator prevAll(String selector) { this }
-
-	@Override
 	Navigator prevAll(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator prevAll(Map<String, Object> attributes, String selector) { this }
-
-	@Override
-	Navigator prevUntil(String selector) { this }
+	Navigator prevAll(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator prevUntil(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator prevUntil(Map<String, Object> attributes, String selector) { this }
+	Navigator prevUntil(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator parent() { this }
 
 	@Override
-	Navigator parent(String selector) { this }
-
-	@Override
 	Navigator parent(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator parent(Map<String, Object> attributes, String selector) { this }
+	Navigator parent(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator parents() { this }
 
 	@Override
-	Navigator parents(String selector) { this }
-
-	@Override
 	Navigator parents(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator parents(Map<String, Object> attributes, String selector) { this }
-
-	@Override
-	Navigator parentsUntil(String selector) { this }
+	Navigator parents(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator parentsUntil(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator parentsUntil(Map<String, Object> attributes, String selector) { this }
-
-	@Override
-	Navigator closest(String selector) { this }
+	Navigator parentsUntil(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator closest(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator closest(Map<String, Object> attributes, String selector) { this }
+	Navigator closest(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator children() { this }
 
 	@Override
-	Navigator children(String selector) { this }
-
-	@Override
 	Navigator children(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator children(Map<String, Object> attributes, String selector) { this }
+	Navigator children(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator siblings() { this }
 
 	@Override
-	Navigator siblings(String selector) { this }
-
-	@Override
 	Navigator siblings(Map<String, Object> attributes) { this }
 
 	@Override
-	Navigator siblings(Map<String, Object> attributes, String selector) { this }
+	Navigator siblings(Map<String, Object> attributes = [:], String selector) { this }
 
 	@Override
 	Navigator remove(int index) { this }
