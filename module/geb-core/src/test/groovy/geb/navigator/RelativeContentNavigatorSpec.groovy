@@ -42,6 +42,9 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a").children(class: 'b')*.text() == ["ab"]
 		$("div").children(class: 'a')*.text() == ["aa", "ba"]
 		$("div").children(class: 'non-existent')*.text() == []
+		$("#a").children("#ab", class: 'b')*.text() == ["ab"]
+		$("div").children(".a", class: 'a')*.text() == ["aa", "ba"]
+		$("div").children(".a", class: 'non-existent')*.text() == []
 	}
 
 	def siblings() {
@@ -67,6 +70,8 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#ca").add("#cb").siblings().unique()*.@id == ["aa", "ba", "da", "ab", "bb", "db"]
 		$("#ba").siblings(class: 'a')*.@id == ["aa"]
 		$("#aa").add("#ab").siblings(class: 'b')*.@id == ["ca", "da", "cb", "db"]
+		$("#ba").siblings(".a", class: 'a')*.@id == ["aa"]
+		$("#aa").add("#ab").siblings(".b", class: 'b')*.@id == ["ca", "da", "cb", "db"]
 	}
 
 	def parent() {
@@ -98,6 +103,9 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a-a").parent(class: "parent")*.@id == ["a"]
 		$("#a-a").parent(class: "non-existent")*.@id == []
 		$("#a-a").add("#b-a").parent(class: "parent")*.@id == ["a", "b"]
+		$("#a-a").parent("#a", class: "parent")*.@id == ["a"]
+		$("#a-a").parent("#a", class: "non-existent")*.@id == []
+		$("#a-a").add("#b-a").parent("div", class: "parent")*.@id == ["a", "b"]
 	}
 
 	def parents() {
@@ -129,6 +137,9 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a-b-a").parents(class: 'parent')*.@id == ["a-b", "a"]
 		$("#a-b-a").add("#b-b-a").parents(class: 'parent')*.@id == ["a-b", "a", "b"]
 		$("#a-b-a").parents(class: 'non-existent')*.@id == []
+		$("#a-b-a").parents("div", class: 'parent')*.@id == ["a-b", "a"]
+		$("#a-b-a").add("#b-b-a").parents("div", class: 'parent')*.@id == ["a-b", "a", "b"]
+		$("#a-b-a").parents("#a-b", class: 'non-existent')*.@id == []
 	}
 
 	def parentsUntil() {
@@ -158,6 +169,8 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("foo").parentsUntil("div")*.@id == []
 		$("#a-a-a").parentsUntil(class: 'parent')*.@id == ["a-a"]
 		$("#a-a-a").parentsUntil(class: 'non-existent')*.@id == ["a-a", "a", "", ""]
+		$("#a-a-a").parentsUntil("#a", class: 'parent')*.@id == ["a-a"]
+		$("#a-a-a").parentsUntil("#a-a", class: 'non-existent')*.@id == ["a-a", "a", "", ""]
 	}
 
 	def closest() {
@@ -188,6 +201,8 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a-a-a").add("#b-a-a").closest("div")*.@id == ["a-a", "b-a"]
 		$("#a-a-a").closest(class: 'closest')*.@id == ["a"]
 		$("#a-a-a").closest(class: 'non-existent')*.@id == []
+		$("#a-a-a").closest("#a", class: 'closest')*.@id == ["a"]
+		$("#a-a-a").closest("#a", class: 'non-existent')*.@id == []
 	}
 
 	def next() {
@@ -205,6 +220,8 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#c").next()*.@id == []
 		$("#a").next(class: "div")*.@id == ["b"]
 		$("#a").add("#b").next(class: "div")*.@id == ["b", "c"]
+		$("#a").next("#c", class: "div")*.@id == ["c"]
+		$("#a").add("#b").next("div", class: "div")*.@id == ["b", "c"]
 	}
 
 	def nextAll() {
@@ -222,6 +239,7 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#a").nextAll()*.@id == ["b", "c", "d"]
 		$("#d").nextAll()*.@id == []
 		$("#a").nextAll(class: "div")*.@id == ["c", "d"]
+		$("#a").nextAll("div", class: "div")*.@id == ["c", "d"]
 	}
 
 	def nextUntil() {
@@ -248,6 +266,8 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#aa").nextUntil(class: "end")*.@id == ["ba", "ca"]
 		$("#aa").add("#ab").nextUntil(class: "end")*.@id == ["ba", "ca", "bb", "cb"]
 		$("#aa").nextUntil(class: "non-existent")*.@id == ["ba", "ca", "da"]
+		$("#aa").nextUntil("#da", class: "end")*.@id == ["ba", "ca"]
+		$("#aa").nextUntil("#zz", class: "non-existent")*.@id == ["ba", "ca", "da"]
 	}
 
 	def previous() {
@@ -277,6 +297,9 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#db").previous(class: 'start')*.@id == ["ab"]
 		$("#db").previous(class: 'non-existent')*.@id == []
 		$("#db").add("#da").previous(class: 'start')*.@id == ["ab", "aa"]
+		$("#db").previous("#ab", class: 'start')*.@id == ["ab"]
+		$("#db").previous("#ab", class: 'non-existent')*.@id == []
+		$("#db").add("#da").previous("div", class: 'start')*.@id == ["ab", "aa"]
 	}
 
 	def prevAll() {
@@ -306,6 +329,9 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#db").prevAll(class: "same")*.@id == ["bb", "ab"]
 		$("#db").add("#da").prevAll(class: "same")*.@id == ["bb", "ab", "ba", "aa"]
 		$("#db").prevAll(class: "non-existent")*.@id == []
+		$("#db").prevAll("div", class: "same")*.@id == ["bb", "ab"]
+		$("#db").add("#da").prevAll("div", class: "same")*.@id == ["bb", "ab", "ba", "aa"]
+		$("#db").prevAll("#db", class: "non-existent")*.@id == []
 	}
 
 	def prevUntil() {
@@ -332,6 +358,8 @@ class RelativeContentNavigatorSpec extends GebSpecWithServer {
 		$("#db").prevUntil(class: "start")*.@id == ["cb", "bb"]
 		$("#db").prevUntil(class: "non-existent")*.@id == ["cb", "bb", "ab"]
 		$("#db").add("#da").prevUntil(class: "start")*.@id == ["cb", "bb", "ca", "ba"]
+		$("#db").prevUntil("div", class: "start")*.@id == ["cb", "bb"]
+		$("#db").prevUntil("#ab", class: "non-existent")*.@id == ["cb", "bb", "ab"]
+		$("#db").add("#da").prevUntil("div", class: "start")*.@id == ["cb", "bb", "ca", "ba"]
 	}
-
 }
