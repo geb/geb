@@ -37,7 +37,16 @@ idea {
 						</copyright>
 					"""))
 					def templateLanguageOptions = copyrightManager.LanguageOptions.find { it.'@name' == '__TEMPLATE__' }
-					templateLanguageOptions.option.find { it.'@name' == 'addBlankAfter' }.@value = false
+					if(templateLanguageOptions == null) {
+						copyrightManager.append(new XmlParser().parseText("""					
+							<LanguageOptions name="__TEMPLATE__">
+								<option name="addBlankAfter" value="false" />
+							</LanguageOptions>
+						"""))
+					}
+					else {
+						templateLanguageOptions.option.find { it.'@name' == 'addBlankAfter' }.@value = false
+					}
 				}
 			}
 		}
