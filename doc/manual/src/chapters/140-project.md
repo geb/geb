@@ -61,6 +61,7 @@ This page lists the high level changes between versions of Geb.
 #### Fixes
 
 * Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]
+* Support setting of elements for WebDriver implementations that return uppercase tag name. \[[GEB-318](http://jira.codehaus.org/browse/GEB-318)\]
 
 ### 0.9.3
 

@@ -16,7 +16,10 @@ package geb
 
 import geb.error.UnableToSetElementException
 import geb.error.UnresolvablePropertyException
+import geb.navigator.Navigator
+import geb.navigator.NonEmptyNavigator
 import geb.test.GebSpecWithServer
+import org.openqa.selenium.WebElement
 
 class NavigableSpec extends GebSpecWithServer {
 
@@ -142,6 +145,23 @@ class NavigableSpec extends GebSpecWithServer {
 		then:
 		UnableToSetElementException ex = thrown(UnableToSetElementException)
 		ex.message == 'Unable to set the value of elements span, img as they are not valid form elements'
+	}
+
+	def "uppercase input element can be set"() {
+		given:
+		WebElement element = Mock(WebElement) {
+			getTagName() >> "INPUT"
+		}
+		Navigator navigator = new NonEmptyNavigator(Stub(Browser), [element])
+
+		when:
+		navigator.value("test")
+
+		then:
+		notThrown(UnableToSetElementException)
+
+		and:
+		1 * element.sendKeys("test")
 	}
 
 	def "composition with navigators"() {
