@@ -1,6 +1,6 @@
 # Testing
 
-Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [TestNG][testng] and [Cuke4Duke][cuke4duke].
+Geb provides first class support for functional web testing via integration with popular testing frameworks such as [Spock][spock], [JUnit][junit], [TestNG][testng] and [Cucumber][cucumber-jvm].
 
 ## Spock, JUnit & TestNG
 
@@ -138,40 +138,65 @@ You can set the `baseUrl` property to the base URL that you want to implicitly c
 
 For fine-grained control, you can create your own [browser][browser-api] instance and assign it to the `browser` property. Otherwise, an implicit browser object is created using `driver` and/or `baseUrl` if they were explicitly set (otherwise the configuration mechanism is used.)
 
-## Cucumber (Cuke4Duke)
+## Cucumber (Cucumber-JVM)
 
-Geb doesn't offer any explicit integration with [Cuke4Duke][cuke4duke] but due to Cuke4Duke's use of Groovy scripts, Geb's [binding management features](binding.html) can be used to great effect.
+It is possible to both:
+ 
+ - Write your own [Cucumber-JVM][cucumber-jvm] steps that manipulate Geb
+ - Use a library of pre-built steps that driver Geb to do many common tasks
 
-The following is an example of what is possible…
+### Writing your own steps
 
-    import static org.junit.Assert.*
-    import static org.junit.matchers.JUnitMatchers.*
+Use Geb's [binding management features](binding.html) to bind a browser in before / after hooks, often in a file named `env.groovy`:
 
-    import pages.*
+	def bindingUpdater
+	Before() { scenario ->
+		bindingUpdater = new BindingUpdater(binding, new Browser())
+		bindingUpdater.initialize()
+	}
+	
+	After() { scenario ->
+		bindingUpdater.remove()
+	}
 
-    this.metaClass.mixin(cuke4duke.GroovyDsl)
+Then normal Geb commands and objects are available in your Cucumber steps:
 
-    Given(~"I am on the Google search page") { ->
-        to GoogleHomePage
-        waitFor { at GoogleHomePage }
-    }
-
-    When(~"I search for \"(.*)\"") { String query ->
-        page.searchField.value(query)
-        page.searchButton.click()
-    }
-
-    Then(~"I am at the results page") {
-        assert at(GoogleResultsPage)
-    }
-
-    Then(~"The first link should be \"(.*)\"") { String text ->
-        waitFor { page.results }
-        assertThat page.resultLink(0).text(), containsString(text)
-    }
+	import static cucumber.api.groovy.EN.*
+	
+	Given(~/I am on the DuckDuckGo search page/) { ->
+		to DuckDuckGoHomePage
+		waitFor { at(DuckDuckGoHomePage) }
+	}
+	
+	When(~/I search for "(.*)"/) { String query ->
+		page.search.value(query)
+		page.searchButton.click()
+	}
+	
+	Then(~/I can see some results/) { ->
+		assert at(DuckDuckGoResultsPage)
+	}
+	
+	Then(~/the first link should be "(.*)"/) { String text ->
+		waitFor { page.results }
+		assert page.resultLink(0).text()?.contains(text)
+	}
     
-### Example Projects
+### Using pre-built steps
 
-The following projects can be used as starting references:
+The [`geb-cucumber`][geb-cucumber] project has a set of pre-built cucumber steps that drive Geb. So for example a feature with steps similar to the above would look like:
 
-* [https://github.com/geb/geb-example-cuke4duke](https://github.com/geb/geb-example-cuke4duke)
+    When I go to the duck duck go home page
+    And I enter "cucumber-jvm github" into the search field
+    And I click the search button
+    Then the results table 1st row link matches /cucumber\/cucumber-jvm · GitHub.*/
+
+See [`geb-cucumber`][geb-cucumber] for more examples. 
+
+`geb-cucumber` also does Geb binding automatically, so if it is picked up you don't need to do it yourself as above.
+
+### Example Project
+
+The following project has examples of both writing your own steps and using `geb-cucumber`:
+
+* [https://github.com/geb/geb-example-cucumber-jvm](https://github.com/geb/geb-example-cucumber-jvm)

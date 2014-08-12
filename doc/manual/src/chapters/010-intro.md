@@ -167,7 +167,7 @@ Now our script again, using the above defined content…
 
 ### Testing
 
-Geb itself does not include any kind of testing or execution framework. Rather, it works with existing popular tools like [Spock][spock], [JUnit][junit], [TestNG][testng] and [Cucumber][cuke4duke]. While Geb works well with all of these test tools, we encourage the use of [Spock][spock] as it's a great match for Geb with its focus and style.
+Geb itself does not include any kind of testing or execution framework. Rather, it works with existing popular tools like [Spock][spock], [JUnit][junit], [TestNG][testng] and [Cucumber][cucumber-jvm]. While Geb works well with all of these test tools, we encourage the use of [Spock][spock] as it's a great match for Geb with its focus and style.
 
 Here is our Google case again, this time use Geb's [Spock][spock] integration…
 

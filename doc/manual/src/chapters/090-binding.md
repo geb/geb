@@ -1,6 +1,6 @@
 # Scripts and Binding
 
-Geb supports being used in scripting environments via both the `Browser.drive()` method, and by using the [`geb.binding.BindingUpdater`][bindingupdater-api] class that populates and updates a [`groovy.lang.Binding`][groovy-binding] that can be used with scripts. This is also the same mechanism that can be used with [Cuke4Duke](testing.html#cucumber_cuke4duke) (Cucumber for the JVM).
+Geb supports being used in scripting environments via both the `Browser.drive()` method, and by using the [`geb.binding.BindingUpdater`][bindingupdater-api] class that populates and updates a [`groovy.lang.Binding`][groovy-binding] that can be used with scripts. This is also the same mechanism that can be used with [Cucumber-JVM](testing.html#cucumber_cucumber_jvm).
 
 ## Setup
 
