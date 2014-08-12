@@ -17,6 +17,11 @@ if (project.hasProperty("ci")) {
 		plugins.withType(ReportingBasePlugin) {
 			reporting.baseDir = rootProject.file("$rootProject.buildDir/reports/$project.name")
 		}
+		tasks.withType(Test) {
+			testLogging {
+				exceptionFormat "full"
+			}
+		}
 	}
 }
 
