@@ -46,6 +46,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Kelly Robinson](https://github.com/kellyrob99) - Additional configuration parameters for SauceLabs
 * [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements, Cleaned up settings.gradle
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
+* [Tom Dunstan](https://github.com/tomdcc) - Cucumber integration and related documentation
 
 ## History
 
