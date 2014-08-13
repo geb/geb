@@ -143,7 +143,7 @@ For fine-grained control, you can create your own [browser][browser-api] instanc
 It is possible to both:
  
  - Write your own [Cucumber-JVM][cucumber-jvm] steps that manipulate Geb
- - Use a library of pre-built steps that driver Geb to do many common tasks
+ - Use a library of pre-built steps that drives Geb to do many common tasks
 
 ### Writing your own steps
 
