@@ -17,11 +17,12 @@ package geb.gradle.browserstack
 
 import geb.gradle.browserstack.task.DownloadBrowserStackTunnel
 import geb.gradle.cloud.BrowserSpec
-import geb.gradle.cloud.task.StartExternalJavaTunnel
+import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.cloud.task.StopExternalJavaTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.testing.Test
 
 class BrowserStackPlugin implements Plugin<Project> {
@@ -66,25 +67,30 @@ class BrowserStackPlugin implements Plugin<Project> {
 	}
 
 	void addTunnelTasks() {
-		project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel) {
-			conventionMapping.tunnelJarUrl = { project.browserStack.tunnelJarUrl }
-			conventionMapping.tunnelJar = { project.browserStack.tunnelJar }
+		def downloadBrowserStackTunnel = project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel)
+
+		project.task('unzipBrowserStackTunnel', type: Sync) {
+			dependsOn downloadBrowserStackTunnel
+
+			from(project.zipTree(downloadBrowserStackTunnel.outputs.files.singleFile))
+			into(project.file("${project.rootProject.buildDir}/browserstack/unzipped"))
 		}
 
 		project.task('closeBrowserStackTunnel', type: StopExternalJavaTunnel) {
 			tunnel = project.browserStack.tunnel
 		}
 
-		def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartExternalJavaTunnel)
+		def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartExternalTunnel)
 
-		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartExternalJavaTunnel) {
+		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartExternalTunnel) {
 			inBackground = true
-			dependsOn 'downloadBrowserStackTunnel'
 			finalizedBy 'closeBrowserStackTunnel'
 		}
 
 		[openBrowserStackTunnel, openBrowserStackTunnelInBackground].each {
 			it.configure {
+				dependsOn 'unzipBrowserStackTunnel'
+
 				tunnel = project.browserStack.tunnel
 				workingDir = project.buildDir
 			}

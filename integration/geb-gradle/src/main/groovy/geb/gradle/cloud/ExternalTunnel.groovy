@@ -16,13 +16,12 @@
 package geb.gradle.cloud
 
 import org.gradle.api.Project
-import org.gradle.internal.jvm.Jvm
 import org.slf4j.Logger
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-abstract class ExternalJavaTunnel {
+abstract class ExternalTunnel {
 	final protected Project project
 	final protected Logger logger
 
@@ -31,7 +30,7 @@ abstract class ExternalJavaTunnel {
 	long timeout = 3
 	TimeUnit timeoutUnit = TimeUnit.MINUTES
 
-	ExternalJavaTunnel(Project project, Logger logger) {
+	ExternalTunnel(Project project, Logger logger) {
 		this.project = project
 		this.logger = logger
 	}
@@ -41,19 +40,16 @@ abstract class ExternalJavaTunnel {
 
 	abstract String getOutputPrefix()
 
-	abstract List<String> assembleArguments()
+	abstract List<String> assembleCommandLine()
 
 	abstract String getTunnelReadyMessage()
 
 	void startTunnel(File workingDir, boolean background) {
 		validateState()
 
-		def javaBinary = Jvm.current().javaExecutable.absolutePath
-
 		if (background) {
 			workingDir.mkdirs()
-			def command = [javaBinary] + assembleArguments() as List<String>
-			tunnelProcess = new ProcessBuilder(command).
+			tunnelProcess = new ProcessBuilder(assembleCommandLine()).
 				redirectErrorStream(true).
 				directory(workingDir).
 				start()
@@ -80,8 +76,7 @@ abstract class ExternalJavaTunnel {
 			}
 		} else {
 			project.exec {
-				executable javaBinary
-				args assembleArguments()
+				commandLine assembleCommandLine()
 			}
 		}
 	}

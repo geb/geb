@@ -22,8 +22,6 @@ class BrowserStackExtension {
 
 	Project project
 	BrowserStackAccount account
-	String tunnelJarUrl = "http://www.browserstack.com/BrowserStackTunnel.jar"
-	File tunnelJar = project.rootProject.file('.gradle/browserstack/BrowserStackTunnel.jar')
 	List<URL> applicationUrls = []
 
 	BrowserStackExtension(Project project) {
@@ -33,7 +31,7 @@ class BrowserStackExtension {
 	void addExtensions() {
 		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
 		account = new BrowserStackAccount()
-		extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, tunnelJar, applicationUrls)
+		extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, applicationUrls)
 	}
 
 	void task(Closure configuration) {

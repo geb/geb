@@ -16,26 +16,33 @@
 package geb.gradle.browserstack.task
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
 class DownloadBrowserStackTunnel extends DefaultTask {
 
-	@Input
-	String tunnelJarUrl
-
 	@OutputFile
-	File tunnelJar
+	File tunnelZip = project.file("${project.buildDir}/browserstack/BrowserStackTunnel.zip")
 
 	@TaskAction
-	void start() {
-		def tunnelJarUrl = getTunnelJarUrl()
-		def tunnelJar = getTunnelJar()
-		tunnelJar.parentFile.mkdirs()
-		if (!tunnelJar.exists()) {
-			logger.info("Downloading {} to {}", tunnelJarUrl, tunnelJar.path)
-			tunnelJar << new URL(tunnelJarUrl).bytes
+	void download() {
+		tunnelZip.parentFile.mkdirs()
+		if (!tunnelZip.exists()) {
+			def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart}.zip"
+			logger.info("Downloading {} to {}", url, tunnelZip)
+			tunnelZip << new URL(url).bytes
+		}
+	}
+
+	String getOsSpecificUrlPart() {
+		if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+			"win32"
+		} else if (Os.isFamily(Os.FAMILY_MAC)) {
+			"darwin-x64"
+		} else if (Os.isFamily(Os.FAMILY_UNIX)) {
+			Os.isArch("amd64") ? "linux-x64" : "linux-ia32"
 		}
 	}
 }

@@ -15,12 +15,12 @@
  */
 package geb.gradle.cloud.task
 
-import geb.gradle.cloud.ExternalJavaTunnel
+import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 class StopExternalJavaTunnel extends DefaultTask {
-	ExternalJavaTunnel tunnel
+	ExternalTunnel tunnel
 
 	@TaskAction
 	void stop() {

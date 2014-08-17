@@ -15,13 +15,14 @@
  */
 package geb.gradle.saucelabs
 
-import geb.gradle.cloud.ExternalJavaTunnel
+import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.internal.jvm.Jvm
 import org.slf4j.Logger
 
-class SauceConnect extends ExternalJavaTunnel {
+class SauceConnect extends ExternalTunnel {
 	final protected SauceAccount account
 	final protected Configuration connectConfiguration
 
@@ -45,8 +46,8 @@ class SauceConnect extends ExternalJavaTunnel {
 	}
 
 	@Override
-	List<String> assembleArguments() {
-		['-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]
+	List<String> assembleCommandLine() {
+		[Jvm.current().javaExecutable.absolutePath, '-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]
 	}
 
 	File getSauceConnectJar() {

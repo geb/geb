@@ -25,7 +25,7 @@ class GebSpecWithServer extends GebSpec {
 
 	@Shared TestHttpServer server
 
-	private static final List<Integer> CROSS_BROWSER_PORTS = [5555, 8000, 8080, 8888, 9000]
+	private static final List<Integer> CROSS_BROWSER_PORTS = [8000, 8080, 8888, 9000, 9090]
 
 	def setupSpec() {
 		server = serverInstance

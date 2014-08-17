@@ -15,23 +15,21 @@
  */
 package geb.gradle.browserstack
 
-import geb.gradle.cloud.ExternalJavaTunnel
+import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.slf4j.Logger
 
-class BrowserStackTunnel extends ExternalJavaTunnel {
+class BrowserStackTunnel extends ExternalTunnel {
 	final protected BrowserStackAccount account
-	final protected File tunnelJar
 	final protected List<URL> applicationUrls
 
 	final String outputPrefix = 'browserstack-tunnel'
-	final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser:'
+	final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
 
-	BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, File tunnelJar, List<URL> applicationUrls) {
+	BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, List<URL> applicationUrls) {
 		super(project, logger)
 		this.account = account
-		this.tunnelJar = tunnelJar
 		this.applicationUrls = applicationUrls
 	}
 
@@ -43,14 +41,15 @@ class BrowserStackTunnel extends ExternalJavaTunnel {
 	}
 
 	@Override
-	List<String> assembleArguments() {
-		def args = ['-jar', tunnelJar.absolutePath]
+	List<String> assembleCommandLine() {
+		def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
+		def commandLine = [tunnelPath]
 		if (account.localId) {
-			args << '-localIdentifier' << account.localId
+			commandLine << '-localIdentifier' << account.localId
 		}
-		args << '-skipCheck'
-		args << account.accessKey << assembleAppSpecifier(applicationUrls)
-		args
+		commandLine << '-skipCheck'
+		commandLine << account.accessKey << assembleAppSpecifier(applicationUrls)
+		commandLine
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {

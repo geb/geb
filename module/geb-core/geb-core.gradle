@@ -47,7 +47,7 @@ sauceLabs {
 }
 
 browserStack {
-	def applicationAddresses = [5555, 8000, 8080, 8888, 9000].collect { "http://localhost:$it" }
+	def applicationAddresses = [8000, 8080, 8888, 9000, 9090].collect { "http://localhost:$it" }
 	application(*applicationAddresses)
 	browsers {
 		chrome_mac
