@@ -32,7 +32,7 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 		openWindow(index)
 
 		then:
-		withWindow(windowName(index)) { title } == windowTitle(index)
+		withWindow(windowName(index)) { waitFor { title } } == windowTitle(index)
 
 		where:
 		index << [1, 2]
@@ -114,7 +114,7 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "ensure withNewWindow block closure called in the context of the newly opened window"() {
 		expect:
-		withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
+		withNewWindow({ openWindow(windowNum) }) { waitFor { title } } == expectedTitle
 
 		where:
 		expectedTitle  | windowNum
