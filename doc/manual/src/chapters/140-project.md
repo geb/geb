@@ -68,6 +68,8 @@ This page lists the high level changes between versions of Geb.
 #### Project Related Changes
 
 * Updated cucumber integration example to use `cucumber-jvm` instead of the now defunct `cuke4duke`. \[[GEB-324](http://jira.codehaus.org/browse/GEB-324)\]
+* Setup CI for all of the example projects \[[GEB-188](http://jira.codehaus.org/browse/GEB-188)\]
+* Incorporate the example projects into the main build \[[GEB-189](http://jira.codehaus.org/browse/GEB-189)\]
 
 ### 0.9.3
 
