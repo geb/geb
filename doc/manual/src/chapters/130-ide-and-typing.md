@@ -69,14 +69,14 @@ In summary:
 1. Use the `browser` object explicitly (made available by the testing adapters)
 2. Use the page instance returned by the `to()` and `at()` methods instead of calling through the browser
 3. Use methods on the `Page` classes instead of the `content {}` block and dynamic properties
-4. Note that closure-based content options like `required:` and `wait:` are not available on Page methods. However, you can mimic this logic within your methods, e.g. using `waitFor{}`. Page methods can also leverage the page's content DSL closures, and content options can be specified on those as usual:
+4. If you need to use content definition options like `required:` and `wait:` then you can still reference content elements defined using the DSL in methods on `Page` and `Module` classes as usual, e.g.:
 
     static content = {
-        asyncElem(wait: true) { $(...) }
+        async(wait: true) { $(".async") }
     }
 
-    String asyncElemText() {
-        asyncElem.text() // Wait here for asynElem definition to return a non-empty Navigator...
+    String asyncText() {
+        async.text() // Wait here for the async definition to return a non-empty Navigator...
     }
 
 Using this “typed” style is not an all or nothing proposition. The typing options exist on a spectrum and can be used selectively where/when the cost of the extra “noise” is worth it to achieve better IDE support. For example, a mix of using the `content {}` DSL and methods can easily be used. The key enabler is to capture the result of the `to()` and `at()` methods in order to access the page object instance.
@@ -88,17 +88,7 @@ IntelliJ IDEA (since version 12) has special support for authoring Geb code. Thi
 The support provides:
 
 * Understanding of implicit browser methods (e.g. `to()`, `at()`) in test classes (e.g. `extends GebSpec`)
-* Understanding of content defined via the Content DSL within Page objects (unfortunately, not within test classes).
+* Understanding of content defined via the Content DSL (within `Page` and `Module` classes only)
 * Completion in `at {}` and `content {}` blocks
 
-This effectively enables more authoring support with less explicit type information. If desired, some additional code completion can be gained in test classes with a slight increase in verbosity, via Groovy's `with()` method:
-
-    at HomePage
-    HomePage.with {
-        // Recognition of HomePage content DSL...
-        loginForm.username = 'foo'
-        loginForm.password = 'bar'
-        loginButton.click()
-    }
-
-The Geb development team would like to thank the good folks at JetBrains for adding this explicit support for Geb to IDEA.
+This effectively enables more authoring support with less explicit type information. The Geb development team would like to thank the good folks at JetBrains for adding this explicit support for Geb to IDEA.
