@@ -47,6 +47,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Todd Gerspacher](https://github.com/tygerpatch) - Doc improvements, Cleaned up settings.gradle
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
 * [Tom Dunstan](https://github.com/tomdcc) - Cucumber integration and related documentation
+* [Brian Kotek](https://github.com/brian428) - Doc improvements
 
 ## History
 
