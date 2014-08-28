@@ -338,7 +338,7 @@ You can obtain value of the `float` css property in the following way…
 
 ## Sending keystrokes
 
-Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence...\)) method of WebDriver.
+Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the [`sendKeys()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys\(java.lang.CharSequence...\)) method of WebDriver.
 
     $("div") << "abc"
 
