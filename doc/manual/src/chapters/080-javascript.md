@@ -5,9 +5,9 @@ This section discusses how to deal with some of the challenges in testing and/or
 ## The "js" object
 
 The browser instance exposes a “[`js`](api/geb/Browser.html#getJs\(\))” object that provides support for working with JavaScript over and above what WebDriver provides.
-It's important to understand how WebDriver does handle JavaScript, which is through a driver's implementation of [JavascriptExecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object[]\)) method.
+It's important to understand how WebDriver does handle JavaScript, which is through a driver's implementation of [JavascriptExecutor]'s [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object...\)) method.
 
-> Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object[]\)) in order to understand how type conversion works between the two worlds.
+> Before reading further, it's **strongly** recommended to read the description of [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object...\)) in order to understand how type conversion works between the two worlds.
 
 You can execute JavaScript like you would with straight WebDriver using the driver instance via the browser…
 
@@ -86,7 +86,7 @@ To call _nested_ methods, we use the same syntax as properties…
 
 ### Executing Arbitrary Code
 
-The `js` object also has an `exec()` method that can be used to run snippets of JavaScript. It is identical to the [JavascriptExecutor.executeScript()](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object[]\)) method, except that it takes its arguments in the other order…
+The `js` object also has an `exec()` method that can be used to run snippets of JavaScript. It is identical to the [JavascriptExecutor.executeScript()](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object...\)) method, except that it takes its arguments in the other order…
 
     assert js.exec(1, 2, "return arguments[0] + arguments[1];") == 3
 
@@ -330,9 +330,9 @@ The methods can also take arguments…
 
     $("#a").jquery.trigger('mouseover')
 
-The same set of restricted types as allowed by WebDriver's [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object[]\)) method are permitted here.
+The same set of restricted types as allowed by WebDriver's [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object...\)) method are permitted here.
 
-The return value of methods called on the `jquery` property depends on what the corresponding jQuery method returns. A jQuery object will be converted to a Navigator representing the same set of elements, other values such as objects, strings and numbers are returned as per WebDriver's [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object[]\)) method.
+The return value of methods called on the `jquery` property depends on what the corresponding jQuery method returns. A jQuery object will be converted to a Navigator representing the same set of elements, other values such as objects, strings and numbers are returned as per WebDriver's [`executeScript()`](http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript\(java.lang.String,%20java.lang.Object...\)) method.
 
 ### Why?
 
