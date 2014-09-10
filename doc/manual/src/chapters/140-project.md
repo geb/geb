@@ -48,6 +48,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [David M. Carr](https://github.com/davidmc24) - BrowserStack integration
 * [Tom Dunstan](https://github.com/tomdcc) - Cucumber integration and related documentation
 * [Brian Kotek](https://github.com/brian428) - Doc improvements
+* [David W Millar](https://github.com/david-w-millar) - Doc improvements
 
 ## History
 
