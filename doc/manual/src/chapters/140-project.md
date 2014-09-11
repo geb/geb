@@ -60,7 +60,7 @@ This page lists the high level changes between versions of Geb.
 
 * New `css()` method on `Navigator` that allows to access CSS properties of elements. \[[GEB-141](http://jira.codehaus.org/browse/GEB-141)\]
 * Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
-* Added signature that accepts `localIdentifier` to `BrowserStackDrivverFactory.create`.
+* Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`.
 
 #### Fixes
 
