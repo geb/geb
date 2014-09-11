@@ -47,9 +47,11 @@ abstract class ExternalTunnel {
 	void startTunnel(File workingDir, boolean background) {
 		validateState()
 
+		def command = assembleCommandLine()
+		logger.debug("Executing command: {}", command)
 		if (background) {
 			workingDir.mkdirs()
-			tunnelProcess = new ProcessBuilder(assembleCommandLine()).
+			tunnelProcess = new ProcessBuilder(command).
 				redirectErrorStream(true).
 				directory(workingDir).
 				start()
@@ -76,7 +78,7 @@ abstract class ExternalTunnel {
 			}
 		} else {
 			project.exec {
-				commandLine assembleCommandLine()
+				commandLine command
 			}
 		}
 	}
