@@ -44,11 +44,13 @@ class BrowserStackTunnel extends ExternalTunnel {
 	List<String> assembleCommandLine() {
 		def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
 		def commandLine = [tunnelPath]
+		commandLine << account.accessKey
 		if (account.localId) {
 			commandLine << '-localIdentifier' << account.localId
 		}
-		commandLine << '-skipCheck'
-		commandLine << account.accessKey << assembleAppSpecifier(applicationUrls)
+		if (applicationUrls) {
+			commandLine << "-only" << assembleAppSpecifier(applicationUrls)
+		}
 		commandLine
 	}
 

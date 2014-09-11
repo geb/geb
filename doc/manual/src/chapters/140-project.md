@@ -67,6 +67,7 @@ This page lists the high level changes between versions of Geb.
 * Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]
 * Support setting of elements for WebDriver implementations that return uppercase tag name. \[[GEB-318](http://jira.codehaus.org/browse/GEB-318)\]
 * Use native binaries for running BrowserStack tunnel. \[[GEB-326](http://jira.codehaus.org/browse/GEB-326)\]
+* Update BrowserStack support to to use command-line arguments introduced in tunnel version 3.1.
 
 #### Project Related Changes
 
