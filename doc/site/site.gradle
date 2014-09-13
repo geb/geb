@@ -20,11 +20,11 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath 'io.ratpack:ratpack-gradle:0.9.4'
+		classpath 'io.ratpack:ratpack-gradle:0.9.8'
 	}
 }
 
-apply plugin: "ratpack-groovy"
+apply plugin: "io.ratpack.ratpack-groovy"
 
 ext {
 	// The old versions of Geb we are including manuals for
@@ -61,10 +61,9 @@ dependencies {
 		"$group:geb-manual:$it@zip"
 	}
 
-	springloaded "org.springsource.springloaded:springloaded-core:1.1.4"
-	compile "io.ratpack:ratpack-groovy:0.9.0-SNAPSHOT"
-	testCompile "io.ratpack:ratpack-groovy-test:0.9.0-SNAPSHOT",
-		"org.spockframework:spock-core:0.7-groovy-2.0",
+	springloaded "org.springsource.loaded:springloaded:1.1.5.RELEASE"
+	compile ratpack.dependency("groovy")
+	testCompile "org.spockframework:spock-core:0.7-groovy-2.0",
 		"org.jsoup:jsoup:1.7.3",
 		project(':module:geb-spock'),
 		htmlUnitDriverDependency,

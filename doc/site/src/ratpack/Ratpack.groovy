@@ -21,8 +21,8 @@ import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
 
 ratpack {
-	modules {
-		get(TemplatingModule).staticallyCompile = true
+	bindings {
+		config(TemplatingModule).staticallyCompile = true
 		bind new StartupTime()
 	}
 	handlers {
@@ -30,7 +30,7 @@ ratpack {
 
 		get('manual/:version/api/') {
 			blocking {
-				context.file("public/${request.path}").toFile().listFiles()*.name
+				context.file("public/${request.path}").toFile().listFiles().toList()*.name
 			} then { List<String> files ->
 				render groovyTemplate('fileListing.html', files: files, title: "Groovy API for Geb ${pathTokens.get('version')}")
 			}

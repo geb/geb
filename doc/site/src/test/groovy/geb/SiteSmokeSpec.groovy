@@ -26,7 +26,7 @@ import spock.lang.Shared
 import spock.lang.Stepwise
 import spock.lang.Unroll
 
-import static ratpack.groovy.test.TestHttpClients.testHttpClient
+import static ratpack.test.http.TestHttpClients.testHttpClient
 
 @Stepwise
 class SiteSmokeSpec extends GebSpec {
@@ -35,7 +35,7 @@ class SiteSmokeSpec extends GebSpec {
 	def app = new LocalScriptApplicationUnderTest()
 
 	private def getMenuItemElements() {
-		def html = Jsoup.parse(testHttpClient(app).get().body.asString())
+		def html = Jsoup.parse(testHttpClient(app).get().body.text)
 		html.select('#header-content > ul > li')
 	}
 

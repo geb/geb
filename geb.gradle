@@ -82,7 +82,7 @@ subprojects {
 		apply plugin: "codenarc"
 
 		dependencies {
-			groovy groovyDependency
+			compile groovyDependency
 			codenarc 'org.codenarc:CodeNarc:0.21'
 		}
 
