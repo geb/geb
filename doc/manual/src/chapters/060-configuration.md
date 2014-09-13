@@ -218,7 +218,7 @@ It is also possible to set the `reportsDir` config item to a file.
 
     reportsDir = new File("target/geb-reports")
 
-By default this value is **not set**. The browser's [`report()`](api/geb/browser.html#report\(java.lang.String\)) method requires a value for this config item so if you are using the reporting features you **must** set a reports dir.
+By default this value is **not set**. The browser's [`report()`](api/geb/Browser.html#report\(java.lang.String\)) method requires a value for this config item so if you are using the reporting features you **must** set a reports dir.
 
 
 ### Report Test Failures Only
