@@ -67,7 +67,8 @@ dependencies {
 		"org.spockframework:spock-core:0.7-groovy-2.0",
 		"org.jsoup:jsoup:1.7.3",
 		project(':module:geb-spock'),
-		htmlUnitDriverDependency
+		htmlUnitDriverDependency,
+		'org.jsoup:jsoup:1.7.2'
 
 	currentManual project(":doc:manual")
 	oldManualVersions.each {

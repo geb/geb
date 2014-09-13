@@ -35,7 +35,6 @@ allprojects { project ->
 		seleniumVersion = "2.42.2"
 		groovyVersion = "1.8.9"
 		spockVersion = "0.7-groovy-1.8"
-		usingSauce =
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
 			exclude module: "groovy-all"
@@ -148,14 +147,17 @@ subprojects {
 			"java.lang",
 			"java.io"
 
-		link "http://selenium.googlecode.com/svn/trunk/docs/api/java/",
+		link "http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/$seleniumVersion",
 			"org.openqa.selenium"
+
+		link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
+			"spock.lang"
+
+		link "http://junit.org/javadoc/4.11/",
+			"org.junit"
 
 		link "http://groovy.codehaus.org/api/",
 			"groovy.lang"
-
-		link "http://www.gebish.org/manual/$version/api/geb-core",
-			"geb"
 
 		def docName = project.name == "manual" ? "Geb" : project.name
 		docTitle = "Groovy API Documentation for $docName $version"

@@ -34,7 +34,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Rich Douglas Evans](https://github.com/richdouglasevans) - Doc improvements
 * [Ian Durkan](https://github.com/idurkan) - Doc improvements
 * [Colin Harrington](http://colinharrington.net/) - Doc improvements
-* [Bob Herrmann](http://jadn.com/bob/) - Doc improvements
+* [Bob Herrmann](https://github.com/bherrmann7) - Doc improvements
 * [George T Walters II](https://github.com/walterg2) - Page option support for `withWindow()`
 * [Craig Atkinson](https://github.com/craigatk) - Doc improvements
 * [Andy Duncan](https://github.com/andyjduncan) - Fail fast when unexpected pages are encountered
@@ -72,6 +72,7 @@ This page lists the high level changes between versions of Geb.
 * Updated cucumber integration example to use `cucumber-jvm` instead of the now defunct `cuke4duke`. \[[GEB-324](http://jira.codehaus.org/browse/GEB-324)\]
 * Setup CI for all of the example projects \[[GEB-188](http://jira.codehaus.org/browse/GEB-188)\]
 * Incorporate the example projects into the main build \[[GEB-189](http://jira.codehaus.org/browse/GEB-189)\]
+* Add a test crawling the site in search for broken links \[[GEB-327](http://jira.codehaus.org/browse/GEB-327)\]
 
 ### 0.9.3
 
@@ -114,7 +115,7 @@ This page lists the high level changes between versions of Geb.
 
 * `page` and `close` options can be passed to `withWindow()` calls, see [this manual section](browser.html#passing_options_when_working_with_already_opened_windows) for more information.
 * Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See [this manual section](pages.html#unexpected_pages) for details. \[[GEB-70](http://jira.codehaus.org/browse/GEB-70)\]
-* Support for running Geb using SauceLabs provided browsers, see [this manual section](sauce-labs.html) for details.
+* Support for running Geb using SauceLabs provided browsers, see [this manual section](cloud-browsers.html) for details.
 * New [`isEnabled()`](api/geb/navigator/Navigator.html#isEnabled\(\)) and [`isEditable()`](api/geb/navigator/Navigator.html#isEditable\(\)) methods on `Navigator`.
 * Support for ephemeral port allocation with Grails integration
 * Compatibility with Grails 2.3

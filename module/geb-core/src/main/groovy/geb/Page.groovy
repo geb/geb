@@ -66,7 +66,7 @@ class Page implements Navigable, PageContentContainer {
 	 * <p>
 	 * This implementation returns an empty string.
 	 *
-	 * @see #to(Map, Object [])
+	 * @see #to(java.util.Map, java.lang.Object)
 	 */
 	static url = ""
 
@@ -135,7 +135,7 @@ class Page implements Navigable, PageContentContainer {
 	 * Checks if the browser is not at an unexpected page and then executes this page's "at checker".
 	 *
 	 * @return whether the at checker succeeded or not.
-	 * @see #verifyAtSafely()
+	 * @see #verifyAtSafely(boolean)
 	 * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
 	 * @throws UnexpectedPageException when at an unexpected page
 	 */
@@ -184,8 +184,8 @@ class Page implements Navigable, PageContentContainer {
 	 *
 	 * @param params request parameters to be appended to the url
 	 * @param args "things" that can be used to generate an extra path to append to this page's url
-	 * @see #convertToPath(Object [])
-	 * @see #getPageUrl(String)
+	 * @see #convertToPath(java.lang.Object)
+	 * @see #getPageUrl(java.lang.String)
 	 */
 	void to(Map params, Object[] args) {
 		def path = convertToPath(* args)
@@ -218,7 +218,7 @@ class Page implements Navigable, PageContentContainer {
 	/**
 	 * Converts the arguments to a path to be appended to this page's url.
 	 * <p>
-	 * This is called by the {@link #to(Map, Object [])} method and can be used for accessing variants of the page.
+	 * This is called by the {@link #to(java.util.Map, java.lang.Object)} method and can be used for accessing variants of the page.
 	 * <p>
 	 * This implementation returns the string value of each argument, separated by "/"
 	 */

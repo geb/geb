@@ -37,7 +37,7 @@ For example…
 	js.someJavaScriptFunction()
 	downloadText($("a.csvFile"))
 
-In a managed binding, all of the methods/properties that you can usually call in the [`Browser.drive()`](#the_drive_method) method are available. This includes the `$()` function.
+In a managed binding, all of the methods/properties that you can usually call in the [`Browser.drive()`](browser.html#the_drive_method) method are available. This includes the `$()` function.
 
 The following methods are available:
 

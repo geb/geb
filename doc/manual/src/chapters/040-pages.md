@@ -264,7 +264,7 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which, on click, sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class[]\)) which is explained in the section on
+Which, on click, sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(java.lang.Class\)) which is explained in the section on
 [changing pages][changing-pages].
 
 All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
@@ -419,7 +419,7 @@ The `verifyAt()` method is used by the browser `at()` method which also returns 
 
 At checkers are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
-If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely\(\)) and [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt\(java.lang.Class\)).
+If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely\(boolean\)) and [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt\(java.lang.Class,%20boolean\)).
 
 As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
 
@@ -510,7 +510,7 @@ The `to()` method can also take arguments…
 
 This will result in a request being made to “`http://myapp.com/example/1/2`”. This is because by default, any arguments passed to the `to()` method after the page class are converted to a URL path by calling `toString()` on each argument and joining them with “`/`”. 
 
-However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the [`convertToPath()`](api/geb/Page.html#convertToPath\(Object[]\)) method.
+However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the [`convertToPath()`](api/geb/Page.html#convertToPath\(java.lang.Object\)) method.
 The [`Page`][page-api] implementation of this method looks like this…
 
     String convertToPath(Object[] args) {
@@ -550,7 +550,7 @@ Any type of argument can be used with the `to()` method, **except** named parame
         to PersonPage, newPerson, flag: true
     }
 
-This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb/Page.html#convertToPath\(Object[]\)) method.
+This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb/Page.html#convertToPath\(java.lang.Object\)) method.
 
 
 ## Inheritance

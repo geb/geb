@@ -308,18 +308,18 @@ class ConfigurationLoader {
 	}
 
 	/**
-	 * Creates a new {@link geb.Configuration} backed by {@code rawConfig} with the {@code properties} and {@code classLoader}
-	 * we were constructed with, and a {@link geb.BuildAdapter build adapter}.
+	 * Creates a new {@link geb.Configuration} backed by {@code rawConfig} with the {@code properties}
+	 * we were constructed with, the {@code classLoader} passed in and a {@link geb.BuildAdapter build adapter}.
 	 *
-	 * @see geb.Configuration#Configuration
+	 * @see geb.Configuration#Configuration(groovy.util.ConfigObject, java.util.Properties, geb.BuildAdapter, java.lang.ClassLoader)
 	 */
 	protected createConf(ConfigObject rawConfig, GroovyClassLoader classLoader) {
 		new Configuration(rawConfig, properties, createBuildAdapter(classLoader), classLoader)
 	}
 
 	/**
-	 * Uses the {@link geb.buildadapter.BuildAdapterFactory#getBuildAdapter(ClassLoader) build adapter factory} to load
-	 * a build adapter with the {@code classLoader} we were constructed with.
+	 * Uses the {@link geb.buildadapter.BuildAdapterFactory#getBuildAdapter(java.lang.ClassLoader) build adapter factory} to load
+	 * a build adapter with the {@code classLoader} passed in.
 	 */
 	protected BuildAdapter createBuildAdapter(GroovyClassLoader classLoader) {
 		BuildAdapterFactory.getBuildAdapter(classLoader)

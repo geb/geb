@@ -155,7 +155,7 @@ class Browser {
 	/**
 	 * Changes the base url used for resolving relative urls.
 	 * <p>
-	 * This method delegates to {@link geb.Configuration#setBaseUrl}.
+	 * This method delegates to {@link geb.Configuration#setBaseUrl(def)}.
 	 */
 	void setBaseUrl(String baseUrl) {
 		config.baseUrl = baseUrl
@@ -459,7 +459,7 @@ class Browser {
 	 *
 	 * @return a page instance of the passed page type
 	 * @see #page(geb.Page)
-	 * @see geb.Page#to(Map, Object[])
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T via(Class<T> pageType, Object[] args) {
 		via([:], pageType, *args)
@@ -470,7 +470,7 @@ class Browser {
 	 *
 	 * @return a page instance of the passed page type
 	 * @see #page(geb.Page)
-	 * @see geb.Page#to(Map, Object[])
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T via(Map params, Class<T> pageType) {
 		via(params, pageType, null)
@@ -481,7 +481,7 @@ class Browser {
 	 *
 	 * @return a page instance of the passed page type
 	 * @see #page(geb.Page)
-	 * @see geb.Page#to(Map, Object[])
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T via(Map params, Class<T> pageType, Object[] args) {
 		def page = createPage(pageType)

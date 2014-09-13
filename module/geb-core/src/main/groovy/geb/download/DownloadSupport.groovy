@@ -86,7 +86,7 @@ class DownloadSupport {
 	}
 
 	/**
-	 * Opens a url connection via {@link #download()} and returns the response input stream.
+	 * Opens a url connection via {@link #download(Map)} and returns the response input stream.
 	 * <p>
 	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
 	 */
@@ -122,7 +122,7 @@ class DownloadSupport {
 	}
 
 	/**
-	 * Opens a url connection via {@link #download()} and returns the response text, if the content type was textual.
+	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
 	 * <p>
 	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
 	 */
@@ -140,7 +140,7 @@ class DownloadSupport {
 	}
 
 	/**
-	 * Opens a url connection via {@link #download()} and returns the raw bytes.
+	 * Opens a url connection via {@link #download(Map)} and returns the raw bytes.
 	 * <p>
 	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
 	 */

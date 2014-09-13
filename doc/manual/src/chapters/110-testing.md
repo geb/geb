@@ -64,7 +64,7 @@ The [`report(String label)`](api/geb/Browser.html#report\(java.lang.String\)) br
         }
     }
 
-Assuming a configured `reportsDir` of `reports/geb` and the default reporter (i.e. [`ScreenshotAndPageSourceReporter`](api/geb/report/ScreenshotAndPageSourceReporter.html)), we would find the following files:
+Assuming a configured `reportsDir` of `reports/geb` and the default reporters (i.e. [`ScreenshotReporter`](api/geb/report/ScreenshotReporter.html) and [`PageSourceReporter`](api/geb/report/PageSourceReporter.html)), we would find the following files:
 
 * `reports/geb/my/tests/FunctionalSpec/1-1-login-login screen.html`
 * `reports/geb/my/tests/FunctionalSpec/1-1-login-login screen.png`

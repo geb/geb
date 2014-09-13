@@ -96,7 +96,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 
 ### Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to\(java.lang.Class,%20Object[]\)) and [`via()`](api/geb/Browser.html#via\(java.lang.Class,%20Object[]\)) methods.
+Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the [`to()`](api/geb/Browser.html#to\(java.lang.Class,%20java.lang.Object\)) and [`via()`](api/geb/Browser.html#via\(java.lang.Class,%20java.lang.Object\)) methods.
 
     class SignupPage extends Page {
         static url = "signup"
@@ -199,7 +199,7 @@ We have already seen that that `to()` methods change the browser's page instance
 
 The [`page(Class pageType)`](api/geb/Browser.html#page\(java.lang.Class\)) method allows you to change the page to a new instance of the given class. The class must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
 
-The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(java.lang.Class[]\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(java.lang.Class\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the [`to` attribute of the Content DSL](pages.html#to) for more information about this). However, should you need to manually change the page type, they are there.
 

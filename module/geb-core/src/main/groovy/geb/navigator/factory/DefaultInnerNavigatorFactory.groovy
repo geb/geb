@@ -22,7 +22,7 @@ import geb.navigator.NonEmptyNavigator
 import org.openqa.selenium.WebElement
 
 /**
- * Default implementation of {@link InnerNavigatorFactory}.
+ * Default implementation of {@link geb.navigator.factory.InnerNavigatorFactory}.
  *
  * Uses {@link NonEmptyNavigator} and {@link EmptyNavigator}.
  */

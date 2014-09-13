@@ -14,7 +14,7 @@
 [browser]: browser.html
 [navigator]: navigator.html
 [clicking]: navigator.html#clicking
-[page-navigation]: page-navigation.html
+[page-navigation]: pages.html#advanced_page_navigation
 [page-at]: pages.html#at_verification
 [required]: pages.html#required
 [drive]: browser.html#the_drive_method
