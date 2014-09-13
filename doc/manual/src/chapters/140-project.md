@@ -60,14 +60,14 @@ This page lists the high level changes between versions of Geb.
 
 * New `css()` method on `Navigator` that allows to access CSS properties of elements. \[[GEB-141](http://jira.codehaus.org/browse/GEB-141)\]
 * Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
-* Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`.
+* Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 
 #### Fixes
 
 * Allow access to module properties from its content block. \[[GEB-245](http://jira.codehaus.org/browse/GEB-245)\]
 * Support setting of elements for WebDriver implementations that return uppercase tag name. \[[GEB-318](http://jira.codehaus.org/browse/GEB-318)\]
 * Use native binaries for running BrowserStack tunnel. \[[GEB-326](http://jira.codehaus.org/browse/GEB-326)\]
-* Update BrowserStack support to to use command-line arguments introduced in tunnel version 3.1.
+* Update BrowserStack support to use command-line arguments introduced in tunnel version 3.1. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 
 #### Project Related Changes
 
