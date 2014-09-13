@@ -72,6 +72,14 @@ browserStack {
 	}
 }
 
+task nonIeBrowserStackTests {
+	dependsOn 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
+}
+
+task ieBrowserStackTests {
+	dependsOn 'internetExplorerWindows8Test', 'internetExplorerWindows9Test', 'internetExplorerWindows10Test', 'internetExplorerWindows11Test'
+}
+
 modifyPom { pom ->
 	pom.project {
 		name "Geb Core"
