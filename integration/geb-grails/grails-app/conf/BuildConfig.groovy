@@ -33,10 +33,3 @@ grails.project.dependency.resolution = {
 		}
 	}
 }
-
-/* -- disabled due to clover grails breaking clover in gradle
-clover {
-	license.path = new File(grailsSettings.baseDir, "../../clover.license").absolutePath
-	initstring = new File(grailsSettings.projectWorkDir, "clover/clover.db").absolutePath
-}
-*/

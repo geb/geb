@@ -6,10 +6,6 @@ buildscript {
 	repositories {
 		mavenCentral()
 	}
-
-	dependencies {
-		classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.6.1'
-	}
 }
 
 if (project.hasProperty("ci")) {
@@ -84,10 +80,6 @@ subprojects {
 		apply plugin: "groovy"
 		apply plugin: "idea"
 		apply plugin: "codenarc"
-
-		if (path != ":test-support") {
-			// apply from: "file:${rootDir}/clover.gradle"
-		}
 
 		dependencies {
 			groovy groovyDependency
@@ -211,12 +203,6 @@ subprojects {
 task release {
 	dependsOn ':integration:geb-grails:publish',
 		{ allprojects.findAll { it.path in publishedModules }*.uploadArchives }
-}
-
-if (hasProperty('enableClover')) {
-	configure(subprojects.findAll { it.parent == project(':module') } + rootProject) {
-		apply from: rootProject.file("gradle/clover.gradle")
-	}
 }
 
 task wrapper(type: Wrapper) {
