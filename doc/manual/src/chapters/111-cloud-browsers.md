@@ -50,6 +50,21 @@ You can optionally pass additional configuration settings by providing a Map to 
 		}
 	}
 
+If using `localIdentifier` support:
+
+	def browserStackBrowser = System.getProperty("geb.browserstack.browser")
+	if (browserStackBrowser) {
+		driver = {
+			def username = System.getenv("GEB_BROWSERSTACK_USERNAME")
+			assert username
+			def accessKey = System.getenv("GEB_BROWSERSTACK_AUTHKEY")
+			assert accessKey
+			def localId = System.getenv("GEB_BROWSERSTACK_LOCALID")
+			assert localId
+			new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, localId)
+		}
+	}
+
 ## Geb Gradle plugins
 
 For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifies declaring the account and browsers that are desired, as well as configuring a tunnel to allow the cloud provider to access local applications. These plugins allow easily creating multiple `Test` tasks that will have the appropriate `geb.PROVIDER.browser` property set (where *PROVIDER* is either `saucelabs` or `browserstack`). The value of that property can be then passed in configuration file to [SauceLabsDriverFactory](#saucelabsdriverfactory)/[BrowserStackDriverFactory](#browserstackdriverfactory) as the ”browser specification“. Examples of typical usage are included below.
@@ -133,6 +148,7 @@ Finally in (7) we pass credentials for [SauceConnect](https://saucelabs.com/docs
 In (1) we apply the plugin to the build and in (2) we're specifying how to resolve the plugin.
 In (3) we're specifying which applications the BrowserStack Tunnel should be able to access.
 Multiple applications can be specified.
+If no applications are specified, the tunnel will not be restricted to particular URLs. 
 In (4) we're saying that we want our tests to run in 3 different browsers; this will generate the following `Test` tasks: `firefoxMac19Test`, `chromeMacTest` and `internetExplorerWindows9Test`.
 You can use `allBrowserStackTests` task that will depend on all of the generated test tasks to run all of them during a build.
 The configuration closure specified at (5) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
