@@ -7,3 +7,4 @@ docs
 build
 application.properties
 GebGrailsPlugin.groovy
+buildPlugins
