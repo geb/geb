@@ -264,7 +264,7 @@ The list variant can also be used…
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which, on click, sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(java.lang.Class\)) which is explained in the section on
+Which, on click, sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) which is explained in the section on
 [changing pages][changing-pages].
 
 All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
@@ -419,7 +419,7 @@ The `verifyAt()` method is used by the browser `at()` method which also returns 
 
 At checkers are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
-If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely\(boolean\)) and [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt\(java.lang.Class,%20boolean\)).
+If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: [`Page#verifyAtSafely()`](api/geb/Page.html#verifyAtSafely\(boolean\)) and [`Browser#isAt(Class<? extends Page>)`](api/geb/Browser.html#isAt\(Class%3C%3F%20extends%20Page%3E,%20boolean\)).
 
 As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
 

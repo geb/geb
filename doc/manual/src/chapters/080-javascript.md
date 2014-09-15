@@ -102,7 +102,7 @@ You might be wondering why the order has been changed (i.e. the arguments go _be
 
 Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX, timers or effects.
 
-The `waitFor` methods are provided by the [`WaitingSupport`](api/geb/waiting/WaitingSupport.html) mixin which delegates to the [`Wait` class](api/geb/waiting/Wait.html) (see the documentation of the [`waitFor` method](api/geb/waiting/Wait.html#waitFor\(groovy.lang.Closure\)) of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth "Groovy - Groovy Truth"), and how long to wait in between invoking the closure again.
+The `waitFor` methods are provided by the [`WaitingSupport`](api/geb/waiting/WaitingSupport.html) mixin which delegates to the [`Wait` class](api/geb/waiting/Wait.html) (see the documentation of the [`waitFor` method](api/geb/waiting/Wait.html#waitFor\(Closure%3CT%3E\)) of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the [Groovy Truth](http://groovy.codehaus.org/Groovy+Truth "Groovy - Groovy Truth"), and how long to wait in between invoking the closure again.
 
     waitFor {}          // use default configuration
     waitFor(10) {}      // wait for up to 10 seconds, using the default retry interval

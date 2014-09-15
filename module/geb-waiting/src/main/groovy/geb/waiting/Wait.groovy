@@ -19,8 +19,6 @@ package geb.waiting
  * Represents a particular configuration of waiting, but does not encompass what is to be waited on.
  * <p>
  * Generally not used by user code, but used internally by {@link geb.Configuration} and {@link geb.waiting.WaitingSupport}.
- *
- * @see #waitFor(Closure)
  */
 class Wait {
 

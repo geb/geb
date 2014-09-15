@@ -530,7 +530,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 		contextElements*.toString()
 	}
 
-	@Override
 	def methodMissing(String name, arguments) {
 		if (!arguments) {
 			def navigator = navigatorFor collectElements {
@@ -543,7 +542,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 		throw new MissingMethodException(name, getClass(), arguments)
 	}
 
-	@Override
 	def propertyMissing(String name) {
 		switch (name) {
 			case ~/@.+/:

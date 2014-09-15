@@ -15,11 +15,11 @@
  */
 dataSource {
 	pooled = true
-	driverClassName = "org.hsqldb.jdbcDriver"
+	driverClassName = "org.h2.Driver"
 	username = "sa"
 	password = ""
 	dbCreate = "create-drop"
-	url = "jdbc:hsqldb:mem:db"
+	url = "jdbc:h2:mem:db"
 }
 hibernate {
 	cache.use_second_level_cache=true

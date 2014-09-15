@@ -17,14 +17,18 @@ package grails.plugin.geb
 
 import geb.junit4.GebReportingTest
 
+import org.junit.Test
+
 class JUnit4SmokeTest extends GebReportingTest {
 
-	void testDefaultLocationIsApplicatioRoot() {
+	@Test
+	void defaultLocationIsApplicatioRoot() {
 		to IndexPage
 		assert at(IndexPage)
 	}
 
-	void testPageUrlsAreRelativeToApp() {
+	@Test
+	void pageUrlsAreRelativeToApp() {
 		to OtherPage
 		assert at(OtherPage)
 	}

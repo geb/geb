@@ -1,4 +1,4 @@
-import org.grails.gradle.plugin.GrailsTask
+import org.grails.gradle.plugin.tasks.GrailsTask
 
 buildscript {
 	repositories {
@@ -6,14 +6,15 @@ buildscript {
 		maven { url 'http://repo.grails.org/grails/repo' }
 	}
 	dependencies {
-		classpath "org.grails:grails-gradle-plugin:2.0.0-SNAPSHOT"
+		classpath "org.grails:grails-gradle-plugin:2.0.0"
 	}
 }
 
 apply plugin: "grails"
 
 grails {
-	grailsVersion "2.1.1"
+	grailsVersion "2.4.2"
+	groovyVersion project.groovyVersion
 }
 
 configurations {
@@ -22,7 +23,6 @@ configurations {
 		exclude module: 'xml-apis'
 	}
 	test {
-		exclude module: "groovy-all"
 		resolutionStrategy {
 			eachDependency {
 				if (it.requested.group == "org.seleniumhq.selenium") {
@@ -39,12 +39,9 @@ repositories {
 }
 
 dependencies {
-	["plugin-tomcat", "plugin-datasource", "plugin-services", "hibernate"].each { module ->
-		compile "org.grails:grails-$module:$grails.grailsVersion"
-	}
-	
-	bootstrap "org.codehaus.groovy:groovy-all:1.8.6"
-	
+	bootstrap "org.grails.plugins:tomcat:7.0.54"
+	bootstrap "org.grails.plugins:hibernate:3.6.10.16"
+
 	test project(':module:geb-junit4')
 	test "org.seleniumhq.selenium:selenium-htmlunit-driver:2.26.0"
 	test project(':module:geb-spock'), {
@@ -53,13 +50,8 @@ dependencies {
 	}
 	
 	test "org.grails.plugins:spock:0.7"
-	test "org.spockframework:spock-grails-support:0.7-groovy-1.8"
-	test "org.grails:grails-test:$grails.grailsVersion"
+	test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
 
-	[hibernate: grails.grailsVersion, tomcat: grails.grailsVersion, release: "2.0.4"].collect { name, version ->
-		bootstrap "org.grails.plugins:$name:$version"
-	}
-	
 	releaseBootstrap "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
 		exclude module: "xml-apis"
 		exclude module: "groovy"
@@ -132,11 +124,6 @@ task dumpClassloaders(type: GrailsTask) {
 	command "dump-classloaders"
 }
 
-task test(type: GrailsTask) {
-	dependsOn packagePlugin
-	command "test-app"
-}
-
 task publish(type: GrailsTask, dependsOn: packagePlugin) {
 	bootstrapClasspath = configurations.releaseBootstrap
 	command "publish-plugin"
@@ -149,5 +136,10 @@ task publish(type: GrailsTask, dependsOn: packagePlugin) {
 	}
 }
 
-task check(dependsOn: test)
-task build(dependsOn: [check, assemble])
+build {
+	dependsOn check, assemble
+}
+
+tasks.'grails-test-app' {
+	outputs.upToDateWhen { false }
+}

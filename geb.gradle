@@ -29,8 +29,8 @@ allprojects { project ->
 		isSnapshot = version.endsWith("-SNAPSHOT")
 
 		seleniumVersion = "2.43.1"
-		groovyVersion = "1.8.9"
-		spockVersion = "0.7-groovy-1.8"
+		groovyVersion = "2.3.6"
+		spockVersion = "0.7-groovy-2.0"
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
 			exclude module: "groovy-all"
