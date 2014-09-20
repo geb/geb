@@ -41,7 +41,6 @@ ext {
 repositories {
 	maven { url "http://oss.jfrog.org/artifactory/repo" }
 	jcenter()
-	maven { url "http://repo.springsource.org/repo" }
 	maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 	maven { url "https://oss.sonatype.org/content/repositories/releases" }
 }
@@ -61,7 +60,7 @@ dependencies {
 		"$group:geb-manual:$it@zip"
 	}
 
-	springloaded "org.springsource.loaded:springloaded:1.1.5.RELEASE"
+	springloaded "org.springframework:springloaded:1.2.0.RELEASE"
 	compile ratpack.dependency("groovy")
 	testCompile "org.spockframework:spock-core:0.7-groovy-2.0",
 		"org.jsoup:jsoup:1.7.3",
