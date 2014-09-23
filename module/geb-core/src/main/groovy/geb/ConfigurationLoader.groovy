@@ -36,7 +36,6 @@ class ConfigurationLoader {
 
 	final String environment
 	final Properties properties
-	final BuildAdapter buildAdapter
 	final GroovyClassLoader specialClassLoader
 
 	/**
@@ -230,7 +229,7 @@ class ConfigurationLoader {
 
 	/**
 	 * This implementation returns a new {@link groovy.lang.GroovyClassLoader} which uses the
-	 * {@code Thread.currentThread ( ) .contextClassLoader} as the parent.
+	 * {@code Thread.currentThread().contextClassLoader} as the parent.
 	 */
 	protected GroovyClassLoader getDefaultSpecialClassLoader() {
 		new GroovyClassLoader()
@@ -280,6 +279,20 @@ class ConfigurationLoader {
 	 */
 	protected ConfigObject loadRawConfig(Class configClass) throws UnableToLoadException {
 		loadRawConfig(createSlurper(), configClass)
+	}
+
+	protected ConfigObject loadRawConfig(ConfigSlurper slurper, URL source) {
+		def configClass
+		try {
+			configClass = slurper.classLoader.parseClass(source.text)
+			loadRawConfig(slurper, configClass)
+		} catch (Throwable e) {
+			throw new UnableToLoadException(source, slurper.environment, e)
+		} finally {
+			if (configClass) {
+				GroovySystem.metaClassRegistry.removeMetaClass(configClass)
+			}
+		}
 	}
 
 	protected ConfigObject loadRawConfig(ConfigSlurper slurper, source) {

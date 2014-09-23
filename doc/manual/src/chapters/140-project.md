@@ -33,7 +33,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Tomasz Kalkosiński](http://refaktor.blogspot.com/) - Doc improvements
 * [Rich Douglas Evans](https://github.com/richdouglasevans) - Doc improvements
 * [Ian Durkan](https://github.com/idurkan) - Doc improvements
-* [Colin Harrington](http://colinharrington.net/) - Doc improvements
+* [Colin Harrington](https://github.com/ColinHarrington) - Doc improvements
 * [Bob Herrmann](https://github.com/bherrmann7) - Doc improvements
 * [George T Walters II](https://github.com/walterg2) - Page option support for `withWindow()`
 * [Craig Atkinson](https://github.com/craigatk) - Doc improvements
@@ -68,6 +68,7 @@ This page lists the high level changes between versions of Geb.
 * Support setting of elements for WebDriver implementations that return uppercase tag name. \[[GEB-318](http://jira.codehaus.org/browse/GEB-318)\]
 * Use native binaries for running BrowserStack tunnel. \[[GEB-326](http://jira.codehaus.org/browse/GEB-326)\]
 * Update BrowserStack support to use command-line arguments introduced in tunnel version 3.1. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
+* Fix PermGen memory leak when using groovy script backed configuration. \[[GEB-335](http://jira.codehaus.org/browse/GEB-335)\]
 
 #### Project Related Changes
 

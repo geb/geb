@@ -16,9 +16,12 @@ package geb.conf
 
 import geb.ConfigurationLoader
 import geb.error.UnableToLoadException
+import org.codehaus.groovy.reflection.ClassInfo
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import spock.lang.Issue
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class ConfigurationLoaderSpec extends Specification {
 
@@ -47,6 +50,7 @@ class ConfigurationLoaderSpec extends Specification {
 		config.rawConfig.a == 1
 	}
 
+	@Unroll
 	def "load file from classpath with env"() {
 		given:
 		env = theEnv
@@ -82,7 +86,7 @@ class ConfigurationLoaderSpec extends Specification {
 
 		and:
 		tmp.newFile("GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
-		loader.addURL(tmp.root.toURL())
+		loader.addURL(tmp.root.toURI().toURL())
 
 		expect:
 		loader.getResource('GebConfigBothScriptAndClass.groovy')
@@ -97,7 +101,7 @@ class ConfigurationLoaderSpec extends Specification {
 
 		and:
 		tmp.newFile("GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
-		loader.specialClassLoader.addURL(tmp.root.toURL())
+		loader.specialClassLoader.addURL(tmp.root.toURI().toURL())
 
 		expect:
 		loader.getConf().rawConfig.testValue == 'from script'
@@ -109,6 +113,15 @@ class ConfigurationLoaderSpec extends Specification {
 
 		expect:
 		loader.getConf().rawConfig.testValue == 'test value'
+	}
+
+	@Issue("GEB-335")
+	def "config script backing class can be garbage collected"() {
+		when:
+		load goodScript
+
+		then:
+		!ClassInfo.allClassInfo.findAll { it.cachedClass.name.contains("script") && it.strongMetaClass != null }
 	}
 }
 

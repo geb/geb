@@ -17,6 +17,9 @@
 idea {
 	project {
 		jdkName "1.7"
+
+		wildcards += ['good-conf.groovy']
+
 		ipr {
 			withXml { provider ->
 				def node = provider.asNode()
