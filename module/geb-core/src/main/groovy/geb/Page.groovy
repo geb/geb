@@ -25,6 +25,8 @@ import geb.js.AlertAndConfirmSupport
 import geb.js.JavascriptInterface
 import geb.navigator.Navigator
 import geb.textmatching.TextMatchingSupport
+import geb.waiting.ImplicitWaitTimeoutException
+import geb.waiting.WaitTimeoutException
 import geb.waiting.WaitingSupport
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -158,6 +160,8 @@ class Page implements Navigable, PageContentContainer {
 			false
 		} catch (RequiredPageContentNotPresent e) {
 			false
+		} catch (ImplicitWaitTimeoutException e) {
+			false
 		}
 	}
 
@@ -173,7 +177,15 @@ class Page implements Navigable, PageContentContainer {
 			verifier.delegate = this
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
 			def atCheckWaiting = browser.config.atCheckWaiting
-			(atCheckWaiting && allowAtCheckWaiting) ? atCheckWaiting.waitFor(verifier) : verifier()
+			if (atCheckWaiting && allowAtCheckWaiting) {
+				try {
+					atCheckWaiting.waitFor(verifier)
+				} catch (WaitTimeoutException e) {
+					throw new ImplicitWaitTimeoutException(e)
+				}
+			} else {
+				verifier()
+			}
 		} else {
 			throw new UndefinedAtCheckerException(this.class.name)
 		}

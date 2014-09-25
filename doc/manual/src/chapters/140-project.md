@@ -69,14 +69,17 @@ This page lists the high level changes between versions of Geb.
 * Use native binaries for running BrowserStack tunnel. \[[GEB-326](http://jira.codehaus.org/browse/GEB-326)\]
 * Update BrowserStack support to use command-line arguments introduced in tunnel version 3.1. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 * Fix PermGen memory leak when using groovy script backed configuration. \[[GEB-335](http://jira.codehaus.org/browse/GEB-335)\]
+* Don't fail in `Browser.isAt()` if at check waiting is enabled and it times out. \[[GEB-337](http://jira.codehaus.org/browse/GEB-337)\]
 
 #### Project Related Changes
 
 * Updated cucumber integration example to use `cucumber-jvm` instead of the now defunct `cuke4duke`. \[[GEB-324](http://jira.codehaus.org/browse/GEB-324)\]
-* Setup CI for all of the example projects \[[GEB-188](http://jira.codehaus.org/browse/GEB-188)\]
-* Incorporate the example projects into the main build \[[GEB-189](http://jira.codehaus.org/browse/GEB-189)\]
-* Add a test crawling the site in search for broken links \[[GEB-327](http://jira.codehaus.org/browse/GEB-327)\]
-* Use Groovy 2.3.6 to build the project \[[GEB-330](http://jira.codehaus.org/browse/GEB-330)\]
+* Setup CI for all of the example projects. \[[GEB-188](http://jira.codehaus.org/browse/GEB-188)\]
+* Incorporate the example projects into the main build. \[[GEB-189](http://jira.codehaus.org/browse/GEB-189)\]
+* Add a test crawling the site in search for broken links. \[[GEB-327](http://jira.codehaus.org/browse/GEB-327)\]
+
+#### Breaking changes
+* Use Groovy 2.3.6 to build Geb. \[[GEB-330](http://jira.codehaus.org/browse/GEB-330)\]
 
 ### 0.9.3
 

@@ -82,6 +82,17 @@ class AtCheckWaitingSpec extends WaitingSpec {
 		WaitTimeoutException e = thrown()
 		e.cause.message.contains('$("div", text: "a")')
 	}
+
+	void 'isAt() does not fail when implicit at waiting is enabled and it times out'() {
+		given:
+		rawConfig.atCheckWaiting = 0.1
+
+		when:
+		via AtCheckWaitingSpecPage
+
+		then:
+		!isAt(AtCheckWaitingSpecPage)
+	}
 }
 
 class AtCheckWaitingSpecPage extends Page {
