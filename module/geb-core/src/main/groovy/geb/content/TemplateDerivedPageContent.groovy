@@ -105,10 +105,10 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	}
 
 	Navigator click() {
-		if (templateParams.toSingle) {
-			_navigator.click(templateParams.toSingle)
-		} else if (templateParams.toList) {
-			_navigator.click(templateParams.toList)
+		def to = templateParams.toSingle ?: templateParams.toList
+		if (to) {
+			def toWait = _template.config.getWaitForParam(templateParams.toWait)
+			_navigator.click(to, toWait)
 		} else {
 			_navigator.click()
 		}

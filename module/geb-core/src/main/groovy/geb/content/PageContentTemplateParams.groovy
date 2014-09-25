@@ -50,6 +50,11 @@ class PageContentTemplateParams {
 	 */
 	final wait
 
+	/**
+	 * The value of the 'toWait' options. Defaults to null (no waiting when switching pages).
+	 */
+	final toWait
+
 	PageContentTemplateParams(PageContentTemplate owner, Map<String, ?> params) {
 		if (params == null) {
 			params = Collections.emptyMap()
@@ -79,6 +84,7 @@ class PageContentTemplateParams {
 		page = pageParam as Class<? extends Page>
 
 		wait = params.wait
+		toWait = params.toWait
 	}
 
 	private static boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {

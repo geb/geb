@@ -17,6 +17,7 @@ package geb.navigator
 
 import geb.Page
 import geb.js.JQueryAdapter
+import geb.waiting.Wait
 import org.openqa.selenium.WebElement
 
 /**
@@ -794,7 +795,11 @@ interface Navigator extends Iterable<Navigator> {
 
 	Navigator click(Class<? extends Page> pageClass)
 
+	Navigator click(Class<? extends Page> pageClass, Wait wait)
+
 	Navigator click(List<Class<? extends Page>> potentialPageClasses)
+
+	Navigator click(List<Class<? extends Page>> potentialPageClasses, Wait wait)
 
 	/**
 	 * Returns the number of context elements.

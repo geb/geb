@@ -253,7 +253,7 @@ The `to` option allows the definition of which page the browser will be sent to 
     Browser.drive {
         to ExamplePage
         helpLink.click()
-        assert at(HelpPage)
+        assert page.class == HelpPage
     }
 
 The `to` value will be implicitly used as an argument to the content's `click()` method, effectively setting the new page type and verifying its at checker. See the section on [clicking content][clicking] for how this changes the browser's page object.
@@ -335,6 +335,50 @@ You can modify the behaviour of content with `wait` option set to true if you us
 Then if wait timeout expires when retrieving `dynamicallyAdded`, there will be no `WaitTimeoutException` thrown, and the last closure evaluation value will be returned. If there is an exception thrown during closure evaluation, it will be wrapped in an [`UnknownWaitForEvaluationResult`](api/geb/waiting/UnknownWaitForEvaluationResult.html) instance and returned.
 
 Waiting content blocks are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
+
+#### toWait
+
+Default value: `false`
+
+Allowed values are the same as for the [`wait`](#wait) option.
+
+Can be used together with the [`to`](#to) option to specify that the page changing action performed when the content is clicked is asynchronous. This essentially means that verification of page transition (“at checking”) should be wrapped in a `waitFor()` call.
+
+    class ExamplePage extends Page {
+        static content = {
+            helpButton(to: HelpPage, toWait: true) { $("button#help") } //page change is asynchronous, e.g. an ajax call is involved
+        }
+    }
+
+    class HelpPage extends Page {
+        static at = { $("#help-contents") }
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        helpButton.click()
+        assert page.class == HelpPage
+    }
+
+Is equivalent to:
+
+    class ExamplePage extends Page {
+        static content = {
+            helpButton { $("button#help") }
+        }
+    }
+
+    class HelpPage extends Page {
+        static at = { $("#help-contents") }
+    }
+    
+    Browser.drive {
+        to ExamplePage
+        helpButton.click()
+        waitFor { at HelpPage }
+    }
+
+See the [section on waiting](javascript.html#waiting) for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a [`WaitTimeoutException`](api/geb/waiting/WaitTimeoutException.html) will be thrown if the wait timeout expires.
 
 #### page
 

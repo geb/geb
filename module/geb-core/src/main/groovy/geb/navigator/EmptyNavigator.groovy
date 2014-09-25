@@ -17,6 +17,7 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.waiting.Wait
 import org.openqa.selenium.WebElement
 
 import static java.util.Collections.EMPTY_LIST
@@ -50,12 +51,12 @@ class EmptyNavigator extends AbstractNavigator {
 	Navigator click() { this }
 
 	@Override
-	Navigator click(Class<? extends Page> pageClass) {
+	Navigator click(Class<? extends Page> pageClass, Wait wait = null) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
 
 	@Override
-	Navigator click(List<Class<? extends Page>> pageClasses) {
+	Navigator click(List<Class<? extends Page>> pageClasses, Wait wait = null) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
 

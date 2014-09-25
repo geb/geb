@@ -21,6 +21,7 @@ import geb.error.UnableToSetElementException
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
+import geb.waiting.Wait
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebElement
@@ -455,14 +456,14 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
-	Navigator click(Class<? extends Page> pageClass) {
+	Navigator click(Class<? extends Page> pageClass, Wait wait = null) {
 		click()
 		browser.page(pageClass)
 		def at = false
 		def assertionError = null
 		def throwable = null
 		try {
-			at = browser.verifyAt()
+			at = wait ? wait.waitFor { browser.verifyAt() } : browser.verifyAt()
 		} catch (AssertionError e) {
 			assertionError = e
 		} catch (UndefinedAtCheckerException e) {
@@ -479,9 +480,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
-	Navigator click(List<Class<? extends Page>> potentialPageClasses) {
+	Navigator click(List<Class<? extends Page>> potentialPageClasses, Wait wait = null) {
 		click()
-		browser.page(* potentialPageClasses)
+		def pageSwitchingAction = {
+			browser.page(* potentialPageClasses)
+			true
+		}
+		wait ? wait.waitFor(pageSwitchingAction) : pageSwitchingAction.call()
 		this
 	}
 

@@ -30,10 +30,17 @@ class PageOrientedSpec extends GebSpecWithServer {
 			def other = path == "b" ? "a" : "b"
 			res.outputStream << """
 			<html>
-			<body>
-				<a href="/$other" id="$path">$other</a>
-				<div id="uri">$req.requestURI</div>
-			</body>
+				<head>
+					<script type="text/javascript" charset="utf-8">
+					setTimeout(function() {
+						document.body.innerHTML += '<div id="dynamic">dynamic</div>';
+					}, 500);
+					</script>
+				</head>
+				<body>
+					<a href="/$other" id="$path">$other</a>
+					<div id="uri">$req.requestURI</div>
+				</body>
 			</html>"""
 		}
 	}
@@ -264,6 +271,28 @@ class PageOrientedSpec extends GebSpecWithServer {
 		PageContentStringPageParam       | 'wrongClass' | String
 		PageContentPageInstancePageParam | 'instance'   | new PageContentPageInstancePageParam()
 	}
+
+	def "implicitly waits when at checking if toWait content option is specified"() {
+		when:
+		to PageOrientedSpecPageA
+
+		and:
+		linkWithToWait.click()
+
+		then:
+		page in PageOrientedSpecPageE
+	}
+
+	def "implicitly waits when at checking if toWait content option is specified and to option contains a list of candidates"() {
+		when:
+		to PageOrientedSpecPageA
+
+		and:
+		linkWithToWaitAndVariantTo.click()
+
+		then:
+		page in PageOrientedSpecPageE
+	}
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -275,6 +304,8 @@ class PageOrientedSpecPageA extends Page {
 		linkWithToClassWithPlainFalseAt(to: PageWithAtCheckerReturningFalse) { $("#a") }
 		linkWithVariantTo(to: [PageOrientedSpecPageD, PageOrientedSpecPageC, PageOrientedSpecPageB]) { link }
 		linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
+		linkWithToWait(to: PageOrientedSpecPageE, toWait: true) { link }
+		linkWithToWaitAndVariantTo(to: [PageOrientedSpecPageC, PageOrientedSpecPageE], toWait: true) { link }
 		linkText { link.text().trim() }
 		linkTextAlias(aliases: 'linkText')
 		notPresentValueRequired { $("div#asdfasdf").text() }
@@ -298,6 +329,14 @@ class PageOrientedSpecPageC extends Page {
 
 class PageOrientedSpecPageD extends Page {
 	static at = { assert 1 == 2 }
+}
+
+class PageOrientedSpecPageE extends Page {
+	static at = { dynamic }
+	static content = {
+		dynamic { $("#dynamic") }
+	}
+
 }
 
 class ConvertPage extends Page {
