@@ -428,7 +428,7 @@ If you wish to have the same content definitions available under different names
 	class AliasingPage extends Page {
 		static content = {
 			someButton { $("button", text: "foo") }
-			someButtonByAnotherName(aliases: someButton)
+			someButtonByAnotherName(aliases: "someButton")
 		}
 	}
 

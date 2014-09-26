@@ -71,6 +71,7 @@ This page lists the high level changes between versions of Geb.
 * Update BrowserStack support to use command-line arguments introduced in tunnel version 3.1. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 * Fix PermGen memory leak when using groovy script backed configuration. \[[GEB-335](http://jira.codehaus.org/browse/GEB-335)\]
 * Don't fail in `Browser.isAt()` if at check waiting is enabled and it times out. \[[GEB-337](http://jira.codehaus.org/browse/GEB-337)\]
+* The value passed to `aliases` content option in documentation examples should be a String \[[GEB-338](http://jira.codehaus.org/browse/GEB-338)\]
 
 #### Project Related Changes
 
