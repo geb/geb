@@ -115,13 +115,17 @@ class ConfigurationLoaderSpec extends Specification {
 		loader.getConf().rawConfig.testValue == 'test value'
 	}
 
+	private int getNumberOfScriptsWithMetaClass() {
+		ClassInfo.allClassInfo.findAll { it.cachedClass.name.contains("script") && it.strongMetaClass != null }.size()
+	}
+
 	@Issue("GEB-335")
 	def "config script backing class can be garbage collected"() {
 		when:
 		load goodScript
 
 		then:
-		!ClassInfo.allClassInfo.findAll { it.cachedClass.name.contains("script") && it.strongMetaClass != null }
+		numberOfScriptsWithMetaClass == old(numberOfScriptsWithMetaClass)
 	}
 }
 
