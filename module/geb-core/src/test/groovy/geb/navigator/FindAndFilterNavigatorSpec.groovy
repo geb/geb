@@ -41,15 +41,22 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		given:
 		html {
 			div(id: "a") {
-				div(id: "b", "b")
-				div(id: "c", "c")
+				div(id: "b", class: "nested", "b")
+				div(id: "c", class: "nested", "c")
 			}
 		}
 
 		expect:
 		$("#a").find("#b").text() == "b"
-		$("#a").find("#c").text() == "c"
 		$("#a").find("#d").empty
+		$("#a").find(text: "b").text() == "b"
+		$("#a").find(text: "b", 0).text() == "b"
+		$("#a").find(class: "nested", 0..1)*.@id == ["b", "c"]
+		$("#a").find(class: "nested", "#c").text() == "c"
+		$("#a").find(class: "nested", "div", 1).text() == "c"
+		$("#a").find(class: "nested", "div", 0..1)*.@id == ["b", "c"]
+		$("#a").find("div", 0).text() == "b"
+		$("#a").find("div", 0..1)*.@id == ["b", "c"]
 	}
 
 	def "find by attributes"() {
