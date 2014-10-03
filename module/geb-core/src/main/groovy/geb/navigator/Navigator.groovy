@@ -135,6 +135,7 @@ interface Navigator extends Iterable<Navigator> {
 	 *
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance containing the matched elements
+	 * @see #find(java.util.Map)
 	 */
 	Navigator $(Map<String, Object> predicates)
 
@@ -143,6 +144,7 @@ interface Navigator extends Iterable<Navigator> {
 	 *
 	 * @param selector
 	 * @return new Navigator
+	 * @see #find(java.util.Map, int)
 	 */
 	Navigator $(Map<String, Object> predicates, int index)
 
@@ -152,6 +154,7 @@ interface Navigator extends Iterable<Navigator> {
 	 * @param predicates attribute predicates
 	 * @param predicates range the range of matches to select
 	 * @return new Navigator
+	 * @see #find(java.util.Map, groovy.lang.Range)
 	 */
 	Navigator $(Map<String, Object> predicates, Range<Integer> range)
 
@@ -161,6 +164,7 @@ interface Navigator extends Iterable<Navigator> {
 	 * @param selector a CSS selector
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance containing the matched elements
+	 * @see #find(java.util.Map, java.lang.String)
 	 */
 	Navigator $(Map<String, Object> predicates, String selector)
 
@@ -169,6 +173,7 @@ interface Navigator extends Iterable<Navigator> {
 	 *
 	 * @param selector
 	 * @return new Navigator
+	 * @see #find(java.util.Map, java.lang.String, int)
 	 */
 	Navigator $(Map<String, Object> predicates, String selector, int index)
 
@@ -177,6 +182,7 @@ interface Navigator extends Iterable<Navigator> {
 	 *
 	 * @param selector a CSS selector
 	 * @return new Navigator instance containing the matched elements
+	 * @see #find(java.util.Map, groovy.lang.Range)
 	 */
 	Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range)
 
@@ -185,6 +191,7 @@ interface Navigator extends Iterable<Navigator> {
 	 *
 	 * @param selector
 	 * @return new Navigator
+	 * @see #find(java.lang.String)
 	 */
 	Navigator $(String selector)
 
@@ -194,6 +201,7 @@ interface Navigator extends Iterable<Navigator> {
 	 * @param selector a CSS selector
 	 * @param index index of the required element in the selection
 	 * @return new Navigator instance containing a single element
+	 * @see #find(java.lang.String, int)
 	 */
 	Navigator $(String selector, int index)
 
@@ -202,6 +210,7 @@ interface Navigator extends Iterable<Navigator> {
 	 *
 	 * @param selector The css selector
 	 * @return new Navigator
+	 * @see #find(java.lang.String, groovy.lang.Range)
 	 */
 	Navigator $(String selector, Range<Integer> range)
 

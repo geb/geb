@@ -62,7 +62,6 @@ This page lists the high level changes between versions of Geb.
 * Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
 * Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 * Added [`toWait`](pages.html#towait) content definition option which allows specifying that page transition happens asynchronously. \[[GEB-134](http://jira.codehaus.org/browse/GEB-134)\]
-* Added `$()` method on Navigator with all signatures of `find()`. \[[GEB-321](http://jira.codehaus.org/browse/GEB-321)\]
 
 #### Fixes
 
@@ -73,6 +72,7 @@ This page lists the high level changes between versions of Geb.
 * Fix PermGen memory leak when using groovy script backed configuration. \[[GEB-335](http://jira.codehaus.org/browse/GEB-335)\]
 * Don't fail in `Browser.isAt()` if at check waiting is enabled and it times out. \[[GEB-337](http://jira.codehaus.org/browse/GEB-337)\]
 * The value passed to `aliases` content option in documentation examples should be a String \[[GEB-338](http://jira.codehaus.org/browse/GEB-338)\]
+* Added `$()` method on Navigator with all signatures of `find()`. \[[GEB-321](http://jira.codehaus.org/browse/GEB-321)\]
 
 #### Project Related Changes
 
