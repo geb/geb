@@ -102,6 +102,51 @@ abstract class AbstractNavigator implements Navigator {
 	}
 
 	@Override
+	Navigator $(Map<String, Object> predicates) {
+		find(predicates)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, int index) {
+		find(predicates, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, Range<Integer> range) {
+		find(predicates, range)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, String selector) {
+		find(predicates, selector)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, String selector, int index) {
+		find(predicates, selector, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
+		find(predicates, selector, range)
+	}
+
+	@Override
+	Navigator $(String selector) {
+		find(selector)
+	}
+
+	@Override
+	Navigator $(String selector, int index) {
+		find(selector, index)
+	}
+
+	@Override
+	Navigator $(String selector, Range<Integer> range) {
+		find(selector, range)
+	}
+
+	@Override
 	Navigator filter(Map<String, Object> predicates, String selector) {
 		filter(selector).filter(predicates)
 	}

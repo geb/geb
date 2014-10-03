@@ -62,6 +62,7 @@ This page lists the high level changes between versions of Geb.
 * Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
 * Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 * Added [`toWait`](pages.html#towait) content definition option which allows specifying that page transition happens asynchronously. \[[GEB-134](http://jira.codehaus.org/browse/GEB-134)\]
+* Added `$()` method on Navigator with all signatures of `find()`. \[[GEB-321](http://jira.codehaus.org/browse/GEB-321)\]
 
 #### Fixes
 

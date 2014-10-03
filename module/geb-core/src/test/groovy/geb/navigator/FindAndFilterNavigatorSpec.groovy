@@ -18,6 +18,7 @@ package geb.navigator
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 import spock.lang.Issue
+import spock.lang.Unroll
 
 @CrossBrowser
 class FindAndFilterNavigatorSpec extends GebSpecWithServer {
@@ -37,7 +38,8 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		$(".dontexist").empty
 	}
 
-	def "nested find"() {
+	@Unroll
+	def "nested find using #findMethod"() {
 		given:
 		html {
 			div(id: "a") {
@@ -47,16 +49,19 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		}
 
 		expect:
-		$("#a").find("#b").text() == "b"
-		$("#a").find("#d").empty
-		$("#a").find(text: "b").text() == "b"
-		$("#a").find(text: "b", 0).text() == "b"
-		$("#a").find(class: "nested", 0..1)*.@id == ["b", "c"]
-		$("#a").find(class: "nested", "#c").text() == "c"
-		$("#a").find(class: "nested", "div", 1).text() == "c"
-		$("#a").find(class: "nested", "div", 0..1)*.@id == ["b", "c"]
-		$("#a").find("div", 0).text() == "b"
-		$("#a").find("div", 0..1)*.@id == ["b", "c"]
+		$("#a")."$findMethod"("#b").text() == "b"
+		$("#a")."$findMethod"("#d").empty
+		$("#a")."$findMethod"(text: "b").text() == "b"
+		$("#a")."$findMethod"(text: "b", 0).text() == "b"
+		$("#a")."$findMethod"(class: "nested", 0..1)*.@id == ["b", "c"]
+		$("#a")."$findMethod"(class: "nested", "#c").text() == "c"
+		$("#a")."$findMethod"(class: "nested", "div", 1).text() == "c"
+		$("#a")."$findMethod"(class: "nested", "div", 0..1)*.@id == ["b", "c"]
+		$("#a")."$findMethod"("div", 0).text() == "b"
+		$("#a")."$findMethod"("div", 0..1)*.@id == ["b", "c"]
+
+		where:
+		findMethod << ['find', '$']
 	}
 
 	def "find by attributes"() {

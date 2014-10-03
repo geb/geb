@@ -133,4 +133,49 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	def propertyMissing(String name, val) {
 		_navigator.propertyMissing(name, val)
 	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates) {
+		_navigator.$(predicates)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, int index) {
+		_navigator.$(predicates, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, Range<Integer> range) {
+		_navigator.$(predicates, range)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, String selector) {
+		_navigator.$(predicates, selector)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, String selector, int index) {
+		_navigator.$(predicates, selector, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
+		_navigator.$(predicates, selector, range)
+	}
+
+	@Override
+	Navigator $(String selector) {
+		_navigator.$(selector)
+	}
+
+	@Override
+	Navigator $(String selector, int index) {
+		_navigator.$(selector, index)
+	}
+
+	@Override
+	Navigator $(String selector, Range<Integer> range) {
+		_navigator.$(selector, range)
+	}
 }

@@ -127,7 +127,7 @@ When treating a navigator as `Iterable`, the iterated over content is always the
 
 ## Finding & Filtering
 
-Navigator objects have a `find` method for finding descendants, and `filter` and `not` methods for reducing the matched content.
+Navigator objects have `find` and `$` methods for finding descendants, and `filter` and `not` methods for reducing the matched content.
 
 Consider the following HTML…
 
@@ -141,6 +141,7 @@ Consider the following HTML…
 We can select `p.b` by…
 
     $("div").find(".b")
+    $("div").$(".b")
    
 We can select `div.b` by…
 
@@ -158,7 +159,7 @@ Or select the `div` containing the `input` with a type attribute of "text" like 
 
     $("div").has("input", type: "text")
 
-The `find` and method supports the **exact same argument types as the $ function**.
+The `find` and `$` methods support the **exact same argument types as the $ function**.
 
 The `filter`, `not` and `has` methods have the same signatures - they accept: a selector string, a predicates map or both.
 

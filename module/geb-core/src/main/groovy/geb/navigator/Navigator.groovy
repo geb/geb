@@ -131,6 +131,81 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(String selector, Range<Integer> range)
 
 	/**
+	 * Shorthand for <code>find(predicates)</code>
+	 *
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
+	Navigator $(Map<String, Object> predicates)
+
+	/**
+	 * Shorthand for <code>find(predicates, index)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	Navigator $(Map<String, Object> predicates, int index)
+
+	/**
+	 * Shorthand for <code>find(predicates, range)</code>
+	 *
+	 * @param predicates attribute predicates
+	 * @param predicates range the range of matches to select
+	 * @return new Navigator
+	 */
+	Navigator $(Map<String, Object> predicates, Range<Integer> range)
+
+	/**
+	 * Shorthand for <code>find(predicates, selector)</code>
+	 *
+	 * @param selector a CSS selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
+	Navigator $(Map<String, Object> predicates, String selector)
+
+	/**
+	 * Shorthand for <code>find(predicates, selector, index)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	Navigator $(Map<String, Object> predicates, String selector, int index)
+
+	/**
+	 * Shorthand for <code>find(predicates, selector, range)</code>
+	 *
+	 * @param selector a CSS selector
+	 * @return new Navigator instance containing the matched elements
+	 */
+	Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range)
+
+	/**
+	 * Shorthand for <code>find(selector)</code>
+	 *
+	 * @param selector
+	 * @return new Navigator
+	 */
+	Navigator $(String selector)
+
+	/**
+	 * Shorthand for <code>find(selector, index)</code>.
+	 *
+	 * @param selector a CSS selector
+	 * @param index index of the required element in the selection
+	 * @return new Navigator instance containing a single element
+	 */
+	Navigator $(String selector, int index)
+
+	/**
+	 * Shorthand for <code>find(selector, range)</code>
+	 *
+	 * @param selector The css selector
+	 * @return new Navigator
+	 */
+	Navigator $(String selector, Range<Integer> range)
+
+	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
 	 * that match the selector.
 	 * @param selector a CSS selector
