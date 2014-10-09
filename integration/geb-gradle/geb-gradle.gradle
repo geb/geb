@@ -1,8 +1,15 @@
 apply plugin: 'groovy'
 
+repositories {
+    mavenCentral()
+    maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
+}
+
 dependencies {
 	compile localGroovy()
 	compile gradleApi()
+
+    compile sauceDependency
 }
 
 modifyPom { pom ->
