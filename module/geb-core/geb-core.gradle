@@ -50,6 +50,9 @@ browserStack {
 	def applicationAddresses = [8000, 8080, 8888, 9000, 9090].collect { "http://localhost:$it" }
 	application(*applicationAddresses)
 	browsers {
+		nexus4 {
+			capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
+		}
 		chrome_mac
 		chrome_windows
 		firefox_windows
@@ -73,7 +76,7 @@ browserStack {
 }
 
 task nonIeBrowserStackTests {
-	dependsOn 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
+	dependsOn 'nexus4Test', 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
 }
 
 task ieBrowserStackTests {

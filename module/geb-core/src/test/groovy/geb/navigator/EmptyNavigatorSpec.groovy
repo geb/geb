@@ -16,11 +16,9 @@
 package geb.navigator
 
 import geb.Browser
-import geb.test.CrossBrowser
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@CrossBrowser
 class EmptyNavigatorSpec extends Specification {
 
 	EmptyNavigator navigator

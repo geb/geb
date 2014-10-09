@@ -20,10 +20,11 @@ import org.gradle.api.tasks.testing.Test
 class BrowserSpec {
 	final String cloudProvider
 	final String name
+	final String displayName
 
-	String browser
-	String platform
-	String version
+	Test testTask
+
+	private final Properties capabilities = new Properties()
 
 	BrowserSpec(String cloudProvider, String name) {
 		this.cloudProvider = cloudProvider
@@ -31,17 +32,38 @@ class BrowserSpec {
 		String browserSpec = name
 		if (browserSpec) {
 			String[] split = browserSpec.split("_", 3)
-			browser = split[0]
-			platform = split.size() > 1 ? split[1] : ""
-			version = split.size() > 2 ? split[2] : ""
+			capabilities["browserName"] = split[0]
+			if (split.size() > 1) {
+				capabilities["platform"] = split[1]
+			}
+			if (split.size() > 2) {
+				capabilities["version"] = split[2]
+			}
+			displayName = "${capabilities["browserName"]}${capabilities["platform"]?.capitalize() ?: ""}${capabilities["version"]?.capitalize() ?: ""}"
+			if (capabilities["platform"]) {
+				capabilities["platform"] = capabilities["platform"].toUpperCase()
+			}
 		}
 	}
 
-	String getDisplayName() {
-		"$browser${platform?.capitalize() ?: ""}${version?.capitalize() ?: ""}"
+	void capability(String capability, String value) {
+		capabilities.put(capability, value)
+		configureTestTask()
 	}
 
-	void configure(Test test) {
-		test.systemProperty "geb.${cloudProvider}.browser", "$browser:$platform:$version"
+	void capabilities(Map<String, String> capabilities) {
+		this.capabilities.putAll(capabilities)
+		configureTestTask()
+	}
+
+	void setCapabilities(Map<String, String> capabilities) {
+		capabilities.clear()
+		capabilities(capabilities)
+	}
+
+	void configureTestTask() {
+		StringWriter writer = new StringWriter()
+		capabilities.store(writer, null)
+		testTask.systemProperty "geb.${cloudProvider}.browser", writer.toString()
 	}
 }

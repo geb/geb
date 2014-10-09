@@ -62,6 +62,7 @@ This page lists the high level changes between versions of Geb.
 * Added attribute based methods to relative content navigators such as next(), children() etc. \[[GEB-299](http://jira.codehaus.org/browse/GEB-299)\]
 * Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 * Added [`toWait`](pages.html#towait) content definition option which allows specifying that page transition happens asynchronously. \[[GEB-134](http://jira.codehaus.org/browse/GEB-134)\]
+* Added support for explicitly specifying browser capabilities when using cloud browsers Gradle plugins. \[[GEB-340](http://jira.codehaus.org/browse/GEB-340)\]
 
 #### Fixes
 
@@ -83,6 +84,7 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking changes
 * Use Groovy 2.3.6 to build Geb. \[[GEB-330](http://jira.codehaus.org/browse/GEB-330)\]
+* Format of browser specification passed to `BrowserStackBrowserFactory.create()` and `SauceLabsBrowserFactory.create()` has changed to be a string in Java properties file format defining the required browser capabilities.
 
 ### 0.9.3
 

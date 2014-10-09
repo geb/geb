@@ -53,7 +53,8 @@ class SaucePlugin implements Plugin<Project> {
 
 				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
 
-				browser.configure(task)
+				browser.testTask = task
+				browser.configureTestTask()
 			}
 
 			def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {

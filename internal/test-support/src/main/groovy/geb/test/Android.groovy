@@ -13,35 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.navigator
+package geb.test
 
-import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
-import geb.test.Android
+import java.lang.annotation.*
 
-@CrossBrowser
-@Android
-class NavigatorCssSpec extends GebSpecWithServer {
-
-	def setupSpec() {
-		responseHtml {
-			body {
-				div(class: 'styled', style: 'float: left', 'text')
-			}
-		}
-	}
-
-	def setup() {
-		go()
-	}
-
-	void 'getting css values'() {
-		expect:
-		$('.styled').css('float') == 'left'
-	}
-
-	void 'getting css values for empty navigator'() {
-		expect:
-		$('p').css('float') == null
-	}
+@Retention(RetentionPolicy.RUNTIME)
+@Target([ElementType.TYPE, ElementType.METHOD])
+@Inherited
+public @interface Android {
 }

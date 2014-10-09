@@ -6,11 +6,30 @@ When you want to perform web testing on multiple browsers and operating systems,
 
 For both SauceLabs and BrowserStack, a special driver factory is provided that, given a browser specification as well as an username and access key, creates an instance of `RemoteWebDriver` configured to use a browser in the cloud. Examples of typical usage in `GebConfig.groovy` are included below. They will configure Geb to run in SauceLabs/BrowserStack if the appropriate system property is set, and if not it will use whatever driver that is configured. This is useful if you want to run the code in a local browser for development. In theory you could use any system property to pass the browser specification but `geb.saucelabs.browser`/`geb.browserstack.browser` are also used by the Geb Gradle plugins, so it's a good idea to stick with those property names.
 
-The first parameter passed to the `create()` method is a ”browser specification“ and it should have the following format:
+The first parameter passed to the `create()` method is a ”browser specification“ and it should be a list of required browser capabilities in Java properties file format:
 
-	«browser»:«operating system»:«version»
+	browserName=«browser name as per values of fields in org.openqa.selenium.remote.BrowserType»
+	platform=«platform as per enum item names in org.openqa.selenium.Platform»
+	version=«version»
 
-Assuming you're using the following snippet in your `GebConfig.groovy` to execute your code via SauceLabs with Firefox 19 on Linux, you would set the `geb.saucelabs.browser` system property to `firefox:linux:19`, and to execute it with IE 9 on Vista to `internetExplorer:vista:9`. Some browsers like Chrome automatically update to the latest version; for these browsers you don't need to specify the version as there's only one, and you would use something like `chrome:mac` as the ”browser specification“. For a full list of available browsers, versions and operating systems refer to your cloud provider's documentation:
+Assuming you're using the following snippet in your `GebConfig.groovy` to execute your code via SauceLabs with Firefox 19 on Linux, you would set the `geb.saucelabs.browser` system property to:
+
+	browserName=firefox
+	platform=LINUX
+	version=19
+ 
+and to execute it with IE 9 on Vista to:
+
+	browserName=internet explorer
+	platform=VISTA
+	version=9
+
+Some browsers like Chrome automatically update to the latest version; for these browsers you don't need to specify the version as there's only one, and you would use something like:
+
+	browserName=chrome
+	platform=MAC
+
+as the ”browser specification“. For a full list of available browsers, versions and operating systems refer to your cloud provider's documentation:
 
 * [SauceLabs platform list](https://saucelabs.com/docs/platforms/webdriver)
 * [BrowserStack Browsers and Platforms list](http://www.browserstack.com/list-of-browsers-and-platforms?product=automate)
@@ -95,13 +114,16 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 			firefox_linux_19
 			chrome_mac
 			internetExplorer_vista_9
+			nexus4 { //6
+				capabilities browserName: "android", platform: "Linux", version: "4.4", deviceName: "LG Nexus 4"
+			}
 		}
-		task { //6
+		task { //7
 			testClassesDir = test.testClassesDir
 			testSrcDirs = test.testSrcDirs
 			classpath = test.classpath
 		}
-		account { //7
+		account { //8
 			username = System.getenv(SauceAccount.USER_ENV_VAR)
 			accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
 		}
@@ -109,10 +131,11 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 
 In (1) we apply the plugin to the build and in (2) we're specifying how to resolve the plugin.
 In (3) and (4) we're defining dependencies for the `sauceConnect` configuration; this will be used by tasks that open a [SauceConnect](https://saucelabs.com/docs/connect) tunnel before running the generated test tasks which means that the browsers in the cloud will have localhost pointing at the machine running the build.
-In (5) we're saying that we want our tests to run in 3 different browsers; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and `internetExplorerVista9Test`.
+In (5) we're saying that we want our tests to run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and `internetExplorerVista9Test`.
+We can also explicitly specify the required browser capabilities as we do in (6) if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 You can use `allSauceLabsTests` task that will depend on all of the generated test tasks to run all of them during a build.
-The configuration closure specified at (6) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-Finally in (7) we pass credentials for [SauceConnect](https://saucelabs.com/docs/connect).
+The configuration closure specified at (7) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+Finally in (8) we pass credentials for [SauceConnect](https://saucelabs.com/docs/connect).
 
 ### Gradle geb-browserstack Plugin
 
@@ -133,6 +156,9 @@ Finally in (7) we pass credentials for [SauceConnect](https://saucelabs.com/docs
 			firefox_mac_19
 			chrome_mac
 			internetExplorer_windows_9
+			nexus4 { //5
+				capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
+			}
 		}
 		task { //5
 			testClassesDir = test.testClassesDir
@@ -149,7 +175,8 @@ In (1) we apply the plugin to the build and in (2) we're specifying how to resol
 In (3) we're specifying which applications the BrowserStack Tunnel should be able to access.
 Multiple applications can be specified.
 If no applications are specified, the tunnel will not be restricted to particular URLs. 
-In (4) we're saying that we want our tests to run in 3 different browsers; this will generate the following `Test` tasks: `firefoxMac19Test`, `chromeMacTest` and `internetExplorerWindows9Test`.
+In (4) we're saying that we want our tests to run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxMac19Test`, `chromeMacTest` and `internetExplorerWindows9Test`.
+We can also explicitly specify the required browser capabilities as we do in (5) if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 You can use `allBrowserStackTests` task that will depend on all of the generated test tasks to run all of them during a build.
-The configuration closure specified at (5) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-Finally in (6) we pass credentials for BrowserStack.
+The configuration closure specified at (6) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+Finally in (7) we pass credentials for BrowserStack.

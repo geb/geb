@@ -17,16 +17,18 @@ package geb.navigator
 
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
+import geb.test.Android
 
 @CrossBrowser
+@Android
 class NavigatorElementsSpec extends GebSpecWithServer {
 
 	def getElement() {
 		given:
 		html {
-			div(id: "a")
-			div(id: "b")
-			div(id: "c")
+			div(id: "a", "a")
+			div(id: "b", "b")
+			div(id: "c", "c")
 		}
 
 		expect:
@@ -39,8 +41,8 @@ class NavigatorElementsSpec extends GebSpecWithServer {
 	def firstElement() {
 		given:
 		html {
-			div(id: "a", 'class': "a1 a2 a3")
-			div(id: "b", 'class': "b1")
+			div(id: "a", 'class': "a1 a2 a3", "a")
+			div(id: "b", 'class': "b1", "b")
 		}
 
 		expect:
@@ -51,8 +53,8 @@ class NavigatorElementsSpec extends GebSpecWithServer {
 	def lastElement() {
 		given:
 		html {
-			div(id: "a", 'class': "a1 a2 a3")
-			div(id: "b", 'class': "b1")
+			div(id: "a", 'class': "a1 a2 a3", "a")
+			div(id: "b", 'class': "b1", "b")
 		}
 
 		expect:
@@ -63,9 +65,9 @@ class NavigatorElementsSpec extends GebSpecWithServer {
 	def allElements() {
 		when:
 		html {
-			div(id: "a")
-			div(id: "b")
-			div(id: "c")
+			div(id: "a", "a")
+			div(id: "b", "b")
+			div(id: "c", "c")
 		}
 
 		then:

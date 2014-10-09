@@ -16,7 +16,6 @@
 package geb.driver
 
 import org.openqa.selenium.Capabilities
-import org.openqa.selenium.Platform
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 
@@ -27,7 +26,7 @@ abstract class CloudDriverFactory {
 	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
 	}
 
-	WebDriver create(String specification, String username, String password, Map<String, Object> capabilities = [:]) {
+	WebDriver create(String specification, String username, String password, Map<String, Object> additionalCapabilities = [:]) {
 		def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
 		Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
 		if (!remoteWebDriverClass) {
@@ -36,25 +35,11 @@ abstract class CloudDriverFactory {
 
 		def url = new URL(assembleProviderUrl(username, password))
 
-		def parts = specification.split(":", 3)
-		def name = parts[0]
-		def platform = parts.size() > 1 ? parts[1] : null
-		def version = parts.size() > 2 ? parts[2] : null
+		Properties capabilities = new Properties()
+		capabilities.load(new StringReader(specification))
+		capabilities.putAll(additionalCapabilities)
 
-		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities')."$name"();
-		capabilities.each { key, value ->
-			browser.setCapability(key, value)
-		}
-		if (platform) {
-			try {
-				platform = Platform."${platform.toUpperCase()}"
-			} catch (MissingPropertyException ignore) {
-			}
-			browser.setCapability("platform", platform)
-		}
-		if (version != null) {
-			browser.setCapability("version", version.toString())
-		}
+		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance(capabilities)
 		configureCapabilities(browser)
 
 		remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, browser)
