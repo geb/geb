@@ -113,7 +113,7 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 		browsers { //5
 			firefox_linux_19
 			chrome_mac
-			internetExplorer_vista_9
+			delegate."internet explorer_vista_9"
 			nexus4 { //6
 				capabilities browserName: "android", platform: "Linux", version: "4.4", deviceName: "LG Nexus 4"
 			}
@@ -131,7 +131,7 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 
 In (1) we apply the plugin to the build and in (2) we're specifying how to resolve the plugin.
 In (3) and (4) we're defining dependencies for the `sauceConnect` configuration; this will be used by tasks that open a [SauceConnect](https://saucelabs.com/docs/connect) tunnel before running the generated test tasks which means that the browsers in the cloud will have localhost pointing at the machine running the build.
-In (5) we're saying that we want our tests to run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and `internetExplorerVista9Test`.
+In (5) we're saying that we want our tests to run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and `internet explorerVista9Test`.
 We can also explicitly specify the required browser capabilities as we do in (6) if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 You can use `allSauceLabsTests` task that will depend on all of the generated test tasks to run all of them during a build.
 The configuration closure specified at (7) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
@@ -155,7 +155,7 @@ Finally in (8) we pass credentials for [SauceConnect](https://saucelabs.com/docs
 		browsers { //4
 			firefox_mac_19
 			chrome_mac
-			internetExplorer_windows_9
+			delegate."internet explorer_windows_9"
 			nexus4 { //5
 				capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
 			}
@@ -175,7 +175,7 @@ In (1) we apply the plugin to the build and in (2) we're specifying how to resol
 In (3) we're specifying which applications the BrowserStack Tunnel should be able to access.
 Multiple applications can be specified.
 If no applications are specified, the tunnel will not be restricted to particular URLs. 
-In (4) we're saying that we want our tests to run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxMac19Test`, `chromeMacTest` and `internetExplorerWindows9Test`.
+In (4) we're saying that we want our tests to run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxMac19Test`, `chromeMacTest` and `internet explorerWindows9Test`.
 We can also explicitly specify the required browser capabilities as we do in (5) if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 You can use `allBrowserStackTests` task that will depend on all of the generated test tasks to run all of them during a build.
 The configuration closure specified at (6) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.

@@ -59,10 +59,10 @@ browserStack {
 		chrome_windows
 		firefox_windows
 		firefox_mac
-		internetExplorer_windows_8
-		internetExplorer_windows_9
-		internetExplorer_windows_10
-		internetExplorer_windows_11
+		delegate."internet explorer_windows_8"
+		delegate."internet explorer_windows_9"
+		delegate."internet explorer_windows_10"
+		delegate."internet explorer_windows_11"
 
 	}
 	task {
@@ -82,7 +82,7 @@ task nonIeBrowserStackTests {
 }
 
 task ieBrowserStackTests {
-	dependsOn 'internetExplorerWindows8Test', 'internetExplorerWindows9Test', 'internetExplorerWindows10Test', 'internetExplorerWindows11Test'
+	dependsOn 'internet explorerWindows8Test', 'internet explorerWindows9Test', 'internet explorerWindows10Test', 'internet explorerWindows11Test'
 }
 
 modifyPom { pom ->
