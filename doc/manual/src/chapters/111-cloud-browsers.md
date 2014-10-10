@@ -160,12 +160,12 @@ Finally in (8) we pass credentials for [SauceConnect](https://saucelabs.com/docs
 				capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
 			}
 		}
-		task { //5
+		task { //6
 			testClassesDir = test.testClassesDir
 			testSrcDirs = test.testSrcDirs
 			classpath = test.classpath
 		}
-		account { //6
+		account { //7
 			username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
 			accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
 		}
