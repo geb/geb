@@ -29,7 +29,9 @@ sauceLabs {
 	browsers {
 		chrome_linux
 		firefox_linux
-		delegate."safari_OS X 10.9_7"
+		safari_mac_7 {
+			capabilities platform: "OS X 10.9"
+		}
 	}
 	task {
 		testClassesDir = test.testClassesDir

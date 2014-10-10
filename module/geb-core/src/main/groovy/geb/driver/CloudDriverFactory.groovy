@@ -39,7 +39,10 @@ abstract class CloudDriverFactory {
 		capabilities.load(new StringReader(specification))
 		capabilities.putAll(additionalCapabilities)
 
-		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance(capabilities)
+		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance()
+		capabilities.each { capability, value ->
+			browser.setCapability(capability, value)
+		}
 		configureCapabilities(browser)
 
 		remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, browser)
