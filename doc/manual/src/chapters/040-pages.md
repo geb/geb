@@ -568,7 +568,7 @@ You can either overwrite this catchall method to control path conversion for all
         String name
     }
     
-    class PersonPage {
+    class PersonPage extends Page {
         static url = "person"
         
         String convertToPath(Person person) {
