@@ -20,12 +20,22 @@ import org.gradle.api.tasks.testing.Test
 class SauceAccount {
 	public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
 	public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_PASSWORD"
+	public static final String SAUCE_CONNECT_OPTS_ENV_VAR = "GEB_SAUCE_LABS_OPTIONS"
+	public static final String SAUCE_CONNECT_PORT_ENV_VAR = "GEB_SAUCE_LABS_PORT"
 
+    /** The Sauce Labs username to use for the Sauce Connect instance. */
 	String username
+    /** The Sauce Labs access key to use for the Sauce Connect instance. */
 	String accessKey
+    /** The Sauce Labs command line options to be supplied when launching Sauce Connect. */
+    String options
+    /** The port that Sauce Connect should be launched on. */
+    Integer port = 4445
 
 	void configure(Test test) {
 		test.environment(USER_ENV_VAR, username)
 		test.environment(ACCESS_KEY_ENV_VAR, accessKey)
+		test.environment(SAUCE_CONNECT_OPTS_ENV_VAR, options)
+		test.environment(SAUCE_CONNECT_PORT_ENV_VAR, port)
 	}
 }

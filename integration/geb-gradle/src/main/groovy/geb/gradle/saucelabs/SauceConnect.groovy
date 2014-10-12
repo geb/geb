@@ -21,13 +21,14 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.internal.jvm.Jvm
 import org.slf4j.Logger
+import com.saucelabs.ci.sauceconnect.SauceConnectFourManager
 
 class SauceConnect extends ExternalTunnel {
 	final protected SauceAccount account
 	final protected Configuration connectConfiguration
 
 	final String outputPrefix = 'sauce-connect'
-	final String tunnelReadyMessage = 'Connected! You may start your tests.'
+	final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
 	SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration) {
 		super(project, logger)
@@ -40,17 +41,19 @@ class SauceConnect extends ExternalTunnel {
 		if (!account.username || !account.accessKey) {
 			throw new InvalidUserDataException('No sauce labs username or passwords set')
 		}
-		if (!sauceConnectJar.exists()) {
-			throw new InvalidUserDataException('No sauce connect jar set')
-		}
 	}
 
+    /**
+     * Unzips the Sauce Connect binary which is applicable to the current operating system to the current working directory,
+     * and returns the command line which should be used to launch Sauce Connect.
+     * @return array representing the Sauce Connect command and options to run
+     */
 	@Override
 	List<String> assembleCommandLine() {
-		[Jvm.current().javaExecutable.absolutePath, '-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]
-	}
-
-	File getSauceConnectJar() {
-		connectConfiguration.singleFile
+        SauceConnectFourManager manager = new SauceConnectFourManager()
+        SauceConnectFourManager.OperatingSystem operatingSystem = SauceConnectFourManager.OperatingSystem.getOperatingSystem();
+        File unzipDirectory = manager.extractZipFile(new File(System.getProperty("user.dir")), operatingSystem)
+        String[] args = [new File(unzipDirectory, operatingSystem.getExecutable()).getPath()]
+        return manager.generateSauceConnectArgs(args, account.username, account.accessKey, account.port, account.options);
 	}
 }

@@ -31,6 +31,7 @@ allprojects { project ->
 		seleniumVersion = "2.43.1"
 		groovyVersion = "2.3.6"
 		spockVersion = "0.7-groovy-2.0"
+        sauceVersion = "1.81"
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
 			exclude module: "groovy-all"
@@ -44,6 +45,8 @@ allprojects { project ->
 		jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
 
 		groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
+
+        sauceDependency = "com.saucelabs:ci-sauce:$sauceVersion"
 
 		repositories {
 			mavenCentral()
