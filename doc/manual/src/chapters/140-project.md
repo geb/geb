@@ -49,6 +49,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Tom Dunstan](https://github.com/tomdcc) - Cucumber integration and related documentation
 * [Brian Kotek](https://github.com/brian428) - Doc improvements
 * [David W Millar](https://github.com/david-w-millar) - Doc improvements
+* [Ai-Lin Liou](https://github.com/alincode) - Doc improvements
 
 ## History
 
