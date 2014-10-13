@@ -20,6 +20,7 @@ import geb.navigator.Navigator
 import geb.navigator.NonEmptyNavigator
 import geb.test.GebSpecWithServer
 import org.openqa.selenium.WebElement
+import spock.lang.Issue
 
 class NavigableSpec extends GebSpecWithServer {
 
@@ -44,7 +45,7 @@ class NavigableSpec extends GebSpecWithServer {
 	def "no args"() {
 		expect:
 		$().tag() == "html"
-		// find().tag() == "html" // doesn't work due to Groovy not dispatching to our method
+		//find().tag() == "html" // doesn't work due to Groovy not dispatching to our method
 	}
 
 	def "just index"() {
@@ -81,6 +82,19 @@ class NavigableSpec extends GebSpecWithServer {
 		expect:
 		$("p", class: "c").text() == "c"
 		find("p", class: "c").text() == "c"
+	}
+
+	@Issue("GEB-339")
+	def "predicates map passed to find is not modified"() {
+		given:
+		def predicates = [class: "c"]
+
+		when:
+		def text = find(predicates, "p").text()
+
+		then:
+		text == "c"
+		predicates == [class: "c"]
 	}
 
 	def "attributes and index"() {

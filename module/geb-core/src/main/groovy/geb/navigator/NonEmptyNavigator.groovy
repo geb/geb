@@ -63,9 +63,10 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator find(Map<String, Object> predicates, String selector) {
-		selector = optimizeSelector(selector, predicates)
+		def predicatesCopy = predicates.clone()
+		selector = optimizeSelector(selector, predicatesCopy)
 		if (selector) {
-			find(selector).filter(predicates)
+			find(selector).filter(predicatesCopy)
 		} else {
 			find(predicates)
 		}
