@@ -84,6 +84,7 @@ This page lists the high level changes between versions of Geb.
 * Setup CI for all of the example projects. \[[GEB-188](http://jira.codehaus.org/browse/GEB-188)\]
 * Incorporate the example projects into the main build. \[[GEB-189](http://jira.codehaus.org/browse/GEB-189)\]
 * Add a test crawling the site in search for broken links. \[[GEB-327](http://jira.codehaus.org/browse/GEB-327)\]
+* Document the [release process](https://github.com/geb/geb/blob/master/RELEASING.md). \[[GEB-325](http://jira.codehaus.org/browse/GEB-325)\]
 
 #### Breaking changes
 * Use Groovy 2.3.6 to build Geb. \[[GEB-330](http://jira.codehaus.org/browse/GEB-330)\]
