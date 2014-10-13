@@ -13,17 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.gradle.cloud.task
+package geb.gradle.saucelabs
 
-import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.DefaultTask
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-class StopExternalJavaTunnel extends DefaultTask {
-	ExternalTunnel tunnel
+class UnpackSauceConnect extends DefaultTask {
+
+	@InputFiles
+	Configuration getSauceConnectConfiguration() {
+		project.configurations.sauceConnect
+	}
+
+	@OutputDirectory
+	File getSauceConnectDir() {
+		new File(project.buildDir, "sauce-connect")
+	}
 
 	@TaskAction
-	void stop() {
-		tunnel.stopTunnel()
+	void unpack() {
+		def operations = new SauceConnectOperations(sauceConnectConfiguration)
+		def manager = operations.loadSauceConnectFourManagerClass().newInstance()
+		manager.extractZipFile(sauceConnectDir, operations.operatingSystem)
 	}
 }

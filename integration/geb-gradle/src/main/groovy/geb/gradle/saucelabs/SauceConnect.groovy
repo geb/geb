@@ -19,20 +19,30 @@ import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.internal.jvm.Jvm
 import org.slf4j.Logger
 
 class SauceConnect extends ExternalTunnel {
 	final protected SauceAccount account
 	final protected Configuration connectConfiguration
+	final protected File sauceConnectDir
 
 	final String outputPrefix = 'sauce-connect'
-	final String tunnelReadyMessage = 'Connected! You may start your tests.'
+	final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
-	SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration) {
+	int port = 4445
+	List<String> additionalOptions = []
+
+	File getSauceConnectExecutable() {
+		def operations = new SauceConnectOperations(connectConfiguration)
+		def directory = new File(sauceConnectDir, operations.operatingSystem.directory)
+		new File(directory, operations.operatingSystem.executable)
+	}
+
+	SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration, File sauceConnectDir) {
 		super(project, logger)
 		this.account = account
 		this.connectConfiguration = connectConfiguration
+		this.sauceConnectDir = sauceConnectDir
 	}
 
 	@Override
@@ -40,17 +50,10 @@ class SauceConnect extends ExternalTunnel {
 		if (!account.username || !account.accessKey) {
 			throw new InvalidUserDataException('No sauce labs username or passwords set')
 		}
-		if (!sauceConnectJar.exists()) {
-			throw new InvalidUserDataException('No sauce connect jar set')
-		}
 	}
 
 	@Override
 	List<String> assembleCommandLine() {
-		[Jvm.current().javaExecutable.absolutePath, '-jar', sauceConnectJar.absolutePath, account.username, account.accessKey]
-	}
-
-	File getSauceConnectJar() {
-		connectConfiguration.singleFile
+		[sauceConnectExecutable.absolutePath, '--user', account.username, '--api-key',  account.accessKey, '--se-port', port] + additionalOptions
 	}
 }

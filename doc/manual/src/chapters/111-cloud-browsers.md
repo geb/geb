@@ -106,7 +106,7 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 	}
 
 	dependencies { //4
-		sauceConnect "com.saucelabs:sauce-connect:3.0.28"
+		sauceConnect "com.saucelabs:ci-sauce:1.81"
 	}
 
 	sauceLabs {
@@ -127,6 +127,10 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 			username = System.getenv(SauceAccount.USER_ENV_VAR)
 			accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
 		}
+		connect { //9
+			port = 4444 //defaults to 4445 
+			additionalOptions = ['--proxy', 'proxy.example.com:8080']
+		}
 	}
 
 In (1) we apply the plugin to the build and in (2) we're specifying how to resolve the plugin.
@@ -135,7 +139,8 @@ In (5) we're saying that we want our tests to run in 3 different browsers using 
 We can also explicitly specify the required browser capabilities as we do in (6) if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 You can use `allSauceLabsTests` task that will depend on all of the generated test tasks to run all of them during a build.
 The configuration closure specified at (7) is used to configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-Finally in (8) we pass credentials for [SauceConnect](https://saucelabs.com/docs/connect).
+In (8) we pass credentials for [SauceConnect](https://saucelabs.com/docs/connect).
+Finally in (9) we can additionally configure [SauceConnect](https://saucelabs.com/docs/connect) if desired. In (10) we override the port used by it and we can also pass additional [command line options](https://docs.saucelabs.com/reference/sauce-connect/#command-line-options) like in (11).
 
 ### Gradle geb-browserstack Plugin
 

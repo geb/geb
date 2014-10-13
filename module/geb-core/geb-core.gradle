@@ -14,7 +14,7 @@ dependencies {
 	compile project(":module:geb-ast")
 	compile project(":module:geb-waiting")
 
-	sauceConnect "com.saucelabs:sauce-connect:3.1.32"
+	sauceConnect "com.saucelabs:ci-sauce:1.81"
 }
 
 test {

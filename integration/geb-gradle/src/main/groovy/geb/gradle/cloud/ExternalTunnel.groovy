@@ -47,7 +47,7 @@ abstract class ExternalTunnel {
 	void startTunnel(File workingDir, boolean background) {
 		validateState()
 
-		def command = assembleCommandLine()
+		def command = assembleCommandLine()*.toString()
 		logger.debug("Executing command: {}", command)
 		if (background) {
 			workingDir.mkdirs()

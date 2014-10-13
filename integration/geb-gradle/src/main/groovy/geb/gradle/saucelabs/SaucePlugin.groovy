@@ -17,7 +17,7 @@ package geb.gradle.saucelabs
 
 import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.task.StartExternalTunnel
-import geb.gradle.cloud.task.StopExternalJavaTunnel
+import geb.gradle.cloud.task.StopExternalTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
@@ -32,6 +32,8 @@ class SaucePlugin implements Plugin<Project> {
 		this.project = project
 
 		project.configurations.create('sauceConnect')
+
+		project.task('unpackSauceConnect', type: UnpackSauceConnect)
 
 		project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
 
@@ -68,7 +70,7 @@ class SaucePlugin implements Plugin<Project> {
 	}
 
 	void addTunnelTasks() {
-		project.task('closeSauceTunnel', type: StopExternalJavaTunnel) {
+		project.task('closeSauceTunnel', type: StopExternalTunnel) {
 			tunnel = project.sauceLabs.connect
 		}
 
@@ -81,6 +83,7 @@ class SaucePlugin implements Plugin<Project> {
 
 		[openSauceTunnel, openSauceTunnelInBackground].each {
 			it.configure {
+				dependsOn 'unpackSauceConnect'
 				tunnel = project.sauceLabs.connect
 				workingDir = project.buildDir
 			}

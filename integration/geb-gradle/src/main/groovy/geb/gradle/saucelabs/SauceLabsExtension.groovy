@@ -30,7 +30,7 @@ class SauceLabsExtension {
 	void addExtensions() {
 		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
 		account = new SauceAccount()
-		extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect)
+		extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
 	}
 
 	void task(Closure configuration) {

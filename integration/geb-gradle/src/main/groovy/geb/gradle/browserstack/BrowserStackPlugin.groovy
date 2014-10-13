@@ -18,7 +18,7 @@ package geb.gradle.browserstack
 import geb.gradle.browserstack.task.DownloadBrowserStackTunnel
 import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.task.StartExternalTunnel
-import geb.gradle.cloud.task.StopExternalJavaTunnel
+import geb.gradle.cloud.task.StopExternalTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
@@ -77,7 +77,7 @@ class BrowserStackPlugin implements Plugin<Project> {
 			into(project.file("${project.rootProject.buildDir}/browserstack/unzipped"))
 		}
 
-		project.task('closeBrowserStackTunnel', type: StopExternalJavaTunnel) {
+		project.task('closeBrowserStackTunnel', type: StopExternalTunnel) {
 			tunnel = project.browserStack.tunnel
 		}
 

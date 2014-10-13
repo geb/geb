@@ -75,6 +75,7 @@ This page lists the high level changes between versions of Geb.
 * Don't fail in `Browser.isAt()` if at check waiting is enabled and it times out. \[[GEB-337](http://jira.codehaus.org/browse/GEB-337)\]
 * The value passed to `aliases` content option in documentation examples should be a String \[[GEB-338](http://jira.codehaus.org/browse/GEB-338)\]
 * Added `$()` method on Navigator with all signatures of `find()`. \[[GEB-321](http://jira.codehaus.org/browse/GEB-321)\]
+* `geb-saucelabs` plugin now uses a native version of SauceConnect. \[[GEB-341](http://jira.codehaus.org/browse/GEB-341)\]
 
 #### Project Related Changes
 
@@ -86,6 +87,7 @@ This page lists the high level changes between versions of Geb.
 #### Breaking changes
 * Use Groovy 2.3.6 to build Geb. \[[GEB-330](http://jira.codehaus.org/browse/GEB-330)\]
 * Format of browser specification passed to `BrowserStackBrowserFactory.create()` and `SauceLabsBrowserFactory.create()` has changed to be a string in Java properties file format defining the required browser capabilities.
+* `sauceConnect` configuration used with `geb-saucelabs` plugin should now point at a version of 'ci-sauce' artifact from 'com.saucelabs' group.
 
 ### 0.9.3
 
