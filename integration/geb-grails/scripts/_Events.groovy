@@ -56,12 +56,16 @@ eventAllTestsStart = {
 	runningTests = true
 
 	tryToLoadTestTypes()
-	
-	[junit3TestTypeClassName, junit4TestTypeClassName].each { testTypeClassName ->
-		def testTypeClass = softLoadClass(testTypeClassName)
-		if (testTypeClass) {
-			if (!functionalTests.any { it.class == testTypeClass }) {
-				functionalTests << testTypeClass.newInstance('functional', 'functional')
+
+	// The Spock test type in Grails 2.3+ will run JUnit tests as well, so don't register the JUnit test
+	// types to avoid running JUnit tests twice when using Grails 2.3+
+	if (!softLoadClass(coreSpecTestTypeClassName)) {
+		[junit3TestTypeClassName, junit4TestTypeClassName].each { testTypeClassName ->
+			def testTypeClass = softLoadClass(testTypeClassName)
+			if (testTypeClass) {
+				if (!functionalTests.any { it.class == testTypeClass }) {
+					functionalTests << testTypeClass.newInstance('functional', 'functional')
+				}
 			}
 		}
 	}
