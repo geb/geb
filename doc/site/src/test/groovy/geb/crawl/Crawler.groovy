@@ -60,6 +60,8 @@ abstract class Crawler {
 		!isUnderStartUrl(url)
 	}
 
+	abstract boolean shouldValidateFragment(Link url)
+
 	Collection<String> getDownloadableExtensions() {
 		["pdf", "zip", "jar"]
 	}
@@ -74,7 +76,7 @@ abstract class Crawler {
 		}
 
 		def fragment = link.uri.fragment
-		if (response.document && fragment) {
+		if (response.document && fragment && shouldValidateFragment(link)) {
 			if (!response.document.select("a").any { Element it -> it.attr("name") == fragment } && response.document.getElementById(fragment) == null) {
 				link.errors << new BadFragmentError(link.uri.fragment)
 			}

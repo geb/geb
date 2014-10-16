@@ -32,7 +32,15 @@ class LinkCrawlSpec extends Specification {
 
 		def crawler = new Crawler(aut.address.toString()) {
 			boolean shouldUseHeadRequest(Link url) {
-				!(url.uri.host in ["drone.io", "blog.proxerd.pl"]) && super.shouldUseHeadRequest(url)
+				def usingHead = !(url.uri.host in ["drone.io", "blog.proxerd.pl", "search.maven.org"]) && super.shouldUseHeadRequest(url)
+				if (!usingHead) {
+					println "not using head for" + url
+				}
+				usingHead
+			}
+
+			boolean shouldValidateFragment(Link url) {
+				url.uri.host != "search.maven.org"
 			}
 
 			@Override

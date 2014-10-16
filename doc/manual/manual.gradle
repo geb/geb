@@ -23,6 +23,7 @@ task tokeniseManual(type: Copy) {
 	ext.substitutionProperties = [
 		"geb-version": project.version,
 		"geb-group": project.group,
+		"geb-group-dir": project.group.replace(".", "/"),
 		"spock-version": "0.7",
 		"spock-core-version": "0.7-groovy-1.8",
 		"selenium-version": seleniumVersion,

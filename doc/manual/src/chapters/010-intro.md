@@ -203,7 +203,7 @@ For more information on using Geb for web and functional testing, see the [testi
 
 ## Installation & Usage
 
-Geb itself is a available as a single [`geb-core` jar from the central Maven repository](http://mvnrepository.com/artifact/@geb-group@/geb-core). To get up and running you simply need this jar, a WebDriver driver implementation and the `selenium-support` jar.
+Geb itself is a available as a single [`geb-core` jar from the central Maven repository](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22@geb-group@%22%20AND%20a%3A%22geb-core%22). To get up and running you simply need this jar, a WebDriver driver implementation and the `selenium-support` jar.
 
 Via `@Grab`…
     
@@ -236,6 +236,12 @@ Via Gradle…
 
     compile "@geb-group@:geb-core:@geb-version@", "org.seleniumhq.selenium:selenium-firefox-driver:@selenium-version@", "org.seleniumhq.selenium:selenium-support:@selenium-version@"
 
-Alternatively, if using an integration such as `geb-spock` or `geb-junit` you can depend on that instead of `geb-core`.
+Alternatively, if using an integration such as `geb-spock` or `geb-junit4` you can depend on that instead of `geb-core`. You can check out [the listing of all artifacts in `@geb-group@` group](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22@geb-group@%22) to see what's available.
 
 > Be sure to check the chapter on [build integrations](build-integrations.html) for information on using Geb with particular environments, like [Grails][grails].
+
+### Snapshot repository
+
+If you fancy living on the bleeding edge then you can try out Geb's snapshot artifacts located in [the Maven repository at https://oss.sonatype.org/content/repositories/snapshots](https://oss.sonatype.org/content/repositories/snapshots/@geb-group-dir@).
+
+
