@@ -81,6 +81,7 @@ This page lists the high level changes between versions of Geb.
 * Functional tests implemented using JUnit and Geb run twice in Grails 2.3+. \[[GEB-314](http://jira.codehaus.org/browse/GEB-314)\]
 * Mention in the manual where snapshot artifacts can be downloaded from. \[[GEB-305](http://jira.codehaus.org/browse/GEB-305)\]
 * Document that `withNewWindow()` and `withWindow()` switch page back to the original one. \[[GEB-279](http://jira.codehaus.org/browse/GEB-279)\]
+* Fix selectors in documentation for manipulating checkboxes. \[[GEB-268](http://jira.codehaus.org/browse/GEB-268)\]
 
 #### Project Related Changes
 

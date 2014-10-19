@@ -469,30 +469,30 @@ If the collection being assigned contains a value that does not match the value 
 
 Checkboxes are generally checked/unchecked by setting their value to `true` or `false`.
 
-You can also select a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.
+You can also check a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.
 
     <input type="checkbox" name="pet" value="dogs" />
     <input type="checkbox" name="pet" value="cats" />
 
 You can select dogs as your pet type, as follows:
 
-    $("checkbox", name: "pet").value("dogs")
+    $("input", type: "checkbox", name: "pet").value("dogs")
 
 Calling `value()` on a checked checkbox will return the value of its `value` attribute, i.e:
 
     <input type="checkbox" name="pet" value="dogs" checked="checked"/>
 
-    assert $("checkbox", name: "pet").value() == "dogs"
+    assert $("input", type: "checkbox", name: "pet").value() == "dogs"
 
 Calling `value()` on an unchecked checkbox will return `false`, i.e:
 
     <input type="checkbox" name="pet" value="dogs"/>
 
-    assert $("checkbox", name: "pet").value() == false
+    assert $("input", type: "checkbox", name: "pet").value() == false
 
 In general you should use [Groovy Truth][groovy-truth] when checking if a checkbox is checked:
 
-    if ($("checkbox", name: "pet").value()) {
+    if ($("input", type: "checkbox", name: "pet").value()) {
         //evaluated only if "pet" checkbox is checked
     }
 
