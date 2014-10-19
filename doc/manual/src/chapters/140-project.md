@@ -80,6 +80,7 @@ This page lists the high level changes between versions of Geb.
 * Don't modify the predicate map passed to  [`Navigator.find(Map<String, Object>, String)`](api/geb/navigator/Navigator.html#find\(Map%3CString,%20Object%3E,%20java.lang.String\)). \[[GEB-339](http://jira.codehaus.org/browse/GEB-339)\]
 * Functional tests implemented using JUnit and Geb run twice in Grails 2.3+. \[[GEB-314](http://jira.codehaus.org/browse/GEB-314)\]
 * Mention in the manual where snapshot artifacts can be downloaded from. \[[GEB-305](http://jira.codehaus.org/browse/GEB-305)\]
+* Document that `withNewWindow()` and `withWindow()` switch page back to the original one. \[[GEB-279](http://jira.codehaus.org/browse/GEB-279)\]
 
 #### Project Related Changes
 

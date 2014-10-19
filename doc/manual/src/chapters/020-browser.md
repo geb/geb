@@ -313,6 +313,8 @@ This code passes:
         assert $('#slogan').text() == 'very groovy browser automation… web testing, screen scraping and more'
     }
 
+If code of the closure passed as the last argument changes browser's current page instance (e.g. by using [`page(Page)`](api/geb/Browser.html#page\(geb.Page\)) or [`at(Page)`](api/geb/Browser.html#at\(Class%3CT%3E\))) then it will be reverted to its original value after returning from `withWindow()`.
+
 #### Passing options when working with already opened windows
 
 Currently there is only one option that can be passed to a [`withWindow()`](api/geb/Browser.html#withWindow\(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure\)) call which make working with already opened windows even simpler. The general syntax is:
@@ -329,7 +331,7 @@ If you pass any *truish* value as `close` option then all matching windows will 
 
 Default value: `null`
 
-If you pass a class that extends `Page` as `page` option, then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards. If the page class defines an at checker then this will be verified when the page is set on the browser.
+If you pass a class that extends `Page` as `page` option, then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards. If the page class defines an at checker then it will be verified when the page is set on the browser.
 
 ### Switching context to newly opened windows
 
@@ -340,6 +342,8 @@ If you wish to execute code in a window that is newly opened by some of your act
     }
 
 Note that if the first parameter opens none or more than one window, then [`NoNewWindowException`](api/geb/error/NoNewWindowException.html) is thrown.
+
+If code of the closure passed as the last argument changes browser's current page instance (e.g. by using [`page(Page)`](api/geb/Browser.html#page\(geb.Page\)) or [`at(Page)`](api/geb/Browser.html#at\(Class%3CT%3E\))) then it will be reverted to its original value after returning from `withNewWindow()`.
 
 #### Passing options when working with newly opened windows
 
