@@ -64,6 +64,7 @@ This page lists the high level changes between versions of Geb.
 * Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. \[[GEB-332](http://jira.codehaus.org/browse/GEB-332)\]
 * Added [`toWait`](pages.html#towait) content definition option which allows specifying that page transition happens asynchronously. \[[GEB-134](http://jira.codehaus.org/browse/GEB-134)\]
 * Added support for explicitly specifying browser capabilities when using cloud browsers Gradle plugins. \[[GEB-340](http://jira.codehaus.org/browse/GEB-340)\]
+* Added an overloaded `create()` method on cloud driver factories that allow specifying browser capabilities in a map and don't require a string capabilities specification. \[[GEB-281](http://jira.codehaus.org/browse/GEB-281)\]
 
 #### Fixes
 

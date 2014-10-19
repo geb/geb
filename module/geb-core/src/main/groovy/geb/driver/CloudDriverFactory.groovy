@@ -26,17 +26,23 @@ abstract class CloudDriverFactory {
 	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
 	}
 
-	WebDriver create(String specification, String username, String password, Map<String, Object> additionalCapabilities = [:]) {
+	WebDriver create(String username, String key, Map<String, Object> capabilities) {
+		create("", username, key, capabilities)
+	}
+
+	WebDriver create(String specification, String username, String key, Map<String, Object> additionalCapabilities = [:]) {
 		def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
 		Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
 		if (!remoteWebDriverClass) {
 			throw new ClassNotFoundException('org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create RemoteWebDriverInstances')
 		}
 
-		def url = new URL(assembleProviderUrl(username, password))
+		def url = new URL(assembleProviderUrl(username, key))
 
 		Properties capabilities = new Properties()
-		capabilities.load(new StringReader(specification))
+		if (specification) {
+			capabilities.load(new StringReader(specification))
+		}
 		capabilities.putAll(additionalCapabilities)
 
 		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance()

@@ -43,6 +43,8 @@ You can optionally pass additional configuration settings by providing a Map to 
 * [SauceLabs additional config](https://saucelabs.com/docs/additional-config)
 * [BrowserStack Capabilities](http://www.browserstack.com/automate/capabilities)
 
+Finally, there is also [an overloaded version of `create()` method](api/geb/driver/CloudDriverFactory.html#create\(java.lang.String,%20java.lang.String,%20Map%3CString,%20Object%3E\)) available that doesn't take a string specification and allows you to simply specify all the required capabilities using a map. This method might be useful if you just want to use the factory, but don't need the build level parametrization.
+
 ### SauceLabsDriverFactory
 
 	def sauceLabsBrowser = System.getProperty("geb.saucelabs.browser")
