@@ -20,7 +20,7 @@ grails {
 configurations {
 	all {
 		exclude module: "commons-logging"
-		exclude module: 'xml-apis'
+		exclude module: "xml-apis"
 	}
 	test {
 		resolutionStrategy {
@@ -41,7 +41,8 @@ repositories {
 dependencies {
 	bootstrap "org.grails.plugins:tomcat:7.0.54"
 	bootstrap "org.grails.plugins:hibernate:3.6.10.16"
-	bootstrap "org.grails.plugins:release:2.0.4"
+
+	releaseBootstrap "org.grails.plugins:release:3.0.1"
 
 	test project(':module:geb-junit4')
 	test "org.seleniumhq.selenium:selenium-htmlunit-driver:2.26.0"
@@ -52,15 +53,6 @@ dependencies {
 	
 	test "org.grails.plugins:spock:0.7"
 	test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
-
-	releaseBootstrap "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
-		exclude module: "xml-apis"
-		exclude module: "groovy"
-		exclude module: "httpclient"
-		exclude module: "nekohtml"
-		exclude module: "httpcore"
-		exclude module: "groovy"
-	}
 }
 
 
@@ -125,7 +117,12 @@ task dumpClassloaders(type: GrailsTask) {
 	command "dump-classloaders"
 }
 
-task publish(type: GrailsTask, dependsOn: packagePlugin) {
+task installReleasePlugin(type: GrailsTask, dependsOn: packagePlugin) {
+	bootstrapClasspath = configurations.releaseBootstrap
+	command "compile"
+}
+
+task publish(type: GrailsTask, dependsOn: installReleasePlugin) {
 	bootstrapClasspath = configurations.releaseBootstrap
 	command "publish-plugin"
 
