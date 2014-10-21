@@ -19,13 +19,11 @@ import geb.crawl.Crawler
 import geb.crawl.PrettyPrintCollection
 import groovy.util.logging.Slf4j
 import ratpack.groovy.test.LocalScriptApplicationUnderTest
-import spock.lang.Ignore
 import spock.lang.Specification
 
 @Slf4j
 class LinkCrawlSpec extends Specification {
 
-	@Ignore
 	def "site has no bad links"() {
 		given:
 		def aut = new LocalScriptApplicationUnderTest()

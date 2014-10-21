@@ -25,7 +25,9 @@
 # Post-release actions
 1. Bump the version to a snapshot of the next planned version.
 1. Remove the oldest version from `oldManualVersions` list in `site.gradle` and append the newly released one.
-1. Commit with message 'Begin version «version»', and push (make sure you push the tag as well). 
+1. Commit with message 'Begin version «version»'
+1. Upload the snapshot manual by running `./gradlew :docs:manual:uploadArchives`. This is required to be uploaded to Sonatype by `LinkCrawlSpec`.
+1. Push (make sure you push the tag as well).
 1. Bump Geb versions in example projects: 
 	* [geb-example-gradle](https://github.com/geb/geb-example-gradle)
 	* [geb-example-cucumber-jvm](https://github.com/geb/geb-example-cucumber-jvm)
