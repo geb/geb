@@ -32,8 +32,8 @@
 	* [geb-example-maven](https://github.com/geb/geb-example-maven)
 	* [geb-example-grails](https://github.com/geb/geb-example-grails)
 1. Update Jira issues and versions:
-	* Find all unresolved issues in Jira that have the fix version set to the first unreleased version and bulk edit them (using the "Tools" button in the right upper corner of issue list) to have the fix version set ot the next version.
-	* Find all resolved issues in Jira for the first unreleased version and bulk close them.
-	* Go to Administrations -> Projects -> Geb -> Versions, find the first unresolved version, change the version number if it's different from the one that was released, release it and set the release date.
+	* Find all unresolved issues in Jira that have the fix version set to the recently released version and bulk edit them (using the "Tools" button in the right upper corner of issue list) to have the fix version set ot the next version.
+	* Find all resolved issues in Jira for the recently released version and bulk close them.
+	* Go to Administrations -> Projects -> Geb -> Versions, find the recently released version, change the version number if it's different from the one that was released, release it and set the release date.
 1. Wait for the build of the next version to pass and the site including manual for the released version to be published.
 1. Send an email to the mailing list, you can use [this one](http://markmail.org/message/j35koyww35lh4mxk) as a template. Please mention significant breaking changes if there are any.
