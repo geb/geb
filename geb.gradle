@@ -22,7 +22,7 @@ if (project.hasProperty("ci")) {
 }
 
 allprojects { project ->
-	version = '0.9.4-SNAPSHOT'
+	version = '0.10.0'
 	group = 'org.gebish'
 	
 	ext {
