@@ -41,6 +41,7 @@ repositories {
 dependencies {
 	bootstrap "org.grails.plugins:tomcat:7.0.54"
 	bootstrap "org.grails.plugins:hibernate:3.6.10.16"
+	bootstrap "org.grails.plugins:release:2.0.4"
 
 	test project(':module:geb-junit4')
 	test "org.seleniumhq.selenium:selenium-htmlunit-driver:2.26.0"
