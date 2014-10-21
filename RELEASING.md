@@ -19,7 +19,7 @@
 1. Commit with message "Version «number»" (don't push yet)
 1. Tag commit with name "v«number»" (still don't push yet)
 1. Run `./gradlew clean release`
-1. Log into [Sonatype OSS repository](https://oss.sonatype.org), go to "Staging Repositories", find the one for Geb, release and then promote it.
+1. Log into [Sonatype OSS repository](https://oss.sonatype.org), go to "Staging Repositories", find the one for Geb, close and then release it.
 1. Wait for the new version to [appear in Maven Central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.gebish%22%20AND%20a%3A%22geb-core%22), this might take several hours.
 
 # Post-release actions
