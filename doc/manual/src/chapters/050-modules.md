@@ -216,8 +216,8 @@ Unfortunately, this has a performance penalty of creating all modules in the lis
 Now all of the following will pass and is more efficient:
 
 	assert cartItems.every { it.price > 0.0 }
-	assert cartItems(0).productName == "The Book Of Geb"
-	assert cartItems(1..2)*.productName == ["Geb Single-User License", "Geb Multi-User License"]
+	assert cartItems[0].productName == "The Book Of Geb"
+	assert cartItems[1..2]*.productName == ["Geb Single-User License", "Geb Multi-User License"]
 
 Keep in mind that you can also pass module parameters the same way as you would with the `module()` method:
 
