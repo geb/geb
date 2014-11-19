@@ -8,16 +8,11 @@ The $ function is the access point to the browser's page content. This returns a
 
 The signature of the $ function is as follows…
 
-    $(«css selector / By locating strategy», «index or range», «attribute / text matchers»)
+    $(«css selector», «index or range», «attribute / text matchers»)
 
 The following is a concrete example…
 
     $("h1", 2, class: "heading")
-
-or	
-
-	$(By.tagName("h1"), 2, class: "heading")
-	
 
 This would find the 3rd (elements are 0 indexed) `h1` element whose `class` *attribute* is exactly “`heading`”.
 
@@ -40,11 +35,12 @@ In the case of the HTMLUnit driver, which does not support CSS selectors at all,
 
 ### Using Selenium By class locating strategy
 
-You can use any of the Selenium By class locating strategy that the underlying `WebDriver` supports…
+Its always preferable to use css selector with Geb. But for convenience Geb allows users to use any of the Selenium By class locating strategy that the underlying `WebDriver` supports for selecting elements.
+There is always a css selector available for any of the By selector other than certain xpath selectors.
 
     $(By.id("some-id"))
     $(By.className("some-class"))
-	$(By.xpath("//some-xpath")
+    $(By.xpath("//some-xpath")
 
 ### Indexes and Ranges
 

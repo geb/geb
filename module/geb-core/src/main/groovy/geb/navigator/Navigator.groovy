@@ -132,7 +132,7 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(String selector, Range<Integer> range)
 
 	/**
-	 * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
+	 * Selects elements by both Selenium By selector and attributes. For example find(By.tagName("input"), name: "firstName") will select
 	 * all input elements with the name "firstName".
 	 * @param bySelector a selenium By selector
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
@@ -141,7 +141,7 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(Map<String, Object> predicates, By bySelector)
 
 	/**
-	 * Shorthand for <code>find(predicates, selector, index..index)</code>
+	 * Shorthand for <code>find(predicates, bySelector, index..index)</code>
 	 *
 	 * @param bySelector a selenium By selector
 	 * @return new Navigator
@@ -157,7 +157,7 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range)
 
 	/**
-	 * Shorthand for <code>find(null, selector, null)</code>
+	 * Shorthand for <code>find(null, bySelector, null)</code>
 	 *
 	 * @param bySelector a selenium <code>By</code> selector
 	 * @return new Navigator
@@ -165,7 +165,7 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(By bySelector)
 
 	/**
-	 * Shorthand for <code>find(selector)[indexOfElement]</code>.
+	 * Shorthand for <code>find(bySelector)[indexOfElement]</code>.
 	 * @param bySelector a selenium <code>By</code> selector
 	 * @param index index of the required element in the selection
 	 * @return new Navigator instance containing a single element
@@ -173,7 +173,7 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(By bySelector, int index)
 
 	/**
-	 * Shorthand for <code>find(null, selector, range)</code>
+	 * Shorthand for <code>find(null, bySelector, range)</code>
 	 *
 	 * @param bySelector a selenium <code>By</code> selector
 	 * @return new Navigator
@@ -347,7 +347,7 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
-	 * that match the selector.
+	 * that match the bySelector.
 	 * @param bySelector a selenium <code>By</code> selector
 	 * @return a new Navigator instance
 	 */
@@ -355,7 +355,7 @@ interface Navigator extends Iterable<Navigator> {
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
-	 * that match the selector and attributes as defined in the predicate.
+	 * that match the bySelector and attributes as defined in the predicate.
 	 * @param bySelector a selenium <code>By</code> selector
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance
