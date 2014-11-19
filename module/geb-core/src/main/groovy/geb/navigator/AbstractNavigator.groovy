@@ -60,7 +60,7 @@ abstract class AbstractNavigator implements Navigator {
 
 	@Override
 	Navigator find(Map<String, Object> predicates, Range<Integer> range) {
-		find(predicates, null, range)
+		find(predicates, (String)null, range)
 	}
 
 	@Override
@@ -100,6 +100,35 @@ abstract class AbstractNavigator implements Navigator {
 	Navigator find(Map<String, Object> predicates, String selector) {
 		find(selector).filter(predicates)
 	}
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector) {
+        find(bySelector).filter(predicates)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector, int index) {
+        find(predicates, bySelector, index..index)
+    }
+
+    Navigator find(Map<String, Object> predicates, By bySelector, Integer index) {
+        find(predicates, bySelector, index..index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+        find(predicates, (By) bySelector)[range]
+    }
+
+    @Override
+    Navigator find(By bySelector, int index) {
+        find(bySelector)[index]
+    }
+
+    @Override
+    Navigator find(By bySelector, Range<Integer> range) {
+        find(bySelector)[range]
+    }
 
 	@Override
 	Navigator $(Map<String, Object> predicates) {
@@ -147,6 +176,36 @@ abstract class AbstractNavigator implements Navigator {
 	}
 
 	@Override
+	Navigator $(Map<String, Object> predicates, By bySelector) {
+		find(predicates, bySelector)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, By bySelector, int index) {
+		find(predicates, bySelector, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+		find(predicates, bySelector, range)
+	}
+
+	@Override
+	Navigator $(By bySelector) {
+		find(bySelector)
+	}
+
+	@Override
+	Navigator $(By bySelector, int index) {
+		find(bySelector, index)
+	}
+
+	@Override
+	Navigator $(By bySelector, Range<Integer> range) {
+		find(bySelector, range)
+	}
+
+	@Override
 	Navigator filter(Map<String, Object> predicates, String selector) {
 		filter(selector).filter(predicates)
 	}
@@ -169,12 +228,28 @@ abstract class AbstractNavigator implements Navigator {
 		}
 	}
 
+	Navigator has(By bySelector) {
+		findAll { Navigator it ->
+			!it.find(bySelector).empty
+		}
+	}
+
+	Navigator has(Map<String, Object> predicates, By bySelector) {
+		findAll { Navigator it ->
+			!it.find(predicates, bySelector).empty
+		}
+	}
+
 	Navigator eq(int index) {
 		this[index]
 	}
 
 	Navigator add(String selector) {
-		add browser.driver.findElements(By.cssSelector(selector))
+		add(By.cssSelector(selector))
+	}
+
+	Navigator add(By bySelector) {
+		add browser.driver.findElements(bySelector)
 	}
 
 	Navigator add(WebElement[] elements) {

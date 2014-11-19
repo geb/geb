@@ -17,6 +17,7 @@ package geb.content
 
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
+import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
 class NavigableSupport implements Navigable {
@@ -79,6 +80,66 @@ class NavigableSupport implements Navigable {
 		base.find(selector, range)
 	}
 
+	@Override
+	Navigator $(Map<String, Object> attributes, By bySelector) {
+		base.find(attributes, bySelector)
+	}
+
+	@Override
+	Navigator find(Map<String, Object> attributes, By bySelector) {
+		base.find(attributes, bySelector)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> attributes, By bySelector, int index) {
+		base.find(attributes, bySelector, index)
+	}
+
+	@Override
+	Navigator find(Map<String, Object> attributes, By bySelector, int index) {
+		base.find(attributes, bySelector, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+		base.find(attributes, bySelector, range)
+	}
+
+	@Override
+	Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+		base.find(attributes, bySelector, range)
+	}
+
+	@Override
+	Navigator $(By bySelector) {
+		base.find(bySelector)
+	}
+
+	@Override
+	Navigator find(By bySelector) {
+		base.find(bySelector)
+	}
+
+	@Override
+	Navigator $(By bySelector, int index) {
+		base.find(bySelector, index)
+	}
+
+	@Override
+	Navigator find(By bySelector, int index) {
+		base.find(bySelector, index)
+	}
+
+	@Override
+	Navigator $(By bySelector, Range<Integer> range) {
+		base.find(bySelector, range)
+	}
+
+	@Override
+	Navigator find(By bySelector, Range<Integer> range) {
+		base.find(bySelector, range)
+	}
+
 	Navigator find(Map<String, Object> attributes) {
 		base.find(attributes)
 	}
@@ -100,7 +161,7 @@ class NavigableSupport implements Navigable {
 	}
 
 	Navigator $(Map<String, Object> attributes, Range<Integer> range) {
-		base.find(attributes, null, range)
+		base.find(attributes, (String)null, range)
 	}
 
 	Navigator find(Map<String, Object> attributes, String selector) {

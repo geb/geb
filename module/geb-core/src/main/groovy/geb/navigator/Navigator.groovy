@@ -18,6 +18,7 @@ package geb.navigator
 import geb.Page
 import geb.js.JQueryAdapter
 import geb.waiting.Wait
+import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
 /**
@@ -131,6 +132,55 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(String selector, Range<Integer> range)
 
 	/**
+	 * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
+	 * all input elements with the name "firstName".
+	 * @param bySelector a selenium By selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 */
+	Navigator find(Map<String, Object> predicates, By bySelector)
+
+	/**
+	 * Shorthand for <code>find(predicates, selector, index..index)</code>
+	 *
+	 * @param bySelector a selenium By selector
+	 * @return new Navigator
+	 */
+	Navigator find(Map<String, Object> predicates, By bySelector, int index)
+
+	/**
+	 * Creates a new Navigator instance containing the elements matching the given
+	 * By type selector. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator instance containing the matched elements
+	 */
+	Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range)
+
+	/**
+	 * Shorthand for <code>find(null, selector, null)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator
+	 */
+	Navigator find(By bySelector)
+
+	/**
+	 * Shorthand for <code>find(selector)[indexOfElement]</code>.
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @param index index of the required element in the selection
+	 * @return new Navigator instance containing a single element
+	 */
+	Navigator find(By bySelector, int index)
+
+	/**
+	 * Shorthand for <code>find(null, selector, range)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator
+	 */
+	Navigator find(By bySelector, Range<Integer> range)
+
+	/**
 	 * Shorthand for <code>find(predicates)</code>
 	 *
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
@@ -215,6 +265,62 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator $(String selector, Range<Integer> range)
 
 	/**
+	 * Shorthand for <code>find(predicates, bySelector)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance containing the matched elements
+	 * @see #find(java.util.Map, org.openqa.selenium.By)
+	 */
+	Navigator $(Map<String, Object> predicates, By bySelector)
+
+	/**
+	 * Shorthand for <code>find(predicates, bySelector, index)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator
+	 * @see #find(java.util.Map, org.openqa.selenium.By, int)
+	 */
+	Navigator $(Map<String, Object> predicates, By bySelector, int index)
+
+	/**
+	 * Shorthand for <code>find(predicates, bySelector, range)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator instance containing the matched elements
+	 * @see #find(java.util.Map, groovy.lang.Range)
+	 */
+	Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range)
+
+	/**
+	 * Shorthand for <code>find(bySelector)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator
+	 * @see #find(org.openqa.selenium.By)
+	 */
+	Navigator $(By bySelector)
+
+	/**
+	 * Shorthand for <code>find(bySelector, index)</code>.
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @param index index of the required element in the selection
+	 * @return new Navigator instance containing a single element
+	 * @see #find(org.openqa.selenium.By, int)
+	 */
+	Navigator $(By bySelector, int index)
+
+	/**
+	 * Shorthand for <code>find(bySelector, range)</code>
+	 *
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return new Navigator
+	 * @see #find(org.openqa.selenium.By, groovy.lang.Range)
+	 */
+	Navigator $(By bySelector, Range<Integer> range)
+
+	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
 	 * that match the selector.
 	 * @param selector a CSS selector
@@ -238,6 +344,23 @@ interface Navigator extends Iterable<Navigator> {
 	 * @return a new Navigator instance
 	 */
 	Navigator has(Map<String, Object> predicates)
+
+	/**
+	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
+	 * that match the selector.
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @return a new Navigator instance
+	 */
+	Navigator has(By bySelector)
+
+	/**
+	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
+	 * that match the selector and attributes as defined in the predicate.
+	 * @param bySelector a selenium <code>By</code> selector
+	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
+	 * @return a new Navigator instance
+	 */
+	Navigator has(Map<String, Object> predicates, By bySelector)
 
 	/**
 	 * Filters the set of elements represented by this Navigator to include only those that match
@@ -317,6 +440,8 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator getAt(Collection indexes)
 
 	Navigator add(String selector)
+
+    Navigator add(By bySelector)
 
 	Navigator add(WebElement[] elements)
 

@@ -17,6 +17,7 @@ package geb.navigator
 
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
+import org.openqa.selenium.By
 import spock.lang.Issue
 import spock.lang.Unroll
 
@@ -38,6 +39,39 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		$(".dontexist").empty
 	}
 
+	def "find by a By object selector"() {
+		given:
+		html {
+			div(id: "idA", 'class': 'classA', "a")
+			div(id: "idB", 'class': 'classB', "b")
+		}
+
+		expect:
+		$(By.id("idA")).text() == "a"
+		$(By.className("classA")).text() == "a"
+		$(By.id("idB")).text() == "b"
+		$(By.className("classB")).text() == "b"
+		$(By.className("dontexist")).empty
+	}
+
+	def "find by different By object selectors"() {
+		given:
+		html {
+			div(id: "idA", 'class': 'classA', "a")
+			div(id: "idB", 'class': 'classB', "b")
+			a(id: "link", 'href': 'www.gebish.org', "Geb testing")
+		}
+
+		expect:
+		$(By.id("idA")).size() > 0
+		$(By.tagName("div")).size() > 0
+		$(By.className("classA")).size() > 0
+		$(By.xpath("//div[@id='idA']")).size() > 0
+		$(By.partialLinkText("Geb")).size() > 0
+		$(By.linkText("Geb testing")).size() > 0
+		$(By.cssSelector("div#idB.classB")).size() > 0
+	}
+
 	@Unroll
 	def "nested find using #findMethod"() {
 		given:
@@ -50,15 +84,55 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 
 		expect:
 		$("#a")."$findMethod"("#b").text() == "b"
+		$("#a")."$findMethod"(By.id("b")).text() == "b"
 		$("#a")."$findMethod"("#d").empty
+		$("#a")."$findMethod"(By.id("d")).empty
 		$("#a")."$findMethod"(text: "b").text() == "b"
 		$("#a")."$findMethod"(text: "b", 0).text() == "b"
 		$("#a")."$findMethod"(class: "nested", 0..1)*.@id == ["b", "c"]
 		$("#a")."$findMethod"(class: "nested", "#c").text() == "c"
+		$("#a")."$findMethod"(class: "nested", By.id("c")).text() == "c"
 		$("#a")."$findMethod"(class: "nested", "div", 1).text() == "c"
+		$("#a")."$findMethod"(class: "nested", By.tagName("div"), 1).text() == "c"
 		$("#a")."$findMethod"(class: "nested", "div", 0..1)*.@id == ["b", "c"]
+		$("#a")."$findMethod"(class: "nested", By.tagName("div"), 0..1)*.@id == ["b", "c"]
 		$("#a")."$findMethod"("div", 0).text() == "b"
+		$("#a")."$findMethod"(By.tagName("div"), 0).text() == "b"
 		$("#a")."$findMethod"("div", 0..1)*.@id == ["b", "c"]
+		$("#a")."$findMethod"(By.tagName("div"), 0..1)*.@id == ["b", "c"]
+
+		where:
+		findMethod << ['find', '$']
+	}
+
+	@Unroll
+	def "nested find using #findMethod and a By object selector"() {
+		given:
+		html {
+			div(id: "a") {
+				div(id: "b", class: "nested", "b")
+				div(id: "c", class: "nested", "c")
+			}
+		}
+
+		expect:
+		$(By.id("a"))."$findMethod"("#b").text() == "b"
+		$(By.id("a"))."$findMethod"(By.id("b")).text() == "b"
+		$(By.id("a"))."$findMethod"("#d").empty
+		$(By.id("a"))."$findMethod"(By.id("d")).empty
+		$(By.id("a"))."$findMethod"(text: "b").text() == "b"
+		$(By.id("a"))."$findMethod"(text: "b", 0).text() == "b"
+		$(By.id("a"))."$findMethod"(class: "nested", 0..1)*.@id == ["b", "c"]
+		$(By.id("a"))."$findMethod"(class: "nested", "#c").text() == "c"
+		$(By.id("a"))."$findMethod"(class: "nested", By.id("c")).text() == "c"
+		$(By.id("a"))."$findMethod"(class: "nested", "div", 1).text() == "c"
+		$(By.id("a"))."$findMethod"(class: "nested", By.tagName("div"), 1).text() == "c"
+		$(By.id("a"))."$findMethod"(class: "nested", "div", 0..1)*.@id == ["b", "c"]
+		$(By.id("a"))."$findMethod"(class: "nested", By.tagName("div"), 0..1)*.@id == ["b", "c"]
+		$(By.id("a"))."$findMethod"("div", 0).text() == "b"
+		$(By.id("a"))."$findMethod"(By.tagName("div"), 0).text() == "b"
+		$(By.id("a"))."$findMethod"("div", 0..1)*.@id == ["b", "c"]
+		$(By.id("a"))."$findMethod"(By.tagName("div"), 0..1)*.@id == ["b", "c"]
 
 		where:
 		findMethod << ['find', '$']
@@ -119,6 +193,20 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		$("div", -1)*.@id == ["c"]
 	}
 
+	def "selecting with index and a By object selector"() {
+		given:
+		html {
+			div('class': 'a', id: 'a')
+			div('class': 'b', id: 'b')
+			div('class': 'b', id: 'c')
+		}
+
+		expect:
+		$(By.tagName("div"), 0)*.@id == ["a"]
+		$(By.tagName("div"), 1)*.@id == ["b"]
+		$(By.tagName("div"), -1)*.@id == ["c"]
+	}
+
 	def "find by selector and attribute"() {
 		given:
 		html {
@@ -137,6 +225,24 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		$(".c", name: "d")*.@id == []
 	}
 
+	def "find by a By object selector and attribute"() {
+		given:
+		html {
+			div('class': 'a', name: 'a1', id: 'a1', "")
+			div('class': 'a', name: 'a2', id: 'a2', "")
+			div('class': 'b', name: 'b1', id: 'b1', "")
+			div('class': 'b', name: 'b2', id: 'b2', "")
+			div('class': 'c', name: 'c1', id: 'c1', "")
+			div('class': 'c', name: 'c2', id: 'c2', "")
+		}
+
+		expect:
+		$(By.className("a"), name: "a1")*.@id == ["a1"]
+		$(By.className("b"), name: "b2")*.@id == ["b2"]
+		$(By.className("c"), name: ~/c\d/)*.@id == ["c1", "c2"]
+		$(By.className("c"), name: "d")*.@id == []
+	}
+
 	def "find by selector and text"() {
 		given:
 		html {
@@ -153,6 +259,24 @@ class FindAndFilterNavigatorSpec extends GebSpecWithServer {
 		$(".b", text: "b2")*.@id == ["b2"]
 		$(".c", text: ~/c\d/)*.@id == ["c1", "c2"]
 		$(".c", text: "d")*.@id == []
+	}
+
+	def "find by a By object selector and text"() {
+		given:
+		html {
+			div('class': 'a', id: 'a1', 'a1')
+			div('class': 'a', id: 'a2', 'a2')
+			div('class': 'b', id: 'b1', 'b1')
+			div('class': 'b', id: 'b2', 'b2')
+			div('class': 'c', id: 'c1', 'c1')
+			div('class': 'c', id: 'c2', 'c2')
+		}
+
+		expect:
+		$(By.className("a"), text: "a1")*.@id == ["a1"]
+		$(By.className("b"), text: "b2")*.@id == ["b2"]
+		$(By.className("c"), text: ~/c\d/)*.@id == ["c1", "c2"]
+		$(By.className("c"), text: "d")*.@id == []
 	}
 
 	def filter() {

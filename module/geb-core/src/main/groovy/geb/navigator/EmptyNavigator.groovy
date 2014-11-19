@@ -18,6 +18,7 @@ package geb.navigator
 import geb.Browser
 import geb.Page
 import geb.waiting.Wait
+import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
 import static java.util.Collections.EMPTY_LIST
@@ -33,6 +34,11 @@ class EmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator find(String selector) { this }
+
+	@Override
+	Navigator find(By bySelector) {
+		this
+	}
 
 	@Override
 	Navigator filter(String selector) { this }

@@ -28,6 +28,7 @@ import geb.textmatching.TextMatchingSupport
 import geb.waiting.ImplicitWaitTimeoutException
 import geb.waiting.WaitTimeoutException
 import geb.waiting.WaitingSupport
+import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
@@ -372,6 +373,54 @@ class Page implements Navigable, PageContentContainer {
 
 	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
 		navigableSupport.$(attributes, selector, range)
+	}
+
+	Navigator $(Map<String, Object> attributes, By bySelector) {
+		navigableSupport.find(attributes, bySelector)
+	}
+
+	Navigator find(Map<String, Object> attributes, By bySelector) {
+		navigableSupport.find(attributes, bySelector)
+	}
+
+	Navigator $(Map<String, Object> attributes, By bySelector, int index) {
+		navigableSupport.find(attributes, bySelector, index)
+	}
+
+	Navigator find(Map<String, Object> attributes, By bySelector, int index) {
+		navigableSupport.find(attributes, bySelector, index)
+	}
+
+	Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+		navigableSupport.find(attributes, bySelector, range)
+	}
+
+	Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+		navigableSupport.find(attributes, bySelector, range)
+	}
+
+	Navigator $(By bySelector) {
+		navigableSupport.find(bySelector)
+	}
+
+	Navigator find(By bySelector) {
+		navigableSupport.find(bySelector)
+	}
+
+	Navigator $(By bySelector, int index) {
+		navigableSupport.find(bySelector, index)
+	}
+
+	Navigator find(By bySelector, int index) {
+		navigableSupport.find(bySelector, index)
+	}
+
+	Navigator $(By bySelector, Range<Integer> range) {
+		navigableSupport.find(bySelector, range)
+	}
+
+	Navigator find(By bySelector, Range<Integer> range) {
+		navigableSupport.find(bySelector, range)
 	}
 
 	Navigator $(Navigator[] navigators) {

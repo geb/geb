@@ -18,6 +18,7 @@ import geb.Module
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
+import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
 class PageContentTemplateFactoryDelegate {
@@ -148,6 +149,54 @@ class PageContentTemplateFactoryDelegate {
 
 	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
 		navigableSupport.$(attributes, selector, range)
+	}
+
+	Navigator $(Map<String, Object> attributes, By bySelector) {
+		navigableSupport.find(attributes, bySelector)
+	}
+
+	Navigator find(Map<String, Object> attributes, By bySelector) {
+		navigableSupport.find(attributes, bySelector)
+	}
+
+	Navigator $(Map<String, Object> attributes, By bySelector, int index) {
+		navigableSupport.find(attributes, bySelector, index)
+	}
+
+	Navigator find(Map<String, Object> attributes, By bySelector, int index) {
+		navigableSupport.find(attributes, bySelector, index)
+	}
+
+	Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+		navigableSupport.find(attributes, bySelector, range)
+	}
+
+	Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+		navigableSupport.find(attributes, bySelector, range)
+	}
+
+	Navigator $(By bySelector) {
+		navigableSupport.find(bySelector)
+	}
+
+	Navigator find(By bySelector) {
+		navigableSupport.find(bySelector)
+	}
+
+	Navigator $(By bySelector, int index) {
+		navigableSupport.find(bySelector, index)
+	}
+
+	Navigator find(By bySelector, int index) {
+		navigableSupport.find(bySelector, index)
+	}
+
+	Navigator $(By bySelector, Range<Integer> range) {
+		navigableSupport.find(bySelector, range)
+	}
+
+	Navigator find(By bySelector, Range<Integer> range) {
+		navigableSupport.find(bySelector, range)
 	}
 
 	Navigator $(Navigator[] navigators) {
