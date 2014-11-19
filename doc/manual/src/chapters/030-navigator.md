@@ -8,11 +8,16 @@ The $ function is the access point to the browser's page content. This returns a
 
 The signature of the $ function is as follows…
 
-    $(«css selector», «index or range», «attribute / text matchers»)
+    $(«css selector / By locating strategy», «index or range», «attribute / text matchers»)
 
 The following is a concrete example…
 
     $("h1", 2, class: "heading")
+
+or	
+
+	$(By.tagName("h1"), 2, class: "heading")
+	
 
 This would find the 3rd (elements are 0 indexed) `h1` element whose `class` *attribute* is exactly “`heading`”.
 
@@ -32,6 +37,14 @@ You can use any CSS selector that the underlying `WebDriver` supports…
     $("div.some-class p:first[title='something']")
 
 In the case of the HTMLUnit driver, which does not support CSS selectors at all, only basic CSS 2 type selectors can be used. A future version of the HTMLUnit driver may gain better CSS selector support.
+
+### Using Selenium By class locating strategy
+
+You can use any of the Selenium By class locating strategy that the underlying `WebDriver` supports…
+
+    $(By.id("some-id"))
+    $(By.className("some-class"))
+	$(By.xpath("//some-xpath")
 
 ### Indexes and Ranges
 
