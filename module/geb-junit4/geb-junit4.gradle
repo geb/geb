@@ -1,5 +1,5 @@
 dependencies {
-	compile "junit:junit:4.8.1"
+	compile "junit:junit:$junit4Version"
 }
 
 modifyPom { pom ->

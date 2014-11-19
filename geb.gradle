@@ -31,6 +31,7 @@ allprojects { project ->
 		seleniumVersion = "2.43.1"
 		groovyVersion = "2.3.6"
 		spockVersion = "0.7-groovy-2.0"
+		junit4Version = "4.10"
 
 		spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
 			exclude module: "groovy-all"
@@ -145,7 +146,7 @@ subprojects {
 		link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
 			"spock.lang"
 
-		link "http://junit.org/javadoc/4.11/",
+		link "http://static.javadoc.io/junit/junit/$junit4Version",
 			"org.junit"
 
 		link "http://groovy.codehaus.org/api/",
