@@ -17,6 +17,7 @@ package geb.content
 import geb.*
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
+import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
 abstract class TemplateDerivedPageContent implements Navigator {
@@ -177,5 +178,35 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	@Override
 	Navigator $(String selector, Range<Integer> range) {
 		_navigator.$(selector, range)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, By bySelector) {
+		_navigator.$(predicates, bySelector)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, By bySelector, int index) {
+		_navigator.$(predicates, bySelector, index)
+	}
+
+	@Override
+	Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+		_navigator.$(predicates, bySelector, range)
+	}
+
+	@Override
+	Navigator $(By bySelector) {
+		_navigator.$(bySelector)
+	}
+
+	@Override
+	Navigator $(By bySelector, int index) {
+		_navigator.$(bySelector, index)
+	}
+
+	@Override
+	Navigator $(By bySelector, Range<Integer> range) {
+		_navigator.$(bySelector, range)
 	}
 }

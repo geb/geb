@@ -54,9 +54,14 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator find(String selector) {
+		find(By.cssSelector(selector))
+	}
+
+	@Override
+	Navigator find(By bySelector) {
 		List<WebElement> list = []
 		for (contextElement in contextElements) {
-			list.addAll contextElement.findElements(By.cssSelector(selector))
+			list.addAll contextElement.findElements(bySelector)
 		}
 		navigatorFor list
 	}

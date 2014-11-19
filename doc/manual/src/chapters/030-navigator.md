@@ -33,6 +33,15 @@ You can use any CSS selector that the underlying `WebDriver` supports…
 
 In the case of the HTMLUnit driver, which does not support CSS selectors at all, only basic CSS 2 type selectors can be used. A future version of the HTMLUnit driver may gain better CSS selector support.
 
+### Using Selenium By class locating strategy
+
+Its always preferable to use css selector with Geb. But for convenience Geb allows users to use any of the Selenium By class locating strategy that the underlying `WebDriver` supports for selecting elements.
+There is always a css selector available for any of the By selector other than certain xpath selectors.
+
+    $(By.id("some-id"))
+    $(By.className("some-class"))
+    $(By.xpath("//some-xpath")
+
 ### Indexes and Ranges
 
 When matching, a single positive integer or integer range can be given to restrict by index.
