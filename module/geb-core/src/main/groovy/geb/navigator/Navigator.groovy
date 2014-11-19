@@ -441,7 +441,7 @@ interface Navigator extends Iterable<Navigator> {
 
 	Navigator add(String selector)
 
-    Navigator add(By bySelector)
+	Navigator add(By bySelector)
 
 	Navigator add(WebElement[] elements)
 

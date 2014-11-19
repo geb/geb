@@ -101,34 +101,34 @@ abstract class AbstractNavigator implements Navigator {
 		find(selector).filter(predicates)
 	}
 
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector) {
-        find(bySelector).filter(predicates)
-    }
+	@Override
+	Navigator find(Map<String, Object> predicates, By bySelector) {
+		find(bySelector).filter(predicates)
+	}
 
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector, int index) {
-        find(predicates, bySelector, index..index)
-    }
+	@Override
+	Navigator find(Map<String, Object> predicates, By bySelector, int index) {
+		find(predicates, bySelector, index..index)
+	}
 
-    Navigator find(Map<String, Object> predicates, By bySelector, Integer index) {
-        find(predicates, bySelector, index..index)
-    }
+	Navigator find(Map<String, Object> predicates, By bySelector, Integer index) {
+		find(predicates, bySelector, index..index)
+	}
 
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        find(predicates, (By) bySelector)[range]
-    }
+	@Override
+	Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+		find(predicates, (By) bySelector)[range]
+	}
 
-    @Override
-    Navigator find(By bySelector, int index) {
-        find(bySelector)[index]
-    }
+	@Override
+	Navigator find(By bySelector, int index) {
+		find(bySelector)[index]
+	}
 
-    @Override
-    Navigator find(By bySelector, Range<Integer> range) {
-        find(bySelector)[range]
-    }
+	@Override
+	Navigator find(By bySelector, Range<Integer> range) {
+		find(bySelector)[range]
+	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates) {
