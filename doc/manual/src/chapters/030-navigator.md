@@ -33,10 +33,13 @@ You can use any CSS selector that the underlying `WebDriver` supports…
 
 In the case of the HTMLUnit driver, which does not support CSS selectors at all, only basic CSS 2 type selectors can be used. A future version of the HTMLUnit driver may gain better CSS selector support.
 
-### Using Selenium By class locating strategy
+### Using WebDriver's `By` class selectors
 
-Its always preferable to use css selector with Geb. But for convenience Geb allows users to use any of the Selenium By class locating strategy that the underlying `WebDriver` supports for selecting elements.
-There is always a css selector available for any of the By selector other than certain xpath selectors.
+For all signatures of `$` function that accept a css selector there is an equivalent signature where an instance of WebDriver's [`By`][by-api] class can be used. 
+
+Using CSS selectors is the idiomatic way of using Geb and should be preferred to using `By` selectors. It is always possible to select the same elements using a css selector as when using a certain `By` selector apart from certain XPath selectors which is why this convenience mechanism is provided.
+
+Following are some examples of using `By` selectors…
 
     $(By.id("some-id"))
     $(By.className("some-class"))

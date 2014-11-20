@@ -58,7 +58,9 @@ This page lists the high level changes between versions of Geb.
 
 ### @geb-version@
 
-No changes have been made, yet.
+#### New Features
+
+* Support for finding elements using Webdriver's [`By`][by-api] selectors \[[GEB-348](http://jira.codehaus.org/browse/GEB-348)\]
 
 ### 0.10.0
 

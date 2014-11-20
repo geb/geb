@@ -7,6 +7,7 @@
 [webdriver]: http://code.google.com/p/selenium/
 [webdriver-api]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebDriver.html
 [webelement-api]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html
+[by-api]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/By.html
 [htmlunitdriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
 [iedriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/ie/InternetExplorerDriver.html
 [firefoxdriver]: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/firefox/FirefoxDriver.html

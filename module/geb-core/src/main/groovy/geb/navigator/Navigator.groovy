@@ -132,9 +132,9 @@ interface Navigator extends Iterable<Navigator> {
 	Navigator find(String selector, Range<Integer> range)
 
 	/**
-	 * Selects elements by both Selenium By selector and attributes. For example find(By.tagName("input"), name: "firstName") will select
+	 * Selects elements by both <code>By</code> selector and attributes. For example <code>find(By.tagName("input"), name: "firstName")</code> will select
 	 * all input elements with the name "firstName".
-	 * @param bySelector a selenium By selector
+	 * @param bySelector a WebDriver By selector
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance containing the matched elements
 	 */
@@ -143,15 +143,15 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(predicates, bySelector, index..index)</code>
 	 *
-	 * @param bySelector a selenium By selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator
 	 */
 	Navigator find(Map<String, Object> predicates, By bySelector, int index)
 
 	/**
 	 * Creates a new Navigator instance containing the elements matching the given
-	 * By type selector. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
-	 * @param bySelector a selenium <code>By</code> selector
+	 * <code>By</code> type selector. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator instance containing the matched elements
 	 */
 	Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range)
@@ -159,14 +159,14 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(null, bySelector, null)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator
 	 */
 	Navigator find(By bySelector)
 
 	/**
 	 * Shorthand for <code>find(bySelector)[indexOfElement]</code>.
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @param index index of the required element in the selection
 	 * @return new Navigator instance containing a single element
 	 */
@@ -175,7 +175,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(null, bySelector, range)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator
 	 */
 	Navigator find(By bySelector, Range<Integer> range)
@@ -267,7 +267,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(predicates, bySelector)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance containing the matched elements
 	 * @see #find(java.util.Map, org.openqa.selenium.By)
@@ -277,7 +277,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(predicates, bySelector, index)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator
 	 * @see #find(java.util.Map, org.openqa.selenium.By, int)
 	 */
@@ -286,7 +286,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(predicates, bySelector, range)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator instance containing the matched elements
 	 * @see #find(java.util.Map, groovy.lang.Range)
 	 */
@@ -295,7 +295,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(bySelector)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator
 	 * @see #find(org.openqa.selenium.By)
 	 */
@@ -304,7 +304,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(bySelector, index)</code>.
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @param index index of the required element in the selection
 	 * @return new Navigator instance containing a single element
 	 * @see #find(org.openqa.selenium.By, int)
@@ -314,7 +314,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Shorthand for <code>find(bySelector, range)</code>
 	 *
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return new Navigator
 	 * @see #find(org.openqa.selenium.By, groovy.lang.Range)
 	 */
@@ -348,7 +348,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
 	 * that match the bySelector.
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @return a new Navigator instance
 	 */
 	Navigator has(By bySelector)
@@ -356,7 +356,7 @@ interface Navigator extends Iterable<Navigator> {
 	/**
 	 * Filters the set of elements represented by this Navigator to include only that have one or more descendants
 	 * that match the bySelector and attributes as defined in the predicate.
-	 * @param bySelector a selenium <code>By</code> selector
+	 * @param bySelector a WebDriver By selector
 	 * @param predicates a Map with keys representing attributes and values representing required values or patterns
 	 * @return a new Navigator instance
 	 */
