@@ -89,7 +89,7 @@ class Page implements Navigable, PageContentContainer {
 	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate
 	private AlertAndConfirmSupport _alertAndConfirmSupport
-
+	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
 	private NavigableSupport navigableSupport
 
 	/**
