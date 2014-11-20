@@ -14,11 +14,11 @@
  */
 package geb.content
 
+import geb.navigator.Locator
 import geb.navigator.Navigator
-import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
-interface Navigable {
+interface Navigable extends Locator {
 
 	Navigator find()
 
@@ -31,66 +31,6 @@ interface Navigable {
 	Navigator $(int index)
 
 	Navigator $(Range<Integer> range)
-
-	Navigator find(String selector)
-
-	Navigator $(String selector)
-
-	Navigator find(String selector, int index)
-
-	Navigator find(String selector, Range<Integer> range)
-
-	Navigator $(String selector, int index)
-
-	Navigator $(String selector, Range<Integer> range)
-
-	Navigator $(Map<String, Object> attributes, By bySelector)
-
-	Navigator find(Map<String, Object> attributes, By bySelector)
-
-	Navigator $(Map<String, Object> attributes, By bySelector, int index)
-
-	Navigator find(Map<String, Object> attributes, By bySelector, int index)
-
-	Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range)
-
-	Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range)
-
-	Navigator $(By bySelector)
-
-	Navigator find(By bySelector)
-
-	Navigator $(By bySelector, int index)
-
-	Navigator find(By bySelector, int index)
-
-	Navigator $(By bySelector, Range<Integer> range)
-
-	Navigator find(By bySelector, Range<Integer> range)
-
-	Navigator find(Map<String, Object> attributes)
-
-	Navigator $(Map<String, Object> attributes)
-
-	Navigator find(Map<String, Object> attributes, int index)
-
-	Navigator find(Map<String, Object> attributes, Range<Integer> range)
-
-	Navigator $(Map<String, Object> attributes, int index)
-
-	Navigator $(Map<String, Object> attributes, Range<Integer> range)
-
-	Navigator find(Map<String, Object> attributes, String selector)
-
-	Navigator $(Map<String, Object> attributes, String selector)
-
-	Navigator find(Map<String, Object> attributes, String selector, int index)
-
-	Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range)
-
-	Navigator $(Map<String, Object> attributes, String selector, int index)
-
-	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range)
 
 	Navigator $(Navigator[] navigators)
 
