@@ -1,6 +1,6 @@
 # Introduction
 
-Geb is a developer focused tool for automating the interaction between web browsers and web content. It uses the dynamic language features of [Groovy][groovy] to provide a powerful content definition DSL (for modelling content for reuse) and key concepts from [jQuery][jQuery] to provide a powerful content inspection and traveral API (for finding and interacting with content).
+Geb is a developer focused tool for automating the interaction between web browsers and web content. It uses the dynamic language features of [Groovy][groovy] to provide a powerful content definition DSL (for modelling content for reuse) and key concepts from [jQuery][jQuery] to provide a powerful content inspection and traversal API (for finding and interacting with content).
 
 Geb was born out of a desire to make browser automation (originally for web testing) easier and more productive. It aims to be a **developer tool** in that it allows and encourages the using of programming and language constructs instead of creating a restricted environment. It uses Groovy's dynamism to remove the noise and boiler plate code in order to focus on what's important — the content and interaction.
 
