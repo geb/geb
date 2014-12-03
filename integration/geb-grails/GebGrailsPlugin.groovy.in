@@ -21,6 +21,7 @@ class GebGrailsPlugin {
 		"grails-app/**/*"
 	]
 
+	def licence = "APACHE"
 	def author = "Luke Daley"
 	def authorEmail = "ld@ldaley.com"
 	def title = "Geb integration for Grails"
