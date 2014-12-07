@@ -445,12 +445,12 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
-		via(params, pageType, args)
+		def page = via(params, pageType, args)
 		try {
-			at(pageType)
+			doAt(page)
 		} catch (UndefinedAtCheckerException e) {
 			// that's okay, we don't want to force users to define at checkers unless they explicitly use "at"
-			createPage(pageType)
+			page
 		}
 	}
 
