@@ -67,7 +67,7 @@ class LinkCrawlSpec extends Specification {
 			@Override
 			void addPageErrors(Link link, Response response) {
 				if (isCrawlable(link)) {
-					response.document?.text()?.findAll(~$/\[.+?]\(.+?\(.+?\)\)/$)?.each {
+					response.document?.text()?.findAll(~$/\[.+]\(.+\)/$)?.each {
 						link.errors << new BadMarkdownLinkSyntax(it)
 					}
 				}
