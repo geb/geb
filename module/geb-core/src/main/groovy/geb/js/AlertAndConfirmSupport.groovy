@@ -17,7 +17,7 @@ package geb.js
 import geb.Configuration
 import geb.waiting.Wait
 
-class AlertAndConfirmSupport {
+class AlertAndConfirmSupport implements AlertAndConfirm {
 
 	private final static UNKNOWN = -1
 	private final Closure javascriptInterfaceFactory

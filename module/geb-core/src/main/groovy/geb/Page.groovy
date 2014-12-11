@@ -15,18 +15,28 @@
 package geb
 
 import geb.content.*
+import geb.download.Download
 import geb.download.DownloadSupport
+import geb.download.UninitializedDownloadSupport
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
+import geb.frame.Frame
 import geb.frame.FrameSupport
+import geb.frame.UninitializedFrameSupport
+import geb.interaction.Interactions
 import geb.interaction.InteractionsSupport
+import geb.interaction.UninitializedInteractionSupport
+import geb.js.AlertAndConfirm
 import geb.js.AlertAndConfirmSupport
 import geb.js.JavascriptInterface
+import geb.js.UninitializedAlertAndConfirmSupport
 import geb.navigator.Navigator
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.ImplicitWaitTimeoutException
+import geb.waiting.UninitializedWaitingSupport
 import geb.waiting.WaitTimeoutException
+import geb.waiting.Waiting
 import geb.waiting.WaitingSupport
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -76,21 +86,21 @@ class Page implements Navigable, PageContentContainer {
 	private Browser browser
 
 	@Delegate
-	private PageContentSupport pageContentSupport
+	private PageContent pageContentSupport = new UninitializedPageContentSupport(this)
 	@Delegate
-	private DownloadSupport _downloadSupport
+	private Download _downloadSupport = new UninitializedDownloadSupport(this)
 	@Delegate
-	private WaitingSupport _waitingSupport
+	private Waiting _waitingSupport = new UninitializedWaitingSupport(this)
 	@Delegate
-	private FrameSupport frameSupport
+	private Frame frameSupport = new UninitializedFrameSupport(this)
 	@Delegate
-	private InteractionsSupport interactionsSupport
+	private Interactions interactionsSupport = new UninitializedInteractionSupport(this)
 	@Delegate
 	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate
-	private AlertAndConfirmSupport _alertAndConfirmSupport
+	private AlertAndConfirm _alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
-	private NavigableSupport navigableSupport
+	private Navigable navigableSupport = new UninitializedNavigableSupport(this)
 
 	/**
 	 * Initialises this page instance, connecting it to the browser.

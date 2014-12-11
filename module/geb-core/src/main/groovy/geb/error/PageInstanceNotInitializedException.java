@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb.error;
 
-import geb.Browser
+import geb.Page;
 
-class InteractionsSupport implements Interactions {
+public class PageInstanceNotInitializedException extends GebException {
 
-	Browser browser
-
-	InteractionsSupport(Browser browser) {
-		this.browser = browser
+	public PageInstanceNotInitializedException(Page page) {
+		super(String.format("The page %s instance is not initialized. Please use Browser.to(), Browser.via(), Browser.page() or Browser.at() methods for instance to be initialized.", page.getClass().getName()));
 	}
-
-	void interact(Closure interactionClosure) {
-		ActionsDelegate actions = new ActionsDelegate(browser.driver)
-		interactionClosure.delegate = actions
-		interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
-		interactionClosure.call()
-		actions.perform()
-	}
-
 }

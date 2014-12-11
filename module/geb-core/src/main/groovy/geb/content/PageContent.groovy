@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb.content
 
-import geb.Browser
+public interface PageContent {
 
-class InteractionsSupport implements Interactions {
+	def getContent(String name, Object[] args)
 
-	Browser browser
+	def methodMissing(String name, args)
 
-	InteractionsSupport(Browser browser) {
-		this.browser = browser
-	}
+	def propertyMissing(String name)
 
-	void interact(Closure interactionClosure) {
-		ActionsDelegate actions = new ActionsDelegate(browser.driver)
-		interactionClosure.delegate = actions
-		interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
-		interactionClosure.call()
-		actions.perform()
-	}
+	def propertyMissing(String name, val)
 
 }

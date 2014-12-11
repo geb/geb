@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb.js
 
-import geb.Browser
 
-class InteractionsSupport implements Interactions {
+public interface AlertAndConfirm {
 
-	Browser browser
+	def withAlert(Closure actions)
 
-	InteractionsSupport(Browser browser) {
-		this.browser = browser
-	}
+	def withAlert(Map params, Closure actions)
 
-	void interact(Closure interactionClosure) {
-		ActionsDelegate actions = new ActionsDelegate(browser.driver)
-		interactionClosure.delegate = actions
-		interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
-		interactionClosure.call()
-		actions.perform()
-	}
+	void withNoAlert(Closure actions)
+
+	def withConfirm(Map params, Closure actions)
+
+	def withConfirm(Closure actions)
+
+	def withConfirm(boolean ok, Closure actions)
+
+	def withConfirm(Map params, boolean ok, Closure actions)
+
+	void withNoConfirm(Closure actions)
 
 }

@@ -50,7 +50,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Brian Kotek](https://github.com/brian428) - Doc improvements
 * [David W Millar](https://github.com/david-w-millar) - Doc improvements
 * [Ai-Lin Liou](https://github.com/alincode) - Doc improvements
-* [Varun Menon](https://github.com/menonvarun) - Selenium By selector support and related documentation
+* [Varun Menon](https://github.com/menonvarun) - Selenium By selector support and related documentation, GEB-310 - Support navigating to page instances in addition to classes
 * [Anders D. Johnson](https://github.com/adjohnson916) - Doc improvements
 
 ## History
@@ -62,6 +62,7 @@ This page lists the high level changes between versions of Geb.
 #### New Features
 
 * Support for finding elements using Webdriver's [`By`][by-api] selectors \[[GEB-348](http://jira.codehaus.org/browse/GEB-348)\]
+* Support for navigating to page instances in addition to classes \[[GEB-310](http://jira.codehaus.org/browse/GEB-310)\]
 
 ### 0.10.0
 

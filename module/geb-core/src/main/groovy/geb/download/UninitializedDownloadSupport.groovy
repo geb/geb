@@ -1,0 +1,163 @@
+/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package geb.download
+
+import geb.Page
+import geb.error.PageInstanceNotInitializedException
+
+class UninitializedDownloadSupport implements Download {
+
+	private Page page
+
+	public UninitializedDownloadSupport(Page page) {
+		this.page = page
+	}
+
+	@Override
+	HttpURLConnection download() {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	HttpURLConnection download(Map options) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	HttpURLConnection download(String uri) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	InputStream downloadStream() {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	InputStream downloadStream(Map options) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	InputStream downloadStream(Map options, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	InputStream downloadStream(String uri) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	InputStream downloadStream(String uri, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	InputStream downloadStream(Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	String downloadText() {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	String downloadText(Map options) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	String downloadText(Map options, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	String downloadText(String uri) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	String downloadText(String uri, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	String downloadText(Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	byte[] downloadBytes() {
+		return new byte[0]
+	}
+
+	@Override
+	byte[] downloadBytes(Map options) {
+		return new byte[0]
+	}
+
+	@Override
+	byte[] downloadBytes(Map options, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	byte[] downloadBytes(Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	byte[] downloadBytes(String uri) {
+		return new byte[0]
+	}
+
+	@Override
+	byte[] downloadBytes(String uri, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Object downloadContent() {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Object downloadContent(Map options) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Object downloadContent(Map options, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Object downloadContent(String uri) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Object downloadContent(String uri, Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Object downloadContent(Closure connectionConfig) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+}

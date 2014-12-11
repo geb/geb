@@ -299,6 +299,24 @@ class Browser {
 	}
 
 	/**
+	 * Checks if the browser is at the current page by running the at checker for this page type
+	 *
+	 *  If the at checker is successful, this browser object's page instance is updated to the said instance of the page.
+	 *
+	 * If the given page object does not define an at checker, UndefinedAtCheckerException is thrown.
+	 *
+	 * <p>
+	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
+	 * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
+	 *
+	 * @return a page instance of the given page type when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
+	 */
+	public <T extends Page> T at(T page) {
+		validatePage(page.getClass())
+		doAt(page)
+	}
+
+	/**
 	 * Checks if the browser is at the given page by running the at checker for this page type, suppressing assertion errors.
 	 *
 	 * If the at checker is successful, this browser object's page instance is updated the one the method is called with.
@@ -312,7 +330,25 @@ class Browser {
 	 * @return true if browser is at the given page otherwise false
 	 */
 	boolean isAt(Class<? extends Page> pageType, boolean allowAtCheckWaiting = true) {
-		def page = initialisePage(createPage(pageType))
+		isAt(createPage(pageType), allowAtCheckWaiting)
+	}
+
+	/**
+	 * Checks if the browser is at the given page by running the at checker for this page instance, suppressing assertion errors.
+	 *
+	 * If the at checker is successful, this browser object's page instance is updated the one the method is called with.
+	 *
+	 * If the given page instance does not define an at checker, UndefinedAtCheckerException is thrown.
+	 *
+	 * If the at check throws an {@link AssertionError}
+	 * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
+	 * are enabled) this method will suppress the exception and return false.
+	 *
+	 * @return true if browser is at the given page otherwise false
+	 */
+	 boolean isAt(Page page, boolean allowAtCheckWaiting = true) {
+		validatePage(page.getClass())
+		initialisePage(page)
 		def isAt = page.verifyAtSafely(allowAtCheckWaiting)
 		if (isAt) {
 			makeCurrentPage(page)
@@ -353,7 +389,7 @@ class Browser {
 	}
 
 	private <T extends Page> T initialisePage(T page) {
-		if (!page.browser.is(this)) {
+		if (page.browser == null || !page.browser.is(this)) {
 			page.init(this)
 		}
 		page
@@ -370,6 +406,12 @@ class Browser {
 			page
 		} else {
 			null
+		}
+	}
+
+	private void validatePage(Class<?> pageType) {
+		if (!Page.isAssignableFrom(pageType)) {
+			throw new IllegalArgumentException("$pageType is not a subclass of ${Page}")
 		}
 	}
 
@@ -427,6 +469,17 @@ class Browser {
 	}
 
 	/**
+	 * Sends the browser to the given page instance url, sets the page to the given instance and verifies the at checker of that page.
+	 *
+	 * @return a page instance of the passed page after initializing when the at checker succeeded
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 */
+	public <T extends Page> T to(T page, Object[] args) {
+		to([:], page, args)
+	}
+
+	/**
 	 * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
 	 *
 	 * @return a page instance of the passed page type when the at checker succeeded
@@ -445,12 +498,23 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
-		via(params, pageType, args)
+		to(params, createPage(pageType), args)
+	}
+
+	/**
+	 * Sends the browser to the given page instance url, sets the page to the given page instance and verifies the at checker of that page.
+	 *
+	 * @return a page instance of the passed page after initializing when the at checker succeeded
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 */
+	public <T extends Page> T to(Map params, T page, Object[] args) {
+		via(params, page, args)
 		try {
-			at(pageType)
+			at(page)
 		} catch (UndefinedAtCheckerException e) {
 			// that's okay, we don't want to force users to define at checkers unless they explicitly use "at"
-			createPage(pageType)
+			page
 		}
 	}
 
@@ -465,6 +529,10 @@ class Browser {
 		via([:], pageType, *args)
 	}
 
+	public <T extends Page> T via(Page page, Object[] args) {
+		via([:], page, *args)
+	}
+
 	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 *
@@ -477,6 +545,17 @@ class Browser {
 	}
 
 	/**
+	 * Sends the browser to the given page instance url and sets the page to the given instance.
+	 *
+	 * @return a page instance that was passed after initializing it.
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 */
+	public <T extends Page> T via(Map params, Page page) {
+		via(params, page, null)
+	}
+
+	/**
 	 * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
 	 *
 	 * @return a page instance of the passed page type
@@ -485,6 +564,19 @@ class Browser {
 	 */
 	public <T extends Page> T via(Map params, Class<T> pageType, Object[] args) {
 		def page = createPage(pageType)
+		via(params, page, args)
+	}
+
+	/**
+	 * Sends the browser to the given page instance url and sets the page the given instance.
+	 *
+	 * @return a page instance that was passed after initializing it.
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 */
+	public <T extends Page> T via(Map params, Page page, Object[] args) {
+		validatePage(page.getClass())
+		initialisePage(page)
 		page.to(params, *args)
 		page
 	}
@@ -710,9 +802,7 @@ class Browser {
 	 * @return The newly created page instance
 	 */
 	public <T extends Page> T createPage(Class<T> pageType) {
-		if (!Page.isAssignableFrom(pageType)) {
-			throw new IllegalArgumentException("$pageType is not a subclass of ${Page}")
-		}
+		validatePage(pageType)
 		pageType.newInstance().init(this)
 	}
 

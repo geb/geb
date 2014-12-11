@@ -22,7 +22,7 @@ import geb.navigator.Navigator
 import geb.content.SimplePageContent
 import geb.Page
 
-class FrameSupport {
+class FrameSupport implements Frame {
 
 	Browser browser
 

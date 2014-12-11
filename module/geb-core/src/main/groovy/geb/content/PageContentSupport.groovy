@@ -19,7 +19,7 @@ import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 
-class PageContentSupport {
+class PageContentSupport implements PageContent {
 
 	private final PageContentContainer owner
 	private final Map<String, PageContentTemplate> contentTemplates

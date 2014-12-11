@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb.frame
 
-import geb.Browser
+import geb.Page
+import geb.content.SimplePageContent
+import geb.navigator.Navigator
 
-class InteractionsSupport implements Interactions {
 
-	Browser browser
+public interface Frame {
 
-	InteractionsSupport(Browser browser) {
-		this.browser = browser
-	}
+	def withFrame(frame, Closure block)
 
-	void interact(Closure interactionClosure) {
-		ActionsDelegate actions = new ActionsDelegate(browser.driver)
-		interactionClosure.delegate = actions
-		interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
-		interactionClosure.call()
-		actions.perform()
-	}
+	def withFrame(frame, Class<? extends Page> page, Closure block)
 
+	def withFrame(Navigator frame, Class<? extends Page> page, Closure block)
+
+	def withFrame(Navigator frame, Closure block)
+
+	def withFrame(SimplePageContent frame, Closure block)
 }

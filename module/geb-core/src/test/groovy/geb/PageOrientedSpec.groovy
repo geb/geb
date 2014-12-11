@@ -82,6 +82,21 @@ class PageOrientedSpec extends GebSpecWithServer {
 		at PageOrientedSpecPageA
 	}
 
+	def "verify the Page API works with a Page instance"() {
+		PageInstanceOrientedSpec pageInstanceOrientedSpec = new PageInstanceOrientedSpec("testing")
+		when:
+		via pageInstanceOrientedSpec
+
+		then:
+		at pageInstanceOrientedSpec
+
+		when:
+		link.click()
+
+		then:
+		at PageOrientedSpecPageB
+	}
+
 	def "check accessing non navigator content"() {
 		when:
 		to PageOrientedSpecPageA
@@ -170,6 +185,17 @@ class PageOrientedSpec extends GebSpecWithServer {
 		clicked                           | cause
 		'linkWithNotMatchingTo'           | AssertionError
 		'linkWithToClassWithPlainFalseAt' | null
+	}
+
+	def "exception should be thrown when support class methods are used on an uninitialized page instance"() {
+		PageInstanceOrientedSpec pageInstanceOrientedSpec = new PageInstanceOrientedSpec("testing")
+
+		when:
+		pageInstanceOrientedSpec.download()
+
+		then:
+		Throwable e = thrown(PageInstanceNotInitializedException)
+		e.message == "The page geb.PageInstanceOrientedSpec instance is not initialized. Please use Browser.to(), Browser.via(), Browser.page() or Browser.at() methods for instance to be initialized."
 	}
 
 	def "unexpected exceptions thrown in at checkers should bubble up from click"() {
@@ -388,4 +414,21 @@ class PageWithAtCheckerReturningFalse extends Page {
 	//this circumvents implicit assertion AST transformation
 	static atChecker = { false }
 	static at = atChecker
+}
+
+class PageInstanceOrientedSpec extends Page {
+	String testData
+
+	static at = { link }
+	static content = {
+		link(to: PageOrientedSpecPageB) { $("#a") }
+	}
+
+	public PageInstanceOrientedSpec(String testData){
+		this.testData = testData
+	}
+
+	public String getTestData(){
+		return this.testData
+	}
 }
