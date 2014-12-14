@@ -12,19 +12,6 @@ buildscript {
 	}
 }
 
-if (isTravis) {
-	apply plugin: 'net.saliman.cobertura'
-	apply plugin: 'com.github.kt3k.coveralls'
-
-	cobertura {
-		coverageMergeDatafiles = []
-		coverageSourceDirs = [] as Set
-		coverageFormats = ['html', 'xml']
-	}
-
-	coberturaReport.dependsOn generateCoberturaReport
-}
-
 if (project.hasProperty("ci")) {
 	allprojects {
 		plugins.withType(ReportingBasePlugin) {
@@ -93,6 +80,19 @@ allprojects { project ->
 
 		grailsPluginModule = ":integration:geb-grails"
 	}
+}
+
+if (isTravis) {
+	apply plugin: 'net.saliman.cobertura'
+	apply plugin: 'com.github.kt3k.coveralls'
+
+	cobertura {
+		coverageMergeDatafiles = []
+		coverageSourceDirs = [] as Set
+		coverageFormats = ['html', 'xml']
+	}
+
+	coberturaReport.dependsOn generateCoberturaReport
 }
 
 tasks.create('codenarc')
