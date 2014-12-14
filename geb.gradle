@@ -6,23 +6,6 @@ buildscript {
 	repositories {
 		mavenCentral()
 	}
-	dependencies {
-		classpath "net.saliman:gradle-cobertura-plugin:2.2.5"
-		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
-	}
-}
-
-if (isTravis) {
-	apply plugin: 'net.saliman.cobertura'
-	apply plugin: 'com.github.kt3k.coveralls'
-
-	cobertura {
-		coverageMergeDatafiles = []
-		coverageSourceDirs = [] as Set
-		coverageFormats = ['html', 'xml']
-	}
-
-	coberturaReport.dependsOn generateCoberturaReport
 }
 
 if (project.hasProperty("ci")) {
@@ -44,7 +27,6 @@ allprojects { project ->
 	
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")
-		isTravis = System.getenv("TRAVIS") != null
 
 		seleniumVersion = "2.43.1"
 		groovyVersion = "2.3.6"
@@ -73,7 +55,7 @@ allprojects { project ->
 		}
 
 		groovyModules = [
-			":module:geb-core", ":internal:test-support", ":internal:skip-branch-optimizations",
+			":module:geb-core", ":internal:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 			":module:geb-testng", ":module:geb-implicit-assertions",
 			":module:geb-ast", ":module:geb-waiting", ":integration:geb-gradle", ":doc:site"
@@ -87,9 +69,6 @@ allprojects { project ->
 
 		publishedGroovyModules = groovyModules.findAll { it in publishedModules }
 		apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions"
-
-		//coberturaModules = groovyModules - [":internal:test-support", ":integration:geb-gradle", ":doc:site"]
-		coberturaModules = [":module:geb-spock", ":module:geb-junit4"]
 
 		grailsPluginModule = ":integration:geb-grails"
 	}
@@ -220,17 +199,6 @@ subprojects {
 			task.onlyIf { isSnapshot || !project.hasProperty("ci") }
 		}
 	}
-
-	if (isTravis && path in coberturaModules) {
-		apply plugin: 'net.saliman.cobertura'
-
-		rootProject.cobertura {
-			coverageMergeDatafiles << cobertura.coverageOutputDatafile
-			coverageSourceDirs.addAll sourceSets.main.groovy.srcDirs
-		}
-
-		rootProject.generateCoberturaReport.dependsOn tasks.cobertura
-	}
 }
 
 task release {
@@ -241,3 +209,4 @@ task release {
 task wrapper(type: Wrapper) {
 	gradleVersion "1.7"
 }
+
