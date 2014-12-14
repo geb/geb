@@ -8,25 +8,13 @@ buildscript {
 	}
 }
 
-if (project.hasProperty("ci")) {
-	allprojects {
-		plugins.withType(ReportingBasePlugin) {
-			reporting.baseDir = rootProject.file("$rootProject.buildDir/reports/$project.name")
-		}
-		tasks.withType(Test) {
-			testLogging {
-				exceptionFormat "full"
-			}
-		}
-	}
-}
-
 allprojects { project ->
 	version = '0.10.1-SNAPSHOT'
 	group = 'org.gebish'
 	
 	ext {
 		isSnapshot = version.endsWith("-SNAPSHOT")
+		isCi = project.hasProperty("ci")
 
 		seleniumVersion = "2.43.1"
 		groovyVersion = "2.3.6"
@@ -71,6 +59,12 @@ allprojects { project ->
 		apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions"
 
 		grailsPluginModule = ":integration:geb-grails"
+	}
+
+	if (isCi) {
+		plugins.withType(ReportingBasePlugin) {
+			reporting.baseDir = rootProject.file("$rootProject.buildDir/reports/$project.name")
+		}
 	}
 }
 
@@ -165,7 +159,7 @@ subprojects {
 
 		signing {
 			sign configurations.archives
-			required { !isSnapshot && !project.hasProperty("ci") && gradle.taskGraph.hasTask(uploadArchives) }
+			required { !isSnapshot && !isCi && gradle.taskGraph.hasTask(uploadArchives) }
 		}
 		
 		apply from: "$rootDir/gradle/pom.gradle"
@@ -196,7 +190,15 @@ subprojects {
 				}
 			}
 
-			task.onlyIf { isSnapshot || !project.hasProperty("ci") }
+			task.onlyIf { isSnapshot || !isCi }
+		}
+	}
+
+	if (isCi) {
+		tasks.withType(Test) {
+			testLogging {
+				exceptionFormat "full"
+			}
 		}
 	}
 }
