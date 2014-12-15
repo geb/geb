@@ -15,7 +15,6 @@
 package geb.content
 
 import geb.error.UndefinedPageContentException
-import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 

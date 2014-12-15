@@ -21,7 +21,6 @@ import geb.navigator.Navigator
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
-
 class UninitializedNavigableSupport implements Navigable {
 
 	private Page page

@@ -18,7 +18,6 @@ package geb.interaction
 import geb.Page
 import geb.error.PageInstanceNotInitializedException
 
-
 class UninitializedInteractionSupport implements InteractionsSupport {
 	private Page page
 

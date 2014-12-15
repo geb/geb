@@ -184,11 +184,12 @@ class PageOrientedSpec extends GebSpecWithServer {
 	}
 
 	@Unroll
+	@SuppressWarnings(["SpaceAfterClosingBrace", "SpaceAfterOpeningBrace", "SpaceBeforeClosingBrace", "SpaceBeforeOpeningBrace"])
 	def "exception should be thrown when support class #className methods are used on an uninitialized page instance"() {
 		PageOrientedSpecParametrizedPage pageInstanceOrientedSpec = new PageOrientedSpecParametrizedPage("testing")
 
 		when:
-		pageInstanceOrientedSpec."$methodName"(* args)
+		pageInstanceOrientedSpec."$methodName"(*args)
 
 		then:
 		Throwable e = thrown(PageInstanceNotInitializedException)
@@ -428,15 +429,15 @@ class PageOrientedSpecParametrizedPage extends Page {
 
 	static at = { link }
 	static content = {
-		link {$("#${testData}") }
-		data{getTestData()}
+		link { $("#${testData}") }
+		data { getTestData() }
 	}
 
-	public PageOrientedSpecParametrizedPage(String testData){
+	public PageOrientedSpecParametrizedPage(String testData) {
 		this.testData = testData
 	}
 
-	public String getTestData(){
+	public String getTestData() {
 		return this.testData
 	}
 }
