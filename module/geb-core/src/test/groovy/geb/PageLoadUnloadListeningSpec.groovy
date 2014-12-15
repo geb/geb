@@ -15,22 +15,17 @@
 package geb
 
 import geb.test.GebSpecWithServer
-import spock.lang.Stepwise
 import spock.lang.Unroll
 
-@Stepwise
 class PageLoadUnloadListeningSpec extends GebSpecWithServer {
-
-	def previousPage
-
-	def setup() {
-		html {
-			button()
-		}
-	}
 
 	@Unroll
 	def "change callbacks via #method"(String method, Closure toPage) {
+		given:
+		html {
+			button()
+		}
+
 		when:
 		to PageLoadUnloadListeningSpecPage1
 
@@ -38,7 +33,7 @@ class PageLoadUnloadListeningSpec extends GebSpecWithServer {
 		page instanceof PageLoadUnloadListeningSpecPage1
 
 		when:
-		previousPage = page
+		def previousPage = page
 		fire(toPage, PageLoadUnloadListeningSpecPage2)
 
 		then:
@@ -59,9 +54,25 @@ class PageLoadUnloadListeningSpec extends GebSpecWithServer {
 		"click with page list"     | { button.click([PageLoadUnloadListeningSpecPage3, it]) }
 	}
 
-	protected fire(Closure closure, Class<? extends Page> pageClass) {
+	private fire(Closure closure, Class<? extends Page> pageClass) {
 		closure.delegate = this
 		closure.call(pageClass)
+	}
+
+	def "there is only one page instance created when passing a page class to to() method"() {
+		given:
+		html {
+			h1("test")
+		}
+
+		when:
+		to PageLoadUnloadListeningSpecContextPage1
+
+		and:
+		context.text = "test"
+
+		then:
+		to PageLoadUnloadListeningSpecContextPage2
 	}
 }
 
@@ -95,4 +106,24 @@ class PageLoadUnloadListeningSpecPage2 extends PageLoadUnloadListeningSpecPage1 
 
 class PageLoadUnloadListeningSpecPage3 extends Page {
 	static at = { false }
+}
+
+class PageLoadUnloadListeningSpecContextPage extends Page {
+	def context = [:]
+
+	void onUnload(Page newPage) {
+		newPage.context << context
+	}
+}
+
+class PageLoadUnloadListeningSpecContextPage1 extends PageLoadUnloadListeningSpecContextPage {
+}
+
+class PageLoadUnloadListeningSpecContextPage2 extends PageLoadUnloadListeningSpecContextPage {
+	static at = {
+		context.text == headerText
+	}
+	static content = {
+		headerText { $("h1").text() }
+	}
 }
