@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,22 @@
  */
 package geb.interaction
 
+import geb.Browser
 
-public interface InteractionsSupport {
-	void interact(Closure interactionClosure)
+class DefaultInteractionsSupport implements InteractionsSupport {
+
+	Browser browser
+
+	DefaultInteractionsSupport(Browser browser) {
+		this.browser = browser
+	}
+
+	void interact(Closure interactionClosure) {
+		ActionsDelegate actions = new ActionsDelegate(browser.driver)
+		interactionClosure.delegate = actions
+		interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
+		interactionClosure.call()
+		actions.perform()
+	}
+
 }

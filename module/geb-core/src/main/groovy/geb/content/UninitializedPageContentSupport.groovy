@@ -13,9 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb.content
 
+import geb.Page
+import geb.error.PageInstanceNotInitializedException
+import geb.navigator.Navigator
 
-public interface InteractionsSupport {
-	void interact(Closure interactionClosure)
+class UninitializedPageContentSupport extends PageContentSupport {
+	private Page page
+
+	UninitializedPageContentSupport(Page page) {
+		this.page = page
+	}
+
+	@Override
+	def getContent(String name, Object[] args) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	Navigator getNavigator() {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	PageContentContainer getOwner() {
+		throw new PageInstanceNotInitializedException(page)
+	}
 }

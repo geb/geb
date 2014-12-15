@@ -14,17 +14,22 @@
  */
 package geb
 
+import geb.content.DefaultPageContentSupport
 import geb.content.PageContentContainer
 import geb.content.PageContentSupport
 import geb.content.PageContentTemplate
 import geb.content.PageContentTemplateBuilder
 import geb.content.TemplateDerivedPageContent
+import geb.download.DefaultDownloadSupport
 import geb.download.DownloadSupport
+import geb.frame.DefaultFrameSupport
 import geb.frame.FrameSupport
 import geb.js.AlertAndConfirmSupport
+import geb.js.DefaultAlertAndConfirmSupport
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
+import geb.waiting.DefaultWaitingSupport
 import geb.waiting.WaitingSupport
 
 class Module extends TemplateDerivedPageContent implements PageContentContainer {
@@ -49,12 +54,12 @@ class Module extends TemplateDerivedPageContent implements PageContentContainer 
 	void init(PageContentTemplate template, NavigatorFactory navigatorFactory, Object[] args) {
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(template.config, this, navigatorFactory, 'content', this.class, Module)
 		def navigator = navigatorFactory.base
-		pageContentSupport = new PageContentSupport(this, contentTemplates, navigatorFactory, navigator)
+		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, navigator)
 		super.init(template, navigator, args)
-		_downloadSupport = new DownloadSupport(browser)
-		_waitingSupport = new WaitingSupport(browser.config)
-		frameSupport = new FrameSupport(browser)
-		_alertAndConfirmSupport = new AlertAndConfirmSupport({ this.getJs() }, browser.config)
+		_downloadSupport = new DefaultDownloadSupport(browser)
+		_waitingSupport = new DefaultWaitingSupport(browser.config)
+		frameSupport = new DefaultFrameSupport(browser)
+		_alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
 	}
 
 	JavascriptInterface getJs() {

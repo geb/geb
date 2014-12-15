@@ -13,9 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb.error;
 
+import geb.Page;
 
-public interface InteractionsSupport {
-	void interact(Closure interactionClosure)
+public class PageInstanceNotInitializedException extends GebException {
+
+	public PageInstanceNotInitializedException(Page page) {
+		super(String.format("The page %s instance has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() methods before using it.", page.getClass().getName()));
+	}
 }

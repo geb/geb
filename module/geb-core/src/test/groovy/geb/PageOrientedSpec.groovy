@@ -82,6 +82,17 @@ class PageOrientedSpec extends GebSpecWithServer {
 		at PageOrientedSpecPageA
 	}
 
+	@Unroll
+	def "verify the Page API #methodName method works with a Page instance"() {
+		PageOrientedSpecParametrizedPage pageInstanceOrientedSpec = new PageOrientedSpecParametrizedPage("a")
+
+		expect:
+		"$methodName" pageInstanceOrientedSpec
+
+		where:
+		methodName << ["via", "at", "to", "page"]
+	}
+
 	def "check accessing non navigator content"() {
 		when:
 		to PageOrientedSpecPageA
@@ -170,6 +181,28 @@ class PageOrientedSpec extends GebSpecWithServer {
 		clicked                           | cause
 		'linkWithNotMatchingTo'           | AssertionError
 		'linkWithToClassWithPlainFalseAt' | null
+	}
+
+	@Unroll
+	def "exception should be thrown when support class #className methods are used on an uninitialized page instance"() {
+		PageOrientedSpecParametrizedPage pageInstanceOrientedSpec = new PageOrientedSpecParametrizedPage("testing")
+
+		when:
+		pageInstanceOrientedSpec."$methodName"(* args)
+
+		then:
+		Throwable e = thrown(PageInstanceNotInitializedException)
+		e.message == "The page geb.PageOrientedSpecParametrizedPage instance has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() methods before using it."
+
+		where:
+		className                | methodName     | args
+		"PageContentSupport"     | "getNavigator" | []
+		"Navigable"              | "find"         | [""]
+		"DownloadSupport"        | "download"     | [""]
+		"WaitingSupport"         | "waitFor"      | [{}]
+		"FrameSupport"           | "withFrame"    | [{}]
+		"InteractionsSupport"    | "interact"     | [{}]
+		"AlertAndConfirmSupport" | "withAlert"    | [{}]
 	}
 
 	def "unexpected exceptions thrown in at checkers should bubble up from click"() {
@@ -388,4 +421,22 @@ class PageWithAtCheckerReturningFalse extends Page {
 	//this circumvents implicit assertion AST transformation
 	static atChecker = { false }
 	static at = atChecker
+}
+
+class PageOrientedSpecParametrizedPage extends Page {
+	String testData
+
+	static at = { link }
+	static content = {
+		link {$("#${testData}") }
+		data{getTestData()}
+	}
+
+	public PageOrientedSpecParametrizedPage(String testData){
+		this.testData = testData
+	}
+
+	public String getTestData(){
+		return this.testData
+	}
 }

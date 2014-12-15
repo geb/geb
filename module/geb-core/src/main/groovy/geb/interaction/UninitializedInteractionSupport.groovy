@@ -15,7 +15,19 @@
  */
 package geb.interaction
 
+import geb.Page
+import geb.error.PageInstanceNotInitializedException
 
-public interface InteractionsSupport {
-	void interact(Closure interactionClosure)
+
+class UninitializedInteractionSupport implements InteractionsSupport {
+	private Page page
+
+	UninitializedInteractionSupport(Page page) {
+		this.page = page
+	}
+
+	@Override
+	void interact(Closure interactionClosure) {
+		throw new PageInstanceNotInitializedException(page)
+	}
 }
