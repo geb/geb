@@ -28,22 +28,12 @@ class UninitializedFrameSupport implements FrameSupport {
 	}
 
 	@Override
-	def withFrame(Object frame, Closure block) {
+	def withFrame(Object frame, Class<? extends Page> pageClass = null, Closure block) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	def withFrame(Object frame, Class<? extends Page> page, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def withFrame(Navigator frame, Class<? extends Page> page, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def withFrame(Navigator frame, Closure block) {
+	def withFrame(Navigator frame, Class<? extends Page> pageClass = null, Closure block) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 

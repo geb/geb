@@ -31,7 +31,7 @@ import org.openqa.selenium.WebDriverException
  * a {@link geb.Page} object that provides access to the content.
  * <p>
  * Browser objects dynamically delegate all method calls and property read/writes that it doesn't implement to the current
- * page instance via {@code propertyMissing()} and {@code methodMissing()}.
+ * page instance via {@code propertyMissing ( )} and {@code methodMissing ( )}.
  */
 class Browser {
 
@@ -44,7 +44,8 @@ class Browser {
 	/**
 	 * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
 	 */
-	@Lazy WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
+	@Lazy
+	WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
 
 	/**
 	 * Create a new browser with a default configuration loader, loading the default configuration file.
@@ -238,19 +239,19 @@ class Browser {
 	 * This method performs the following:
 	 * <ul>
 	 *   <li>Check if not at an unexpected page
-	 *	 <li>For each given page type:
-	 *	 <ul>
-	 *	 <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
-	 *	 <li>Test if the page represents the new instance by running its at checker
-	 *	 <li>If the page's at checker is successful:
-	 *	 <ul>
-	 *	   <li>Inform any registered page change listeners
-	 *	   <li>Set the browser's page property to the instance (if it is not already of this type)
-	 *	   <li>Discard the rest of the potentials
-	 *	 </ul>
-	 *	 <li>If the page's at checker is not successful:
-	 *	 <ul>
-	 *	   <li>Try the next potential
+	 * 	 <li>For each given page type:
+	 * 	 <ul>
+	 * 	 <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
+	 * 	 <li>Test if the page represents the new instance by running its at checker
+	 * 	 <li>If the page's at checker is successful:
+	 * 	 <ul>
+	 * 	   <li>Inform any registered page change listeners
+	 * 	   <li>Set the browser's page property to the instance (if it is not already of this type)
+	 * 	   <li>Discard the rest of the potentials
+	 * 	 </ul>
+	 * 	 <li>If the page's at checker is not successful:
+	 * 	 <ul>
+	 * 	   <li>Try the next potential
 	 */
 	void page(Class<? extends Page>[] potentialPageClasses) {
 		def potentialPageClassesClone = potentialPageClasses.toList()
@@ -273,7 +274,7 @@ class Browser {
 	/**
 	 * Sets this browser's page to be the given page after initializing it.
 	 *
-	 * @return a page instance of the passed page after initializing
+	 * @return a page instance passed as the first argument after initializing
 	 * @see #page(Class)
 	 */
 	public <T extends Page> T page(T page) {
@@ -296,6 +297,7 @@ class Browser {
 	 * @return a page instance of the given page type when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
 	public <T extends Page> T at(Class<T> pageType) {
+		validatePage(pageType)
 		doAt(createPage(pageType))
 	}
 
@@ -313,7 +315,6 @@ class Browser {
 	 * @return a page instance of the passed page after initializing when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
 	public <T extends Page> T at(T page) {
-		validatePage(page.getClass())
 		doAt(page)
 	}
 
@@ -347,7 +348,7 @@ class Browser {
 	 *
 	 * @return true if browser is at the given page otherwise false
 	 */
-	 boolean isAt(Page page, boolean allowAtCheckWaiting = true) {
+	boolean isAt(Page page, boolean allowAtCheckWaiting = true) {
 		initialisePage(page)
 		def isAt = page.verifyAtSafely(allowAtCheckWaiting)
 		if (isAt) {
@@ -379,7 +380,7 @@ class Browser {
 	 * <p>
 	 */
 	private void makeCurrentPage(Page page) {
-		if (page.getClass() != getPage().getClass()) {
+		if (page != getPage()) {
 			informPageChangeListeners(getPage(), page)
 			getPage().onUnload(page)
 			def previousPage = getPage()
@@ -389,7 +390,7 @@ class Browser {
 	}
 
 	private <T extends Page> T initialisePage(T page) {
-		if (page.browser == null || !page.browser.is(this)) {
+		if (!this.is(page.browser)) {
 			page.init(this)
 		}
 		page
@@ -526,7 +527,7 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T via(Class<T> pageType, Object[] args) {
-		via([:], pageType, *args)
+		via([:], pageType, args)
 	}
 
 	/**
@@ -537,7 +538,7 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T via(T page, Object[] args) {
-		via([:], page, *args)
+		via([:], page, args)
 	}
 
 	/**
@@ -582,9 +583,8 @@ class Browser {
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
 	public <T extends Page> T via(Map params, T page, Object[] args) {
-		validatePage(page.getClass())
 		initialisePage(page)
-		page.to(params, *args)
+		page.to(params, args)
 		page
 	}
 

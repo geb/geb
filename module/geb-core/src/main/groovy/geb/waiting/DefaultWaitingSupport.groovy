@@ -29,35 +29,19 @@ class DefaultWaitingSupport implements WaitingSupport {
 		this.config = config
 	}
 
-	public <T> T waitFor(String waitPreset, Closure<T> block) {
-		waitFor([:], waitPreset, block)
-	}
-
-	public <T> T waitFor(Map params, String waitPreset, Closure<T> block) {
+	public <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
 		doWaitFor(params.message, config.getWaitPreset(waitPreset), block)
 	}
 
-	public <T> T waitFor(Closure<T> block) {
-		waitFor([:], block)
-	}
-
-	public <T> T waitFor(Map params, Closure<T> block) {
+	public <T> T waitFor(Map params = [:], Closure<T> block) {
 		doWaitFor(params.message, config.defaultWait, block)
 	}
 
-	public <T> T waitFor(Double timeout, Closure<T> block) {
-		waitFor([:], timeout, block)
-	}
-
-	public <T> T waitFor(Map params, Double timeout, Closure<T> block) {
+	public <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
 		doWaitFor(params.message, config.getWait(timeout), block)
 	}
 
-	public <T> T waitFor(Double timeout, Double interval, Closure<T> block) {
-		waitFor([:], timeout, interval, block)
-	}
-
-	public <T> T waitFor(Map params, Double timeout, Double interval, Closure<T> block) {
+	public <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
 		doWaitFor(params.message, new Wait(timeout, interval), block)
 	}
 

@@ -30,11 +30,7 @@ class DefaultFrameSupport implements FrameSupport {
 		this.browser = browser
 	}
 
-	def withFrame(frame, Closure block) {
-		withFrame(frame, null, block)
-	}
-
-	def withFrame(frame, Class<? extends Page> page, Closure block) {
+	def withFrame(frame, Class<? extends Page> page = null, Closure block) {
 		def originalPage = browser.page
 		browser.driver.switchTo().frame(frame)
 		if (page) {
@@ -48,20 +44,12 @@ class DefaultFrameSupport implements FrameSupport {
 		}
 	}
 
-	private withFrameForContent(content, Class<? extends Page> page, Closure block) {
-		WebElement element = content.firstElement()
+	def withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure block) {
+		WebElement element = frameNavigator.firstElement()
 		if (element == null) {
-			throw new NoSuchFrameException("No elements for given content: $content")
+			throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")
 		}
 		withFrame(element, page, block)
-	}
-
-	def withFrame(Navigator frame, Class<? extends Page> page, Closure block) {
-		withFrameForContent(frame, page, block)
-	}
-
-	def withFrame(Navigator frame, Closure block) {
-		withFrame(frame, null, block)
 	}
 
 	def withFrame(SimplePageContent frame, Closure block) {

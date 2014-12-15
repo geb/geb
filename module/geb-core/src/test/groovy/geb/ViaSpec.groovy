@@ -72,17 +72,23 @@ class ViaSpec extends GebSpecWithServer {
 		page.getClass() == ViaSpecPageA
 	}
 
-	def "verify isAt() works"() {
+	@Unroll
+	def "verify isAt() works when using #scenario"() {
 		when:
-		via ViaSpecPageA
+		via pageA
 
 		then:
-		isAt ViaSpecPageA
-		!isAt(ViaSpecPageB)
-		!isAt(ViaSpecPageB)
+		isAt pageA
+		!isAt(pageB)
+		!isAt(pageB)
+
+		where:
+		scenario    | pageA              | pageB
+		"classes"   | ViaSpecPageA       | ViaSpecPageB
+		"instances" | new ViaSpecPageA() | new ViaSpecPageB()
 	}
 
-	def "when isAt() returns true it also modifies browser's page instance"() {
+	def "when isAt() returns true it also modifies browser's page instance when using classes"() {
 		given:
 		go ''
 
@@ -95,51 +101,78 @@ class ViaSpec extends GebSpecWithServer {
 		page.getClass() == ViaSpecPageA
 	}
 
+	def "when isAt() returns true it also modifies browser's page instance when using instances"() {
+		given:
+		def pageA = new ViaSpecPageA()
+		def pageB = new ViaSpecPageB()
+		go ''
+
+		expect:
+		isAt pageA
+		page == pageA
+
+		and:
+		!isAt(pageB)
+		page == pageA
+	}
+
 	@Unroll
 	def "verify to() asserts that we are at the expected page - #scenario"() {
 		when:
-		to(* args)
+		to(*args)
 
 		then:
 		PowerAssertionError error = thrown()
 		error.message.contains('div')
 
 		where:
-		scenario                      | args
-		'simple call'                 | [ViaSpecPageB]
-		'call with map'               | [[hideA: true], ViaSpecPageA]
-		'call with parameter'         | [ViaSpecPageA, true]
-		'call with parameter and map' | [[hideA: true], ViaSpecPageA, true]
+		scenario                                     | args
+		'simple call using class'                    | [ViaSpecPageB]
+		'simple call using instance'                 | [new ViaSpecPageB()]
+		'call with map using class'                  | [[hideA: true], ViaSpecPageA]
+		'call with map using instance'               | [[hideA: true], new ViaSpecPageA()]
+		'call with parameter using class'            | [ViaSpecPageA, true]
+		'call with parameter using instance'         | [new ViaSpecPageA(), true]
+		'call with parameter and map using class'    | [[hideA: true], ViaSpecPageA, true]
+		'call with parameter and map using instance' | [[hideA: true], new ViaSpecPageA(), true]
 	}
 
 	@Unroll
 	def "verify to() succeeds when we are at the expected page - #scenario"() {
 		when:
-		def newPage = to(* args)
+		def newPage = to(*args)
 
 		then:
 		notThrown(PowerAssertionError)
-		newPage in args.find { it instanceof Class }
+		newPage in args.find { it instanceof Class || it in Page }
 
 		where:
-		scenario                      | args
-		'simple call'                 | [ViaSpecPageA]
-		'call with map'               | [[showB: true], ViaSpecPageB]
-		'call with parameter'         | [ViaSpecPageB, true]
-		'call with parameter and map' | [[showB: true], ViaSpecPageB, true]
+		scenario                                     | args
+		'simple call using class'                    | [ViaSpecPageA]
+		'simple call using instance'                 | [new ViaSpecPageA()]
+		'call with map using class'                  | [[showB: true], ViaSpecPageB]
+		'call with map using instance'               | [[showB: true], new ViaSpecPageB()]
+		'call with parameter using class'            | [ViaSpecPageB, true]
+		'call with parameter using instance'         | [new ViaSpecPageB(), true]
+		'call with parameter and map using class'    | [[showB: true], ViaSpecPageB, true]
+		'call with parameter and map using instance' | [[showB: true], new ViaSpecPageB(), true]
 	}
 
 	@Unroll
 	def "via() returns a page instance - #scenario"() {
 		expect:
-		via(* args) in args.find { it instanceof Class }
+		via(*args) in args.find { it instanceof Class || it in Page }
 
 		where:
-		scenario                      | args
-		'simple call'                 | [ViaSpecPageA]
-		'call with map'               | [[showB: true], ViaSpecPageB]
-		'call with parameter'         | [ViaSpecPageB, true]
-		'call with parameter and map' | [[showB: true], ViaSpecPageB, true]
+		scenario                                     | args
+		'simple call using class'                    | [ViaSpecPageA]
+		'simple call using instance'                 | [new ViaSpecPageA()]
+		'call with map using class'                  | [[showB: true], ViaSpecPageB]
+		'call with map using instance'               | [[showB: true], new ViaSpecPageB()]
+		'call with parameter using class'            | [ViaSpecPageB, true]
+		'call with parameter using instance'         | [new ViaSpecPageB(), true]
+		'call with parameter and map using class'    | [[showB: true], ViaSpecPageB, true]
+		'call with parameter and map using instance' | [[showB: true], new ViaSpecPageB(), true]
 	}
 
 	def 'at() returns an instance of a page if it succeeds'() {

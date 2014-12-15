@@ -26,12 +26,7 @@ class UninitializedAlertAndConfirmSupport implements AlertAndConfirmSupport {
 	}
 
 	@Override
-	def withAlert(Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def withAlert(Map params, Closure actions) {
+	def withAlert(Map params = [:], Closure actions) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
@@ -41,22 +36,12 @@ class UninitializedAlertAndConfirmSupport implements AlertAndConfirmSupport {
 	}
 
 	@Override
-	def withConfirm(Map params, Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def withConfirm(Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
 	def withConfirm(boolean ok, Closure actions) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	def withConfirm(Map params, boolean ok, Closure actions) {
+	def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 

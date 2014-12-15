@@ -20,6 +20,6 @@ import geb.Page;
 public class PageInstanceNotInitializedException extends GebException {
 
 	public PageInstanceNotInitializedException(Page page) {
-		super(String.format("The page %s instance has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() methods before using it.", page.getClass().getName()));
+		super(String.format("Instance of page class %s has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it.", page.getClass().getName()));
 	}
 }

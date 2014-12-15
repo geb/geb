@@ -142,11 +142,7 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
 		captureDialog(this.&installConfirm.curry(ok), 'confirm', actions, config.getWaitForParam(waitParam))
 	}
 
-	def withAlert(Closure actions) {
-		withAlert([:], actions)
-	}
-
-	def withAlert(Map params, Closure actions) {
+	def withAlert(Map params = [:], Closure actions) {
 		def message = captureAlert(actions, params.wait)
 		if (message == null) {
 			throw new AssertionError("no browser alert() was raised")
@@ -164,19 +160,11 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
 		}
 	}
 
-	def withConfirm(Map params, Closure actions) {
-		withConfirm(params, true, actions)
-	}
-
-	def withConfirm(Closure actions) {
-		withConfirm([:], actions)
-	}
-
 	def withConfirm(boolean ok, Closure actions) {
 		withConfirm([:], ok, actions)
 	}
 
-	def withConfirm(Map params, boolean ok, Closure actions) {
+	def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
 		def message = captureConfirm(ok, actions, params.wait)
 		if (message == null) {
 			throw new AssertionError("no browser confirm() was raised")

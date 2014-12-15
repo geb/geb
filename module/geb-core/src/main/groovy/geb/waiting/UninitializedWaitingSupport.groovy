@@ -26,42 +26,22 @@ class UninitializedWaitingSupport implements WaitingSupport {
 	}
 
 	@Override
-	def <T> T waitFor(String waitPreset, Closure<T> block) {
+	def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	def <T> T waitFor(Map params, String waitPreset, Closure<T> block) {
+	def <T> T waitFor(Map params = [:], Closure<T> block) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	def <T> T waitFor(Closure<T> block) {
+	def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	def <T> T waitFor(Map params, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def <T> T waitFor(Double timeout, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def <T> T waitFor(Map params, Double timeout, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def <T> T waitFor(Double timeout, Double interval, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def <T> T waitFor(Map params, Double timeout, Double interval, Closure<T> block) {
+	def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 }
