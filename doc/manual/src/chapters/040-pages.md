@@ -596,6 +596,34 @@ Any type of argument can be used with the `to()` method, **except** named parame
 
 This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are **not** sent to the [`convertToPath()`](api/geb/Page.html#convertToPath\(java.lang.Object\)) method.
 
+## Parametrized pages
+
+`Browser` methods like [`to()`](api/geb/Browser.html#to\(T,%20java.lang.Object\)), [`via()`](api/geb/Browser.html#via\(T,%20java.lang.Object\)), [`at()`](api/geb/Browser.html#at\(T\)) and [`page()`](api/geb/Browser.html#page\(T\)) accept not only page classes but page instances as well. This is for example useful when parameterizing pages to use property values in at checkers:
+
+    class BooksPage extends Page {
+        static content = {
+            book { bookTitle -> $("a", text: bookTitle) }
+        }
+    }
+
+    class BookPage extends Page {
+        String forBook
+        
+        static at = { forBook == bookTitle }
+        
+        static content = {
+            bookTitle { $("h1").text() }
+        }
+    }
+    
+    Browser.drive {
+        to BooksPage
+        book("The Book of Geb").click()
+        
+        at(new BookPage(forBook: "The Book of Geb"))
+    }
+
+> Manually instantiated pages have to be initialized before they can be used. Initialization is performed as part of the `Browser` methods mentioned above. Failing to pass the page instance to one of these methods and calling any method on an uninitialized page instance might result in a `PageInstanceNotInitializedException`.
 
 ## Inheritance
 
