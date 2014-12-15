@@ -313,7 +313,7 @@ This code passes:
         assert $('#slogan').text() == 'very groovy browser automation… web testing, screen scraping and more'
     }
 
-If code of the closure passed as the last argument changes browser's current page instance (e.g. by using [`page(Page)`](api/geb/Browser.html#page\(geb.Page\)) or [`at(Page)`](api/geb/Browser.html#at\(Class%3CT%3E\))) then it will be reverted to its original value after returning from `withWindow()`.
+If code of the closure passed as the last argument changes browser's current page instance (e.g. by using [`page(Page)`](api/geb/Browser.html#page\(T\)) or [`at(Page)`](api/geb/Browser.html#at\(Class%3CT%3E\))) then it will be reverted to its original value after returning from `withWindow()`.
 
 #### Passing options when working with already opened windows
 
@@ -343,7 +343,7 @@ If you wish to execute code in a window that is newly opened by some of your act
 
 Note that if the first parameter opens none or more than one window, then [`NoNewWindowException`](api/geb/error/NoNewWindowException.html) is thrown.
 
-If code of the closure passed as the last argument changes browser's current page instance (e.g. by using [`page(Page)`](api/geb/Browser.html#page\(geb.Page\)) or [`at(Page)`](api/geb/Browser.html#at\(Class%3CT%3E\))) then it will be reverted to its original value after returning from `withNewWindow()`.
+If code of the closure passed as the last argument changes browser's current page instance (e.g. by using [`page(Page)`](api/geb/Browser.html#page\(T\)) or [`at(Page)`](api/geb/Browser.html#at\(Class%3CT%3E\))) then it will be reverted to its original value after returning from `withNewWindow()`.
 
 #### Passing options when working with newly opened windows
 
