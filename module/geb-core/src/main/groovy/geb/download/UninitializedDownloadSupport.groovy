@@ -18,21 +18,16 @@ package geb.download
 import geb.Page
 import geb.error.PageInstanceNotInitializedException
 
-class UninitializedDownloadSupport implements Download {
+class UninitializedDownloadSupport implements DownloadSupport {
 
 	private Page page
 
-	public UninitializedDownloadSupport(Page page) {
+	UninitializedDownloadSupport(Page page) {
 		this.page = page
 	}
 
 	@Override
-	HttpURLConnection download() {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	HttpURLConnection download(Map options) {
+	HttpURLConnection download(Map options = [:]) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
@@ -42,27 +37,12 @@ class UninitializedDownloadSupport implements Download {
 	}
 
 	@Override
-	InputStream downloadStream() {
+	InputStream downloadStream(Map options = [:], Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	InputStream downloadStream(Map options) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	InputStream downloadStream(Map options, Closure connectionConfig) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	InputStream downloadStream(String uri) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	InputStream downloadStream(String uri, Closure connectionConfig) {
+	InputStream downloadStream(String uri, Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
@@ -72,27 +52,12 @@ class UninitializedDownloadSupport implements Download {
 	}
 
 	@Override
-	String downloadText() {
+	String downloadText(Map options = [:], Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	String downloadText(Map options) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	String downloadText(Map options, Closure connectionConfig) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	String downloadText(String uri) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	String downloadText(String uri, Closure connectionConfig) {
+	String downloadText(String uri, Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
@@ -102,17 +67,7 @@ class UninitializedDownloadSupport implements Download {
 	}
 
 	@Override
-	byte[] downloadBytes() {
-		return new byte[0]
-	}
-
-	@Override
-	byte[] downloadBytes(Map options) {
-		return new byte[0]
-	}
-
-	@Override
-	byte[] downloadBytes(Map options, Closure connectionConfig) {
+	byte[] downloadBytes(Map options = [:], Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
@@ -122,37 +77,17 @@ class UninitializedDownloadSupport implements Download {
 	}
 
 	@Override
-	byte[] downloadBytes(String uri) {
-		return new byte[0]
-	}
-
-	@Override
-	byte[] downloadBytes(String uri, Closure connectionConfig) {
+	byte[] downloadBytes(String uri, Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	Object downloadContent() {
+	Object downloadContent(Map options = [:], Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	Object downloadContent(Map options) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	Object downloadContent(Map options, Closure connectionConfig) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	Object downloadContent(String uri) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	Object downloadContent(String uri, Closure connectionConfig) {
+	Object downloadContent(String uri, Closure connectionConfig = null) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 

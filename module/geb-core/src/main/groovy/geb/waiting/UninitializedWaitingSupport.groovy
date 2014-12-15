@@ -18,10 +18,10 @@ package geb.waiting
 import geb.Page
 import geb.error.PageInstanceNotInitializedException
 
-class UninitializedWaitingSupport implements Waiting {
+class UninitializedWaitingSupport implements WaitingSupport {
 	private Page page
 
-	public UninitializedWaitingSupport(Page page) {
+	UninitializedWaitingSupport(Page page) {
 		this.page = page
 	}
 

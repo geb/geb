@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,213 +15,175 @@
  */
 package geb.download
 
-import geb.Browser
-import org.openqa.selenium.Cookie
+public interface DownloadSupport {
 
-/**
- * Provides methods to directly download content into the running program using HttpURLConnection.
- * <p>
- * Any cookies that the browser currently has will be automatically transferred to the url connection,
- * allowing it to assume the context of the browser.
- * <p>
- * An instance of this class will be mixed in to all browser, page and module objects making these methods
- * public methods on those objects.
- */
-class DownloadSupport implements Download {
+	/**
+	 * Creates a http url connection to a url, that has the same cookies as the browser.
+	 * Resolves the base and the uri to the current browser page
+	 */
+	HttpURLConnection download()
 
-	/*
-		NOTE - if public methods are added here, make sure they are also added to the binding updater.
-	*/
+	/**
+	 * Creates a http url connection to a url, that has the same cookies as the browser.
+	 * <p>
+	 * Valid options are:
+	 *
+	 * <ul>
+	 * <li>{@code uri} - the uri to resolve relative to the base option (current browser page used if {@code null})
+	 * <li>{@code base} - what to resolve the uri against (current browser page used if {@code null})
+	 * </ul>
+	 */
+	HttpURLConnection download(Map options)
 
-	final private Browser browser
+	/**
+	 * Calls download with the single option '{@code uri}' as the given value.
+	 */
+	HttpURLConnection download(String uri)
 
-	// HTTP 1.1 states that this charset is the default if none was specified
-	static final private DEFAULT_CHARSET = "ISO-8859-1"
-
-	DownloadSupport(Browser browser) {
-		this.browser = browser
-	}
-
-	HttpURLConnection download() {
-		download([:])
-	}
-
-	HttpURLConnection download(Map options) {
-		def url = resolveUrl(options)
-		def connection = url.openConnection()
-		applyCookies(connection, browser)
-		browser.config.getDownloadConfig()?.call(connection)
-		connection
-	}
-
-	HttpURLConnection download(String uri) {
-		download(uri: uri)
-	}
-
-	InputStream downloadStream() {
-		downloadStream([:], null)
-	}
+	/**
+	 * Opens a url connection via {@link #download(Map)} using an empty Map and returns the response input stream.
+	 */
+	InputStream downloadStream()
 
 	/**
 	 * Opens a url connection via {@link #download(Map)} and returns the response input stream.
 	 */
-	InputStream downloadStream(Map options) {
-		downloadStream(options, null)
-	}
-
-	InputStream downloadStream(Map options, Closure connectionConfig) {
-		wrapInDownloadException(downloadWithConfig(options, connectionConfig)) { it.inputStream }
-	}
-
-	InputStream downloadStream(String uri) {
-		downloadStream(uri:uri, null)
-	}
-
-	InputStream downloadStream(String uri, Closure connectionConfig) {
-		downloadStream(uri: uri, connectionConfig)
-	}
-
-	InputStream downloadStream(Closure connectionConfig) {
-		downloadStream([:], connectionConfig)
-	}
-
-	String downloadText() {
-		downloadText([:], null)
-	}
-
-	String downloadText(Map options) {
-		downloadText(options, null)
-	}
-
-	String downloadText(Map options, Closure connectionConfig) {
-		def connection = downloadWithConfig(options, connectionConfig)
-		connection.connect()
-		def contentType = connection.contentType
-
-		if (isTextContentType(contentType)) {
-			def charset = determineCharset(contentType)
-			wrapInDownloadException(connection) { it.inputStream.getText(charset) }
-		} else {
-			throw new DownloadException(connection, "cannot extract text from connection as content type is non text (is: $contentType)")
-		}
-	}
-
-	String downloadText(String uri) {
-		downloadText(uri:uri, null)
-	}
-
-	String downloadText(String uri, Closure connectionConfig) {
-		downloadText(uri: uri, connectionConfig)
-	}
-
-	String downloadText(Closure connectionConfig) {
-		downloadText([:], connectionConfig)
-	}
-
-	byte[] downloadBytes() {
-		downloadBytes([:], null)
-	}
-
-	byte[] downloadBytes(Map options) {
-		downloadBytes(options, null)
-	}
-
-	byte[] downloadBytes(Map options, Closure connectionConfig) {
-		downloadStream(options, connectionConfig).bytes
-	}
-
-	byte[] downloadBytes(Closure connectionConfig) {
-		downloadStream(connectionConfig).bytes
-	}
-
-	byte[] downloadBytes(String uri) {
-		downloadBytes(uri, null)
-	}
-
-	byte[] downloadBytes(String uri, Closure connectionConfig) {
-		downloadBytes(uri: uri, connectionConfig)
-	}
-
-	Object downloadContent() {
-		downloadContent([:], null)
-	}
-
-	Object downloadContent(Map options) {
-		downloadContent(options, null)
-	}
-
-	Object downloadContent(Map options, Closure connectionConfig) {
-		wrapInDownloadException(downloadWithConfig(options, connectionConfig)) { it.content }
-	}
-
-	Object downloadContent(String uri){
-		downloadContent(uri, null)
-	}
-
-	Object downloadContent(String uri, Closure connectionConfig) {
-		downloadContent(uri: uri, connectionConfig)
-	}
-
-	Object downloadContent(Closure connectionConfig) {
-		downloadContent([:], connectionConfig)
-	}
-
-	private HttpURLConnection downloadWithConfig(Map options, Closure config) {
-		def connection = download(options)
-		config?.call(connection)
-		connection
-	}
+	InputStream downloadStream(Map options)
 
 	/**
-	 * Returns a URL for what is to be downloaded.
+	 * Opens a url connection via {@link #download(Map)} and returns the response input stream.
 	 * <p>
-	 * If uri is non {@code null}, it is resolved against the browser's current page url. If it is {@code null},
-	 * the browser's current page url will be returned.
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
 	 */
-	private URL resolveUrl(Map options) {
-		def uri = options.uri
-		def base = options.base ?: browser.driver.currentUrl
-		uri ? new URI(base).resolve(uri).toURL() : new URL(base)
-	}
+	InputStream downloadStream(Map options , Closure connectionConfig)
 
 	/**
-	 * Copies the browser's current cookies to the given connection via the "Cookie" header.
+	 * Opens a url connection via {@link #download(String)} and returns the response input stream.
 	 */
-	private applyCookies(HttpURLConnection connection, Browser browser) {
-		applyCookies(connection, browser.driver.manage().cookies)
-	}
+	InputStream downloadStream(String uri)
 
 	/**
-	 * Copies the given cookies to the given connection via the "Cookie" header.
+	 * Opens a url connection via {@link #download(String)} and returns the response input stream.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
 	 */
-	private applyCookies(HttpURLConnection connection, Collection<Cookie> cookies) {
-		def cookieHeader = cookies.collect { "${it.name}=${it.value}" }.join("; ")
-		connection.setRequestProperty("Cookie", cookieHeader)
-	}
+	InputStream downloadStream(String uri, Closure connectionConfig)
 
-	private boolean isTextContentType(String contentType) {
-		contentType?.startsWith("text/")
-	}
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the response input stream.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	InputStream downloadStream(Closure connectionConfig)
 
-	private determineCharset(String contentType) {
-		if (contentType) {
-			def parts = contentType.split(";").collect { it.trim() }
-			def charsetPart = parts.find { it.startsWith("charset=") }
-			if (charsetPart) {
-				charsetPart.split("=", 2)[1]
-			} else {
-				DEFAULT_CHARSET
-			}
-		} else {
-			DEFAULT_CHARSET
-		}
-	}
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
+	 */
+	String downloadText()
 
-	private wrapInDownloadException(HttpURLConnection connection, Closure operation) {
-		try {
-			operation(connection)
-		} catch (Throwable e) {
-			throw new DownloadException(connection, "An error occurred during the download operation", e)
-		}
-	}
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
+	 */
+	String downloadText(Map options)
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	String downloadText(Map options, Closure connectionConfig )
+
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the response text, if the content type was textual.
+	 */
+	String downloadText(String uri)
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the response text, if the content type was textual.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	String downloadText(String uri, Closure connectionConfig )
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the response text, if the content type was textual.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	String downloadText(Closure connectionConfig)
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} by passing an empty Map and returns the raw bytes.
+	 */
+	byte[] downloadBytes()
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the raw bytes.
+	 */
+	byte[] downloadBytes(Map options)
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the raw bytes.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	byte[] downloadBytes(Map options, Closure connectionConfig)
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the raw bytes.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	byte[] downloadBytes(Closure connectionConfig)
+
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the raw bytes.
+	 */
+	byte[] downloadBytes(String uri)
+
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the raw bytes.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
+	 */
+	byte[] downloadBytes(String uri, Closure connectionConfig)
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} by passing an empty Map and returns the content object.
+	 */
+	Object downloadContent()
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the content object.
+	 */
+	Object downloadContent(Map options)
+
+	/**
+	 * Opens a url connection via {@link #download(Map)} and returns the content object.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
+	 *
+	 * @see URLConnection#getContent()
+	 */
+	Object downloadContent(Map options, Closure connectionConfig)
+
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the content object.
+	 */
+	Object downloadContent(String uri)
+
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the content object.
+	 * <p>
+	 * If connectionConfig is given, it is called with the {@link HttpURLConnection} before the request is made.
+	 *
+	 * @see URLConnection#getContent()
+	 */
+	Object downloadContent(String uri, Closure connectionConfig)
+	/**
+	 * Opens a url connection via {@link #download(String)} and returns the content object.
+	 * <p>
+	 * connectionConfig is called with the {@link HttpURLConnection} before the request is made.
+	 *
+	 * @see URLConnection#getContent()
+	 */
+	Object downloadContent(Closure connectionConfig)
 }

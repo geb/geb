@@ -19,10 +19,10 @@ import geb.Page
 import geb.error.PageInstanceNotInitializedException
 
 
-class UninitializedInteractionSupport implements Interactions {
+class UninitializedInteractionSupport implements InteractionsSupport {
 	private Page page
 
-	public UninitializedInteractionSupport(Page page) {
+	UninitializedInteractionSupport(Page page) {
 		this.page = page
 	}
 

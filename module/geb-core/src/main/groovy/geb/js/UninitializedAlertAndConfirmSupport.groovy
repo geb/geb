@@ -18,10 +18,10 @@ package geb.js
 import geb.Page
 import geb.error.PageInstanceNotInitializedException
 
-class UninitializedAlertAndConfirmSupport implements AlertAndConfirm {
+class UninitializedAlertAndConfirmSupport implements AlertAndConfirmSupport {
 	private Page page
 
-	public UninitializedAlertAndConfirmSupport(Page page) {
+	UninitializedAlertAndConfirmSupport(Page page) {
 		this.page = page
 	}
 

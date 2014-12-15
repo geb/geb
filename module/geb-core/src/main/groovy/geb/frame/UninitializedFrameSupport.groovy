@@ -20,10 +20,10 @@ import geb.content.SimplePageContent
 import geb.error.PageInstanceNotInitializedException
 import geb.navigator.Navigator
 
-class UninitializedFrameSupport implements Frame {
+class UninitializedFrameSupport implements FrameSupport {
 	private Page page
 
-	public UninitializedFrameSupport(Page page) {
+	UninitializedFrameSupport(Page page) {
 		this.page = page
 	}
 

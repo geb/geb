@@ -17,11 +17,12 @@ package geb.content
 
 import geb.Page
 import geb.error.PageInstanceNotInitializedException
+import geb.navigator.Navigator
 
-class UninitializedPageContentSupport implements PageContent {
+class UninitializedPageContentSupport extends PageContentSupport {
 	private Page page
 
-	public UninitializedPageContentSupport(Page page) {
+	UninitializedPageContentSupport(Page page) {
 		this.page = page
 	}
 
@@ -31,17 +32,12 @@ class UninitializedPageContentSupport implements PageContent {
 	}
 
 	@Override
-	def methodMissing(String name, Object args) {
+	Navigator getNavigator() {
 		throw new PageInstanceNotInitializedException(page)
 	}
 
 	@Override
-	def propertyMissing(String name) {
-		throw new PageInstanceNotInitializedException(page)
-	}
-
-	@Override
-	def propertyMissing(String name, Object val) {
+	PageContentContainer getOwner() {
 		throw new PageInstanceNotInitializedException(page)
 	}
 }

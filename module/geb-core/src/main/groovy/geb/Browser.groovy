@@ -273,11 +273,12 @@ class Browser {
 	/**
 	 * Sets this browser's page to be the given page after initializing it.
 	 *
-	 *
+	 * @return a page instance of the passed page after initializing
 	 * @see #page(Class)
 	 */
-	void page(Page page) {
+	public <T extends Page> T page(T page) {
 		makeCurrentPage(initialisePage(page))
+		page
 	}
 
 	/**
@@ -299,9 +300,9 @@ class Browser {
 	}
 
 	/**
-	 * Checks if the browser is at the current page by running the at checker for this page type
+	 * Checks if the browser is at the current page by running the at checker for this page instance
 	 *
-	 *  If the at checker is successful, this browser object's page instance is updated to the said instance of the page.
+	 * If the at checker is successful, this browser object's page instance is updated to the said instance of the page.
 	 *
 	 * If the given page object does not define an at checker, UndefinedAtCheckerException is thrown.
 	 *
@@ -309,7 +310,7 @@ class Browser {
 	 * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
 	 * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
 	 *
-	 * @return a page instance of the given page type when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
+	 * @return a page instance of the passed page after initializing when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
 	 */
 	public <T extends Page> T at(T page) {
 		validatePage(page.getClass())
@@ -347,7 +348,6 @@ class Browser {
 	 * @return true if browser is at the given page otherwise false
 	 */
 	 boolean isAt(Page page, boolean allowAtCheckWaiting = true) {
-		validatePage(page.getClass())
 		initialisePage(page)
 		def isAt = page.verifyAtSafely(allowAtCheckWaiting)
 		if (isAt) {
@@ -529,7 +529,14 @@ class Browser {
 		via([:], pageType, *args)
 	}
 
-	public <T extends Page> T via(Page page, Object[] args) {
+	/**
+	 * Sends the browser to the given page instance url and sets the page to the given instance.
+	 *
+	 * @return a page instance that was passed after initializing it.
+	 * @see #page(geb.Page)
+	 * @see geb.Page#to(java.util.Map, java.lang.Object)
+	 */
+	public <T extends Page> T via(T page, Object[] args) {
 		via([:], page, *args)
 	}
 
@@ -551,7 +558,7 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
-	public <T extends Page> T via(Map params, Page page) {
+	public <T extends Page> T via(Map params, T page) {
 		via(params, page, null)
 	}
 
@@ -574,7 +581,7 @@ class Browser {
 	 * @see #page(geb.Page)
 	 * @see geb.Page#to(java.util.Map, java.lang.Object)
 	 */
-	public <T extends Page> T via(Map params, Page page, Object[] args) {
+	public <T extends Page> T via(Map params, T page, Object[] args) {
 		validatePage(page.getClass())
 		initialisePage(page)
 		page.to(params, *args)
