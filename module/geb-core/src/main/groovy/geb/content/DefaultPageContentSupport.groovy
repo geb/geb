@@ -46,15 +46,7 @@ class DefaultPageContentSupport extends PageContentSupport {
 		}
 	}
 
-	def methodMissing(String name, args) {
-		try {
-			getContent(name, * args)
-		} catch (UndefinedPageContentException e1) {
-			getNavigator().methodMissing(name, args)
-		}
-	}
-
-	PageContentContainer getOwner(){
+	PageContentContainer getOwner() {
 		this.owner
 	}
 }
