@@ -57,11 +57,7 @@ class LinkCrawlSpec extends Specification {
 
 			List<String> findPageLinks(Response response) {
 				def document = response.document
-				document == null ? [] : document.select("body a").collect {
-					it.attr("href")
-				}.findAll {
-					it
-				}
+				document == null ? [] : document.select("body a")*.attr("href").findAll { it }
 			}
 
 			@Override

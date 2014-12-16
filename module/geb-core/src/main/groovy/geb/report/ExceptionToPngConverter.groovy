@@ -78,7 +78,7 @@ class ExceptionToPngConverter {
 		def g = image.createGraphics()
 
 		g.color = WHITE
-		g.fillRect(0, 0, image.width, image.height);
+		g.fillRect(0, 0, image.width, image.height)
 		g.color = BLACK
 		g.font = font
 

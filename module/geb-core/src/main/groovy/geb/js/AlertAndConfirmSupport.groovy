@@ -15,7 +15,7 @@
  */
 package geb.js
 
-public interface AlertAndConfirmSupport {
+interface AlertAndConfirmSupport {
 
 	def withAlert(Closure actions)
 

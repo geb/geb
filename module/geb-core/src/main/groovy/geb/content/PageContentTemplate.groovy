@@ -59,7 +59,7 @@ class PageContentTemplate {
 			def factoryReturn = invokeFactory(* args)
 			def creation = wrapFactoryReturn(factoryReturn, * args)
 			if (params.required) {
-				if (creation != null && creation instanceof TemplateDerivedPageContent) {
+				if (creation instanceof TemplateDerivedPageContent) {
 					creation.require()
 				} else if (creation == null) {
 					throw new RequiredPageValueNotPresent(this, * args)

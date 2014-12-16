@@ -191,7 +191,7 @@ class ViaSpecPageA extends Page {
 	}
 
 	String convertToPath(param) {
-		return param ? "?hideA=$param" : ''
+		param ? "?hideA=$param" : ''
 	}
 }
 
@@ -202,7 +202,7 @@ class ViaSpecPageB extends Page {
 	}
 
 	String convertToPath(param) {
-		return param ? "?showB=$param" : ''
+		param ? "?showB=$param" : ''
 	}
 }
 

@@ -191,7 +191,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		if (expression) {
 			result = transform(expression, statement)
 		}
-		return result
+		result
 	}
 
 	private Expression getTransformableExpression(Statement statement) {
@@ -225,7 +225,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
 		Statement withAssertion = new AssertStatement(booleanExpression)
 		withAssertion.setSourcePosition(expression)
-		withAssertion.setStatementLabel((String) expression.getNodeMetaData("statementLabel"));
+		withAssertion.setStatementLabel((String) expression.getNodeMetaData("statementLabel"))
 
 		BlockStatement assertAndRetrieveRecordedValue = new BlockStatement()
 		assertAndRetrieveRecordedValue.addStatement(withAssertion)
@@ -271,9 +271,9 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 		List<SpreadExpression> spreadExpressions = argumentList.findAll { it in SpreadExpression }
 		if (spreadExpressions) {
 			spreadExpressions.each { reportError(it, 'Spread expressions are not allowed here', sourceUnit) }
-			return null
+			null
 		} else {
-			new ArrayExpression(ClassHelper.OBJECT_TYPE, argumentList);
+			new ArrayExpression(ClassHelper.OBJECT_TYPE, argumentList)
 		}
 	}
 }

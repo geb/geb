@@ -42,7 +42,7 @@ class NavigatorGroovySpec extends Specification {
 
 	def "can use collect(Closure) on Navigator"() {
 		when:
-		def list = navigator.collect { it.@id }
+		def list = navigator*.@id
 		then: list == expectedList
 		where:
 		navigator                 | expectedList

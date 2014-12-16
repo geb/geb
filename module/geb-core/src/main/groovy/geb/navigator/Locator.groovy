@@ -21,7 +21,7 @@ import org.openqa.selenium.By
  * Allows to create {@link geb.navigator.Navigator}s by selecting {@link org.openqa.selenium.WebElement}s
  * using different criteria (CSS selectors, attribute maps, indexes, ranges and {@link org.openqa.selenium.By} selectors).
  */
-public interface Locator {
+interface Locator {
 
 	/**
 	 * Shorthand for <code>find(null, selector, null)</code>

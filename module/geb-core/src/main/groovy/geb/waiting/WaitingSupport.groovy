@@ -15,7 +15,8 @@
  */
 package geb.waiting
 
-public interface WaitingSupport {
+@SuppressWarnings("UnnecessaryPublicModifier")
+interface WaitingSupport {
 
 	/**
 	 * Uses the {@link geb.Configuration#getWaitPreset(java.lang.String) wait preset} from the {@code configuration}

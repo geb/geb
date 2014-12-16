@@ -213,7 +213,7 @@ class ConfigurationLoader {
 		} catch (ClassNotFoundException cnfe) {
 			//just return null if the class could not be found
 		}
-		return loaded
+		loaded
 	}
 
 	/**

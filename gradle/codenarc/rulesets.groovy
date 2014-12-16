@@ -51,7 +51,23 @@ ruleset {
 		CrapMetric {
 			enabled = false
 		}
+	}*/
+	ruleset('rulesets/unnecessary.xml') {
+		UnnecessaryGetter {
+			enabled = false
+		}
+		UnnecessaryGString {
+			enabled = false
+		}
+		UnnecessarySubstring {
+			enabled = false
+		}
+		UnnecessaryObjectReferences {
+			enabled = false
+		}
+		UnnecessaryPackageReference {
+			enabled = false
+		}
 	}
-	ruleset('rulesets/unnecessary.xml')
-	ruleset('rulesets/unused.xml')*/
+	/*ruleset('rulesets/unused.xml')*/
 }

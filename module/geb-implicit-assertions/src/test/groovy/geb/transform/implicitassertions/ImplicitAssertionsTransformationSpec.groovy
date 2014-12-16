@@ -52,7 +52,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
 		getTransformedClassWithClosureBody('')
 	}
 
-	private def getTransformedInstanceWithClosureBody(String... code) {
+	private getTransformedInstanceWithClosureBody(String... code) {
 		getTransformedClassWithClosureBody(code).newInstance()
 	}
 

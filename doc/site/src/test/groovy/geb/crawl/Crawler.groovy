@@ -52,7 +52,7 @@ abstract class Crawler {
 		isUnderStartUrl(link) && !link.uri.fragment
 	}
 
-	def boolean isUnderStartUrl(Link link) {
+	boolean isUnderStartUrl(Link link) {
 		link.uri.toString().startsWith(startingUrl)
 	}
 
@@ -177,24 +177,22 @@ abstract class Crawler {
 			https.hostnameVerifier = new HostnameVerifier() {
 				@Override
 				boolean verify(String s, SSLSession sslSession) {
-					return true
+					true
 				}
 			}
 
 			def trustManager = new X509TrustManager() {
 				@Override
 				void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
 				}
 
 				@Override
 				void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
 				}
 
 				@Override
 				X509Certificate[] getAcceptedIssuers() {
-					return new X509Certificate[0];
+					new X509Certificate[0]
 				}
 			}
 
@@ -313,15 +311,11 @@ abstract class Crawler {
 
 			Link link = (Link) o
 
-			if (uri != link.uri) {
-				return false
-			}
-
-			return true
+			uri == link.uri
 		}
 
 		int hashCode() {
-			return uri.hashCode()
+			uri.hashCode()
 		}
 	}
 }

@@ -60,7 +60,7 @@ class JavascriptInterface {
 			script = args[0]
 			jsArgs = []
 		} else {
-			script = args[args.size() - 1]
+			script = args.last()
 			jsArgs = args[0..(args.size() - 2)]
 		}
 

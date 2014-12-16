@@ -64,7 +64,7 @@ class GebReportingTestTest extends GebReportingTest {
 	@Test
 	void reportingTestShouldReportOnDemand(Method testMethod) {
 		report("ondemand")
-		doTestReport(testMethod.name, "ondemand");
+		doTestReport(testMethod.name, "ondemand")
 	}
 
 	@Test
@@ -115,7 +115,7 @@ class GebReportingTestTest extends GebReportingTest {
 
 	def tryToFindReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
 		def reportName = ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)
-		return reportGroupDir.listFiles().find { it.name.startsWith reportName }
+		reportGroupDir.listFiles().find { it.name.startsWith reportName }
 	}
 
 	@AfterClass
