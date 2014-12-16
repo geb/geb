@@ -853,10 +853,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	protected void ensureTagIn(List<String> allowedTags, String attribute) {
-		if (!allowedTags.contains(firstElement().tagName)) {
+		String tagName = firstElement().tagName
+
+		if (!allowedTags.contains(tagName)) {
 
 			String joinedValidTags = allowedTags.join(', ');
-			throw new UnsupportedOperationException("Value of '$attribute' attribute can only be checked for the following elements: $joinedValidTags.")
+			throw new UnsupportedOperationException("Value of '$attribute' attribute cannot be checked for element: $tagName as this operation is only supported for the following elements: $joinedValidTags.")
 		}
 	}
 

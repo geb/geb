@@ -63,6 +63,7 @@ This page lists the high level changes between versions of Geb.
 
 * Support for finding elements using Webdriver's [`By`][by-api] selectors \[[GEB-348](http://jira.codehaus.org/browse/GEB-348)\]
 * Support for navigating to page instances in addition to classes \[[GEB-310](http://jira.codehaus.org/browse/GEB-310)\]
+* Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element \[[GEB-345](http://jira.codehaus.org/browse/GEB-345)\]
 
 ### 0.10.0
 

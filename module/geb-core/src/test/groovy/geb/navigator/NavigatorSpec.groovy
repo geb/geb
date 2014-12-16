@@ -323,14 +323,14 @@ class NavigatorSpec extends GebSpecWithServer {
 
 		then:
 		UnsupportedOperationException e1 = thrown()
-		e1.message == "Value of 'disabled' attribute can only be checked for the following elements: button, input, option, select, textarea."
+		e1.message == "Value of 'disabled' attribute cannot be checked for element: div as this operation is only supported for the following elements: button, input, option, select, textarea."
 
 		when:
 		$("div").enabled
 
 		then:
 		UnsupportedOperationException e2 = thrown()
-		e2.message == "Value of 'disabled' attribute can only be checked for the following elements: button, input, option, select, textarea."
+		e2.message == "Value of 'disabled' attribute cannot be checked for element: div as this operation is only supported for the following elements: button, input, option, select, textarea."
 	}
 
 	def readOnly() {
@@ -379,14 +379,14 @@ class NavigatorSpec extends GebSpecWithServer {
 
 		then:
 		UnsupportedOperationException e1 = thrown()
-		e1.message == "Value of 'readonly' attribute can only be checked for the following elements: input, textarea."
+		e1.message == "Value of 'readonly' attribute cannot be checked for element: div as this operation is only supported for the following elements: input, textarea."
 
 		when:
 		$("div").editable
 
 		then:
 		UnsupportedOperationException e2 = thrown()
-		e2.message == "Value of 'readonly' attribute can only be checked for the following elements: input, textarea."
+		e2.message == "Value of 'readonly' attribute cannot be checked for element: div as this operation is only supported for the following elements: input, textarea."
 	}
 
 	def eq() {
