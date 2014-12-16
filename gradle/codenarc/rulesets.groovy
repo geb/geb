@@ -1,7 +1,7 @@
 ruleset {
-	/*ruleset('rulesets/basic.xml')
+	/*ruleset('rulesets/basic.xml')*/
 	ruleset('rulesets/braces.xml')
-	ruleset('rulesets/concurrency.xml')
+	/*ruleset('rulesets/concurrency.xml')
 	ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml')
 	ruleset('rulesets/dry.xml')

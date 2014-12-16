@@ -264,8 +264,10 @@ class EmptyNavigator extends AbstractNavigator {
 	String toString() { "[]" }
 
 	def methodMissing(String name, arguments) {
-		if (!arguments) this
-		else throw new MissingMethodException(name, getClass(), arguments)
+		if (arguments) {
+			throw new MissingMethodException(name, getClass(), arguments)
+		}
+		this
 	}
 
 	def propertyMissing(String name) {
