@@ -21,6 +21,7 @@ import geb.Configuration
  *
  * This is mixed into {@link geb.Page} and {@link geb.Module}.
  */
+@SuppressWarnings("UnnecessaryPublicModifier")
 class DefaultWaitingSupport implements WaitingSupport {
 
 	private final Configuration config

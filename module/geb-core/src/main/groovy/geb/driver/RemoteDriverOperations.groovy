@@ -48,7 +48,7 @@ class RemoteDriverOperations {
 		softLoadRemoteDriverClass("RemoteWebDriver")
 	}
 
-	public Class softLoadRemoteDriverClass(String name) {
+	Class softLoadRemoteDriverClass(String name) {
 		try {
 			classLoader.loadClass("org.openqa.selenium.remote.$name")
 		} catch (ClassNotFoundException e) {

@@ -381,7 +381,7 @@ class ConvertPage extends Page {
 	static url = '/theview'
 
 	String convertToPath(param) {
-		return "?theParam=$param"
+		"?theParam=$param"
 	}
 }
 

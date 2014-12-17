@@ -15,7 +15,7 @@
  */
 package geb.download
 
-public interface DownloadSupport {
+interface DownloadSupport {
 
 	/**
 	 * Creates a http url connection to a url, that has the same cookies as the browser.

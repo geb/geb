@@ -28,7 +28,7 @@ class SimplePageContent extends TemplateDerivedPageContent {
 			super.equals(o)
 			false
 		} else {
-			def values = iterator()*.value().findAll() { it != null }
+			def values = iterator()*.value().findAll { it != null }
 			def value
 			switch (values.size()) {
 				case 0:

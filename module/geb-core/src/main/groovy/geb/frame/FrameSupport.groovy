@@ -19,7 +19,7 @@ import geb.Page
 import geb.content.SimplePageContent
 import geb.navigator.Navigator
 
-public interface FrameSupport {
+interface FrameSupport {
 
 	def withFrame(frame, Closure block)
 

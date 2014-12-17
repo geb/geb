@@ -30,7 +30,7 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
 	}
 
 	protected Browser getBrowser() {
-		return browser
+		browser
 	}
 
 	Navigator createFromWebElements(Iterable<WebElement> elements) {

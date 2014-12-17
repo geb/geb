@@ -25,7 +25,7 @@ class UninitializedNavigableSupport implements Navigable {
 
 	private Page page
 
-	public UninitializedNavigableSupport(Page page) {
+	UninitializedNavigableSupport(Page page) {
 		this.page = page
 	}
 

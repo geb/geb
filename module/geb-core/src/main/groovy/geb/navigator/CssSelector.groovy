@@ -105,7 +105,7 @@ class CssSelector {
 				}
 			}
 		}
-		return result
+		result
 	}
 
 	private static List<CssSelector> compileSingle(String selector) {
@@ -122,7 +122,7 @@ class CssSelector {
 				compileSimpleSelector(part, result)
 			}
 		}
-		return result
+		result
 	}
 
 	private static void compileSimpleSelector(String selector, List<CssSelector> list) {
@@ -151,6 +151,6 @@ class CssSelector {
 			}
 		}
 		tokens << selector.substring(previous)
-		return tokens
+		tokens
 	}
 }

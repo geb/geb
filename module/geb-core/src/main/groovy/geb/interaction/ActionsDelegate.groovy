@@ -41,7 +41,7 @@ class ActionsDelegate {
 				// Empty exception block where WebDriver element has already been extracted
 			}
 
-			return argument
+			argument
 		}
 
 		actions."${methodName}"(* arguments)

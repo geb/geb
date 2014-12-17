@@ -272,15 +272,15 @@ abstract class AbstractNavigator implements Navigator {
 	}
 
 	WebElement firstElement() {
-		return getElement(0)
+		getElement(0)
 	}
 
 	WebElement lastElement() {
-		return getElement(-1)
+		getElement(-1)
 	}
 
 	Iterator<Navigator> iterator() {
-		return new NavigatorIterator()
+		new NavigatorIterator()
 	}
 
 	Navigator findAll(Closure predicate) {
@@ -319,11 +319,11 @@ abstract class AbstractNavigator implements Navigator {
 		private int index
 
 		boolean hasNext() {
-			return index < AbstractNavigator.this.size()
+			index < AbstractNavigator.this.size()
 		}
 
 		Navigator next() {
-			return AbstractNavigator.this[index++]
+			AbstractNavigator.this[index++]
 		}
 
 		void remove() {

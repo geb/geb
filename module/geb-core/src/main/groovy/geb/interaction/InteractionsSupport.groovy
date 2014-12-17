@@ -15,6 +15,6 @@
  */
 package geb.interaction
 
-public interface InteractionsSupport {
+interface InteractionsSupport {
 	void interact(Closure interactionClosure)
 }

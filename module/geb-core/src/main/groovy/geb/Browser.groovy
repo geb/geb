@@ -33,6 +33,7 @@ import org.openqa.selenium.WebDriverException
  * Browser objects dynamically delegate all method calls and property read/writes that it doesn't implement to the current
  * page instance via {@code propertyMissing ( )} and {@code methodMissing ( )}.
  */
+@SuppressWarnings("UnnecessaryPublicModifier")
 class Browser {
 
 	private Page page

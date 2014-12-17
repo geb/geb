@@ -19,9 +19,9 @@ import geb.error.UndefinedPageContentException
 import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
 
-public abstract class PageContentSupport {
+abstract class PageContentSupport {
 
-	abstract def getContent(String name, Object[] args)
+	abstract getContent(String name, Object[] args)
 
 	abstract Navigator getNavigator()
 

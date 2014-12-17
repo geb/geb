@@ -204,7 +204,7 @@ class DefaultDownloadSupport implements DownloadSupport {
 
 	private determineCharset(String contentType) {
 		if (contentType) {
-			def parts = contentType.split(";").collect { it.trim() }
+			def parts = contentType.split(";")*.trim()
 			def charsetPart = parts.find { it.startsWith("charset=") }
 			if (charsetPart) {
 				charsetPart.split("=", 2)[1]

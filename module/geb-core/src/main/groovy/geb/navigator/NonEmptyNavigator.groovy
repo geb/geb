@@ -395,7 +395,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	boolean isEnabled() {
-		return !disabled
+		!disabled
 	}
 
 	@Override
@@ -408,7 +408,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	boolean isEditable() {
-		return !readOnly
+		!readOnly
 	}
 
 	@Override
@@ -564,9 +564,8 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 				if (inputs) {
 					return getInputValues(inputs)
-				} else {
-					throw new MissingPropertyException(name, getClass())
 				}
+				throw new MissingPropertyException(name, getClass())
 		}
 	}
 
@@ -603,7 +602,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		if (buffer[0] == "*" && buffer.length() > 1) {
 			buffer.deleteCharAt(0)
 		}
-		return buffer.toString()
+		buffer.toString()
 	}
 
 	protected boolean matches(WebElement element, Map<String, Object> predicates) {
@@ -651,7 +650,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 				values << value
 			}
 		}
-		return values.size() < 2 ? values[0] : values
+		values.size() < 2 ? values[0] : values
 	}
 
 	protected getInputValue(WebElement input) {
@@ -856,8 +855,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		String tagName = firstElement().tagName
 
 		if (!allowedTags.contains(tagName)) {
-
-			String joinedValidTags = allowedTags.join(', ');
+			String joinedValidTags = allowedTags.join(', ')
 			throw new UnsupportedOperationException("Value of '$attribute' attribute cannot be checked for element: $tagName as this operation is only supported for the following elements: $joinedValidTags.")
 		}
 	}

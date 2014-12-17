@@ -32,7 +32,7 @@ package geb.report
  * }
  * </pre>
  */
-public interface ReportingListener {
+interface ReportingListener {
 
 	/**
 	 * Called when a report is taken.

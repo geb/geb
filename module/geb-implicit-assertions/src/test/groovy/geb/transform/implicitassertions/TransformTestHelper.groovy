@@ -29,7 +29,7 @@ import org.codehaus.groovy.ast.ModuleNode
 
 class TransformTestHelper {
 
-	public Class parse(File input) {
+	Class parse(File input) {
 		new TestHarnessClassLoader().parseClass(input)
 	}
 
@@ -58,7 +58,7 @@ class TransformTestHelper {
 					}
 				}
 			)
-			return cu
+			cu
 		}
 	}
 

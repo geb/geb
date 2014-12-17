@@ -34,17 +34,17 @@ class SiteSmokeSpec extends GebSpec {
 	@Shared
 	def app = new LocalScriptApplicationUnderTest()
 
-	private def getMenuItemElements() {
+	private getMenuItemElements() {
 		def html = Jsoup.parse(testHttpClient(app).get().body.text)
 		html.select('#header-content > ul > li')
 	}
 
-	private def manualLinksData() {
+	private manualLinksData() {
 		def links = menuItemElements.first().select('a')
 		links.collect { [it.text() - ' - current', it.attr('href')] }
 	}
 
-	private def apiLinksData() {
+	private apiLinksData() {
 		[menuItemElements.get(1).select('a').first().attr('href'), 'manual/0.7.0/api/']
 	}
 

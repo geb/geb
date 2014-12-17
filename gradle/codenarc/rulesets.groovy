@@ -1,7 +1,7 @@
 ruleset {
-	/*ruleset('rulesets/basic.xml')
+	/*ruleset('rulesets/basic.xml')*/
 	ruleset('rulesets/braces.xml')
-	ruleset('rulesets/concurrency.xml')
+	/*ruleset('rulesets/concurrency.xml')
 	ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml')
 	ruleset('rulesets/dry.xml')
@@ -51,7 +51,23 @@ ruleset {
 		CrapMetric {
 			enabled = false
 		}
+	}*/
+	ruleset('rulesets/unnecessary.xml') {
+		UnnecessaryGetter {
+			enabled = false
+		}
+		UnnecessaryGString {
+			enabled = false
+		}
+		UnnecessarySubstring {
+			enabled = false
+		}
+		UnnecessaryObjectReferences {
+			enabled = false
+		}
+		UnnecessaryPackageReference {
+			enabled = false
+		}
 	}
-	ruleset('rulesets/unnecessary.xml')
-	ruleset('rulesets/unused.xml')*/
+	/*ruleset('rulesets/unused.xml')*/
 }

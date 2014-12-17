@@ -399,9 +399,8 @@ class Configuration {
 				def result = navigatorFactory.call(browser)
 				if (result instanceof NavigatorFactory) {
 					return result
-				} else {
-					throw new InvalidGebConfiguration("navigatorFactory returned '${result}', it should be a NavigatorFactory implementation")
 				}
+				throw new InvalidGebConfiguration("navigatorFactory returned '${result}', it should be a NavigatorFactory implementation")
 			} else {
 				throw new InvalidGebConfiguration("navigatorFactory is '${navigatorFactory}', it should be a Closure that returns a NavigatorFactory implementation")
 			}
