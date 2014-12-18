@@ -49,8 +49,10 @@ class EmptyNavigator extends AbstractNavigator {
 	@Override
 	Navigator not(String selector) { this }
 
+	@Override
 	Navigator not(Map<String, Object> predicates, String selector) { this }
 
+	@Override
 	Navigator not(Map<String, Object> predicates) { this }
 
 	@Override

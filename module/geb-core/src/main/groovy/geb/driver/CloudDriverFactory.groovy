@@ -23,6 +23,7 @@ abstract class CloudDriverFactory {
 
 	abstract String assembleProviderUrl(String username, String password)
 
+	@SuppressWarnings("UnusedMethodParameter")
 	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
 	}
 

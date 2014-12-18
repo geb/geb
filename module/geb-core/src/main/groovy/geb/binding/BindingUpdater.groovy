@@ -41,6 +41,7 @@ class BindingUpdater {
 	}
 
 	private class BindingUpdatingPageChangeListener implements PageChangeListener {
+		@Override
 		void pageWillChange(Browser browser, Page oldPage, Page newPage) {
 			binding.setVariable("page", newPage)
 			binding.setVariable("\$", new InvocationForwarding("\$", newPage))
@@ -52,6 +53,7 @@ class BindingUpdater {
 		}
 	}
 
+	@SuppressWarnings("UnusedMethodParameter")
 	protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
 		new BindingUpdatingPageChangeListener()
 	}

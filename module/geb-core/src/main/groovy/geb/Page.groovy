@@ -87,16 +87,23 @@ class Page implements Navigable, PageContentContainer {
 
 	@Delegate
 	private PageContentSupport pageContentSupport = new UninitializedPageContentSupport(this)
+
 	@Delegate
 	private DownloadSupport _downloadSupport = new UninitializedDownloadSupport(this)
+
 	@Delegate
 	private WaitingSupport _waitingSupport = new UninitializedWaitingSupport(this)
+
 	@Delegate
 	private FrameSupport frameSupport = new UninitializedFrameSupport(this)
+
 	@Delegate
 	private InteractionsSupport interactionsSupport = new UninitializedInteractionSupport(this)
+
 	@Delegate
+	@SuppressWarnings("UnusedPrivateField")
 	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+
 	@Delegate
 	private AlertAndConfirmSupport _alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
@@ -274,8 +281,8 @@ class Page implements Navigable, PageContentContainer {
 	 *
 	 * @param previousPage The page that was active before this one
 	 */
+	@SuppressWarnings("UnusedMethodParameter")
 	void onLoad(Page previousPage) {
-
 	}
 
 	/**
@@ -285,8 +292,8 @@ class Page implements Navigable, PageContentContainer {
 	 *
 	 * @param nextPage The page that will be active after this one
 	 */
+	@SuppressWarnings("UnusedMethodParameter")
 	void onUnload(Page nextPage) {
-
 	}
 
 	Navigator find() {

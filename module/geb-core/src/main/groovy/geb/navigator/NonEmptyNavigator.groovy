@@ -120,6 +120,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		navigatorFor getElements(range)
 	}
 
+	@SuppressWarnings("UnusedMethodParameter")
 	Navigator getAt(EmptyRange range) {
 		new EmptyNavigator(browser)
 	}
@@ -144,6 +145,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 		contextElements[range]
 	}
 
+	@SuppressWarnings("UnusedMethodParameter")
 	List<WebElement> getElements(EmptyRange range) {
 		EMPTY_LIST
 	}

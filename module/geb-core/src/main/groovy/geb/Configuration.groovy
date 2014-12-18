@@ -35,14 +35,10 @@ import geb.navigator.factory.ClosureInnerNavigatorFactory
  */
 class Configuration {
 
-	static private final DEFAULT_WAIT_RETRY_SECS = 0.1
-
 	final ClassLoader classLoader
 	final ConfigObject rawConfig
 	final Properties properties
 	final BuildAdapter buildAdapter
-
-	private final Map<String, Wait> waits = null
 
 	private WebDriver driver
 

@@ -45,6 +45,7 @@ class PageSourceReporter extends ReporterSupport {
 	/**
 	 * Here to allow smarter calculation of the extension if necessary
 	 */
+	@SuppressWarnings("UnusedMethodParameter")
 	protected getPageSourceFileExtension(Browser browser) {
 		"html"
 	}

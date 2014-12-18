@@ -42,16 +42,7 @@ ruleset {
 			doNotApplyToFileNames = 'ExceptionToPngConverter.groovy'
 		}
 	}
-	/*ruleset('rulesets/junit.xml')
-	ruleset('rulesets/logging.xml')
-	ruleset('rulesets/naming.xml')
-	ruleset('rulesets/security.xml')
-	ruleset('rulesets/serialization.xml')
-	ruleset('rulesets/size.xml') {
-		CrapMetric {
-			enabled = false
-		}
-	}*/
+	//ruleset('rulesets/naming.xml')
 	ruleset('rulesets/unnecessary.xml') {
 		UnnecessaryGetter {
 			enabled = false
@@ -69,5 +60,5 @@ ruleset {
 			enabled = false
 		}
 	}
-	/*ruleset('rulesets/unused.xml')*/
+	ruleset('rulesets/unused.xml')
 }

@@ -44,6 +44,7 @@ class SelfSignedCertificateHelper {
 
 	private HostnameVerifier getHostnameVerifier() {
 		new HostnameVerifier() {
+			@Override
 			boolean verify(String hostname, SSLSession sslSession) {
 				true
 			}

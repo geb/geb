@@ -292,7 +292,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 		link.click()
 
 		then:
-		def e = thrown UndefinedAtCheckerException
+		thrown UndefinedAtCheckerException
 	}
 
 	@Unroll

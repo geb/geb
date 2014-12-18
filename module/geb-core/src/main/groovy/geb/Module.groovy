@@ -46,6 +46,7 @@ class Module extends TemplateDerivedPageContent implements PageContentContainer 
 	private FrameSupport frameSupport
 
 	@Delegate
+	@SuppressWarnings("UnusedPrivateField")
 	private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate
 	private AlertAndConfirmSupport _alertAndConfirmSupport

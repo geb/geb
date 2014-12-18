@@ -37,8 +37,8 @@ class TransformTestHelper {
 		void add(ASTTransformation transform, CompilePhase phase)
 	}
 
+	@SuppressWarnings("UnusedMethodParameter")
 	protected configure(Transforms transforms) {
-
 	}
 
 	@SuppressWarnings('SpaceAfterClosingBrace')
@@ -50,6 +50,7 @@ class TransformTestHelper {
 					void add(ASTTransformation transform, CompilePhase phase) {
 						cu.addPhaseOperation(
 							new PrimaryClassNodeOperation() {
+								@Override
 								void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
 									transform.visit([new ModuleNode(source)] as ASTNode[], source)
 								}
