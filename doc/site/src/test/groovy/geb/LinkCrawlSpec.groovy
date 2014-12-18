@@ -88,7 +88,7 @@ class LinkCrawlSpec extends Specification {
 		aut.stop()
 	}
 
-	private static class BadMarkdownLinkSyntax extends Crawler.PageError {
+	private static class BadMarkdownLinkSyntax {
 		final String link
 
 		BadMarkdownLinkSyntax(String link) {

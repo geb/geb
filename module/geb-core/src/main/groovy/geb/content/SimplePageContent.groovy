@@ -16,6 +16,7 @@ package geb.content
 
 import geb.navigator.Navigator
 
+@SuppressWarnings("EqualsAndHashCode")
 class SimplePageContent extends TemplateDerivedPageContent {
 
 	void init(PageContentTemplate template, Navigator navigator, Object[] args) {

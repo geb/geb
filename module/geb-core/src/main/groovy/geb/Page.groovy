@@ -281,7 +281,7 @@ class Page implements Navigable, PageContentContainer {
 	 *
 	 * @param previousPage The page that was active before this one
 	 */
-	@SuppressWarnings("UnusedMethodParameter")
+	@SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
 	void onLoad(Page previousPage) {
 	}
 
@@ -292,7 +292,7 @@ class Page implements Navigable, PageContentContainer {
 	 *
 	 * @param nextPage The page that will be active after this one
 	 */
-	@SuppressWarnings("UnusedMethodParameter")
+	@SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
 	void onUnload(Page nextPage) {
 	}
 

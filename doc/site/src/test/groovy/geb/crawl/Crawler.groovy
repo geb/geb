@@ -249,9 +249,7 @@ abstract class Crawler {
 		}
 	}
 
-	static abstract class PageError { }
-
-	static class StatusCodeError extends PageError {
+	static class StatusCodeError {
 		final int code
 
 		StatusCodeError(int code) { this.code = code }
@@ -259,7 +257,7 @@ abstract class Crawler {
 		String toString() { "HTTP status: $code" }
 	}
 
-	static class BadFragmentError extends PageError {
+	static class BadFragmentError {
 		final String fragment
 
 		BadFragmentError(String fragment) { this.fragment = fragment }
@@ -267,7 +265,7 @@ abstract class Crawler {
 		String toString() { "Bad fragment: $fragment" }
 	}
 
-	static class ExceptionError extends PageError {
+	static class ExceptionError {
 		final Throwable exception
 
 		ExceptionError(Throwable exception) { this.exception = StackTraceUtils.deepSanitize(exception) }
@@ -285,7 +283,7 @@ abstract class Crawler {
 		final URI uri
 
 		final Set<String> referrers = new HashSet().asSynchronized()
-		final List<PageError> errors = [].asSynchronized()
+		final List errors = [].asSynchronized()
 
 		int attemptCount = 0
 

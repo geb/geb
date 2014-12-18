@@ -1,8 +1,14 @@
 ruleset {
-	/*ruleset('rulesets/basic.xml')*/
+	ruleset('rulesets/basic.xml') {
+		ThrowExceptionFromFinallyBlock {
+			enabled = false
+		}
+		EmptyCatchBlock {
+			enabled = false
+		}
+	}
 	ruleset('rulesets/braces.xml')
-	/*ruleset('rulesets/concurrency.xml')
-	ruleset('rulesets/convention.xml')
+	/*ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml')
 	ruleset('rulesets/dry.xml')
 	ruleset('rulesets/exceptions.xml')*/

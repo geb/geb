@@ -37,7 +37,7 @@ class TransformTestHelper {
 		void add(ASTTransformation transform, CompilePhase phase)
 	}
 
-	@SuppressWarnings("UnusedMethodParameter")
+	@SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
 	protected configure(Transforms transforms) {
 	}
 
