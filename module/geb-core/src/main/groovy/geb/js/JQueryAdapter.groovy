@@ -25,7 +25,7 @@ class JQueryAdapter {
 		this.navigator = navigator
 	}
 
-	private _callJQueryMethod(String name, args) {
+	private callJQueryMethod(String name, args) {
 		def browser = navigator.browser
 		def elements = navigator.allElements()
 
@@ -57,7 +57,7 @@ class JQueryAdapter {
 	}
 
 	def methodMissing(String name, args) {
-		def result = _callJQueryMethod(name, args)
+		def result = callJQueryMethod(name, args)
 		if (result instanceof WebElement) {
 			navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
 		} else if (result instanceof List) {

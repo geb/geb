@@ -26,6 +26,7 @@ class GebSpec extends Specification {
 	String gebConfEnv = null
 	String gebConfScript = null
 
+	@SuppressWarnings("PropertyName")
 	@Shared Browser _browser
 
 	Configuration createConf() {

@@ -89,10 +89,10 @@ class Page implements Navigable, PageContentContainer {
 	private PageContentSupport pageContentSupport = new UninitializedPageContentSupport(this)
 
 	@Delegate
-	private DownloadSupport _downloadSupport = new UninitializedDownloadSupport(this)
+	private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
 
 	@Delegate
-	private WaitingSupport _waitingSupport = new UninitializedWaitingSupport(this)
+	private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
 
 	@Delegate
 	private FrameSupport frameSupport = new UninitializedFrameSupport(this)
@@ -105,7 +105,8 @@ class Page implements Navigable, PageContentContainer {
 	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
 	@Delegate
-	private AlertAndConfirmSupport _alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
+	private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
+
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
 	private Navigable navigableSupport = new UninitializedNavigableSupport(this)
 
@@ -120,11 +121,11 @@ class Page implements Navigable, PageContentContainer {
 		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, browser.navigatorFactory, 'content', this.class, Page)
 		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, browser.navigatorFactory)
 		navigableSupport = new NavigableSupport(browser.navigatorFactory)
-		_downloadSupport = new DefaultDownloadSupport(browser)
-		_waitingSupport = new DefaultWaitingSupport(browser.config)
+		downloadSupport = new DefaultDownloadSupport(browser)
+		waitingSupport = new DefaultWaitingSupport(browser.config)
 		frameSupport = new DefaultFrameSupport(browser)
 		interactionsSupport = new DefaultInteractionsSupport(browser)
-		_alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
+		alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
 		this
 	}
 

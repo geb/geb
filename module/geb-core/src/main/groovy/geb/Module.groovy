@@ -39,9 +39,9 @@ class Module extends TemplateDerivedPageContent implements PageContentContainer 
 	@Delegate
 	private PageContentSupport pageContentSupport
 	@Delegate
-	private DownloadSupport _downloadSupport
+	private DownloadSupport downloadSupport
 	@Delegate
-	private WaitingSupport _waitingSupport
+	private WaitingSupport waitingSupport
 	@Delegate
 	private FrameSupport frameSupport
 
@@ -49,7 +49,7 @@ class Module extends TemplateDerivedPageContent implements PageContentContainer 
 	@SuppressWarnings("UnusedPrivateField")
 	private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate
-	private AlertAndConfirmSupport _alertAndConfirmSupport
+	private AlertAndConfirmSupport alertAndConfirmSupport
 
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	void init(PageContentTemplate template, NavigatorFactory navigatorFactory, Object[] args) {
@@ -57,10 +57,10 @@ class Module extends TemplateDerivedPageContent implements PageContentContainer 
 		def navigator = navigatorFactory.base
 		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, navigator)
 		super.init(template, navigator, args)
-		_downloadSupport = new DefaultDownloadSupport(browser)
-		_waitingSupport = new DefaultWaitingSupport(browser.config)
+		downloadSupport = new DefaultDownloadSupport(browser)
+		waitingSupport = new DefaultWaitingSupport(browser.config)
 		frameSupport = new DefaultFrameSupport(browser)
-		_alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
+		alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
 	}
 
 	JavascriptInterface getJs() {

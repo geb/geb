@@ -20,7 +20,7 @@ import org.gradle.api.artifacts.Configuration
 
 class SauceConnectOperations {
 
-	private URLClassLoader _sauceConnectManagerClassLoader
+	private URLClassLoader sauceConnectManagerClassLoader
 
 	Configuration sauceConnectConfiguration
 
@@ -41,18 +41,18 @@ class SauceConnectOperations {
 	}
 
 	protected URLClassLoader getSauceConnectManagerClassLoader() {
-		if (!_sauceConnectManagerClassLoader) {
+		if (!sauceConnectManagerClassLoader) {
 			if (sauceConnectConfiguration.empty) {
 				throw new InvalidUserDataException("'sauceConnect' configuration is empty, please add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it")
 			}
-			_sauceConnectManagerClassLoader = new URLClassLoader(sauceConnectConfiguration.files*.toURI()*.toURL() as URL[])
+			sauceConnectManagerClassLoader = new URLClassLoader(sauceConnectConfiguration.files*.toURI()*.toURL() as URL[])
 		}
-		_sauceConnectManagerClassLoader
+		sauceConnectManagerClassLoader
 	}
 
 	private Class loadClass(String name) {
 		try {
-			sauceConnectManagerClassLoader.loadClass(name)
+			getSauceConnectManagerClassLoader().loadClass(name)
 		} catch (ClassNotFoundException e) {
 			throw new InvalidUserDataException("Could not load '$name' class, did you add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to 'sauceConnect' configuration?", e)
 		}

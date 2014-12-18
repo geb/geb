@@ -20,6 +20,7 @@ import geb.navigator.Navigator
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
+@SuppressWarnings("FieldName")
 abstract class TemplateDerivedPageContent implements Navigator {
 
 	private PageContentTemplate _template

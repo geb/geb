@@ -60,7 +60,7 @@ class CachingDriverFactory implements DriverFactory {
 		}
 	}
 
-	static private CACHE = new SimpleCache<Cache<WebDriver>>()
+	static private final CACHE = new SimpleCache<Cache<WebDriver>>()
 
 	private final Cache<WebDriver> cache
 	private final DriverFactory innerFactory

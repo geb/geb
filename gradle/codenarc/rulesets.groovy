@@ -52,7 +52,18 @@ ruleset {
 			doNotApplyToFileNames = 'ExceptionToPngConverter.groovy'
 		}
 	}
-	//ruleset('rulesets/naming.xml')
+	ruleset('rulesets/naming.xml') {
+		MethodName {
+			doNotApplyToFileNames = '*Spec.groovy'
+			regex = /([a-z]\w*|\$)/
+		}
+		ConfusingMethodName {
+			enabled = false
+		}
+		FactoryMethodName {
+			enabled = false
+		}
+	}
 	ruleset('rulesets/unnecessary.xml') {
 		UnnecessaryGetter {
 			enabled = false

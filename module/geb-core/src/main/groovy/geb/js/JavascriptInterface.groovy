@@ -27,7 +27,7 @@ class JavascriptInterface {
 
 	}
 
-	private _execjs(String script, Object[] args) {
+	private execjs(String script, Object[] args) {
 		def driver = browser.driver
 		if (!(driver instanceof JavascriptExecutor)) {
 			throw new GebException("driver '$driver' can not execute javascript")
@@ -42,11 +42,11 @@ class JavascriptInterface {
 	}
 
 	def propertyMissing(String name) {
-		_execjs("return $name;")
+		execjs("return $name;")
 	}
 
 	def methodMissing(String name, args) {
-		_execjs("return ${name}.apply(window, arguments)", * args)
+		execjs("return ${name}.apply(window, arguments)", * args)
 	}
 
 	def exec(Object[] args) {
@@ -68,7 +68,7 @@ class JavascriptInterface {
 			throw new IllegalArgumentException("The last argument to the js function must be string-like")
 		}
 
-		_execjs(script.toString(), * jsArgs)
+		execjs(script.toString(), * jsArgs)
 	}
 
 }

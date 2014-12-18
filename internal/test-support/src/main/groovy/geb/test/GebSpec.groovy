@@ -31,13 +31,15 @@ class GebSpec extends Specification {
 	String gebConfEnv = null
 	String gebConfScript = null
 
+	@SuppressWarnings("PropertyName")
 	@Shared Browser _browser
+
 	@Shared boolean takeReports = true
 
 	// Ridiculous name to avoid name clashes
-	@Rule TestName _gebReportingSpecTestName
-	def _gebReportingPerTestCounter = 0
-	@Shared _gebReportingSpecTestCounter = 0
+	@Rule TestName gebReportingSpecTestName
+	private int gebReportingPerTestCounter = 0
+	@Shared private int gebReportingSpecTestCounter = 0
 
 	Configuration createConf() {
 		def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
@@ -77,7 +79,7 @@ class GebSpec extends Specification {
 
 	void report(String label = "") {
 		if (takeReports) {
-			browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter++, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
+			browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter++, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
 		}
 	}
 

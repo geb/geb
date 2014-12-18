@@ -27,10 +27,10 @@ class GebReportingTest extends GebTest {
 	private instanceTestCounter = 1
 
 	@Rule
-	public TestName _gebReportingTestTestName = new TestName()
+	public TestName gebReportingTestTestName = new TestName()
 
 	void report(String label) {
-		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, _gebReportingTestTestName.methodName, label))
+		browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, gebReportingTestTestName.methodName, label))
 	}
 
 	@Before

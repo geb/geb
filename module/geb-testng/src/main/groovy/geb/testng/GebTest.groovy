@@ -25,7 +25,7 @@ class GebTest {
 	String gebConfEnv = null
 	String gebConfScript = null
 
-	private Browser _browser
+	private Browser browser
 
 	Configuration createConf() {
 		new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
@@ -36,14 +36,14 @@ class GebTest {
 	}
 
 	Browser getBrowser() {
-		if (_browser == null) {
-			_browser = createBrowser()
+		if (browser == null) {
+			browser = createBrowser()
 		}
-		_browser
+		browser
 	}
 
 	void resetBrowser() {
-		_browser = null
+		browser = null
 	}
 
 	def methodMissing(String name, args) {
@@ -60,8 +60,8 @@ class GebTest {
 
 	@AfterMethod
 	void clearBrowserCookies() {
-		if (_browser?.config?.autoClearCookies) {
-			_browser?.clearCookiesQuietly()
+		if (browser?.config?.autoClearCookies) {
+			browser?.clearCookiesQuietly()
 		}
 	}
 

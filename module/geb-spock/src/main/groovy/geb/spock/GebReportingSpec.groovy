@@ -22,9 +22,9 @@ import org.junit.rules.TestName
 class GebReportingSpec extends GebSpec {
 
 	// Ridiculous name to avoid name clashes
-	@Rule TestName _gebReportingSpecTestName
-	def _gebReportingPerTestCounter = 1
-	@Shared _gebReportingSpecTestCounter = 1
+	@Rule TestName gebReportingSpecTestName
+	private int gebReportingPerTestCounter = 1
+	@Shared private int gebReportingSpecTestCounter = 1
 
 	def setupSpec() {
 		reportGroup getClass()
@@ -37,11 +37,11 @@ class GebReportingSpec extends GebSpec {
 
 	def cleanup() {
 		report "end"
-		++_gebReportingSpecTestCounter
+		++gebReportingSpecTestCounter
 	}
 
 	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(_gebReportingSpecTestCounter, _gebReportingPerTestCounter++, _gebReportingSpecTestName.methodName, label))
+		browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
 	}
 
 }
