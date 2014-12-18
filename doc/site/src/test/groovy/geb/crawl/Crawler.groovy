@@ -153,13 +153,14 @@ abstract class Crawler {
 		connection.requestMethod = method
 
 		try {
+			def resolvedLink = link
 			while (connection.responseCode > 300 && connection.responseCode < 400) {
 				def redirectTo = connection.getURL().toURI().resolve(connection.getHeaderField("location")).toString()
-				link = new Link(redirectTo)
+				resolvedLink = new Link(redirectTo)
 				connection = openUrlConnection(link.uri)
 			}
 
-			addPageErrors(link, new Response(link.uri, connection))
+			addPageErrors(resolvedLink, new Response(resolvedLink.uri, connection))
 		} catch (IOException e) {
 			link.errors << new ExceptionError(e)
 		}

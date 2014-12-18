@@ -97,9 +97,9 @@ class CssSelector {
 	static List<List<CssSelector>> compile(String groupSelector) {
 		List<List<CssSelector>> result = []
 		groupSelector.split(",").each { String part ->
-			part = part.trim()
-			if (part) {
-				List<CssSelector> compiled = compileSingle(part)
+			def trimmedPart = part.trim()
+			if (trimmedPart) {
+				List<CssSelector> compiled = compileSingle(trimmedPart)
 				if (compiled) {
 					result << compiled
 				}
@@ -112,14 +112,14 @@ class CssSelector {
 		List<CssSelector> result = []
 		boolean first = true
 		selector.split(/\s/).each { String part ->
-			part = part.trim()
-			if (part) {
+			def trimmedPart = part.trim()
+			if (trimmedPart) {
 				if (first) {
 					first = false
 				} else {
 					result << DESCENDANT_SELECTOR
 				}
-				compileSimpleSelector(part, result)
+				compileSimpleSelector(trimmedPart, result)
 			}
 		}
 		result

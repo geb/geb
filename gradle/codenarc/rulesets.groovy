@@ -8,8 +8,12 @@ ruleset {
 		}
 	}
 	ruleset('rulesets/braces.xml')
-	/*ruleset('rulesets/convention.xml')
-	ruleset('rulesets/design.xml')
+	ruleset('rulesets/convention.xml') {
+		InvertedIfElse {
+			enabled = false
+		}
+	}
+	/*ruleset('rulesets/design.xml')
 	ruleset('rulesets/dry.xml')
 	ruleset('rulesets/exceptions.xml')*/
 	ruleset('rulesets/formatting.xml') {

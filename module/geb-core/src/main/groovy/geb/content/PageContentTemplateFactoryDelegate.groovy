@@ -58,27 +58,25 @@ class PageContentTemplateFactoryDelegate {
 	}
 
 	def module(Map params, Class<? extends Module> moduleClass, Navigator base) {
-		if (params == null) {
-			params = [:]
-		}
+		def moduleParams = params ?: [:]
 
 		if (!(moduleClass in Module)) {
 			throw new InvalidPageContent("class '${moduleClass}' should extend from ${Module} to be allowed to be a part of a module definition with name '${template.name}'")
 		}
 
 		// Make sure they haven't used params that map to our internal ivars
-		if (params.any { it.key in DISALLOWED_MODULE_PARAMS }) {
+		if (moduleParams.any { it.key in DISALLOWED_MODULE_PARAMS }) {
 			def disallowed = DISALLOWED_MODULE_PARAMS.join(', ')
 			throw new InvalidPageContent("params for module $moduleClass with name ${template.name} contains one or more disallowed params (${disallowed})")
 		}
 
 		def baseNavigatorFactory = base != null ? template.navigatorFactory.relativeTo(base) : template.navigatorFactory
 
-		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory, params)
+		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory, moduleParams)
 
 		def module = moduleClass.newInstance()
 		module.init(template, moduleBaseNavigatorFactory, * args)
-		params.each { name, value ->
+		moduleParams.each { name, value ->
 			// TODO - catch MPE and provide better error message
 			module."$name" = value
 		}

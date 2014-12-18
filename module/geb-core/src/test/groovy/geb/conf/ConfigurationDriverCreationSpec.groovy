@@ -25,7 +25,8 @@ import spock.lang.Specification
 
 class ConfigurationDriverCreationSpec extends Specification {
 
-	@Shared classLoader
+	@Shared
+		classLoader
 
 	def d
 
@@ -50,11 +51,9 @@ class ConfigurationDriverCreationSpec extends Specification {
 	}
 
 	def conf(Object[] args) {
-		if (args.size() < 2) {
-			args = [args.size() == 0 ? null : args[0], p()]
-		}
+		def configurationArguments = args.size() < 2 ? [args.size() == 0 ? null : args[0], p()] : args
 
-		def conf = loadClass(Configuration).newInstance(* args)
+		def conf = loadClass(Configuration).newInstance(*configurationArguments)
 		conf.cacheDriver = false
 		conf
 	}

@@ -69,9 +69,9 @@ class NonEmptyNavigator extends AbstractNavigator {
 	@Override
 	Navigator find(Map<String, Object> predicates, String selector) {
 		def predicatesCopy = predicates.clone()
-		selector = optimizeSelector(selector, predicatesCopy)
-		if (selector) {
-			find(selector).filter(predicatesCopy)
+		def optimizedSelector = optimizeSelector(selector, predicatesCopy)
+		if (optimizedSelector) {
+			find(optimizedSelector).filter(predicatesCopy)
 		} else {
 			find(predicates)
 		}
@@ -759,10 +759,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	protected String labelFor(WebElement input) {
 		def id = input.getAttribute("id")
-		def labels = browser.driver.findElements(By.xpath("//label[@for='$id']"))
-		if (!labels) {
-			labels = input.findElements(By.xpath("ancestor::label"))
-		}
+		def labels = browser.driver.findElements(By.xpath("//label[@for='$id']")) ?: input.findElements(By.xpath("ancestor::label"))
 		labels ? labels[0].text : null
 	}
 

@@ -133,14 +133,14 @@ class ConfigurationLoader {
 	 * @see #getConf(String)
 	 */
 	protected Configuration doGetConf(String configFileResourcePath) throws UnableToLoadException {
-		configFileResourcePath = configFileResourcePath ?: getDefaultConfigScriptResourcePath()
+		def resourcePath = configFileResourcePath ?: getDefaultConfigScriptResourcePath()
 
-		def specialLoaderResource = specialClassLoader.getResource(configFileResourcePath)
+		def specialLoaderResource = specialClassLoader.getResource(resourcePath)
 		if (specialLoaderResource) {
 			getConf(specialLoaderResource, specialClassLoader)
 		} else {
 			def thisClassLoader = new GroovyClassLoader(getClass().classLoader)
-			def thisLoaderResource = thisClassLoader.getResource(configFileResourcePath)
+			def thisLoaderResource = thisClassLoader.getResource(resourcePath)
 			thisLoaderResource ? getConf(thisLoaderResource, thisClassLoader) : null
 		}
 	}
@@ -195,13 +195,13 @@ class ConfigurationLoader {
 	 * @see #getConf(Class, GroovyClassLoader)
 	 */
 	protected Configuration doGetConfFromClass(String className) {
-		className = className ?: getDefaultConfigClassName()
-		def configClass = tryToLoadClass(className, specialClassLoader)
+		def configurationClassName = className ?: getDefaultConfigClassName()
+		def configClass = tryToLoadClass(configurationClassName, specialClassLoader)
 		if (configClass) {
 			getConf(configClass, specialClassLoader)
 		} else {
 			def thisLoader = new GroovyClassLoader(getClass().classLoader)
-			configClass = tryToLoadClass(className, thisLoader)
+			configClass = tryToLoadClass(configurationClassName, thisLoader)
 			configClass ? getConf(configClass, thisLoader) : null
 		}
 	}
