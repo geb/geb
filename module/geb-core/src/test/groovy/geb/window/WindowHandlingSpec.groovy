@@ -64,6 +64,21 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		]
 	}
 
+	def "withWindow block closure is called in the context of the page instance passed as the 'page' option"() {
+		given:
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+		openAllWindows()
+
+		when:
+		withWindow(page: new WindowHandlingSpecParametrizedPage(index: 1), windowName(1)) {
+			assert page.getClass() == WindowHandlingSpecParametrizedPage
+		}
+
+		then:
+		page.getClass() == WindowHandlingSpecMainPage
+	}
+
 	@Unroll
 	def "withWindow by default does not close the matching windows"() {
 		go MAIN_PAGE_URL
@@ -156,6 +171,21 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		when:
 		withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowPage) {
 			assert page.getClass() == WindowHandlingSpecNewWindowPage
+		}
+
+		then:
+		page.getClass() == WindowHandlingSpecMainPage
+	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow block closure is called in the context of the page instance passed as the 'page' option"() {
+		given:
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(1) }, page: new WindowHandlingSpecParametrizedPage(index: 1)) {
+			assert page.getClass() == WindowHandlingSpecParametrizedPage
 		}
 
 		then:
@@ -356,4 +386,10 @@ class WindowHandlingSpecNewWindowPage extends Page {
 
 class WindowHandlingSpecNewWindowWithAtCheckPage extends Page {
 	static at = { title == "Window main-1" }
+}
+
+class WindowHandlingSpecParametrizedPage extends Page {
+	int index
+
+	static at = { title == "Window main-${index}" }
 }

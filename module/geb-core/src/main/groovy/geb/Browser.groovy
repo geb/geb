@@ -931,7 +931,7 @@ class Browser {
 		}
 	}
 
-	private void verifyAtIfPresent(Class<? extends Page> targetPage) {
+	private void verifyAtIfPresent(def targetPage) {
 		if (targetPage) {
 			try {
 				at(targetPage)
