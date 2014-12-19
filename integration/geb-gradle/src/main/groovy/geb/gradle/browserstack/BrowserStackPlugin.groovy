@@ -27,6 +27,9 @@ import org.gradle.api.tasks.testing.Test
 
 class BrowserStackPlugin implements Plugin<Project> {
 
+	public static final String CLOSE_TUNNEL_TASK_NAME = 'closeBrowserStackTunnel'
+	public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openBrowserStackTunnelInBackground'
+	public static final String UNZIP_TUNNEL_TASK_NAME = 'unzipBrowserStackTunnel'
 	Project project
 
 	@Override
@@ -47,9 +50,9 @@ class BrowserStackPlugin implements Plugin<Project> {
 		project.browserStack.browsers.all { BrowserSpec browser ->
 			def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
 				group allBrowserStackTests.group
-				task.dependsOn 'openBrowserStackTunnelInBackground'
+				task.dependsOn OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
 				allBrowserStackTests.dependsOn task
-				finalizedBy 'closeBrowserStackTunnel'
+				finalizedBy CLOSE_TUNNEL_TASK_NAME
 
 				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
 
@@ -70,27 +73,27 @@ class BrowserStackPlugin implements Plugin<Project> {
 	void addTunnelTasks() {
 		def downloadBrowserStackTunnel = project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel)
 
-		project.task('unzipBrowserStackTunnel', type: Sync) {
+		project.task(UNZIP_TUNNEL_TASK_NAME, type: Sync) {
 			dependsOn downloadBrowserStackTunnel
 
 			from(project.zipTree(downloadBrowserStackTunnel.outputs.files.singleFile))
 			into(project.file("${project.rootProject.buildDir}/browserstack/unzipped"))
 		}
 
-		project.task('closeBrowserStackTunnel', type: StopExternalTunnel) {
+		project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
 			tunnel = project.browserStack.tunnel
 		}
 
 		def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartExternalTunnel)
 
-		def openBrowserStackTunnelInBackground = project.task('openBrowserStackTunnelInBackground', type: StartExternalTunnel) {
+		def openBrowserStackTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
 			inBackground = true
-			finalizedBy 'closeBrowserStackTunnel'
+			finalizedBy CLOSE_TUNNEL_TASK_NAME
 		}
 
 		[openBrowserStackTunnel, openBrowserStackTunnelInBackground].each {
 			it.configure {
-				dependsOn 'unzipBrowserStackTunnel'
+				dependsOn UNZIP_TUNNEL_TASK_NAME
 
 				tunnel = project.browserStack.tunnel
 				workingDir = project.buildDir

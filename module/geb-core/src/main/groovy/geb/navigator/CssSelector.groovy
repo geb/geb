@@ -22,7 +22,7 @@ import static java.util.Collections.EMPTY_LIST
 
 class CssSelector {
 
-	enum Type {
+	static enum Type {
 		ELEMENT(""),
 		HTML_CLASS("."),
 		ID("#"),
@@ -128,9 +128,9 @@ class CssSelector {
 	private static void compileSimpleSelector(String selector, List<CssSelector> list) {
 		tokenize(selector).each { String part ->
 			if (part) {
-				if (part.startsWith(".")) {
+				if (part.startsWith(Type.HTML_CLASS.prefix)) {
 					list << new CssSelector(Type.HTML_CLASS, part.substring(1))
-				} else if (part.startsWith("#")) {
+				} else if (part.startsWith(Type.ID.prefix)) {
 					list << new CssSelector(Type.ID, part.substring(1))
 				} else {
 					list << new CssSelector(Type.ELEMENT, part)
@@ -145,7 +145,7 @@ class CssSelector {
 		int max = selector.length()
 		for (int index = 0; index < max; ++index) {
 			char character = selector.charAt(index)
-			if (index > 0 && (character == '.' || character == '#')) {
+			if (index > 0 && (character == Type.HTML_CLASS.prefix || character == Type.ID.prefix)) {
 				tokens << selector.substring(previous, index)
 				previous = index
 			}

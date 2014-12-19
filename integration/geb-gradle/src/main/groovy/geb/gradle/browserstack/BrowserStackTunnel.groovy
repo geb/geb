@@ -21,6 +21,8 @@ import org.gradle.api.Project
 import org.slf4j.Logger
 
 class BrowserStackTunnel extends ExternalTunnel {
+	private static final String HTTPS_PROTOCOL = 'https'
+
 	final protected BrowserStackAccount account
 	final protected List<URL> applicationUrls
 
@@ -55,10 +57,10 @@ class BrowserStackTunnel extends ExternalTunnel {
 	}
 
 	static String assembleAppSpecifier(List<URL> applicationUrls) {
-		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == 'https' ? '1' : '0'}" }.join(',')
+		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}" }.join(',')
 	}
 
 	static int determinePort(URL url) {
-		url.port > 0 ? url.port : (url.protocol == 'https' ? 443 : 80)
+		url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
 	}
 }

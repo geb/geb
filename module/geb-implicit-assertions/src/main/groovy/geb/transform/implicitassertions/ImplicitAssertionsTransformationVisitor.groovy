@@ -27,6 +27,10 @@ import static org.codehaus.groovy.syntax.Types.ofType
 import static geb.transform.implicitassertions.ImplicitAssertionsTransformationUtil.*
 
 class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
+
+	private static final int LAST = -1
+	private static final String WAIT_FOR_METHOD_NAME = "waitFor"
+
 	SourceUnit sourceUnit
 
 	ImplicitAssertionsTransformationVisitor(SourceUnit sourceUnit) {
@@ -48,17 +52,17 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 	}
 
 	private boolean lastArgumentIsClosureExpression(ArgumentListExpression arguments) {
-		arguments.expressions && arguments.expressions[-1] in ClosureExpression
+		arguments.expressions && arguments.expressions[LAST] in ClosureExpression
 	}
 
 	@Override
 	void visitExpressionStatement(ExpressionStatement statement) {
 		if (statement.expression in MethodCallExpression) {
 			MethodCallExpression expression = statement.expression
-			if (expression.methodAsString == 'waitFor' && expression.arguments in ArgumentListExpression) {
+			if (expression.methodAsString == WAIT_FOR_METHOD_NAME && expression.arguments in ArgumentListExpression) {
 				ArgumentListExpression arguments = expression.arguments
 				if (lastArgumentIsClosureExpression(arguments)) {
-					transformEachStatement(arguments.expressions[-1])
+					transformEachStatement(arguments.expressions[LAST])
 				}
 			} else {
 				compensateForSpockIfNecessary(expression)
@@ -123,7 +127,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 	}
 
 	void visitSpockValueRecordMethodCall(String name, List<Expression> arguments) {
-		if (name == "waitFor") {
+		if (name == WAIT_FOR_METHOD_NAME) {
 			if (!arguments.empty) {
 				Expression lastArg = arguments.last()
 				if (lastArg instanceof ClosureExpression) {
@@ -169,7 +173,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 					if (methodCall.arguments in ArgumentListExpression) {
 						ArgumentListExpression arguments = methodCall.arguments
 						if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments) && !requiredOptionSpecifiedAsFalse(arguments)) {
-							transformEachStatement(arguments.expressions[-1])
+							transformEachStatement(arguments.expressions[LAST])
 						}
 					}
 				}

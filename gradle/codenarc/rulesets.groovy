@@ -13,7 +13,20 @@ ruleset {
 			enabled = false
 		}
 	}
-	/*ruleset('rulesets/dry.xml')*/
+	ruleset('rulesets/dry.xml') {
+		DuplicateStringLiteral {
+			doNotApplyToFileNames = '*Spec.groovy, RemoteWebDriverWithExpectations.groovy, Configuration.groovy, Page.groovy, BindingUpdater.groovy, TextMatchingSupport.groovy, NonEmptyNavigator.groovy, EmptyNavigator.groovy'
+		}
+		DuplicateNumberLiteral {
+			doNotApplyToFileNames = '*Spec.groovy, Crawler.groovy'
+		}
+		DuplicateListLiteral {
+			doNotApplyToFileNames = '*Spec.groovy, Page.groovy'
+		}
+		DuplicateMapLiteral {
+			doNotApplyToFileNames = '*Spec.groovy'
+		}
+	}
 	ruleset('rulesets/formatting.xml') {
 		ClassJavadoc {
 			enabled = false

@@ -36,6 +36,8 @@ import org.openqa.selenium.WebDriverException
 @SuppressWarnings("UnnecessaryPublicModifier")
 class Browser {
 
+	private static final String UTF8 = "UTF-8"
+
 	private Page page
 	private final Configuration config
 	private final pageChangeListeners = new LinkedHashSet()
@@ -895,7 +897,7 @@ class Browser {
 			params.collectMany { name, value ->
 				def values = value instanceof Collection ? value : [value]
 				values.collect { v ->
-					"${URLEncoder.encode(name.toString(), "UTF-8")}=${URLEncoder.encode(v.toString(), "UTF-8")}"
+					"${URLEncoder.encode(name.toString(), UTF8)}=${URLEncoder.encode(v.toString(), UTF8)}"
 				}
 			}.join("&")
 		} else {

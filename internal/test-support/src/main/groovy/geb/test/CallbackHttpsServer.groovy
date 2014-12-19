@@ -20,12 +20,14 @@ import org.mortbay.jetty.security.SslSocketConnector
 
 class CallbackHttpsServer extends CallbackHttpServer {
 
+	private static final String PASSWORD = 'password'
+
 	protected Connector createConnector(int port) {
 		def connector = new SslSocketConnector()
 		connector.port = port
-		connector.password = 'password'
-		connector.keyPassword = 'password'
-		connector.trustPassword = 'password'
+		connector.password = PASSWORD
+		connector.keyPassword = PASSWORD
+		connector.trustPassword = PASSWORD
 		connector.keystore = getClass().getResource('/keystore.jks').toString()
 		connector
 	}
