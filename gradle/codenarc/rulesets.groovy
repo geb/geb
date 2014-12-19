@@ -13,9 +13,7 @@ ruleset {
 			enabled = false
 		}
 	}
-	/*ruleset('rulesets/design.xml')
-	ruleset('rulesets/dry.xml')
-	ruleset('rulesets/exceptions.xml')*/
+	/*ruleset('rulesets/dry.xml')*/
 	ruleset('rulesets/formatting.xml') {
 		ClassJavadoc {
 			enabled = false
@@ -40,7 +38,20 @@ ruleset {
 			violationMessage = 'Copyright header not found'
 		}
 	}
-	/*ruleset('rulesets/groovyism.xml')*/
+	ruleset('rulesets/groovyism.xml') {
+		ExplicitHashSetInstantiation {
+			enabled = false
+		}
+		GetterMethodCouldBeProperty {
+			enabled = false
+		}
+		ExplicitCallToDivMethod {
+			enabled = false
+		}
+		ExplicitCallToModMethod {
+			enabled = false
+		}
+	}
 	ruleset('rulesets/imports.xml') {
 		MisorderedStaticImports {
 			comesBefore = false

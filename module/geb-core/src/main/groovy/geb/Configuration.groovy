@@ -464,6 +464,7 @@ class Configuration {
 	 * Returns the default configuration closure to be applied before the user-
 	 * supplied config closure when using the download support.
 	 */
+	@SuppressWarnings("ClosureAsLastMethodParameter")
 	Closure getDownloadConfig() {
 		readValue("defaultDownloadConfig", { HttpURLConnection con -> })
 	}
