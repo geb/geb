@@ -15,7 +15,6 @@
  */
 package geb.frame
 
-import geb.navigator.factory.ClosureInnerNavigatorFactory
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchFrameException
 import geb.Browser
