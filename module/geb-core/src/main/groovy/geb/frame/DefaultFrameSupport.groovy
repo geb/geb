@@ -15,6 +15,7 @@
  */
 package geb.frame
 
+import geb.navigator.factory.ClosureInnerNavigatorFactory
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchFrameException
 import geb.Browser
@@ -31,6 +32,26 @@ class DefaultFrameSupport implements FrameSupport {
 	}
 
 	def withFrame(frame, Class<? extends Page> page = null, Closure block) {
+		executeWithFrame(frame, page, block)
+	}
+
+	def withFrame(frame, Page page, Closure block) {
+		executeWithFrame(frame, page, block)
+	}
+
+	def withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure block) {
+		executeWithFrame(frameNavigator, page, block)
+	}
+
+	def withFrame(Navigator frameNavigator, Page page, Closure block) {
+		executeWithFrame(frameNavigator, page, block)
+	}
+
+	def withFrame(SimplePageContent frame, Closure block) {
+		executeWithFrame(frame, frame.templateParams.page, block)
+	}
+
+	private def executeWithFrame(frame, def page, Closure block) {
 		def originalPage = browser.page
 		browser.driver.switchTo().frame(frame)
 		if (page) {
@@ -44,15 +65,11 @@ class DefaultFrameSupport implements FrameSupport {
 		}
 	}
 
-	def withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure block) {
+	private def executeWithFrame(Navigator frameNavigator, def page, Closure block) {
 		WebElement element = frameNavigator.firstElement()
 		if (element == null) {
 			throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")
 		}
-		withFrame(element, page, block)
-	}
-
-	def withFrame(SimplePageContent frame, Closure block) {
-		withFrame(frame, frame.templateParams.page, block)
+		executeWithFrame(element, page, block)
 	}
 }

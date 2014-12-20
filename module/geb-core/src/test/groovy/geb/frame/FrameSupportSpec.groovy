@@ -121,6 +121,20 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
 		page in FrameSupportSpecPage
 	}
 
+	def "page content with parametrized page instance specified changes the page for the closure body"() {
+		given:
+		def parametrizedPage = new FrameSupportSpecParametrizedPage(tag: "span")
+
+		when:
+		withFrame(footer, parametrizedPage) {
+			assert page == parametrizedPage
+			assert getElementText() == "footer"
+		}
+
+		then:
+		page in FrameSupportSpecPage
+	}
+
 	def "ensure pages and modules have withFrame available"() {
 		when:
 		to FrameSupportSpecPage
@@ -167,3 +181,17 @@ class FrameSupportSpecModule extends Module {
 		count
 	}
 }
+
+class FrameSupportSpecParametrizedPage extends Page {
+	String tag
+
+	static at = { element }
+	static content = {
+		element { $(tag) }
+	}
+
+	def getElementText() {
+		element.text()
+	}
+}
+

@@ -727,7 +727,7 @@ If a frame cannot be found for a given first argument of the `withFrame()` call,
 
 ### Switching pages and frames at once
 
-All of the aforementioned `withFrame()` variants also accept an optional second argument (a page class) which allows to switch page for the execution of the closure passed as the last parameter.
+All of the aforementioned `withFrame()` variants also accept an optional second argument (a page class or an page instance) which allows to switch page for the execution of the closure passed as the last parameter.
 
 Following shows an example usage:
 
@@ -736,6 +736,17 @@ Following shows an example usage:
 
     withFrame('frame-name', PageDescribingFrameContents) {
         //browser.page set to a PageDescribingFrameContents instance
+    }
+
+    //browser.page set back to the PageWithFrames instance
+
+Following shows an example usage of a page instance:
+
+    to PageWithFrames
+    //browser.page set to a PageWithFrames instance
+
+    withFrame('frame-name', new ParametrizedPageDescribingFrameContents(tag: "span")) {
+        //browser.page set to the given ParametrizedPageDescribingFrameContents instance
     }
 
     //browser.page set back to the PageWithFrames instance
