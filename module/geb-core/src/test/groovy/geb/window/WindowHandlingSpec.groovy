@@ -66,13 +66,14 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 	def "withWindow block closure is called in the context of the page instance passed as the 'page' option"() {
 		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
 		go MAIN_PAGE_URL
 		page WindowHandlingSpecMainPage
 		openAllWindows()
 
 		when:
-		withWindow(page: new WindowHandlingSpecParametrizedPage(index: 1), windowName(1)) {
-			assert page.getClass() == WindowHandlingSpecParametrizedPage
+		withWindow(page: parametrizedPage, windowName(1)) {
+			assert page == parametrizedPage
 		}
 
 		then:
@@ -180,12 +181,13 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow block closure is called in the context of the page instance passed as the 'page' option"() {
 		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
 		go MAIN_PAGE_URL
 		page WindowHandlingSpecMainPage
 
 		when:
-		withNewWindow({ openWindow(1) }, page: new WindowHandlingSpecParametrizedPage(index: 1)) {
-			assert page.getClass() == WindowHandlingSpecParametrizedPage
+		withNewWindow({ openWindow(1) }, page: parametrizedPage) {
+			assert page == parametrizedPage
 		}
 
 		then:
@@ -334,6 +336,27 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		]
 	}
 
+	@Unroll
+	def "withWindow verifies at checker for a parametrized page instance"() {
+		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
+		go MAIN_PAGE_URL
+		openAllWindows()
+
+		when:
+		withWindow(page: parametrizedPage, specification) {
+		}
+
+		then:
+		thrown(AssertionError)
+
+		where:
+		specification << [
+			{ title == windowTitle(2) },
+			windowName(2)
+		]
+	}
+
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow successfully verifies at checker"() {
 		given:
@@ -371,6 +394,21 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 		when:
 		withNewWindow({ openWindow(2) }, page: WindowHandlingSpecNewWindowWithAtCheckPage) {
+		}
+
+		then:
+		thrown(AssertionError)
+	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow verifies at checker for a parametrized page instance"() {
+		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
+		go MAIN_PAGE_URL
+		page WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(2) }, page: parametrizedPage) {
 		}
 
 		then:

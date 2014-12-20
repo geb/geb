@@ -361,7 +361,7 @@ If you pass any truly value as `close` option then the newly opened window will 
 
 Default value: `null`
 
-If you pass a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards.
+If you pass a class or an instance of a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards.
 
 ##### wait
 
