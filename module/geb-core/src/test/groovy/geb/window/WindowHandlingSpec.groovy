@@ -20,7 +20,7 @@ import geb.error.NoNewWindowException
 import geb.error.UndefinedAtCheckerException
 import spock.lang.Unroll
 
-import static geb.window.BaseWindowHandlingSpec.getMAIN_PAGE_URL
+import static geb.window.BaseWindowHandlingSpec.MAIN_PAGE_URL
 
 class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
