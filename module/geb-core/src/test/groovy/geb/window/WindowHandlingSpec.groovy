@@ -20,6 +20,8 @@ import geb.error.NoNewWindowException
 import geb.error.UndefinedAtCheckerException
 import spock.lang.Unroll
 
+import static geb.window.BaseWindowHandlingSpec.MAIN_PAGE_URL
+
 class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 	@Unroll
@@ -44,9 +46,8 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "withWindow block closure is called in the context of the page passed as the 'page' option"() {
 		given:
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
 		openAllWindows()
+		page WindowHandlingSpecMainPage
 
 		when:
 		withWindow(page: WindowHandlingSpecNewWindowPage, specification) {
@@ -64,9 +65,23 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		]
 	}
 
+	def "withWindow block closure is called in the context of the page instance passed as the 'page' option"() {
+		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
+		openAllWindows()
+		page WindowHandlingSpecMainPage
+
+		when:
+		withWindow(page: parametrizedPage, windowName(1)) {
+			assert page == parametrizedPage
+		}
+
+		then:
+		page.getClass() == WindowHandlingSpecMainPage
+	}
+
 	@Unroll
 	def "withWindow by default does not close the matching windows"() {
-		go MAIN_PAGE_URL
 		openAllWindows()
 
 		when:
@@ -86,7 +101,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "withWindow closes matching windows if 'close' option is passed and block closure throws an exception"() {
 		given:
-		go MAIN_PAGE_URL
 		openAllWindows()
 
 		when:
@@ -150,8 +164,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow block closure is called in the context of the page passed as the 'page' option"() {
 		given:
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
+		to WindowHandlingSpecMainPage
 
 		when:
 		withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowPage) {
@@ -163,10 +176,24 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow block closure is called in the context of the page instance passed as the 'page' option"() {
+		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
+		to WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(1) }, page: parametrizedPage) {
+			assert page == parametrizedPage
+		}
+
+		then:
+		page.getClass() == WindowHandlingSpecMainPage
+	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "page context is reverted after a withNewWindow call where block closure throws an exception and 'page' option is present"() {
 		given:
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
+		to WindowHandlingSpecMainPage
 
 		when:
 		withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowPage) {
@@ -181,8 +208,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "'wait' option can be used in withNewWindow call if the new window opens asynchronously"() {
 		given:
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
+		to WindowHandlingSpecMainPage
 
 		when:
 		withNewWindow({
@@ -246,7 +272,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "withWindow successfully verifies at checker"() {
 		given:
-		go MAIN_PAGE_URL
 		openAllWindows()
 
 		when:
@@ -266,7 +291,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "withWindow does not fail if there is no at checker"() {
 		given:
-		go MAIN_PAGE_URL
 		openAllWindows()
 
 		when:
@@ -287,7 +311,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@Unroll
 	def "withWindow verifies at checker"() {
 		given:
-		go MAIN_PAGE_URL
 		openAllWindows()
 
 		when:
@@ -304,11 +327,30 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		]
 	}
 
+	@Unroll
+	def "withWindow verifies at checker for a parametrized page instance"() {
+		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
+		openAllWindows()
+
+		when:
+		withWindow(page: parametrizedPage, specification) {
+		}
+
+		then:
+		thrown(AssertionError)
+
+		where:
+		specification << [
+			{ title == windowTitle(2) },
+			windowName(2)
+		]
+	}
+
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow successfully verifies at checker"() {
 		given:
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
+		to WindowHandlingSpecMainPage
 
 		when:
 		withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowWithAtCheckPage) {
@@ -320,8 +362,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow does not fail if there is no at checker"() {
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
+		to WindowHandlingSpecMainPage
 
 		when:
 		def newWindowPage = withNewWindow({ openWindow(1) }, page: WindowHandlingSpecNewWindowPage) {
@@ -336,8 +377,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow verifies at checker"() {
 		given:
-		go MAIN_PAGE_URL
-		page WindowHandlingSpecMainPage
+		to WindowHandlingSpecMainPage
 
 		when:
 		withNewWindow({ openWindow(2) }, page: WindowHandlingSpecNewWindowWithAtCheckPage) {
@@ -346,9 +386,24 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		then:
 		thrown(AssertionError)
 	}
+
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow verifies at checker for a parametrized page instance"() {
+		given:
+		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
+		to WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(2) }, page: parametrizedPage) {
+		}
+
+		then:
+		thrown(AssertionError)
+	}
 }
 
 class WindowHandlingSpecMainPage extends Page {
+	static url = MAIN_PAGE_URL
 }
 
 class WindowHandlingSpecNewWindowPage extends Page {
@@ -356,4 +411,10 @@ class WindowHandlingSpecNewWindowPage extends Page {
 
 class WindowHandlingSpecNewWindowWithAtCheckPage extends Page {
 	static at = { title == "Window main-1" }
+}
+
+class WindowHandlingSpecParametrizedPage extends Page {
+	int index
+
+	static at = { title == "Window main-${index}" }
 }

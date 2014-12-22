@@ -63,6 +63,7 @@ This page lists the high level changes between versions of Geb.
 
 * Support for finding elements using Webdriver's [`By`][by-api] selectors \[[GEB-348](http://jira.codehaus.org/browse/GEB-348)\]
 * Support for navigating to page instances in addition to classes \[[GEB-310](http://jira.codehaus.org/browse/GEB-310)\]
+* Support for using page instances as `page` option value of window switching methods \[[GEB-352](http://jira.codehaus.org/browse/GEB-352)\]
 
 #### Fixes
 

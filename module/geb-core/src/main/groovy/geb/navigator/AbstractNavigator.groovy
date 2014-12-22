@@ -22,6 +22,7 @@ import org.openqa.selenium.WebElement
 
 abstract class AbstractNavigator implements Navigator {
 
+	private static final String MATCH_ALL_SELECTOR = "*"
 	final Browser browser
 
 	AbstractNavigator(Browser browser) {
@@ -83,7 +84,7 @@ abstract class AbstractNavigator implements Navigator {
 	}
 
 	Navigator find(Map<String, Object> predicates, Integer index) {
-		find(predicates, "*", index)
+		find(predicates, MATCH_ALL_SELECTOR, index)
 	}
 
 	@Override
@@ -93,7 +94,7 @@ abstract class AbstractNavigator implements Navigator {
 
 	@Override
 	Navigator find(Map<String, Object> predicates) {
-		find predicates, "*"
+		find predicates, MATCH_ALL_SELECTOR
 	}
 
 	@Override

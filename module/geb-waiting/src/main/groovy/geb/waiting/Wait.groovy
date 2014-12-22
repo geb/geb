@@ -32,6 +32,8 @@ class Wait {
 	 */
 	static public final Double DEFAULT_RETRY_INTERVAL = 0.1
 
+	private static final int HASHCODE_MULTIPLIER = 31
+
 	/**
 	 * The maximum amount of seconds that something can be waited on.
 	 */
@@ -65,8 +67,8 @@ class Wait {
 
 	int hashCode() {
 		int code = 41
-		code = 31 * code + timeout.hashCode()
-		code = 31 * code + retryInterval.hashCode()
+		code = HASHCODE_MULTIPLIER * code + timeout.hashCode()
+		code = HASHCODE_MULTIPLIER * code + retryInterval.hashCode()
 		code
 	}
 
@@ -77,8 +79,12 @@ class Wait {
 	Date calculateTimeoutFrom(Date start) {
 		def calendar = Calendar.instance
 		calendar.time = start
-		calendar.add(Calendar.MILLISECOND, Math.ceil(timeout * 1000) as int)
+		calendar.add(Calendar.MILLISECOND, Math.ceil(toMiliseconds(timeout)) as int)
 		calendar.time
+	}
+
+	private double toMiliseconds(Double seconds) {
+		seconds * 1000
 	}
 
 	/**
@@ -132,6 +138,6 @@ class Wait {
 	 * Blocks the caller for the retryInterval
 	 */
 	void sleepForRetryInterval() {
-		Thread.sleep((retryInterval * 1000) as long)
+		Thread.sleep(toMiliseconds(retryInterval) as long)
 	}
 }

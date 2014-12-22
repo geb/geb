@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse
 
 class GebSpecWithServer extends GebSpec {
 
+	private static final String UTF8 = "utf8"
+
 	@Shared TestHttpServer server
 
 	private static final List<Integer> CROSS_BROWSER_PORTS = [8000, 8080, 8888, 9000, 9090]
@@ -59,8 +61,8 @@ class GebSpecWithServer extends GebSpec {
 			synchronized (this) { // MarkupBuilder has some static state, so protect
 				try {
 					response.setContentType("text/html")
-					response.setCharacterEncoding("utf8")
-					def writer = new OutputStreamWriter(response.outputStream, "utf8")
+					response.setCharacterEncoding(UTF8)
+					def writer = new OutputStreamWriter(response.outputStream, UTF8)
 					writer << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
 					new MarkupBuilder(writer).html {
 						htmlMarkup.delegate = delegate

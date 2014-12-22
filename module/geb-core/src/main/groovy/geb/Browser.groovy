@@ -36,6 +36,8 @@ import org.openqa.selenium.WebDriverException
 @SuppressWarnings("UnnecessaryPublicModifier")
 class Browser {
 
+	private static final String UTF8 = "UTF-8"
+
 	private Page page
 	private final Configuration config
 	private final pageChangeListeners = new LinkedHashSet()
@@ -892,12 +894,12 @@ class Browser {
 
 	private String toQueryString(Map params) {
 		if (params) {
-			params.collect { name, value ->
+			params.collectMany { name, value ->
 				def values = value instanceof Collection ? value : [value]
 				values.collect { v ->
-					"${URLEncoder.encode(name.toString(), "UTF-8")}=${URLEncoder.encode(v.toString(), "UTF-8")}"
+					"${URLEncoder.encode(name.toString(), UTF8)}=${URLEncoder.encode(v.toString(), UTF8)}"
 				}
-			}.flatten().join("&")
+			}.join("&")
 		} else {
 			""
 		}
@@ -931,7 +933,7 @@ class Browser {
 		}
 	}
 
-	private void verifyAtIfPresent(Class<? extends Page> targetPage) {
+	private void verifyAtIfPresent(def targetPage) {
 		if (targetPage) {
 			try {
 				at(targetPage)

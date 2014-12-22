@@ -13,9 +13,20 @@ ruleset {
 			enabled = false
 		}
 	}
-	/*ruleset('rulesets/design.xml')
-	ruleset('rulesets/dry.xml')
-	ruleset('rulesets/exceptions.xml')*/
+	ruleset('rulesets/dry.xml') {
+		DuplicateStringLiteral {
+			doNotApplyToFileNames = '*Spec.groovy, RemoteWebDriverWithExpectations.groovy, Configuration.groovy, Page.groovy, BindingUpdater.groovy, TextMatchingSupport.groovy, NonEmptyNavigator.groovy, EmptyNavigator.groovy'
+		}
+		DuplicateNumberLiteral {
+			doNotApplyToFileNames = '*Spec.groovy, Crawler.groovy'
+		}
+		DuplicateListLiteral {
+			doNotApplyToFileNames = '*Spec.groovy, Page.groovy'
+		}
+		DuplicateMapLiteral {
+			doNotApplyToFileNames = '*Spec.groovy'
+		}
+	}
 	ruleset('rulesets/formatting.xml') {
 		ClassJavadoc {
 			enabled = false
@@ -40,7 +51,20 @@ ruleset {
 			violationMessage = 'Copyright header not found'
 		}
 	}
-	/*ruleset('rulesets/groovyism.xml')*/
+	ruleset('rulesets/groovyism.xml') {
+		ExplicitHashSetInstantiation {
+			enabled = false
+		}
+		GetterMethodCouldBeProperty {
+			enabled = false
+		}
+		ExplicitCallToDivMethod {
+			enabled = false
+		}
+		ExplicitCallToModMethod {
+			enabled = false
+		}
+	}
 	ruleset('rulesets/imports.xml') {
 		MisorderedStaticImports {
 			comesBefore = false

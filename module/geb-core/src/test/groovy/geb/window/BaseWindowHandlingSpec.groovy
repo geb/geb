@@ -18,7 +18,7 @@ package geb.window
 import geb.test.GebSpecWithServer
 
 abstract class BaseWindowHandlingSpec extends GebSpecWithServer {
-	final static String MAIN_PAGE_URL = '/main'
+	public final static String MAIN_PAGE_URL = '/main'
 
 	def mainWindow
 
