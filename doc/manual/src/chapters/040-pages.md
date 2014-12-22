@@ -727,7 +727,7 @@ If a frame cannot be found for a given first argument of the `withFrame()` call,
 
 ### Switching pages and frames at once
 
-All of the aforementioned `withFrame()` variants also accept an optional second argument (a page class or an page instance) which allows to switch page for the execution of the closure passed as the last parameter.
+All of the aforementioned `withFrame()` variants also accept an optional second argument (a page class or a page instance) which allows to switch page for the execution of the closure passed as the last parameter.
 
 Following shows an example usage:
 

@@ -50,7 +50,7 @@ class DefaultFrameSupport implements FrameSupport {
 		executeWithFrame(frame, frame.templateParams.page, block)
 	}
 
-	private def executeWithFrame(frame, def page, Closure block) {
+	private executeWithFrame(frame, def page, Closure block) {
 		def originalPage = browser.page
 		browser.driver.switchTo().frame(frame)
 		if (page) {
@@ -64,7 +64,7 @@ class DefaultFrameSupport implements FrameSupport {
 		}
 	}
 
-	private def executeWithFrame(Navigator frameNavigator, def page, Closure block) {
+	private executeWithFrame(Navigator frameNavigator, def page, Closure block) {
 		WebElement element = frameNavigator.firstElement()
 		if (element == null) {
 			throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")
