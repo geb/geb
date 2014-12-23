@@ -113,7 +113,7 @@ task dumpClassloaders(type: GrailsTask) {
 	command "dump-classloaders"
 }
 
-task installReleasePlugin(type: GrailsTask, dependsOn: packagePlugin) {
+task installReleasePlugin(type: GrailsTask, dependsOn: "packagePlugin") {
 	bootstrapClasspath = configurations.releaseBootstrap
 	command "compile"
 }
