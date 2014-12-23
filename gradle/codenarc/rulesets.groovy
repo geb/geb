@@ -104,6 +104,9 @@ ruleset {
 		UnnecessaryPackageReference {
 			enabled = false
 		}
+		UnnecessarySemicolon {
+			doNotApplyToFileNames = 'PageOrientedSpec.groovy'
+		}
 	}
 	ruleset('rulesets/unused.xml')
 }

@@ -6,7 +6,7 @@ buildscript {
 		maven { url 'http://repo.grails.org/grails/repo' }
 	}
 	dependencies {
-		classpath "org.grails:grails-gradle-plugin:2.0.0"
+		classpath "org.grails:grails-gradle-plugin:2.1.2"
 	}
 }
 
@@ -107,10 +107,6 @@ task clean(type: Delete, overwrite: true) { task ->
 			task.delete(it)
 		}
 	}
-}
-
-task packagePlugin(type: GrailsTask) {
-	command "package-plugin"
 }
 
 task dumpClassloaders(type: GrailsTask) {
