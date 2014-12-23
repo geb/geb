@@ -257,21 +257,8 @@ class Browser {
 	 * 	   <li>Try the next potential
 	 */
 	void page(Class<? extends Page>[] potentialPageClasses) {
-		def potentialPageClassesClone = potentialPageClasses.toList()
-		def match = null
 		checkIfAtAnUnexpectedPage(potentialPageClasses)
-		while (match == null && !potentialPageClassesClone.empty) {
-			def potential = createPage(potentialPageClassesClone.remove(0))
-			if (potential.verifyAtSafely()) {
-				match = potential
-			}
-		}
-
-		if (match) {
-			makeCurrentPage(match)
-		} else {
-			throw new UnexpectedPageException(potentialPageClasses)
-		}
+		verifyPages(createPages(potentialPageClasses))
 	}
 
 	/**
@@ -283,6 +270,36 @@ class Browser {
 	public <T extends Page> T page(T page) {
 		makeCurrentPage(initialisePage(page))
 		page
+	}
+
+	/**
+	 * Changes the browser's page to be an instance of the first given instance whose at checker returns a true value.
+	 * <p>
+	 * This method performs the following:
+	 * <ul>
+	 *   <li>Check if not at an unexpected page
+	 * 	 <li>For each given page instance:
+	 * 	 <ul>
+	 * 	 <li>Connects the page instance to the browser object
+	 * 	 <li>Test if the page represents the instance by running its at checker
+	 * 	 <li>If the page's at checker is successful:
+	 * 	 <ul>
+	 * 	   <li>Inform any registered page change listeners
+	 * 	   <li>Set the browser's page property to the instance (if it is not already of this type)
+	 * 	   <li>Discard the rest of the potentials
+	 * 	 </ul>
+	 * 	 <li>If the page's at checker is not successful:
+	 * 	 <ul>
+	 * 	   <li>Try the next potential
+	 * 	 </ul>
+	 * </ul>
+	 */
+	public <T extends Page> T page(T[] potentialPageInstances) {
+		checkIfAtAnUnexpectedPage(potentialPageInstances)
+		potentialPageInstances.each { pageInstance ->
+			initialisePage(pageInstance)
+		}
+		verifyPages(potentialPageInstances)
 	}
 
 	/**
@@ -367,6 +384,20 @@ class Browser {
 	 * @throws UnexpectedPageException when at an unexpected page
 	 */
 	void checkIfAtAnUnexpectedPage(Class<? extends Page>[] expectedPages) {
+		checkIfAtAnUnexpectedPageOrNot(expectedPages)
+	}
+
+	/**
+	 * Check if at one of the pages configured to be unexpected.
+	 *
+	 * @param expectedPages allows to specify which of the unexpected pages to ignore for the check
+	 * @throws UnexpectedPageException when at an unexpected page
+	 */
+	void checkIfAtAnUnexpectedPage(Page[] expectedPages) {
+		checkIfAtAnUnexpectedPageOrNot(expectedPages)
+	}
+
+	private checkIfAtAnUnexpectedPageOrNot(def expectedPages) {
 		def unexpectedPages = config.unexpectedPages - expectedPages.toList()
 		unexpectedPages.each {
 			if (isAt(it, false)) {
@@ -817,6 +848,19 @@ class Browser {
 	}
 
 	/**
+	 * Creates new instances of the given page types and initialises them.
+	 *
+	 * @return The newly created page instances
+	 */
+	public <T extends Page> T[] createPages(Class<T>[] pageTypes) {
+		List pageInstances = []
+		pageTypes.each { pageClass ->
+			pageInstances.add(createPage(pageClass))
+		}
+		pageInstances.toArray()
+	}
+
+	/**
 	 * Returns a newly created javascript interface connected to this browser.
 	 */
 	JavascriptInterface getJs() {
@@ -942,6 +986,24 @@ class Browser {
 				page(targetPage)
 			}
 		}
+	}
+
+	private <T extends Page> T verifyPages(T[] pages) {
+		def potentialPagesClone = pages.toList()
+		def match = null
+		while (match == null && !potentialPagesClone.empty) {
+			def potential = potentialPagesClone.remove(0)
+			if (potential.verifyAtSafely()) {
+				match = potential
+			}
+		}
+
+		if (match) {
+			makeCurrentPage(match)
+		} else {
+			throw new UnexpectedPageException(pages)
+		}
+		match
 	}
 
 	/**

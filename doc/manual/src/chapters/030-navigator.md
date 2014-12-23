@@ -279,7 +279,7 @@ You will get a navigator that contains the same elements as the one above.
 
 Navigator objects implement the `click()` method, which will instruct the browser to click **only the first item** the navigator has matched.
 
-There are also `click(Class)` and `click(List<Class>)` methods that are analogous to the browser object's [`page(Class)` and `page(List<Class>)` methods respectively][changing-pages]. This allow page changes to be specified at the same time as click actions.
+There are also `click(Class)` , `click(List<Class>)` , `click(Page)` and `click(List<Page>)` methods that are analogous to the browser object's [`page(Class)` , `page(List<Class>)` , `page(Page)` and `page(List<Page)` methods respectively][changing-pages]. This allow page changes to be specified at the same time as click actions.
     
 For example…
 

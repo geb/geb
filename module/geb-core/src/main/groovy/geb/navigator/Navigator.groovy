@@ -711,11 +711,15 @@ interface Navigator extends Iterable<Navigator>, Locator {
 
 	Navigator click(Class<? extends Page> pageClass)
 
+	Navigator click(Page pageInstance)
+
 	Navigator click(Class<? extends Page> pageClass, Wait wait)
 
-	Navigator click(List<Class<? extends Page>> potentialPageClasses)
+	Navigator click(Page pageInstance, Wait wait)
 
-	Navigator click(List<Class<? extends Page>> potentialPageClasses, Wait wait)
+	Navigator click(List<? extends Page> potentialPages)
+
+	Navigator click(List<? extends Page> potentialPages, Wait wait)
 
 	/**
 	 * Returns the number of context elements.

@@ -465,8 +465,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 
 	@Override
 	Navigator click(Class<? extends Page> pageClass, Wait wait = null) {
+		click(browser.createPage(pageClass), wait)
+	}
+
+	@Override
+	Navigator click(Page pageInstance, Wait wait = null) {
 		click()
-		browser.page(pageClass)
+		browser.page(pageInstance)
 		def at = false
 		def assertionError = null
 		def throwable = null
@@ -481,17 +486,17 @@ class NonEmptyNavigator extends AbstractNavigator {
 			throw e
 		} finally {
 			if (!at && !throwable) {
-				throw new UnexpectedPageException(pageClass, (Throwable) assertionError)
+				throw new UnexpectedPageException(pageInstance, (Throwable) assertionError)
 			}
 		}
 		this
 	}
 
 	@Override
-	Navigator click(List<Class<? extends Page>> potentialPageClasses, Wait wait = null) {
+	Navigator click(List<? extends Page> potentialPages, Wait wait = null) {
 		click()
 		def pageSwitchingAction = {
-			browser.page(* potentialPageClasses)
+			browser.page(* potentialPages)
 			true
 		}
 		wait ? wait.waitFor(pageSwitchingAction) : pageSwitchingAction.call()

@@ -38,6 +38,10 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 		browser.config.unexpectedPages = [UnexpectedPage, AnotherUnexpectedPage]
 	}
 
+	private void defineUnexpectedPageInstances() {
+		browser.config.unexpectedPages = [new ParametrizedUnexpectedPage(condition: true), new ParametrizedUnexpectedPage(condition: false)]
+	}
+
 	@Unroll
 	void 'verify that page response is configured as expected'() {
 		given:
@@ -77,6 +81,19 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when expected to be at geb.ExpectedPage'
 	}
 
+	void 'an exception is thrown when we end up at an parametrized instance of unexpected page'() {
+		given:
+		defineUnexpectedPageInstances()
+
+		when:
+		via UnexpectedPage
+		at ExpectedPage
+
+		then:
+		UnexpectedPageException e = thrown()
+		e.getMessage() == 'An unexpected page geb.ParametrizedUnexpectedPage was encountered when expected to be at geb.ExpectedPage'
+	}
+
 	void 'it is possible to do at checking for an unexpected page'() {
 		given:
 		defineUnexpectedPages()
@@ -99,6 +116,19 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 		then:
 		UnexpectedPageException e = thrown()
 		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [class geb.ExpectedPage, class geb.AnotherExpectedPage])'
+	}
+
+	void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible parametrized page instances'() {
+		given:
+		defineUnexpectedPages()
+
+		when:
+		via UnexpectedPage
+		page(new ParametrizedPage(condition: true), new ParametrizedPage(condition: true))
+
+		then:
+		UnexpectedPageException e = thrown()
+		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [ParametrizedPage, ParametrizedPage])'
 	}
 
 	void 'it is possible to pass an unexpected page when setting a page from a list of possible pages'() {
@@ -162,4 +192,16 @@ class AnotherExpectedPage extends Page {
 	static url = "?title=anotherExpected"
 
 	static at = { title == 'anotherExpected' }
+}
+
+class ParametrizedPage extends Page {
+	boolean condition
+
+	static at = {condition}
+}
+
+class ParametrizedUnexpectedPage extends Page {
+	boolean condition
+
+	static at = {condition}
 }
