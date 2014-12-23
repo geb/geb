@@ -6,7 +6,7 @@ buildscript {
 		maven { url 'http://repo.grails.org/grails/repo' }
 	}
 	dependencies {
-		classpath "org.grails:grails-gradle-plugin:2.0.0"
+		classpath "org.grails:grails-gradle-plugin:2.1.2"
 	}
 }
 
@@ -109,15 +109,11 @@ task clean(type: Delete, overwrite: true) { task ->
 	}
 }
 
-task packagePlugin(type: GrailsTask) {
-	command "package-plugin"
-}
-
 task dumpClassloaders(type: GrailsTask) {
 	command "dump-classloaders"
 }
 
-task installReleasePlugin(type: GrailsTask, dependsOn: packagePlugin) {
+task installReleasePlugin(type: GrailsTask, dependsOn: "packagePlugin") {
 	bootstrapClasspath = configurations.releaseBootstrap
 	command "compile"
 }
