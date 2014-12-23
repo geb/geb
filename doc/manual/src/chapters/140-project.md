@@ -68,6 +68,7 @@ This page lists the high level changes between versions of Geb.
 #### Fixes
 
 * Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element \[[GEB-345](http://jira.codehaus.org/browse/GEB-345)\]
+* Browser.verifyAtIfPresent() should fail for at checkers returning false when implicit assertions are disabled \[[GEB-357](http://jira.codehaus.org/browse/GEB-357)\]
 
 ### 0.10.0
 

@@ -328,6 +328,27 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 	}
 
 	@Unroll
+	def "withWindow verifies truthy at checker when implicit assertions are disabled"() {
+		given:
+		openAllWindows()
+
+		when:
+		withWindow(page: page, specification) {
+		}
+
+		then:
+		Throwable t = thrown(AssertionError)
+		t.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
+
+		where:
+		page                                                   | specification
+		WindowHandlingSpecNewWindowWithTruthyAtCheckPage       | { title == windowTitle(2) }
+		WindowHandlingSpecNewWindowWithTruthyAtCheckPage       | windowName(2)
+		new WindowHandlingSpecNewWindowWithTruthyAtCheckPage() | { title == windowTitle(2) }
+		new WindowHandlingSpecNewWindowWithTruthyAtCheckPage() | windowName(2)
+	}
+
+	@Unroll
 	def "withWindow verifies at checker for a parametrized page instance"() {
 		given:
 		def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
@@ -387,6 +408,24 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		thrown(AssertionError)
 	}
 
+	@Unroll
+	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	def "withNewWindow verifies truthy at checker when implicit assertions are disabled"() {
+		given:
+		to WindowHandlingSpecMainPage
+
+		when:
+		withNewWindow({ openWindow(2) }, page: page) {
+		}
+
+		then:
+		Throwable t = thrown(AssertionError)
+		t.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
+
+		where:
+		page << [WindowHandlingSpecNewWindowWithTruthyAtCheckPage, new WindowHandlingSpecNewWindowWithTruthyAtCheckPage()]
+	}
+
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	def "withNewWindow verifies at checker for a parametrized page instance"() {
 		given:
@@ -411,6 +450,12 @@ class WindowHandlingSpecNewWindowPage extends Page {
 
 class WindowHandlingSpecNewWindowWithAtCheckPage extends Page {
 	static at = { title == "Window main-1" }
+}
+
+class WindowHandlingSpecNewWindowWithTruthyAtCheckPage extends Page {
+	// this circumvents implicit assertion AST transformation
+	static atChecker = { false }
+	static at = atChecker
 }
 
 class WindowHandlingSpecParametrizedPage extends Page {
