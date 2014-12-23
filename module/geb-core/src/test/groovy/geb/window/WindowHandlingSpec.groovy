@@ -16,6 +16,7 @@
 package geb.window
 
 import geb.Page
+import geb.error.AtCheckerVerificationFailedException
 import geb.error.NoNewWindowException
 import geb.error.UndefinedAtCheckerException
 import spock.lang.Unroll
@@ -337,8 +338,8 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		}
 
 		then:
-		Throwable t = thrown(AssertionError)
-		t.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
+		AtCheckerVerificationFailedException e = thrown()
+		e.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
 
 		where:
 		page                                                   | specification
@@ -419,8 +420,8 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 		}
 
 		then:
-		Throwable t = thrown(AssertionError)
-		t.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
+		AtCheckerVerificationFailedException e = thrown()
+		e.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
 
 		where:
 		page << [WindowHandlingSpecNewWindowWithTruthyAtCheckPage, new WindowHandlingSpecNewWindowWithTruthyAtCheckPage()]
