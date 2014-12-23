@@ -121,18 +121,26 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
 		page in FrameSupportSpecPage
 	}
 
-	def "page content with parametrized page instance specified changes the page for the closure body"() {
+	@Unroll
+	def "page content using #scenario & parametrized page instance changes the page for the closure body"() {
 		given:
 		def parametrizedPage = new FrameSupportSpecParametrizedPage(tag: "span")
 
 		when:
-		withFrame(footer, parametrizedPage) {
+		withFrame(frameFactory.call(), parametrizedPage) {
 			assert page == parametrizedPage
-			assert getElementText() == "footer"
+			assert getElementText() == expectedText
 		}
 
 		then:
 		page in FrameSupportSpecPage
+
+		where:
+		scenario              | frameFactory     | expectedText
+		"frame name"          | { 'header' }     | "header"
+		"index"               | { 0 }            | "header"
+		"navigator"           | { $('#footer') } | "footer"
+		"simple page content" | { page.footer }  | "footer"
 	}
 
 	def "ensure pages and modules have withFrame available"() {
