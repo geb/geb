@@ -197,11 +197,11 @@ class AnotherExpectedPage extends Page {
 class ParametrizedPage extends Page {
 	boolean condition
 
-	static at = {condition}
+	static at = { condition }
 }
 
 class ParametrizedUnexpectedPage extends Page {
 	boolean condition
 
-	static at = {condition}
+	static at = { condition }
 }
