@@ -339,7 +339,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 		then:
 		AtCheckerVerificationFailedException e = thrown()
-		e.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
+		e.message == "At checker verification failed for page [geb.window.WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
 
 		where:
 		page                                                   | specification
@@ -421,7 +421,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
 		then:
 		AtCheckerVerificationFailedException e = thrown()
-		e.message == "At checker verification failed for page [WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
+		e.message == "At checker verification failed for page [geb.window.WindowHandlingSpecNewWindowWithTruthyAtCheckPage]"
 
 		where:
 		page << [WindowHandlingSpecNewWindowWithTruthyAtCheckPage, new WindowHandlingSpecNewWindowWithTruthyAtCheckPage()]
