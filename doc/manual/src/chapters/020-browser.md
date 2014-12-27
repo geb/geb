@@ -197,11 +197,11 @@ Page objects are discussed in depth in the [pages](pages.html) chapter, which al
 
 We have already seen that that `to()` methods change the browser's page instance. It is also possible to change the page instance without initiating a new request with the `page()` methods.
 
-The [`page(Class pageType)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) method allows you to change the page to a new instance of the given class. The class must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
+The [`page(Class<? extends Page> pageType)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) method allows you to change the page to a new instance of *the given class*. The class must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
 
-The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+The [`page(Page pageInstance)`](api/geb/Browser.html#page\(T\)) method allows you to change the page to *the given instance*. Similarly to the method taking a page class it **does not** verify that the given page actually matches the content.
 
-The [`page(Page pageInstance)`](api/geb/Browser.html#page\(T\)) method allows you to change the page to the given instance. The instance must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
+The [`page(Class<? extends Page>[] potentialPageTypes)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each page's at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 The [`page(Page[] potentialPageInstances)`](api/geb/Browser.html#page\(T\)) method allows you to specify a number of *potential* page instances. Each of the potential page instances is initialized and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page instances passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 

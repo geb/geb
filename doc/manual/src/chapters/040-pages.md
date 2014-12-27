@@ -258,16 +258,21 @@ The `to` option allows the definition of which page the browser will be sent to 
 
 The `to` value will be implicitly used as an argument to the content's `click()` method, effectively setting the new page type and verifying its at checker. See the section on [clicking content][clicking] for how this changes the browser's page object.
 
-The list variant can also be used…
+This option also supports all types that can be passed to any of the [`Browser.page()` method variants][changing-pages]:
+
+* a page instance
+* a list of page classes
+* a list of page instances
+
+When using lists variants (here shown with page classes)…
 
     static content = {
         loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
     }
 
-Which, on click, sets the browser's page to be the first page in the list whose at checker returns true. This is equivalent to the [`page(Class[] potentialPageTypes)` browser method](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) which is explained in the section on
-[changing pages][changing-pages].
+Then, on click, the browser's page is set to the first page in the list whose at checker passes. This is equivalent to the [`page(Class<? extends Page>[] potentialPageTypes)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) and [`page(Page[] potentialPageInstances)`](api/geb/Browser.html#page\(T\)) browser methods which are explained in the section on [changing pages][changing-pages].
 
-All of the page classes passed in when using the list variant have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+All of the page classes and classes of the page instances passed in when using any variant of the `to` option have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 #### wait
 
