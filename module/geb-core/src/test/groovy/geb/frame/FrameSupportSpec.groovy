@@ -121,6 +121,28 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
 		page in FrameSupportSpecPage
 	}
 
+	@Unroll
+	def "page content using #scenario & parametrized page instance changes the page for the closure body"() {
+		given:
+		def parametrizedPage = new FrameSupportSpecParametrizedPage(tag: "span")
+
+		when:
+		withFrame(frameFactory.call(), parametrizedPage) {
+			assert page == parametrizedPage
+			assert getElementText() == expectedText
+		}
+
+		then:
+		page in FrameSupportSpecPage
+
+		where:
+		scenario              | frameFactory     | expectedText
+		"frame name"          | { 'header' }     | "header"
+		"index"               | { 0 }            | "header"
+		"navigator"           | { $('#footer') } | "footer"
+		"simple page content" | { page.footer }  | "footer"
+	}
+
 	def "ensure pages and modules have withFrame available"() {
 		when:
 		to FrameSupportSpecPage
@@ -167,3 +189,17 @@ class FrameSupportSpecModule extends Module {
 		count
 	}
 }
+
+class FrameSupportSpecParametrizedPage extends Page {
+	String tag
+
+	static at = { element }
+	static content = {
+		element { $(tag) }
+	}
+
+	def getElementText() {
+		element.text()
+	}
+}
+

@@ -25,7 +25,11 @@ interface FrameSupport {
 
 	def withFrame(frame, Class<? extends Page> page, Closure block)
 
+	def withFrame(frame, Page page, Closure block)
+
 	def withFrame(Navigator frame, Class<? extends Page> page, Closure block)
+
+	def withFrame(Navigator frame, Page page, Closure block)
 
 	def withFrame(Navigator frame, Closure block)
 
