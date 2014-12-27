@@ -12,6 +12,9 @@ ruleset {
 		InvertedIfElse {
 			enabled = false
 		}
+		NoDef {
+			enabled = false
+		}
 	}
 	ruleset('rulesets/dry.xml') {
 		DuplicateStringLiteral {

@@ -78,7 +78,7 @@ subprojects {
 
 		dependencies {
 			compile groovyDependency
-			codenarc 'org.codenarc:CodeNarc:0.21'
+			codenarc 'org.codenarc:CodeNarc:0.22'
 		}
 
 		sourceCompatibility = 1.5
