@@ -62,7 +62,8 @@ class PageOrientedSpec extends GebSpecWithServer {
 		$("#b").empty == false
 	}
 
-	def "verify the Page API works"() {
+	@Unroll
+	def "verify the Page API works for '#contentName' content"() {
 		when:
 		via PageOrientedSpecPageA
 
@@ -70,16 +71,19 @@ class PageOrientedSpec extends GebSpecWithServer {
 		at PageOrientedSpecPageA
 
 		when:
-		link.click()
+		page[contentName].click()
 
 		then:
 		at PageOrientedSpecPageB
 
 		when:
-		link.click()
+		page[contentName].click()
 
 		then:
 		at PageOrientedSpecPageA
+
+		where:
+		contentName << ["link", "linkUsingPageInstance"]
 	}
 
 	@Unroll
@@ -154,20 +158,30 @@ class PageOrientedSpec extends GebSpecWithServer {
 		notThrown(RequiredPageContentNotPresent)
 	}
 
-	def "clicking on content with to specified changes the page"() {
+	@Unroll
+	def "clicking on content with to specified changes the page for '#contentName' content"() {
 		when:
 		to PageOrientedSpecPageA
-		link.click()
+		page[contentName].click()
+
 		then:
 		page in PageOrientedSpecPageB
+
+		where:
+		contentName << ["link", "linkUsingPageInstance"]
 	}
 
-	def "variant to should cycle through and select match"() {
+	@Unroll
+	def "variant to should cycle through and select match for '#contentName' content"() {
 		when:
 		to PageOrientedSpecPageA
-		linkWithVariantTo.click()
+		page[contentName].click()
+
 		then:
-		at PageOrientedSpecPageB
+		page in PageOrientedSpecPageB
+
+		where:
+		contentName << ["linkWithVariantTo", "linkWithVariantToUsingPageInstances"]
 	}
 
 	@Unroll
@@ -182,9 +196,11 @@ class PageOrientedSpec extends GebSpecWithServer {
 		e.cause in cause
 
 		where:
-		clicked                           | cause
-		'linkWithNotMatchingTo'           | AssertionError
-		'linkWithToClassWithPlainFalseAt' | null
+		clicked                                            | cause
+		'linkWithNotMatchingTo'                            | AssertionError
+		'linkWithNotMatchingToUsingPageInstance'           | AssertionError
+		'linkWithToClassWithPlainFalseAt'                  | null
+		'linkWithToClassWithPlainFalseAtUsingPageInstance' | null
 	}
 
 	@Unroll
@@ -200,32 +216,41 @@ class PageOrientedSpec extends GebSpecWithServer {
 		e.message == "Instance of page class geb.PageOrientedSpecPageA has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
 
 		where:
-		className                | methodName     | args
-		"PageContentSupport"     | "someContent"  | []
-		"Navigable"              | "find"         | [""]
-		"DownloadSupport"        | "download"     | [""]
-		"WaitingSupport"         | "waitFor"      | [{}]
-		"FrameSupport"           | "withFrame"    | [{}]
-		"InteractionsSupport"    | "interact"     | [{}]
-		"AlertAndConfirmSupport" | "withAlert"    | [{}]
+		className                | methodName    | args
+		"PageContentSupport"     | "someContent" | []
+		"Navigable"              | "find"        | [""]
+		"DownloadSupport"        | "download"    | [""]
+		"WaitingSupport"         | "waitFor"     | [{}]
+		"FrameSupport"           | "withFrame"   | [{}]
+		"InteractionsSupport"    | "interact"    | [{}]
+		"AlertAndConfirmSupport" | "withAlert"   | [{}]
 	}
 
-	def "unexpected exceptions thrown in at checkers should bubble up from click"() {
+	@Unroll
+	def "unexpected exceptions thrown in at checkers should bubble up from click for '#contentName' content"() {
 		when:
 		to PageOrientedSpecPageA
-		page.linkWithToClassThrowingExceptionInAt.click()
+		page[contentName].click()
 
 		then:
 		Throwable e = thrown()
 		e.message == "from at checker"
+
+		where:
+		contentName << ["linkWithToClassThrowingExceptionInAt", "linkWithToClassThrowingExceptionInAtUsingPageInstance"]
 	}
 
-	def "exception should be thrown when no to values match"() {
+	@Unroll
+	def "exception should be thrown when no to values match for '#contentName' content"() {
 		when:
 		to PageOrientedSpecPageA
-		linkWithVariantToNoMatches.click()
+		page[contentName].click()
+
 		then:
 		thrown(UnexpectedPageException)
+
+		where:
+		contentName << ["linkWithVariantToNoMatches", "linkWithVariantToNoMatchesUsingPageInstances"]
 	}
 
 	def "call in mixed in method from TextMatchingSupport"() {
@@ -286,13 +311,17 @@ class PageOrientedSpec extends GebSpecWithServer {
 		e.message == "No at checker has been defined for page class geb.PageWithoutAtChecker."
 	}
 
-	def "exception should be thrown when no at checker is defined for one of the to pages"() {
+	@Unroll
+	def "exception should be thrown when no at checker is defined for one of the to pages for '#contentName' content"() {
 		when:
 		to PageWithLinkToPageWithoutAtChecker
-		link.click()
+		page[contentName].click()
 
 		then:
 		thrown UndefinedAtCheckerException
+
+		where:
+		contentName << ["link", "linkUsingPageInstances"]
 	}
 
 	@Unroll
@@ -310,26 +339,34 @@ class PageOrientedSpec extends GebSpecWithServer {
 		PageContentPageInstancePageParam | 'instance'   | new PageContentPageInstancePageParam()
 	}
 
-	def "implicitly waits when at checking if toWait content option is specified"() {
+	@Unroll
+	def "implicitly waits when at checking if toWait content option is specified for '#contentName' content"() {
 		when:
 		to PageOrientedSpecPageA
 
 		and:
-		linkWithToWait.click()
+		page[contentName].click()
 
 		then:
 		page in PageOrientedSpecPageE
+
+		where:
+		contentName << ["linkWithToWait", "linkWithToWaitUsingPageInstance"]
 	}
 
-	def "implicitly waits when at checking if toWait content option is specified and to option contains a list of candidates"() {
+	@Unroll
+	def "implicitly waits when at checking if toWait content option is specified and to option contains a list of candidates for '#contentName' content"() {
 		when:
 		to PageOrientedSpecPageA
 
 		and:
-		linkWithToWaitAndVariantTo.click()
+		page[contentName].click()
 
 		then:
 		page in PageOrientedSpecPageE
+
+		where:
+		contentName << ["linkWithToWaitAndVariantTo", "linkWithToWaitAndVariantToUsingPageInstances"]
 	}
 }
 
@@ -337,13 +374,21 @@ class PageOrientedSpecPageA extends Page {
 	static at = { link }
 	static content = {
 		link(to: PageOrientedSpecPageB) { $("#a") }
+		linkUsingPageInstance(to: new PageOrientedSpecPageB()) { $("#a") }
 		linkWithNotMatchingTo(to: PageOrientedSpecPageC) { $("#a") }
+		linkWithNotMatchingToUsingPageInstance(to: new PageOrientedSpecPageC()) { $("#a") }
 		linkWithToClassThrowingExceptionInAt(to: PageWithAtCheckerThrowingException) { $("#a") }
+		linkWithToClassThrowingExceptionInAtUsingPageInstance(to: new PageWithAtCheckerThrowingException()) { $("#a") }
 		linkWithToClassWithPlainFalseAt(to: PageWithAtCheckerReturningFalse) { $("#a") }
+		linkWithToClassWithPlainFalseAtUsingPageInstance(to: new PageWithAtCheckerReturningFalse()) { $("#a") }
 		linkWithVariantTo(to: [PageOrientedSpecPageD, PageOrientedSpecPageC, PageOrientedSpecPageB]) { link }
+		linkWithVariantToUsingPageInstances(to: [new PageOrientedSpecPageD(), new PageOrientedSpecPageC(), new PageOrientedSpecPageB()]) { link }
 		linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
+		linkWithVariantToNoMatchesUsingPageInstances(to: [new PageOrientedSpecPageD(), new PageOrientedSpecPageC()]) { link }
 		linkWithToWait(to: PageOrientedSpecPageE, toWait: true) { link }
+		linkWithToWaitUsingPageInstance(to: new PageOrientedSpecPageE(), toWait: true) { link }
 		linkWithToWaitAndVariantTo(to: [PageOrientedSpecPageC, PageOrientedSpecPageE], toWait: true) { link }
+		linkWithToWaitAndVariantToUsingPageInstances(to: [new PageOrientedSpecPageC(), new PageOrientedSpecPageE()], toWait: true) { link }
 		linkText { link.text().trim() }
 		linkTextAlias(aliases: 'linkText')
 		notPresentValueRequired { $("div#asdfasdf").text() }
@@ -357,6 +402,7 @@ class PageOrientedSpecPageB extends Page {
 	static at = { link }
 	static content = {
 		link(to: PageOrientedSpecPageA) { $("#b") }
+		linkUsingPageInstance(to: new PageOrientedSpecPageA()) { $("#b") }
 		linkText { link.text() }
 	}
 }
@@ -416,6 +462,7 @@ class PageWithoutAtChecker extends Page {
 class PageWithLinkToPageWithoutAtChecker extends Page {
 	static content = {
 		link(to: [PageWithAtChecker, PageWithoutAtChecker]) { $("#a") }
+		linkUsingPageInstances(to: [new PageWithAtChecker(), new PageWithoutAtChecker()]) { $("#a") }
 	}
 }
 

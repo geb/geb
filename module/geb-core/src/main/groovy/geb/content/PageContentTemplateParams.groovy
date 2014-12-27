@@ -33,12 +33,12 @@ class PageContentTemplateParams {
 	/**
 	 * If the to option was a list, this will be the specified list. Defaults to null.
 	 */
-	List<Class<? extends Page>> toList
+	List toList
 
 	/**
-	 * If the to option was a single page class, this will be the specified page class. Defaults to null.
+	 * If the to option was a single page class or instance, this will be the value used. Defaults to null.
 	 */
-	Class<? extends Page> toSingle
+	def toSingle
 
 	/**
 	 * The value of the 'page' option. Defaults to null.
@@ -67,7 +67,7 @@ class PageContentTemplateParams {
 		if (!toParam) {
 			toSingle = null
 			toList = null
-		} else if (toParam instanceof Class && Page.isAssignableFrom(toParam)) {
+		} else if ((toParam instanceof Class && Page.isAssignableFrom(toParam)) || toParam instanceof Page) {
 			toSingle = toParam
 			toList = null
 		} else if (toParam instanceof List) {
