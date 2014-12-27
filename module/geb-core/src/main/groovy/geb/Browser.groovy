@@ -230,10 +230,13 @@ class Browser {
 	 * <li>Create a new instance of the given class (which must be {@link geb.Page} or a subclass thereof) and connect it to this browser object
 	 * <li>Inform any registered page change listeners
 	 * <li>Set the browser's page property to the created instance (if it is not already of this type)
+	 * </ul>
 	 * <p>
 	 * <b>Note that it does not verify that the page matches the current content by running its at checker</b>
+	 *
+	 * @return an initialized page instance set as the current page
 	 */
-	void page(Class<? extends Page> pageClass) {
+	public <T extends Page> T page(Class<T> pageClass) {
 		makeCurrentPage(createPage(pageClass))
 	}
 
@@ -243,27 +246,41 @@ class Browser {
 	 * This method performs the following:
 	 * <ul>
 	 *   <li>Check if not at an unexpected page
-	 * 	 <li>For each given page type:
-	 * 	 <ul>
-	 * 	 <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
-	 * 	 <li>Test if the page represents the new instance by running its at checker
-	 * 	 <li>If the page's at checker is successful:
-	 * 	 <ul>
-	 * 	   <li>Inform any registered page change listeners
-	 * 	   <li>Set the browser's page property to the instance (if it is not already of this type)
-	 * 	   <li>Discard the rest of the potentials
-	 * 	 </ul>
-	 * 	 <li>If the page's at checker is not successful:
-	 * 	 <ul>
-	 * 	   <li>Try the next potential
+	 *   <li>For each given page type:
+	 *     <ul>
+	 *     <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
+	 *     <li>Test if the page represents the new instance by running its at checker
+	 *     <li>If the page's at checker is successful:
+	 *       <ul>
+	 *       <li>Inform any registered page change listeners
+	 *       <li>Set the browser's page property to the instance
+	 *       <li>Discard the rest of the potentials
+	 *       </ul>
+	 *     <li>If the page's at checker is not successful:
+	 *       <ul>
+	 *       <li>Try the next potential
+	 *       </ul>
+	 *     </ul>
+	 * </ul>
+	 *
+	 * @return an initialized page instance set as the current page
 	 */
-	void page(Class<? extends Page>[] potentialPageClasses) {
+	Page page(Class<? extends Page>[] potentialPageClasses) {
 		checkIfAtAnUnexpectedPage(potentialPageClasses)
-		verifyPages(createPages(potentialPageClasses))
+		verifyPages(potentialPageClasses.collect { createPage(it) })
 	}
 
 	/**
 	 * Sets this browser's page to be the given page after initializing it.
+	 *
+	 * <p>
+	 * This method performs the following:
+	 * <ul>
+	 * <li>Connect the instance passed in to this browser object
+	 * <li>Inform any registered page change listeners
+	 * <li>Set the browser's page property to the instance passed in
+	 * <p>
+	 * <b>Note that it does not verify that the page matches the current content by running its at checker</b>
 	 *
 	 * @return a page instance passed as the first argument after initializing
 	 * @see #page(Class)
@@ -279,28 +296,29 @@ class Browser {
 	 * This method performs the following:
 	 * <ul>
 	 *   <li>Check if not at an unexpected page
-	 * 	 <li>For each given page instance:
-	 * 	 <ul>
-	 * 	 <li>Connects the page instance to the browser object
-	 * 	 <li>Test if the page represents the instance by running its at checker
-	 * 	 <li>If the page's at checker is successful:
-	 * 	 <ul>
-	 * 	   <li>Inform any registered page change listeners
-	 * 	   <li>Set the browser's page property to the instance (if it is not already of this type)
-	 * 	   <li>Discard the rest of the potentials
-	 * 	 </ul>
-	 * 	 <li>If the page's at checker is not successful:
-	 * 	 <ul>
-	 * 	   <li>Try the next potential
-	 * 	 </ul>
+	 *   <li>For each given page instance:
+	 *     <ul>
+	 *     <li>Connects the page instance to the browser object
+	 *     <li>Test if the page represents the instance by running its at checker
+	 *     <li>If the page's at checker is successful:
+	 *       <ul>
+	 *       <li>Inform any registered page change listeners
+	 *       <li>Set the browser's page property to the instance (if it is not already of this type)
+	 *       <li>Discard the rest of the potentials
+	 *       </ul>
+	 *     </ul>
+	 *   <li>If the page's at checker is not successful:
+	 *   <ul>
+	 *     <li>Try the next potential
+	 *   </ul>
 	 * </ul>
+	 *
+	 * @return an initialized page instance set as the current page
+	 * @see #page(Class [ ])
 	 */
-	public <T extends Page> T page(T[] potentialPageInstances) {
+	public Page page(Page[] potentialPageInstances) {
 		checkIfAtAnUnexpectedPage(potentialPageInstances)
-		potentialPageInstances.each { pageInstance ->
-			initialisePage(pageInstance)
-		}
-		verifyPages(potentialPageInstances)
+		verifyPages(potentialPageInstances.collect { initialisePage(it) })
 	}
 
 	/**
@@ -414,7 +432,7 @@ class Browser {
 	 * on the previous page and {@link geb.Page#onLoad(geb.Page)} is called on the incoming page.
 	 * <p>
 	 */
-	private void makeCurrentPage(Page page) {
+	private Page makeCurrentPage(Page page) {
 		if (page != getPage()) {
 			informPageChangeListeners(getPage(), page)
 			getPage().onUnload(page)
@@ -422,6 +440,7 @@ class Browser {
 			this.page = page
 			getPage().onLoad(previousPage)
 		}
+		getPage()
 	}
 
 	private <T extends Page> T initialisePage(T page) {
@@ -849,19 +868,6 @@ class Browser {
 	}
 
 	/**
-	 * Creates new instances of the given page types and initialises them.
-	 *
-	 * @return The newly created page instances
-	 */
-	public <T extends Page> T[] createPages(Class<T>[] pageTypes) {
-		List pageInstances = []
-		pageTypes.each { pageClass ->
-			pageInstances.add(createPage(pageClass))
-		}
-		pageInstances.toArray()
-	}
-
-	/**
 	 * Returns a newly created javascript interface connected to this browser.
 	 */
 	JavascriptInterface getJs() {
@@ -991,20 +997,13 @@ class Browser {
 		}
 	}
 
-	private <T extends Page> T verifyPages(T[] pages) {
-		def potentialPagesClone = pages.toList()
-		def match = null
-		while (match == null && !potentialPagesClone.empty) {
-			def potential = potentialPagesClone.remove(0)
-			if (potential.verifyAtSafely()) {
-				match = potential
-			}
-		}
+	private Page verifyPages(List<Page> pages) {
+		def match = pages.find { it.verifyAtSafely() }
 
 		if (match) {
 			makeCurrentPage(match)
 		} else {
-			throw new UnexpectedPageException(pages)
+			throw new UnexpectedPageException(pages*.getClass())
 		}
 		match
 	}

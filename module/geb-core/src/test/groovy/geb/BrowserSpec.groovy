@@ -15,6 +15,7 @@
 package geb
 
 import geb.test.GebSpecWithServer
+import spock.lang.Unroll
 
 class BrowserSpec extends GebSpecWithServer {
 
@@ -43,4 +44,21 @@ class BrowserSpec extends GebSpecWithServer {
 		then:
 		browser.currentUrl == server.baseUrl
 	}
+
+	@Unroll
+	def "page setting methods return an instance set as the current page when using #scenario"() {
+		expect:
+		page(argument).getClass() == BrowserSpecPage
+
+		where:
+		scenario             | argument
+		"class"              | BrowserSpecPage
+		"instance"           | new BrowserSpecPage()
+		"array of classes"   | [BrowserSpecPage] as Class[]
+		"array of instances" | [new BrowserSpecPage()] as Page[]
+	}
+}
+
+class BrowserSpecPage extends Page {
+	static at = { true }
 }

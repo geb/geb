@@ -17,6 +17,8 @@ package geb.error;
 import geb.Page;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
+import java.util.List;
+
 public class UnexpectedPageException extends GebException {
 
 	public UnexpectedPageException(Class<? extends Page> page, Throwable cause) {
@@ -27,11 +29,7 @@ public class UnexpectedPageException extends GebException {
 		super(String.format("Page verification failed for page %s after clicking an element", page.getClass().getName()), cause);
 	}
 
-	public UnexpectedPageException(Class<? extends Page>[] potentials) {
-		super(String.format("Unable to find page match (given potentials: %s)", DefaultGroovyMethods.toString(potentials)));
-	}
-
-	public UnexpectedPageException(Page[] potentials) {
+	public UnexpectedPageException(List<Class<? extends Page>> potentials) {
 		super(String.format("Unable to find page match (given potentials: %s)", DefaultGroovyMethods.toString(potentials)));
 	}
 
