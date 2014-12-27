@@ -38,7 +38,8 @@ class NavigatorClickSpec extends GebSpecWithServer {
 		navigator.click(* clickParams).is(navigator)
 
 		where:
-		clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]]]
+		clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]], [new PageInstanceWithParametrizedAtChecker(condition: true)],
+						[[new PageInstanceWithParametrizedAtChecker(condition: true), new PageInstanceWithParametrizedAtChecker(condition: true)]]]
 	}
 
 	def 'click can be used with pages without at checker'() {

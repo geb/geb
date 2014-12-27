@@ -201,6 +201,10 @@ The [`page(Class pageType)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20
 
 The [`page(Class[] potentialPageTypes)`](api/geb/Browser.html#page\(Class%3C%3F%20extends%20Page%3E\)) method allows you to specify a number of *potential* page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
+The [`page(Page pageInstance)`](api/geb/Browser.html#page\(T\)) method allows you to change the page to the given instance. The instance must be [Page](api/geb/Page.html) or a subclass thereof. This method **does not** verify that the given page actually matches the content (at checking is discussed shortly).
+
+The [`page(Page[] potentialPageInstances)`](api/geb/Browser.html#page\(T\)) method allows you to specify a number of *potential* page instances. Each of the potential page instances is initialized and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page instances passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+
 These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the [`to` attribute of the Content DSL](pages.html#to) for more information about this). However, should you need to manually change the page type, they are there.
 
 ## At checking

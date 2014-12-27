@@ -23,7 +23,15 @@ public class UnexpectedPageException extends GebException {
 		super(String.format("Page verification failed for page %s after clicking an element", page.getName()), cause);
 	}
 
+	public UnexpectedPageException(Page page, Throwable cause) {
+		super(String.format("Page verification failed for page %s after clicking an element", page.getClass().getName()), cause);
+	}
+
 	public UnexpectedPageException(Class<? extends Page>[] potentials) {
+		super(String.format("Unable to find page match (given potentials: %s)", DefaultGroovyMethods.toString(potentials)));
+	}
+
+	public UnexpectedPageException(Page[] potentials) {
 		super(String.format("Unable to find page match (given potentials: %s)", DefaultGroovyMethods.toString(potentials)));
 	}
 
@@ -31,8 +39,32 @@ public class UnexpectedPageException extends GebException {
 		super(String.format("An unexpected page %s was encountered when expected to be at %s", actualPage.getName(), expectedPage.getName()));
 	}
 
+	public UnexpectedPageException(Class<? extends Page> actualPage, Page expectedPage) {
+		super(String.format("An unexpected page %s was encountered when expected to be at %s", actualPage.getName(), expectedPage.getClass().getName()));
+	}
+
+	public UnexpectedPageException(Page actualPage, Page expectedPage) {
+		super(String.format("An unexpected page %s was encountered when expected to be at %s", actualPage.getClass().getName(), expectedPage.getClass().getName()));
+	}
+
+	public UnexpectedPageException(Page actualPage, Class<? extends Page> expectedPage) {
+		super(String.format("An unexpected page %s was encountered when expected to be at %s", actualPage.getClass().getName(), expectedPage.getName()));
+	}
+
 	public UnexpectedPageException(Class<? extends Page> actualPage, Class<? extends Page>[] potentials) {
 		super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getName(), DefaultGroovyMethods.toString(potentials)));
+	}
+
+	public UnexpectedPageException(Class<? extends Page> actualPage, Page[] potentials) {
+		super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getName(), DefaultGroovyMethods.toString(potentials)));
+	}
+
+	public UnexpectedPageException(Page actualPage, Class<? extends Page>[] potentials) {
+		super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getClass().getName(), DefaultGroovyMethods.toString(potentials)));
+	}
+
+	public UnexpectedPageException(Page actualPage,Page[] potentials) {
+		super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getClass().getName(), DefaultGroovyMethods.toString(potentials)));
 	}
 
 }
