@@ -15,7 +15,6 @@
 package geb
 
 import geb.driver.RemoteDriverOperations
-import geb.error.AtCheckerVerificationFailedException
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UndefinedAtCheckerException
@@ -742,10 +741,6 @@ class Browser {
 		try {
 			availableWindows.each {
 				switchToWindow(it)
-				if (options.page) {
-					page(options.page)
-				}
-
 				if (specification.call()) {
 					verifyAtIfPresent(options.page)
 
@@ -988,7 +983,7 @@ class Browser {
 		if (targetPage) {
 			try {
 				if (!at(targetPage)) {
-					throw new AtCheckerVerificationFailedException(targetPage)
+					throw new UnexpectedPageException(targetPage)
 				}
 			}
 			catch (UndefinedAtCheckerException e) {

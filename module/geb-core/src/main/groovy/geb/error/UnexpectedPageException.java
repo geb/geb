@@ -21,8 +21,16 @@ import java.util.List;
 
 public class UnexpectedPageException extends GebException {
 
+	public UnexpectedPageException(Page page) {
+		this(page, null);
+	}
+
+	public UnexpectedPageException(Class<? extends Page> page) {
+		super(String.format("At checker page verification failed for page %s", page.getName()));
+	}
+
 	public UnexpectedPageException(Page page, Throwable cause) {
-		super(String.format("Page verification failed for page %s after clicking an element", page.getClass().getName()), cause);
+		super(String.format("At checker page verification failed for page %s", page), cause);
 	}
 
 	public UnexpectedPageException(List<Class<? extends Page>> potentials) {

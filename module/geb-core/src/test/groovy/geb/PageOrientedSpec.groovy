@@ -192,7 +192,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 
 		then:
 		UnexpectedPageException e = thrown()
-		e.message ==~ "Page verification failed for page .* after clicking an element"
+		e.message ==~ "At checker page verification failed for page .*"
 		e.cause in cause
 
 		where:
