@@ -61,18 +61,20 @@ This page lists the high level changes between versions of Geb.
 
 #### New Features
 
-* Support for finding elements using Webdriver's [`By`][by-api] selectors \[[GEB-348](http://jira.codehaus.org/browse/GEB-348)\]
-* Support for navigating to page instances in addition to classes \[[GEB-310](http://jira.codehaus.org/browse/GEB-310)\]
-* Support for using page instances as `page` option value of window switching methods \[[GEB-352](http://jira.codehaus.org/browse/GEB-352)\]
-* Support for using page instances together with frame switching methods \[[GEB-354](http://jira.codehaus.org/browse/GEB-354)\]
+* Support for finding elements using Webdriver's [`By`][by-api] selectors. \[[GEB-348](http://jira.codehaus.org/browse/GEB-348)\]
+* Support for navigating to page instances in addition to classes. \[[GEB-310](http://jira.codehaus.org/browse/GEB-310)\]
+* Support for using page instances as `page` option value of window switching methods. \[[GEB-352](http://jira.codehaus.org/browse/GEB-352)\]
+* Support for using page instances together with frame switching methods. \[[GEB-354](http://jira.codehaus.org/browse/GEB-354)\]
+* Support for using page instances with `Navigator.click()` methods. \[[GEB-355](http://jira.codehaus.org/browse/GEB-355)\]
+* Support for using page instances and lists of page instances as `page` option value of content templates. \[[GEB-356](http://jira.codehaus.org/browse/GEB-356)\]
 
 #### Fixes
 
-* Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element \[[GEB-345](http://jira.codehaus.org/browse/GEB-345)\]
-* Browser.verifyAtIfPresent() should fail for at checkers returning false when implicit assertions are disabled \[[GEB-357](http://jira.codehaus.org/browse/GEB-357)\]
+* Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element. \[[GEB-345](http://jira.codehaus.org/browse/GEB-345)\]
+* Browser.verifyAtIfPresent() should fail for at checkers returning false when implicit assertions are disabled. \[[GEB-357](http://jira.codehaus.org/browse/GEB-357)\]
 
 #### Breaking changes
-* `Page.toString()` now returns full page class name instead of its simple name 
+* `Page.toString()` now returns full page class name instead of its simple name.
 
 ### 0.10.0
 
