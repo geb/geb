@@ -493,7 +493,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
-	Navigator click(List<? extends Page> potentialPages, Wait wait = null) {
+	Navigator click(List potentialPages, Wait wait = null) {
 		click()
 		def pageSwitchingAction = {
 			browser.page(* potentialPages)

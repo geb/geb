@@ -704,22 +704,59 @@ interface Navigator extends Iterable<Navigator>, Locator {
 
 	/**
 	 * Clicks on the first context element.
-	 * @throws java.io.IOException
-	 * @throws java.lang.ClassCastException
 	 */
-	Navigator click() throws IOException, ClassCastException
+	Navigator click()
 
+	/**
+	 * Clicks on the first context element, verifies the at checker (if it is defined) of the class passed as the argument and sets it as the current page.
+	 *
+	 * @param pageClass page class to be used as the new current page after clicking the element
+	 * @return this
+	 */
 	Navigator click(Class<? extends Page> pageClass)
 
+	/**
+	 * Clicks on the first context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+	 *
+	 * @param pageInstance page instance to be used as the new current page after clicking the element
+	 * @return this
+	 */
 	Navigator click(Page pageInstance)
 
+	/**
+	 * Clicks on the first context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+	 *
+	 * @param pageClass page class to be used as the new current page after clicking the element
+	 * @param wait configuration to be used for waiting for the at checker to succeed
+	 * @return this
+	 */
 	Navigator click(Class<? extends Page> pageClass, Wait wait)
 
+	/**
+	 * Clicks on the first context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+	 *
+	 * @param pageInstance page instance to be used as the new current page after clicking the element
+	 * @param wait configuration to be used for waiting for the at checker to succeed
+	 * @return this
+	 */
 	Navigator click(Page pageInstance, Wait wait)
 
-	Navigator click(List<? extends Page> potentialPages)
+	/**
+	 * Clicks on the first context element, finds the first page from the list for which the at checker is defined and sets it as the current page.
+	 *
+	 * @param potentialPages a list of classes extending {@link geb.Page} or a list of instances of such classes
+	 * @return this
+	 */
+	Navigator click(List potentialPages)
 
-	Navigator click(List<? extends Page> potentialPages, Wait wait)
+	/**
+	 * Clicks on the first context element, finds the first page from the list for which the at checker is defined and sets it as the current page.
+	 *
+	 * @param potentialPages a list of classes extending {@link geb.Page} or a list of instances of such classes
+	 * @param wait configuration to be used for waiting for the at checkers to succeed
+	 * @return this
+	 */
+	Navigator click(List potentialPages, Wait wait)
 
 	/**
 	 * Returns the number of context elements.

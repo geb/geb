@@ -69,7 +69,7 @@ class EmptyNavigator extends AbstractNavigator {
 	}
 
 	@Override
-	Navigator click(List<? extends Page> potentialPages, Wait wait = null) {
+	Navigator click(List potentialPages, Wait wait = null) {
 		throw new UnsupportedOperationException("not supported on empty navigator objects")
 	}
 
