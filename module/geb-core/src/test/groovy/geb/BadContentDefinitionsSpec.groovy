@@ -59,7 +59,7 @@ class BadContentDefinitionsSpec extends GebSpecWithServer {
 		page BadContentDefinitionsSpecUnknownElementAliased
 		then:
 		InvalidPageContent e = thrown()
-		e.message == "Definition of page component template 'foo' of 'BadContentDefinitionsSpecUnknownElementAliased' aliases an unknown element 'bar'"
+		e.message == "Definition of page component template 'foo' of '${BadContentDefinitionsSpecUnknownElementAliased.name}' aliases an unknown element 'bar'"
 	}
 
 }

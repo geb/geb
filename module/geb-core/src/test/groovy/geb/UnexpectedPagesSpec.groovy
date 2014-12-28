@@ -111,7 +111,7 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 
 		then:
 		UnexpectedPageException e = thrown()
-		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [ParametrizedPage, ParametrizedPage])'
+		e.getMessage() == "An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [${ParametrizedPage.name}, ${ParametrizedPage.name}])"
 	}
 
 	void 'it is possible to pass an unexpected page when setting a page from a list of possible pages'() {

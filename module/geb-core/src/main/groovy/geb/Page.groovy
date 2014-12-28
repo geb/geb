@@ -144,12 +144,12 @@ class Page implements Navigable, PageContentContainer {
 	}
 
 	/**
-	 * Returns the simple name of this class.
+	 * Returns the name of this class.
 	 *
-	 * @see Class#getSimpleName()
+	 * @see Class#getName()
 	 */
 	String toString() {
-		this.class.simpleName
+		this.class.name
 	}
 
 	/**
