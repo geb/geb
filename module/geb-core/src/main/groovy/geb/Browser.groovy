@@ -403,7 +403,7 @@ class Browser {
 	 * @throws UnexpectedPageException when at an unexpected page
 	 */
 	void checkIfAtAnUnexpectedPage(Class<? extends Page>[] expectedPages) {
-		checkIfAtAnUnexpectedPageOrNot(expectedPages)
+		doCheckIfAtAnUnexpectedPage(expectedPages)
 	}
 
 	/**
@@ -413,10 +413,10 @@ class Browser {
 	 * @throws UnexpectedPageException when at an unexpected page
 	 */
 	void checkIfAtAnUnexpectedPage(Page[] expectedPages) {
-		checkIfAtAnUnexpectedPageOrNot(expectedPages)
+		doCheckIfAtAnUnexpectedPage(expectedPages)
 	}
 
-	private checkIfAtAnUnexpectedPageOrNot(def expectedPages) {
+	private doCheckIfAtAnUnexpectedPage(def expectedPages) {
 		def unexpectedPages = config.unexpectedPages - expectedPages.toList()
 		unexpectedPages.each {
 			if (isAt(it, false)) {
@@ -1003,7 +1003,7 @@ class Browser {
 		if (match) {
 			makeCurrentPage(match)
 		} else {
-			throw new UnexpectedPageException(pages*.getClass())
+			throw new UnexpectedPageException(pages)
 		}
 		match
 	}

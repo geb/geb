@@ -38,10 +38,6 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 		browser.config.unexpectedPages = [UnexpectedPage, AnotherUnexpectedPage]
 	}
 
-	private void defineUnexpectedPageInstances() {
-		browser.config.unexpectedPages = [new ParametrizedUnexpectedPage(condition: true), new ParametrizedUnexpectedPage(condition: false)]
-	}
-
 	@Unroll
 	void 'verify that page response is configured as expected'() {
 		given:
@@ -79,19 +75,6 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 		then:
 		UnexpectedPageException e = thrown()
 		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when expected to be at geb.ExpectedPage'
-	}
-
-	void 'an exception is thrown when we end up at an parametrized instance of unexpected page'() {
-		given:
-		defineUnexpectedPageInstances()
-
-		when:
-		via UnexpectedPage
-		at ExpectedPage
-
-		then:
-		UnexpectedPageException e = thrown()
-		e.getMessage() == 'An unexpected page geb.ParametrizedUnexpectedPage was encountered when expected to be at geb.ExpectedPage'
 	}
 
 	void 'it is possible to do at checking for an unexpected page'() {
@@ -195,12 +178,6 @@ class AnotherExpectedPage extends Page {
 }
 
 class ParametrizedPage extends Page {
-	boolean condition
-
-	static at = { condition }
-}
-
-class ParametrizedUnexpectedPage extends Page {
 	boolean condition
 
 	static at = { condition }
