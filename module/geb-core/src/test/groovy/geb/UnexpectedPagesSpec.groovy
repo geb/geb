@@ -15,6 +15,7 @@
  */
 package geb
 
+import geb.error.InvalidGebConfiguration
 import geb.error.UnexpectedPageException
 import geb.test.GebSpecWithServer
 import spock.lang.Unroll
@@ -147,6 +148,25 @@ class UnexpectedPagesSpec extends GebSpecWithServer {
 
 		then:
 		at(ExpectedPage)
+	}
+
+	@Unroll
+	void "an informative exception is thrown when unexpected pages config list contains something that is not a page class"() {
+		given:
+		browser.config.rawConfig.unexpectedPages = configValue
+
+		when:
+		browser.config.unexpectedPages
+
+		then:
+		InvalidGebConfiguration e = thrown()
+		e.message == "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$message\". Did you forget to include some imports in your config file?"
+
+		where:
+		configValue    | message
+		["foo"]        | '[foo]'
+		"foo"          | 'foo'
+		UnexpectedPage | "class geb.UnexpectedPage"
 	}
 }
 

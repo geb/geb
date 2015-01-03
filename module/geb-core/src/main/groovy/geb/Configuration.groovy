@@ -163,7 +163,13 @@ class Configuration {
 	}
 
 	Collection<Class<? extends Page>> getUnexpectedPages() {
-		rawConfig.unexpectedPages ?: []
+		def unexpectedPages = rawConfig.unexpectedPages ?: []
+		def isCollectionContainingOnlyPageClasses = unexpectedPages instanceof Collection && unexpectedPages.every { it instanceof Class && Page.isAssignableFrom(it) }
+		if (!isCollectionContainingOnlyPageClasses) {
+			def message = "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$unexpectedPages\". Did you forget to include some imports in your config file?"
+			throw new InvalidGebConfiguration(message)
+		}
+		unexpectedPages
 	}
 
 	void setUnexpectedPages(Collection<Class<? extends Page>> pages) {
