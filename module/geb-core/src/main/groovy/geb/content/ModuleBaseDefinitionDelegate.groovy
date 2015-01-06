@@ -14,6 +14,7 @@
  */
 package geb.content
 
+import geb.Module
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
@@ -42,6 +43,12 @@ class ModuleBaseDefinitionDelegate {
 		} else {
 			throw new MissingPropertyException(name, ModuleBaseDefinitionDelegate)
 		}
+	}
+
+	@Override
+	//necessary because @Delegate generates wrong method signature for this method
+	<T extends Module> T module(Class<T> moduleClass) {
+		navigableSupport.module(moduleClass)
 	}
 
 	Navigator $() {

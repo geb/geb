@@ -18,7 +18,7 @@ Pages can “include” modules using the following syntax…
         }
     }
 
-The `module` method is a special method only available in content template definitions. It sets the content to an instance of the module…
+The `module` method sets the content to an instance of the module…
 
     Browser.drive {
         to ExamplePage
@@ -79,6 +79,19 @@ It can be defined at inclusion time…
 
     static content = {
         form { module FormModule, $("form") }
+    }
+
+You can base a module on a `Navigator` instance as well…
+
+    static content = {
+        form { $("form").module(FormModule) }
+    }
+
+And you can do it "on the fly" (outside of a content definition)…
+
+    Browser.drive {
+        to FormPage
+        $("form").module(ExampleModule)
     }
 
 We can define a `Navigator` context when including the module using the above syntax. This now means that _all_ `$()` function calls that occur within the module are against the given context (in this case, the `form` element).

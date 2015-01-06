@@ -15,6 +15,7 @@
  */
 package geb.content
 
+import geb.Module
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import org.openqa.selenium.By
@@ -194,5 +195,10 @@ class NavigableSupport implements Navigable {
 
 	Navigator $(WebElement[] elements) {
 		navigatorFactory.createFromWebElements(Arrays.asList(elements))
+	}
+
+	@Override
+	<T extends Module> T module(Class<T> moduleClass) {
+		base.module(moduleClass)
 	}
 }

@@ -15,6 +15,7 @@
  */
 package geb.content
 
+import geb.Module
 import geb.Page
 import geb.error.PageInstanceNotInitializedException
 import geb.navigator.Navigator
@@ -216,6 +217,11 @@ class UninitializedNavigableSupport implements Navigable {
 
 	@Override
 	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
+		throw new PageInstanceNotInitializedException(page)
+	}
+
+	@Override
+	def <T extends Module> T module(Class<T> moduleClass) {
 		throw new PageInstanceNotInitializedException(page)
 	}
 }

@@ -125,15 +125,15 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	}
 
 	def methodMissing(String name, args) {
-		_navigator.methodMissing(name, args)
+		_navigator."$name"(*args)
 	}
 
 	def propertyMissing(String name) {
-		_navigator.propertyMissing(name)
+		_navigator[name]
 	}
 
 	def propertyMissing(String name, val) {
-		_navigator.propertyMissing(name, val)
+		_navigator[name] = val
 	}
 
 	@Override
@@ -209,5 +209,11 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	@Override
 	Navigator $(By bySelector, Range<Integer> range) {
 		_navigator.$(bySelector, range)
+	}
+
+	@Override
+	//necessary because @Delegate generates wrong method signature for this method
+	<T extends Module> T module(Class<T> moduleClass) {
+		_navigator.module(moduleClass)
 	}
 }

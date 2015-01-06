@@ -15,6 +15,7 @@
  */
 package geb.navigator
 
+import geb.Module
 import geb.Page
 import geb.js.JQueryAdapter
 import geb.waiting.Wait
@@ -874,4 +875,12 @@ interface Navigator extends Iterable<Navigator>, Locator {
 	 * @return The current, computed value of the property or null if the is not specified.
 	 */
 	String css(String propertyName)
+
+	/**
+	 * Create and initialize an instance of the given module class, using {@code this} as its base.
+	 *
+	 * @param moduleClass a class extending {@link geb.Module}
+	 * @return an initialized instance of the module class passed as the argument
+	 */
+	public <T extends Module> T module(Class<T> moduleClass)
 }

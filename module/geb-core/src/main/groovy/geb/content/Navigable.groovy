@@ -14,6 +14,7 @@
  */
 package geb.content
 
+import geb.Module
 import geb.navigator.Locator
 import geb.navigator.Navigator
 import org.openqa.selenium.WebElement
@@ -35,4 +36,12 @@ interface Navigable extends Locator {
 	Navigator $(Navigator[] navigators)
 
 	Navigator $(WebElement[] elements)
+
+	/**
+	 * Create and initialize an instance of the given module class.
+	 *
+	 * @param moduleClass a class extending {@link geb.Module}
+	 * @return an initialized instance of the module class passed as the argument
+	 */
+	public <T extends Module> T module(Class<T> moduleClass)
 }

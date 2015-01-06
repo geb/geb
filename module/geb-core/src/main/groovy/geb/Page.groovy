@@ -118,7 +118,7 @@ class Page implements Navigable, PageContentContainer {
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	Page init(Browser browser) {
 		this.browser = browser
-		def contentTemplates = PageContentTemplateBuilder.build(browser.config, this, browser.navigatorFactory, 'content', this.class, Page)
+		def contentTemplates = PageContentTemplateBuilder.build(browser, this, browser.navigatorFactory, 'content', this.class, Page)
 		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, browser.navigatorFactory)
 		navigableSupport = new NavigableSupport(browser.navigatorFactory)
 		downloadSupport = new DefaultDownloadSupport(browser)
@@ -447,5 +447,10 @@ class Page implements Navigable, PageContentContainer {
 
 	Navigator $(WebElement[] elements) {
 		navigableSupport.$(elements)
+	}
+
+	@Override
+	<T extends Module> T module(Class<T> moduleClass) {
+		navigableSupport.module(moduleClass)
 	}
 }

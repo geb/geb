@@ -139,8 +139,8 @@ class ModulesSpec extends GebSpecWithServer {
 		invalid
 
 		then:
-		InvalidPageContent e = thrown()
-		e.message == "class '${Page}' should extend from ${Module} to be allowed to be a part of a module definition with name 'invalid'"
+		IllegalArgumentException e = thrown()
+		e.message == "${Page} is not a subclass of ${Module}"
 	}
 
 	def 'can access an attribute of a module base'() {
@@ -255,6 +255,6 @@ class OptionalModule extends Module {
 
 class ContainsAnInvalidModulePage extends Page {
 	static content = {
-		invalid { module (Page) }
+		invalid { module Page }
 	}
 }

@@ -16,10 +16,13 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Module
 import geb.Page
+import geb.content.ModuleBaseCalculator
 import geb.error.UnableToSetElementException
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
+import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatcher
 import geb.waiting.Wait
 import org.openqa.selenium.By
@@ -541,6 +544,21 @@ class NonEmptyNavigator extends AbstractNavigator {
 	@Override
 	Navigator unique() {
 		new NonEmptyNavigator(browser, contextElements.unique(false))
+	}
+
+	public <T extends Module> T module(Class<T> moduleClass) {
+		if (!Module.isAssignableFrom(moduleClass)) {
+			throw new IllegalArgumentException("$moduleClass is not a subclass of ${Module}")
+		}
+
+		def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
+
+		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory)
+
+		def module = moduleClass.newInstance()
+		module.init(browser, moduleBaseNavigatorFactory)
+
+		module
 	}
 
 	@Override

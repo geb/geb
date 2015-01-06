@@ -20,7 +20,7 @@ import geb.navigator.factory.NavigatorFactory
 
 class ModuleBaseCalculator {
 
-	static NavigatorFactory calculate(Class moduleClass, NavigatorFactory navigatorFactory, Map params) {
+	static NavigatorFactory calculate(Class moduleClass, NavigatorFactory navigatorFactory, Map params = [:]) {
 		def moduleBaseDefinition = moduleClass.base
 		if (!moduleBaseDefinition) {
 			navigatorFactory

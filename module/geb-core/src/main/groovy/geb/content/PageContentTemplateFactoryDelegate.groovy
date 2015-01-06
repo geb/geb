@@ -23,7 +23,7 @@ import org.openqa.selenium.WebElement
 
 class PageContentTemplateFactoryDelegate {
 
-	static final DISALLOWED_MODULE_PARAMS = ['_template', '_navigator', '_args']
+	static final DISALLOWED_MODULE_PARAMS = ['_navigator', '_args']
 
 	private PageContentTemplate template
 	private Object[] args
@@ -45,8 +45,10 @@ class PageContentTemplateFactoryDelegate {
 		template.owner."$name"
 	}
 
-	def module(Class<? extends Module> moduleClass) {
-		module(null, moduleClass, null)
+	@Override
+	//necessary because @Delegate generates wrong method signature for this method
+	<T extends Module> T module(Class<T> moduleClass) {
+		navigableSupport.module(moduleClass)
 	}
 
 	def module(Map params, Class<? extends Module> moduleClass) {
@@ -61,13 +63,13 @@ class PageContentTemplateFactoryDelegate {
 		def moduleParams = params ?: [:]
 
 		if (!(moduleClass in Module)) {
-			throw new InvalidPageContent("class '${moduleClass}' should extend from ${Module} to be allowed to be a part of a module definition with name '${template.name}'")
+			throw new InvalidPageContent("${moduleClass} should extend from ${Module} to be allowed to be a part of a module definition with name '${template.name}'")
 		}
 
 		// Make sure they haven't used params that map to our internal ivars
 		if (moduleParams.any { it.key in DISALLOWED_MODULE_PARAMS }) {
 			def disallowed = DISALLOWED_MODULE_PARAMS.join(', ')
-			throw new InvalidPageContent("params for module $moduleClass with name ${template.name} contains one or more disallowed params (${disallowed})")
+			throw new InvalidPageContent("Params for module $moduleClass with name ${template.name} contains one or more disallowed params (${disallowed})")
 		}
 
 		def baseNavigatorFactory = base != null ? template.navigatorFactory.relativeTo(base) : template.navigatorFactory
@@ -75,7 +77,7 @@ class PageContentTemplateFactoryDelegate {
 		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory, moduleParams)
 
 		def module = moduleClass.newInstance()
-		module.init(template, moduleBaseNavigatorFactory, * args)
+		module.init(template.browser, moduleBaseNavigatorFactory)
 		moduleParams.each { name, value ->
 			// TODO - catch MPE and provide better error message
 			module."$name" = value

@@ -14,8 +14,8 @@
  */
 package geb.content
 
+import geb.Browser
 import geb.Configuration
-import geb.Module
 import geb.Page
 import geb.error.RequiredPageValueNotPresent
 import geb.navigator.Navigator
@@ -24,7 +24,7 @@ import geb.waiting.WaitTimeoutException
 
 class PageContentTemplate {
 
-	final Configuration config
+	final Browser browser
 	final PageContentContainer owner
 	final String name
 	final PageContentTemplateParams params
@@ -33,8 +33,8 @@ class PageContentTemplate {
 
 	private cache = [:]
 
-	PageContentTemplate(Configuration config, PageContentContainer owner, String name, Map<String, ?> params, Closure factory, NavigatorFactory navigatorFactory) {
-		this.config = config
+	PageContentTemplate(Browser browser, PageContentContainer owner, String name, Map<String, ?> params, Closure factory, NavigatorFactory navigatorFactory) {
+		this.browser = browser
 		this.owner = owner
 		this.name = name
 		this.params = new PageContentTemplateParams(this, params)
@@ -48,6 +48,10 @@ class PageContentTemplate {
 
 	Page getPage() {
 		owner instanceof Page ? owner : owner.getPage()
+	}
+
+	Configuration getConfig() {
+		browser.config
 	}
 
 	def get(Object[] args) {
@@ -102,7 +106,7 @@ class PageContentTemplate {
 	}
 
 	private wrapFactoryReturn(factoryReturn, Object[] args) {
-		if (Navigator.isInstance(factoryReturn) && !Module.isInstance(factoryReturn)) {
+		if (Navigator.isInstance(factoryReturn)) {
 			def pageContent = new SimplePageContent()
 			pageContent.init(this, factoryReturn, * args)
 			pageContent
