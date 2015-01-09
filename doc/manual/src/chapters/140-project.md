@@ -52,6 +52,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Ai-Lin Liou](https://github.com/alincode) - Doc improvements
 * [Varun Menon](https://github.com/menonvarun) - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
 * [Anders D. Johnson](https://github.com/adjohnson916) - Doc improvements
+* [Hiroyuki Ohnaka](https://github.com/azusa) - Doc improvements
 
 ## History
 
