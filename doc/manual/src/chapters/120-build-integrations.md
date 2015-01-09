@@ -154,7 +154,7 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.9</version>
+            <version>2.18.1</version>
             <configuration>
               <includes>
                 <include>*Spec.*</include>
