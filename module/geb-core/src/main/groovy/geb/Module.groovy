@@ -38,7 +38,6 @@ import geb.waiting.WaitingSupport
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
-@SuppressWarnings("FieldName")
 class Module implements Navigator, PageContentContainer, Initializable {
 
 	static base = null
@@ -61,14 +60,14 @@ class Module implements Navigator, PageContentContainer, Initializable {
 	private Browser browser
 
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
-	private Navigator _navigator
+	private Navigator navigator
 
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	void init(Browser browser, NavigatorFactory navigatorFactory) {
 		this.browser = browser
-		_navigator = navigatorFactory.base
+		navigator = navigatorFactory.base
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(browser, this, navigatorFactory, 'content', this.class, Module)
-		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, _navigator)
+		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, navigator)
 		downloadSupport = new DefaultDownloadSupport(browser)
 		waitingSupport = new DefaultWaitingSupport(browser.config)
 		frameSupport = new DefaultFrameSupport(browser)
@@ -92,10 +91,10 @@ class Module implements Navigator, PageContentContainer, Initializable {
 	}
 
 	private Navigator getInitializedNavigator() {
-		if (_navigator == null) {
+		if (navigator == null) {
 			throw uninitializedException()
 		}
-		_navigator
+		navigator
 	}
 
 	boolean asBoolean() {

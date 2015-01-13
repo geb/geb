@@ -23,7 +23,7 @@ import org.openqa.selenium.WebElement
 
 class PageContentTemplateFactoryDelegate {
 
-	static final DISALLOWED_MODULE_PARAMS = ['_navigator', '_args']
+	static final DISALLOWED_MODULE_PARAMS = ['navigator', '_args']
 
 	private PageContentTemplate template
 	private Object[] args
