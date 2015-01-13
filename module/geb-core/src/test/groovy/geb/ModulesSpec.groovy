@@ -180,6 +180,7 @@ class ModulesSpec extends GebSpecWithServer {
 		"WaitingSupport"         | "waitFor"     | [{}]
 		"FrameSupport"           | "withFrame"   | ["frame-id", {}]
 		"AlertAndConfirmSupport" | "withAlert"   | [{}]
+		"JavascriptInterface"    | "getJs"       | []
 	}
 }
 

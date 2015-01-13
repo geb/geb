@@ -224,6 +224,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 		"FrameSupport"           | "withFrame"   | ["frame-id", {}]
 		"InteractionsSupport"    | "interact"    | [{}]
 		"AlertAndConfirmSupport" | "withAlert"   | [{}]
+		"Browser"                | "verifyAt"    | []
 	}
 
 	@Unroll

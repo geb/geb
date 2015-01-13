@@ -138,11 +138,18 @@ class Page implements Navigable, PageContentContainer, Initializable {
 		browser
 	}
 
+	private Browser getInitializedBrowser() {
+		if (browser == null) {
+			throw uninitializedException()
+		}
+		browser
+	}
+
 	/**
 	 * The driver of the browser that the page is connected to.
 	 */
 	WebDriver getDriver() {
-		browser.driver
+		getInitializedBrowser().driver
 	}
 
 	/**
@@ -163,7 +170,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
 	 * @throws UnexpectedPageException when at an unexpected page
 	 */
 	boolean verifyAt() {
-		browser.checkIfAtAnUnexpectedPage(getClass())
+		getInitializedBrowser().checkIfAtAnUnexpectedPage(getClass())
 		verifyThisPageAtOnly(true)
 	}
 
@@ -197,7 +204,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
 		if (verifier) {
 			verifier.delegate = this
 			verifier.resolveStrategy = Closure.DELEGATE_FIRST
-			def atCheckWaiting = browser.config.atCheckWaiting
+			def atCheckWaiting = getInitializedBrowser().config.atCheckWaiting
 			if (atCheckWaiting && allowAtCheckWaiting) {
 				try {
 					atCheckWaiting.waitFor(verifier)
@@ -225,8 +232,8 @@ class Page implements Navigable, PageContentContainer, Initializable {
 		if (path == null) {
 			path = ""
 		}
-		browser.go(params, getPageUrl(path))
-		browser.page(this)
+		getInitializedBrowser().go(params, getPageUrl(path))
+		getInitializedBrowser().page(this)
 	}
 
 	/**
@@ -265,7 +272,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
 	 * @see org.openqa.selenium.WebDriver#getTitle()
 	 */
 	String getTitle() {
-		browser.driver.title
+		getInitializedBrowser().driver.title
 	}
 
 	/**
@@ -274,7 +281,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
 	 * @see geb.Browser#getJs()
 	 */
 	JavascriptInterface getJs() {
-		browser.js
+		getInitializedBrowser().js
 	}
 
 	/**

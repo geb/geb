@@ -57,25 +57,28 @@ class Module implements Navigator, PageContentContainer, Initializable {
 	@Delegate
 	private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
-	private Browser browser
+	private JavascriptInterface js
 
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
 	private Navigator navigator
 
 	@SuppressWarnings('SpaceBeforeOpeningBrace')
 	void init(Browser browser, NavigatorFactory navigatorFactory) {
-		this.browser = browser
 		navigator = navigatorFactory.base
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(browser, this, navigatorFactory, 'content', this.class, Module)
 		pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, navigator)
 		downloadSupport = new DefaultDownloadSupport(browser)
 		waitingSupport = new DefaultWaitingSupport(browser.config)
 		frameSupport = new DefaultFrameSupport(browser)
-		alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
+		js = browser.js
+		alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
 	}
 
 	JavascriptInterface getJs() {
-		browser.js
+		if (js == null) {
+			throw uninitializedException()
+		}
+		js
 	}
 
 	def methodMissing(String name, args) {
