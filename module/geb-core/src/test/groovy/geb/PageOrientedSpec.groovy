@@ -221,7 +221,7 @@ class PageOrientedSpec extends GebSpecWithServer {
 		"Navigable"              | "find"        | [""]
 		"DownloadSupport"        | "download"    | [""]
 		"WaitingSupport"         | "waitFor"     | [{}]
-		"FrameSupport"           | "withFrame"   | [{}]
+		"FrameSupport"           | "withFrame"   | ["frame-id", {}]
 		"InteractionsSupport"    | "interact"    | [{}]
 		"AlertAndConfirmSupport" | "withAlert"   | [{}]
 	}

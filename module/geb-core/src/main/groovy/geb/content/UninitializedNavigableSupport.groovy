@@ -15,213 +15,212 @@
  */
 package geb.content
 
+import geb.Initializable
 import geb.Module
-import geb.Page
-import geb.error.PageInstanceNotInitializedException
 import geb.navigator.Navigator
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
 class UninitializedNavigableSupport implements Navigable {
 
-	private Page page
+	private final Initializable initializable
 
-	UninitializedNavigableSupport(Page page) {
-		this.page = page
+	UninitializedNavigableSupport(Initializable initializable) {
+		this.initializable = initializable
 	}
 
 	@Override
 	Navigator find() {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $() {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 }
 
 	@Override
 	Navigator find(int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Navigator[] navigators) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(WebElement[] elements) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(String selector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(String selector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(String selector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(String selector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(String selector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(String selector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, By bySelector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, By bySelector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, By bySelector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, By bySelector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(By bySelector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(By bySelector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(By bySelector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(By bySelector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(By bySelector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(By bySelector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, String selector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, String selector) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, String selector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, String selector, int index) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def <T extends Module> T module(Class<T> moduleClass) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 }

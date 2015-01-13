@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.interaction
+package geb
 
-import geb.Initializable
+import geb.error.GebException
 
-class UninitializedInteractionSupport implements InteractionsSupport {
-
-	private final Initializable initializable
-
-	UninitializedInteractionSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
-
-	@Override
-	void interact(Closure interactionClosure) {
-		throw initializable.uninitializedException()
-	}
+interface Initializable {
+	GebException uninitializedException()
 }

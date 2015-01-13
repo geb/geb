@@ -18,6 +18,8 @@ import geb.content.*
 import geb.download.DefaultDownloadSupport
 import geb.download.DownloadSupport
 import geb.download.UninitializedDownloadSupport
+import geb.error.GebException
+import geb.error.PageInstanceNotInitializedException
 import geb.error.RequiredPageContentNotPresent
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
@@ -61,7 +63,7 @@ import org.openqa.selenium.WebElement
  * <p>
  * See the chapter in the Geb manual on pages for more information on writing subclasses.
  */
-class Page implements Navigable, PageContentContainer {
+class Page implements Navigable, PageContentContainer, Initializable {
 
 	/**
 	 * The "at checker" for this page.
@@ -452,5 +454,10 @@ class Page implements Navigable, PageContentContainer {
 	@Override
 	<T extends Module> T module(Class<T> moduleClass) {
 		navigableSupport.module(moduleClass)
+	}
+
+	GebException uninitializedException() {
+		def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
+		new PageInstanceNotInitializedException(message)
 	}
 }

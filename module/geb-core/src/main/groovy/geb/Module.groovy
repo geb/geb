@@ -17,40 +17,46 @@ package geb
 import geb.content.*
 import geb.download.DefaultDownloadSupport
 import geb.download.DownloadSupport
+import geb.download.UninitializedDownloadSupport
+import geb.error.GebException
+import geb.error.ModuleInstanceNotInitializedException
 import geb.frame.DefaultFrameSupport
 import geb.frame.FrameSupport
+import geb.frame.UninitializedFrameSupport
 import geb.js.AlertAndConfirmSupport
 import geb.js.DefaultAlertAndConfirmSupport
 import geb.js.JQueryAdapter
 import geb.js.JavascriptInterface
+import geb.js.UninitializedAlertAndConfirmSupport
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.DefaultWaitingSupport
+import geb.waiting.UninitializedWaitingSupport
 import geb.waiting.Wait
 import geb.waiting.WaitingSupport
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
 @SuppressWarnings("FieldName")
-class Module implements Navigator, PageContentContainer {
+class Module implements Navigator, PageContentContainer, Initializable {
 
 	static base = null
 
 	@Delegate
-	private PageContentSupport pageContentSupport
+	private PageContentSupport pageContentSupport = new UninitializedPageContentSupport(this)
 	@Delegate
-	private DownloadSupport downloadSupport
+	private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
 	@Delegate
-	private WaitingSupport waitingSupport
+	private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
 	@Delegate
-	private FrameSupport frameSupport
+	private FrameSupport frameSupport = new UninitializedFrameSupport(this)
 
 	@Delegate
 	@SuppressWarnings("UnusedPrivateField")
 	private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 	@Delegate
-	private AlertAndConfirmSupport alertAndConfirmSupport
+	private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
 	private Browser browser
 
@@ -85,598 +91,610 @@ class Module implements Navigator, PageContentContainer {
 		pageContentSupport.propertyMissing(name, val)
 	}
 
+	private Navigator getInitializedNavigator() {
+		if (_navigator == null) {
+			throw uninitializedException()
+		}
+		_navigator
+	}
+
 	boolean asBoolean() {
-		_navigator.asBoolean()
+		getInitializedNavigator().asBoolean()
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates) {
-		_navigator.$(predicates)
+		getInitializedNavigator().$(predicates)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, int index) {
-		_navigator.$(predicates, index)
+		getInitializedNavigator().$(predicates, index)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, Range<Integer> range) {
-		_navigator.$(predicates, range)
+		getInitializedNavigator().$(predicates, range)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, String selector) {
-		_navigator.$(predicates, selector)
+		getInitializedNavigator().$(predicates, selector)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, String selector, int index) {
-		_navigator.$(predicates, selector, index)
+		getInitializedNavigator().$(predicates, selector, index)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
-		_navigator.$(predicates, selector, range)
+		getInitializedNavigator().$(predicates, selector, range)
 	}
 
 	@Override
 	Navigator $(String selector) {
-		_navigator.$(selector)
+		getInitializedNavigator().$(selector)
 	}
 
 	@Override
 	Navigator $(String selector, int index) {
-		_navigator.$(selector, index)
+		getInitializedNavigator().$(selector, index)
 	}
 
 	@Override
 	Navigator $(String selector, Range<Integer> range) {
-		_navigator.$(selector, range)
+		getInitializedNavigator().$(selector, range)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, By bySelector) {
-		_navigator.$(predicates, bySelector)
+		getInitializedNavigator().$(predicates, bySelector)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, By bySelector, int index) {
-		_navigator.$(predicates, bySelector, index)
+		getInitializedNavigator().$(predicates, bySelector, index)
 	}
 
 	@Override
 	Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-		_navigator.$(predicates, bySelector, range)
+		getInitializedNavigator().$(predicates, bySelector, range)
 	}
 
 	@Override
 	Navigator $(By bySelector) {
-		_navigator.$(bySelector)
+		getInitializedNavigator().$(bySelector)
 	}
 
 	@Override
 	Navigator $(By bySelector, int index) {
-		_navigator.$(bySelector, index)
+		getInitializedNavigator().$(bySelector, index)
 	}
 
 	@Override
 	Navigator $(By bySelector, Range<Integer> range) {
-		_navigator.$(bySelector, range)
+		getInitializedNavigator().$(bySelector, range)
 	}
 
 	@Override
 	<T extends Module> T module(Class<T> moduleClass) {
-		_navigator.module(moduleClass)
+		getInitializedNavigator().module(moduleClass)
 	}
 
 	@Override
 	String css(String propertyName) {
-		_navigator.css(propertyName)
+		getInitializedNavigator().css(propertyName)
 	}
 
 	@Override
 	Navigator unique() {
-		_navigator.unique()
+		getInitializedNavigator().unique()
 	}
 
 	@Override
 	int getY() {
-		_navigator.getY()
+		getInitializedNavigator().getY()
 	}
 
 	@Override
 	int getX() {
-		_navigator.getX()
+		getInitializedNavigator().getX()
 	}
 
 	@Override
 	int getWidth() {
-		_navigator.getWidth()
+		getInitializedNavigator().getWidth()
 	}
 
 	@Override
 	int getHeight() {
-		_navigator.getHeight()
+		getInitializedNavigator().getHeight()
 	}
 
 	@Override
 	JQueryAdapter getJquery() {
-		_navigator.getJquery()
+		getInitializedNavigator().getJquery()
 	}
 
 	@Override
 	Navigator verifyNotEmpty() {
-		_navigator.verifyNotEmpty()
+		getInitializedNavigator().verifyNotEmpty()
 	}
 
 	@Override
 	Navigator findAll(Closure predicate) {
-		_navigator.findAll(predicate)
+		getInitializedNavigator().findAll(predicate)
 	}
 
 	@Override
 	Iterator<Navigator> iterator() {
-		_navigator.iterator()
+		getInitializedNavigator().iterator()
 	}
 
 	@Override
 	Collection<WebElement> allElements() {
-		_navigator.allElements()
+		getInitializedNavigator().allElements()
 	}
 
 	@Override
 	WebElement lastElement() {
-		_navigator.lastElement()
+		getInitializedNavigator().lastElement()
 	}
 
 	@Override
 	WebElement firstElement() {
-		_navigator.firstElement()
+		getInitializedNavigator().firstElement()
 	}
 
 	@Override
 	Navigator tail() {
-		_navigator.tail()
+		getInitializedNavigator().tail()
 	}
 
 	@Override
 	Navigator last() {
-		_navigator.last()
+		getInitializedNavigator().last()
 	}
 
 	@Override
 	Navigator first() {
-		_navigator.first()
+		getInitializedNavigator().first()
 	}
 
 	@Override
 	Navigator head() {
-		_navigator.head()
+		getInitializedNavigator().head()
 	}
 
 	@Override
 	boolean isEmpty() {
-		_navigator.isEmpty()
+		getInitializedNavigator().isEmpty()
 	}
 
 	@Override
 	int size() {
-		_navigator.size()
+		getInitializedNavigator().size()
 	}
 
 	@Override
 	Navigator click(List potentialPages, Wait wait = null) {
-		_navigator.click(potentialPages, wait)
+		getInitializedNavigator().click(potentialPages, wait)
 	}
 
 	@Override
 	Navigator click(Page pageInstance, Wait wait = null) {
-		_navigator.click(pageInstance, wait)
+		getInitializedNavigator().click(pageInstance, wait)
 	}
 
 	@Override
 	Navigator click(Class<? extends Page> pageClass, Wait wait = null) {
-		_navigator.click(pageClass, wait)
+		getInitializedNavigator().click(pageClass, wait)
 	}
 
 	@Override
 	Navigator click() {
-		_navigator.click()
+		getInitializedNavigator().click()
 	}
 
 	@Override
 	Navigator leftShift(value) {
-		_navigator << value
+		getInitializedNavigator() << value
 	}
 
 	@Override
 	Navigator value(value) {
-		_navigator.value(value)
+		getInitializedNavigator().value(value)
 	}
 
 	@Override
 	def value() {
-		_navigator.value()
+		getInitializedNavigator().value()
 	}
 
 	@Override
 	List<String> classes() {
-		_navigator.classes()
+		getInitializedNavigator().classes()
 	}
 
 	@Override
 	String attr(String name) {
-		_navigator.attr(name)
+		getInitializedNavigator().attr(name)
 	}
 
 	@Override
 	String getAttribute(String name) {
-		_navigator.getAttribute(name)
+		getInitializedNavigator().getAttribute(name)
 	}
 
 	@Override
 	String text() {
-		_navigator.text()
+		getInitializedNavigator().text()
 	}
 
 	@Override
 	String tag() {
-		_navigator.tag()
+		getInitializedNavigator().tag()
 	}
 
 	@Override
 	boolean isEditable() {
-		_navigator.isEditable()
+		getInitializedNavigator().isEditable()
 	}
 
 	@Override
 	boolean isReadOnly() {
-		_navigator.isReadOnly()
+		getInitializedNavigator().isReadOnly()
 	}
 
 	@Override
 	boolean isEnabled() {
-		_navigator.isEnabled()
+		getInitializedNavigator().isEnabled()
 	}
 
 	@Override
 	boolean isDisabled() {
-		_navigator.isDisabled()
+		getInitializedNavigator().isDisabled()
 	}
 
 	@Override
 	boolean isDisplayed() {
-		_navigator.isDisplayed()
+		getInitializedNavigator().isDisplayed()
 	}
 
 	@Override
 	boolean is(String tag) {
-		_navigator.is(tag)
+		getInitializedNavigator().is(tag)
 	}
 
 	@Override
 	boolean hasClass(String className) {
-		_navigator.hasClass(className)
+		getInitializedNavigator().hasClass(className)
 	}
 
 	@Override
 	Navigator siblings(Map<String, Object> attributes = [:], String selector) {
-		_navigator.siblings(attributes, selector)
+		getInitializedNavigator().siblings(attributes, selector)
 	}
 
 	@Override
 	Navigator siblings(Map<String, Object> attributes) {
-		_navigator.siblings(attributes)
+		getInitializedNavigator().siblings(attributes)
 	}
 
 	@Override
 	Navigator siblings() {
-		_navigator.siblings()
+		getInitializedNavigator().siblings()
 	}
 
 	@Override
 	Navigator children(Map<String, Object> attributes = [:], String selector) {
-		_navigator.children(attributes, selector)
+		getInitializedNavigator().children(attributes, selector)
 	}
 
 	@Override
 	Navigator children(Map<String, Object> attributes) {
-		_navigator.children(attributes)
+		getInitializedNavigator().children(attributes)
 	}
 
 	@Override
 	Navigator children() {
-		_navigator.children()
+		getInitializedNavigator().children()
 	}
 
 	@Override
 	Navigator closest(Map<String, Object> attributes = [:], String selector) {
-		_navigator.closest(attributes, selector)
+		getInitializedNavigator().closest(attributes, selector)
 	}
 
 	@Override
 	Navigator closest(Map<String, Object> attributes) {
-		_navigator.closest(attributes)
+		getInitializedNavigator().closest(attributes)
 	}
 
 	@Override
 	Navigator parentsUntil(Map<String, Object> attributes = [:], String selector) {
-		_navigator.parentsUntil(attributes, selector)
+		getInitializedNavigator().parentsUntil(attributes, selector)
 	}
 
 	@Override
 	Navigator parentsUntil(Map<String, Object> attributes) {
-		_navigator.parentsUntil(attributes)
+		getInitializedNavigator().parentsUntil(attributes)
 	}
 
 	@Override
 	Navigator parents(Map<String, Object> attributes = [:], String selector) {
-		_navigator.parents(attributes, selector)
+		getInitializedNavigator().parents(attributes, selector)
 	}
 
 	@Override
 	Navigator parents(Map<String, Object> attributes) {
-		_navigator.parents(attributes)
+		getInitializedNavigator().parents(attributes)
 	}
 
 	@Override
 	Navigator parents() {
-		_navigator.parents()
+		getInitializedNavigator().parents()
 	}
 
 	@Override
 	Navigator parent(Map<String, Object> attributes = [:], String selector) {
-		_navigator.parent(attributes, selector)
+		getInitializedNavigator().parent(attributes, selector)
 	}
 
 	@Override
 	Navigator parent(Map<String, Object> attributes) {
-		_navigator.parent(attributes)
+		getInitializedNavigator().parent(attributes)
 	}
 
 	@Override
 	Navigator parent() {
-		_navigator.parent()
+		getInitializedNavigator().parent()
 	}
 
 	@Override
 	Navigator prevUntil(Map<String, Object> attributes = [:], String selector) {
-		_navigator.prevUntil(attributes, selector)
+		getInitializedNavigator().prevUntil(attributes, selector)
 	}
 
 	@Override
 	Navigator prevUntil(Map<String, Object> attributes) {
-		_navigator.prevUntil(attributes)
+		getInitializedNavigator().prevUntil(attributes)
 	}
 
 	@Override
 	Navigator prevAll(Map<String, Object> attributes = [:], String selector) {
-		_navigator.prevAll(attributes, selector)
+		getInitializedNavigator().prevAll(attributes, selector)
 	}
 
 	@Override
 	Navigator prevAll(Map<String, Object> attributes) {
-		_navigator.prevAll(attributes)
+		getInitializedNavigator().prevAll(attributes)
 	}
 
 	@Override
 	Navigator prevAll() {
-		_navigator.prevAll()
+		getInitializedNavigator().prevAll()
 	}
 
 	@Override
 	Navigator previous(Map<String, Object> attributes = [:], String selector) {
-		_navigator.previous(attributes, selector)
+		getInitializedNavigator().previous(attributes, selector)
 	}
 
 	@Override
 	Navigator previous(Map<String, Object> attributes) {
-		_navigator.previous(attributes)
+		getInitializedNavigator().previous(attributes)
 	}
 
 	@Override
 	Navigator previous() {
-		_navigator.previous()
+		getInitializedNavigator().previous()
 	}
 
 	@Override
 	Navigator nextUntil(Map<String, Object> attributes = [:], String selector) {
-		_navigator.nextUntil(attributes, selector)
+		getInitializedNavigator().nextUntil(attributes, selector)
 	}
 
 	@Override
 	Navigator nextUntil(Map<String, Object> attributes) {
-		_navigator.nextUntil(attributes)
+		getInitializedNavigator().nextUntil(attributes)
 	}
 
 	@Override
 	Navigator nextAll(Map<String, Object> attributes = [:], String selector) {
-		_navigator.nextAll(attributes, selector)
+		getInitializedNavigator().nextAll(attributes, selector)
 	}
 
 	@Override
 	Navigator nextAll(Map<String, Object> attributes) {
-		_navigator.nextAll(attributes)
+		getInitializedNavigator().nextAll(attributes)
 	}
 
 	@Override
 	Navigator nextAll() {
-		_navigator.nextAll()
+		getInitializedNavigator().nextAll()
 	}
 
 	@Override
 	Navigator next(Map<String, Object> attributes = [:], String selector) {
-		_navigator.next(attributes, selector)
+		getInitializedNavigator().next(attributes, selector)
 	}
 
 	@Override
 	Navigator next(Map<String, Object> attributes) {
-		_navigator.next(attributes)
+		getInitializedNavigator().next(attributes)
 	}
 
 	@Override
 	Navigator next() {
-		_navigator.next()
+		getInitializedNavigator().next()
 	}
 
 	@Override
 	Navigator plus(Navigator navigator) {
-		_navigator + navigator
+		getInitializedNavigator() + navigator
 	}
 
 	@Override
 	Navigator remove(int index) {
-		_navigator.remove(index)
+		getInitializedNavigator().remove(index)
 	}
 
 	@Override
 	Navigator add(Collection<WebElement> elements) {
-		_navigator.add(elements)
+		getInitializedNavigator().add(elements)
 	}
 
 	@Override
 	Navigator add(WebElement[] elements) {
-		_navigator.add(elements)
+		getInitializedNavigator().add(elements)
 	}
 
 	@Override
 	Navigator add(By bySelector) {
-		_navigator.add(bySelector)
+		getInitializedNavigator().add(bySelector)
 	}
 
 	@Override
 	Navigator add(String selector) {
-		_navigator.add(selector)
+		getInitializedNavigator().add(selector)
 	}
 
 	@Override
 	@SuppressWarnings("ExplicitCallToGetAtMethod")
 	Navigator getAt(Collection indexes) {
-		_navigator.getAt(indexes)
+		getInitializedNavigator().getAt(indexes)
 	}
 
 	@Override
 	Navigator getAt(Range range) {
-		_navigator[range]
+		getInitializedNavigator()[range]
 	}
 
 	@Override
 	Navigator getAt(int index) {
-		_navigator[index]
+		getInitializedNavigator()[index]
 	}
 
 	@Override
 	Navigator eq(int index) {
-		_navigator.eq(index)
+		getInitializedNavigator().eq(index)
 	}
 
 	@Override
 	Navigator not(Map<String, Object> predicates = [:], String selector) {
-		_navigator.not(predicates, selector)
+		getInitializedNavigator().not(predicates, selector)
 	}
 
 	@Override
 	Navigator not(Map<String, Object> predicates) {
-		_navigator.not(predicates)
+		getInitializedNavigator().not(predicates)
 	}
 
 	@Override
 	Navigator filter(Map<String, Object> predicates = [:], String selector) {
-		_navigator.filter(predicates, selector)
+		getInitializedNavigator().filter(predicates, selector)
 	}
 
 	@Override
 	Navigator filter(Map<String, Object> predicates) {
-		_navigator.filter(predicates)
+		getInitializedNavigator().filter(predicates)
 	}
 
 	@Override
 	Navigator has(Map<String, Object> predicates = [:], By bySelector) {
-		_navigator.has(predicates, bySelector)
+		getInitializedNavigator().has(predicates, bySelector)
 	}
 
 	@Override
 	Navigator has(Map<String, Object> predicates) {
-		_navigator.has(predicates)
+		getInitializedNavigator().has(predicates)
 	}
 
 	@Override
 	Navigator has(Map<String, Object> predicates = [:], String selector) {
-		_navigator.has(predicates, selector)
+		getInitializedNavigator().has(predicates, selector)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates) {
-		_navigator.find(predicates)
+		getInitializedNavigator().find(predicates)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, int index) {
-		_navigator.find(predicates, index)
+		getInitializedNavigator().find(predicates, index)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, Range<Integer> range) {
-		_navigator.find(predicates, range)
+		getInitializedNavigator().find(predicates, range)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, String selector) {
-		_navigator.find(predicates, selector)
+		getInitializedNavigator().find(predicates, selector)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, String selector, int index) {
-		_navigator.find(predicates, selector, index)
+		getInitializedNavigator().find(predicates, selector, index)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
-		_navigator.find(predicates, selector, range)
+		getInitializedNavigator().find(predicates, selector, range)
 	}
 
 	@Override
 	Navigator find(String selector) {
-		_navigator.find(selector)
+		getInitializedNavigator().find(selector)
 	}
 
 	@Override
 	Navigator find(String selector, int index) {
-		_navigator.find(selector, index)
+		getInitializedNavigator().find(selector, index)
 	}
 
 	@Override
 	Navigator find(String selector, Range<Integer> range) {
-		_navigator.find(selector, range)
+		getInitializedNavigator().find(selector, range)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, By bySelector) {
-		_navigator.find(predicates, bySelector)
+		getInitializedNavigator().find(predicates, bySelector)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, By bySelector, int index) {
-		_navigator.find(predicates, bySelector, index)
+		getInitializedNavigator().find(predicates, bySelector, index)
 	}
 
 	@Override
 	Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-		_navigator.find(predicates, bySelector, range)
+		getInitializedNavigator().find(predicates, bySelector, range)
 	}
 
 	@Override
 	Navigator find(By bySelector) {
-		_navigator.find(bySelector)
+		getInitializedNavigator().find(bySelector)
 	}
 
 	@Override
 	Navigator find(By bySelector, int index) {
-		_navigator.find(bySelector, index)
+		getInitializedNavigator().find(bySelector, index)
 	}
 
 	@Override
 	Navigator find(By bySelector, Range<Integer> range) {
-		_navigator.find(bySelector, range)
+		getInitializedNavigator().find(bySelector, range)
+	}
+
+	GebException uninitializedException() {
+		def message = "Instance of module ${getClass()} has not been initialized. Please pass it to Navigable.module() or Navigator.module() before using it."
+		throw new ModuleInstanceNotInitializedException(message)
 	}
 }

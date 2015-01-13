@@ -15,40 +15,40 @@
  */
 package geb.frame
 
+import geb.Initializable
 import geb.Page
 import geb.content.SimplePageContent
-import geb.error.PageInstanceNotInitializedException
 import geb.navigator.Navigator
 
 class UninitializedFrameSupport implements FrameSupport {
-	private Page page
+	private final Initializable initializable
 
-	UninitializedFrameSupport(Page page) {
-		this.page = page
+	UninitializedFrameSupport(Initializable initializable) {
+		this.initializable = initializable
 	}
 
 	@Override
 	def withFrame(Object frame, Class<? extends Page> pageClass = null, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def withFrame(Object frame, Page page, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def withFrame(Navigator frame, Class<? extends Page> pageClass = null, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def withFrame(Navigator frame, Page pageClass, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def withFrame(SimplePageContent frame, Closure block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 }

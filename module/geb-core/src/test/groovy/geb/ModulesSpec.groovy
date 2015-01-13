@@ -15,6 +15,7 @@
 package geb
 
 import geb.error.InvalidPageContent
+import geb.error.ModuleInstanceNotInitializedException
 import geb.test.GebSpecWithServer
 import spock.lang.Issue
 import spock.lang.Unroll
@@ -157,6 +158,28 @@ class ModulesSpec extends GebSpecWithServer {
 
 		then:
 		baseUsingMatcher
+	}
+
+	@Unroll
+	@SuppressWarnings(["SpaceAfterClosingBrace", "SpaceAfterOpeningBrace", "SpaceBeforeClosingBrace", "SpaceBeforeOpeningBrace"])
+	def "exception should be thrown when support class #className methods are used on an uninitialized module instance"() {
+		def moduleInstance = new ModulesSpecDivModuleNoLocator()
+
+		when:
+		moduleInstance."$methodName"(*args)
+
+		then:
+		Throwable e = thrown(ModuleInstanceNotInitializedException)
+		e.message == "Instance of module class geb.ModulesSpecDivModuleNoLocator has not been initialized. Please pass it to Navigable.module() or Navigator.module() before using it."
+
+		where:
+		className                | methodName    | args
+		"PageContentSupport"     | "someContent" | []
+		"Navigator"              | "find"        | ["div"]
+		"DownloadSupport"        | "download"    | [""]
+		"WaitingSupport"         | "waitFor"     | [{}]
+		"FrameSupport"           | "withFrame"   | ["frame-id", {}]
+		"AlertAndConfirmSupport" | "withAlert"   | [{}]
 	}
 }
 

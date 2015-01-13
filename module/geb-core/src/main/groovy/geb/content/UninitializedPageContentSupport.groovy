@@ -15,29 +15,28 @@
  */
 package geb.content
 
-import geb.Page
-import geb.error.PageInstanceNotInitializedException
+import geb.Initializable
 import geb.navigator.Navigator
 
 class UninitializedPageContentSupport extends PageContentSupport {
-	private Page page
+	private final Initializable initializable
 
-	UninitializedPageContentSupport(Page page) {
-		this.page = page
+	UninitializedPageContentSupport(Initializable initializable) {
+		this.initializable = initializable
 	}
 
 	@Override
 	def getContent(String name, Object[] args) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	Navigator getNavigator() {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	PageContentContainer getOwner() {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 }

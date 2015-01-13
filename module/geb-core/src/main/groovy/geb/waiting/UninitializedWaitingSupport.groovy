@@ -15,33 +15,32 @@
  */
 package geb.waiting
 
-import geb.Page
-import geb.error.PageInstanceNotInitializedException
+import geb.Initializable
 
 class UninitializedWaitingSupport implements WaitingSupport {
-	private Page page
+	private final Initializable initializable
 
-	UninitializedWaitingSupport(Page page) {
-		this.page = page
+	UninitializedWaitingSupport(Initializable initializable) {
+		this.initializable = initializable
 	}
 
 	@Override
 	def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def <T> T waitFor(Map params = [:], Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 }

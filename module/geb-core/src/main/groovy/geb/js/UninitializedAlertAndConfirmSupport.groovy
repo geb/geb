@@ -15,38 +15,37 @@
  */
 package geb.js
 
-import geb.Page
-import geb.error.PageInstanceNotInitializedException
+import geb.Initializable
 
 class UninitializedAlertAndConfirmSupport implements AlertAndConfirmSupport {
-	private Page page
+	private final Initializable initializable
 
-	UninitializedAlertAndConfirmSupport(Page page) {
-		this.page = page
+	UninitializedAlertAndConfirmSupport(Initializable initializable) {
+		this.initializable = initializable
 	}
 
 	@Override
 	def withAlert(Map params = [:], Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	void withNoAlert(Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def withConfirm(boolean ok, Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 
 	@Override
 	void withNoConfirm(Closure actions) {
-		throw new PageInstanceNotInitializedException(page)
+		throw initializable.uninitializedException()
 	}
 }
