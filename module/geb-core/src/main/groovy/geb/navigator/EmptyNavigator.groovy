@@ -16,7 +16,6 @@
 package geb.navigator
 
 import geb.Browser
-import geb.Module
 import geb.Page
 import geb.waiting.Wait
 import org.openqa.selenium.By
@@ -270,11 +269,6 @@ class EmptyNavigator extends AbstractNavigator {
 
 	@Override
 	String toString() { "[]" }
-
-	@Override
-	<T extends Module> T module(Class<T> moduleClass) {
-		throw new UnsupportedOperationException("not supported on empty navigator objects")
-	}
 
 	def methodMissing(String name, arguments) {
 		if (arguments) {

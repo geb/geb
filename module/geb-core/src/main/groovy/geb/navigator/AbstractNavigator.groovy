@@ -16,7 +16,10 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Module
+import geb.content.ModuleBaseCalculator
 import geb.js.JQueryAdapter
+import geb.navigator.factory.NavigatorFactory
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
@@ -310,6 +313,22 @@ abstract class AbstractNavigator implements Navigator {
 
 	String css(String propertyName) {
 		firstElement()?.getCssValue(propertyName)
+	}
+
+	@SuppressWarnings("UnnecessaryPublicModifier")
+	public <T extends Module> T module(Class<T> moduleClass) {
+		if (!Module.isAssignableFrom(moduleClass)) {
+			throw new IllegalArgumentException("$moduleClass is not a subclass of ${Module}")
+		}
+
+		def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
+
+		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory)
+
+		def module = moduleClass.newInstance()
+		module.init(browser, moduleBaseNavigatorFactory)
+
+		module
 	}
 
 	/**

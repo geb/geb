@@ -16,7 +16,6 @@
 package geb.navigator
 
 import geb.Browser
-import geb.Module
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -64,14 +63,5 @@ class EmptyNavigatorSpec extends Specification {
 		'editable' | 'readonly'
 		'enabled'  | 'disabled'
 		'disabled' | 'disabled'
-	}
-
-	def 'does not support creating a module backed by an empty navigator'() {
-		when:
-		navigator.module(Module)
-
-		then:
-		UnsupportedOperationException e = thrown()
-		e.message == "not supported on empty navigator objects"
 	}
 }

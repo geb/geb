@@ -40,6 +40,7 @@ class ModulesSpec extends GebSpecWithServer {
 		to ModulesSpecPage
 		then:
 		divNoBase("a").p.text() == "a"
+		divNoBaseUsingNavigatorMethod("a").p.text() == "a"
 		divWithBase("a").p.text() == "a"
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
@@ -75,10 +76,16 @@ class ModulesSpec extends GebSpecWithServer {
 	def "can coerce module to boolean"() {
 		when:
 		to ModulesSpecPage
+
 		then:
 		optional("a")
 		!optional("e")
 		!optional("e").p
+
+		and:
+		optionalUsingNavigatorMethod("a")
+		!optionalUsingNavigatorMethod("e")
+		!optionalUsingNavigatorMethod("e").p
 	}
 
 	def 'content created with moduleList contains a list of expected Module instances and of expected size'() {
@@ -188,6 +195,7 @@ class ModulesSpecPage extends Page {
 	static content = {
 		// A module that doesn't define a locator, given one at construction
 		divNoBase { module ModulesSpecDivModuleNoLocator, $("div.$it") }
+		divNoBaseUsingNavigatorMethod { $("div.$it").module(ModulesSpecDivModuleNoLocator) }
 
 		// A module that defines a locator, given a param at construction
 		divWithBase { module ModulesSpecDivModuleWithLocator, className: it }
@@ -209,6 +217,7 @@ class ModulesSpecPage extends Page {
 		instanceMethod { module InstanceMethodModule }
 
 		optional(required: false) { module OptionalModule, $("div.$it") }
+		optionalUsingNavigatorMethod(required: false) { $("div.$it").module(OptionalModule) }
 
 		// A list of modules, with the base of each module being set to the nth given navigator
 		repeating { index -> moduleList ModulesSpecDivModuleNoLocator, $('div'), index }

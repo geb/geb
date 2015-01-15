@@ -546,21 +546,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 		new NonEmptyNavigator(browser, contextElements.unique(false))
 	}
 
-	public <T extends Module> T module(Class<T> moduleClass) {
-		if (!Module.isAssignableFrom(moduleClass)) {
-			throw new IllegalArgumentException("$moduleClass is not a subclass of ${Module}")
-		}
-
-		def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
-
-		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory)
-
-		def module = moduleClass.newInstance()
-		module.init(browser, moduleBaseNavigatorFactory)
-
-		module
-	}
-
 	@Override
 	String toString() {
 		contextElements*.toString()
