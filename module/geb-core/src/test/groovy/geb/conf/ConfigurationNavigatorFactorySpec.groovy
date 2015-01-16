@@ -50,6 +50,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 		raw.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
 			new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
 		}
+		go()
 
 		then:
 		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
@@ -65,6 +66,9 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 		}
 
 		raw.innerNavigatorFactory = impl
+
+		and:
+		go()
 
 		then:
 		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
@@ -110,6 +114,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
 				new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
 			}
 		}
+		go()
 
 		then:
 		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
