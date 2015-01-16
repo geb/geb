@@ -68,6 +68,8 @@ This page lists the high level changes between versions of Geb.
 * Support for using page instances together with frame switching methods. \[[GEB-354](http://jira.codehaus.org/browse/GEB-354)\]
 * Support for using page instances with `Navigator.click()` methods. \[[GEB-355](http://jira.codehaus.org/browse/GEB-355)\]
 * Support for using page instances and lists of page instances as `page` option value of content templates. \[[GEB-356](http://jira.codehaus.org/browse/GEB-356)\]
+* New `Navigator.module(Class<? extends Module>)` and `Navigable.module(Class<? extends Module>)`. \[[GEB-312](http://jira.codehaus.org/browse/GEB-312)\]
+* New `Navigable.module(Module)` and `Navigable.module(Module)`. \[[GEB-311](http://jira.codehaus.org/browse/GEB-311)\]
 
 #### Fixes
 
@@ -77,6 +79,11 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking changes
 * `Page.toString()` now returns full page class name instead of its simple name.
+
+#### Deprecations
+* `module(Class<? extends Module>, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class<? extends Module>)` and will be removed in a future version of Geb.
+* `module(Class<? extends Module>, Map args)` available in content DLS has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
+* `module(Class<? extends Module>, Navigator base, Map args)` available in content DLS has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
 
 ### 0.10.0
 

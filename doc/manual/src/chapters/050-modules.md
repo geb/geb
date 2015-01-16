@@ -34,11 +34,10 @@ Modules can also be parameterised…
         }
     }
 
-Where the parameters are set using the `module` method…
-
+Where the parameters are passed to constructor of the module…
     class ExamplePage extends Page {
         static content = {
-            theModule { name -> module ExampleModule, buttonName: name }
+            theModule { name -> module(new ExampleModule(buttonName: name) }
         }
     }
     
@@ -75,26 +74,20 @@ Modules can also include other modules…
 
 Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition. There are two ways that a modules base/context can be defined.
 
-It can be defined at inclusion time…
-
-    static content = {
-        form { module FormModule, $("form") }
-    }
-
-You can base a module on a `Navigator` instance as well…
+Module can be based on a `Navigator` instance…
 
     static content = {
         form { $("form").module(FormModule) }
     }
 
-And you can do it "on the fly" (outside of a content definition)…
+It can also be done outside of a content definition…
 
     Browser.drive {
         to FormPage
         $("form").module(ExampleModule)
     }
 
-We can define a `Navigator` context when including the module using the above syntax. This now means that _all_ `$()` function calls that occur within the module are against the given context (in this case, the `form` element).
+We can define a `Navigator` context when including the module using the above syntax. This now means that calls to _all_ `Navigator` (e.g. `$()`) method calls that occur within the module are against the given context (in this case, the `form` element).
 
 However, module classes can also define their own base…
 
@@ -125,8 +118,8 @@ And the following content definitions…
     
     class ExamplePage extends Page {
         static content = {
-            formA { module FormModule, $("div.a") }
-            formB { module FormModule, $("div.b") }
+            formA { $("div.a").module(FormModule) }
+            formB { $("div.b").module(FormModule)  }
         }
     }
     
@@ -137,12 +130,12 @@ And the following content definitions…
         }
     }
 
-When working with a browser at a `ExamplePage` page…
+When working with a browser located at `ExamplePage` page…
 
     assert formA.thingValue == "a"
     assert formB.thingValue == "b"
 
-If the module declares a base, it is always calculated _relative_ to the base given by the including statement. If the including statement does not specify a base, the module's base is calculated relative to the including page's base.
+If the module declares a base, it is always calculated _relative_ to the `Navigator` used in the initialization statement. If the initialization statement does not use a `Navigator`, the module's base is calculated relative to the including page's base.
 
 ## Reusing modules across pages
 
