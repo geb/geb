@@ -42,11 +42,14 @@ class ModulesSpec extends GebSpecWithServer {
 		divNoBase("a").p.text() == "a"
 		divNoBaseUsingNavigatorMethod("a").p.text() == "a"
 		divWithBase("a").p.text() == "a"
+		divWithBaseUsingInstance("a").p.text() == "a"
 		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
-		divWithBaseAndSpecificBaseAndParam.p.text() == "d"
+		divWithBaseAndSpecificBaseAndParamUsingInstanceAndNavigatorMethod.p.text() == "d"
 		divA.p.text() == "a"
 		divC.innerDiv.p.text() == "d"
+		divC.innerDivUsingInstance.p.text() == "d"
 		divCWithRelativeInner.innerDiv.p.text() == "d"
+		divCWithRelativeInner.innerDivUsingInstance.p.text() == "d"
 	}
 
 	def "call in mixed in method from TextMatchingSupport"() {
@@ -199,9 +202,11 @@ class ModulesSpecPage extends Page {
 
 		// A module that defines a locator, given a param at construction
 		divWithBase { module ModulesSpecDivModuleWithLocator, className: it }
+		divWithBaseUsingInstance { module(new ModulesSpecDivModuleWithLocator(className: it)) }
 
 		// A module that defines a location, and uses a param given at construction in the locator
 		divWithBaseAndSpecificBaseAndParam { module ModulesSpecDivModuleWithLocator, $("div.c"), className: "d" }
+		divWithBaseAndSpecificBaseAndParamUsingInstanceAndNavigatorMethod { $("div.c").module(new ModulesSpecDivModuleWithLocator(className: "d")) }
 
 		// A module that defines a location, and is contructed with no base or params
 		divA { module ModulesSpecSpecificDivModule }
@@ -254,6 +259,7 @@ class ModulesSpecDivModuleWithNestedDiv extends Module {
 	static base = { $("div.c") }
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, className: "d" }
+		innerDivUsingInstance { module(new ModulesSpecDivModuleWithLocator(className: "d")) }
 	}
 }
 
@@ -261,6 +267,7 @@ class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
 	static base = { $("div.c") }
 	static content = {
 		innerDiv { module ModulesSpecDivModuleWithLocator, $(), className: "d" }
+		innerDivUsingInstance { $().module(new ModulesSpecDivModuleWithLocator(className: "d")) }
 	}
 }
 

@@ -14,13 +14,15 @@
  */
 package geb.content
 
+import geb.Module
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 
 class ModuleBaseCalculator {
 
-	static NavigatorFactory calculate(Class moduleClass, NavigatorFactory navigatorFactory, Map params = [:]) {
+	static NavigatorFactory calculate(Module module, NavigatorFactory navigatorFactory, Map params = [:]) {
+		def moduleClass = module.getClass()
 		def moduleBaseDefinition = moduleClass.base
 		if (!moduleBaseDefinition) {
 			navigatorFactory
@@ -28,7 +30,7 @@ class ModuleBaseCalculator {
 			// Clone it because the same closure may be used
 			// via through a subclass and have a different base
 			def moduleBaseDefinitionClone = moduleBaseDefinition.clone()
-			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(navigatorFactory, params)
+			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(module, navigatorFactory, params)
 			moduleBaseDefinitionClone.resolveStrategy = Closure.DELEGATE_FIRST
 			def moduleBase = moduleBaseDefinitionClone()
 

@@ -51,6 +51,12 @@ class PageContentTemplateFactoryDelegate {
 		navigableSupport.module(moduleClass)
 	}
 
+	@Override
+	//necessary because @Delegate generates wrong method signature for this method
+	<T extends Module> T module(T module) {
+		navigableSupport.module(module)
+	}
+
 	def module(Map params, Class<? extends Module> moduleClass) {
 		module(params, moduleClass, null)
 	}
@@ -74,9 +80,10 @@ class PageContentTemplateFactoryDelegate {
 
 		def baseNavigatorFactory = base != null ? template.navigatorFactory.relativeTo(base) : template.navigatorFactory
 
-		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory, moduleParams)
-
 		def module = moduleClass.newInstance()
+
+		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(module, baseNavigatorFactory, moduleParams)
+
 		module.init(template.browser, moduleBaseNavigatorFactory)
 		moduleParams.each { name, value ->
 			// TODO - catch MPE and provide better error message

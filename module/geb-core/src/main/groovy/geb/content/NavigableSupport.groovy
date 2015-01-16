@@ -201,4 +201,9 @@ class NavigableSupport implements Navigable {
 	<T extends Module> T module(Class<T> moduleClass) {
 		base.module(moduleClass)
 	}
+
+	@Override
+	<T extends Module> T module(T module) {
+		base.module(module)
+	}
 }

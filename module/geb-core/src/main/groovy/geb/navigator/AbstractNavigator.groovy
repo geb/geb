@@ -321,17 +321,20 @@ abstract class AbstractNavigator implements Navigator {
 			throw new IllegalArgumentException("$moduleClass is not a subclass of ${Module}")
 		}
 
+		module(moduleClass.newInstance())
+	}
+
+	@SuppressWarnings("UnnecessaryPublicModifier")
+	public <T extends Module> T module(T module) {
 		def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
 
-		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(moduleClass, baseNavigatorFactory)
+		NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(module, baseNavigatorFactory)
 
-		def module = moduleClass.newInstance()
 		module.init(browser, moduleBaseNavigatorFactory)
 
 		module
 	}
-
-	/**
+/**
 	 * Iterator for looping over the context elements of a Navigator instance.
 	 */
 	private class NavigatorIterator implements Iterator<Navigator> {

@@ -185,6 +185,11 @@ class Module implements Navigator, PageContentContainer, Initializable {
 	}
 
 	@Override
+	<T extends Module> T module(T module) {
+		getInitializedNavigator().module(module)
+	}
+
+	@Override
 	String css(String propertyName) {
 		getInitializedNavigator().css(propertyName)
 	}

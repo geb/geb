@@ -220,7 +220,12 @@ class UninitializedNavigableSupport implements Navigable {
 	}
 
 	@Override
-	def <T extends Module> T module(Class<T> moduleClass) {
+	<T extends Module> T module(Class<T> moduleClass) {
+		throw initializable.uninitializedException()
+	}
+
+	@Override
+	<T extends Module> T module(T module) {
 		throw initializable.uninitializedException()
 	}
 }

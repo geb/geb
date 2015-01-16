@@ -883,4 +883,12 @@ interface Navigator extends Iterable<Navigator>, Locator {
 	 * @return an initialized instance of the module class passed as the argument
 	 */
 	public <T extends Module> T module(Class<T> moduleClass)
+
+	/**
+	 * Initialize a module instance using {@code this} as its base.
+	 *
+	 * @param module an instance of a class extending {@link geb.Module}
+	 * @return an initialized instance of passed as the argument
+	 */
+	public <T extends Module> T module(T module)
 }

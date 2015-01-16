@@ -23,25 +23,27 @@ import org.openqa.selenium.WebElement
 
 class ModuleBaseDefinitionDelegate {
 
-	private params
+	private final Map params
 
+	private final Module module
 	@Delegate
-	private NavigableSupport navigableSupport
+	private final NavigableSupport navigableSupport
 
 	@Delegate
 	@SuppressWarnings("UnusedPrivateField")
-	private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
-	ModuleBaseDefinitionDelegate(NavigatorFactory navigatorFactory, Map params) {
+	ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, Map params) {
 		this.params = params
 		navigableSupport = new NavigableSupport(navigatorFactory)
+		this.module = module
 	}
 
 	def propertyMissing(String name) {
 		if (params.containsKey(name)) {
 			params[name]
 		} else {
-			throw new MissingPropertyException(name, ModuleBaseDefinitionDelegate)
+			module.getProperty(name)
 		}
 	}
 
@@ -49,6 +51,12 @@ class ModuleBaseDefinitionDelegate {
 	//necessary because @Delegate generates wrong method signature for this method
 	<T extends Module> T module(Class<T> moduleClass) {
 		navigableSupport.module(moduleClass)
+	}
+
+	@Override
+	//necessary because @Delegate generates wrong method signature for this method
+	<T extends Module> T module(T module) {
+		navigableSupport.module(module)
 	}
 
 	Navigator $() {

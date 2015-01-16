@@ -216,4 +216,10 @@ abstract class TemplateDerivedPageContent implements Navigator {
 	<T extends Module> T module(Class<T> moduleClass) {
 		_navigator.module(moduleClass)
 	}
+
+	@Override
+	//necessary because @Delegate generates wrong method signature for this method
+	<T extends Module> T module(T module) {
+		_navigator.module(module)
+	}
 }

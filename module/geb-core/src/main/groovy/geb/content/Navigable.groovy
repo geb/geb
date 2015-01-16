@@ -44,4 +44,12 @@ interface Navigable extends Locator {
 	 * @return an initialized instance of the module class passed as the argument
 	 */
 	public <T extends Module> T module(Class<T> moduleClass)
+
+	/**
+	 * Initialize a module instance.
+	 *
+	 * @param module an instance of a class extending {@link geb.Module}
+	 * @return the initialized instance passed as the argument
+	 */
+	public <T extends Module> T module(T module)
 }

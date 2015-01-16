@@ -463,6 +463,11 @@ class Page implements Navigable, PageContentContainer, Initializable {
 		navigableSupport.module(moduleClass)
 	}
 
+	@Override
+	<T extends Module> T module(T module) {
+		navigableSupport.module(module)
+	}
+
 	GebException uninitializedException() {
 		def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
 		new PageInstanceNotInitializedException(message)
