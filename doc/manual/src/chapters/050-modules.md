@@ -137,6 +137,43 @@ When working with a browser located at `ExamplePage` page…
 
 If the module declares a base, it is always calculated _relative_ to the `Navigator` used in the initialization statement. If the initialization statement does not use a `Navigator`, the module's base is calculated relative to the including page's base.
 
+## Module is-a Navigator
+
+Modules always have a base navigator associated with them (if you don't specify a base for a module at all then it will be assigned the root element of the page as the base) so it is natural to think of them as navigators. Given that `Module` implements `Navigator` and considering the following HTML…
+
+	<form method="post">
+		...
+	</form>
+
+These example calls are possible…
+
+	class FormModule extends Module {
+		static base = { $("form") }
+	}
+	
+	class FormPage extends Page {
+		static content = {
+			form { module FormModule }
+		}
+	}
+	
+	to FormPage
+	assert form.getAttribute("method") == "post" 
+	assert form.displayed
+
+It's also possible to use `Navigator`'s methods inside of a module implementation…
+
+	class FormModule extends Module {
+		static base = { $("form") }
+		
+		boolean getHasWhiteBackground() {
+			css("background-color") == "rgba(255, 255, 255, 1)"
+		}
+	}
+	
+	to FormPage
+	assert form.hasWhiteBackground
+
 ## Reusing modules across pages
 
 As previously stated, modules can be used to model page fragments that are reused across multiple pages. For example, many different types of pages in your application may show information about the user's shopping cart. You could handle this with modules…
