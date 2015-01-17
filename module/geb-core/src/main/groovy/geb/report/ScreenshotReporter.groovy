@@ -34,7 +34,7 @@ class ScreenshotReporter extends ReporterSupport {
 			def decoded
 			try {
 				def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
-				decoded = Base64.decode(rawBase64)
+				decoded = Base64.decode(rawBase64 as String)
 
 				// WebDriver has a bug where sometimes the screenshot has been encoded twice
 				if (!PngUtils.isPng(decoded)) {
