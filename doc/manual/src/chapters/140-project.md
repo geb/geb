@@ -153,6 +153,7 @@ This page lists the high level changes between versions of Geb.
 * `MissingMethodException` is now thrown when using shortcut for obtaining a navigator based on a control name and the returned navigator is empty. \[[GEB-239](http://jira.codehaus.org/browse/GEB-239)\]
 * When using SauceLabs integration, the `allSauceTests` task was renamed to`allSauceLabsTests`
 * When using SauceLabs integration, the `geb.sauce.browser` system property was renamed to `geb.saucelabs.browser`
+* `Module` now implements `Navigator` instead of `Navigable` so `Navigator`'s methods can be called on it without having to first call `$()` to get the module's base `Navigator`.
 
 #### Project Related Changes
 
