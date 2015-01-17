@@ -84,6 +84,7 @@ This page lists the high level changes between versions of Geb.
 * `module(Class<? extends Module>, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class<? extends Module>)` and will be removed in a future version of Geb.
 * `module(Class<? extends Module>, Map args)` available in content DLS has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
 * `module(Class<? extends Module>, Navigator base, Map args)` available in content DLS has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
+* all variants of `moduleList()` method available in content DLS have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future version of Geb, see [chapter on using modules for repeating content](modules.html#using_modules_for_repeating_content_on_a_page) for examples \[[GEB-362](http://jira.codehaus.org/browse/GEB-362)\]
 
 ### 0.10.0
 

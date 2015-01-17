@@ -91,19 +91,28 @@ class ModulesSpec extends GebSpecWithServer {
 		!optionalUsingNavigatorMethod("e").p
 	}
 
-	def 'content created with moduleList contains a list of expected Module instances and of expected size'() {
+	@Unroll
+	def 'content created with #scenario contains a list of expected Module instances and of expected size'() {
 		when:
 		to ModulesSpecPage
 
 		then:
-		repeating.size() == 5
-		repeating.every { it.class == ModulesSpecDivModuleNoLocator }
-		repeatingWithParam.size() == 5
-		repeatingWithParam.every { it.class == ModulesSpecDivModuleWithLocator }
+		page[repeating].size() == 5
+		page[repeating].every { it.class == ModulesSpecDivModuleNoLocator }
+		page[repeatingWithParam].size() == 5
+		page[repeatingWithParam].every { it.class == ModulesSpecDivModuleWithLocator }
+
+		where:
+		usingSpread << [true, false]
+
+		repeating = usingSpread ? 'repeatingUsingSpread' : 'repeating'
+		repeatingWithParam = usingSpread ? 'repeatingWithParamUsingCollect' : 'repeatingWithParam'
+
+		scenario = usingSpread ? "spread operator" : "module list"
 	}
 
 	@Unroll
-	def 'content created with moduleList contains consecutive modules'() {
+	def 'content created with module list contains consecutive modules'() {
 		when:
 		to ModulesSpecPage
 
@@ -119,12 +128,30 @@ class ModulesSpec extends GebSpecWithServer {
 		3     | 'd'           | false
 	}
 
+	@Unroll
+	def 'content created with spread operator contains consecutive modules'() {
+		when:
+		to ModulesSpecPage
+
+		then:
+		repeatingUsingSpread[index].p.text() == repeatingText
+		repeatingWithParamUsingCollect[index] as Boolean == repeatingWithParamAvailable
+
+		where:
+		index | repeatingText | repeatingWithParamAvailable
+		0     | 'a'           | false
+		1     | 'a'           | false
+		2     | 'd'           | true
+		3     | 'd'           | false
+	}
+
 	def 'moduleList also supports ranges'() {
 		when:
 		to ModulesSpecPage
 
 		then:
 		repeating(1..2)*.p*.text() == ['a', 'd']
+		repeatingUsingSpread[1..2]*.p*.text() == ['a', 'd']
 	}
 
 	@Unroll
@@ -194,6 +221,7 @@ class ModulesSpec extends GebSpecWithServer {
 	}
 }
 
+@SuppressWarnings("UnnecessaryCollectCall")
 class ModulesSpecPage extends Page {
 	static content = {
 		// A module that doesn't define a locator, given one at construction
@@ -226,8 +254,12 @@ class ModulesSpecPage extends Page {
 
 		// A list of modules, with the base of each module being set to the nth given navigator
 		repeating { index -> moduleList ModulesSpecDivModuleNoLocator, $('div'), index }
+		repeatingUsingSpread { $('div')*.module(ModulesSpecDivModuleNoLocator) }
 		repeatingWithParam(required: false) { index ->
 			moduleList ModulesSpecDivModuleWithLocator, $('div'), index, className: 'd'
+		}
+		repeatingWithParamUsingCollect(required: false) {
+			$('div').collect { it.module(new ModulesSpecDivModuleWithLocator(className: 'd')) }
 		}
 
 		baseUsingMatcher { module ModulesSpecBaseUsingTextMatcher }

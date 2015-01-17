@@ -98,10 +98,10 @@ class SiteSmokeSpec extends GebSpec {
 
 		then:
 		at ContentPage
-		menuItems(0).name == 'Manual'
-		menuItems(0).links
-		menuItems(1).name == 'API'
-		menuItems(1).links
+		menuItems[0].name == 'Manual'
+		menuItems[0].links
+		menuItems[1].name == 'API'
+		menuItems[1].links
 	}
 
 	@Unroll

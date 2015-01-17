@@ -165,7 +165,7 @@ Modules work well for this.
 
 ## Using modules for repeating content on a page
 
-Other than content that is repeated on different pages (like the shopping cart mentioned above), pages also have content that is repeated on the page itself. On a checkout page, the contents of the shopping cart could be summarized with the product name, the quantity and price for each product contained. For this kind of page, a list of modules can be collected using the moduleList function.
+Other than content that is repeated on different pages (like the shopping cart mentioned above), pages also have content that is repeated on the page itself. On a checkout page, the contents of the shopping cart could be summarized with the product name, the quantity and price for each product contained. Thanks to `Navigator` implementing `Iterable<Navigator>` a list of modules can be collected using Groovy's `collect()`the `Navigator.module()` methods.
 
 Consider the following HTML for our cart contents:
 
@@ -199,36 +199,27 @@ And define a list of CartRows in our Page:
 
     class CheckoutPage extends Page {
         static content = {
-            cartItems { moduleList CartRow, $("table tr").tail() } // tailing to skip the header row
+            cartItems { $("table tr").tail().collect { it.module(CartRow) }  } // tailing to skip the header row
         }
     }
 
-Because the return value of cartItems is a list of CartRow instances, we can use any of the usual collection methods:
+> It's possible to make the creation of a list of modules from a `Navigator` even more concise by using the spread-dot operator (i.e. `$("table tr").tail()*.module(CartRow)`). Be careful though because it won't do what you'd expect it to do if you use this technique together with the `module()` method that takes module instance - instead of creating multiple module instances like when spreading a `module()` call that takes a class it will take the single instance passed to it and initialize it multiple times returning a list which will contain the same module instance multiple times!
+
+Because the return value of `cartItems` is a list of CartRow instances, we can use any of the usual collection methods:
 
     assert cartItems.every { it.price > 0.0 }
 
-We can also access the cart items like this:
+We can also access the cart items using subscript operator together with an index or a range of indexes:
 
     assert cartItems[0].productName == "The Book Of Geb"
+    assert cartItems[1..2]*.productName == ["Geb Single-User License", "Geb Multi-User License"]
 
-Unfortunately, this has a performance penalty of creating all modules in the list. You can get around it and add support for ranges by changing your content definition to:
-
-	class CheckoutPage extends Page {
-		static content = {
-			cartItems { index -> moduleList CartRow, $("table tr").tail(), index }
-		}
-	}
-
-Now all of the following will pass and is more efficient:
-
-	assert cartItems.every { it.price > 0.0 }
-	assert cartItems(0).productName == "The Book Of Geb"
-	assert cartItems(1..2)*.productName == ["Geb Single-User License", "Geb Multi-User License"]
-
-Keep in mind that you can also pass module parameters the same way as you would with the `module()` method:
+Keep in mind that you can also use parametrized module instances to create lists of modules for repeating content:
 
 	static content = {
-		myContent { index -> moduleList MyModule, $(".myModuleClass"), index, myParam: 'param value' }
+		myContent { 
+			$(".myModuleClass").collect { it.module(new MyModule(myParam: 'param value')) } 
+		}
 	}
 
 ## The Content DSL
