@@ -1,0 +1,71 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package geb.module
+
+import geb.error.InvalidModuleBaseException
+import geb.test.GebSpecWithServer
+import spock.lang.Unroll
+
+class FormElementBaseSpec extends GebSpecWithServer {
+
+	@Unroll
+	def "can base the module on '#tag'"() {
+		given:
+		html {
+			button()
+			input()
+			select {
+				option()
+			}
+			textarea()
+		}
+
+		when:
+		$(tag).module(FormElement)
+
+		then:
+		noExceptionThrown()
+
+		where:
+		tag << ['button', 'input', 'option', 'select', 'textarea']
+	}
+
+	def "can base the module on an empty navigator"() {
+		given:
+		html {
+		}
+
+		when:
+		$("div").module(FormElement)
+
+		then:
+		noExceptionThrown()
+	}
+
+	def "creating the module for anything other than button, input, option, select or textarea results in an exception"() {
+		given:
+		html {
+			div("div")
+		}
+
+		when:
+		$("div").module(FormElement)
+
+		then:
+		InvalidModuleBaseException e = thrown()
+		e.message == "Specified base element for ${FormElement.name} module was 'div' but only the following are allowed: button, input, option, select, textarea"
+	}
+}

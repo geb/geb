@@ -62,7 +62,7 @@ class Module implements Navigator, PageContentContainer, Initializable {
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
 	private Navigator navigator
 
-	@SuppressWarnings('SpaceBeforeOpeningBrace')
+	@SuppressWarnings("SpaceBeforeOpeningBrace")
 	void init(Browser browser, NavigatorFactory navigatorFactory) {
 		navigator = navigatorFactory.base
 		Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(browser, this, navigatorFactory, 'content', this.class, Module)
@@ -72,6 +72,11 @@ class Module implements Navigator, PageContentContainer, Initializable {
 		frameSupport = new DefaultFrameSupport(browser)
 		js = browser.js
 		alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
+		initialized()
+	}
+
+	@SuppressWarnings("EmptyMethod")
+	protected void initialized() {
 	}
 
 	JavascriptInterface getJs() {
