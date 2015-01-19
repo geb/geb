@@ -33,10 +33,8 @@ class FormElement extends Module {
 
 	protected void initialized() {
 		if (!empty) {
-			String baseTag = firstElement().tagName
-
-			if (!SUPPORTED_TAGS.contains(baseTag)) {
-				throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$baseTag' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
+			if (!SUPPORTED_TAGS.contains(tag())) {
+				throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag()}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
 			}
 		}
 	}
