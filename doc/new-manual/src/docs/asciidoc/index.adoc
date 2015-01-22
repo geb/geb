@@ -1,0 +1,7 @@
+= The Book of Geb
+:revremark: Very Groovy browser automation… web testing, screen scraping and more
+
+:numbered:
+:leveloffset: 1
+include::intro.adoc[]
+include::browser.adoc[]

@@ -46,7 +46,7 @@ allprojects { project ->
 			":module:geb-core", ":internal:test-support",
 			":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
 			":module:geb-testng", ":module:geb-implicit-assertions",
-			":module:geb-ast", ":module:geb-waiting", ":integration:geb-gradle", ":doc:site"
+			":module:geb-ast", ":module:geb-waiting", ":integration:geb-gradle", ":doc:site", ":doc:new-manual"
 		]
 
 		publishedModules = [
