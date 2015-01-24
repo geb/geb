@@ -1,9 +1,0 @@
-[[_introduction]]
-= Introduction
-
-== The jQuery-ish Navigator API
-
-[source,groovy]
-----
-include::{testdir}/DollarMethodSamplesSpec.groovy[tags=basic_examples]
-----

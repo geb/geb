@@ -1,0 +1,389 @@
+= About the Project
+
+The Geb home page can be found at http://www.gebish.org.
+
+== API Reference
+
+The API reference can be found link:api/index.html[here].
+
+== Support &amp; Development
+
+Support for Geb is offered on the link:mailto:&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g[&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/user@geb.codehaus.org[here].
+
+Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&#x76;&#x40;&#103;&#101;b&#x2e;&#x63;o&#100;&#x65;&#x68;&#97;&#117;&#115;&#46;&#111;&#x72;&#x67;[&#x64;&#101;&#x76;&#x40;&#103;&#101;b&#x2e;&#x63;o&#100;&#x65;&#x68;&#97;&#117;&#115;&#46;&#111;&#x72;&#x67;] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/dev@geb.codehaus.org[here].
+
+== Credits
+
+=== Committers
+
+* http://ldaley.com[Luke Daley]
+* http://blog.proxerd.pl[Marcin Erdmann]
+* https://github.com/chris-prior[Chris Prior]
+
+=== Contributors
+
+* http://adhockery.blogspot.com/[Robert Fletcher]
+* http://pniederw.wordpress.com/[Peter Niederwieser]
+* http://github.com/zolotov[Alexander Zolotov] - TestNG Integration
+* http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
+* http://www.desirableobjects.co.uk/[Antony Jones] - Various fixes and patches, doc improvements
+* http://hennr.name/imprint/[Jan-Hendrik Peters] - Doc improvements
+* http://fbflex.wordpress.com/[Tomás Lin] - Doc improvements
+* https://github.com/measlyweasel[Jason Cahoon] - Bug fix around text matchers
+* http://refaktor.blogspot.com/[Tomasz Kalkosiński] - Doc improvements
+* https://github.com/richdouglasevans[Rich Douglas Evans] - Doc improvements
+* https://github.com/idurkan[Ian Durkan] - Doc improvements
+* https://github.com/ColinHarrington[Colin Harrington] - Doc improvements
+* https://github.com/bherrmann7[Bob Herrmann] - Doc improvements
+* https://github.com/walterg2[George T Walters II] - Page option support for `withWindow()`
+* https://github.com/craigatk[Craig Atkinson] - Doc improvements
+* https://github.com/andyjduncan[Andy Duncan] - Fail fast when unexpected pages are encountered
+* https://github.com/johnrengelman[John Engelman] - Grails integration improvements
+* https://github.com/legart[Michael Legart] - Grails integration improvements
+* https://github.com/graemerocher[Graeme Rocher] - Grails integration improvements
+* https://github.com/craigatk[Craig Atkinson] - Bug fix around unexpected pages
+* https://github.com/kgeis[Ken Geis] - Doc improvements
+* https://github.com/kellyrob99[Kelly Robinson] - Additional configuration parameters for SauceLabs
+* https://github.com/tygerpatch[Todd Gerspacher] - Doc improvements, Cleaned up settings.gradle
+* https://github.com/davidmc24[David M. Carr] - BrowserStack integration
+* https://github.com/tomdcc[Tom Dunstan] - Cucumber integration and related documentation
+* https://github.com/brian428[Brian Kotek] - Doc improvements
+* https://github.com/david-w-millar[David W Millar] - Doc improvements
+* https://github.com/alincode[Ai-Lin Liou] - Doc improvements
+* https://github.com/menonvarun[Varun Menon] - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
+* https://github.com/adjohnson916[Anders D. Johnson] - Doc improvements
+* https://github.com/azusa[Hiroyuki Ohnaka] - Doc improvements
+
+== History
+
+This page lists the high level changes between versions of Geb.
+
+=== @geb-version@
+
+==== New Features
+
+* Support for finding elements using Webdriver's [`By`][by-api] selectors. [http://jira.codehaus.org/browse/GEB-348[GEB-348]]
+* Support for navigating to page instances in addition to classes. [http://jira.codehaus.org/browse/GEB-310[GEB-310]]
+* Support for using page instances as `page` option value of window switching methods. [http://jira.codehaus.org/browse/GEB-352[GEB-352]]
+* Support for using page instances together with frame switching methods. [http://jira.codehaus.org/browse/GEB-354[GEB-354]]
+* Support for using page instances with `Navigator.click()` methods. [http://jira.codehaus.org/browse/GEB-355[GEB-355]]
+* Support for using page instances and lists of page instances as `page` option value of content templates. [http://jira.codehaus.org/browse/GEB-356[GEB-356]]
+* New `Navigator.module(Class&lt;? extends Module&gt;)` and `Navigable.module(Class&lt;? extends Module&gt;)`. [http://jira.codehaus.org/browse/GEB-312[GEB-312]]
+* New `Navigable.module(Module)` and `Navigable.module(Module)`. [http://jira.codehaus.org/browse/GEB-311[GEB-311]]
+
+==== Fixes
+
+* Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element. [http://jira.codehaus.org/browse/GEB-345[GEB-345]]
+* Browser.verifyAtIfPresent() should fail for at checkers returning false when implicit assertions are disabled. [http://jira.codehaus.org/browse/GEB-357[GEB-357]]
+* Provide better error reporting when unexpected pages configuration is not a collection that contains classes which extend `Page` [http://jira.codehaus.org/browse/GEB-270[GEB-270]]
+* Don't fail when creating a report and driver's screenshot taking method returns null [http://jira.codehaus.org/browse/GEB-292[GEB-292]]
+
+==== Breaking changes
+
+* `Page.toString()` now returns full page class name instead of its simple name.
+
+==== Deprecations
+
+* `module(Class&lt;? extends Module&gt;, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class&lt;? extends Module&gt;)` and will be removed in a future version of Geb.
+* `module(Class&lt;? extends Module&gt;, Map args)` available in content DLS has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
+* `module(Class&lt;? extends Module&gt;, Navigator base, Map args)` available in content DLS has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
+* all variants of `moduleList()` method available in content DLS have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future version of Geb, see link:modules.html#using_modules_for_repeating_content_on_a_page[chapter on using modules for repeating content] for examples [http://jira.codehaus.org/browse/GEB-362[GEB-362]]
+
+=== 0.10.0
+
+==== New Features
+
+* New `css()` method on `Navigator` that allows to access CSS properties of elements. [http://jira.codehaus.org/browse/GEB-141[GEB-141]]
+* Added attribute based methods to relative content navigators such as next(), children() etc. [http://jira.codehaus.org/browse/GEB-299[GEB-299]]
+* Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. [http://jira.codehaus.org/browse/GEB-332[GEB-332]]
+* Added link:pages.html#towait[`toWait`] content definition option which allows specifying that page transition happens asynchronously. [http://jira.codehaus.org/browse/GEB-134[GEB-134]]
+* Added support for explicitly specifying browser capabilities when using cloud browsers Gradle plugins. [http://jira.codehaus.org/browse/GEB-340[GEB-340]]
+* Added an overloaded `create()` method on cloud driver factories that allow specifying browser capabilities in a map and don't require a string capabilities specification. [http://jira.codehaus.org/browse/GEB-281[GEB-281]]
+
+==== Fixes
+
+* Allow access to module properties from its content block. [http://jira.codehaus.org/browse/GEB-245[GEB-245]]
+* Support setting of elements for WebDriver implementations that return uppercase tag name. [http://jira.codehaus.org/browse/GEB-318[GEB-318]]
+* Use native binaries for running BrowserStack tunnel. [http://jira.codehaus.org/browse/GEB-326[GEB-326]]
+* Update BrowserStack support to use command-line arguments introduced in tunnel version 3.1. [http://jira.codehaus.org/browse/GEB-332[GEB-332]]
+* Fix PermGen memory leak when using groovy script backed configuration. [http://jira.codehaus.org/browse/GEB-335[GEB-335]]
+* Don't fail in `Browser.isAt()` if at check waiting is enabled and it times out. [http://jira.codehaus.org/browse/GEB-337[GEB-337]]
+* The value passed to `aliases` content option in documentation examples should be a String [http://jira.codehaus.org/browse/GEB-338[GEB-338]]
+* Added `$()` method on Navigator with all signatures of `find()`. [http://jira.codehaus.org/browse/GEB-321[GEB-321]]
+* `geb-saucelabs` plugin now uses a native version of SauceConnect. [http://jira.codehaus.org/browse/GEB-341[GEB-341]]
+* Don't modify the predicate map passed to link:api/geb/navigator/Locator.html#find(Map%3CString,%20Object%3E,%20java.lang.String)["`Navigator.find(Map&lt;String, Object&gt;, String)`"]. [http://jira.codehaus.org/browse/GEB-339[GEB-339]]
+* Functional tests implemented using JUnit and Geb run twice in Grails 2.3+. [http://jira.codehaus.org/browse/GEB-314[GEB-314]]
+* Mention in the manual where snapshot artifacts can be downloaded from. [http://jira.codehaus.org/browse/GEB-305[GEB-305]]
+* Document that `withNewWindow()` and `withWindow()` switch page back to the original one. [http://jira.codehaus.org/browse/GEB-279[GEB-279]]
+* Fix selectors in documentation for manipulating checkboxes. [http://jira.codehaus.org/browse/GEB-268[GEB-268]]
+
+==== Project Related Changes
+
+* Updated cucumber integration example to use `cucumber-jvm` instead of the now defunct `cuke4duke`. [http://jira.codehaus.org/browse/GEB-324[GEB-324]]
+* Setup CI for all of the example projects. [http://jira.codehaus.org/browse/GEB-188[GEB-188]]
+* Incorporate the example projects into the main build. [http://jira.codehaus.org/browse/GEB-189[GEB-189]]
+* Add a test crawling the site in search for broken links. [http://jira.codehaus.org/browse/GEB-327[GEB-327]]
+* Document the https://github.com/geb/geb/blob/master/RELEASING.md[release process]. [http://jira.codehaus.org/browse/GEB-325[GEB-325]]
+
+==== Breaking changes
+
+* Use Groovy 2.3.6 to build Geb. [http://jira.codehaus.org/browse/GEB-330[GEB-330]]
+* Format of browser specification passed to `BrowserStackBrowserFactory.create()` and `SauceLabsBrowserFactory.create()` has changed to be a string in Java properties file format defining the required browser capabilities.
+* `sauceConnect` configuration used with `geb-saucelabs` plugin should now point at a version of 'ci-sauce' artifact from 'com.saucelabs' group.
+
+=== 0.9.3
+
+==== New Features
+
+* Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. [http://jira.codehaus.org/browse/GEB-269[GEB-269]]
+* Page content classes including `Module` now implement `Navigator` interface [http://jira.codehaus.org/browse/GEB-181[GEB-181]]
+* Added some tests that guard performance by verifying which WebDriver commands are executed [http://jira.codehaus.org/browse/GEB-302[GEB-302]]
+* Added http://www.browserstack.com[BrowserStack] integration [http://jira.codehaus.org/browse/GEB-307[GEB-307]]
+* Added a shortcut to `Browser` for getting current url [http://jira.codehaus.org/browse/GEB-294[GEB-294]]
+* Verify pages at checker when passed as an option to open a new window via `withWindow()` and `withNewWindow()` [http://jira.codehaus.org/browse/GEB-278[GEB-278]]
+
+==== Fixes
+
+* Ignore `atCheckWaiting` setting when checking for unexpected pages. [http://jira.codehaus.org/browse/GEB-267[GEB-267]]
+* Added missing range variants of find/$ methods. [http://jira.codehaus.org/browse/GEB-283[GEB-283]]
+* Migrated `UnableToLoadException` to java. [http://jira.codehaus.org/browse/GEB-263[GEB-263]]
+* Exception thrown when trying to set value on an invalid element (non form control). [http://jira.codehaus.org/browse/GEB-286[GEB-286]]
+* Support for jQuery methods like offset() and position() which return a native Javascript object. [http://jira.codehaus.org/browse/GEB-271[GEB-271]]
+* Finding elements when passing ids with spaces in the predicates map to the $() method. [http://jira.codehaus.org/browse/GEB-308[GEB-308]]
+
+==== Breaking Changes
+
+* Removed easyb support. [http://jira.codehaus.org/browse/GEB-277[GEB-277]]
+* `MissingMethodException` is now thrown when using shortcut for obtaining a navigator based on a control name and the returned navigator is empty. [http://jira.codehaus.org/browse/GEB-239[GEB-239]]
+* When using SauceLabs integration, the `allSauceTests` task was renamed to`allSauceLabsTests`
+* When using SauceLabs integration, the `geb.sauce.browser` system property was renamed to `geb.saucelabs.browser`
+* `Module` now implements `Navigator` instead of `Navigable` so `Navigator`'s methods can be called on it without having to first call `$()` to get the module's base `Navigator`.
+
+==== Project Related Changes
+
+* Documentation site has been migrated to http://ratpack.io[Ratpack]. [http://jira.codehaus.org/browse/GEB-261[GEB-261]]
+* Cross browser tests are now also executed using Safari driver [http://jira.codehaus.org/browse/GEB-276[GEB-276]]
+* Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI [http://jira.codehaus.org/browse/GEB-295[GEB-295]]
+* Migrated continuous integration build to https://snap-ci.com/geb/geb/branch/master[Snap CI]
+* Added a https://travis-ci.org/geb/geb[Travis CI build] that runs tests on submitted pull requests [http://jira.codehaus.org/browse/GEB-309[GEB-309]]
+
+=== 0.9.2
+
+==== New Features
+
+* `page` and `close` options can be passed to `withWindow()` calls, see link:browser.html#passing_options_when_working_with_already_opened_windows[this manual section] for more information.
+* Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See link:pages.html#unexpected_pages[this manual section] for details. [http://jira.codehaus.org/browse/GEB-70[GEB-70]]
+* Support for running Geb using SauceLabs provided browsers, see link:cloud-browsers.html[this manual section] for details.
+* New link:api/geb/navigator/Navigator.html#isEnabled()[`isEnabled()`] and link:api/geb/navigator/Navigator.html#isEditable()[`isEditable()`] methods on `Navigator`.
+* Support for ephemeral port allocation with Grails integration
+* Compatibility with Grails 2.3
+
+==== Fixes
+
+* Default value of `close` option for `withNewWindow()` is set to `true` as specified in the documentation. [http://jira.codehaus.org/browse/GEB-258[GEB-258]]
+
+==== Breaking Changes
+
+* `isDisabled()` now throws `UnsupportedOperationException` if called on an `EmptyNavigator` or on a `Navigator` that contains anything else than a button, input, option, select or textarea.
+* `isReadOnly()` now throws `UnsupportedOperationException` if called on an `EmptyNavigator` or on a `Navigator` that contains anything else than an input or a textarea.
+
+=== 0.9.1
+
+==== Breaking Changes
+
+* Explicitly calling `at()` with a page object will throw `UndefinedAtCheckerException` instead of silently passing if the page object does not define an at checker.
+* Passing a page with no at checker to `click(List&lt;Class&lt;? extends Page&gt;&gt;)` or as one of the pages in `to` template option will throw `UndefinedAtCheckerException`.
+
+==== New Features
+
+* Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`. [http://jira.codehaus.org/browse/GEB-150[GEB-150]]
+* Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
+* New `atCheckWaiting` configuration option allowing to implictly wrap ”at“ checkers in `waitFor` calls. [http://jira.codehaus.org/browse/GEB-253[GEB-253]]
+
+==== Fixes
+
+* `containsWord()` and `iContainsWord()` now return expected results when matching against text that contains spaces [http://jira.codehaus.org/browse/GEB-254[GEB-254]]
+* `has(Map&lt;String, Object&gt; predicates, String selector)` and `has(Map&lt;String, Object&gt; predicates)` were added to Navigator for consistency with `find()` and `filter()` [http://jira.codehaus.org/browse/GEB-256[GEB-256]]
+* Also catch WaitTimeoutException when page verification has failed following a `click()` call [http://jira.codehaus.org/browse/GEB-255[GEB-255]]
+* `not(Map&lt;String, Object&gt; predicates, String selector)` and `not(Map&lt;String, Object&gt; predicates)` were added to Navigator for consistency with `find()` and `filter()` [http://jira.codehaus.org/browse/GEB-257[GEB-257]]
+* Make sure that `NullPointerException` is not thrown for incorrect driver implementations of getting current url without previously driving the browser to a url [http://jira.codehaus.org/browse/GEB-291[GEB-291]]
+
+=== 0.9.0
+
+==== New Features
+
+* New `via()` method that behaves the same way as `to()` behaved previously - it sets the page on the browser and does not verify the at checker of that page[http://jira.codehaus.org/browse/GEB-249[GEB-249]].
+* It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`], see link:configuration.html#navigator_factory[this manual section] for more information [http://jira.codehaus.org/browse/GEB-96[GEB-96]].
+* New variants of `withFrame()` method that allow to switch into frame context and change the page in one go and also automatically change it back to the original page after the call, see [switching pages and frames at once][switch-frame-and-page] in the manual [http://jira.codehaus.org/browse/GEB-213[GEB-213]].
+* `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see link:browser.html#passing_options_when_working_with_newly_opened_windows[this manual section] for more information [http://jira.codehaus.org/browse/GEB-167[GEB-167]].
+* Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class [http://jira.codehaus.org/browse/GEB-240[GEB-240]].
+* Improved signature of `Browser.at()` and `Browser.to()` to return the exact type of the page that was asserted to be at / was navigated to.
+* link:api/geb/report/ReportingListener.html[`ReportingListener`] objects can be registered to observe reporting (see: link:reporting.html#listening_to_reporting[reporting.html#listening_to_reporting]
+
+==== Fixes
+
+* Fixed an issue where waitFor would throw a WaitTimeoutException even if the last evaluation before timeout returned a truthy value [http://jira.codehaus.org/browse/GEB-215[GEB-215]].
+* Fixed taking screenshots for reporting when the browser is not on a HTML page (e.g. XML file) [http://jira.codehaus.org/browse/GEB-126[GEB-126]].
+* Return the last evaluation value for a `(wait: true, required: false)` content instead of always returning null [http://jira.codehaus.org/browse/GEB-216[GEB-216]].
+* `isAt()` behaves the same as `at()` in regards to updating the browser's page instance to the given page type if its at checker is successful [http://jira.codehaus.org/browse/GEB-227[GEB-227]].
+* Handling of `select` elements has been reworked to be far more efficient [http://jira.codehaus.org/browse/GEB-229[GEB-229]].
+* Modules support accessing base attributes' values using @attributeName notation [http://jira.codehaus.org/browse/GEB-237[GEB-237]].
+* Use of text matchers in module base definitions is supported [http://jira.codehaus.org/browse/GEB-241[GEB-241]].
+* Reading of textareas have been updated so that the current value of the text field is returned, instead of the initial [http://jira.codehaus.org/browse/GEB-174[GEB-174]].
+
+==== Breaking Changes
+
+* `to(Class&lt;? extends Page&gt;)` method now changes the page on the browser and verifies the at checker of that page in one method call [http://jira.codehaus.org/browse/GEB-1[GEB-1]], [http://jira.codehaus.org/browse/GEB-249[GEB-249]]; use `via()` if you need the old behaviour
+* `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present.
+* `at()` and `to()` methods on `Browser` now return a page instance if they succeed and `via()` method always returns a page instance [http://jira.codehaus.org/browse/GEB-217[GEB-217]].
+* `withFrame()` calls that don't take a page argument now change the browser page to what it was before the call, after the call [http://jira.codehaus.org/browse/GEB-222[GEB-222]].
+* due to performance improvements duplicate elements are not removed when creating new `Navigator`s anymore; the new `unique()` method on `Navigator` can be used to remove duplicates if needed [http://jira.codehaus.org/browse/GEB-223[GEB-223]].
+* `at(Page)` and `isAt(Page)` methods on `Browser` have been removed as they were inconsistent with the rest of the API [http://jira.codehaus.org/browse/GEB-242[GEB-242]].
+* Navigator's `click(Class&lt;? extends Page&gt;)` and `to:` content option now verify page after switching to the new one to stay consistent with the new behaviour of `to(Class&lt;? extends Page&gt;)` [http://jira.codehaus.org/browse/GEB-250[GEB-250]].
+* Reading an attribute that is not set on a navigator now returns an empty string across all drivers [http://jira.codehaus.org/browse/GEB-251[GEB-251]].
+
+=== 0.7.2
+
+==== Fixes
+
+* Further fixes for Java 7 [http://jira.codehaus.org/browse/GEB-211[GEB-211]].
+
+=== 0.7.1
+
+==== New Features
+
+* Geb is now built with Groovy 1.8.6. This was forced to resolve [http://jira.codehaus.org/browse/GEB-194[GEB-194]].
+
+==== Fixes
+
+* `startsWith()`, `contains()` etc. now work for selecting via element text now works for multiline (i.e. `&lt;br/&gt;`) text [http://jira.codehaus.org/browse/GEB-202[GEB-202]]
+* Geb now works with Java 7 [http://jira.codehaus.org/browse/GEB-194[GEB-194]].
+
+=== 0.7.0
+
+==== New Features
+
+* Added support for indexes and ranges in `moduleList()` method
+* Form control shortcuts now also work on page and module content
+* Custom timeout message for `waitFor()` calls
+* Navigators can be composed also from content
+* Closure expressions passed to `waitFor()` calls are now transformed so that every statement in them is asserted - this provides better reporting on `waitFor()` timeouts.
+* `at` closure properties of Page classes are now transformed so that every statement in them is asserted - this provides better reporting on failed at checks
+* new `isAt()` method on Browser that behaves like `at()` used to behave before, i.e. does not throw AssertionError but returns `false` if at checking fails
+* `withAlert()` and `withConfirm()` now accept a `wait` option and the possible values are the same as for waiting content
+
+==== Breaking Changes
+
+* `click()` now instructs the browser to click *only on the first* element the navigator has matched
+* All `click()` method variants return the reciever
+* Content definitions with `required: false, wait: true` return `null` and do not throw `WaitTimeoutException` if the timeout expires
+* Assignment statements are not allowed anymore in closure expressions passed to `waitFor()` calls
+* `at()` now throws AssertionException if at checking fails instead of returning false
+
+=== 0.6.3
+
+==== New Features
+
+* Compatibility with Spock 0.6
+
+=== 0.6.2
+
+==== New Features
+
+* New `interact()` function for mouse and keyboard actions which delegates to the WebDriver Actions class
+* New `moduleList()` function for repeating content
+* New `withFrame()` method for working with frames
+* New `withWindow()` and `withNewWindow()` methods for working with multiple windows
+* Added `getCurrentWindow()` and `getAvailableWindows()` methods to browser that delegate to the underlying driver instance
+* Content aliasing is now possible using `aliases` parameter in content DSL
+* If config script is not found a config class will be used if there is any - this is usefull if you run test using Geb from IDE
+* Drivers are now cached across the whole JVM, which avoids the browser startup cost in some situations
+* Added config option to disable quitting of cached browsers on JVM shutdown
+
+==== Breaking Changes
+
+* The `Page.convertToPath()` function is now responsible for adding a prefix slash if required (i.e. it's not added implicitly in `Page.getPageUrl()`) [GEB-139].
+* Unchecked checkboxes now report their value as `false` instead of null
+
+=== 0.6.1
+
+==== New Features
+
+* Compatibility with at least Selenium 2.9.0 (version 0.6.0 of Geb did not work with Selenium 2.5.0 and up)
+* Attempting to set a select to a value that it does not contain now throws an exception
+* The waiting algorithm is now time based instead of number of retries based, which is better for blocks that are not near instant
+* Better support for working with already instantiated pages
+
+==== Breaking Changes
+
+* Using `&lt;select&gt;` elements with Geb now requires an explicit dependency on an extra WebDriver jar (see link:intro.html#installation__usage[the section on installation for more info])
+* The `Navigator` `classes()` method now returns a `List` (instead of `Set`) and guarantees that it will be sorted alphabetically
+
+=== 0.6
+
+==== New Features
+
+* selenium-common is now a 'provided' scoped dependency of Geb
+* Radio buttons can be selected with their label text as well as their value attribute.
+* Select options can be selected with their text as well as their value attribute.
+* `Navigator.getAttribute` returns `null` rather than the empty string when an attribute is not found.
+* The `jquery` property on `Navigator` now returns whatever the jQuery method called on it returns.
+* All waitFor clauses now treat exceptions raised in the condition as an evaluation failure, instead of propagating the exception
+* Content can be defined with `wait: true` to make Geb implicitly wait for it when it is requested
+* Screenshots are now taken when reporting for all drivers that implement the `TakesScreenshot` interface (which is nearly all)
+* Added `BindingUpdater` class that can manage a groovy script binding for use with Geb
+* Added `quit()` and `close()` methods to browser that delegate to the underlying driver instance
+* `geb.Browser.drive()` methods now return the used `Browser` instance
+* The underlying WebElements of a Navigator are now retrievable
+* Added $() methods that take one or more Navigator or WebElement objects and returns a new Navigator composed of these objects
+* Added Direct Download API which can be used for directly downloading content (PDFs, CSVs etc.) into your Geb program (not via the browser)
+* Introduced new configuration mechanism for more flexible and environment sensitive configuration of Geb (e.g. driver implementation, base url)
+* Default wait timeout and retry interval is now configurable, and can now also use user configuration presets (e.g. quick, slow)
+* Added a “build adapter” mechanism, making it easier for build systems to take control of relevant configuration
+* The JUnit 3 integration now includes the test method name in the automatically generated reports
+* The reporting support has been rewritten, making it much friendlier to use outside of testing
+* Added the TestNG support (contributed by Alexander Zolotov)
+* Added the `height`, `width`, `x` and `y` properties to navigator objects and modules
+
+==== Breaking Changes
+
+* Raised minimum Groovy version to 1.7
+* All failed waitFor clauses now throw a `geb.waiting.WaitTimeoutException` instead of `AssertionError`
+* Upgraded minimum version requirement of WebDriver to 2.0rc1
+* The `onLoad()` and `onUnload()` page methods both have changed their return types from `def` to `void`
+* The Grails specific testing subclasses have been REMOVED. Use the direct equivalent instead (e.g `geb.spock.GebReportingSpec` instead of `grails.plugin.geb.GebSpec`)
+* The Grails plugin no longer depends on the test integration modules, you need to depend on the one you want manually
+* The `getBaseUrl()` method from testing subclasses has been removed, use the configuration mechanism
+* Inputs with no value now report their value as an empty string instead of `null`
+* Select elements that are not multiple select enabled no longer report their value as a 1 element list, but now as the value of the selected element (if no selection, `null` is returned)
+
+=== 0.5.1
+
+* Fixed problem with incorrectly compiled specs and the geb grails module
+
+=== 0.5
+
+==== New Features
+
+* Navigator objects now implement the Groovy truth (empty == false, non empty == true)
+* Introduced “js” short notation
+* Added “{easyb}” support (`geb-easyb` and Grails support)
+* Page change listening support through `geb.PageChangeListener`
+* `waitFor()` methods added, making dealing with dynamic pages easier
+* Support for `alert()` and `confirm()` dialogs
+* Added jQuery integration
+* Reporting integration classes (e.g. GebReportingSpec) now save a screenshot if using the FirefoxDriver
+* Added `displayed` property to navigator objects for determining visibility
+* Added `find` as an alias for `$` (e.g. `find(&quot;div.section&quot;)`)
+* Browser objects now implement the `page(List&lt;Class&gt;)` method that sets the page to the first type whose at-checker matches the page
+* The click() methods that take one or more page classes are now available on `Navigator` objects
+* Added page lifecycle methods `onLoad()`/`onUnload()`
+
+==== Breaking Changes
+
+* Exceptions raised in `drive()` blocks are no longer wrapped with `DriveException`
+* the `at(Class pageClass)` method no longer requires the existing page instance to be of that class (page will be updated if the given type matches)
+
+=== 0.4
+
+*Initial Public Release*
