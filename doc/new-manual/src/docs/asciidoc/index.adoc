@@ -4,46 +4,39 @@
 :revremark: Very groovy browser automation… web testing, screen scraping and more
 :toclevels: 10
 
-//image::griffon-banner-large.png[Griffon,align="center"]
-
 include::_links.adoc[]
 
 :leveloffset: 1
 include::010-intro.adoc[]
-include::020-browser.adoc[]
-include::021-driver.adoc[]
-include::030-navigator.adoc[]
-include::040-pages.adoc[]
-include::050-modules.adoc[]
-include::060-configuration.adoc[]
-include::070-implicit-assertions.adoc[]
-include::080-javascript.adoc[]
-include::081-downloading.adoc[]
-include::090-binding.adoc[]
-include::100-reporting.adoc[]
-include::110-testing.adoc[]
-include::111-cloud-browsers.adoc[]
-include::120-build-integrations.adoc[]
-include::130-ide-and-typing.adoc[]
-include::140-project.adoc[]
 
-//:numbered!:
-//:leveloffset: 1
-//[appendix]
-//include::appendix-migration.adoc[]
-//
-//:numbered!:
-//[appendix]
-//include::appendix-module-bindings.adoc[]
-//
-//:numbered!:
-//[appendix]
-//include::appendix-ast-transformations.adoc[]
-//
-//:numbered!:
-//[appendix]
-//include::appendix-sample-applications.adoc[]
-//
-//:numbered!:
-//[appendix]
-//includeappendix-builder-nodes.adoc[]
+include::020-browser.adoc[]
+
+include::021-driver.adoc[]
+
+include::030-navigator.adoc[]
+
+include::040-pages.adoc[]
+
+include::050-modules.adoc[]
+
+include::060-configuration.adoc[]
+
+include::070-implicit-assertions.adoc[]
+
+include::080-javascript.adoc[]
+
+include::081-downloading.adoc[]
+
+include::090-binding.adoc[]
+
+include::100-reporting.adoc[]
+
+include::110-testing.adoc[]
+
+include::111-cloud-browsers.adoc[]
+
+include::120-build-integrations.adoc[]
+
+include::130-ide-and-typing.adoc[]
+
+include::140-project.adoc[]
