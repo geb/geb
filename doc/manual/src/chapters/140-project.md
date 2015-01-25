@@ -53,6 +53,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Varun Menon](https://github.com/menonvarun) - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
 * [Anders D. Johnson](https://github.com/adjohnson916) - Doc improvements
 * [Hiroyuki Ohnaka](https://github.com/azusa) - Doc improvements
+* [Erik Pragt](https://github.com/bodiam) - Migration of the manual to AsciiDoc
 
 ## History
 

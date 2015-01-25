@@ -53,6 +53,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&
 * https://github.com/menonvarun[Varun Menon] - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
 * https://github.com/adjohnson916[Anders D. Johnson] - Doc improvements
 * https://github.com/azusa[Hiroyuki Ohnaka] - Doc improvements
+* https://github.com/bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
 
 == History
 
