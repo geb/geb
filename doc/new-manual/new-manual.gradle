@@ -19,7 +19,8 @@ asciidoctor {
 		toc     : 'left',
 		doctype : 'book',
 		encoding: 'utf-8',
-		testdir : '../../test/groovy'
+		testdir : '../../test/groovy',
+		numbered: true
 	]
 	sources {
 		include 'index.adoc'
