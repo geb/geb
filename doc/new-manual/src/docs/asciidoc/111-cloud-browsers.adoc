@@ -106,6 +106,7 @@ For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifi
 
 === geb-saucelabs plugin
 
+[subs="attributes"]
 ----
 apply plugin: "geb-saucelabs" //1
 
@@ -114,7 +115,7 @@ buildscript { //2
        mavenCentral()
     }
     dependencies {
-       classpath 'org.gebish:geb-gradle:@geb-version@'
+       classpath 'org.gebish:geb-gradle:{geb-version}'
     }
 }
 
@@ -162,6 +163,7 @@ Finally in (9) we can additionally configure https://saucelabs.com/docs/connect[
 
 === geb-browserstack
 
+[subs="attributes"]
 ----
 apply plugin: "geb-browserstack" //1
 
@@ -170,7 +172,7 @@ buildscript { //2
        mavenCentral()
     }
     dependencies {
-       classpath 'org.gebish:geb-gradle:@geb-version@'
+       classpath 'org.gebish:geb-gradle:{geb-version}'
     }
 }
 

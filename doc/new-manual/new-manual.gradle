@@ -20,7 +20,15 @@ asciidoctor {
 		doctype : 'book',
 		encoding: 'utf-8',
 		testdir : '../../test/groovy',
-		numbered: true
+		numbered: true,
+		"geb-version": project.version,
+		"geb-group": project.group,
+		"geb-group-dir": project.group.replace(".", "/"),
+		"spock-version": "0.7",
+		"spock-core-version": "0.7-groovy-2.0",
+		"selenium-version": seleniumVersion,
+		"groovy-version": groovyVersion,
+		"home-page": "www.gebish.org"
 	]
 	sources {
 		include 'index.adoc'

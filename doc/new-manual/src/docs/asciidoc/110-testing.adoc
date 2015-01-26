@@ -104,10 +104,10 @@ The following table illustrates the specific JARs and class names for Spock and 
 |===
 |Framework |JAR |Base Class |Reporting Base Class
 
-|Spock |http://mvnrepository.com/artifact/@geb-group@/geb-spock[geb-spock] |api/geb/spock/GebSpec.html[geb.spock.GebSpec] |api/geb/spock/GebReportingSpec.html[geb.spock.GebReportingSpec]
-|JUnit 4 |http://mvnrepository.com/artifact/@geb-group@/geb-junit4[geb-junit4] |api/geb/junit4/GebTest.html[geb.junit4.GebTest] |api/geb/junit4/GebReportingTest.html[geb.junit4.GebReportingTest]
-|JUnit 3 |http://mvnrepository.com/artifact/@geb-group@/geb-junit3[geb-junit3] |api/geb/junit3/GebTest.html[geb.junit3.GebTest] |api/geb/junit3/GebReportingTest.html[geb.junit3.GebReportingTest]
-|TestNG |http://mvnrepository.com/artifact/@geb-group@/geb-testng[geb-testng] |api/geb/testng/GebTest.html[geb.testng.GebTest] |api/geb/testng/GebReportingTest.html[geb.testng.GebReportingTest]
+|Spock |http://mvnrepository.com/artifact/{geb-group}/geb-spock[geb-spock] |api/geb/spock/GebSpec.html[geb.spock.GebSpec] |api/geb/spock/GebReportingSpec.html[geb.spock.GebReportingSpec]
+|JUnit 4 |http://mvnrepository.com/artifact/{geb-group}/geb-junit4[geb-junit4] |api/geb/junit4/GebTest.html[geb.junit4.GebTest] |api/geb/junit4/GebReportingTest.html[geb.junit4.GebReportingTest]
+|JUnit 3 |http://mvnrepository.com/artifact/{geb-group}/geb-junit3[geb-junit3] |api/geb/junit3/GebTest.html[geb.junit3.GebTest] |api/geb/junit3/GebReportingTest.html[geb.junit3.GebReportingTest]
+|TestNG |http://mvnrepository.com/artifact/{geb-group}/geb-testng[geb-testng] |api/geb/testng/GebTest.html[geb.testng.GebTest] |api/geb/testng/GebReportingTest.html[geb.testng.GebReportingTest]
 |===
 
 === Example projects
