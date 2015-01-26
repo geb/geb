@@ -21,6 +21,7 @@ asciidoctor {
 		encoding: 'utf-8',
 		testdir : '../../test/groovy',
 		numbered: true,
+		sectlinks: true,
 		"geb-version": project.version,
 		"geb-group": project.group,
 		"geb-group-dir": project.group.replace(".", "/"),
