@@ -459,6 +459,8 @@ $("div") << "abc"
 
 How content responds to the keystrokes depends on what the content is.
 
+:numbered!:
+
 === Non characters (e.g. delete key)
 
 It is possible to send non-textual characters to content by using the WebDriver http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html[Keys] enumeration…
@@ -472,6 +474,8 @@ $("input", name: "firstName") << Keys.chord(Keys.CONTROL, "c")
 Here we are sending a “control-c” to an input.
 
 See the documentation for http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html[Keys] for more information on the possible keys.
+
+:numbered:
 
 == Accessing input values
 
@@ -562,7 +566,7 @@ The following examples describe usage of form controls only using code like `$(&
 
 ____
 
-=== Setting Values
+== Setting form control values
 
 ____
 
@@ -570,7 +574,7 @@ Trying to set a value on an element which is not one of `input`, `select` or `te
 
 ____
 
-==== select
+=== select
 
 Select values are set by assigning the value or text of the required option. Assigned values are automatically coerced to String. For example…
 
@@ -592,7 +596,7 @@ $("form").artist = "Ima Robot" // first option selected by its text
 
 If you attempt to set a select to a value that does not match the value or text of any options, an `IllegalArgumentException` will be thrown.
 
-==== multiple select
+=== multiple select
 
 If the select has the `multiple` attribute it is set with a array or `Collection` of values. Any options not in the values are un-selected. For example…
 
@@ -617,7 +621,7 @@ $("form").genres = []                         // all options un-selected
 
 If the collection being assigned contains a value that does not match the value or text of any options, an `IllegalArgumentException` will be thrown.
 
-==== checkbox
+=== checkbox
 
 Checkboxes are generally checked/unchecked by setting their value to `true` or `false`.
 
@@ -658,7 +662,7 @@ if ($("input", type: "checkbox", name: "pet").value()) {
 }
 ----
 
-==== radio
+=== radio
 
 Radio values are set by assigning the value of the radio button that is to be selected or the label text associated with a radio button.
 
@@ -681,7 +685,7 @@ $("form").site = "Search this site" // selects the first radio by its label
 $("form").site = "Search Google"    // selects the second radio by its label
 ----
 
-==== text inputs and textareas
+=== text inputs and textareas
 
 In the case of a text `input`, the assigned value becomes the input's _value_ attribute and for a `textarea` effectively becomes the text.
 
@@ -712,7 +716,7 @@ Note that WebDriver has some issues with textareas and surrounding whitespace. N
 
 ____
 
-==== file upload
+=== file upload
 
 It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the _absolute path_ of a file on the system where the driver is running and on form submission that file will be uploaded.
 
@@ -721,6 +725,8 @@ It's currently not possible with WebDriver to simulate the process of a user cli
 
 $("form").csvFile = "/path/to/my/file.csv"
 ----
+
+:numbered:
 
 == Complex Interactions
 

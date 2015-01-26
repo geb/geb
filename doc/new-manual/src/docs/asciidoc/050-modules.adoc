@@ -232,7 +232,7 @@ class OtherPage extends Page {
 
 Modules work well for this.
 
-== Using modules for repeating content on a page
+== Using modules for repeating content
 
 Other than content that is repeated on different pages (like the shopping cart mentioned above), pages also have content that is repeated on the page itself. On a checkout page, the contents of the shopping cart could be summarized with the product name, the quantity and price for each product contained. Thanks to `Navigator` implementing `Iterable&lt;Navigator&gt;` a list of modules can be collected using Groovy's `collect()`the `Navigator.module()` methods.
 

@@ -14,6 +14,7 @@ One option for specifying the driver implementation is to construct the driver i
 
 However, where possible prefer implicit driver management which is discussed later in this chapter.
 
+[discrete]
 === Explicit Lifecycle
 
 When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time. This can be done via the methods on the webdriver instance (obtainable via `geb.Browser#getDriver()`) or by calling the link:browser.html#quitting_the_browser[delegating methods on the browser object].
@@ -22,6 +23,7 @@ When the driver is constructed by the user, the user is responsible for quitting
 
 If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the link:configuration.html#driver_implementation[configuration mechanism].
 
+[discrete]
 === Implicit Lifecycle
 
 By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver. This avoids the overhead of creating a new driver each time, which can be significant when working with a real browser.
@@ -53,8 +55,10 @@ This caching behavior is link:configuration.html#driver_caching[configurable].
 
 This section details various quirks or issues that have been encountered with different driver implementations.
 
+[discrete]
 === HTMLUnitDriver
 
+[discrete]
 ==== Dealing with pages that use HTML refreshes
 
 The default behaviour of the HTMLUnit driver is to immediately refresh the page as soon as it encounters a `&lt;meta http-equiv=&quot;refresh&quot; content=&quot;5&quot;&gt;` regardless of the specified time. The solution is to use a refresh handler that handles the refresh asynchronously.
@@ -70,6 +74,7 @@ Browser.drive {
 
 See http://markmail.org/thread/bu3g56oxz2uqzq43[this mailing list thread] for details.
 
+[discrete]
 ==== Configuring logging
 
 HTMLUnit can be very noisy, and it's not clear how to make it not so noisy.

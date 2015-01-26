@@ -238,6 +238,8 @@ Browser.drive {
 
 Page objects are discussed in depth in the link:pages.html[pages] chapter, which also explores the Content DSL.
 
+:numbered!:
+
 === Changing the page
 
 We have already seen that that `to()` methods change the browser's page instance. It is also possible to change the page instance without initiating a new request with the `page()` methods.
@@ -251,6 +253,8 @@ The link:api/geb/Browser.html#page(Class%3C%3F%20extends%20Page%3E)[`page(Class&
 The link:api/geb/Browser.html#page(T)[`page(Page[] potentialPageInstances)`] method allows you to specify a number of _potential_ page instances. Each of the potential page instances is initialized and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page instances passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
 These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the link:pages.html#to[`to` attribute of the Content DSL] for more information about this). However, should you need to manually change the page type, they are there.
+
+:numbered:
 
 == At checking
 
@@ -387,6 +391,7 @@ withWindow({ title == 'Geb - Very Groovy Browser Automation' }) {
 
 If code of the closure passed as the last argument changes browser's current page instance (e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or link:api/geb/Browser.html#at(Class%3CT%3E)[`at(Page)`]) then it will be reverted to its original value after returning from `withWindow()`.
 
+[discrete]
 ==== Passing options when working with already opened windows
 
 Currently there is only one option that can be passed to a link:api/geb/Browser.html#withWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withWindow()`] call which make working with already opened windows even simpler. The general syntax is:
@@ -395,12 +400,14 @@ Currently there is only one option that can be passed to a link:api/geb/Browser.
 withWindow({ «window specification» }, «option name»: «option value», ...) { «action executed within the context of the window» }
 ----
 
+[discrete]
 ===== close
 
 Default value: `false`
 
 If you pass any _truish_ value as `close` option then all matching windows will be closed after the execution of the closure passed as the last argument to the `withWindow()` call.
 
+[discrete]
 ===== page
 
 Default value: `null`
@@ -421,6 +428,7 @@ Note that if the first parameter opens none or more than one window, then link:a
 
 If code of the closure passed as the last argument changes browser's current page instance (e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or link:api/geb/Browser.html#at(Class%3CT%3E)[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
 
+[discrete]
 ==== Passing options when working with newly opened windows
 
 There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withNewWindow()`] call which make working with newly opened windows even simpler. The general syntax is:
@@ -429,18 +437,21 @@ There are several options that can be passed to a link:api/geb/Browser.html#with
 withNewWindow({ «window opening action» }, «option name»: «option value», ...) { «action executed within the context of the window» }
 ----
 
+[discrete]
 ===== close
 
 Default value: `true`
 
 If you pass any truly value as `close` option then the newly opened window will be closed after the execution of the closure passed as the last argument to the `withNewWindow()` call.
 
+[discrete]
 ===== page
 
 Default value: `null`
 
 If you pass a class or an instance of a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards.
 
+[discrete]
 ===== wait
 
 Default value: `null`

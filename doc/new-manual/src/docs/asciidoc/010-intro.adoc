@@ -270,6 +270,10 @@ Be sure to check the chapter on link:build-integrations.html[build integrations]
 
 ____
 
+:numbered!:
+
 === Snapshot repository
 
 If you fancy living on the bleeding edge then you can try out Geb's snapshot artifacts located in https://oss.sonatype.org/content/repositories/snapshots/@geb-group-dir@[the Maven repository at https://oss.sonatype.org/content/repositories/snapshots].
+
+:numbered:

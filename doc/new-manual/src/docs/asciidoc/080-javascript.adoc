@@ -345,7 +345,7 @@ ____
 
 A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withConfirm()`/`withNoConfirm()`). We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change. If a page change was detected, the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
 
-=== About prompt()
+=== prompt()
 
 Geb does not provide any support for prompt() due to its infrequent and generally discouraged use.
 
@@ -436,6 +436,10 @@ The same set of restricted types as allowed by WebDriver's http://selenium.googl
 
 The return value of methods called on the `jquery` property depends on what the corresponding jQuery method returns. A jQuery object will be converted to a Navigator representing the same set of elements, other values such as objects, strings and numbers are returned as per WebDriver's http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[`executeScript()`] method.
 
+:numbered!:
+
 === Why?
 
 This functionality was developed to make triggering mouse related events easier. Some applications are very sensitive to mouse events, and triggering these events in an automated environment is a challenge. jQuery provides a good API for faking these events, which makes for a good solution.
+
+:numbered:

@@ -557,6 +557,8 @@ If a page does not have an “at” checker, the `verifyAt()` method will throw 
 
 It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after URL change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via link:configuration.html#waiting_in_at_checkers[`atCheckWaiting`] option.
 
+:numbered!:
+
 === Unexpected pages
 
 A list of unexpected pages can be provided via link:configuration.html#unexpected_pages[`unexpectedPages` configuration option].
@@ -599,6 +601,8 @@ Finally, you can still explicitly check if the browser is at an unexpected page 
 ----
 at PageNotFoundPage
 ----
+
+:numbered:
 
 == Page URLs
 
@@ -686,6 +690,8 @@ Browser.drive {
 
 This will result in a request to “`http://myapp.com/person/5`”.
 
+:numbered!:
+
 === Named params
 
 Any type of argument can be used with the `to()` method, *except* named parameters (i.e. a `Map`). Named parameters are *always* interpreted as query parameters. Using the classes from the above example…
@@ -698,6 +704,8 @@ Browser.driver {
 ----
 
 This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are *not* sent to the link:api/geb/Page.html#convertToPath(java.lang.Object)[`convertToPath()`] method.
+
+:numbered:
 
 == Parametrized pages
 

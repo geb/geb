@@ -149,6 +149,8 @@ Something else
 
 The failed assertion is carried as the cause of the `geb.waiting.WaitTimeoutException` and gives you an informative message as to why the waiting failed.
 
+:numbered!:
+
 === Waiting Content
 
 The same implicit assertion semantics apply to content definitions that are waiting.
@@ -160,6 +162,8 @@ If you're unfamiliar with Geb's “waiting content” support, please read [this
 ____
 
 Any content definitions that declare a `wait` parameter have implicit assertions added to each expression just like `waitFor()` method calls.
+
+:numbered:
 
 == How it works
 
