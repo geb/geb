@@ -59,6 +59,8 @@ Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&
 
 This page lists the high level changes between versions of Geb.
 
+:numbered!:
+
 === @geb-version@
 
 ==== New features
@@ -388,3 +390,5 @@ This page lists the high level changes between versions of Geb.
 === 0.4
 
 *Initial Public Release*
+
+:numbered:
