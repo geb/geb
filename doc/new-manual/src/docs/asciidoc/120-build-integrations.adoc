@@ -1,4 +1,4 @@
-= Build System &amp; Framework Integrations
+= Build system &amp; framework integrations
 
 This kind of integration for Geb is typically focused on managing the base URL and reports dir, as build systems tend to be able to provide this configuration (via the link:configuration.html#build_adapter[build adapter] mechanism).
 

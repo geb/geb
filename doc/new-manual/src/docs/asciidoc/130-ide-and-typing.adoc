@@ -1,4 +1,4 @@
-= IDE Support
+= IDE support
 
 Geb does not require any special plugins or configuration for use inside an IDE. However, there are some considerations that will be addressed in this chapter.
 
@@ -10,7 +10,7 @@ Geb _tests_ can be executed in an IDE if that IDE supports Groovy scripts and th
 
 In both cases, the simplest way to create such an IDE configuration is to use a build tool (such as Gradle or Maven) that supports IDE integration. This will take care of the classpath setup and other concerns.
 
-== Authoring Assistance (autocomplete and navigation)
+== Authoring assistance (autocomplete and navigation)
 
 This section discusses what kind of authoring assistance can be provided by IDEs and usage patterns that enable better authoring support.
 

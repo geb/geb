@@ -110,7 +110,7 @@ The following table illustrates the specific JARs and class names for Spock and 
 |TestNG |http://mvnrepository.com/artifact/@geb-group@/geb-testng[geb-testng] |api/geb/testng/GebTest.html[geb.testng.GebTest] |api/geb/testng/GebReportingTest.html[geb.testng.GebReportingTest]
 |===
 
-=== Example Projects
+=== Example projects
 
 The following projects can be used as starting references:
 
@@ -189,7 +189,7 @@ See [`geb-cucumber`][geb-cucumber] for more examples.
 
 `geb-cucumber` also does Geb binding automatically, so if it is picked up you don't need to do it yourself as above.
 
-=== Example Project
+=== Example project
 
 The following project has examples of both writing your own steps and using `geb-cucumber`:
 

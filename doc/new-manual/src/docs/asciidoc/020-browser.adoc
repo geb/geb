@@ -1,4 +1,4 @@
-= The Browser
+= The `Browser`
 
 The entry point to Geb is the [`Browser`][browser-api] object.
 A browser object marries a [`WebDriver`][webdriver-api] instance (which drives the actual web browser being automated) with the concept of a “current page”.
@@ -57,7 +57,7 @@ Geb integrations typically remove the need to construct a browser object and do 
 
 ____
 
-== The drive() method
+== The `drive()` method
 
 The Browser class features a static method, link:api/geb/Browser.html#drive(groovy.lang.Closure)[`drive()`], that makes Geb scripting a little more convenient.
 
@@ -196,7 +196,7 @@ Browser.drive {
 }
 ----
 
-== The Page
+== The `Page`
 
 Browser instances hold a reference to a _page_. This page instance is retrievable via the link:api/geb/Browser.html#getPage()[`page`] property. Initially, all browser instances have a page of type link:api/geb/Page.html[`Page`] which provides the basic navigation functions and is the superclass for all page objects.
 
@@ -401,14 +401,14 @@ withWindow({ «window specification» }, «option name»: «option value», ...)
 ----
 
 [discrete]
-===== close
+===== `close`
 
 Default value: `false`
 
 If you pass any _truish_ value as `close` option then all matching windows will be closed after the execution of the closure passed as the last argument to the `withWindow()` call.
 
 [discrete]
-===== page
+===== `page`
 
 Default value: `null`
 
@@ -438,21 +438,21 @@ withNewWindow({ «window opening action» }, «option name»: «option value», 
 ----
 
 [discrete]
-===== close
+===== `close`
 
 Default value: `true`
 
 If you pass any truly value as `close` option then the newly opened window will be closed after the execution of the closure passed as the last argument to the `withNewWindow()` call.
 
 [discrete]
-===== page
+===== `page`
 
 Default value: `null`
 
 If you pass a class or an instance of a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards.
 
 [discrete]
-===== wait
+===== `wait`
 
 Default value: `null`
 

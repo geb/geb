@@ -1,4 +1,4 @@
-= Javascript, AJAX and Dynamic Pages
+= Javascript, AJAX and dynamic pages
 
 This section discusses how to deal with some of the challenges in testing and/or automating modern web applications.
 
@@ -27,7 +27,7 @@ The {javascriptexecutor} interface does not define any contract in regards to th
 
 ____
 
-=== Accessing Variables
+=== Accessing variables
 
 Any _global_ JavaScript variables inside the browser can be read as _properties_ of the `js` object.
 
@@ -72,7 +72,7 @@ We can even access _nested_ variables…
 assert js."document.title" == "Book of Geb"
 ----
 
-=== Calling Methods
+=== Calling methods
 
 Any _global_ JavaScript functions can be called as methods on the `js` object.
 
@@ -108,7 +108,7 @@ Browser.drive {
 }
 ----
 
-=== Executing Arbitrary Code
+=== Executing arbitrary code
 
 The `js` object also has an `exec()` method that can be used to run snippets of JavaScript. It is identical to the http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[JavascriptExecutor.executeScript()] method, except that it takes its arguments in the other order…
 
@@ -226,7 +226,7 @@ If you wish to add a custom message to `WaitTimeoutException` that is being thro
 waitFor (message: 'My custom message') { $("div#result").present }
 ----
 
-== Alert and Confirm Dialogs
+== Alert and confirm dialogs
 
 WebDriver currently http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?[does not handle] the http://www.w3schools.com/JS/js_popup.asp[`alert()` and `confirm()` dialog windows]. However, we can fake it through some JavaScript magic as http://code.google.com/p/selenium/issues/detail?id=27#c17[discussed on the WebDriver issue for this]. Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the link:api/geb/js/AlertAndConfirmSupport.html[`AlertAndConfirmSupport`] class that is mixed into
 [`Page`][page-api] and
@@ -240,7 +240,7 @@ Unexpected `alert()` and `confirm()` calls can have strange results. This is due
 
 ____
 
-=== alert()
+=== `alert()`
 
 There are two methods that deal with `alert()` dialogs:
 
@@ -295,7 +295,7 @@ ____
 
 A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withAlert()`/`withNoAlert()`). We can detect that the browser page did change, but we can't know if `alert()` did or did not get called before the page change. If a page change was detected the `withAlert()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoAlert()` will succeed.
 
-=== confirm()
+=== `confirm()`
 
 There are three methods that deal with `confirm()` dialogs:
 
@@ -345,11 +345,11 @@ ____
 
 A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withConfirm()`/`withNoConfirm()`). We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change. If a page change was detected, the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
 
-=== prompt()
+=== `prompt()`
 
-Geb does not provide any support for prompt() due to its infrequent and generally discouraged use.
+Geb does not provide any support for `prompt()` due to its infrequent and generally discouraged use.
 
-== jQuery Integration
+== jQuery integration
 
 Geb has special support for the {jquery}. Navigator objects have a special adapter that makes calling jQuery methods against the underlying DOM elements simple. This is best explained by example.
 

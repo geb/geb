@@ -4,13 +4,13 @@ Geb is a developer focused tool for automating the interaction between web brows
 
 Geb was born out of a desire to make browser automation (originally for web testing) easier and more productive. It aims to be a *developer tool* in that it allows and encourages the using of programming and language constructs instead of creating a restricted environment. It uses Groovy's dynamism to remove the noise and boiler plate code in order to focus on what's important — the content and interaction.
 
-== The Browser Automation Technology
+== The browser automation technology
 
 Geb builds on the {webdriver} browser automation library, which means that Geb can work with http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Which_browsers_does_support?[any browser that WebDriver can]. While Geb provides an extra layer of convenience and productivity, it is always possible to “drop down” to the WebDriver level to do something directly should you need to.
 
 For more information see the manual section on link:driver.html[using a driver implementation].
 
-== The Page Object Pattern
+== The Page Object pattern
 
 The Page Object Pattern gives us a common sense way to model content in a reusable and maintainable way. From the http://code.google.com/p/selenium/wiki/PageObjects[WebDriver wiki page on the Page Object Pattern]:
 
@@ -30,7 +30,7 @@ ____
 
 The Page Object Pattern is an important technique, and Geb provides first class support via its link:pages.html[page] and link:modules.html[module] constructs.
 
-== The jQuery-ish Navigator API
+== The jQuery-ish navigator API
 
 The {jquery} JavaScript library provides an excellent API for (among other things) selecting or targeting content on a page and traversing through and around content. Geb takes a lot of inspiration from this. 
 
@@ -70,11 +70,11 @@ $("p").find("table", cellspacing: '0')
 
 This is just the beginning of what is possible with the Navigator API. See the {navigator} for more details.
 
-== Full Examples
+== Full examples
 
 Let's have a look at a simple case of wanting to search for “wikipedia” on Google and follow the first result returned.
 
-=== Inline Scripting
+=== Inline scripting
 
 Here's an example of using Geb in an inline (i.e. no page objects or predefined content) scripting style…
 
@@ -221,7 +221,7 @@ class GoogleWikipediaSpec extends GebSpec {
 
 For more information on using Geb for web and functional testing, see the link:testing.html[testing chapter].
 
-== Installation &amp; Usage
+== Installation &amp; usage
 
 Geb itself is a available as a single http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22@geb-group@%22%20AND%20a%3A%22geb-core%22[`geb-core` jar from the central Maven repository]. To get up and running you simply need this jar, a WebDriver driver implementation and the `selenium-support` jar.
 

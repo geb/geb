@@ -2,7 +2,7 @@
 
 Geb provides a concise and Groovy interface to the content and controls in your browser. This is implemented through the `Navigator` API which is a jQuery inspired mechanism for finding, filtering and interacting with DOM elements.
 
-== The $ Function
+== The `$()` function
 
 The $ function is the access point to the browser's page content. This returns a `geb.navigator.Navigator` object that is roughly analogous to a jQuery object. It is analogous in that it represents one or more elements on the page and can be used to refine the matched content or query the matched content. When a $ function is called that does not match any content, an “empty” navigator object is returned that represents no content. Operations on “empty” navigators return `null` or another “empty” navigator or other values that make sense (e.g. the `size()` method returns `0`).
 
@@ -59,7 +59,7 @@ $(By.className("some-class"))
 $(By.xpath("//some-xpath")
 ----
 
-=== Indexes and Ranges
+=== Indexes and ranges
 
 When matching, a single positive integer or integer range can be given to restrict by index.
 
@@ -82,7 +82,7 @@ $("p", 1..2)*.text() = ["b", "c"]
 
 See below for an explanation of the `text()` method and the use of the spread operator.
 
-=== Attribute and Text Matching
+=== Attribute and text matching
 
 Matches can be made on attributes and node text values via Groovy's named parameter syntax. The value `text` is treated specially as a match against the node's text. All other values are matched against their corresponding attribute values.
 
@@ -118,7 +118,7 @@ You can mix attribute and text matchers…
 $("p", text: "p1", attr1: "a").size() == 1
 ----
 
-==== Using Patterns
+==== Using patterns
 
 To match the entire value of an attribute or the text you use a `String` value. It is also possible to use a `Pattern` to do regexp matching…
 
@@ -160,7 +160,7 @@ You might be wondering how this magic works, i.e. where these methods come from 
 
 ____
 
-=== Navigators are Iterable
+=== Navigators are iterable
 
 The navigator objects implement the Java `Iterable` interface, which allows you to do lots of Groovy stuff like use the `max()` function…
 
@@ -179,7 +179,7 @@ $("p")*.text().max() == "2"
 
 When treating a navigator as `Iterable`, the iterated over content is always the exact matched elements (as opposed to including children).
 
-== Finding &amp; Filtering
+== Finding &amp; filtering
 
 Navigator objects have `find` and `$` methods for finding descendants, and `filter` and `not` methods for reducing the matched content.
 
@@ -371,11 +371,11 @@ Would click the “`input.loginButton`” element, then effectively call `browse
 
 All of the page classes passed in when using the list variant have to have an “at” checker defined, otherwise an `UndefinedAtCheckerException` will be thrown.
 
-== Determining Visibility
+== Determining visibility
 
 Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not. The `displayed` property of a navigator object that doesn't match anything is always `false`
 
-== Size and Location
+== Size and location
 
 You can obtain the size and location of content on the page. All units are in pixels. The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page (or parent frame) to the top left point of the content.
 
@@ -427,7 +427,7 @@ $("p")*.@title == ["a", "b", "c"]
 $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
 ----
 
-== Css properties
+== CSS properties
 
 Css properties of a navigator can be accessed using the `css()` method.
 
@@ -481,7 +481,7 @@ See the documentation for http://selenium.googlecode.com/svn/trunk/docs/api/java
 
 The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a `String` if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection of values.
 
-== Form Control Shortcuts
+== Form control shortcuts
 
 Interacting with form controls (`input`, `select` etc.) is such a common task in web functional testing that Geb provides convenient shortcuts for common functions.
 
@@ -728,7 +728,7 @@ $("form").csvFile = "/path/to/my/file.csv"
 
 :numbered:
 
-== Complex Interactions
+== Complex interactions
 
 WebDriver supports interactions that are more complex than simply clicking or typing into items, such as dragging. You can use this API from Geb, or use the more Geb friendly `interact {}` DSL (explained below).
 
@@ -744,7 +744,7 @@ Collection<WebElement> allElements()
 
 By using the methods of the WebDriver http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html[Actions] class with WebElements, complex user gestures can be emulated.
 
-=== Using Actions
+=== Using `Actions`
 
 Create an Actions instance after obtaining the WebDriver driver:
 
@@ -767,7 +767,7 @@ Finally, call perform() to actually trigger the desired mouse or keyboard behavi
 shiftDoubleClickAction.perform()
 ----
 
-=== Using Interact Closures
+=== Using interact closures
 
 To cut down on the amount of typing required, use an interact closure instead of using class `Actions` explicitly. When using an interact closure, an `Actions` instance is implicitly created, built into an Action, and performed. As an added bonus, Geb navigators can be passed directly to `Actions` methods within an interact closure.
 
@@ -787,11 +787,11 @@ This method creates code that is more readable than using `Actions` directly.
 
 For the full list of available interactions, see the documentation for the WebDriver http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html[Actions] class.
 
-=== Interact Examples
+=== Interact examples
 
 Interact closures (or Actions) can be used to perform behaviors that are more complicated than clicking buttons and anchors or typing in input fields. Shift-double-clicking was demonstrated earlier.
 
-==== Drag and Drop
+==== Drag and drop
 
 clickAndHold, moveByOffset, and then release will drag and drop an element on the page.
 
@@ -819,7 +819,7 @@ Note that moving to arbitrary locations with the mouse is currently not supporte
 
 ____
 
-==== Control-Clicking
+==== Control-clicking
 
 Control-clicking several elements, such as items in a list, is performed the same way as shift-clicking.
 

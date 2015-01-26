@@ -1,4 +1,4 @@
-= Direct Downloading
+= Direct downloading
 
 Geb features an API that can be used to make direct HTTP requests from the application that is executing the Geb scripts or tests. This facilitates fine grained requests and downloading content such as PDF, CSVs, images etc. into your scripts or tests to then do something with. 
 
@@ -6,7 +6,7 @@ The direct download API works by using [`java.net.HttpURLConnection`][httpurlcon
 
 The Direct Download API is provided by the link:api/geb/download/DownloadSupport.html[`DownloadSupport`] class, which is mixed in to pages and modules (which means you can just call these instance methods directly from anywhere where you would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules). Consult the link:api/geb/download/DownloadSupport.html[`DownloadSupport`] API reference for the `download*` methods that are available.
 
-== Downloading Example
+== Downloading example
 
 For example, let's say you are using Geb to exercise a web application that generates PDF documents. The WebDriver API can only deal with HTML documents. You want to hit the PDF download link and also do some tests on the downloaded PDF. The direct download API is there to fill this need.
 
@@ -29,7 +29,7 @@ Browser.drive {
 
 Simple enough, but consider what is happening behind the scenes. Our application required us to log in, which implies some kind of session state. Geb is using [`HttpURLConnection`][httpurlconnection] behind the scenes to get the content and before doing so the cookies from the real browser will be transferred allowing this connection to assume the same session. The PDF download link href may also be relative, and Geb handles this by resolving the link passed to the download function against the browser's current page URL.
 
-== Fine Grained Request
+== Fine grained request
 
 The Direct Download API can also be used for making fine grained requests which can be useful for testing edge cases or abnormal behavior.
 
@@ -66,7 +66,7 @@ downloadText { HttpURLConnection connection ->
 }
 ----
 
-== Default Configuration
+== Default configuration
 
 In the link:configuration.html[configuration], the default behaviour of the HttpURLConnection object can be specified by providing a closure as the `defaultDownloadConfig` property.
 

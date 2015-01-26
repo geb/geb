@@ -1,12 +1,12 @@
-= About the Project
+= About the project
 
 The Geb home page can be found at http://www.gebish.org.
 
-== API Reference
+== API reference
 
 The API reference can be found link:api/index.html[here].
 
-== Support &amp; Development
+== Support &amp; development
 
 Support for Geb is offered on the link:mailto:&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g[&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/user@geb.codehaus.org[here].
 
@@ -61,7 +61,7 @@ This page lists the high level changes between versions of Geb.
 
 === @geb-version@
 
-==== New Features
+==== New features
 
 * Support for finding elements using Webdriver's [`By`][by-api] selectors. [http://jira.codehaus.org/browse/GEB-348[GEB-348]]
 * Support for navigating to page instances in addition to classes. [http://jira.codehaus.org/browse/GEB-310[GEB-310]]
@@ -92,7 +92,7 @@ This page lists the high level changes between versions of Geb.
 
 === 0.10.0
 
-==== New Features
+==== New features
 
 * New `css()` method on `Navigator` that allows to access CSS properties of elements. [http://jira.codehaus.org/browse/GEB-141[GEB-141]]
 * Added attribute based methods to relative content navigators such as next(), children() etc. [http://jira.codehaus.org/browse/GEB-299[GEB-299]]
@@ -118,7 +118,7 @@ This page lists the high level changes between versions of Geb.
 * Document that `withNewWindow()` and `withWindow()` switch page back to the original one. [http://jira.codehaus.org/browse/GEB-279[GEB-279]]
 * Fix selectors in documentation for manipulating checkboxes. [http://jira.codehaus.org/browse/GEB-268[GEB-268]]
 
-==== Project Related Changes
+==== Project related changes
 
 * Updated cucumber integration example to use `cucumber-jvm` instead of the now defunct `cuke4duke`. [http://jira.codehaus.org/browse/GEB-324[GEB-324]]
 * Setup CI for all of the example projects. [http://jira.codehaus.org/browse/GEB-188[GEB-188]]
@@ -134,7 +134,7 @@ This page lists the high level changes between versions of Geb.
 
 === 0.9.3
 
-==== New Features
+==== New features
 
 * Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. [http://jira.codehaus.org/browse/GEB-269[GEB-269]]
 * Page content classes including `Module` now implement `Navigator` interface [http://jira.codehaus.org/browse/GEB-181[GEB-181]]
@@ -152,7 +152,7 @@ This page lists the high level changes between versions of Geb.
 * Support for jQuery methods like offset() and position() which return a native Javascript object. [http://jira.codehaus.org/browse/GEB-271[GEB-271]]
 * Finding elements when passing ids with spaces in the predicates map to the $() method. [http://jira.codehaus.org/browse/GEB-308[GEB-308]]
 
-==== Breaking Changes
+==== Breaking changes
 
 * Removed easyb support. [http://jira.codehaus.org/browse/GEB-277[GEB-277]]
 * `MissingMethodException` is now thrown when using shortcut for obtaining a navigator based on a control name and the returned navigator is empty. [http://jira.codehaus.org/browse/GEB-239[GEB-239]]
@@ -160,7 +160,7 @@ This page lists the high level changes between versions of Geb.
 * When using SauceLabs integration, the `geb.sauce.browser` system property was renamed to `geb.saucelabs.browser`
 * `Module` now implements `Navigator` instead of `Navigable` so `Navigator`'s methods can be called on it without having to first call `$()` to get the module's base `Navigator`.
 
-==== Project Related Changes
+==== Project related changes
 
 * Documentation site has been migrated to http://ratpack.io[Ratpack]. [http://jira.codehaus.org/browse/GEB-261[GEB-261]]
 * Cross browser tests are now also executed using Safari driver [http://jira.codehaus.org/browse/GEB-276[GEB-276]]
@@ -170,7 +170,7 @@ This page lists the high level changes between versions of Geb.
 
 === 0.9.2
 
-==== New Features
+==== New features
 
 * `page` and `close` options can be passed to `withWindow()` calls, see link:browser.html#passing_options_when_working_with_already_opened_windows[this manual section] for more information.
 * Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See link:pages.html#unexpected_pages[this manual section] for details. [http://jira.codehaus.org/browse/GEB-70[GEB-70]]
@@ -183,19 +183,19 @@ This page lists the high level changes between versions of Geb.
 
 * Default value of `close` option for `withNewWindow()` is set to `true` as specified in the documentation. [http://jira.codehaus.org/browse/GEB-258[GEB-258]]
 
-==== Breaking Changes
+==== Breaking changes
 
 * `isDisabled()` now throws `UnsupportedOperationException` if called on an `EmptyNavigator` or on a `Navigator` that contains anything else than a button, input, option, select or textarea.
 * `isReadOnly()` now throws `UnsupportedOperationException` if called on an `EmptyNavigator` or on a `Navigator` that contains anything else than an input or a textarea.
 
 === 0.9.1
 
-==== Breaking Changes
+==== Breaking changes
 
 * Explicitly calling `at()` with a page object will throw `UndefinedAtCheckerException` instead of silently passing if the page object does not define an at checker.
 * Passing a page with no at checker to `click(List&lt;Class&lt;? extends Page&gt;&gt;)` or as one of the pages in `to` template option will throw `UndefinedAtCheckerException`.
 
-==== New Features
+==== New features
 
 * Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`. [http://jira.codehaus.org/browse/GEB-150[GEB-150]]
 * Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
@@ -211,7 +211,7 @@ This page lists the high level changes between versions of Geb.
 
 === 0.9.0
 
-==== New Features
+==== New features
 
 * New `via()` method that behaves the same way as `to()` behaved previously - it sets the page on the browser and does not verify the at checker of that page[http://jira.codehaus.org/browse/GEB-249[GEB-249]].
 * It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`], see link:configuration.html#navigator_factory[this manual section] for more information [http://jira.codehaus.org/browse/GEB-96[GEB-96]].
@@ -232,7 +232,7 @@ This page lists the high level changes between versions of Geb.
 * Use of text matchers in module base definitions is supported [http://jira.codehaus.org/browse/GEB-241[GEB-241]].
 * Reading of textareas have been updated so that the current value of the text field is returned, instead of the initial [http://jira.codehaus.org/browse/GEB-174[GEB-174]].
 
-==== Breaking Changes
+==== Breaking changes
 
 * `to(Class&lt;? extends Page&gt;)` method now changes the page on the browser and verifies the at checker of that page in one method call [http://jira.codehaus.org/browse/GEB-1[GEB-1]], [http://jira.codehaus.org/browse/GEB-249[GEB-249]]; use `via()` if you need the old behaviour
 * `getAttribute(String)` on `Navigator` now returns `null` for boolean attributes that are not present.
@@ -251,7 +251,7 @@ This page lists the high level changes between versions of Geb.
 
 === 0.7.1
 
-==== New Features
+==== New features
 
 * Geb is now built with Groovy 1.8.6. This was forced to resolve [http://jira.codehaus.org/browse/GEB-194[GEB-194]].
 
@@ -262,7 +262,7 @@ This page lists the high level changes between versions of Geb.
 
 === 0.7.0
 
-==== New Features
+==== New features
 
 * Added support for indexes and ranges in `moduleList()` method
 * Form control shortcuts now also work on page and module content
@@ -273,7 +273,7 @@ This page lists the high level changes between versions of Geb.
 * new `isAt()` method on Browser that behaves like `at()` used to behave before, i.e. does not throw AssertionError but returns `false` if at checking fails
 * `withAlert()` and `withConfirm()` now accept a `wait` option and the possible values are the same as for waiting content
 
-==== Breaking Changes
+==== Breaking changes
 
 * `click()` now instructs the browser to click *only on the first* element the navigator has matched
 * All `click()` method variants return the reciever
@@ -283,13 +283,13 @@ This page lists the high level changes between versions of Geb.
 
 === 0.6.3
 
-==== New Features
+==== New features
 
 * Compatibility with Spock 0.6
 
 === 0.6.2
 
-==== New Features
+==== New features
 
 * New `interact()` function for mouse and keyboard actions which delegates to the WebDriver Actions class
 * New `moduleList()` function for repeating content
@@ -301,28 +301,28 @@ This page lists the high level changes between versions of Geb.
 * Drivers are now cached across the whole JVM, which avoids the browser startup cost in some situations
 * Added config option to disable quitting of cached browsers on JVM shutdown
 
-==== Breaking Changes
+==== Breaking changes
 
 * The `Page.convertToPath()` function is now responsible for adding a prefix slash if required (i.e. it's not added implicitly in `Page.getPageUrl()`) [GEB-139].
 * Unchecked checkboxes now report their value as `false` instead of null
 
 === 0.6.1
 
-==== New Features
+==== New features
 
 * Compatibility with at least Selenium 2.9.0 (version 0.6.0 of Geb did not work with Selenium 2.5.0 and up)
 * Attempting to set a select to a value that it does not contain now throws an exception
 * The waiting algorithm is now time based instead of number of retries based, which is better for blocks that are not near instant
 * Better support for working with already instantiated pages
 
-==== Breaking Changes
+==== Breaking changes
 
 * Using `&lt;select&gt;` elements with Geb now requires an explicit dependency on an extra WebDriver jar (see link:intro.html#installation__usage[the section on installation for more info])
 * The `Navigator` `classes()` method now returns a `List` (instead of `Set`) and guarantees that it will be sorted alphabetically
 
 === 0.6
 
-==== New Features
+==== New features
 
 * selenium-common is now a 'provided' scoped dependency of Geb
 * Radio buttons can be selected with their label text as well as their value attribute.
@@ -346,7 +346,7 @@ This page lists the high level changes between versions of Geb.
 * Added the TestNG support (contributed by Alexander Zolotov)
 * Added the `height`, `width`, `x` and `y` properties to navigator objects and modules
 
-==== Breaking Changes
+==== Breaking changes
 
 * Raised minimum Groovy version to 1.7
 * All failed waitFor clauses now throw a `geb.waiting.WaitTimeoutException` instead of `AssertionError`
@@ -364,11 +364,11 @@ This page lists the high level changes between versions of Geb.
 
 === 0.5
 
-==== New Features
+==== New features
 
 * Navigator objects now implement the Groovy truth (empty == false, non empty == true)
 * Introduced “js” short notation
-* Added “{easyb}” support (`geb-easyb` and Grails support)
+* Added “{easyb}” support (`geb-easyb`) and Grails support
 * Page change listening support through `geb.PageChangeListener`
 * `waitFor()` methods added, making dealing with dynamic pages easier
 * Support for `alert()` and `confirm()` dialogs
@@ -380,7 +380,7 @@ This page lists the high level changes between versions of Geb.
 * The click() methods that take one or more page classes are now available on `Navigator` objects
 * Added page lifecycle methods `onLoad()`/`onUnload()`
 
-==== Breaking Changes
+==== Breaking changes
 
 * Exceptions raised in `drive()` blocks are no longer wrapped with `DriveException`
 * the `at(Class pageClass)` method no longer requires the existing page instance to be of that class (page will be updated if the given type matches)

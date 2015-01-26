@@ -82,7 +82,7 @@ Browser.drive {
 }
 ----
 
-== Base And Context
+== Base And context
 
 Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition. There are two ways that a modules base/context can be defined.
 
@@ -161,7 +161,7 @@ assert formB.thingValue == "b"
 
 If the module declares a base, it is always calculated _relative_ to the `Navigator` used in the initialization statement. If the initialization statement does not use a `Navigator`, the module's base is calculated relative to the including page's base.
 
-== Module is-a Navigator
+== `Module` is-a `Navigator`
 
 Modules always have a base navigator associated with them (if you don't specify a base for a module at all then it will be assigned the root element of the page as the base) so it is natural to think of them as navigators. Given that `Module` implements `Navigator` and considering the following HTML…
 
@@ -307,7 +307,7 @@ static content = {
 }
 ----
 
-== The Content DSL
+== The content DSL
 
 The Content DSL used for modules is _exactly_ the same as the [one used for pages][content-dsl], so all of the same options and techniques can be used.
 
@@ -315,7 +315,7 @@ The Content DSL used for modules is _exactly_ the same as the [one used for page
 
 Modules can use inheritance in the same way that pages can. That is, their content definitions are merged with any content redefined in the subclass taking precedence of the superclass.
 
-== Size and Location
+== Size and location
 
 You can obtain the size and location of the module. All units are in pixels. The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page (or parent frame) to the top left point of the base of the module.
 

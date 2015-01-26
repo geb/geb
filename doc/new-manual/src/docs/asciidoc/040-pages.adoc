@@ -60,11 +60,11 @@ Browser.drive {
 
 You have now encapsulated, in a reusable fashion, information about each page and how to interact with it. As anyone who has tried to knows, maintaining a large suite of functional web tests for a changing application can become an expensive and frustrating process. Geb's support for the Page Object pattern addresses this problem.
 
-== The Page superclass
+== The `Page` superclass
 
 All page objects *must* inherit from [`Page`][page-api].
 
-== The Content DSL
+== The content DSL
 
 Geb features a DSL for defining page content in a _templated_ fashion, which allows very concise yet flexible page definitions. Pages define a `static` closure property called `content` that describes the page content. 
 
@@ -191,7 +191,7 @@ class ExamplePage extends Page {
 }
 ----
 
-=== Template Options
+=== Template options
 
 Template definitions can take different options. The syntax is…
 
@@ -207,7 +207,7 @@ theDiv(cache: false, required: false) { $("div", id: "a") }
 
 The following are the available options.
 
-==== required
+==== `required`
 
 Default value: `true`
 
@@ -234,7 +234,7 @@ Browser.drive {
 }
 ----
 
-==== cache
+==== `cache`
 
 Default value: `false`
 
@@ -276,7 +276,7 @@ Browser.drive {
 
 Caching is a performance optimisation and is disabled by default. You may want to enable if you notice that the a particular content definition is taking a long time to resolve.
 
-==== to
+==== `to`
 
 Default value: `null`
 
@@ -318,7 +318,7 @@ Then, on click, the browser's page is set to the first page in the list whose at
 
 All of the page classes and classes of the page instances passed in when using any variant of the `to` option have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
-==== wait
+==== `wait`
 
 Default value: `false`
 
@@ -393,7 +393,7 @@ Then if wait timeout expires when retrieving `dynamicallyAdded`, there will be n
 
 Waiting content blocks are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
 
-==== toWait
+==== `toWait`
 
 Default value: `false`
 
@@ -441,7 +441,7 @@ Browser.drive {
 
 See the link:javascript.html#waiting[section on waiting] for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a link:api/geb/waiting/WaitTimeoutException.html[`WaitTimeoutException`] will be thrown if the wait timeout expires.
 
-==== page
+==== `page`
 
 Default value: `null`
 
@@ -508,7 +508,7 @@ Browser.drive {
 
 Remember that the aliased content has to be defined before the aliasing content, otherwise you will get a link:api/geb/error/InvalidPageContent.html[`InvalidPageContent`] exception.
 
-== “At” Verification
+== “At” verification
 
 Each page can define a way to check whether the underlying browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
 
@@ -625,7 +625,7 @@ Browser.drive {
 
 See the section on link:browser.html#the_base_url[the base url] for notes about URLs and slashes.
 
-== Advanced Page Navigation
+== Advanced page navigation
 
 Page classes can customise how they generate URLs when used in conjunction with the browser `to()` method. 
 
@@ -768,11 +768,11 @@ Browser.drive {
 
 If a subclass defines a content template with the same name as a content template defined in a superclass, the subclass version replaces the version from the superclass.
 
-== Lifecycle Hooks
+== Lifecycle hooks
 
 Page classes can optionally implement methods that are called when the page is set as the browser's current page and when it is swapped out for another page. This can be used to transfer state between pages.
 
-=== onLoad(Page previousPage)
+=== `onLoad(Page previousPage)`
 
 The `onLoad()` method is called with previous page object instance when the page becomes the new page object for a browser.
 
@@ -786,7 +786,7 @@ class SomePage extends Page {
 }
 ----
 
-=== onUnload(Page newPage)
+=== `onUnload(Page newPage)`
 
 The `onUnload()` method is called with next page object instance when the page is being replaced as the page object for the browser.
 

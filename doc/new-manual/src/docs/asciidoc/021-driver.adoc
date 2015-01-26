@@ -1,4 +1,4 @@
-= The WebDriver Implementation
+= The WebDriver implementation
 
 A `geb.Browser` instance interacts with an actual browser via an instance of [WebDriver][webdriver-api]. The browser's driver can always be retrieved via the `WebDriver getDriver()` method.
 
@@ -8,23 +8,23 @@ One of the key design principles that WebDriver embraces is that tests/scripts s
 
 ____
 
-== Explicit Driver Management
+== Explicit driver management
 
 One option for specifying the driver implementation is to construct the driver instance and pass it to the `geb.Browser` to be used link:browser.html[when it is constructed].
 
 However, where possible prefer implicit driver management which is discussed later in this chapter.
 
 [discrete]
-=== Explicit Lifecycle
+=== Explicit lifecycle
 
 When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time. This can be done via the methods on the webdriver instance (obtainable via `geb.Browser#getDriver()`) or by calling the link:browser.html#quitting_the_browser[delegating methods on the browser object].
 
-== Implicit Driver Management
+== Implicit driver management
 
 If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the link:configuration.html#driver_implementation[configuration mechanism].
 
 [discrete]
-=== Implicit Lifecycle
+=== Implicit lifecycle
 
 By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver. This avoids the overhead of creating a new driver each time, which can be significant when working with a real browser.
 
@@ -51,12 +51,12 @@ After calling either of this methods, the next request for a default driver will
 
 This caching behavior is link:configuration.html#driver_caching[configurable]. 
 
-== Driver Quirks
+== Driver quirks
 
 This section details various quirks or issues that have been encountered with different driver implementations.
 
 [discrete]
-=== HTMLUnitDriver
+=== `HTMLUnitDriver`
 
 [discrete]
 ==== Dealing with pages that use HTML refreshes

@@ -1,4 +1,4 @@
-= Scripts and Binding
+= Scripts and binding
 
 Geb supports being used in scripting environments via both the `Browser.drive()` method, and by using the [`geb.binding.BindingUpdater`][bindingupdater-api] class that populates and updates a [`groovy.lang.Binding`][groovy-binding] that can be used with scripts. This is also the same mechanism that can be used with link:testing.html#cucumber_cucumber_jvm[Cucumber-JVM].
 

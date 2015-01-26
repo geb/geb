@@ -1,8 +1,8 @@
-= Cloud Browser Testing
+= Cloud browser testing
 
 When you want to perform web testing on multiple browsers and operating systems, it can be quite complicated to maintain machines for each of the target environments. There are a few companies that provide "remote web browsers as a service", making it easy to do this sort of matrix testing without having to maintain the multiple browser installations yourself. Geb provides easy integration with two such services, https://saucelabs.com/[SauceLabs] and http://www.browserstack.com/[BrowserStack]. This integration includes two parts: assistance with creating a driver in `GebConfig.groovy` and a Gradle plugin.
 
-== Creating a Driver
+== Creating a driver
 
 For both SauceLabs and BrowserStack, a special driver factory is provided that, given a browser specification as well as an username and access key, creates an instance of `RemoteWebDriver` configured to use a browser in the cloud. Examples of typical usage in `GebConfig.groovy` are included below. They will configure Geb to run in SauceLabs/BrowserStack if the appropriate system property is set, and if not it will use whatever driver that is configured. This is useful if you want to run the code in a local browser for development. In theory you could use any system property to pass the browser specification but `geb.saucelabs.browser`/`geb.browserstack.browser` are also used by the Geb Gradle plugins, so it's a good idea to stick with those property names.
 
@@ -53,7 +53,7 @@ You can optionally pass additional configuration settings by providing a Map to 
 
 Finally, there is also link:api/geb/driver/CloudDriverFactory.html#create(java.lang.String,%20java.lang.String,%20Map%3CString,%20Object%3E)[an overloaded version of `create()` method] available that doesn't take a string specification and allows you to simply specify all the required capabilities using a map. This method might be useful if you just want to use the factory, but don't need the build level parametrization.
 
-=== SauceLabsDriverFactory
+=== `SauceLabsDriverFactory`
 
 ----
 def sauceLabsBrowser = System.getProperty("geb.saucelabs.browser")
@@ -68,7 +68,7 @@ if (sauceLabsBrowser) {
 }
 ----
 
-=== BrowserStackDriverFactory
+=== `BrowserStackDriverFactory`
 
 ----
 def browserStackBrowser = System.getProperty("geb.browserstack.browser")
@@ -100,11 +100,11 @@ if (browserStackBrowser) {
 }
 ----
 
-== Geb Gradle plugins
+== Gradle plugins
 
 For both SauceLabs and BrowserStack, Geb provides a Gradle plugin which simplifies declaring the account and browsers that are desired, as well as configuring a tunnel to allow the cloud provider to access local applications. These plugins allow easily creating multiple `Test` tasks that will have the appropriate `geb.PROVIDER.browser` property set (where _PROVIDER_ is either `saucelabs` or `browserstack`). The value of that property can be then passed in configuration file to <<saucelabsdriverfactory,SauceLabsDriverFactory>>/<<browserstackdriverfactory,BrowserStackDriverFactory>> as the ”browser specification“. Examples of typical usage are included below.
 
-=== Gradle geb-saucelabs Plugin
+=== geb-saucelabs plugin
 
 ----
 apply plugin: "geb-saucelabs" //1
@@ -160,7 +160,7 @@ The configuration closure specified at (7) is used to configure all of the gener
 In (8) we pass credentials for https://saucelabs.com/docs/connect[SauceConnect].
 Finally in (9) we can additionally configure https://saucelabs.com/docs/connect[SauceConnect] if desired. In (10) we override the port used by it and we can also pass additional https://docs.saucelabs.com/reference/sauce-connect/#command-line-options[command line options] like in (11).
 
-=== Gradle geb-browserstack Plugin
+=== geb-browserstack
 
 ----
 apply plugin: "geb-browserstack" //1

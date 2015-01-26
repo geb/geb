@@ -6,7 +6,7 @@ There are three general mechanisms for influencing configuration; _system proper
 
 == Mechanisms
 
-=== The Config Script
+=== The config script
 
 Geb attempts to load a {configslurper} script named `GebConfig.groovy` from the _default package_ (in other words, in the root of a directory that is on the classpath). If it is not found, Geb will try to load a {configslurper} class named `GebConfig` from the _default package_ - this is usefull if you run tests that use Geb from an IDE because you won't have to specify `GebConfig.groovy` as a resource, Geb will simply fall back to the compiled version of the script. If both script and class are not found Geb will continue using all defaults.
 
@@ -18,7 +18,7 @@ In a Grails project, the `test/functional` directory is a good place to put your
 
 ____
 
-==== Environment Sensitivity
+==== Environment sensitivity
 
 The Groovy {configslurper} mechanism has built in support for environment sensitive configuration, and Geb leverages this by using the *`geb.env`* system property to determine the environment to use. An effective use of this mechanism is to configure different drivers based on the designated Geb “environment” (concrete details on how to do this further down).
 
@@ -30,11 +30,11 @@ grails -Dgeb.env=windows test-app functional:
 
 Other build environments will allow you to do this in different ways.
 
-=== System Properties
+=== System properties
 
 Some config options can be specified by system properties. In general, config options specified by system properties will _override_ values set in the config script. See the config options below for which options are controllable via system properties.
 
-=== Build Adapter
+=== Build adapter
 
 The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options. For example, Grails dictates what the base URL and directory for reports should be set to and the Geb plugin for Grails uses the build adapter mechanism to set this up.
 
@@ -48,13 +48,13 @@ Note that while the default build adapter uses system properties, it should not 
 
 ____
 
-== Config Options
+== Config options
 
-=== Driver Implementation
+=== Driver implementation
 
 The driver to use is specified by the config key `driver`, or the system property `geb.driver`.
 
-==== Factory Closure
+==== Factory closure
 
 In the config script it can be a closure that when invoked with no arguments returns an instance of {webdriver-api} …
 
@@ -93,7 +93,7 @@ WebDriver has the ability to drive browsers on a remote host, which is what we a
 
 ____
 
-==== Driver Class Name
+==== Driver class name
 
 The name of the driver class to use (it will be constructed with no arguments) can be specified as a string with the key `driver` in the config script or via the `geb.driver` system property (the class must implement the [WebDriver API][webdriver-api]).
 
@@ -120,7 +120,7 @@ The following table gives the possible short names that can be used:
 
 If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table. If none of these classes can be found, a link:api/geb/error/UnableToLoadAnyDriversException.html[`UnableToLoadAnyDriversException`] will be thrown.
 
-=== Navigator Factory
+=== Navigator factory
 
 It is possible to specify your own implementation of link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`] via configuration. This is useful if you want to extend the link:api/geb/navigator/Navigator.html[`Navigator`] class to provide your own behaviour extensions.
 
@@ -134,7 +134,7 @@ innerNavigatorFactory = { Browser browser, List<org.openqa.selenium.WebElement> 
 
 This is a rather advanced use case. If you need to do this, check out the source code or get in touch via the mailing list if you need help.
 
-=== Driver Caching
+=== Driver caching
 
 Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. link:driver.html#implicit_lifecycle[the implicit driver lifecycle]) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become link:driver.html#explicit_lifecycle[responsible for quitting] every driver that is created at the appropriate time.
 
@@ -229,7 +229,7 @@ The _reporter_ is the object responsible for snapshotting the state of the brows
 reporter = new CustomReporter()
 ----
 
-=== Reports Dir
+=== Reports directory
 
 The reports dir configuration is used by to control where the browser should write reports (see the link:reporting.html[reporting] chapter for details).
 
@@ -255,7 +255,7 @@ reportsDir = new File("target/geb-reports")
 
 By default this value is *not set*. The browser's link:api/geb/Browser.html#report(java.lang.String)[`report()`] method requires a value for this config item so if you are using the reporting features you *must* set a reports dir.
 
-=== Report Test Failures Only
+=== Report test failures only
 
 By default Geb will take a report at the end of each test method, regardless of whether it ended successfully or not. The `reportOnTestFailureOnly` setting allows you to specify that a report should be taken only if a failure occurs. This might be useful as a way to speed up large test suites.
 
@@ -273,7 +273,7 @@ ____
 
 It is possible to specify a listener that will be notified when reports are taken. See the section on link:reporting.html#listening_to_reporting[listening to reporting] for details.
 
-=== Auto Clearing Cookies
+=== Auto clearing cookies
 
 Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an link:driver.html#implicit_lifecycle[implicit driver]. This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
 
@@ -281,7 +281,7 @@ Certain integrations will automatically clear the driver's cookies, which is usu
 autoClearCookies = false
 ----
 
-== Runtime Overrides
+== Runtime overrides
 
 The {configuration-api} object also has setters for all of the config properties it exposes, allowing you to override config properties at runtime in particular circumstances if you need to.
 

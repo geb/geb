@@ -1,4 +1,4 @@
-= Implicit Assertions
+= Implicit assertions
 
 As of Geb 0.7.0, certain parts of Geb utilise “*implicit assertions*”. This sole goal of this feature is to provide more informative error messages. Put simply, it means that for a given block of code, all _expressions_ are automatically turned into assertions. So the following code:
 
@@ -66,7 +66,7 @@ static content = {
 
 Accessing `headingText` here will _wait_ for there to be a `h1` and for it to have some text (because an http://docs.codehaus.org/display/GROOVY/Groovy+Truth[empty string is `false` in Groovy]), which will then be returned. This means that even when implicit assertions are used, the value is still returned and is is usable.
 
-== At Verification
+== At verification
 
 Let's take the `at` case.
 
@@ -151,7 +151,7 @@ The failed assertion is carried as the cause of the `geb.waiting.WaitTimeoutExce
 
 :numbered!:
 
-=== Waiting Content
+=== Waiting content
 
 The same implicit assertion semantics apply to content definitions that are waiting.
 
