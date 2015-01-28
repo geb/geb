@@ -16,18 +16,45 @@ import geb.test.GebSpecWithServer
  * limitations under the License.
  */
 
-class DollarMethodSamplesSpec extends GebSpecWithServer {
+class IntroSamplesSpec extends GebSpecWithServer {
 
-	def "can call different versions of the dollar method"() {
+	def "dollar method"() {
 		given:
 		html {
-			div()
+			div(title: "section", class: "main")
 		}
 
 		expect:
-		// tag::basic_examples[]
-		//match all 'div' elements on the page
-		$("div")
-		// end::basic_examples[]
+		// tag::dollar_examples[]
+		$("div") //<1>
+
+		$("div", 0) //<2>
+
+		$("div", title: "section") //<3>
+
+		$("div", 0, title: "section") //<4>
+
+		$("div.main") //<5>
+
+		$("div.main", 0) //<6>
+		// end::dollar_examples[]
+	}
+
+	def "refining content"() {
+		given:
+		html {
+			div {
+				p {
+					table(cellspacing: 0)
+				}
+			}
+		}
+
+		expect:
+		// tag::refining_content[]
+		$("p", 0).parent() //<1>
+
+		$("p").find("table", cellspacing: '0') //<2>
+		// end::refining_content[]
 	}
 }

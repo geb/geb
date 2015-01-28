@@ -1,3 +1,4 @@
+[[driver]]
 = The WebDriver implementation
 
 A `geb.Browser` instance interacts with an actual browser via an instance of [WebDriver][webdriver-api]. The browser's driver can always be retrieved via the `WebDriver getDriver()` method.

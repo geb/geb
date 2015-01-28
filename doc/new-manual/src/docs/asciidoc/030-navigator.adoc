@@ -1,3 +1,4 @@
+[[navigator]]
 = Interacting with content
 
 Geb provides a concise and Groovy interface to the content and controls in your browser. This is implemented through the `Navigator` API which is a jQuery inspired mechanism for finding, filtering and interacting with DOM elements.

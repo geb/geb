@@ -1,22 +1,31 @@
 = Introduction
 
-Geb is a developer focused tool for automating the interaction between web browsers and web content. It uses the dynamic language features of {groovy} to provide a powerful content definition DSL (for modelling content for reuse) and key concepts from {jquery} to provide a powerful content inspection and traversal API (for finding and interacting with content).
+Geb is a developer focused tool for automating the interaction between web browsers and web content.
+It uses the dynamic language features of {groovy} to provide a powerful content definition DSL (for modelling content for reuse) and key concepts from {jquery} to provide a powerful content
+inspection and traversal API (for finding and interacting with content).
 
-Geb was born out of a desire to make browser automation (originally for web testing) easier and more productive. It aims to be a *developer tool* in that it allows and encourages the using of programming and language constructs instead of creating a restricted environment. It uses Groovy's dynamism to remove the noise and boiler plate code in order to focus on what's important — the content and interaction.
+Geb was born out of a desire to make browser automation (originally for web testing) easier and more productive.
+It aims to be a *developer tool* in that it allows and encourages the using of programming and language constructs instead of creating a restricted environment.
+It uses Groovy's dynamism to remove the noise and boiler plate code in order to focus on what's important — the content and interaction.
 
 == The browser automation technology
 
-Geb builds on the {webdriver} browser automation library, which means that Geb can work with http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Which_browsers_does_support?[any browser that WebDriver can]. While Geb provides an extra layer of convenience and productivity, it is always possible to “drop down” to the WebDriver level to do something directly should you need to.
+Geb builds on the {webdriver} browser automation library, which means that Geb can work with
+link:https://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Which_browsers_does_WebDriver_support?[any browser that WebDriver can].
+While Geb provides an extra layer of convenience and productivity, it is always possible to “drop down” to the WebDriver level to do something directly should you need to.
 
-For more information see the manual section on link:driver.html[using a driver implementation].
+For more information see the manual section on link:#driver[using a driver implementation].
 
 == The Page Object pattern
 
-The Page Object Pattern gives us a common sense way to model content in a reusable and maintainable way. From the http://code.google.com/p/selenium/wiki/PageObjects[WebDriver wiki page on the Page Object Pattern]:
+The Page Object Pattern gives us a common sense way to model content in a reusable and maintainable way.
+From the http://code.google.com/p/selenium/wiki/PageObjects[WebDriver wiki page on the Page Object Pattern]:
 
 ____
 
-Within your web app's UI there are areas that your tests interact with. A Page Object simply models these as objects within the test code. This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
+Within your web app's UI there are areas that your tests interact with.
+A Page Object simply models these as objects within the test code.
+This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
 
 ____
 
@@ -24,51 +33,49 @@ Furthermore (from the same document):
 
 ____
 
-PageObjects can be thought of as facing in two directions simultaneously. Facing towards the developer of a test, they represent the services offered by a particular page. Facing away from the developer, they should be the only thing that has a deep knowledge of the structure of the HTML of a page (or part of a page) It's simplest to think of the methods on a Page Object as offering the "services" that a page offers rather than exposing the details and mechanics of the page. As an example, think of the inbox of any web-based email system. Amongst the services that it offers are typically the ability to compose a new email, to choose to read a single email, and to list the subject lines of the emails in the inbox. How these are implemented shouldn't matter to the test.
+PageObjects can be thought of as facing in two directions simultaneously.
+Facing towards the developer of a test, they represent the services offered by a particular page.
+Facing away from the developer, they should be the only thing that has a deep knowledge of the structure of the HTML of a page (or part of a page) It's simplest to think of the methods on a
+Page Object as offering the "services" that a page offers rather than exposing the details and mechanics of the page.
+As an example, think of the inbox of any web-based email system.
+Amongst the services that it offers are typically the ability to compose a new email, to choose to read a single email, and to list the subject lines of the emails in the inbox.
+How these are implemented shouldn't matter to the test.
 
 ____
 
-The Page Object Pattern is an important technique, and Geb provides first class support via its link:pages.html[page] and link:modules.html[module] constructs.
+The Page Object Pattern is an important technique, and Geb provides first class support via its <<pages,page>> and <<modules,module>> constructs.
 
 == The jQuery-ish navigator API
 
 The {jquery} JavaScript library provides an excellent API for (among other things) selecting or targeting content on a page and traversing through and around content. Geb takes a lot of inspiration from this. 
 
-In Geb, content is selected through the `$` function, which returns a [`Navigator`][navigator-api] object. A [`Navigator`][navigator-api] object is in someways analogous to the `jQuery` data type in jQuery in that it represents one or more targeted elements on the page.
+In Geb, content is selected through the `$` function, which returns a `{navigator-api}` object.
+A `Navigator` object is in someways analogous to the `jQuery` data type in jQuery in that it represents one or more targeted elements on the page.
 
 Let's see some examples:
 
+[source,groovy,indent=0]
 ----
-// match all 'div' elements on the page
-$("div")
-
-// match the first 'div' element on the page
-$("div", 0)
-
-// match all 'div' elements with a title attribute value of 'section'
-$("div", title: "section")
-
-// match the first 'div' element with a title attribute value of 'section'
-$("div", 0, title: "section")
-
-// match all 'div' elements who have the class 'main'
-$("div.main") 
-
-// match the first 'div' element with the class 'main'
-$("div.main", 0) 
+include::{testdir}/IntroSamplesSpec.groovy[tags=dollar_examples]
 ----
+<1> Match all `"div"` elements on the page
+<2> Match the first `"div"` element on the page
+<3> Match all `"div"` elements with a title attribute value of `"section"`
+<4> Match the first "div" element with a title attribute value of `"section"`
+<5> Match all `"div"` elements who have the class `"main"`
+<6> Match the first `"div"` element with the class `"main"`
+
 
 These methods return `Navigator` objects that can be used to further refine the content.
 
+[source,groovy,indent=0]
 ----
-// The parent of the first paragraph
-$("p", 0).parent()
-
-// All tables with a cellspacing attribute value of 0 that are nested in a paragraph
-$("p").find("table", cellspacing: '0')
+include::{testdir}/IntroSamplesSpec.groovy[tags=refining_content]
 ----
+<1> The parent of the first paragraph
+<2> All tables with a cellspacing attribute value of 0 that are nested in a paragraph
 
-This is just the beginning of what is possible with the Navigator API. See the {navigator} for more details.
+This is just the beginning of what is possible with the Navigator API. See the <<navigator,chapter on the navigator>> for more details.
 
 == Full examples
 
