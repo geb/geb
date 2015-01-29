@@ -73,6 +73,7 @@ This page lists the high level changes between versions of Geb.
 * Support for using page instances and lists of page instances as `page` option value of content templates. [http://jira.codehaus.org/browse/GEB-356[GEB-356]]
 * New `Navigator.module(Class&lt;? extends Module&gt;)` and `Navigable.module(Class&lt;? extends Module&gt;)`. [http://jira.codehaus.org/browse/GEB-312[GEB-312]]
 * New `Navigable.module(Module)` and `Navigable.module(Module)`. [http://jira.codehaus.org/browse/GEB-311[GEB-311]]
+* Support for using `interact {}` blocks in modules. [http://jira.codehaus.org/browse/GEB-364[GEB-364]]
 
 ==== Fixes
 

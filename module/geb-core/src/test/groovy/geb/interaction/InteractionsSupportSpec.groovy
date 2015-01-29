@@ -15,6 +15,8 @@
  */
 package geb.interaction
 
+import geb.Module
+import geb.Page
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithServer
 import spock.lang.IgnoreIf
@@ -48,31 +50,82 @@ class InteractionsSupportSpec extends GebSpecWithServer {
 		$('#second-input').value() == 'geb'
 	}
 
-	def "page content items are unpacked in interact block"() {
+	def "content items are unpacked in interact block"() {
 		given:
 		at InteractionPage
 
 		when:
 		interact {
-			moveToElement first
+			moveToElement interactions.first
 			click()
 			sendKeys 'GEB'
-			moveToElement second
+			moveToElement interactions.second
 			click()
 			sendKeys 'geb'
 		}
 
 		then:
-		first == 'GEB'
-		second == 'geb'
+		interactions.first == 'GEB'
+		interactions.second == 'geb'
 	}
 
+	def "can use interaction blocks in page classes"() {
+		given:
+		at InteractionPage
+
+		when:
+		fillInputs()
+
+		then:
+		interactions.first == 'GEB'
+		interactions.second == 'geb'
+	}
+
+	def "can use interaction blocks in module classes"() {
+		given:
+		at InteractionPage
+
+		when:
+		interactions.fillInputs()
+
+		then:
+		interactions.first == 'GEB'
+		interactions.second == 'geb'
+	}
 }
 
-class InteractionPage extends geb.Page {
+class InteractionPage extends Page {
 	static at = { true }
+	static content = {
+		interactions { module InteractionsModule }
+	}
+
+	void fillInputs() {
+		interact {
+			moveToElement interactions.first
+			click()
+			sendKeys 'GEB'
+			moveToElement interactions.second
+			click()
+			sendKeys 'geb'
+		}
+	}
+}
+
+class InteractionsModule extends Module {
 	static content = {
 		first { $('#first-input') }
 		second { $('#second-input') }
+	}
+
+	void fillInputs() {
+		interact {
+			moveToElement first
+			delegate.click()
+			sendKeys 'GEB'
+			moveToElement second
+			delegate.click()
+			sendKeys 'geb'
+		}
 	}
 }

@@ -23,6 +23,9 @@ import geb.error.ModuleInstanceNotInitializedException
 import geb.frame.DefaultFrameSupport
 import geb.frame.FrameSupport
 import geb.frame.UninitializedFrameSupport
+import geb.interaction.DefaultInteractionsSupport
+import geb.interaction.InteractionsSupport
+import geb.interaction.UninitializedInteractionSupport
 import geb.js.AlertAndConfirmSupport
 import geb.js.DefaultAlertAndConfirmSupport
 import geb.js.JQueryAdapter
@@ -57,6 +60,9 @@ class Module implements Navigator, PageContentContainer, Initializable {
 	@Delegate
 	private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
+	@Delegate
+	private InteractionsSupport interactionsSupport = new UninitializedInteractionSupport(this)
+
 	private JavascriptInterface js
 
 	//manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
@@ -72,6 +78,7 @@ class Module implements Navigator, PageContentContainer, Initializable {
 		frameSupport = new DefaultFrameSupport(browser)
 		js = browser.js
 		alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
+		interactionsSupport = new DefaultInteractionsSupport(browser)
 		initialized()
 	}
 

@@ -48,7 +48,7 @@ class ActionsDelegate {
 	}
 
 	void perform() {
-		actions.build().perform()
+		actions.perform()
 	}
 
 }

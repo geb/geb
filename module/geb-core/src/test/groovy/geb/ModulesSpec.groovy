@@ -218,6 +218,7 @@ class ModulesSpec extends GebSpecWithServer {
 		"FrameSupport"           | "withFrame"   | ["frame-id", {}]
 		"AlertAndConfirmSupport" | "withAlert"   | [{}]
 		"JavascriptInterface"    | "getJs"       | []
+		"InteractionsSupport"    | "interact"    | [{}]
 	}
 }
 
