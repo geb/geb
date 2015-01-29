@@ -58,12 +58,12 @@ Let's see some examples:
 ----
 include::{testdir}/IntroSamplesSpec.groovy[tags=dollar_examples]
 ----
-<1> Match all `"div"` elements on the page
-<2> Match the first `"div"` element on the page
-<3> Match all `"div"` elements with a title attribute value of `"section"`
-<4> Match the first "div" element with a title attribute value of `"section"`
-<5> Match all `"div"` elements who have the class `"main"`
-<6> Match the first `"div"` element with the class `"main"`
+<1> Match all `"div"` elements on the page.
+<2> Match the first `"div"` element on the page.
+<3> Match all `"div"` elements with a title attribute value of `"section"`.
+<4> Match the first "div" element with a title attribute value of `"section"`.
+<5> Match all `"div"` elements who have the class `"main"`.
+<6> Match the first `"div"` element with the class `"main"`.
 
 
 These methods return `Navigator` objects that can be used to further refine the content.
@@ -72,123 +72,60 @@ These methods return `Navigator` objects that can be used to further refine the 
 ----
 include::{testdir}/IntroSamplesSpec.groovy[tags=refining_content]
 ----
-<1> The parent of the first paragraph
-<2> All tables with a cellspacing attribute value of 0 that are nested in a paragraph
+<1> The parent of the first paragraph.
+<2> All tables with a cellspacing attribute value of 0 that are nested in a paragraph.
 
 This is just the beginning of what is possible with the Navigator API. See the <<navigator,chapter on the navigator>> for more details.
 
 == Full examples
 
-Let's have a look at a simple case of wanting to search for “wikipedia” on Google and follow the first result returned.
+Let's have a look at a simple case of wanting to go to Geb's home page and opening the latest version of this manual.
 
 === Inline scripting
 
 Here's an example of using Geb in an inline (i.e. no page objects or predefined content) scripting style…
 
+[source,groovy]
 ----
-import geb.Browser
+include::{testdir}/ScriptingSpec.groovy[tags=imports,indent=0]
 
-Browser.drive {
-    go "http://google.com/ncr"
-
-    // make sure we actually got to the page
-    assert title == "Google"
-
-    // enter wikipedia into the search field
-    $("input", name: "q").value("wikipedia")
-
-    // wait for the change to results page to happen
-    // (google updates the page dynamically without a new request)
-    waitFor { title.endsWith("Google Search") }
-
-    // is the first link to wikipedia?
-    def firstLink = $("li.g", 0).find("a.l")
-    assert firstLink.text() == "Wikipedia"
-
-    // click the link 
-    firstLink.click()
-
-    // wait for Google's javascript to redirect to Wikipedia
-    waitFor { title == "Wikipedia" }
-}
+include::{testdir}/ScriptingSpec.groovy[tags=inline,indent=0]
 ----
+<1> Check that we are at Geb's homepage.
+<2> Hover over to expand the menu item for manuals.
+<3> Ensure that the first link is for the current manual.
+<4> Click on the first link.
+<5> Check that we're at The Book of Geb.
 
 === Scripting with Page Objects
 
 This time let us define our content up front using the Page Object pattern…
 
+[source,groovy]
 ----
-import geb.Browser
-import geb.Page
-import geb.Module
+include::{testdir}/ScriptingSpec.groovy[tags=content_imports,indent=0]
 
-// modules are reusable fragments that can be used across pages that can be parameterised
-// here we are using a module to model the search function on the home and results pages
-class GoogleSearchModule extends Module {
-
-    // a parameterised value set when the module is included
-    def buttonValue
-
-    // the content DSL
-    static content = {
-
-        // name the search input control “field”, defining it with the jQuery like navigator
-        field { $("input", name: "q") }
-
-        // the search button declares that it takes us to the results page, and uses the 
-        // parameterised buttonValue to define itself
-        button(to: GoogleResultsPage) { 
-            $("input", value: buttonValue)
-        }
-    }
-}
-
-class GoogleHomePage extends Page {
-
-    // pages can define their location, either absolutely or relative to a base
-    static url = "http://google.com/ncr"
-
-    // “at checkers” allow verifying that the browser is at the expected page
-    static at = { title == "Google" }
-
-    static content = {
-        // include the previously defined module
-        search { module GoogleSearchModule, buttonValue: "Google Search" }
-    }
-}
-
-class GoogleResultsPage extends Page {
-    static at = { title.endsWith "Google Search" }
-    static content = {
-        // reuse our previously defined module
-        search { module GoogleSearchModule, buttonValue: "Search" }
-
-        // content definitions can compose and build from other definitions
-        results { $("li.g") }
-        result { i -> results[i] }
-        resultLink { i -> result(i).find("a.l") }
-        firstResultLink { resultLink(0) }
-    }
-}
-
-class WikipediaPage extends Page {
-    static at = { title == "Wikipedia" }
-}
+include::{testdir}/ScriptingSpec.groovy[tags=page_objects,indent=0]
 ----
+<1> Modules are reusable fragments that can be used across pages. Here we are using a module to model a menu that opens when hovered over.
+<2> Content DSL.
+<3> Name the span that is has to be hovered over to open the menu, defining it with a jQuery-like navigator.
+<4> Name the navigator that contains all links and declare that they take us to the manual.
+<5> A method that opens the menu hiding the implementation detail of how that is achieved.
+<6> Pages can define their location, either absolutely or relative to a base.
+<7> “at checkers” allow verifying that the browser is at the expected page
+<8> Include the previously defined module
 
 Now our script again, using the above defined content…
 
+[source,groovy]
 ----
-Browser.drive {
-    to GoogleHomePage
-    assert at(GoogleHomePage)
-    search.field.value("wikipedia")
-    waitFor { at GoogleResultsPage }
-    assert firstResultLink.text() == "Wikipedia"
-    firstResultLink.click()
-    waitFor { at WikipediaPage }
-}
+include::{testdir}/ScriptingSpec.groovy[tags=imports,indent=0]
+
+include::{testdir}/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
 ----
+<1> Go to the url defined by `GebHomePage` and also verify it's “at checker”.
+<2> Ensure that we end up at the manual page.
 
 === Testing
 

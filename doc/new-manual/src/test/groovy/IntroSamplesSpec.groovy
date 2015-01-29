@@ -1,5 +1,3 @@
-import geb.test.GebSpecWithServer
-
 /*
  * Copyright 2015 the original author or authors.
  *
@@ -15,6 +13,8 @@ import geb.test.GebSpecWithServer
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import geb.test.GebSpecWithServer
 
 class IntroSamplesSpec extends GebSpecWithServer {
 
