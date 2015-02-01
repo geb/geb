@@ -42,7 +42,7 @@
 :module-api: link:api/geb/Module.html
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :bindingupdater-api: link:api/geb/binding/BindingUpdater.html
-:grails: http://grails.org
+:grails: http://grails.org[Grails]
 :waiting: javascript.html#waiting
 :waiting-content: pages.html#wait
 :assertion-error: http://docs.oracle.com/javase/6/docs/api/java/lang/AssertionError.html
