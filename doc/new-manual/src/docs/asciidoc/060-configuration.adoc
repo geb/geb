@@ -1,3 +1,4 @@
+[[configuration]]
 = Configuration
 
 Geb provides a configuration mechanism that allows you to control various aspects of Geb in a flexible way. At the heart of this is the {configuration-api} object, which the {browser-api} and other objects query at runtime.

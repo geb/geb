@@ -1,61 +1,62 @@
 = The `Browser`
 
-The entry point to Geb is the [`Browser`][browser-api] object.
-A browser object marries a [`WebDriver`][webdriver-api] instance (which drives the actual web browser being automated) with the concept of a “current page”.
+The entry point to Geb is the `{browser-api}` object.
+A browser object marries a `{webdriver-api}` instance (which drives the actual web browser being automated) with the concept of a “current page”.
 
-Browser objects are created with a [configuration][configuration-api] that specifies which driver implemenation to use, the base URL to resolve relative links against and other bits of config. The configuration mechansism allows you to externalise how Geb should operate, which means you can use the same suite of Geb code or tests with different browsers or site instances. The link:configuration.html[chapter on configuration] contains more details on how to manage the configuration parameters and what they are.
+Browser objects are created with a `{configuration-api}` that specifies which driver implementation to use, the base URL to resolve relative links against and other bits of config.
+The configuration mechanism allows you to externalise how Geb should operate, which means you can use the same suite of Geb code or tests with different browsers or site instances.
+The <<configuration,chapter on configuration>> contains more details on how to manage the configuration parameters and what they are.
 
-The default constructor of [`Browser`][browser-api] simply loads its settings from the config mechanism.
+The default constructor of `{browser-api}` simply loads its settings from the config mechanism.
 
+[source,groovy]
 ----
-import geb.Browser
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=imports]
 
-def browser = new Browser()
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=creation,indent=0]
 ----
 
-However, if you prefer to specify the driver implementation (or any other settable property on the [browser][browser-api]) you can by using Groovy's map constructor syntax.
+However, if you prefer to specify the driver implementation (or any other settable property on the `{browser-api}`) you can by using Groovy's map constructor syntax.
 
+[source,groovy]
 ----
-import geb.Browser
-import org.openqa.selenium.firefox.FirefoxDriver
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=driver_imports]
 
-def browser = new Browser(driver: new FirefoxDriver())
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=setting_driver_in_constructor,indent=0]
 ----
 
 Which is the same as…
 
+[source,groovy]
 ----
-def browser = new Browser()
-browser.driver = new FirefoxDriver()
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=setting_driver,indent=0]
 ----
 
 Any property set this way will *override* any settings coming from the config mechanism.
 
-____
+[IMPORTANT]
+====
+The behaviour is undefined if a browser's driver is changed after its first use, so you should avoid setting the driver this way and prefer the configuration mechanism.
+====
 
-Note: The behaviour is undefined if a browser's driver is changed after its first use, so you should avoid setting the driver this way and prefer the configuration mechanism.
+For drastically custom configuration requirements, you can create your own `{configuration-api}` object and construct the browser with it,
+likely using the link:api/geb/ConfigurationLoader.html[configuration loader].
 
-____
-
-For drastically custom configuration requirements, you can create your own [configuration][configuration-api] object and construct the browser with it, likely using the link:api/geb/ConfigurationLoader.html[configuration loader].
-
+[source,groovy]
 ----
-import geb.Browser
-import geb.Configuration
-import geb.ConfigurationLoader
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=imports]
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=configuration_imports]
 
-def loader = new ConfigurationLoader("a-custom-environment")
-def config = loader.conf
-def browser = new Browser(config)
+include::{testDir}/browser/BrowserCreationSpec.groovy[tag=configuration_construction,indent=0]
 ----
 
-Wherever possible, you should strive to use the no-arg constructor and manage Geb through the inbuilt link:configuration.html[configuration mechanism] as it offers a great deal of flexibility and separates your configuration from your code.
+Wherever possible, you should strive to use the no-arg constructor and manage Geb through the inbuilt <<configuration,configuration mechanism>> as it offers a great deal of flexibility
+and separates your configuration from your code.
 
-____
-
+[NOTE]
+====
 Geb integrations typically remove the need to construct a browser object and do this for you, leaving you to just manage the configuration.
-
-____
+====
 
 == The `drive()` method
 

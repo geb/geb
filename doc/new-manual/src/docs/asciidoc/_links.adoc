@@ -7,7 +7,7 @@
 :jquery: http://jquery.com/[jQuery]
 :webclient: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 :webdriver: http://code.google.com/p/selenium/[WebDriver]
-:webdriver-api: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebDriver.html
+:webdriver-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebDriver.html[WebDriver]
 :webelement-api: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html
 :by-api: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/By.html
 :htmlunitdriver: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
@@ -36,8 +36,8 @@
 :configslurper: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html
 :groovy-binding: http://groovy.codehaus.org/api/groovy/lang/Binding.html
 :httpurlconnection: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
-:configuration-api: link:api/geb/Configuration.html
-:browser-api: link:api/geb/Browser.html
+:configuration-api: link:api/geb/Configuration.html[Configuration]
+:browser-api: link:api/geb/Browser.html[Browser]
 :page-api: link:api/geb/Page.html
 :module-api: link:api/geb/Module.html
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
