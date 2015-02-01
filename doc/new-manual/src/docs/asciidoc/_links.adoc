@@ -25,10 +25,10 @@
 :content-dsl: pages.html#the_content_dsl
 :defaultdriver: browser.html#the_default_driver
 :defaultdriver-lifecycle: browser.html#lifecycle
-:spock: http://spockframework.org/
-:junit: http://www.junit.org/
-:testng: http://testng.org/
-:cucumber-jvm: https://github.com/cucumber/cucumber-jvm
+:spock: http://spockframework.org/[Spock]
+:junit: http://www.junit.org/[JUnit]
+:testng: http://testng.org/[TestNg]
+:cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
 :geb-cucumber: https://github.com/tomdcc/geb-cucumber
 :javascriptexecutor: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html
 :remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver

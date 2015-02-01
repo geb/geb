@@ -1,3 +1,4 @@
+[[testing]]
 = Testing
 
 Geb provides first class support for functional web testing via integration with popular testing frameworks such as {spock}, {junit}, {testng} and {cucumber-jvm}.

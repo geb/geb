@@ -12,6 +12,7 @@ apply plugin: 'org.asciidoctor.convert'
 
 dependencies {
 	testCompile project(':internal:test-support')
+	testCompile project(':module:geb-spock')
 }
 
 asciidoctor {

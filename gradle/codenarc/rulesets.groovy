@@ -47,6 +47,9 @@ ruleset {
 		SpaceBeforeOpeningBrace {
 			doNotApplyToFileNames = 'InteractionsSupportSpec.groovy'
 		}
+		MissingBlankLineAfterImports {
+			doNotApplyToFileNames = 'SelectableLinkModule.groovy'
+		}
 	}
 	ruleset('rulesets/generic.xml') {
 		RequiredString {

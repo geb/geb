@@ -56,7 +56,7 @@ Let's see some examples:
 
 [source,groovy,indent=0]
 ----
-include::{testdir}/IntroSamplesSpec.groovy[tags=dollar_examples]
+include::{testdir}/intro/IntroSamplesSpec.groovy[tags=dollar_examples]
 ----
 <1> Match all `"div"` elements on the page.
 <2> Match the first `"div"` element on the page.
@@ -70,7 +70,7 @@ These methods return `Navigator` objects that can be used to further refine the 
 
 [source,groovy,indent=0]
 ----
-include::{testdir}/IntroSamplesSpec.groovy[tags=refining_content]
+include::{testdir}/intro/IntroSamplesSpec.groovy[tags=refining_content]
 ----
 <1> The parent of the first paragraph.
 <2> All tables with a cellspacing attribute value of 0 that are nested in a paragraph.
@@ -79,7 +79,7 @@ This is just the beginning of what is possible with the Navigator API. See the <
 
 == Full examples
 
-Let's have a look at a simple case of wanting to go to Geb's home page and opening the latest version of this manual.
+Let's have a look at a simple case of going to Geb's home page and opening the highlights page for jQuery-like API.
 
 === Inline scripting
 
@@ -87,15 +87,14 @@ Here's an example of using Geb in an inline (i.e. no page objects or predefined 
 
 [source,groovy]
 ----
-include::{testdir}/ScriptingSpec.groovy[tags=imports,indent=0]
+include::{testdir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
 
-include::{testdir}/ScriptingSpec.groovy[tags=inline,indent=0]
+include::{testdir}/intro/ScriptingSpec.groovy[tags=inline,indent=0]
 ----
 <1> Check that we are at Geb's homepage.
-<2> Hover over to expand the menu item for manuals.
-<3> Ensure that the first link is for the current manual.
-<4> Click on the first link.
-<5> Check that we're at The Book of Geb.
+<2> Click on the link for information on jQuery-like API.
+<3> Check that section titles are as expected for the page about jQuery-like API.
+<4> Ensure that the previously clicked link is shown as the selected one.
 
 === Scripting with Page Objects
 
@@ -103,67 +102,50 @@ This time let us define our content up front using the Page Object pattern…
 
 [source,groovy]
 ----
-include::{testdir}/ScriptingSpec.groovy[tags=content_imports,indent=0]
+include::{testdir}/intro/module/SelectableLinkModule.groovy[tags=imports,indent=0]
+include::{testdir}/intro/page/GebHomePage.groovy[tags=imports,indent=0]
 
-include::{testdir}/ScriptingSpec.groovy[tags=page_objects,indent=0]
+include::{testdir}/intro/module/SelectableLinkModule.groovy[tags=class,indent=0]
+
+include::{testdir}/intro/module/HighlightsModule.groovy[tags=class,indent=0]
+
+include::{testdir}/intro/page/GebHomePage.groovy[tags=class,indent=0]
 ----
-<1> Modules are reusable fragments that can be used across pages. Here we are using a module to model a menu that opens when hovered over.
-<2> Content DSL.
-<3> Name the span that is has to be hovered over to open the menu, defining it with a jQuery-like navigator.
-<4> Name the navigator that contains all links and declare that they take us to the manual.
-<5> A method that opens the menu hiding the implementation detail of how that is achieved.
-<6> Pages can define their location, either absolutely or relative to a base.
-<7> “at checkers” allow verifying that the browser is at the expected page
-<8> Include the previously defined module
+<1> Modules are reusable fragments that can be used across pages. Here we are using a module to model a link that can be shown as selected.
+<2> Modules can contain methods that allow to hide document structure details.
+<3> Content DSL.
+<4> Content definitions can use other, more general content definitions to define more specific content elements.
+<5> Pages can define their location, either absolute or relative to a base.
+<6> “at checkers” allow verifying that the browser is at the expected page.
+<7> Include the previously defined module using a base.
+<8> Content definitions can not only return document elements but also other types. Here we return a list of section titles.
 
 Now our script again, using the above defined content…
 
 [source,groovy]
 ----
-include::{testdir}/ScriptingSpec.groovy[tags=imports,indent=0]
+include::{testdir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
 
-include::{testdir}/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
+include::{testdir}/intro/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
 ----
 <1> Go to the url defined by `GebHomePage` and also verify it's “at checker”.
-<2> Ensure that we end up at the manual page.
 
+[[testing-intro]]
 === Testing
 
-Geb itself does not include any kind of testing or execution framework. Rather, it works with existing popular tools like {spock}, {junit}, {testng} and {cucumber-jvm}. While Geb works well with all of these test tools, we encourage the use of {spock} as it's a great match for Geb with its focus and style.
+Geb itself does not include any kind of testing or execution framework.
+Rather, it works with existing popular tools like {spock}, {junit}, {testng} and {cucumber-jvm}. While Geb works well with all of these test tools, we encourage the use of {spock} as it's a great match for Geb with its focus and style.
 
-Here is our Google case again, this time use Geb's {spock} integration…
+Here is our Geb homepage case again, this time using Geb's {spock} integration…
 
+[source,groovy]
 ----
-import geb.spock.GebSpec
+include::{testdir}/intro/GebHomepageSpec.groovy[tags=imports,indent=0]
 
-class GoogleWikipediaSpec extends GebSpec {
-
-    def "first result for wikipedia search should be wikipedia"() {
-        given:
-        to GoogleHomePage
-
-        expect:
-        at GoogleHomePage
-
-        when:
-        search.field.value("wikipedia")
-
-        then:
-        waitFor { at GoogleResultsPage }
-
-        and:
-        firstResultLink.text() == "Wikipedia"
-
-        when:
-        firstResultLink.click()
-
-        then:
-        waitFor { at WikipediaPage }
-    }
-}
+include::{testdir}/intro/GebHomepageSpec.groovy[tags=class,indent=0]
 ----
 
-For more information on using Geb for web and functional testing, see the link:testing.html[testing chapter].
+For more information on using Geb for web and functional testing, see the <<testing,testing chapter>>.
 
 == Installation &amp; usage
 
