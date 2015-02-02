@@ -60,41 +60,36 @@ Geb integrations typically remove the need to construct a browser object and do 
 
 == The `drive()` method
 
-The Browser class features a static method, link:api/geb/Browser.html#drive(groovy.lang.Closure)[`drive()`], that makes Geb scripting a little more convenient.
+The Browser class features a static method, `{drive-method}`, that makes Geb scripting a little more convenient.
 
+[source,groovy,indent=0]
 ----
-Browser.drive {
-    go "signup"
-    $("h1").text() == "Signup Page"
-}
+include::{testDir}/browser/DriveSpec.groovy[tag=using_drive]
 ----
 
 Which is equivalent to:
 
+[source,groovy,indent=0]
 ----
-def browser = new Browser()
-browser.go "signup"
-browser.$("h1").text() == "Signup Page"
+include::{testDir}/browser/DriveSpec.groovy[tag=explicit]
 ----
 
-The `drive()` method takes all of the arguments that the
-[`Browser`][browser-api] constructor takes (i.e. none, a
-[configuration][configuration-api] and/or property overrides) or an existing browser instance, and a
-closure. The closure is evaluated against created browser instance (i.e. the browser is made the _delegate_ of the closure). The net result is that all top level method calls and property accesses are implied to be against the browser.
+The `drive()` method takes all of the arguments that the `{browser-api}` constructor takes (i.e. none, a `{configuration-api}` and/or property overrides) or an existing browser instance,
+and a closure.
+The closure is evaluated against created browser instance (i.e. the browser is made the _delegate_ of the closure).
+The net result is that all top level method calls and property accesses are implied to be against the browser.
 
 The `drive()` method always returns the browser object that was used, so if you need to quit the browser after the drive session you can do something like…
 
+[source,groovy,indent=0]
 ----
-Browser.drive("http://myapp.com") {
-    …
-}.quit()
+include::{testDir}/browser/DriveSpec.groovy[tag=quit]
 ----
 
-____
-
-For more on when/why you need to manually quit the browser, see the section on the link:driver.html[driver]
-
-____
+[TIP]
+====
+For more on when/why you need to manually quit the browser, see the section on the <<driver,driver>>
+====
 
 == Making requests
 
