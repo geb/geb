@@ -15,7 +15,6 @@
 package geb
 
 import geb.error.UnableToSetElementException
-import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
 import geb.navigator.NonEmptyNavigator
 import geb.test.GebSpecWithCallbackServer
@@ -127,7 +126,7 @@ class NavigableSpec extends GebSpecWithCallbackServer {
 		when:
 		SomePage
 		then:
-		UnresolvablePropertyException e = thrown()
+		MissingPropertyException e = thrown()
 		e.message.endsWith('Is SomePage a class you forgot to import?')
 	}
 
@@ -135,7 +134,7 @@ class NavigableSpec extends GebSpecWithCallbackServer {
 		when:
 		z = 3
 		then:
-		thrown(UnresolvablePropertyException)
+		thrown(MissingPropertyException)
 	}
 
 	def "dynamic method call that resolves to an empty navigator throws missing method exception"() {

@@ -16,7 +16,6 @@
 package geb.content
 
 import geb.error.UndefinedPageContentException
-import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
 
 abstract class PageContentSupport {
@@ -42,7 +41,7 @@ abstract class PageContentSupport {
 			try {
 				getNavigator().propertyMissing(name)
 			} catch (MissingPropertyException e2) {
-				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as content for ${owner}, or as a property on its Navigator context. Is $name a class you forgot to import?")
+				throw new MissingPropertyException("Unable to resolve $name as content for ${owner}, or as a property on its Navigator context. Is $name a class you forgot to import?", name, owner.getClass())
 			}
 		}
 	}
@@ -54,7 +53,7 @@ abstract class PageContentSupport {
 			try {
 				getNavigator().propertyMissing(name, val)
 			} catch (MissingPropertyException e1) {
-				throw new UnresolvablePropertyException(owner, name, "Unable to resolve $name as a property to set on ${owner}'s Navigator context")
+				throw new MissingPropertyException(name, owner.getClass())
 			}
 		}
 	}
