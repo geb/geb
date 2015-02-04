@@ -47,7 +47,7 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
 
 	void 'going to a page and getting its title'() {
 		given:
-		responseHtml {
+		callbackAndWebDriverServer.responseHtml {
 			head {
 				title 'a title'
 			}
@@ -64,7 +64,7 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
 
 	void 'using a selector that returns multiple elements'() {
 		given:
-		responseHtml {
+		callbackAndWebDriverServer.responseHtml {
 			body {
 				p 'first'
 				p 'second'
@@ -83,7 +83,7 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
 
 	void 'using form control shortcuts in a baseless module should not generate multiple root element searches'() {
 		given:
-		responseHtml {
+		callbackAndWebDriverServer.responseHtml {
 			body {
 				input type: 'text', name: 'someName'
 			}

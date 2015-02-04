@@ -15,10 +15,16 @@
  */
 package geb.test
 
+import groovy.xml.MarkupBuilder
 import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
 
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 class CallbackHttpServer extends TestHttpServer {
+
+	private static final String UTF8 = "utf8"
 
 	Closure get
 	Closure post
@@ -27,5 +33,40 @@ class CallbackHttpServer extends TestHttpServer {
 
 	protected addServlets(Context context) {
 		context.addServlet(new ServletHolder(new CallbackServlet(this)), "/*")
+	}
+
+	void responseHtml(Closure htmlMarkup) {
+		get = { HttpServletRequest request, HttpServletResponse response ->
+			synchronized (this) { // MarkupBuilder has some static state, so protect
+				try {
+					response.setContentType("text/html")
+					response.setCharacterEncoding(UTF8)
+					def writer = new OutputStreamWriter(response.outputStream, UTF8)
+					writer << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
+					new MarkupBuilder(writer).html {
+						htmlMarkup.delegate = delegate
+						htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
+						if (htmlMarkup.maximumNumberOfParameters < 2) {
+							htmlMarkup(request)
+						} else {
+							htmlMarkup(request, response)
+						}
+					}
+					writer.flush()
+				} catch (Exception e) {
+					e.printStackTrace()
+				}
+			}
+		}
+	}
+
+	void responseHtml(String html) {
+		get = { HttpServletRequest request, HttpServletResponse response ->
+			response.writer << html
+		}
+	}
+
+	void html(Closure html) {
+		responseHtml(html)
 	}
 }

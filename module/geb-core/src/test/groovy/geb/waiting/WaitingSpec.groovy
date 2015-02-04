@@ -15,12 +15,12 @@
  */
 package geb.waiting
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
-class WaitingSpec extends GebSpecWithServer {
+class WaitingSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 				<html>
 				<head>

@@ -16,10 +16,10 @@
 package geb.navigator
 
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
 @CrossBrowser
-class RelativeContentNavigatorSpec extends GebSpecWithServer {
+class RelativeContentNavigatorSpec extends GebSpecWithCallbackServer {
 
 	def children() {
 		given:

@@ -16,11 +16,11 @@
 package geb.navigator
 
 import geb.Browser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import groovy.transform.InheritConstructors
 import org.openqa.selenium.WebElement
 
-class CustomNavigatorSpec extends GebSpecWithServer {
+class CustomNavigatorSpec extends GebSpecWithCallbackServer {
 
 	def setup() {
 		_browser = null

@@ -16,12 +16,12 @@ package geb.js
 
 import geb.test.*
 
-class JQueryAdapterSpec extends GebSpecWithServer {
+class JQueryAdapterSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		def jquery = getClass().getResource("/jquery-1.4.2.min.js")
 
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 				<html>
 				<head>

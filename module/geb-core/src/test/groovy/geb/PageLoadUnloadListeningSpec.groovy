@@ -14,10 +14,10 @@
  */
 package geb
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
-class PageLoadUnloadListeningSpec extends GebSpecWithServer {
+class PageLoadUnloadListeningSpec extends GebSpecWithCallbackServer {
 
 	@Unroll
 	def "change callbacks via #method"(String method, Closure toPage) {

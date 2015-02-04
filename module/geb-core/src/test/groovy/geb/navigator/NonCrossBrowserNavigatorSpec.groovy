@@ -15,10 +15,10 @@
  */
 package geb.navigator
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import org.openqa.selenium.WebElement
 
-class NonCrossBrowserNavigatorSpec extends GebSpecWithServer {
+class NonCrossBrowserNavigatorSpec extends GebSpecWithCallbackServer {
 
 	def "click is called only on the first element of the navigator"() {
 		given:

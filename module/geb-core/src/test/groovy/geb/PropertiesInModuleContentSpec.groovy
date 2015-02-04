@@ -15,11 +15,11 @@
  */
 package geb
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
 import javax.servlet.http.HttpServletRequest
 
-class PropertiesInModuleContentSpec extends GebSpecWithServer {
+class PropertiesInModuleContentSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		responseHtml { HttpServletRequest request ->

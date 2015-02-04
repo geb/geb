@@ -18,13 +18,13 @@ package geb.navigator
 import geb.Page
 import geb.error.UndefinedAtCheckerException
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
 import spock.lang.Unroll
 
 @CrossBrowser
 @Unroll
-class NavigatorClickSpec extends GebSpecWithServer {
+class NavigatorClickSpec extends GebSpecWithCallbackServer {
 
 	@Issue('GEB-160')
 	def 'click call returns receiver for parameters: #clickParams'() {

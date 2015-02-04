@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,35 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.navigator
+package browser
 
-import geb.test.Android
-import geb.test.CrossBrowser
-import geb.test.GebSpecWithCallbackServer
+import geb.test.CallbackHttpServer
+import spock.lang.Shared
+import spock.lang.Specification
 
-@CrossBrowser
-@Android
-class NavigatorCssSpec extends GebSpecWithCallbackServer {
+abstract class DriveMethodSupportingSpecWithServer extends Specification {
+
+	@Shared CallbackHttpServer server = new CallbackHttpServer()
 
 	def setupSpec() {
-		responseHtml {
-			body {
-				div(class: 'styled', style: 'float: left', 'text')
-			}
-		}
+		server.start()
+		Browser.serverBaseUrl = server.baseUrl
 	}
 
-	def setup() {
-		go()
-	}
-
-	void 'getting css values'() {
-		expect:
-		$('.styled').css('float') == 'left'
-	}
-
-	void 'getting css values for empty navigator'() {
-		expect:
-		$('p').css('float') == null
+	def cleanupSpec() {
+		server?.stop()
 	}
 }

@@ -15,13 +15,13 @@
  */
 package geb.navigator
 
-import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
 import geb.test.Android
+import geb.test.CrossBrowser
+import geb.test.GebSpecWithCallbackServer
 
 @CrossBrowser
 @Android
-class NavigatorElementsSpec extends GebSpecWithServer {
+class NavigatorElementsSpec extends GebSpecWithCallbackServer {
 
 	def getElement() {
 		given:

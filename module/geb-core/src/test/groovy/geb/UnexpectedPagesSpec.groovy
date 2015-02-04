@@ -17,10 +17,10 @@ package geb
 
 import geb.error.InvalidGebConfiguration
 import geb.error.UnexpectedPageException
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
-class UnexpectedPagesSpec extends GebSpecWithServer {
+class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
 	def setup() {
 		responseHtml { request ->

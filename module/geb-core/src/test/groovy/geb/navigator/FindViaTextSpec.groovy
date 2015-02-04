@@ -16,10 +16,10 @@
 package geb.navigator
 
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
 @CrossBrowser
-class FindViaTextSpec extends GebSpecWithServer {
+class FindViaTextSpec extends GebSpecWithCallbackServer {
 
 	def setup() {
 		responseHtml {

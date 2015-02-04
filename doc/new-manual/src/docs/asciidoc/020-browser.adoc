@@ -88,7 +88,7 @@ include::{testDir}/browser/DriveSpec.groovy[tag=quit]
 
 [TIP]
 ====
-For more on when/why you need to manually quit the browser, see the section on the <<driver,driver>>
+For more on when/why you need to manually quit the browser, see the section on the <<driver,driver>>.
 ====
 
 == Making requests
@@ -96,50 +96,45 @@ For more on when/why you need to manually quit the browser, see the section on t
 === The base URL
 
 Browser instances maintain a link:api/geb/Browser.html#getBaseUrl()[`baseUrl`] property that is used to resolve all relative URLs.
-This value can come from link:configuration.html#base_url[configuration] or can be
-link:api/geb/Browser.html#setBaseUrl(java.lang.String)[explicitly set] on the browser.
+This value can come from <<base-url,configuration>> or can be link:api/geb/Browser.html#setBaseUrl(java.lang.String)[explicitly set] on the browser.
 
-Care must be taken with slashes when specifying both the base URL and the relative URL as trailing and leading slashes have significant meaning. The following table illustrates the resolution of different types of URLs.
+Care must be taken with slashes when specifying both the base URL and the relative URL as trailing and leading slashes have significant meaning.
+The following table illustrates the resolution of different types of URLs.
 
 |===
 |Base |Navigating To |Result
 
-|http://myapp.com/ |abc |http://myapp.com/abc
-|http://myapp.com |abc |http://myapp.comabc
-|http://myapp.com |/abc |http://myapp.com/abc
-|http://myapp.com/abc/ |def |http://myapp.com/abc/def
-|http://myapp.com/abc |def |http://myapp.com/def
-|http://myapp.com/abc/ |/def |http://myapp.com/def
-|http://myapp.com/abc/def/ |jkl |http://myapp.com/abc/def/jkl
-|http://myapp.com/abc/def |jkl |http://myapp.com/abc/jkl
-|http://myapp.com/abc/def |/jkl |http://myapp.com/jkl
+|\http://myapp.com/ |abc |\http://myapp.com/abc
+|\http://myapp.com |abc |\http://myapp.comabc
+|\http://myapp.com |/abc |\http://myapp.com/abc
+|\http://myapp.com/abc/ |def |\http://myapp.com/abc/def
+|\http://myapp.com/abc |def |\http://myapp.com/def
+|\http://myapp.com/abc/ |/def |\http://myapp.com/def
+|\http://myapp.com/abc/def/ |jkl |\http://myapp.com/abc/def/jkl
+|\http://myapp.com/abc/def |jkl |\http://myapp.com/abc/jkl
+|\http://myapp.com/abc/def |/jkl |\http://myapp.com/jkl
 |===
 
 It is usually most desirable to define your base urls with trailing slashes and not to use leading slashes on relative URLs.
 
 === Using pages
 
-Page objects (discussed further shortly) can define a url that will be used when explicitly navigating to that page. This is done with the link:api/geb/Browser.html#to(Class%3CT%3E,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(Class%3CT%3E,%20java.lang.Object)[`via()`] methods.
+Page objects (<<the-page,discussed further shortly>>) can define a url that will be used when explicitly navigating to that page.
+This is done with the link:api/geb/Browser.html#to(Class%3CT%3E,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(Class%3CT%3E,%20java.lang.Object)[`via()`] methods.
 
+[source,groovy]
 ----
-class SignupPage extends Page {
-    static url = "signup"
-}
+include::{testDir}/browser/PageSpec.groovy[tag=signup_page]
 
-Browser.drive {
-    to SignupPage
-    assert $("h1").text() == "Signup Page"
-    assert page instanceof SignupPage
-}
+include::{testDir}/browser/PageSpec.groovy[tag=using_pages,indent=0]
 ----
 
 The `to()` and `via()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` or `via()` call.
 
-____
-
-See the section on [Advanced Page Navigation][page-navigation] for more information on how to use more complicated URL resolution for pages.
-
-____
+[TIP]
+====
+See the section on <<advanced-page-navigation,advanced page navigation>> for more information on how to use more complicated URL resolution for pages.
+====
 
 === Direct
 
@@ -192,6 +187,7 @@ Browser.drive {
 }
 ----
 
+[[the-page]]
 == The `Page`
 
 Browser instances hold a reference to a _page_. This page instance is retrievable via the link:api/geb/Browser.html#getPage()[`page`] property. Initially, all browser instances have a page of type link:api/geb/Page.html[`Page`] which provides the basic navigation functions and is the superclass for all page objects.

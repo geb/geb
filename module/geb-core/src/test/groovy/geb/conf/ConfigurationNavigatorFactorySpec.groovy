@@ -23,11 +23,11 @@ import geb.navigator.NonEmptyNavigator
 import geb.navigator.factory.BrowserBackedNavigatorFactory
 import geb.navigator.factory.DefaultInnerNavigatorFactory
 import geb.navigator.factory.InnerNavigatorFactory
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import groovy.transform.InheritConstructors
 import org.openqa.selenium.WebElement
 
-class ConfigurationNavigatorFactorySpec extends GebSpecWithServer {
+class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
 
 	Configuration config
 	ConfigObject raw

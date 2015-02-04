@@ -18,10 +18,10 @@ package geb.navigator
 import org.openqa.selenium.support.ui.Select
 import geb.test.*
 
-class SelectFactorySpec extends GebSpecWithServer {
+class SelectFactorySpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 			<html>
 			<body>

@@ -16,10 +16,10 @@
 package geb.module
 
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
 @CrossBrowser
-class FormElementSpec extends GebSpecWithServer {
+class FormElementSpec extends GebSpecWithCallbackServer {
 
 	def disabled() {
 		given:

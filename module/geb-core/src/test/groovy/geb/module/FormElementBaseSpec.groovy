@@ -16,10 +16,10 @@
 package geb.module
 
 import geb.error.InvalidModuleBaseException
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
-class FormElementBaseSpec extends GebSpecWithServer {
+class FormElementBaseSpec extends GebSpecWithCallbackServer {
 
 	@Unroll
 	def "can base the module on '#tag'"() {

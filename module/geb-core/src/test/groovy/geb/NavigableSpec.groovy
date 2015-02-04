@@ -18,11 +18,11 @@ import geb.error.UnableToSetElementException
 import geb.error.UnresolvablePropertyException
 import geb.navigator.Navigator
 import geb.navigator.NonEmptyNavigator
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import org.openqa.selenium.WebElement
 import spock.lang.Issue
 
-class NavigableSpec extends GebSpecWithServer {
+class NavigableSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		responseHtml {

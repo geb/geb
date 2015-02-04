@@ -16,10 +16,10 @@
 package geb.navigator
 
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
 @CrossBrowser
-class ExoticAttributeValuesSpec extends GebSpecWithServer {
+class ExoticAttributeValuesSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		responseHtml {

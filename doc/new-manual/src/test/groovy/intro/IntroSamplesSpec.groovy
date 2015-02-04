@@ -15,9 +15,9 @@
  */
 package intro
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
-class IntroSamplesSpec extends GebSpecWithServer {
+class IntroSamplesSpec extends GebSpecWithCallbackServer {
 
 	def "dollar method"() {
 		given:

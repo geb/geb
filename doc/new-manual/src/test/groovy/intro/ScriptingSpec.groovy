@@ -25,7 +25,11 @@ import spock.lang.Specification
 
 class ScriptingSpec extends Specification {
 
-	void setup() {
+	void setupSpec() {
+		CachingDriverFactory.clearCache()
+	}
+
+	void cleanupSpec() {
 		CachingDriverFactory.clearCache()
 	}
 

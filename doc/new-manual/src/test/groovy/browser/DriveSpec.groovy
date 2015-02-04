@@ -16,20 +16,14 @@
 package browser
 
 import geb.driver.CachingDriverFactory
-import geb.test.GebSpecWithServer
 
 import javax.servlet.http.HttpServletRequest
 
-class DriveSpec extends GebSpecWithServer {
-
-	def setupSpec() {
-		Browser.serverBaseUrl = server.baseUrl
-		takeReports = false
-	}
+class DriveSpec extends DriveMethodSupportingSpecWithServer {
 
 	def "signup"() {
 		given:
-		html { HttpServletRequest request ->
+		server.html { HttpServletRequest request ->
 			if (request.requestURI.endsWith("/signup")) {
 				h1("Signup Page")
 			}
@@ -63,14 +57,3 @@ class DriveSpec extends GebSpecWithServer {
 	}
 }
 
-class Browser extends geb.Browser {
-	static String serverBaseUrl
-
-	Browser() {
-		browser.baseUrl = serverBaseUrl
-	}
-
-	static Browser drive(Closure script) {
-		drive(new Browser(), script)
-	}
-}

@@ -16,12 +16,12 @@
 package geb.binding
 
 import geb.Page
-import geb.test.*
+import geb.test.GebSpecWithCallbackServer
 
-class BindingUpdaterSpec extends GebSpecWithServer {
+class BindingUpdaterSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 			<html>
 			<body>

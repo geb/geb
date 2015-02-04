@@ -15,9 +15,9 @@
  */
 package geb.module
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
-class CheckboxSpec extends GebSpecWithServer {
+class CheckboxSpec extends GebSpecWithCallbackServer {
 
 	def setup() {
 		html {

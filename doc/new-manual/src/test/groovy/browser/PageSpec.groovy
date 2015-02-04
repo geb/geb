@@ -13,32 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.navigator
+package browser
 
-import geb.Module
-import geb.test.GebSpecWithCallbackServer
+import geb.Page
 
-class ModuleFromNavigatorSpec extends GebSpecWithCallbackServer {
+import javax.servlet.http.HttpServletRequest
 
-	def setupSpec() {
-		responseHtml {
-			body {
-				div(class: 'module-base')
+class PageSpec extends DriveMethodSupportingSpecWithServer {
+
+	def "using pages"() {
+		when:
+		server.html { HttpServletRequest request ->
+			if (request.requestURI.endsWith("/signup")) {
+				h1("Signup Page")
 			}
 		}
 
-		go()
-	}
-
-	def 'can create a module from a navigator'() {
-		when:
-		def module = $('div').module(ModuleFromNavigatorSpecModule)
-
 		then:
-		module instanceof ModuleFromNavigatorSpecModule
-		module.hasClass("module-base")
+		// tag::using_pages[]
+		Browser.drive {
+			to SignupPage
+			assert $("h1").text() == "Signup Page"
+			assert page instanceof SignupPage
+		}
+		// end::using_pages[]
 	}
 }
 
-class ModuleFromNavigatorSpecModule extends Module {
+// tag::signup_page[]
+class SignupPage extends Page {
+	static url = "signup"
 }
+// end::signup_page[]

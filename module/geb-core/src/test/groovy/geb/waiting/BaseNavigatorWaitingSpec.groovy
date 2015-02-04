@@ -17,12 +17,12 @@ package geb.waiting
 
 import geb.Configuration
 import geb.navigator.factory.BrowserBackedNavigatorFactory
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import groovy.transform.InheritConstructors
 import spock.lang.Unroll
 
 @Unroll
-class BaseNavigatorWaitingSpec extends GebSpecWithServer {
+class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 
 	Configuration config
 	ConfigObject rawConfig

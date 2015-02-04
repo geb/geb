@@ -626,6 +626,7 @@ Browser.drive {
 
 See the section on link:browser.html#the_base_url[the base url] for notes about URLs and slashes.
 
+[[advanced-page-navigation]]
 == Advanced page navigation
 
 Page classes can customise how they generate URLs when used in conjunction with the browser `to()` method. 

@@ -14,13 +14,13 @@
  */
 package geb
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
-class UrlCalculationSpec extends GebSpecWithServer {
+class UrlCalculationSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 			<html>
 			<body>

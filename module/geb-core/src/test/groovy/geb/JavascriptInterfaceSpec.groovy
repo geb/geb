@@ -16,10 +16,10 @@ package geb
 
 import geb.test.*
 
-class JavascriptInterfaceSpec extends GebSpecWithServer {
+class JavascriptInterfaceSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 			<html>
 				<title>geb</title>

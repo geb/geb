@@ -20,10 +20,13 @@ import geb.download.helper.SelfSignedCertificateHelper
 import geb.test.CallbackHttpsServer
 import geb.test.GebSpecWithServer
 import geb.test.TestHttpServer
+import spock.lang.Shared
 
 import javax.net.ssl.HttpsURLConnection
 
 class HttpsDownloadingSpec extends GebSpecWithServer {
+
+	@Shared CallbackHttpsServer httpsServer = new CallbackHttpsServer()
 
 	private static final Closure<Void> CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT = { HttpURLConnection connection ->
 		if (connection instanceof HttpsURLConnection) {
@@ -31,7 +34,6 @@ class HttpsDownloadingSpec extends GebSpecWithServer {
 			helper.acceptCertificatesFor(connection as HttpsURLConnection)
 		}
 	}
-
 	Configuration config
 	ConfigObject rawConfig
 
@@ -39,14 +41,14 @@ class HttpsDownloadingSpec extends GebSpecWithServer {
 		config = browser.config
 		rawConfig = config.rawConfig
 
-		server.get = { req, res ->
+		httpsServer.get = { req, res ->
 			res.contentType = "text/plain"
 			res.outputStream << "from https"
 		}
 	}
 
 	TestHttpServer getServerInstance() {
-		new CallbackHttpsServer()
+		httpsServer
 	}
 
 	void 'can download from endpoints with self-signed certificates'() {

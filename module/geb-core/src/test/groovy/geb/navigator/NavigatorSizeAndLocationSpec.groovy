@@ -17,12 +17,12 @@ package geb.navigator
 
 import geb.Module
 import geb.Page
-import geb.test.*
+import geb.test.GebSpecWithCallbackServer
 
-class NavigatorSizeAndLocationSpec extends GebSpecWithServer {
+class NavigatorSizeAndLocationSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 			<html>
 			<head>

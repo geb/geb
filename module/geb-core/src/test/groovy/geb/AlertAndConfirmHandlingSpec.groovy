@@ -16,11 +16,10 @@ package geb
 
 import geb.test.*
 
-/*@Ignore*/
-class AlertAndConfirmHandlingSpec extends GebSpecWithServer {
+class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 				<html>
 				<body>

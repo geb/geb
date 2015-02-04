@@ -15,9 +15,9 @@
  */
 package geb.frame
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
-abstract class BaseFrameSupportSpec extends GebSpecWithServer {
+abstract class BaseFrameSupportSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		responseHtml { request, response ->

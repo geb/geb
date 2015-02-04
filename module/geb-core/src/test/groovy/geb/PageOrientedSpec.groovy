@@ -16,16 +16,16 @@ package geb
 
 import geb.content.SimplePageContent
 import geb.error.*
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
 import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Stepwise
-class PageOrientedSpec extends GebSpecWithServer {
+class PageOrientedSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			def path = req.requestURI == "/b" ? "b" : "a"
 			def other = path == "b" ? "a" : "b"
 			res.outputStream << """

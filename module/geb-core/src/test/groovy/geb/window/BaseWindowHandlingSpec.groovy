@@ -15,9 +15,9 @@
  */
 package geb.window
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
-abstract class BaseWindowHandlingSpec extends GebSpecWithServer {
+abstract class BaseWindowHandlingSpec extends GebSpecWithCallbackServer {
 	public final static String MAIN_PAGE_URL = '/main'
 
 	def mainWindow

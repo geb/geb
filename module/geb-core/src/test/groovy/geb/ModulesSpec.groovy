@@ -16,11 +16,11 @@ package geb
 
 import geb.error.InvalidPageContent
 import geb.error.ModuleInstanceNotInitializedException
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
 import spock.lang.Unroll
 
-class ModulesSpec extends GebSpecWithServer {
+class ModulesSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		responseHtml {

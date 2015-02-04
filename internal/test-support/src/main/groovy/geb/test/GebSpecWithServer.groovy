@@ -15,15 +15,9 @@
 package geb.test
 
 import geb.Browser
-import groovy.xml.MarkupBuilder
 import spock.lang.Shared
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-
-class GebSpecWithServer extends GebSpec {
-
-	private static final String UTF8 = "utf8"
+abstract class GebSpecWithServer extends GebSpec {
 
 	@Shared TestHttpServer server
 
@@ -35,13 +29,11 @@ class GebSpecWithServer extends GebSpec {
 		browser.baseUrl = server.baseUrl
 	}
 
-	TestHttpServer getServerInstance() {
-		new CallbackHttpServer()
-	}
+	abstract TestHttpServer getServerInstance()
 
 	int getTestPort() {
 		def portIndex = System.getProperty("geb.port.index")
-		portIndex ?  CROSS_BROWSER_PORTS[portIndex.toInteger()] : 0
+		portIndex ? CROSS_BROWSER_PORTS[portIndex.toInteger()] : 0
 	}
 
 	Browser createBrowser() {
@@ -55,41 +47,4 @@ class GebSpecWithServer extends GebSpec {
 	def cleanupSpec() {
 		server?.stop()
 	}
-
-	def responseHtml(Closure htmlMarkup) {
-		server.get = { HttpServletRequest request, HttpServletResponse response ->
-			synchronized (this) { // MarkupBuilder has some static state, so protect
-				try {
-					response.setContentType("text/html")
-					response.setCharacterEncoding(UTF8)
-					def writer = new OutputStreamWriter(response.outputStream, UTF8)
-					writer << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
-					new MarkupBuilder(writer).html {
-						htmlMarkup.delegate = delegate
-						htmlMarkup.resolveStrategy = Closure.DELEGATE_FIRST
-						if (htmlMarkup.maximumNumberOfParameters < 2) {
-							htmlMarkup(request)
-						} else {
-							htmlMarkup(request, response)
-						}
-					}
-					writer.flush()
-				} catch (Exception e) {
-					e.printStackTrace()
-				}
-			}
-		}
-	}
-
-	def responseHtml(String html) {
-		server.get = { HttpServletRequest request, HttpServletResponse response ->
-			response.writer << html
-		}
-	}
-
-	void html(Closure html) {
-		responseHtml(html)
-		go()
-	}
-
 }

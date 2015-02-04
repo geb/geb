@@ -16,9 +16,9 @@
 package geb.module
 
 import geb.error.InvalidModuleBaseException
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 
-class CheckboxBaseSpec extends GebSpecWithServer {
+class CheckboxBaseSpec extends GebSpecWithCallbackServer {
 	def "can base the module on input of type checkbox"() {
 		given:
 		html {

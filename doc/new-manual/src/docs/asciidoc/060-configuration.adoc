@@ -143,6 +143,7 @@ The default caching behavior is to cache the driver globally across the JVM. If 
 
 Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits. You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
 
+[[base-url]]
 === Base URL
 
 The link:browser.html#the_base_url[base URL] to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the `geb.build.baseUrl` system property). Any value set in the config script will take precedence over the value provided by the build adapter.

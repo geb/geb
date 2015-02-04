@@ -15,12 +15,12 @@
 package geb
 
 import geb.error.PageChangeListenerAlreadyRegisteredException
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Shared
 import spock.lang.Stepwise
 
 @Stepwise
-class PageChangeListeningSpec extends GebSpecWithServer {
+class PageChangeListeningSpec extends GebSpecWithCallbackServer {
 
 	@Shared pgl1
 	@Shared pgl2
@@ -28,7 +28,7 @@ class PageChangeListeningSpec extends GebSpecWithServer {
 	@Shared pgl2Callback
 
 	def setupSpec() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.outputStream << """
 			<html>
 			<body>

@@ -16,11 +16,11 @@
 package geb.navigator
 
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
 
 @CrossBrowser
-class FormControlSpec extends GebSpecWithServer {
+class FormControlSpec extends GebSpecWithCallbackServer {
 
 	def textInputs() {
 		when:

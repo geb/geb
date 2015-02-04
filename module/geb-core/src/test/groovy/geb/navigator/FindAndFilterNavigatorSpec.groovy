@@ -16,13 +16,13 @@
 package geb.navigator
 
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import org.openqa.selenium.By
 import spock.lang.Issue
 import spock.lang.Unroll
 
 @CrossBrowser
-class FindAndFilterNavigatorSpec extends GebSpecWithServer {
+class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
 
 	def "find by selector"() {
 		given:

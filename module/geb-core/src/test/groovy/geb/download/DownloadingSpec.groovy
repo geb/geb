@@ -15,15 +15,15 @@
  */
 package geb.download
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
 import javax.servlet.http.Cookie
 
-class DownloadingSpec extends GebSpecWithServer {
+class DownloadingSpec extends GebSpecWithCallbackServer {
 
 	def setup() {
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.contentType = "text/plain"
 			res.outputStream << "initial"
 		}
@@ -31,7 +31,7 @@ class DownloadingSpec extends GebSpecWithServer {
 
 	def "cookies are copied"() {
 		given:
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.contentType = "text/plain"
 			res.addCookie(new Cookie("a", "1"))
 			res.addCookie(new Cookie("b", "2"))
@@ -43,7 +43,7 @@ class DownloadingSpec extends GebSpecWithServer {
 
 		and:
 		def cookies
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			cookies = req.cookies
 			res.contentType = "text/plain"
 			res.outputStream << "cookies received"
@@ -61,7 +61,7 @@ class DownloadingSpec extends GebSpecWithServer {
 	def "links are resolved relative to current page"() {
 		given:
 		go()
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.contentType = "text/plain"
 			res.outputStream << "${req.requestURI}"
 		}
@@ -82,7 +82,7 @@ class DownloadingSpec extends GebSpecWithServer {
 	def "http 500 causes DownloadException"() {
 		given:
 		go()
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.sendError(500, "bang!")
 		}
 
@@ -96,7 +96,7 @@ class DownloadingSpec extends GebSpecWithServer {
 	@Unroll("download variants - method: #method")
 	def "download variants - method: #method"() {
 		given:
-		server.get = { req, res ->
+		callbackServer.get = { req, res ->
 			res.contentType = "text/plain"
 			res.outputStream << "123"
 		}

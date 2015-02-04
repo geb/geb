@@ -17,12 +17,12 @@ package geb.navigator
 
 import geb.Page
 import geb.test.CrossBrowser
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
 @Unroll
 @CrossBrowser
-class NavigatorSpec extends GebSpecWithServer {
+class NavigatorSpec extends GebSpecWithCallbackServer {
 
 	def truthiness() {
 		given:

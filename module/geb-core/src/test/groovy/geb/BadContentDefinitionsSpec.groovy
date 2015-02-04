@@ -17,7 +17,7 @@ package geb
 import geb.error.InvalidPageContent
 import geb.test.*
 
-class BadContentDefinitionsSpec extends GebSpecWithServer {
+class BadContentDefinitionsSpec extends GebSpec {
 
 	def "no args"() {
 		when:

@@ -15,10 +15,10 @@
  */
 package geb
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
-class ContentAccessShortcutsSpec extends GebSpecWithServer {
+class ContentAccessShortcutsSpec extends GebSpecWithCallbackServer {
 
 	def setupSpec() {
 		responseHtml {

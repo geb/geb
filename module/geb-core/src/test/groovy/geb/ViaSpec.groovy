@@ -15,12 +15,13 @@
  */
 package geb
 
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
+
 import javax.servlet.http.HttpServletRequest
 
-class ViaSpec extends GebSpecWithServer {
+class ViaSpec extends GebSpecWithCallbackServer {
 	def setupSpec() {
 		responseHtml { HttpServletRequest request ->
 			body {
