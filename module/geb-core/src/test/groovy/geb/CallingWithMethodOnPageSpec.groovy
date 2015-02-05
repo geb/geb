@@ -28,7 +28,6 @@ class CallingWithMethodOnPageSpec extends GebSpecWithCallbackServer {
         }
 
         when:
-
         browser.to(WithMethodOnPageScopeSpecPage).with {
             foo = text
         }
