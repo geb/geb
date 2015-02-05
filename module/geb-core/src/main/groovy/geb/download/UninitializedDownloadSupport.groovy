@@ -19,79 +19,79 @@ import geb.Initializable
 
 class UninitializedDownloadSupport implements DownloadSupport {
 
-	private final Initializable initializable
+    private final Initializable initializable
 
-	UninitializedDownloadSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
+    UninitializedDownloadSupport(Initializable initializable) {
+        this.initializable = initializable
+    }
 
-	@Override
-	HttpURLConnection download(Map options = [:]) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    HttpURLConnection download(Map options = [:]) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	HttpURLConnection download(String uri) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    HttpURLConnection download(String uri) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	InputStream downloadStream(Map options = [:], Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    InputStream downloadStream(Map options = [:], Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	InputStream downloadStream(String uri, Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    InputStream downloadStream(String uri, Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	InputStream downloadStream(Closure connectionConfig) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    InputStream downloadStream(Closure connectionConfig) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	String downloadText(Map options = [:], Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    String downloadText(Map options = [:], Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	String downloadText(String uri, Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    String downloadText(String uri, Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	String downloadText(Closure connectionConfig) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    String downloadText(Closure connectionConfig) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	byte[] downloadBytes(Map options = [:], Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    byte[] downloadBytes(Map options = [:], Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	byte[] downloadBytes(Closure connectionConfig) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    byte[] downloadBytes(Closure connectionConfig) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	byte[] downloadBytes(String uri, Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    byte[] downloadBytes(String uri, Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	Object downloadContent(Map options = [:], Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    Object downloadContent(Map options = [:], Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	Object downloadContent(String uri, Closure connectionConfig = null) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    Object downloadContent(String uri, Closure connectionConfig = null) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	Object downloadContent(Closure connectionConfig) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    Object downloadContent(Closure connectionConfig) {
+        throw initializable.uninitializedException()
+    }
 }

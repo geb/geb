@@ -19,27 +19,27 @@ import geb.test.GebSpecWithCallbackServer
 
 class CallingWithMethodOnPageSpec extends GebSpecWithCallbackServer {
 
-	private String text = "bar"
+    private String text = "bar"
 
-	def "can access owner scope from a with block called on a page instance"() {
-		given:
-		html {
-			input(type: "text", name: "foo")
-		}
+    def "can access owner scope from a with block called on a page instance"() {
+        given:
+        html {
+            input(type: "text", name: "foo")
+        }
 
-		when:
+        when:
 
-		browser.to(WithMethodOnPageScopeSpecPage).with {
-			foo = text
-		}
+        browser.to(WithMethodOnPageScopeSpecPage).with {
+            foo = text
+        }
 
-		then:
-		foo == text
-	}
+        then:
+        foo == text
+    }
 }
 
 class WithMethodOnPageScopeSpecPage extends Page {
-	static content = {
-		foo { $("input[name=foo]") }
-	}
+    static content = {
+        foo { $("input[name=foo]") }
+    }
 }

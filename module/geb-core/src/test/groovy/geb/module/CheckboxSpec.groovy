@@ -19,50 +19,50 @@ import geb.test.GebSpecWithCallbackServer
 
 class CheckboxSpec extends GebSpecWithCallbackServer {
 
-	def setup() {
-		html {
-			input(id: "checked", type: "checkbox", checked: "checked")
-			input(id: "unchecked", type: "checkbox")
-		}
-	}
+    def setup() {
+        html {
+            input(id: "checked", type: "checkbox", checked: "checked")
+            input(id: "unchecked", type: "checkbox")
+        }
+    }
 
-	def "checked"() {
-		expect:
-		$("#checked").module(Checkbox).checked
-		!$("#unchecked").module(Checkbox).checked
-	}
+    def "checked"() {
+        expect:
+        $("#checked").module(Checkbox).checked
+        !$("#unchecked").module(Checkbox).checked
+    }
 
-	def "unchecked"() {
-		expect:
-		$("#unchecked").module(Checkbox).unchecked
-		!$("#checked").module(Checkbox).unchecked
-	}
+    def "unchecked"() {
+        expect:
+        $("#unchecked").module(Checkbox).unchecked
+        !$("#checked").module(Checkbox).unchecked
+    }
 
-	def "check"() {
-		when:
-		$("#checked").module(Checkbox).check()
+    def "check"() {
+        when:
+        $("#checked").module(Checkbox).check()
 
-		then:
-		$("#checked").value()
+        then:
+        $("#checked").value()
 
-		when:
-		$("#unchecked").module(Checkbox).check()
+        when:
+        $("#unchecked").module(Checkbox).check()
 
-		then:
-		$("#unchecked").value()
-	}
+        then:
+        $("#unchecked").value()
+    }
 
-	def "uncheck"() {
-		when:
-		$("#unchecked").module(Checkbox).uncheck()
+    def "uncheck"() {
+        when:
+        $("#unchecked").module(Checkbox).uncheck()
 
-		then:
-		!$("#unchecked").value()
+        then:
+        !$("#unchecked").value()
 
-		when:
-		$("#checked").module(Checkbox).uncheck()
+        when:
+        $("#checked").module(Checkbox).uncheck()
 
-		then:
-		!$("#checked").value()
-	}
+        then:
+        !$("#checked").value()
+    }
 }

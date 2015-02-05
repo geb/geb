@@ -23,11 +23,11 @@ import org.codehaus.groovy.syntax.SyntaxException;
 
 public abstract class ImplicitAssertionsTransformationUtil {
 
-	public static void  reportError(ASTNode node, String message, SourceUnit sourceUnit) {
-		int line = node.getLineNumber() > 0 ? node.getLineNumber() : node.getLastLineNumber();
-		int column = node.getColumnNumber() > 0 ? node.getColumnNumber() : node.getLastColumnNumber();
-		SyntaxErrorMessage errorMessage = new SyntaxErrorMessage(new SyntaxException(message, line, column), sourceUnit);
-		sourceUnit.getErrorCollector().addErrorAndContinue(errorMessage);
-	}
+    public static void reportError(ASTNode node, String message, SourceUnit sourceUnit) {
+        int line = node.getLineNumber() > 0 ? node.getLineNumber() : node.getLastLineNumber();
+        int column = node.getColumnNumber() > 0 ? node.getColumnNumber() : node.getLastColumnNumber();
+        SyntaxErrorMessage errorMessage = new SyntaxErrorMessage(new SyntaxException(message, line, column), sourceUnit);
+        sourceUnit.getErrorCollector().addErrorAndContinue(errorMessage);
+    }
 
 }

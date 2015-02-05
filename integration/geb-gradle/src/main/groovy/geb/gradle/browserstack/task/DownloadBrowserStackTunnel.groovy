@@ -23,26 +23,26 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 class DownloadBrowserStackTunnel extends DefaultTask {
 
-	@OutputFile
-	File tunnelZip = project.file("${project.buildDir}/browserstack/BrowserStackTunnel.zip")
+    @OutputFile
+    File tunnelZip = project.file("${project.buildDir}/browserstack/BrowserStackTunnel.zip")
 
-	@TaskAction
-	void download() {
-		tunnelZip.parentFile.mkdirs()
-		if (!tunnelZip.exists()) {
-			def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart}.zip"
-			logger.info("Downloading {} to {}", url, tunnelZip)
-			tunnelZip << new URL(url).bytes
-		}
-	}
+    @TaskAction
+    void download() {
+        tunnelZip.parentFile.mkdirs()
+        if (!tunnelZip.exists()) {
+            def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart}.zip"
+            logger.info("Downloading {} to {}", url, tunnelZip)
+            tunnelZip << new URL(url).bytes
+        }
+    }
 
-	String getOsSpecificUrlPart() {
-		if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-			"win32"
-		} else if (Os.isFamily(Os.FAMILY_MAC)) {
-			"darwin-x64"
-		} else if (Os.isFamily(Os.FAMILY_UNIX)) {
-			Os.isArch("amd64") ? "linux-x64" : "linux-ia32"
-		}
-	}
+    String getOsSpecificUrlPart() {
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            "win32"
+        } else if (Os.isFamily(Os.FAMILY_MAC)) {
+            "darwin-x64"
+        } else if (Os.isFamily(Os.FAMILY_UNIX)) {
+            Os.isArch("amd64") ? "linux-x64" : "linux-ia32"
+        }
+    }
 }

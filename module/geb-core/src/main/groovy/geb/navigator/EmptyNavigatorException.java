@@ -16,8 +16,8 @@ package geb.navigator;
 
 public class EmptyNavigatorException extends IllegalStateException {
 
-	public EmptyNavigatorException() {
-		super("The Navigator instance is empty");
-	}
+    public EmptyNavigatorException() {
+        super("The Navigator instance is empty");
+    }
 
 }

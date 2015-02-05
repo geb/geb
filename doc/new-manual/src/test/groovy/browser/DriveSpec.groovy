@@ -21,39 +21,39 @@ import javax.servlet.http.HttpServletRequest
 
 class DriveSpec extends DriveMethodSupportingSpecWithServer {
 
-	def "signup"() {
-		given:
-		server.html { HttpServletRequest request ->
-			if (request.requestURI.endsWith("/signup")) {
-				h1("Signup Page")
-			}
-		}
+    def "signup"() {
+        given:
+        server.html { HttpServletRequest request ->
+            if (request.requestURI.endsWith("/signup")) {
+                h1("Signup Page")
+            }
+        }
 
-		expect:
-		// tag::using_drive[]
-		Browser.drive {
-			go "signup"
-			assert $("h1").text() == "Signup Page"
-		}
-		// end::using_drive[]
+        expect:
+        // tag::using_drive[]
+        Browser.drive {
+            go "signup"
+            assert $("h1").text() == "Signup Page"
+        }
+        // end::using_drive[]
 
-		and:
-		// tag::explicit[]
-		def browser = new Browser()
-		browser.go "signup"
-		assert browser.$("h1").text() == "Signup Page"
-		// end::explicit[]
-	}
+        and:
+        // tag::explicit[]
+        def browser = new Browser()
+        browser.go "signup"
+        assert browser.$("h1").text() == "Signup Page"
+        // end::explicit[]
+    }
 
-	def "quit"() {
-		expect:
-		// tag::quit[]
-		Browser.drive {
-			//…
-		}.quit()
-		// end::quit[]
-		cleanup:
-		CachingDriverFactory.clearCacheCache()
-	}
+    def "quit"() {
+        expect:
+        // tag::quit[]
+        Browser.drive {
+            //…
+        }.quit()
+        // end::quit[]
+        cleanup:
+        CachingDriverFactory.clearCacheCache()
+    }
 }
 

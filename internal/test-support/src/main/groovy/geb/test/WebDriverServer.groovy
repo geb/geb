@@ -22,8 +22,8 @@ import org.openqa.selenium.remote.server.DriverServlet
 
 class WebDriverServer extends TestHttpServer {
 
-	protected addServlets(Context context) {
-		context.addServlet(new ServletHolder(new DriverServlet()), "/*")
-	}
+    protected addServlets(Context context) {
+        context.addServlet(new ServletHolder(new DriverServlet()), "/*")
+    }
 
 }

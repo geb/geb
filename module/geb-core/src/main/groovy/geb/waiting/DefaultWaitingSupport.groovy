@@ -24,31 +24,31 @@ import geb.Configuration
 @SuppressWarnings("UnnecessaryPublicModifier")
 class DefaultWaitingSupport implements WaitingSupport {
 
-	private final Configuration config
+    private final Configuration config
 
-	DefaultWaitingSupport(Configuration config) {
-		this.config = config
-	}
+    DefaultWaitingSupport(Configuration config) {
+        this.config = config
+    }
 
-	public <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
-		doWaitFor(params.message, config.getWaitPreset(waitPreset), block)
-	}
+    public <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
+        doWaitFor(params.message, config.getWaitPreset(waitPreset), block)
+    }
 
-	public <T> T waitFor(Map params = [:], Closure<T> block) {
-		doWaitFor(params.message, config.defaultWait, block)
-	}
+    public <T> T waitFor(Map params = [:], Closure<T> block) {
+        doWaitFor(params.message, config.defaultWait, block)
+    }
 
-	public <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
-		doWaitFor(params.message, config.getWait(timeout), block)
-	}
+    public <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+        doWaitFor(params.message, config.getWait(timeout), block)
+    }
 
-	public <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
-		doWaitFor(params.message, new Wait(timeout, interval), block)
-	}
+    public <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+        doWaitFor(params.message, new Wait(timeout, interval), block)
+    }
 
-	private <T> T doWaitFor(String customMessage, Wait wait, Closure<T> block) {
-		wait.customMessage = customMessage
-		wait.waitFor(block)
-	}
+    private <T> T doWaitFor(String customMessage, Wait wait, Closure<T> block) {
+        wait.customMessage = customMessage
+        wait.waitFor(block)
+    }
 
 }

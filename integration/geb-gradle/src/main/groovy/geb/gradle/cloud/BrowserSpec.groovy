@@ -18,52 +18,52 @@ package geb.gradle.cloud
 import org.gradle.api.tasks.testing.Test
 
 class BrowserSpec {
-	final String cloudProvider
-	final String name
-	final String displayName
+    final String cloudProvider
+    final String name
+    final String displayName
 
-	Test testTask
+    Test testTask
 
-	private final Properties capabilities = new Properties()
+    private final Properties capabilities = new Properties()
 
-	BrowserSpec(String cloudProvider, String name) {
-		this.cloudProvider = cloudProvider
-		this.name = name
-		String browserSpec = name
-		if (browserSpec) {
-			String[] split = browserSpec.split("_", 3)
-			capabilities["browserName"] = split[0]
-			if (split.size() > 1) {
-				capabilities["platform"] = split[1]
-			}
-			if (split.size() > 2) {
-				capabilities["version"] = split[2]
-			}
-			displayName = "${capabilities["browserName"]}${capabilities["platform"]?.capitalize() ?: ""}${capabilities["version"]?.capitalize() ?: ""}"
-			if (capabilities["platform"]) {
-				capabilities["platform"] = capabilities["platform"].toUpperCase()
-			}
-		}
-	}
+    BrowserSpec(String cloudProvider, String name) {
+        this.cloudProvider = cloudProvider
+        this.name = name
+        String browserSpec = name
+        if (browserSpec) {
+            String[] split = browserSpec.split("_", 3)
+            capabilities["browserName"] = split[0]
+            if (split.size() > 1) {
+                capabilities["platform"] = split[1]
+            }
+            if (split.size() > 2) {
+                capabilities["version"] = split[2]
+            }
+            displayName = "${capabilities["browserName"]}${capabilities["platform"]?.capitalize() ?: ""}${capabilities["version"]?.capitalize() ?: ""}"
+            if (capabilities["platform"]) {
+                capabilities["platform"] = capabilities["platform"].toUpperCase()
+            }
+        }
+    }
 
-	void capability(String capability, String value) {
-		capabilities.put(capability, value)
-		configureTestTask()
-	}
+    void capability(String capability, String value) {
+        capabilities.put(capability, value)
+        configureTestTask()
+    }
 
-	void capabilities(Map<String, String> capabilities) {
-		this.capabilities.putAll(capabilities)
-		configureTestTask()
-	}
+    void capabilities(Map<String, String> capabilities) {
+        this.capabilities.putAll(capabilities)
+        configureTestTask()
+    }
 
-	void setCapabilities(Map<String, String> capabilities) {
-		capabilities.clear()
-		capabilities(capabilities)
-	}
+    void setCapabilities(Map<String, String> capabilities) {
+        capabilities.clear()
+        capabilities(capabilities)
+    }
 
-	void configureTestTask() {
-		StringWriter writer = new StringWriter()
-		capabilities.store(writer, null)
-		testTask.systemProperty "geb.${cloudProvider}.browser", writer.toString()
-	}
+    void configureTestTask() {
+        StringWriter writer = new StringWriter()
+        capabilities.store(writer, null)
+        testTask.systemProperty "geb.${cloudProvider}.browser", writer.toString()
+    }
 }

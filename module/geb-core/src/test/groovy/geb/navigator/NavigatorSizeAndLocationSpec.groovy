@@ -21,9 +21,9 @@ import geb.test.GebSpecWithCallbackServer
 
 class NavigatorSizeAndLocationSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		callbackServer.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<head>
 				<style>
@@ -48,60 +48,60 @@ class NavigatorSizeAndLocationSpec extends GebSpecWithCallbackServer {
 				<div class="b"/>
 			</body>
 			</html>"""
-		}
-	}
+        }
+    }
 
-	def setup() {
-		go()
-	}
+    def setup() {
+        go()
+    }
 
-	def "size"() {
-		expect:
-		$(".a").height == 40
-		$(".b").height == 80
-		$("div")*.height == [40, 80]
+    def "size"() {
+        expect:
+        $(".a").height == 40
+        $(".b").height == 80
+        $("div")*.height == [40, 80]
 
-		$(".a").width == 30
-		$(".b").width == 70
-		$("div")*.width == [30, 70]
-	}
+        $(".a").width == 30
+        $(".b").width == 70
+        $("div")*.width == [30, 70]
+    }
 
-	def "location"() {
-		expect:
-		$(".a").x == 20
-		$(".b").x == 60
-		$("div")*.x == [20, 60]
+    def "location"() {
+        expect:
+        $(".a").x == 20
+        $(".b").x == 60
+        $("div")*.x == [20, 60]
 
-		$(".a").y == 10
-		$(".b").y == 50
-		$("div")*.y == [10, 50]
-	}
+        $(".a").y == 10
+        $(".b").y == 50
+        $("div")*.y == [10, 50]
+    }
 
-	def "available on page content"() {
-		when:
-		page TestPage
+    def "available on page content"() {
+        when:
+        page TestPage
 
-		then:
-		div("a").height == 40
-		div("a").width == 30
+        then:
+        div("a").height == 40
+        div("a").width == 30
 
-		and:
-		div("b").height == 80
-		div("b").width == 70
-	}
+        and:
+        div("b").height == 80
+        div("b").width == 70
+    }
 
-	def "available on module"() {
-		when:
-		page TestPage
+    def "available on module"() {
+        when:
+        page TestPage
 
-		then:
-		module("a").height == 40
-		module("a").width == 30
+        then:
+        module("a").height == 40
+        module("a").width == 30
 
-		and:
-		module("b").height == 80
-		module("b").width == 70
-	}
+        and:
+        module("b").height == 80
+        module("b").width == 70
+    }
 
 }
 
@@ -109,9 +109,9 @@ class TestModule extends Module {
 }
 
 class TestPage extends Page {
-	static content = {
-		div { $("div.$it") }
-		module { module TestModule, div(it) }
-	}
+    static content = {
+        div { $("div.$it") }
+        module { module TestModule, div(it) }
+    }
 }
 

@@ -27,23 +27,23 @@ import org.openqa.selenium.remote.server.DriverSessions
 
 class CallbackAndWebDriverServer extends CallbackHttpServer {
 
-	protected addServlets(Context context) {
-		context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
-		context.addServlet(new ServletHolder(
-			new DriverServlet(new Supplier<DriverSessions>() {
+    protected addServlets(Context context) {
+        context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
+        context.addServlet(new ServletHolder(
+            new DriverServlet(new Supplier<DriverSessions>() {
 
-				DriverSessions get() {
-					new DefaultDriverSessions(new DefaultDriverFactory(), [(DesiredCapabilities.htmlUnit()): HtmlUnitDriver])
-				}
-			}
-		)), "/webdriver/*")
-	}
+                DriverSessions get() {
+                    new DefaultDriverSessions(new DefaultDriverFactory(), [(DesiredCapabilities.htmlUnit()): HtmlUnitDriver])
+                }
+            }
+            )), "/webdriver/*")
+    }
 
-	String getApplicationUrl() {
-		"$protocol://localhost:$port/application/"
-	}
+    String getApplicationUrl() {
+        "$protocol://localhost:$port/application/"
+    }
 
-	URL getWebdriverUrl() {
-		new URL("$protocol://localhost:$port/webdriver")
-	}
+    URL getWebdriverUrl() {
+        new URL("$protocol://localhost:$port/webdriver")
+    }
 }

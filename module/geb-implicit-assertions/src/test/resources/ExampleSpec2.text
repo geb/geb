@@ -2,17 +2,17 @@ import spock.lang.Specification
 
 class ExampleSpec extends Specification {
 
-	def featureMethodWithAssertInWaitFor() {
-		expect:
-		waitFor { assert 1 == 1; true }
-	}
+    def featureMethodWithAssertInWaitFor() {
+        expect:
+        waitFor { assert 1 == 1; true }
+    }
 
-	private waitFor(Closure c) {
-		def result = null
-		try {
-			c()
-		} catch (Throwable e) {
-			throw new Exception("nested", e)
-		}
-	}
+    private waitFor(Closure c) {
+        def result = null
+        try {
+            c()
+        } catch (Throwable e) {
+            throw new Exception("nested", e)
+        }
+    }
 }

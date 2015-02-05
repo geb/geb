@@ -16,9 +16,9 @@
 package geb.error;
 
 public class NoBaseUrlDefinedException extends GebException {
-	
-	public NoBaseUrlDefinedException() {
-		super("There is no base URL configured and it was requested. Please see the Geb manual for different ways of managing the base URL (quick solution: you can set the 'geb.build.baseUrl' JVM system property)");
-	}
-	
+
+    public NoBaseUrlDefinedException() {
+        super("There is no base URL configured and it was requested. Please see the Geb manual for different ways of managing the base URL (quick solution: you can set the 'geb.build.baseUrl' JVM system property)");
+    }
+
 }

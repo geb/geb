@@ -21,46 +21,46 @@ import org.gradle.api.Project
 import org.slf4j.Logger
 
 class BrowserStackTunnel extends ExternalTunnel {
-	private static final String HTTPS_PROTOCOL = 'https'
+    private static final String HTTPS_PROTOCOL = 'https'
 
-	final protected BrowserStackAccount account
-	final protected List<URL> applicationUrls
+    final protected BrowserStackAccount account
+    final protected List<URL> applicationUrls
 
-	final String outputPrefix = 'browserstack-tunnel'
-	final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
+    final String outputPrefix = 'browserstack-tunnel'
+    final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
 
-	BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, List<URL> applicationUrls) {
-		super(project, logger)
-		this.account = account
-		this.applicationUrls = applicationUrls
-	}
+    BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, List<URL> applicationUrls) {
+        super(project, logger)
+        this.account = account
+        this.applicationUrls = applicationUrls
+    }
 
-	@Override
-	void validateState() {
-		if (!account.accessKey) {
-			throw new InvalidUserDataException('No BrowserStack access key set')
-		}
-	}
+    @Override
+    void validateState() {
+        if (!account.accessKey) {
+            throw new InvalidUserDataException('No BrowserStack access key set')
+        }
+    }
 
-	@Override
-	List<String> assembleCommandLine() {
-		def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
-		def commandLine = [tunnelPath]
-		commandLine << account.accessKey
-		if (account.localId) {
-			commandLine << '-localIdentifier' << account.localId
-		}
-		if (applicationUrls) {
-			commandLine << "-only" << assembleAppSpecifier(applicationUrls)
-		}
-		commandLine
-	}
+    @Override
+    List<String> assembleCommandLine() {
+        def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
+        def commandLine = [tunnelPath]
+        commandLine << account.accessKey
+        if (account.localId) {
+            commandLine << '-localIdentifier' << account.localId
+        }
+        if (applicationUrls) {
+            commandLine << "-only" << assembleAppSpecifier(applicationUrls)
+        }
+        commandLine
+    }
 
-	static String assembleAppSpecifier(List<URL> applicationUrls) {
-		applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}" }.join(',')
-	}
+    static String assembleAppSpecifier(List<URL> applicationUrls) {
+        applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}" }.join(',')
+    }
 
-	static int determinePort(URL url) {
-		url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
-	}
+    static int determinePort(URL url) {
+        url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
+    }
 }

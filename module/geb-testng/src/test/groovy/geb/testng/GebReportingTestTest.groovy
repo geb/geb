@@ -27,14 +27,14 @@ import org.testng.internal.TestResult
 
 class GebReportingTestTest extends GebReportingTest {
 
-	def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer()
 
-	private methodNumber = 0
-	private reportNumberInTest = 1
+    private methodNumber = 0
+    private reportNumberInTest = 1
 
-	private methodNumberOfInitTest = 0
+    private methodNumberOfInitTest = 0
 
-	static responseText = """
+    static responseText = """
 		<html>
 		<body>
 			<div class="d1" id="d1">d1</div>
@@ -42,84 +42,84 @@ class GebReportingTestTest extends GebReportingTest {
 		</html>
 	"""
 
-	@BeforeClass
-	void setUpClass() {
-		server.start()
-		server.get = { req, res ->
-			res.outputStream << responseText
-		}
-	}
+    @BeforeClass
+    void setUpClass() {
+        server.start()
+        server.get = { req, res ->
+            res.outputStream << responseText
+        }
+    }
 
-	@BeforeMethod
-	void setUp() {
-		++methodNumber
-		reportNumberInTest = 1
+    @BeforeMethod
+    void setUp() {
+        ++methodNumber
+        reportNumberInTest = 1
 
-		config.reportOnTestFailureOnly = false
+        config.reportOnTestFailureOnly = false
 
-		browser.baseUrl = server.baseUrl
-		go()
-	}
+        browser.baseUrl = server.baseUrl
+        go()
+    }
 
-	@Test
-	void reportingTestShouldReportOnDemand(Method testMethod) {
-		report("ondemand")
-		doTestReport(testMethod.name, "ondemand")
-	}
+    @Test
+    void reportingTestShouldReportOnDemand(Method testMethod) {
+        report("ondemand")
+        doTestReport(testMethod.name, "ondemand")
+    }
 
-	@Test
-	void reportingTestShouldReportAfterMethodInit() {
-		// initialization method that created in order to assert report creation in next method
-		methodNumberOfInitTest = methodNumber
-	}
+    @Test
+    void reportingTestShouldReportAfterMethodInit() {
+        // initialization method that created in order to assert report creation in next method
+        methodNumberOfInitTest = methodNumber
+    }
 
-	@Test(dependsOnMethods = ["reportingTestShouldReportAfterMethodInit"])
-	void reportingTestShouldReportAfterMethod() {
-		// check previous method reporting (reportingTestShouldReportAfterMethodInit)
-		report("ondemand")
-		doTestReport("reportingTestShouldReportAfterMethodInit", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 1)
-		methodNumberOfInitTest = methodNumber
-	}
+    @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethodInit"])
+    void reportingTestShouldReportAfterMethod() {
+        // check previous method reporting (reportingTestShouldReportAfterMethodInit)
+        report("ondemand")
+        doTestReport("reportingTestShouldReportAfterMethodInit", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 1)
+        methodNumberOfInitTest = methodNumber
+    }
 
-	@Test(dependsOnMethods = ["reportingTestShouldReportAfterMethod"])
-	void reportingTestShouldReportAfterMethodAndOnDemand() {
-		// check previous method reporting (reportingTestShouldReportAfterMethod)
-		doTestReport("reportingTestShouldReportAfterMethod", "ondemand", methodNumberOfInitTest, 1)
-		doTestReport("reportingTestShouldReportAfterMethod", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2)
-	}
+    @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethod"])
+    void reportingTestShouldReportAfterMethodAndOnDemand() {
+        // check previous method reporting (reportingTestShouldReportAfterMethod)
+        doTestReport("reportingTestShouldReportAfterMethod", "ondemand", methodNumberOfInitTest, 1)
+        doTestReport("reportingTestShouldReportAfterMethod", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2)
+    }
 
-	@Test
-	void reportingTestShouldReportOnTestFailureOnlyIfThatStrategyIsEnabled(Method testMethod) {
-		config.reportOnTestFailureOnly = true
-		def testResult = new TestResult()
+    @Test
+    void reportingTestShouldReportOnTestFailureOnlyIfThatStrategyIsEnabled(Method testMethod) {
+        config.reportOnTestFailureOnly = true
+        def testResult = new TestResult()
 
-		testResult.status = ITestResult.SUCCESS
-		super.reportingAfter testResult
-		def report = tryToFindReport(testMethod.name, GebReportingTest.END_OF_METHOD_REPORT_LABEL)
-		assert report == null
+        testResult.status = ITestResult.SUCCESS
+        super.reportingAfter testResult
+        def report = tryToFindReport(testMethod.name, GebReportingTest.END_OF_METHOD_REPORT_LABEL)
+        assert report == null
 
-		testResult.status = ITestResult.FAILURE
-		super.reportingAfter testResult
-		doTestReport(testMethod.name, GebReportingTest.END_OF_METHOD_REPORT_LABEL)
-	}
+        testResult.status = ITestResult.FAILURE
+        super.reportingAfter testResult
+        doTestReport(testMethod.name, GebReportingTest.END_OF_METHOD_REPORT_LABEL)
+    }
 
-	def doTestReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
-		def report = tryToFindReport(methodName, label, methodNumber, reportCounter)
+    def doTestReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
+        def report = tryToFindReport(methodName, label, methodNumber, reportCounter)
 
-		assert report != null, "${ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)} not found in ${reportGroupDir.listFiles()}"
-		assert report.exists()
-		reportNumberInTest++
+        assert report != null, "${ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)} not found in ${reportGroupDir.listFiles()}"
+        assert report.exists()
+        reportNumberInTest++
 
-		assert report.text.contains('<div class="d1" id="d1">')
-	}
+        assert report.text.contains('<div class="d1" id="d1">')
+    }
 
-	def tryToFindReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
-		def reportName = ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)
-		reportGroupDir.listFiles().find { it.name.startsWith reportName }
-	}
+    def tryToFindReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
+        def reportName = ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)
+        reportGroupDir.listFiles().find { it.name.startsWith reportName }
+    }
 
-	@AfterClass
-	void tearDown() {
-		server.stop()
-	}
+    @AfterClass
+    void tearDown() {
+        server.stop()
+    }
 }

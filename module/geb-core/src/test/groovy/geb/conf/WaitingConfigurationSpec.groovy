@@ -22,90 +22,91 @@ import spock.lang.Unroll
 
 class WaitingConfigurationSpec extends Specification {
 
-	@Delegate Configuration config
+    @Delegate
+    Configuration config
 
-	void setUserConf(String script) {
-		config = new Configuration(new ConfigSlurper().parse(script))
-	}
+    void setUserConf(String script) {
+        config = new Configuration(new ConfigSlurper().parse(script))
+    }
 
-	def "defaults"() {
-		when:
-		userConf = ""
+    def "defaults"() {
+        when:
+        userConf = ""
 
-		then:
-		defaultWait == new Wait()
-		getWaitPreset("anything") == defaultWait
-		getWait(10) == new Wait(10)
-	}
+        then:
+        defaultWait == new Wait()
+        getWaitPreset("anything") == defaultWait
+        getWait(10) == new Wait(10)
+    }
 
-	@Unroll
-	def "setter for defaultWaitTimeout when #scenario"() {
-		given:
-		userConf = userConfiguration
+    @Unroll
+    def "setter for defaultWaitTimeout when #scenario"() {
+        given:
+        userConf = userConfiguration
 
-		when:
-		defaultWaitTimeout = 10
+        when:
+        defaultWaitTimeout = 10
 
-		then:
-		defaultWaitTimeout == 10
+        then:
+        defaultWaitTimeout == 10
 
-		where:
-		userConfiguration << ['', 'waiting { timeout = 15 }']
-		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
-	}
+        where:
+        userConfiguration << ['', 'waiting { timeout = 15 }']
+        scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
+    }
 
-	@Unroll
-	def "setter for defaultWaitRetryInterval when #scenario"() {
-		given:
-		userConf = userConfiguration
+    @Unroll
+    def "setter for defaultWaitRetryInterval when #scenario"() {
+        given:
+        userConf = userConfiguration
 
-		when:
-		defaultWaitRetryInterval = 1
+        when:
+        defaultWaitRetryInterval = 1
 
-		then:
-		defaultWaitRetryInterval == 1
+        then:
+        defaultWaitRetryInterval == 1
 
-		where:
-		userConfiguration << ['', 'waiting { retryInterval = 0.5 }']
-		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
-	}
+        where:
+        userConfiguration << ['', 'waiting { retryInterval = 0.5 }']
+        scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
+    }
 
-	@Unroll
-	def "setter for waitPreset when #scenario"() {
-		given:
-		userConf = userConfiguration
+    @Unroll
+    def "setter for waitPreset when #scenario"() {
+        given:
+        userConf = userConfiguration
 
-		when:
-		setWaitPreset('customPreset', 1, 1)
+        when:
+        setWaitPreset('customPreset', 1, 1)
 
-		then:
-		def preset = getWaitPreset('customPreset')
-		preset.timeout == 1
-		preset.retryInterval == 1
+        then:
+        def preset = getWaitPreset('customPreset')
+        preset.timeout == 1
+        preset.retryInterval == 1
 
-		where:
-		userConfiguration << ['', 'waiting { presets { customPreset { timeout = 20; retryInterval = 1 } } }']
-		scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
-	}
+        where:
+        userConfiguration << ['', 'waiting { presets { customPreset { timeout = 20; retryInterval = 1 } } }']
+        scenario = userConfiguration ? 'not set in config' : 'overriding a value defined in config'
+    }
 
-	def "specified default wait values"() {
-		when:
-		userConf = """
+    def "specified default wait values"() {
+        when:
+        userConf = """
 			waiting {
 				timeout = 20
 				retryInterval = 40
 			}
 		"""
 
-		then:
-		defaultWait == new Wait(20, 40)
-		getWaitPreset("anything") == new Wait(20, 40)
-		getWait(10) == new Wait(10, 40)
-	}
+        then:
+        defaultWait == new Wait(20, 40)
+        getWaitPreset("anything") == new Wait(20, 40)
+        getWait(10) == new Wait(10, 40)
+    }
 
-	def "presets"() {
-		when:
-		userConf = """
+    def "presets"() {
+        when:
+        userConf = """
 			waiting {
 				timeout = 3
 				presets {
@@ -124,9 +125,9 @@ class WaitingConfigurationSpec extends Specification {
 			}
 		"""
 
-		then:
-		getWaitPreset("quick") == new Wait(1, 0.1)
-		getWaitPreset("slow") == new Wait(30, 1)
-		getWaitPreset("partial") == new Wait(3, 5)
-	}
+        then:
+        getWaitPreset("quick") == new Wait(1, 0.1)
+        getWaitPreset("slow") == new Wait(30, 1)
+        getWaitPreset("partial") == new Wait(3, 5)
+    }
 }

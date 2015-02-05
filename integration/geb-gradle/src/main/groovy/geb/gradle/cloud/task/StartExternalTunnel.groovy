@@ -20,12 +20,12 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 class StartExternalTunnel extends DefaultTask {
-	boolean inBackground = false
-	File workingDir
-	ExternalTunnel tunnel
+    boolean inBackground = false
+    File workingDir
+    ExternalTunnel tunnel
 
-	@TaskAction
-	void start() {
-		tunnel.startTunnel(workingDir, inBackground)
-	}
+    @TaskAction
+    void start() {
+        tunnel.startTunnel(workingDir, inBackground)
+    }
 }

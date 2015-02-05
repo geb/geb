@@ -17,12 +17,13 @@ package intro.module
 
 // tag::imports[]
 import geb.Module
+
 // end::imports[]
 
 // tag::class[]
 class SelectableLinkModule extends Module { //<1>
-	boolean isSelected() { //<2>
-		parent().hasClass("selected")
-	}
+    boolean isSelected() { //<2>
+        parent().hasClass("selected")
+    }
 }
 // end::class[]

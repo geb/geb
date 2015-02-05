@@ -16,13 +16,13 @@
 package geb.crawl
 
 class PrettyPrintCollection {
-	final Collection collection
+    final Collection collection
 
-	PrettyPrintCollection(Collection collection) { this.collection = collection }
+    PrettyPrintCollection(Collection collection) { this.collection = collection }
 
-	String toString() {
-		collection.collect { "$it" }.join(",\n")
-	}
+    String toString() {
+        collection.collect { "$it" }.join(",\n")
+    }
 
-	boolean isEmpty() { collection.empty }
+    boolean isEmpty() { collection.empty }
 }

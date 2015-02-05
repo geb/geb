@@ -17,7 +17,7 @@ package geb.waiting;
 
 public class ImplicitWaitTimeoutException extends WaitTimeoutException {
 
-	public ImplicitWaitTimeoutException(WaitTimeoutException cause) {
-		super(cause.wait, cause.getCause(), cause.lastEvaluationValue);
-	}
+    public ImplicitWaitTimeoutException(WaitTimeoutException cause) {
+        super(cause.wait, cause.getCause(), cause.lastEvaluationValue);
+    }
 }

@@ -23,59 +23,60 @@ import spock.lang.Stepwise
 
 class GebSpec extends Specification {
 
-	String gebConfEnv = null
-	String gebConfScript = null
+    String gebConfEnv = null
+    String gebConfScript = null
 
-	@SuppressWarnings("PropertyName")
-	@Shared Browser _browser
+    @SuppressWarnings("PropertyName")
+    @Shared
+    Browser _browser
 
-	Configuration createConf() {
-		new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)
-	}
+    Configuration createConf() {
+        new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)
+    }
 
-	Browser createBrowser() {
-		new Browser(createConf())
-	}
+    Browser createBrowser() {
+        new Browser(createConf())
+    }
 
-	Browser getBrowser() {
-		if (_browser == null) {
-			_browser = createBrowser()
-		}
-		_browser
-	}
+    Browser getBrowser() {
+        if (_browser == null) {
+            _browser = createBrowser()
+        }
+        _browser
+    }
 
-	void resetBrowser() {
-		if (_browser?.config?.autoClearCookies) {
-			_browser.clearCookiesQuietly()
-		}
-		_browser = null
-	}
+    void resetBrowser() {
+        if (_browser?.config?.autoClearCookies) {
+            _browser.clearCookiesQuietly()
+        }
+        _browser = null
+    }
 
-	def methodMissing(String name, args) {
-		getBrowser()."$name"(* args)
-	}
+    def methodMissing(String name, args) {
+        getBrowser()."$name"(*args)
+    }
 
-	def propertyMissing(String name) {
-		getBrowser()."$name"
-	}
+    def propertyMissing(String name) {
+        getBrowser()."$name"
+    }
 
-	def propertyMissing(String name, value) {
-		getBrowser()."$name" = value
-	}
+    def propertyMissing(String name, value) {
+        getBrowser()."$name" = value
+    }
 
-	private isSpecStepwise() {
-		this.class.getAnnotation(Stepwise) != null
-	}
+    private isSpecStepwise() {
+        this.class.getAnnotation(Stepwise) != null
+    }
 
-	def cleanup() {
-		if (!isSpecStepwise()) {
-			resetBrowser()
-		}
-	}
+    def cleanup() {
+        if (!isSpecStepwise()) {
+            resetBrowser()
+        }
+    }
 
-	def cleanupSpec() {
-		if (isSpecStepwise()) {
-			resetBrowser()
-		}
-	}
+    def cleanupSpec() {
+        if (isSpecStepwise()) {
+            resetBrowser()
+        }
+    }
 }

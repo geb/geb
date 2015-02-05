@@ -20,55 +20,55 @@ import org.openqa.selenium.JavascriptExecutor
 
 class JavascriptInterface {
 
-	final Browser browser
+    final Browser browser
 
-	JavascriptInterface(Browser browser) {
-		this.browser = browser
+    JavascriptInterface(Browser browser) {
+        this.browser = browser
 
-	}
+    }
 
-	private execjs(String script, Object[] args) {
-		def driver = browser.driver
-		if (!(driver instanceof JavascriptExecutor)) {
-			throw new GebException("driver '$driver' can not execute javascript")
-		}
+    private execjs(String script, Object[] args) {
+        def driver = browser.driver
+        if (!(driver instanceof JavascriptExecutor)) {
+            throw new GebException("driver '$driver' can not execute javascript")
+        }
 
-		// Temporarily disabled due to issues with 2.0rc3
-		//if (!driver.javascriptEnabled) {
-		//	throw new GebException("javascript is disabled for driver '$driver'")
-		//}
+        // Temporarily disabled due to issues with 2.0rc3
+        //if (!driver.javascriptEnabled) {
+        //	throw new GebException("javascript is disabled for driver '$driver'")
+        //}
 
-		browser.driver.executeScript(script, * args)
-	}
+        browser.driver.executeScript(script, *args)
+    }
 
-	def propertyMissing(String name) {
-		execjs("return $name;")
-	}
+    def propertyMissing(String name) {
+        execjs("return $name;")
+    }
 
-	def methodMissing(String name, args) {
-		execjs("return ${name}.apply(window, arguments)", * args)
-	}
+    def methodMissing(String name, args) {
+        execjs("return ${name}.apply(window, arguments)", *args)
+    }
 
-	def exec(Object[] args) {
-		if (args.size() == 0) {
-			throw new IllegalArgumentException("there must be a least one argument")
-		}
+    def exec(Object[] args) {
+        if (args.size() == 0) {
+            throw new IllegalArgumentException("there must be a least one argument")
+        }
 
-		def script
-		def jsArgs
-		if (args.size() == 1) {
-			script = args[0]
-			jsArgs = []
-		} else {
-			script = args.last()
-			jsArgs = args[0..(args.size() - 2)]
-		}
+        def script
+        def jsArgs
+        if (args.size() == 1) {
+            script = args[0]
+            jsArgs = []
+        } else {
+            script = args.last()
+            jsArgs = args[0..(args.size() - 2)]
+        }
 
-		if (!(script instanceof CharSequence)) {
-			throw new IllegalArgumentException("The last argument to the js function must be string-like")
-		}
+        if (!(script instanceof CharSequence)) {
+            throw new IllegalArgumentException("The last argument to the js function must be string-like")
+        }
 
-		execjs(script.toString(), * jsArgs)
-	}
+        execjs(script.toString(), *jsArgs)
+    }
 
 }

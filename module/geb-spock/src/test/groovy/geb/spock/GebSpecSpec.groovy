@@ -20,57 +20,58 @@ import geb.test.CallbackHttpServer
 
 class GebSpecSpec extends GebSpec {
 
-	@Shared server = new CallbackHttpServer()
+    @Shared
+        server = new CallbackHttpServer()
 
-	def setupSpec() {
-		server.start()
-		server.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        server.start()
+        server.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<div class="d1" id="d1">d1</div>
 			</body>
 			</html>"""
-		}
-	}
+        }
+    }
 
-	def setup() {
-		baseUrl = server.baseUrl
-		go()
-	}
+    def setup() {
+        baseUrl = server.baseUrl
+        go()
+    }
 
-	def "missing methods are invoked on the driver instance"() {
-		// This also verifies that the driver instance is instantiated correctly
-		when:
-		go("/")
-		then:
-		notThrown(Exception)
-	}
+    def "missing methods are invoked on the driver instance"() {
+        // This also verifies that the driver instance is instantiated correctly
+        when:
+        go("/")
+        then:
+        notThrown(Exception)
+    }
 
-	def "missing property access are requested on the driver instance"() {
-		given:
-		page SomePage
-		when:
-		prop
-		then:
-		notThrown(Exception)
-	}
+    def "missing property access are requested on the driver instance"() {
+        given:
+        page SomePage
+        when:
+        prop
+        then:
+        notThrown(Exception)
+    }
 
-	def "missing property assignments are forwarded to the driver instance"() {
-		given:
-		page SomePage
-		when:
-		prop = 2
-		then:
-		notThrown(Exception)
-	}
+    def "missing property assignments are forwarded to the driver instance"() {
+        given:
+        page SomePage
+        when:
+        prop = 2
+        then:
+        notThrown(Exception)
+    }
 
-	def cleanupSpec() {
-		server.stop()
-	}
+    def cleanupSpec() {
+        server.stop()
+    }
 
 }
 
 class SomePage extends Page {
-	def prop = 1
+    def prop = 1
 }

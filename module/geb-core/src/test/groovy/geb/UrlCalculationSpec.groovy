@@ -19,9 +19,9 @@ import spock.lang.Unroll
 
 class UrlCalculationSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		callbackServer.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<div class="url">${req.requestURL + (req.queryString ? "?${req.queryString}" : "")}</div>
@@ -29,61 +29,61 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
 				<div class="params">$req.parameterMap</div>
 			</body>
 			</html>"""
-		}
-	}
+        }
+    }
 
-	protected toRequestParameterMapString(map) {
-		def requestMap = [:]
-		map.each { k, v ->
-			if (!requestMap.containsKey(k)) {
-				requestMap[k] = []
-			}
-			(v instanceof Collection ? v : [v]).each {
-				requestMap[k] << it
-			}
-		}
-		requestMap.toString()
-	}
+    protected toRequestParameterMapString(map) {
+        def requestMap = [:]
+        map.each { k, v ->
+            if (!requestMap.containsKey(k)) {
+                requestMap[k] = []
+            }
+            (v instanceof Collection ? v : [v]).each {
+                requestMap[k] << it
+            }
+        }
+        requestMap.toString()
+    }
 
-	@Unroll("to page: page = #page, args = #args, params = #params, path = #path")
-	def "t1"() {
-		when:
-		to(page, *: params, * args)
-		then:
-		requestPath == path
-		requestParams == toRequestParameterMapString(params)
-		where:
-		page                   | params      | args       | path
-		UrlCalculationSpecPage | [:]         | []         | "/"
-		UrlCalculationSpecPage | [a: 1]      | []         | "/"
-		UrlCalculationSpecPage | [:]         | ["a"]      | "/a"
-		UrlCalculationSpecPage | [:]         | ["a", "b"] | "/a/b"
-		UrlCalculationSpecPage | [a: [1, 2]] | []         | "/"
-	}
+    @Unroll("to page: page = #page, args = #args, params = #params, path = #path")
+    def "t1"() {
+        when:
+        to(page, *: params, *args)
+        then:
+        requestPath == path
+        requestParams == toRequestParameterMapString(params)
+        where:
+        page                   | params      | args       | path
+        UrlCalculationSpecPage | [:]         | []         | "/"
+        UrlCalculationSpecPage | [a: 1]      | []         | "/"
+        UrlCalculationSpecPage | [:]         | ["a"]      | "/a"
+        UrlCalculationSpecPage | [:]         | ["a", "b"] | "/a/b"
+        UrlCalculationSpecPage | [a: [1, 2]] | []         | "/"
+    }
 
-	@Unroll("go: baseUrl = #baseUrl, params = #params, path = #path, expectedRequestPath = #expectedRequestPath")
-	def "t2"() {
-		when:
-		browser.baseUrl = base
-		go(path, *: params)
-		page UrlCalculationSpecPage
+    @Unroll("go: baseUrl = #baseUrl, params = #params, path = #path, expectedRequestPath = #expectedRequestPath")
+    def "t2"() {
+        when:
+        browser.baseUrl = base
+        go(path, *: params)
+        page UrlCalculationSpecPage
 
-		then:
-		requestUrl == expectedRequestURL
+        then:
+        requestUrl == expectedRequestURL
 
-		where:
-		base           | params | path  | expectedRequestURL
-		server.baseUrl | [:]    | ""    | server.baseUrl
-		server.baseUrl | [a: 1] | ""    | server.baseUrl + "?a=1"
-		server.baseUrl | [:]    | "a/b" | server.baseUrl + "a/b"
-	}
+        where:
+        base           | params | path  | expectedRequestURL
+        server.baseUrl | [:]    | ""    | server.baseUrl
+        server.baseUrl | [a: 1] | ""    | server.baseUrl + "?a=1"
+        server.baseUrl | [:]    | "a/b" | server.baseUrl + "a/b"
+    }
 }
 
 class UrlCalculationSpecPage extends Page {
 
-	static content = {
-		requestUrl(dynamic: true) { $("div.url").text() }
-		requestPath(dynamic: true) { $("div.path").text() }
-		requestParams(dynamic: true) { $("div.params").text() }
-	}
+    static content = {
+        requestUrl(dynamic: true) { $("div.url").text() }
+        requestPath(dynamic: true) { $("div.path").text() }
+        requestParams(dynamic: true) { $("div.params").text() }
+    }
 }

@@ -22,114 +22,114 @@ import spock.lang.Unroll
 @CrossBrowser
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
-	def setup() {
-		go MAIN_PAGE_URL
-	}
+    def setup() {
+        go MAIN_PAGE_URL
+    }
 
-	@Unroll
-	def "withWindow changes focus to window with given name and returns closure return value"() {
-		when:
-		openWindow(index)
+    @Unroll
+    def "withWindow changes focus to window with given name and returns closure return value"() {
+        when:
+        openWindow(index)
 
-		then:
-		withWindow(windowName(index)) { title } == windowTitle(index)
+        then:
+        withWindow(windowName(index)) { title } == windowTitle(index)
 
-		where:
-		index << [1, 2]
-	}
+        where:
+        index << [1, 2]
+    }
 
-	@Unroll
-	@SuppressWarnings('SpaceAfterClosingBrace')
-	def "ensure original context is preserved after a call to withWindow"() {
-		given:
-		openWindow(1)
+    @Unroll
+    @SuppressWarnings('SpaceAfterClosingBrace')
+    def "ensure original context is preserved after a call to withWindow"() {
+        given:
+        openWindow(1)
 
-		when:
-		withWindow(specification) {
-		}
+        when:
+        withWindow(specification) {
+        }
 
-		then:
-		inContextOfMainWindow
+        then:
+        inContextOfMainWindow
 
-		when:
-		withWindow(specification) { throw new Exception() }
+        when:
+        withWindow(specification) { throw new Exception() }
 
-		then:
-		thrown(Exception)
-		inContextOfMainWindow
+        then:
+        thrown(Exception)
+        inContextOfMainWindow
 
-		where:
-		specification << [windowName(1), { title == windowTitle(1) }]
-	}
+        where:
+        specification << [windowName(1), { title == windowTitle(1) }]
+    }
 
-	@Unroll
-	@SuppressWarnings('SpaceAfterClosingBrace')
-	def "ensure exception is thrown for a non existing window passed to withWindow"() {
-		when:
-		withWindow(specification) {
-		}
+    @Unroll
+    @SuppressWarnings('SpaceAfterClosingBrace')
+    def "ensure exception is thrown for a non existing window passed to withWindow"() {
+        when:
+        withWindow(specification) {
+        }
 
-		then:
-		thrown(NoSuchWindowException)
+        then:
+        thrown(NoSuchWindowException)
 
-		where:
-		specification << ['nonexisting', { false }]
-	}
+        where:
+        specification << ['nonexisting', { false }]
+    }
 
-	@Unroll
-	@SuppressWarnings('SpaceBeforeOpeningBrace')
-	def "withWindow closes matching windows if 'close' option is passed"() {
-		given:
-		openWindow(1)
+    @Unroll
+    @SuppressWarnings('SpaceBeforeOpeningBrace')
+    def "withWindow closes matching windows if 'close' option is passed"() {
+        given:
+        openWindow(1)
 
-		when:
-		withWindow(specification, close: true) {
-		}
+        when:
+        withWindow(specification, close: true) {
+        }
 
-		then:
-		availableWindows.size() == old(availableWindows.size() - 1)
+        then:
+        availableWindows.size() == old(availableWindows.size() - 1)
 
-		where:
-		specification << [{ title == windowTitle(1) }, windowName(1)]
-	}
+        where:
+        specification << [{ title == windowTitle(1) }, windowName(1)]
+    }
 
-	@SuppressWarnings('SpaceBeforeOpeningBrace')
-	def "ensure original context is preserved after a call to withNewWindow"() {
-		when:
-		withNewWindow({ openWindow(1) }) {
-		}
+    @SuppressWarnings('SpaceBeforeOpeningBrace')
+    def "ensure original context is preserved after a call to withNewWindow"() {
+        when:
+        withNewWindow({ openWindow(1) }) {
+        }
 
-		then:
-		inContextOfMainWindow
+        then:
+        inContextOfMainWindow
 
-		when:
-		withNewWindow({ openWindow(2) }) { throw new Exception() }
+        when:
+        withNewWindow({ openWindow(2) }) { throw new Exception() }
 
-		then:
-		thrown(Exception)
-		inContextOfMainWindow
-	}
+        then:
+        thrown(Exception)
+        inContextOfMainWindow
+    }
 
-	@Unroll
-	@SuppressWarnings('SpaceBeforeOpeningBrace')
-	def "ensure withNewWindow block closure called in the context of the newly opened window"() {
-		expect:
-		withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
+    @Unroll
+    @SuppressWarnings('SpaceBeforeOpeningBrace')
+    def "ensure withNewWindow block closure called in the context of the newly opened window"() {
+        expect:
+        withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
 
-		where:
-		expectedTitle  | windowNum
-		windowTitle(1) | 1
-		windowTitle(2) | 2
-	}
+        where:
+        expectedTitle  | windowNum
+        windowTitle(1) | 1
+        windowTitle(2) | 2
+    }
 
-	@SuppressWarnings('SpaceBeforeOpeningBrace')
-	def "withNewWindow closes the new window by default"() {
-		when:
-		withNewWindow({ openWindow(1) }) {
-		}
+    @SuppressWarnings('SpaceBeforeOpeningBrace')
+    def "withNewWindow closes the new window by default"() {
+        when:
+        withNewWindow({ openWindow(1) }) {
+        }
 
-		then:
-		availableWindows.size() == old(availableWindows.size())
-		inContextOfMainWindow
-	}
+        then:
+        availableWindows.size() == old(availableWindows.size())
+        inContextOfMainWindow
+    }
 }

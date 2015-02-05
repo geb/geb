@@ -29,34 +29,35 @@ import static org.openqa.selenium.remote.DriverCommand.GET_CURRENT_URL
 
 class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer {
 
-	@Shared CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer()
+    @Shared
+    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer()
 
-	@Override
-	TestHttpServer getServerInstance() {
-		callbackAndWebDriverServer
-	}
+    @Override
+    TestHttpServer getServerInstance() {
+        callbackAndWebDriverServer
+    }
 
-	def setup() {
-		browser.driver = new DriverWithInvalidGetCurrentUrlImplementation(callbackAndWebDriverServer.webdriverUrl, DesiredCapabilities.htmlUnit())
-		browser.baseUrl = callbackAndWebDriverServer.applicationUrl
-		browser.config.cacheDriver = false
-	}
+    def setup() {
+        browser.driver = new DriverWithInvalidGetCurrentUrlImplementation(callbackAndWebDriverServer.webdriverUrl, DesiredCapabilities.htmlUnit())
+        browser.baseUrl = callbackAndWebDriverServer.applicationUrl
+        browser.config.cacheDriver = false
+    }
 
-	@Issue('http://jira.codehaus.org/browse/GEB-291')
-	void 'go() does not fail even if the driver returns null for get current url command'() {
-		when:
-		go()
+    @Issue('http://jira.codehaus.org/browse/GEB-291')
+    void 'go() does not fail even if the driver returns null for get current url command'() {
+        when:
+        go()
 
-		then:
-		notThrown(NullPointerException)
-	}
+        then:
+        notThrown(NullPointerException)
+    }
 }
 
 @InheritConstructors
 class DriverWithInvalidGetCurrentUrlImplementation extends RemoteWebDriver {
 
-	@Override
-	protected Response execute(String command) {
-		command == GET_CURRENT_URL ? new Response() : super.execute(command)
-	}
+    @Override
+    protected Response execute(String command) {
+        command == GET_CURRENT_URL ? new Response() : super.execute(command)
+    }
 }

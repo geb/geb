@@ -22,26 +22,27 @@ import javax.servlet.http.HttpServletResponse
 
 class GebSpecWithCallbackServer extends GebSpecWithServer {
 
-	@Shared CallbackHttpServer callbackServer = new CallbackHttpServer()
+    @Shared
+    CallbackHttpServer callbackServer = new CallbackHttpServer()
 
-	@Override
-	TestHttpServer getServerInstance() {
-		callbackServer
-	}
+    @Override
+    TestHttpServer getServerInstance() {
+        callbackServer
+    }
 
-	def responseHtml(Closure htmlMarkup) {
-		callbackServer.responseHtml(htmlMarkup)
-	}
+    def responseHtml(Closure htmlMarkup) {
+        callbackServer.responseHtml(htmlMarkup)
+    }
 
-	def responseHtml(String html) {
-		callbackServer.responseHtml(html)
-		server.get = { HttpServletRequest request, HttpServletResponse response ->
-			response.writer << html
-		}
-	}
+    def responseHtml(String html) {
+        callbackServer.responseHtml(html)
+        server.get = { HttpServletRequest request, HttpServletResponse response ->
+            response.writer << html
+        }
+    }
 
-	void html(Closure html) {
-		responseHtml(html)
-		go()
-	}
+    void html(Closure html) {
+        responseHtml(html)
+        go()
+    }
 }

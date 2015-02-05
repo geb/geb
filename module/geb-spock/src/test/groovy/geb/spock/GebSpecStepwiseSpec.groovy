@@ -21,43 +21,44 @@ import geb.test.CallbackHttpServer
 @Stepwise
 class GebSpecStepwiseSpec extends GebReportingSpec {
 
-	@Shared server = new CallbackHttpServer()
+    @Shared
+        server = new CallbackHttpServer()
 
-	def setupSpec() {
-		server.start()
-		server.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        server.start()
+        server.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<p>stuff</p>
 			</body>
 			</html>"""
-		}
-	}
+        }
+    }
 
-	def setup() {
-		baseUrl = server.baseUrl
-		go()
-	}
+    def setup() {
+        baseUrl = server.baseUrl
+        go()
+    }
 
-	def "go to the page"() {
-		when:
-		to FirstPage
-		then:
-		at FirstPage
-	}
+    def "go to the page"() {
+        when:
+        to FirstPage
+        then:
+        at FirstPage
+    }
 
-	def "make sure we are still at the page"() {
-		expect:
-		at FirstPage
-	}
+    def "make sure we are still at the page"() {
+        expect:
+        at FirstPage
+    }
 
-	def cleanupSpec() {
-		server.stop()
-	}
+    def cleanupSpec() {
+        server.stop()
+    }
 }
 
 class FirstPage extends Page {
-	static url = "/"
-	static at = { $("p", 0).text() == "stuff" }
+    static url = "/"
+    static at = { $("p", 0).text() == "stuff" }
 }

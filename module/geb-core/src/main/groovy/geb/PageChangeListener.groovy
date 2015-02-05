@@ -19,14 +19,14 @@ package geb
  */
 interface PageChangeListener {
 
-	/**
-	 * Called first when the listener is registered, with {@code oldPage} as {@code null}
-	 * and {@code newPage} as the current page at time of registration, then each time
-	 * the browser's page instance changes.
-	 *
-	 * Note that this is not when the browser navigates to a new page, but when it's page <i>object</i>
-	 * changes.
-	 */
-	void pageWillChange(Browser browser, Page oldPage, Page newPage)
+    /**
+     * Called first when the listener is registered, with {@code oldPage} as {@code null}
+     * and {@code newPage} as the current page at time of registration, then each time
+     * the browser's page instance changes.
+     *
+     * Note that this is not when the browser navigates to a new page, but when it's page <i>object</i>
+     * changes.
+     */
+    void pageWillChange(Browser browser, Page oldPage, Page newPage)
 
 }

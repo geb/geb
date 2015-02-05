@@ -17,22 +17,23 @@ package intro
 
 // tag::imports[]
 import geb.spock.GebSpec
+
 // end::imports[]
 import intro.page.GebHomePage
 
 // tag::class[]
 class GebHomepageSpec extends GebSpec {
 
-	def "can access The Book of Geb via homepage"() {
-		when:
-		to GebHomePage
+    def "can access The Book of Geb via homepage"() {
+        when:
+        to GebHomePage
 
-		and:
-		highlights.jQueryLikeApi.click()
+        and:
+        highlights.jQueryLikeApi.click()
 
-		then:
-		sectionTitles == ["Navigating Content", "Form Control Shortcuts"]
-		highlights.jQueryLikeApi.selected
-	}
+        then:
+        sectionTitles == ["Navigating Content", "Form Control Shortcuts"]
+        highlights.jQueryLikeApi.selected
+    }
 }
 // end::class[]

@@ -20,10 +20,10 @@ import geb.modules.MenuItemModule
 
 class ContentPage extends Page {
 
-	static at = { title == 'Geb - Very Groovy Browser Automation' }
+    static at = { title == 'Geb - Very Groovy Browser Automation' }
 
-	static content = {
-		firstHeaderText { $('#main h1', 0).text() }
-		menuItems { $('#header-content > ul > li')*.module(MenuItemModule) }
-	}
+    static content = {
+        firstHeaderText { $('#main h1', 0).text() }
+        menuItems { $('#header-content > ul > li')*.module(MenuItemModule) }
+    }
 }

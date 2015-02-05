@@ -26,41 +26,41 @@ import spock.lang.Unroll
 @Unroll
 class NavigatorClickSpec extends GebSpecWithCallbackServer {
 
-	@Issue('GEB-160')
-	def 'click call returns receiver for parameters: #clickParams'() {
-		given:
-		html { button("") }
+    @Issue('GEB-160')
+    def 'click call returns receiver for parameters: #clickParams'() {
+        given:
+        html { button("") }
 
-		when:
-		def navigator = $('button')
+        when:
+        def navigator = $('button')
 
-		then:
-		navigator.click(* clickParams).is(navigator)
+        then:
+        navigator.click(*clickParams).is(navigator)
 
-		where:
-		clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]], [new PageInstanceWithParametrizedAtChecker(condition: true)],
-						[[new PageInstanceWithParametrizedAtChecker(condition: true), new PageInstanceWithParametrizedAtChecker(condition: true)]]]
-	}
+        where:
+        clickParams << [[], [Page], [[PageWithAtChecker, PageWithAtChecker]], [new PageInstanceWithParametrizedAtChecker(condition: true)],
+                        [[new PageInstanceWithParametrizedAtChecker(condition: true), new PageInstanceWithParametrizedAtChecker(condition: true)]]]
+    }
 
-	def 'click can be used with pages without at checker'() {
-		given:
-		html { div('some text') }
+    def 'click can be used with pages without at checker'() {
+        given:
+        html { div('some text') }
 
-		when:
-		$('div').click(Page)
+        when:
+        $('div').click(Page)
 
-		then:
-		notThrown(UndefinedAtCheckerException)
-	}
+        then:
+        notThrown(UndefinedAtCheckerException)
+    }
 
-	def 'click fails when used with a list of pages, one of which does not have an at checker'() {
-		given:
-		html { div('some text') }
+    def 'click fails when used with a list of pages, one of which does not have an at checker'() {
+        given:
+        html { div('some text') }
 
-		when:
-		$('div').click([PageWithoutAtChecker, PageWithAtChecker])
+        when:
+        $('div').click([PageWithoutAtChecker, PageWithAtChecker])
 
-		then:
-		thrown(UndefinedAtCheckerException)
-	}
+        then:
+        thrown(UndefinedAtCheckerException)
+    }
 }

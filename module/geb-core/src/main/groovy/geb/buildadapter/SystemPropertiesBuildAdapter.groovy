@@ -22,22 +22,22 @@ import geb.BuildAdapter
  */
 class SystemPropertiesBuildAdapter implements BuildAdapter {
 
-	static public final String BASE_URL_PROPERTY_NAME = "geb.build.baseUrl"
-	static public final String REPORTS_DIR_PROPERTY_NAME = "geb.build.reportsDir"
+    static public final String BASE_URL_PROPERTY_NAME = "geb.build.baseUrl"
+    static public final String REPORTS_DIR_PROPERTY_NAME = "geb.build.reportsDir"
 
-	/**
-	 * Returns the system property {@code geb.build.baseUrl}.
-	 */
-	String getBaseUrl() {
-		System.getProperty(BASE_URL_PROPERTY_NAME)
-	}
+    /**
+     * Returns the system property {@code geb.build.baseUrl}.
+     */
+    String getBaseUrl() {
+        System.getProperty(BASE_URL_PROPERTY_NAME)
+    }
 
-	/**
-	 * Returns a {@link java.io.File} constructed with the system property {@code geb.build.reportsDir}, or {@code null} if not set.
-	 */
-	File getReportsDir() {
-		def value = System.getProperty(REPORTS_DIR_PROPERTY_NAME)
-		value ? new File(value) : null
-	}
+    /**
+     * Returns a {@link java.io.File} constructed with the system property {@code geb.build.reportsDir}, or {@code null} if not set.
+     */
+    File getReportsDir() {
+        def value = System.getProperty(REPORTS_DIR_PROPERTY_NAME)
+        value ? new File(value) : null
+    }
 
 }

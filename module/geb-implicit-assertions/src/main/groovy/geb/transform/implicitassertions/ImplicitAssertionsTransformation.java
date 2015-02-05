@@ -10,8 +10,8 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class ImplicitAssertionsTransformation implements ASTTransformation {
     public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-		for (ClassNode classNode : sourceUnit.getAST().getClasses()) {
-			classNode.visitContents(new ImplicitAssertionsTransformationVisitor(sourceUnit));
-		}
+        for (ClassNode classNode : sourceUnit.getAST().getClasses()) {
+            classNode.visitContents(new ImplicitAssertionsTransformationVisitor(sourceUnit));
+        }
     }
 }

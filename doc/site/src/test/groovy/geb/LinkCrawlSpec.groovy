@@ -24,80 +24,80 @@ import spock.lang.Specification
 @Slf4j
 class LinkCrawlSpec extends Specification {
 
-	def "site has no bad links"() {
-		given:
-		def aut = new LocalScriptApplicationUnderTest()
+    def "site has no bad links"() {
+        given:
+        def aut = new LocalScriptApplicationUnderTest()
 
-		def allowBroken = []
+        def allowBroken = []
 
-		def crawler = new Crawler(aut.address.toString()) {
-			boolean shouldUseHeadRequest(Link url) {
-				def usingHead = !(url.uri.host in ["drone.io", "blog.proxerd.pl", "search.maven.org"]) && super.shouldUseHeadRequest(url)
-				if (!usingHead) {
-					println "not using head for" + url
-				}
-				usingHead
-			}
+        def crawler = new Crawler(aut.address.toString()) {
+            boolean shouldUseHeadRequest(Link url) {
+                def usingHead = !(url.uri.host in ["drone.io", "blog.proxerd.pl", "search.maven.org"]) && super.shouldUseHeadRequest(url)
+                if (!usingHead) {
+                    println "not using head for" + url
+                }
+                usingHead
+            }
 
-			boolean shouldValidateFragment(Link url) {
-				url.uri.host != "search.maven.org"
-			}
+            boolean shouldValidateFragment(Link url) {
+                url.uri.host != "search.maven.org"
+            }
 
-			@Override
-			boolean isCrawlable(Link link) {
-				def path = link.uri.path
-				if (path.startsWith("/manual") && !path.startsWith("/manual/snapshot")) {
-					false
-				} else if (path.endsWith("api/index-all.html") || path.endsWith("api/help-doc.html") || path.endsWith("package-summary.html")) {
-					false
-				} else {
-					super.isCrawlable(link)
-				}
-			}
+            @Override
+            boolean isCrawlable(Link link) {
+                def path = link.uri.path
+                if (path.startsWith("/manual") && !path.startsWith("/manual/snapshot")) {
+                    false
+                } else if (path.endsWith("api/index-all.html") || path.endsWith("api/help-doc.html") || path.endsWith("package-summary.html")) {
+                    false
+                } else {
+                    super.isCrawlable(link)
+                }
+            }
 
-			List<String> findPageLinks(Response response) {
-				def document = response.document
-				document == null ? [] : document.select("body a")*.attr("href").findAll { it }
-			}
+            List<String> findPageLinks(Response response) {
+                def document = response.document
+                document == null ? [] : document.select("body a")*.attr("href").findAll { it }
+            }
 
-			@Override
-			void addPageErrors(Link link, Response response) {
-				if (isCrawlable(link)) {
-					response.document?.text()?.findAll(~$/\[.+]\(.+\)/$)?.each {
-						link.errors << new BadMarkdownLinkSyntax(it)
-					}
-				}
-				super.addPageErrors(link, response)
-			}
-		}
+            @Override
+            void addPageErrors(Link link, Response response) {
+                if (isCrawlable(link)) {
+                    response.document?.text()?.findAll(~$/\[.+]\(.+\)/$)?.each {
+                        link.errors << new BadMarkdownLinkSyntax(it)
+                    }
+                }
+                super.addPageErrors(link, response)
+            }
+        }
 
-		when:
-		def visited = crawler.crawl()
-		def broken = visited.findAll { it.errors.size() > 0 }
-		def brokenByLevel = broken.groupBy { link -> allowBroken.any { link.uri.toString().startsWith(it) } ? "warn" : "error" }
-		def errored = new PrettyPrintCollection(brokenByLevel["error"] ?: [])
-		def warned = new PrettyPrintCollection(brokenByLevel["warn"] ?: [])
-		if (!warned.empty) {
-			log.warn "${warned}"
-		}
+        when:
+        def visited = crawler.crawl()
+        def broken = visited.findAll { it.errors.size() > 0 }
+        def brokenByLevel = broken.groupBy { link -> allowBroken.any { link.uri.toString().startsWith(it) } ? "warn" : "error" }
+        def errored = new PrettyPrintCollection(brokenByLevel["error"] ?: [])
+        def warned = new PrettyPrintCollection(brokenByLevel["warn"] ?: [])
+        if (!warned.empty) {
+            log.warn "${warned}"
+        }
 
-		then:
-		errored.empty
+        then:
+        errored.empty
 
-		cleanup:
-		aut.stop()
-	}
+        cleanup:
+        aut.stop()
+    }
 
-	private static class BadMarkdownLinkSyntax {
-		final String link
+    private static class BadMarkdownLinkSyntax {
+        final String link
 
-		BadMarkdownLinkSyntax(String link) {
-			this.link = link
-		}
+        BadMarkdownLinkSyntax(String link) {
+            this.link = link
+        }
 
-		@Override
-		String toString() {
-			"Bad markdown link: $link"
-		}
-	}
+        @Override
+        String toString() {
+            "Bad markdown link: $link"
+        }
+    }
 }

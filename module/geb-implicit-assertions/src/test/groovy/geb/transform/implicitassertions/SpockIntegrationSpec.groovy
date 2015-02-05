@@ -27,54 +27,54 @@ import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
 
 class SpockIntegrationSpec extends Specification {
 
-	def makeSpecClass(filename = "ExampleSpec") {
-		def invoker = new TransformTestHelper() {
-			protected configure(TransformTestHelper.Transforms transforms) {
-				transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
-				transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
-			}
-		}
+    def makeSpecClass(filename = "ExampleSpec") {
+        def invoker = new TransformTestHelper() {
+            protected configure(TransformTestHelper.Transforms transforms) {
+                transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
+                transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
+            }
+        }
 
-		def file = new File(getClass().classLoader.getResource("${filename}.text").toURI())
-		invoker.parse(file)
-	}
+        def file = new File(getClass().classLoader.getResource("${filename}.text").toURI())
+        invoker.parse(file)
+    }
 
-	def "transform works in a spec feature method"() {
-		given:
-		def specClass = makeSpecClass()
+    def "transform works in a spec feature method"() {
+        given:
+        def specClass = makeSpecClass()
 
-		when:
-		Result result = JUnitCore.runClasses(specClass)
+        when:
+        Result result = JUnitCore.runClasses(specClass)
 
-		then:
-		result.failureCount == 1
-		Failure failure = result.failures.first()
-		PowerAssertionError error = failure.exception
-		error.message.contains "1 == 2"
-	}
+        then:
+        result.failureCount == 1
+        Failure failure = result.failures.first()
+        PowerAssertionError error = failure.exception
+        error.message.contains "1 == 2"
+    }
 
-	def "transform works in a spec helper method"() {
-		given:
-		def specClass = makeSpecClass()
+    def "transform works in a spec helper method"() {
+        given:
+        def specClass = makeSpecClass()
 
-		when:
-		specClass.newInstance().helperMethod()
+        when:
+        specClass.newInstance().helperMethod()
 
-		then:
-		PowerAssertionError error = thrown()
-		error.message.contains "3 == 4"
-	}
+        then:
+        PowerAssertionError error = thrown()
+        error.message.contains "3 == 4"
+    }
 
-	def "can have wait for methods with explicit asserts"() {
-		given:
-		def specClass = makeSpecClass("ExampleSpec2")
+    def "can have wait for methods with explicit asserts"() {
+        given:
+        def specClass = makeSpecClass("ExampleSpec2")
 
-		when:
-		Result result = JUnitCore.runClasses(specClass)
+        when:
+        Result result = JUnitCore.runClasses(specClass)
 
-		then:
-		result.failureCount == 0
+        then:
+        result.failureCount == 0
 
-	}
+    }
 }
 

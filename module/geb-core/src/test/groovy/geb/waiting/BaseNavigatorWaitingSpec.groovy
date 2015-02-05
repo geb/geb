@@ -24,11 +24,11 @@ import spock.lang.Unroll
 @Unroll
 class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 
-	Configuration config
-	ConfigObject rawConfig
+    Configuration config
+    ConfigObject rawConfig
 
-	def setup() {
-		responseHtml """
+    def setup() {
+        responseHtml """
 			<html>
 				<head>
 					<script type="text/javascript" charset="utf-8">
@@ -41,46 +41,46 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 			</html>
 		"""
 
-		config = browser.config
-		config.setWaitPreset('forBaseNavigator', 1, 0.1)
-		rawConfig = config.rawConfig
-		rawConfig.navigatorFactory = {
-			new TestBaseNavigatorNavigatorFactory(browser, browser.config.innerNavigatorFactory)
-		}
-	}
+        config = browser.config
+        config.setWaitPreset('forBaseNavigator', 1, 0.1)
+        rawConfig = config.rawConfig
+        rawConfig.navigatorFactory = {
+            new TestBaseNavigatorNavigatorFactory(browser, browser.config.innerNavigatorFactory)
+        }
+    }
 
-	void 'base navigator waiting can be configured via config file to wait with waitFor parameter: #waitFor'() {
-		given:
-		rawConfig.baseNavigatorWaiting = waitFor
+    void 'base navigator waiting can be configured via config file to wait with waitFor parameter: #waitFor'() {
+        given:
+        rawConfig.baseNavigatorWaiting = waitFor
 
-		when:
-		go()
-		$('div')
+        when:
+        go()
+        $('div')
 
-		then:
-		notThrown(NoSuchElementException)
+        then:
+        notThrown(NoSuchElementException)
 
-		where:
-		waitFor << [true, 1, 'forBaseNavigator', [1, 0.1]]
-	}
+        where:
+        waitFor << [true, 1, 'forBaseNavigator', [1, 0.1]]
+    }
 
-	void 'base navigator waiting can be configured programmatically'() {
-		given:
-		config.baseNavigatorWaiting = true
+    void 'base navigator waiting can be configured programmatically'() {
+        given:
+        config.baseNavigatorWaiting = true
 
-		when:
-		go()
-		$('div')
+        when:
+        go()
+        $('div')
 
-		then:
-		notThrown(NoSuchElementException)
-	}
+        then:
+        notThrown(NoSuchElementException)
+    }
 }
 
 @InheritConstructors
 class TestBaseNavigatorNavigatorFactory extends BrowserBackedNavigatorFactory {
 
-	protected String getBaseTagName() {
-		"div"
-	}
+    protected String getBaseTagName() {
+        "div"
+    }
 }

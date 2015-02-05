@@ -17,13 +17,13 @@ package geb.textmatching
 
 class NegatedTextMatcher implements TextMatcher {
 
-	final TextMatcher matcher
+    final TextMatcher matcher
 
-	NegatedTextMatcher(TextMatcher matcher) {
-		this.matcher = matcher
-	}
+    NegatedTextMatcher(TextMatcher matcher) {
+        this.matcher = matcher
+    }
 
-	boolean matches(String text) {
-		!matcher.matches(text)
-	}
+    boolean matches(String text) {
+        !matcher.matches(text)
+    }
 }

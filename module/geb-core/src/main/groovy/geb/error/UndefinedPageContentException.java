@@ -16,8 +16,8 @@ package geb.error;
 
 public class UndefinedPageContentException extends GebException {
 
-	public UndefinedPageContentException(Object container, Object name) {
-		super(String.format("%s does not define content with name '%s'", container, name));
-	}
+    public UndefinedPageContentException(Object container, Object name) {
+        super(String.format("%s does not define content with name '%s'", container, name));
+    }
 
 }

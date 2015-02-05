@@ -19,46 +19,46 @@ import spock.lang.Unroll
 
 class BrowserSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		responseHtml {
-			body {
-			}
-		}
-	}
+    def setupSpec() {
+        responseHtml {
+            body {
+            }
+        }
+    }
 
-	def "clear cookies"() {
-		when:
-		browser.clearCookies()
-		then:
-		notThrown(Throwable)
-	}
+    def "clear cookies"() {
+        when:
+        browser.clearCookies()
+        then:
+        notThrown(Throwable)
+    }
 
-	def "load default config"() {
-		expect:
-		browser.config.rawConfig.testValue == true
-	}
+    def "load default config"() {
+        expect:
+        browser.config.rawConfig.testValue == true
+    }
 
-	def "current url is returned from browser"() {
-		when:
-		go()
-		then:
-		browser.currentUrl == server.baseUrl
-	}
+    def "current url is returned from browser"() {
+        when:
+        go()
+        then:
+        browser.currentUrl == server.baseUrl
+    }
 
-	@Unroll
-	def "page setting methods return an instance set as the current page when using #scenario"() {
-		expect:
-		page(argument).getClass() == BrowserSpecPage
+    @Unroll
+    def "page setting methods return an instance set as the current page when using #scenario"() {
+        expect:
+        page(argument).getClass() == BrowserSpecPage
 
-		where:
-		scenario             | argument
-		"class"              | BrowserSpecPage
-		"instance"           | new BrowserSpecPage()
-		"array of classes"   | [BrowserSpecPage] as Class[]
-		"array of instances" | [new BrowserSpecPage()] as Page[]
-	}
+        where:
+        scenario             | argument
+        "class"              | BrowserSpecPage
+        "instance"           | new BrowserSpecPage()
+        "array of classes"   | [BrowserSpecPage] as Class[]
+        "array of instances" | [new BrowserSpecPage()] as Page[]
+    }
 }
 
 class BrowserSpecPage extends Page {
-	static at = { true }
+    static at = { true }
 }

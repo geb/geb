@@ -21,21 +21,21 @@ import spock.lang.Specification
 
 class RemoteDriverSpec extends Specification {
 
-	def "get augmented driver"() {
-		when:
-		def server = new WebDriverServer()
-		server.start()
+    def "get augmented driver"() {
+        when:
+        def server = new WebDriverServer()
+        server.start()
 
-		and:
-		def driver = new RemoteWebDriver(new URL(server.baseUrl[0..-2]), DesiredCapabilities.htmlUnit())
-		def browser = new Browser(driver: driver)
+        and:
+        def driver = new RemoteWebDriver(new URL(server.baseUrl[0..-2]), DesiredCapabilities.htmlUnit())
+        def browser = new Browser(driver: driver)
 
-		then:
-		!browser.driver.is(browser.augmentedDriver)
+        then:
+        !browser.driver.is(browser.augmentedDriver)
 
-		cleanup:
-		browser?.driver?.quit()
-		server?.stop()
-	}
+        cleanup:
+        browser?.driver?.quit()
+        server?.stop()
+    }
 
 }

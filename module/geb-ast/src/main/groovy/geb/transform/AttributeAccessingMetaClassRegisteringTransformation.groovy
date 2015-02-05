@@ -29,36 +29,36 @@ import org.codehaus.groovy.ast.expr.StaticMethodCallExpression
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class AttributeAccessingMetaClassRegisteringTransformation implements ASTTransformation {
-	@Override
-	void visit(ASTNode[] nodes, SourceUnit source) {
-		source.AST.classes.each {
-			if (extendsFromAttributeAccessEnabledClass(it)) {
-				changeMetaClassImplementation(it)
-			}
-		}
-	}
+    @Override
+    void visit(ASTNode[] nodes, SourceUnit source) {
+        source.AST.classes.each {
+            if (extendsFromAttributeAccessEnabledClass(it)) {
+                changeMetaClassImplementation(it)
+            }
+        }
+    }
 
-	void changeMetaClassImplementation(ClassNode classNode) {
-		Statement metaClassRegisterStatement = new ExpressionStatement(
-			new StaticMethodCallExpression(
-				new ClassNode(AttributeAccessingMetaClassRegistrar),
-				'registerFor',
-				new ClassExpression(classNode.plainNodeReference)
-			)
-		)
+    void changeMetaClassImplementation(ClassNode classNode) {
+        Statement metaClassRegisterStatement = new ExpressionStatement(
+            new StaticMethodCallExpression(
+                new ClassNode(AttributeAccessingMetaClassRegistrar),
+                'registerFor',
+                new ClassExpression(classNode.plainNodeReference)
+            )
+        )
 
-		classNode.addStaticInitializerStatements([metaClassRegisterStatement], false)
-	}
+        classNode.addStaticInitializerStatements([metaClassRegisterStatement], false)
+    }
 
-	boolean extendsFromAttributeAccessEnabledClass(ClassNode classNode) {
-		boolean isAttributeAccessEnabledClass = false
-		ClassNode superClass = classNode.superClass
+    boolean extendsFromAttributeAccessEnabledClass(ClassNode classNode) {
+        boolean isAttributeAccessEnabledClass = false
+        ClassNode superClass = classNode.superClass
 
-		while (superClass && !isAttributeAccessEnabledClass) {
-			isAttributeAccessEnabledClass = (superClass.name in ['geb.navigator.AbstractNavigator', 'geb.content.TemplateDerivedPageContent'])
-			superClass = superClass.superClass
-		}
+        while (superClass && !isAttributeAccessEnabledClass) {
+            isAttributeAccessEnabledClass = (superClass.name in ['geb.navigator.AbstractNavigator', 'geb.content.TemplateDerivedPageContent'])
+            superClass = superClass.superClass
+        }
 
-		isAttributeAccessEnabledClass
-	}
+        isAttributeAccessEnabledClass
+    }
 }

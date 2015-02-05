@@ -16,5 +16,5 @@
 package geb.textmatching
 
 interface TextMatcher {
-	boolean matches(String text)
+    boolean matches(String text)
 }

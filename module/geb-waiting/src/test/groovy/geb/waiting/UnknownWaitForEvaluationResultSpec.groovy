@@ -18,16 +18,16 @@ package geb.waiting
 import spock.lang.Specification
 
 class UnknownWaitForEvaluationResultSpec extends Specification {
-	def "instance is falsey"() {
-		expect:
-		!new UnknownWaitForEvaluationResult(new Exception())
-	}
+    def "instance is falsey"() {
+        expect:
+        !new UnknownWaitForEvaluationResult(new Exception())
+    }
 
-	def "toString explains that an exception was thrown"() {
-		given:
-		def e = new Exception()
+    def "toString explains that an exception was thrown"() {
+        given:
+        def e = new Exception()
 
-		expect:
-		new UnknownWaitForEvaluationResult(e).toString() == "Last waitFor evaluation value is unknown because the following exception was thrown from the evaluated closure: $e"
-	}
+        expect:
+        new UnknownWaitForEvaluationResult(e).toString() == "Last waitFor evaluation value is unknown because the following exception was thrown from the evaluated closure: $e"
+    }
 }

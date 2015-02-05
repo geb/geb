@@ -20,29 +20,29 @@ import org.gradle.api.Project
 
 class SauceLabsExtension {
 
-	Project project
-	SauceAccount account
+    Project project
+    SauceAccount account
 
-	SauceLabsExtension(Project project) {
-		this.project = project
-	}
+    SauceLabsExtension(Project project) {
+        this.project = project
+    }
 
-	void addExtensions() {
-		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
-		account = new SauceAccount()
-		extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
-	}
+    void addExtensions() {
+        extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
+        account = new SauceAccount()
+        extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
+    }
 
-	void task(Closure configuration) {
-		extensions.browsers.all { BrowserSpec browser ->
-			project.tasks["${browser.displayName}Test"].configure configuration
-		}
-	}
+    void task(Closure configuration) {
+        extensions.browsers.all { BrowserSpec browser ->
+            project.tasks["${browser.displayName}Test"].configure configuration
+        }
+    }
 
-	void account(Closure configuration) {
-		project.configure(account, configuration)
-		extensions.browsers.all { BrowserSpec browser ->
-			account.configure project.tasks["${browser.displayName}Test"]
-		}
-	}
+    void account(Closure configuration) {
+        project.configure(account, configuration)
+        extensions.browsers.all { BrowserSpec browser ->
+            account.configure project.tasks["${browser.displayName}Test"]
+        }
+    }
 }

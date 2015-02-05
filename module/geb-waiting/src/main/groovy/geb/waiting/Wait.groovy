@@ -22,122 +22,122 @@ package geb.waiting
  */
 class Wait {
 
-	/**
-	 * 5 seconds
-	 */
-	static public final Double DEFAULT_TIMEOUT = 5
+    /**
+     * 5 seconds
+     */
+    static public final Double DEFAULT_TIMEOUT = 5
 
-	/**
-	 * 100 milliseconds
-	 */
-	static public final Double DEFAULT_RETRY_INTERVAL = 0.1
+    /**
+     * 100 milliseconds
+     */
+    static public final Double DEFAULT_RETRY_INTERVAL = 0.1
 
-	private static final int HASHCODE_MULTIPLIER = 31
+    private static final int HASHCODE_MULTIPLIER = 31
 
-	/**
-	 * The maximum amount of seconds that something can be waited on.
-	 */
-	final Double timeout
+    /**
+     * The maximum amount of seconds that something can be waited on.
+     */
+    final Double timeout
 
-	/**
-	 * How many seconds to wait before trying something again while waiting.
-	 */
-	final Double retryInterval
+    /**
+     * How many seconds to wait before trying something again while waiting.
+     */
+    final Double retryInterval
 
-	String customMessage
+    String customMessage
 
-	Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL) {
-		this.timeout = timeout
-		this.retryInterval = [timeout, retryInterval].min()
-	}
+    Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL) {
+        this.timeout = timeout
+        this.retryInterval = [timeout, retryInterval].min()
+    }
 
-	String toString() {
-		"Wait[timeout: $timeout, retryInterval: $retryInterval]"
-	}
+    String toString() {
+        "Wait[timeout: $timeout, retryInterval: $retryInterval]"
+    }
 
-	boolean equals(other) {
-		if (this.is(other)) {
-			true
-		} else if (!(other instanceof Wait)) {
-			false
-		} else {
-			this.timeout == other.timeout && this.retryInterval == other.retryInterval
-		}
-	}
+    boolean equals(other) {
+        if (this.is(other)) {
+            true
+        } else if (!(other instanceof Wait)) {
+            false
+        } else {
+            this.timeout == other.timeout && this.retryInterval == other.retryInterval
+        }
+    }
 
-	int hashCode() {
-		int code = 41
-		code = HASHCODE_MULTIPLIER * code + timeout.hashCode()
-		code = HASHCODE_MULTIPLIER * code + retryInterval.hashCode()
-		code
-	}
+    int hashCode() {
+        int code = 41
+        code = HASHCODE_MULTIPLIER * code + timeout.hashCode()
+        code = HASHCODE_MULTIPLIER * code + retryInterval.hashCode()
+        code
+    }
 
-	Date calculateTimeoutFromNow() {
-		calculateTimeoutFrom(new Date())
-	}
+    Date calculateTimeoutFromNow() {
+        calculateTimeoutFrom(new Date())
+    }
 
-	Date calculateTimeoutFrom(Date start) {
-		def calendar = Calendar.instance
-		calendar.time = start
-		calendar.add(Calendar.MILLISECOND, Math.ceil(toMiliseconds(timeout)) as int)
-		calendar.time
-	}
+    Date calculateTimeoutFrom(Date start) {
+        def calendar = Calendar.instance
+        calendar.time = start
+        calendar.add(Calendar.MILLISECOND, Math.ceil(toMiliseconds(timeout)) as int)
+        calendar.time
+    }
 
-	private double toMiliseconds(Double seconds) {
-		seconds * 1000
-	}
+    private double toMiliseconds(Double seconds) {
+        seconds * 1000
+    }
 
-	/**
-	 * Invokes the given {@code block} every {@code retryInterval} seconds until it returns
-	 * a true value according to the Groovy Truth. If {@code block} does not return a truish value
-	 * within {@code timeout} seconds then a {@link geb.waiting.WaitTimeoutException} will be thrown.
-	 * <p>
-	 * If the given block is executing at the time when the timeout is reached, it will not be interrupted. This means that
-	 * this method may take longer than the specified {@code timeout}. For example, if the {@code block} takes 5 seconds
-	 * to complete but the timeout is 2 seconds, the wait is always going to take at least 5 seconds.
-	 * <p>
-	 * If {@code block} throws any {@link Throwable}, it is treated as a failure and the {@code block} will be tried
-	 * again after the {@code retryInterval} has expired. If the last invocation of {@code block} throws an exception
-	 * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
-	 */
-	@SuppressWarnings("UnnecessaryPublicModifier")
-	public <T> T waitFor(Closure<T> block) {
-		def stopAt = calculateTimeoutFromNow()
-		def pass
-		def thrown = null
+    /**
+     * Invokes the given {@code block} every {@code retryInterval} seconds until it returns
+     * a true value according to the Groovy Truth. If {@code block} does not return a truish value
+     * within {@code timeout} seconds then a {@link geb.waiting.WaitTimeoutException} will be thrown.
+     * <p>
+     * If the given block is executing at the time when the timeout is reached, it will not be interrupted. This means that
+     * this method may take longer than the specified {@code timeout}. For example, if the {@code block} takes 5 seconds
+     * to complete but the timeout is 2 seconds, the wait is always going to take at least 5 seconds.
+     * <p>
+     * If {@code block} throws any {@link Throwable}, it is treated as a failure and the {@code block} will be tried
+     * again after the {@code retryInterval} has expired. If the last invocation of {@code block} throws an exception
+     * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
+     */
+    @SuppressWarnings("UnnecessaryPublicModifier")
+    public <T> T waitFor(Closure<T> block) {
+        def stopAt = calculateTimeoutFromNow()
+        def pass
+        def thrown = null
 
-		try {
-			pass = block()
-		} catch (Throwable e) {
-			pass = new UnknownWaitForEvaluationResult(e)
-			thrown = e
-		}
+        try {
+            pass = block()
+        } catch (Throwable e) {
+            pass = new UnknownWaitForEvaluationResult(e)
+            thrown = e
+        }
 
-		def timedOut = new Date() > stopAt
-		while (!pass && !timedOut) {
-			sleepForRetryInterval()
-			try {
-				pass = block()
-				thrown = null
-			} catch (Throwable e) {
-				pass = new UnknownWaitForEvaluationResult(e)
-				thrown = e
-			} finally {
-				timedOut = new Date() > stopAt
-			}
-		}
+        def timedOut = new Date() > stopAt
+        while (!pass && !timedOut) {
+            sleepForRetryInterval()
+            try {
+                pass = block()
+                thrown = null
+            } catch (Throwable e) {
+                pass = new UnknownWaitForEvaluationResult(e)
+                thrown = e
+            } finally {
+                timedOut = new Date() > stopAt
+            }
+        }
 
-		if (!pass && timedOut) {
-			throw new WaitTimeoutException(this, thrown, pass)
-		}
+        if (!pass && timedOut) {
+            throw new WaitTimeoutException(this, thrown, pass)
+        }
 
-		pass as T
-	}
+        pass as T
+    }
 
-	/**
-	 * Blocks the caller for the retryInterval
-	 */
-	void sleepForRetryInterval() {
-		Thread.sleep(toMiliseconds(retryInterval) as long)
-	}
+    /**
+     * Blocks the caller for the retryInterval
+     */
+    void sleepForRetryInterval() {
+        Thread.sleep(toMiliseconds(retryInterval) as long)
+    }
 }

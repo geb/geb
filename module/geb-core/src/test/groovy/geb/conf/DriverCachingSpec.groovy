@@ -24,94 +24,94 @@ import spock.util.concurrent.BlockingVariable
 
 class DriverCachingSpec extends Specification {
 
-	def num = 0
+    def num = 0
 
-	private static class NullBuildAdapter implements BuildAdapter {
-		String getBaseUrl() { null }
+    private static class NullBuildAdapter implements BuildAdapter {
+        String getBaseUrl() { null }
 
-		File getReportsDir() { null }
-	}
+        File getReportsDir() { null }
+    }
 
-	def conf(cacheDriverPerThread = false) {
-		def conf = new Configuration(new ConfigObject(), new Properties(), new NullBuildAdapter())
-		conf.cacheDriverPerThread = cacheDriverPerThread
-		conf.driverConf = { new HtmlUnitDriver() }
+    def conf(cacheDriverPerThread = false) {
+        def conf = new Configuration(new ConfigObject(), new Properties(), new NullBuildAdapter())
+        conf.cacheDriverPerThread = cacheDriverPerThread
+        conf.driverConf = { new HtmlUnitDriver() }
 
-		assert conf.cacheDriver
+        assert conf.cacheDriver
 
-		conf
-	}
+        conf
+    }
 
-	def setupSpec() {
-		CachingDriverFactory.clearCacheCache()
-	}
+    def setupSpec() {
+        CachingDriverFactory.clearCacheCache()
+    }
 
-	def "per thread caching yields a new driver on a different thread"() {
-		given:
-		def conf1 = conf(true)
-		def conf2 = conf(true)
+    def "per thread caching yields a new driver on a different thread"() {
+        given:
+        def conf1 = conf(true)
+        def conf2 = conf(true)
 
-		and:
-		def holder = new BlockingVariable()
+        and:
+        def holder = new BlockingVariable()
 
-		when:
-		Thread.start { holder.set(conf2.driver) }
+        when:
+        Thread.start { holder.set(conf2.driver) }
 
-		and:
-		def driver1 = conf1.driver
-		def driver2 = holder.get()
+        and:
+        def driver1 = conf1.driver
+        def driver2 = holder.get()
 
-		then:
-		!driver1.is(driver2)
+        then:
+        !driver1.is(driver2)
 
-		and:
-		driver1.is conf(true).driver
+        and:
+        driver1.is conf(true).driver
 
-		when:
-		CachingDriverFactory.clearCacheAndQuitDriver()
+        when:
+        CachingDriverFactory.clearCacheAndQuitDriver()
 
-		then:
-		!driver1.is(conf(true).driver)
+        then:
+        !driver1.is(conf(true).driver)
 
-		cleanup:
-		driver1.quit()
-		driver2.quit()
-	}
+        cleanup:
+        driver1.quit()
+        driver2.quit()
+    }
 
-	def "global caching yields the same driver on different threads"() {
-		given:
-		def conf1 = conf()
-		def conf2 = conf()
+    def "global caching yields the same driver on different threads"() {
+        given:
+        def conf1 = conf()
+        def conf2 = conf()
 
-		and:
-		def holder = new BlockingVariable()
+        and:
+        def holder = new BlockingVariable()
 
-		when:
-		Thread.start { holder.set(conf2.driver) }
+        when:
+        Thread.start { holder.set(conf2.driver) }
 
-		and:
-		def driver1 = conf1.driver
-		def driver2 = holder.get()
+        and:
+        def driver1 = conf1.driver
+        def driver2 = holder.get()
 
-		then:
-		driver1.is(driver2)
+        then:
+        driver1.is(driver2)
 
-		and:
-		driver1.is conf().driver
+        and:
+        driver1.is conf().driver
 
-		when:
-		CachingDriverFactory.clearCacheAndQuitDriver()
+        when:
+        CachingDriverFactory.clearCacheAndQuitDriver()
 
-		then:
-		!driver1.is(conf(true).driver)
+        then:
+        !driver1.is(conf(true).driver)
 
-		cleanup:
-		driver1.quit()
-		driver2.quit()
-	}
+        cleanup:
+        driver1.quit()
+        driver2.quit()
+    }
 
-	def cleanup() {
-		CachingDriverFactory.clearCacheCache()
-	}
+    def cleanup() {
+        CachingDriverFactory.clearCacheCache()
+    }
 
 }

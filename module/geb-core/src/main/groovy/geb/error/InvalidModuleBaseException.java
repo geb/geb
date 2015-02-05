@@ -16,7 +16,7 @@
 package geb.error;
 
 public class InvalidModuleBaseException extends GebException {
-	public InvalidModuleBaseException(Object message) {
-		super(message);
-	}
+    public InvalidModuleBaseException(Object message) {
+        super(message);
+    }
 }

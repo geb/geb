@@ -26,60 +26,64 @@ def runningTests = false
 // For Grails 2.3 spock is part of core so the spock plugin should no
 // longer be used. Try to support both configurations.
 tryToLoadTestTypes = {
-	if(!tryToLoadTestType("spock", coreSpecTestTypeClassName)) {
-		tryToLoadTestType("spock", pluginSpecTestTypeClassName)
-	}
+    if (!tryToLoadTestType("spock", coreSpecTestTypeClassName)) {
+        tryToLoadTestType("spock", pluginSpecTestTypeClassName)
+    }
 }
 
 tryToLoadTestType = { name, typeClassName ->
-	if (name in loadedTestTypes) return
-	if (!binding.variables.containsKey("functionalTests")) return
-	
-	def typeClass = softLoadClass(typeClassName)
-	if (typeClass) {
-		if (!functionalTests.any { it.class == typeClass }) {
-			functionalTests << typeClass.newInstance(name, 'functional')
-		}
-		loadedTestTypes << name
-	}
+    if (name in loadedTestTypes) {
+        return
+    }
+    if (!binding.variables.containsKey("functionalTests")) {
+        return
+    }
+
+    def typeClass = softLoadClass(typeClassName)
+    if (typeClass) {
+        if (!functionalTests.any { it.class == typeClass }) {
+            functionalTests << typeClass.newInstance(name, 'functional')
+        }
+        loadedTestTypes << name
+    }
 }
 
 softLoadClass = { className ->
-	try {
-		classLoader.loadClass(className)
-	} catch (ClassNotFoundException e) {
-		null
-	}
+    try {
+        classLoader.loadClass(className)
+    } catch (ClassNotFoundException e) {
+        null
+    }
 }
 
 eventAllTestsStart = {
-	runningTests = true
+    runningTests = true
 
-	tryToLoadTestTypes()
+    tryToLoadTestTypes()
 
-	// The Spock test type in Grails 2.3+ will run JUnit tests as well, so don't register the JUnit test
-	// types to avoid running JUnit tests twice when using Grails 2.3+
-	if (!softLoadClass(coreSpecTestTypeClassName)) {
-		[junit3TestTypeClassName, junit4TestTypeClassName].each { testTypeClassName ->
-			def testTypeClass = softLoadClass(testTypeClassName)
-			if (testTypeClass) {
-				if (!functionalTests.any { it.class == testTypeClass }) {
-					functionalTests << testTypeClass.newInstance('functional', 'functional')
-				}
-			}
-		}
-	}
+    // The Spock test type in Grails 2.3+ will run JUnit tests as well, so don't register the JUnit test
+    // types to avoid running JUnit tests twice when using Grails 2.3+
+    if (!softLoadClass(coreSpecTestTypeClassName)) {
+        [junit3TestTypeClassName, junit4TestTypeClassName].each { testTypeClassName ->
+            def testTypeClass = softLoadClass(testTypeClassName)
+            if (testTypeClass) {
+                if (!functionalTests.any { it.class == testTypeClass }) {
+                    functionalTests << testTypeClass.newInstance('functional', 'functional')
+                }
+            }
+        }
+    }
 }
 
 eventPackagePluginsEnd = {
-	tryToLoadTestTypes()
+    tryToLoadTestTypes()
 }
 
 loadGebBuildAdapterClass = {
-	def buildAdapterClass = softLoadClass(buildAdapterClassName)
-	if (buildAdapterClass == null) {
-		def gebPluginVersion = pluginSettings.getPluginInfo(gebPluginDir.path).version
-		def msg = """
+    def buildAdapterClass = softLoadClass(buildAdapterClassName)
+    if (buildAdapterClass == null) {
+        def gebPluginVersion = pluginSettings.getPluginInfo(gebPluginDir.path).version
+        def msg = """
 ERROR: No Geb testing adapters are installed
 
 Starting with 0.6 of the Geb plugin for Grails, testing adapters are no longer installed automatically by the plugin.
@@ -106,35 +110,35 @@ of these classes with the equivalent from the relevant testing adapter:
 
 Please see the Geb website for more information if required.
 """
-		event('StatusError', [msg])
-		exit 1
-	}
-	buildAdapterClass
+        event('StatusError', [msg])
+        exit 1
+    }
+    buildAdapterClass
 }
 
 eventTestPhasesStart = { phases ->
-	if ("functional" in phases) {
-		// do this early to fail fast
-		loadGebBuildAdapterClass()
-	}
+    if ("functional" in phases) {
+        // do this early to fail fast
+        loadGebBuildAdapterClass()
+    }
 }
 
 eventTestPhaseStart = { phaseName ->
-	if (phaseName == 'functional') {
-		// GRAILS-7563
-		if (!binding.hasVariable('serverContextPath')) {
-			includeTargets << grailsScript("_GrailsPackage") 
-			createConfig() // GRAILS-7562
-			configureServerContextPath()
-		}
-		
-		def buildAdapterClass = loadGebBuildAdapterClass()
-		def baseUrl = argsMap["baseUrl"] ?: "http://${serverHost ?: 'localhost'}:$serverPort${serverContextPath == "/" ? "" : serverContextPath}/"
-		System.setProperty(buildAdapterClass.BASE_URL_PROPERTY_NAME, baseUrl)
-		
-		def reportsDir = new File(grailsSettings.testReportsDir, 'geb')
-		System.setProperty(buildAdapterClass.REPORTS_DIR_PROPERTY_NAME, reportsDir.absolutePath)
-	}
+    if (phaseName == 'functional') {
+        // GRAILS-7563
+        if (!binding.hasVariable('serverContextPath')) {
+            includeTargets << grailsScript("_GrailsPackage")
+            createConfig() // GRAILS-7562
+            configureServerContextPath()
+        }
+
+        def buildAdapterClass = loadGebBuildAdapterClass()
+        def baseUrl = argsMap["baseUrl"] ?: "http://${serverHost ?: 'localhost'}:$serverPort${serverContextPath == "/" ? "" : serverContextPath}/"
+        System.setProperty(buildAdapterClass.BASE_URL_PROPERTY_NAME, baseUrl)
+
+        def reportsDir = new File(grailsSettings.testReportsDir, 'geb')
+        System.setProperty(buildAdapterClass.REPORTS_DIR_PROPERTY_NAME, reportsDir.absolutePath)
+    }
 }
 
 eventTestPhasePrepared = { phaseName ->
@@ -151,19 +155,19 @@ eventTestPhasePrepared = { phaseName ->
 // Just upgrade plugins without user input when building this plugin
 // Has no effect for clients of this plugin
 if (grailsAppName == 'geb') {
-	
-	// Override to workaround GRAILS-7296
-	org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport.metaClass.getSourceDir = { ->
-		new File(delegate.buildBinding.grailsSettings.testSourceDir, delegate.relativeSourcePath)
-	}
-	
-	def resolveDependenciesWasInteractive = false
-	eventResolveDependenciesStart = {
-		resolveDependenciesWasInteractive = isInteractive
-		isInteractive = false
-	}
 
-	eventResolveDependenciesEnd = {
-		isInteractive = resolveDependenciesWasInteractive
-	}
+    // Override to workaround GRAILS-7296
+    org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport.metaClass.getSourceDir = { ->
+        new File(delegate.buildBinding.grailsSettings.testSourceDir, delegate.relativeSourcePath)
+    }
+
+    def resolveDependenciesWasInteractive = false
+    eventResolveDependenciesStart = {
+        resolveDependenciesWasInteractive = isInteractive
+        isInteractive = false
+    }
+
+    eventResolveDependenciesEnd = {
+        isInteractive = resolveDependenciesWasInteractive
+    }
 }

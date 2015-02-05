@@ -21,42 +21,42 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class CallbackServlet extends HttpServlet {
-	private server
+    private server
 
-	CallbackServlet(CallbackHttpServer server) {
-		this.server = server
-	}
+    CallbackServlet(CallbackHttpServer server) {
+        this.server = server
+    }
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (server.get) {
-			server.get?.call(req, res)
-		} else {
-		 super.doGet(req, res)
-		}
-	}
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if (server.get) {
+            server.get?.call(req, res)
+        } else {
+            super.doGet(req, res)
+        }
+    }
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (server.post) {
-			server.post?.call(req, res)
-		} else {
-		 super.doPost(req, res)
-		}
-	}
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if (server.post) {
+            server.post?.call(req, res)
+        } else {
+            super.doPost(req, res)
+        }
+    }
 
-	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (server.put) {
-			server.put?.call(req, res)
-		} else {
-		 super.doPut(req, res)
-		}
-	}
+    protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if (server.put) {
+            server.put?.call(req, res)
+        } else {
+            super.doPut(req, res)
+        }
+    }
 
-	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (server.delete) {
-			server.delete?.call(req, res)
-		} else {
-		 super.doDelete(req, res)
-		}
-	}
+    protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if (server.delete) {
+            server.delete?.call(req, res)
+        } else {
+            super.doDelete(req, res)
+        }
+    }
 
 }

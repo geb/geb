@@ -19,5 +19,5 @@ import geb.Page
 
 class NotFoundPage extends Page {
 
-	static at = { $('h1').text() == 'Not Found' }
+    static at = { $('h1').text() == 'Not Found' }
 }

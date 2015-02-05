@@ -1,5 +1,5 @@
 <html>
 <body>
-  <div>index</div>
+<div>index</div>
 </body>
 </html>

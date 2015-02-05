@@ -19,5 +19,5 @@ import geb.Page
 
 class ApiPage extends Page {
 
-	static at = { title.contains('Groovy API for Geb') }
+    static at = { title.contains('Groovy API for Geb') }
 }

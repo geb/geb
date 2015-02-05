@@ -21,14 +21,14 @@ import org.openqa.selenium.WebElement
 
 class ClosureInnerNavigatorFactory implements InnerNavigatorFactory {
 
-	private final Closure<Navigator> closure
+    private final Closure<Navigator> closure
 
-	ClosureInnerNavigatorFactory(Closure<Navigator> closure) {
-		this.closure = closure
-	}
+    ClosureInnerNavigatorFactory(Closure<Navigator> closure) {
+        this.closure = closure
+    }
 
-	@Override
-	Navigator createNavigator(Browser browser, List<WebElement> elements) {
-		closure.call(browser, elements)
-	}
+    @Override
+    Navigator createNavigator(Browser browser, List<WebElement> elements) {
+        closure.call(browser, elements)
+    }
 }

@@ -18,13 +18,13 @@ package geb.textmatching
 import java.util.regex.Pattern
 
 class PatternTextMatcher implements TextMatcher {
-	final Pattern pattern
+    final Pattern pattern
 
-	PatternTextMatcher(CharSequence pattern) {
-		this.pattern = Pattern.compile(pattern.toString(), Pattern.DOTALL)
-	}
+    PatternTextMatcher(CharSequence pattern) {
+        this.pattern = Pattern.compile(pattern.toString(), Pattern.DOTALL)
+    }
 
-	boolean matches(String text) {
-		text ==~ pattern
-	}
+    boolean matches(String text) {
+        text ==~ pattern
+    }
 }

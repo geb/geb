@@ -20,15 +20,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 class PngUtils {
-	
-	static public boolean isPng(byte[] bytes) {
-		try {
-			return new DataInputStream(new ByteArrayInputStream(bytes)).readLong() == 0x89504e470d0a1a0aL;
-		} catch (IOException e) {
-			// not going to happen
-			return false;
-		}
-		
-	}
-	
+
+    static public boolean isPng(byte[] bytes) {
+        try {
+            return new DataInputStream(new ByteArrayInputStream(bytes)).readLong() == 0x89504e470d0a1a0aL;
+        } catch (IOException e) {
+            // not going to happen
+            return false;
+        }
+
+    }
+
 }

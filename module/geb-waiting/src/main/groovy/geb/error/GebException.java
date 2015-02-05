@@ -16,16 +16,16 @@ package geb.error;
 
 public class GebException extends Exception {
 
-	public GebException(Object message) {
-		this(message, null);
-	}
+    public GebException(Object message) {
+        this(message, null);
+    }
 
-	public GebException(Object message, Throwable cause) {
-		super(message == null ? null : message.toString(), cause);
-	}
+    public GebException(Object message, Throwable cause) {
+        super(message == null ? null : message.toString(), cause);
+    }
 
-	public GebException(Throwable cause) {
-		this(null, cause);
-	}
+    public GebException(Throwable cause) {
+        this(null, cause);
+    }
 
 }

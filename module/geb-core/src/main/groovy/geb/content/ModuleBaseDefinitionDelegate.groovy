@@ -23,119 +23,119 @@ import org.openqa.selenium.WebElement
 
 class ModuleBaseDefinitionDelegate {
 
-	private final Map params
+    private final Map params
 
-	private final Module module
-	@Delegate
-	private final NavigableSupport navigableSupport
+    private final Module module
+    @Delegate
+    private final NavigableSupport navigableSupport
 
-	@Delegate
-	@SuppressWarnings("UnusedPrivateField")
-	private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+    @Delegate
+    @SuppressWarnings("UnusedPrivateField")
+    private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
-	ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, Map params) {
-		this.params = params
-		navigableSupport = new NavigableSupport(navigatorFactory)
-		this.module = module
-	}
+    ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, Map params) {
+        this.params = params
+        navigableSupport = new NavigableSupport(navigatorFactory)
+        this.module = module
+    }
 
-	def propertyMissing(String name) {
-		if (params.containsKey(name)) {
-			params[name]
-		} else {
-			module.getProperty(name)
-		}
-	}
+    def propertyMissing(String name) {
+        if (params.containsKey(name)) {
+            params[name]
+        } else {
+            module.getProperty(name)
+        }
+    }
 
-	@Override
-	//necessary because @Delegate generates wrong method signature for this method
-	<T extends Module> T module(Class<T> moduleClass) {
-		navigableSupport.module(moduleClass)
-	}
+    @Override
+    //necessary because @Delegate generates wrong method signature for this method
+    <T extends Module> T module(Class<T> moduleClass) {
+        navigableSupport.module(moduleClass)
+    }
 
-	@Override
-	//necessary because @Delegate generates wrong method signature for this method
-	<T extends Module> T module(T module) {
-		navigableSupport.module(module)
-	}
+    @Override
+    //necessary because @Delegate generates wrong method signature for this method
+    <T extends Module> T module(T module) {
+        navigableSupport.module(module)
+    }
 
-	Navigator $() {
-		navigableSupport.$()
-	}
+    Navigator $() {
+        navigableSupport.$()
+    }
 
-	Navigator $(int index) {
-		navigableSupport.$(index)
-	}
+    Navigator $(int index) {
+        navigableSupport.$(index)
+    }
 
-	Navigator $(Range<Integer> range) {
-		navigableSupport.$(range)
-	}
+    Navigator $(Range<Integer> range) {
+        navigableSupport.$(range)
+    }
 
-	Navigator $(String selector) {
-		navigableSupport.$(selector)
-	}
+    Navigator $(String selector) {
+        navigableSupport.$(selector)
+    }
 
-	Navigator $(String selector, int index) {
-		navigableSupport.$(selector, index)
-	}
+    Navigator $(String selector, int index) {
+        navigableSupport.$(selector, index)
+    }
 
-	Navigator $(String selector, Range<Integer> range) {
-		navigableSupport.$(selector, range)
-	}
+    Navigator $(String selector, Range<Integer> range) {
+        navigableSupport.$(selector, range)
+    }
 
-	Navigator $(Map<String, Object> attributes) {
-		navigableSupport.$(attributes)
-	}
+    Navigator $(Map<String, Object> attributes) {
+        navigableSupport.$(attributes)
+    }
 
-	Navigator $(Map<String, Object> attributes, int index) {
-		navigableSupport.$(attributes, index)
-	}
+    Navigator $(Map<String, Object> attributes, int index) {
+        navigableSupport.$(attributes, index)
+    }
 
-	Navigator $(Map<String, Object> attributes, Range<Integer> range) {
-		navigableSupport.$(attributes, range)
-	}
+    Navigator $(Map<String, Object> attributes, Range<Integer> range) {
+        navigableSupport.$(attributes, range)
+    }
 
-	Navigator $(Map<String, Object> attributes, String selector) {
-		navigableSupport.$(attributes, selector)
-	}
+    Navigator $(Map<String, Object> attributes, String selector) {
+        navigableSupport.$(attributes, selector)
+    }
 
-	Navigator $(Map<String, Object> attributes, String selector, int index) {
-		navigableSupport.$(attributes, selector, index)
-	}
+    Navigator $(Map<String, Object> attributes, String selector, int index) {
+        navigableSupport.$(attributes, selector, index)
+    }
 
-	Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
-		navigableSupport.$(attributes, selector, range)
-	}
+    Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
+        navigableSupport.$(attributes, selector, range)
+    }
 
-	Navigator $(Map<String, Object> attributes, By bySelector) {
-		navigableSupport.find(attributes, bySelector)
-	}
+    Navigator $(Map<String, Object> attributes, By bySelector) {
+        navigableSupport.find(attributes, bySelector)
+    }
 
-	Navigator $(Map<String, Object> attributes, By bySelector, int index) {
-		navigableSupport.find(attributes, bySelector, index)
-	}
+    Navigator $(Map<String, Object> attributes, By bySelector, int index) {
+        navigableSupport.find(attributes, bySelector, index)
+    }
 
-	Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-		navigableSupport.find(attributes, bySelector, range)
-	}
+    Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+        navigableSupport.find(attributes, bySelector, range)
+    }
 
-	Navigator $(By bySelector) {
-		navigableSupport.find(bySelector)
-	}
+    Navigator $(By bySelector) {
+        navigableSupport.find(bySelector)
+    }
 
-	Navigator $(By bySelector, int index) {
-		navigableSupport.find(bySelector, index)
-	}
+    Navigator $(By bySelector, int index) {
+        navigableSupport.find(bySelector, index)
+    }
 
-	Navigator $(By bySelector, Range<Integer> range) {
-		navigableSupport.find(bySelector, range)
-	}
+    Navigator $(By bySelector, Range<Integer> range) {
+        navigableSupport.find(bySelector, range)
+    }
 
-	Navigator $(Navigator[] navigators) {
-		navigableSupport.$(navigators)
-	}
+    Navigator $(Navigator[] navigators) {
+        navigableSupport.$(navigators)
+    }
 
-	Navigator $(WebElement[] elements) {
-		navigableSupport.$(elements)
-	}
+    Navigator $(WebElement[] elements) {
+        navigableSupport.$(elements)
+    }
 }

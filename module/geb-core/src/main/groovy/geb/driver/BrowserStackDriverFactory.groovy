@@ -20,18 +20,18 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 
 class BrowserStackDriverFactory extends CloudDriverFactory {
-	@Override
-	String assembleProviderUrl(String username, String password) {
-		"http://$username:$password@hub.browserstack.com/wd/hub"
-	}
+    @Override
+    String assembleProviderUrl(String username, String password) {
+        "http://$username:$password@hub.browserstack.com/wd/hub"
+    }
 
-	@Override
-	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
-		desiredCapabilities.setCapability("browserstack.local", "true")
-	}
+    @Override
+    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+        desiredCapabilities.setCapability("browserstack.local", "true")
+    }
 
-	WebDriver create(String specification, String username, String password, String localId, Map<String, Object> capabilities = [:]) {
-		def mergedCapabilities = ImmutableMap.builder().putAll(capabilities).put("browserstack.localIdentifier", localId).build()
-		create(specification, username, password, mergedCapabilities)
-	}
+    WebDriver create(String specification, String username, String password, String localId, Map<String, Object> capabilities = [:]) {
+        def mergedCapabilities = ImmutableMap.builder().putAll(capabilities).put("browserstack.localIdentifier", localId).build()
+        create(specification, username, password, mergedCapabilities)
+    }
 }

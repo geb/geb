@@ -19,111 +19,111 @@ import spock.lang.Unroll
 
 class PageLoadUnloadListeningSpec extends GebSpecWithCallbackServer {
 
-	@Unroll
-	def "change callbacks via #method"(String method, Closure toPage) {
-		given:
-		html {
-			button()
-		}
+    @Unroll
+    def "change callbacks via #method"(String method, Closure toPage) {
+        given:
+        html {
+            button()
+        }
 
-		when:
-		to PageLoadUnloadListeningSpecPage1
+        when:
+        to PageLoadUnloadListeningSpecPage1
 
-		then:
-		page instanceof PageLoadUnloadListeningSpecPage1
+        then:
+        page instanceof PageLoadUnloadListeningSpecPage1
 
-		when:
-		def previousPage = page
-		fire(toPage, PageLoadUnloadListeningSpecPage2)
+        when:
+        def previousPage = page
+        fire(toPage, PageLoadUnloadListeningSpecPage2)
 
-		then:
-		previousPage.arg.class == PageLoadUnloadListeningSpecPage2
-		previousPage.method == 'onUnload'
+        then:
+        previousPage.arg.class == PageLoadUnloadListeningSpecPage2
+        previousPage.method == 'onUnload'
 
-		and:
-		page instanceof PageLoadUnloadListeningSpecPage2
-		page.arg.class == PageLoadUnloadListeningSpecPage1
-		page.method == 'onLoad'
+        and:
+        page instanceof PageLoadUnloadListeningSpecPage2
+        page.arg.class == PageLoadUnloadListeningSpecPage1
+        page.method == 'onLoad'
 
-		where:
-		method                     | toPage
-		"page method"              | { page(it) }
-		"content click"            | { link.click() }
-		"to method"                | { to(it) }
-		"click with explicit page" | { button.click(it) }
-		"click with page list"     | { button.click([PageLoadUnloadListeningSpecPage3, it]) }
-	}
+        where:
+        method                     | toPage
+        "page method"              | { page(it) }
+        "content click"            | { link.click() }
+        "to method"                | { to(it) }
+        "click with explicit page" | { button.click(it) }
+        "click with page list"     | { button.click([PageLoadUnloadListeningSpecPage3, it]) }
+    }
 
-	private fire(Closure closure, Class<? extends Page> pageClass) {
-		closure.delegate = this
-		closure.call(pageClass)
-	}
+    private fire(Closure closure, Class<? extends Page> pageClass) {
+        closure.delegate = this
+        closure.call(pageClass)
+    }
 
-	def "there is only one page instance created when passing a page class to to() method"() {
-		given:
-		html {
-			h1("test")
-		}
+    def "there is only one page instance created when passing a page class to to() method"() {
+        given:
+        html {
+            h1("test")
+        }
 
-		when:
-		to PageLoadUnloadListeningSpecContextPage1
+        when:
+        to PageLoadUnloadListeningSpecContextPage1
 
-		and:
-		context.text = "test"
+        and:
+        context.text = "test"
 
-		then:
-		to PageLoadUnloadListeningSpecContextPage2
-	}
+        then:
+        to PageLoadUnloadListeningSpecContextPage2
+    }
 }
 
 class PageLoadUnloadListeningSpecPage1 extends Page {
-	def arg
-	def method
+    def arg
+    def method
 
-	static content = {
-		link(to: PageLoadUnloadListeningSpecPage2) { $("button") }
-		button { $("button") }
-	}
+    static content = {
+        link(to: PageLoadUnloadListeningSpecPage2) { $("button") }
+        button { $("button") }
+    }
 
-	void onLoad(Page previousPage) {
-		method = 'onLoad'
-		arg = previousPage
-	}
+    void onLoad(Page previousPage) {
+        method = 'onLoad'
+        arg = previousPage
+    }
 
-	void onUnload(Page nextPage) {
-		method = 'onUnload'
-		arg = nextPage
-	}
+    void onUnload(Page nextPage) {
+        method = 'onUnload'
+        arg = nextPage
+    }
 }
 
 class PageLoadUnloadListeningSpecPage2 extends PageLoadUnloadListeningSpecPage1 {
-	static at = { true }
-	static content = {
-		link(to: PageLoadUnloadListeningSpecPage1) { $("button") }
-		button { $("button") }
-	}
+    static at = { true }
+    static content = {
+        link(to: PageLoadUnloadListeningSpecPage1) { $("button") }
+        button { $("button") }
+    }
 }
 
 class PageLoadUnloadListeningSpecPage3 extends Page {
-	static at = { false }
+    static at = { false }
 }
 
 class PageLoadUnloadListeningSpecContextPage extends Page {
-	def context = [:]
+    def context = [:]
 
-	void onUnload(Page newPage) {
-		newPage.context << context
-	}
+    void onUnload(Page newPage) {
+        newPage.context << context
+    }
 }
 
 class PageLoadUnloadListeningSpecContextPage1 extends PageLoadUnloadListeningSpecContextPage {
 }
 
 class PageLoadUnloadListeningSpecContextPage2 extends PageLoadUnloadListeningSpecContextPage {
-	static at = {
-		context.text == headerText
-	}
-	static content = {
-		headerText { $("h1").text() }
-	}
+    static at = {
+        context.text == headerText
+    }
+    static content = {
+        headerText { $("h1").text() }
+    }
 }

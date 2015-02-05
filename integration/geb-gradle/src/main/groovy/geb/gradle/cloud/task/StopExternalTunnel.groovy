@@ -20,10 +20,10 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 class StopExternalTunnel extends DefaultTask {
-	ExternalTunnel tunnel
+    ExternalTunnel tunnel
 
-	@TaskAction
-	void stop() {
-		tunnel.stopTunnel()
-	}
+    @TaskAction
+    void stop() {
+        tunnel.stopTunnel()
+    }
 }

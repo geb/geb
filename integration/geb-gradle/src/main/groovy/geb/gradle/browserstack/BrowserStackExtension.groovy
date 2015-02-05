@@ -20,38 +20,38 @@ import org.gradle.api.Project
 
 class BrowserStackExtension {
 
-	Project project
-	BrowserStackAccount account
-	List<URL> applicationUrls = []
+    Project project
+    BrowserStackAccount account
+    List<URL> applicationUrls = []
 
-	BrowserStackExtension(Project project) {
-		this.project = project
-	}
+    BrowserStackExtension(Project project) {
+        this.project = project
+    }
 
-	void addExtensions() {
-		extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
-		account = new BrowserStackAccount()
-		extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, applicationUrls)
-	}
+    void addExtensions() {
+        extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
+        account = new BrowserStackAccount()
+        extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, applicationUrls)
+    }
 
-	void task(Closure configuration) {
-		extensions.browsers.all { BrowserSpec browser ->
-			project.tasks["${browser.displayName}Test"].configure configuration
-		}
-	}
+    void task(Closure configuration) {
+        extensions.browsers.all { BrowserSpec browser ->
+            project.tasks["${browser.displayName}Test"].configure configuration
+        }
+    }
 
-	void account(Closure configuration) {
-		project.configure(account, configuration)
-		extensions.browsers.all { BrowserSpec browser ->
-			account.configure project.tasks["${browser.displayName}Test"]
-		}
-	}
+    void account(Closure configuration) {
+        project.configure(account, configuration)
+        extensions.browsers.all { BrowserSpec browser ->
+            account.configure project.tasks["${browser.displayName}Test"]
+        }
+    }
 
-	void application(String... urls) {
-		applicationUrls.addAll(urls.collect { new URL(it) })
-	}
+    void application(String... urls) {
+        applicationUrls.addAll(urls.collect { new URL(it) })
+    }
 
-	void application(URL... urls) {
-		applicationUrls.addAll(urls)
-	}
+    void application(URL... urls) {
+        applicationUrls.addAll(urls)
+    }
 }

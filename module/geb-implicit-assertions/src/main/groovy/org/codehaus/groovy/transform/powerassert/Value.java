@@ -17,25 +17,24 @@
 package org.codehaus.groovy.transform.powerassert;
 
 /**
- * A value recorded during evaluation of an assertion, along with the column it
- * is associated with in the assertion's normalized source text.
+ * A value recorded during evaluation of an assertion, along with the column it is associated with in the assertion's normalized source text.
  *
  * @author Peter Niederwieser
  */
 public class Value {
-	private final Object value;
-	private final int column;
+    private final Object value;
+    private final int column;
 
-	public Value(Object value, int column) {
-		this.value = value;
-		this.column = column;
-	}
+    public Value(Object value, int column) {
+        this.value = value;
+        this.column = column;
+    }
 
-	public Object getValue() {
-		return value;
-	}
+    public Object getValue() {
+        return value;
+    }
 
-	public int getColumn() {
-		return column;
-	}
+    public int getColumn() {
+        return column;
+    }
 }

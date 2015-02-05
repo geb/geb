@@ -18,14 +18,14 @@ package geb.gradle.saucelabs
 import org.gradle.api.tasks.testing.Test
 
 class SauceAccount {
-	public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
-	public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_PASSWORD"
+    public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
+    public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_PASSWORD"
 
-	String username
-	String accessKey
+    String username
+    String accessKey
 
-	void configure(Test test) {
-		test.environment(USER_ENV_VAR, username)
-		test.environment(ACCESS_KEY_ENV_VAR, accessKey)
-	}
+    void configure(Test test) {
+        test.environment(USER_ENV_VAR, username)
+        test.environment(ACCESS_KEY_ENV_VAR, accessKey)
+    }
 }

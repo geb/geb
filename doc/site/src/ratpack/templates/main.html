@@ -1,110 +1,115 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta name="Robots" content="index,follow"/>
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-15031038-2']);
-		_gaq.push(['_trackPageview']);
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="Robots" content="index,follow"/>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15031038-2']);
+        _gaq.push(['_trackPageview']);
 
-		(function () {
-			var ga = document.createElement('script');
-			ga.type = 'text/javascript';
-			ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 
-	<link type="text/css" rel="stylesheet" href="css/shCore.css"/>
-	<link type="text/css" rel="stylesheet" href="css/shThemeEclipse.css"/>
-	<script language="javascript" src="js/jquery.js"></script>
-	<script language="javascript" src="js/shCore.js"></script>
-	<script language="javascript" src="js/shBrushGroovy.js"></script>
-	<script type="text/javascript" charset="utf-8">
-		SyntaxHighlighter.defaults['toolbar'] = false;
-		SyntaxHighlighter.defaults['gutter'] = false;
-		SyntaxHighlighter.all();
-	</script>
-	<link rel="stylesheet" href="css/main.css" type="text/css"/>
-	<title>Geb - Very Groovy Browser Automation</title>
+    <link type="text/css" rel="stylesheet" href="css/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="css/shThemeEclipse.css"/>
+    <script language="javascript" src="js/jquery.js"></script>
+    <script language="javascript" src="js/shCore.js"></script>
+    <script language="javascript" src="js/shBrushGroovy.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.defaults['gutter'] = false;
+        SyntaxHighlighter.all();
+    </script>
+    <link rel="stylesheet" href="css/main.css" type="text/css"/>
+    <title>Geb - Very Groovy Browser Automation</title>
 </head>
 
 <body>
 
 <div id="header-wrap">
-	<div id="header-content">
+    <div id="header-content">
 
-		<h1 id="logo">
-			<a href="/" title="">Geb <span class="orange" style="font-size: 50%; font-style: italic">(pronounced “jeb”)</span></a>
-		</h1>
+        <h1 id="logo">
+            <a href="/" title="">Geb <span class="orange" style="font-size: 50%; font-style: italic">(pronounced “jeb”)</span></a>
+        </h1>
 
-		<h2 id="slogan">very groovy browser automation… web testing, screen scraping and more</h2>
+        <h2 id="slogan">very groovy browser automation… web testing, screen scraping and more</h2>
 
-		<ul>
-			<li>
-				<span>Manual</span>
-				<ul class="link-list">
-					<li><a href="manual/current/">${model.currentManual} - current</a></li>
-					<% model.oldManuals.each { %>
-					<li><a href="manual/$it/">${it}</a></li>
-					<% } %>
-					<% if (model.snapshotManual) { %>
-					<li><a href="manual/snapshot/">${model.snapshotManual}</a></li>
-					<% } %>
-				</ul>
-			</li>
-			<li>
-				<span>API</span>
-				<ul class="link-list" id="api-list">
-					<li><a href="manual/current/api/">${model.currentManual} - current</a></li>
-					<% model.oldManuals.each { %>
-					<li><a href="manual/$it/api/">${it}</a></li>
-					<% } %>
-					<% if (model.snapshotManual) { %>
-					<li><a href="manual/snapshot/api/">${model.snapshotManual}</a></li>
-					<% } %>
-				</ul>
-			</li>
-			<li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
-			<li><a href="http://jira.codehaus.org/browse/GEB">Issues</a></li>
-			<li><a href="http://github.com/geb/geb">Code</a></li>
-		</ul>
+        <ul>
+            <li>
+                <span>Manual</span>
+                <ul class="link-list">
+                    <li><a href="manual/current/">${model.currentManual} - current</a></li>
+                    <% model.oldManuals.each { %>
+                    <li><a href="manual/$it/">${it}</a></li>
+                    <% } %>
+                    <% if (model.snapshotManual) { %>
+                    <li><a href="manual/snapshot/">${model.snapshotManual}</a></li>
+                    <% } %>
+                </ul>
+            </li>
+            <li>
+                <span>API</span>
+                <ul class="link-list" id="api-list">
+                    <li><a href="manual/current/api/">${model.currentManual} - current</a></li>
+                    <% model.oldManuals.each { %>
+                    <li><a href="manual/$it/api/">${it}</a></li>
+                    <% } %>
+                    <% if (model.snapshotManual) { %>
+                    <li><a href="manual/snapshot/api/">${model.snapshotManual}</a></li>
+                    <% } %>
+                </ul>
+            </li>
+            <li><a href="http://xircles.codehaus.org/projects/geb/lists">Mailing List</a></li>
+            <li><a href="http://jira.codehaus.org/browse/GEB">Issues</a></li>
+            <li><a href="http://github.com/geb/geb">Code</a></li>
+        </ul>
 
-	</div>
+    </div>
 </div>
 
 <div id="content-wrap">
-	<div id="content">
-		<div id="main">
-			<% render "includes/${model.page}.html" %>
-		</div>
-		<div id="sidebar">
-			<%
-				def sections = (Map<String, Map<String, String>>) model.map('pages')
-				sections.each { String section, pages ->
-			%>
-				<h1>${section}</h1>
-				<ul class="sidemenu">
-					<% pages.each { String label, String name -> %>
-					<li class="${label} ${label == model.page ? 'selected' : ''}"><a href="$label">${name}</a></li>
-					<% } %>
-				</ul>
-				<h1>Build Status</h1>
-				<a href="https://snap-ci.com/geb/geb/branch/master" target="_blank"><img src="https://snap-ci.com/geb/geb/branch/master/build_image" alt="Build status"/></a>
-			<% } %>
-		</div>
-	</div>
+    <div id="content">
+        <div id="main">
+            <% render "includes/${model.page}.html" %>
+        </div>
+        <div id="sidebar">
+            <%
+            def sections = (Map
+            <String
+            , Map
+            <String
+            , String>>) model.map('pages')
+            sections.each { String section, pages ->
+            %>
+            <h1>${section}</h1>
+            <ul class="sidemenu">
+                <% pages.each { String label, String name -> %>
+                <li class="${label} ${label == model.page ? 'selected' : ''}"><a href="$label">${name}</a></li>
+                <% } %>
+            </ul>
+            <h1>Build Status</h1>
+            <a href="https://snap-ci.com/geb/geb/branch/master" target="_blank"><img src="https://snap-ci.com/geb/geb/branch/master/build_image" alt="Build status"/></a>
+            <% } %>
+        </div>
+    </div>
 </div>
 
 
 <div id="footer-wrap">
-	<div id="footer-content">
-		<p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
-		<p>This site is powered by <a href="http://ratpack.io" title="Ratpack - A toolkit for JVM web applications">Ratpack</a>.</p>
-	</div>
+    <div id="footer-content">
+        <p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
+
+        <p>This site is powered by <a href="http://ratpack.io" title="Ratpack - A toolkit for JVM web applications">Ratpack</a>.</p>
+    </div>
 </div>
 
 

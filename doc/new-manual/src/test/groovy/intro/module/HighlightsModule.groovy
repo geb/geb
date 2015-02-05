@@ -19,9 +19,9 @@ import geb.Module
 
 // tag::class[]
 class HighlightsModule extends Module {
-	static content = { //<3>
-		highlightsLink { text -> $("a", text: text).module(SelectableLinkModule) }
-		jQueryLikeApi { highlightsLink("jQuery-like API") } //<4>
-	}
+    static content = { //<3>
+        highlightsLink { text -> $("a", text: text).module(SelectableLinkModule) }
+        jQueryLikeApi { highlightsLink("jQuery-like API") } //<4>
+    }
 }
 // end::class[]

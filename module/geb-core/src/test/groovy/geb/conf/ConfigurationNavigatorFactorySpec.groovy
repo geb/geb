@@ -29,96 +29,96 @@ import org.openqa.selenium.WebElement
 
 class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
 
-	Configuration config
-	ConfigObject raw
+    Configuration config
+    ConfigObject raw
 
-	def setup() {
-		_browser = null
-		config = browser.config
-		raw = config.rawConfig
-	}
+    def setup() {
+        _browser = null
+        config = browser.config
+        raw = config.rawConfig
+    }
 
-	def "creates navigator with default inner by default"() {
-		expect:
-		browser.navigatorFactory instanceof BrowserBackedNavigatorFactory
-		browser.navigatorFactory.is(browser.navigatorFactory)
-		config.innerNavigatorFactory instanceof DefaultInnerNavigatorFactory
-	}
+    def "creates navigator with default inner by default"() {
+        expect:
+        browser.navigatorFactory instanceof BrowserBackedNavigatorFactory
+        browser.navigatorFactory.is(browser.navigatorFactory)
+        config.innerNavigatorFactory instanceof DefaultInnerNavigatorFactory
+    }
 
-	def "can use closure based inner"() {
-		when:
-		raw.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
-			new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
-		}
-		go()
+    def "can use closure based inner"() {
+        when:
+        raw.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+            new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
+        }
+        go()
 
-		then:
-		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
-	}
+        then:
+        $("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
+    }
 
-	def "can use inner impl"() {
-		when:
-		def impl = new InnerNavigatorFactory() {
-			@Override
-			Navigator createNavigator(Browser browser, List<WebElement> elements) {
-				new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
-			}
-		}
+    def "can use inner impl"() {
+        when:
+        def impl = new InnerNavigatorFactory() {
+            @Override
+            Navigator createNavigator(Browser browser, List<WebElement> elements) {
+                new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
+            }
+        }
 
-		raw.innerNavigatorFactory = impl
+        raw.innerNavigatorFactory = impl
 
-		and:
-		go()
+        and:
+        go()
 
-		then:
-		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
-	}
+        then:
+        $("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
+    }
 
-	def "error when invalid factory type"() {
-		given:
-		raw.navigatorFactory = 1
+    def "error when invalid factory type"() {
+        given:
+        raw.navigatorFactory = 1
 
-		when:
-		browser.navigatorFactory
+        when:
+        browser.navigatorFactory
 
-		then:
-		thrown InvalidGebConfiguration
-	}
+        then:
+        thrown InvalidGebConfiguration
+    }
 
-	def "error when invalid factory closure return type"() {
-		given:
-		raw.navigatorFactory = { 1 }
+    def "error when invalid factory closure return type"() {
+        given:
+        raw.navigatorFactory = { 1 }
 
-		when:
-		browser.navigatorFactory
+        when:
+        browser.navigatorFactory
 
-		then:
-		thrown InvalidGebConfiguration
-	}
+        then:
+        thrown InvalidGebConfiguration
+    }
 
-	def "error when inner factory is invalid"() {
-		given:
-		raw.innerNavigatorFactory = 1
+    def "error when inner factory is invalid"() {
+        given:
+        raw.innerNavigatorFactory = 1
 
-		when:
-		browser.navigatorFactory
+        when:
+        browser.navigatorFactory
 
-		then:
-		thrown InvalidGebConfiguration
-	}
+        then:
+        thrown InvalidGebConfiguration
+    }
 
-	def "can explicitly set"() {
-		when:
-		raw.innerNavigatorFactory = new InnerNavigatorFactory() {
-			Navigator createNavigator(Browser browser, List<WebElement> elements) {
-				new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
-			}
-		}
-		go()
+    def "can explicitly set"() {
+        when:
+        raw.innerNavigatorFactory = new InnerNavigatorFactory() {
+            Navigator createNavigator(Browser browser, List<WebElement> elements) {
+                new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
+            }
+        }
+        go()
 
-		then:
-		$("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
-	}
+        then:
+        $("p").class == ConfigurationNavigatorFactorySpecCustomNavigator
+    }
 
 }
 

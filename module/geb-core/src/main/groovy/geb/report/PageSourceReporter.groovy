@@ -21,33 +21,33 @@ import geb.Browser
  */
 class PageSourceReporter extends ReporterSupport {
 
-	static public final NO_PAGE_SOURCE_SUBSTITUTE = "-- no page source --"
+    static public final NO_PAGE_SOURCE_SUBSTITUTE = "-- no page source --"
 
-	@Override
-	void writeReport(ReportState reportState) {
-		def file = getReportFile(reportState)
-		writePageSource(file, reportState.browser)
-		notifyListeners(reportState, [file])
-	}
+    @Override
+    void writeReport(ReportState reportState) {
+        def file = getReportFile(reportState)
+        writePageSource(file, reportState.browser)
+        notifyListeners(reportState, [file])
+    }
 
-	protected getReportFile(ReportState reportState) {
-		getFile(reportState.outputDir, reportState.label, getPageSourceFileExtension(reportState.browser))
-	}
+    protected getReportFile(ReportState reportState) {
+        getFile(reportState.outputDir, reportState.label, getPageSourceFileExtension(reportState.browser))
+    }
 
-	protected writePageSource(File file, Browser browser) {
-		file.write(getPageSource(browser))
-	}
+    protected writePageSource(File file, Browser browser) {
+        file.write(getPageSource(browser))
+    }
 
-	protected getPageSource(Browser browser) {
-		browser.driver.pageSource ?: NO_PAGE_SOURCE_SUBSTITUTE
-	}
+    protected getPageSource(Browser browser) {
+        browser.driver.pageSource ?: NO_PAGE_SOURCE_SUBSTITUTE
+    }
 
-	/**
-	 * Here to allow smarter calculation of the extension if necessary
-	 */
-	@SuppressWarnings("UnusedMethodParameter")
-	protected getPageSourceFileExtension(Browser browser) {
-		"html"
-	}
+    /**
+     * Here to allow smarter calculation of the extension if necessary
+     */
+    @SuppressWarnings("UnusedMethodParameter")
+    protected getPageSourceFileExtension(Browser browser) {
+        "html"
+    }
 
 }

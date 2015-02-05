@@ -18,11 +18,11 @@ package geb.error;
 
 public class InvalidGebConfiguration extends GebException {
 
-	public InvalidGebConfiguration(Object message) {
-		super(message);
-	}
+    public InvalidGebConfiguration(Object message) {
+        super(message);
+    }
 
-	public InvalidGebConfiguration(Object message, Throwable cause) {
-		super(message, cause);
-	}
+    public InvalidGebConfiguration(Object message, Throwable cause) {
+        super(message, cause);
+    }
 }

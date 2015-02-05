@@ -19,22 +19,22 @@ package geb.report
  */
 class CompositeReporter implements Reporter {
 
-	private final List<Reporter> reporters
+    private final List<Reporter> reporters
 
-	CompositeReporter(Reporter... reporters) {
-		this.reporters = reporters.toList()
-	}
+    CompositeReporter(Reporter... reporters) {
+        this.reporters = reporters.toList()
+    }
 
-	@Override
-	void writeReport(ReportState reportState) {
-		for (reporter in reporters) {
-			reporter.writeReport(reportState)
-		}
-	}
+    @Override
+    void writeReport(ReportState reportState) {
+        for (reporter in reporters) {
+            reporter.writeReport(reportState)
+        }
+    }
 
-	@Override
-	void addListener(ReportingListener listener) {
-		reporters*.addListener(listener)
-	}
+    @Override
+    void addListener(ReportingListener listener) {
+        reporters*.addListener(listener)
+    }
 
 }

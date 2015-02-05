@@ -21,51 +21,51 @@ import spock.lang.Unroll
 
 class FormElementBaseSpec extends GebSpecWithCallbackServer {
 
-	@Unroll
-	def "can base the module on '#tag'"() {
-		given:
-		html {
-			button()
-			input()
-			select {
-				option()
-			}
-			textarea()
-		}
+    @Unroll
+    def "can base the module on '#tag'"() {
+        given:
+        html {
+            button()
+            input()
+            select {
+                option()
+            }
+            textarea()
+        }
 
-		when:
-		$(tag).module(FormElement)
+        when:
+        $(tag).module(FormElement)
 
-		then:
-		noExceptionThrown()
+        then:
+        noExceptionThrown()
 
-		where:
-		tag << ['button', 'input', 'option', 'select', 'textarea']
-	}
+        where:
+        tag << ['button', 'input', 'option', 'select', 'textarea']
+    }
 
-	def "can base the module on an empty navigator"() {
-		given:
-		html {
-		}
+    def "can base the module on an empty navigator"() {
+        given:
+        html {
+        }
 
-		when:
-		$("div").module(FormElement)
+        when:
+        $("div").module(FormElement)
 
-		then:
-		noExceptionThrown()
-	}
+        then:
+        noExceptionThrown()
+    }
 
-	def "creating the module for anything other than button, input, option, select or textarea results in an exception"() {
-		given:
-		html {
-			div("div")
-		}
+    def "creating the module for anything other than button, input, option, select or textarea results in an exception"() {
+        given:
+        html {
+            div("div")
+        }
 
-		when:
-		$("div").module(FormElement)
+        when:
+        $("div").module(FormElement)
 
-		then:
-		InvalidModuleBaseException e = thrown()
-		e.message == "Specified base element for ${FormElement.name} module was 'div' but only the following are allowed: button, input, option, select, textarea"
-	}
+        then:
+        InvalidModuleBaseException e = thrown()
+        e.message == "Specified base element for ${FormElement.name} module was 'div' but only the following are allowed: button, input, option, select, textarea"
+    }
 }

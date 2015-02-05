@@ -19,46 +19,46 @@ import geb.error.UnableToLoadAnyDriversException
 
 class NameBasedDriverFactory implements DriverFactory {
 
-	public static final String DRIVER_SEPARATOR = ":"
+    public static final String DRIVER_SEPARATOR = ":"
 
-	final ClassLoader classLoader
-	final String driverNames
+    final ClassLoader classLoader
+    final String driverNames
 
-	NameBasedDriverFactory(ClassLoader classLoader, String driverNames) {
-		this.classLoader = classLoader
-		this.driverNames = driverNames
-	}
+    NameBasedDriverFactory(ClassLoader classLoader, String driverNames) {
+        this.classLoader = classLoader
+        this.driverNames = driverNames
+    }
 
-	WebDriver getDriver() {
-		def potentials = getPotentialDriverClassNames()
+    WebDriver getDriver() {
+        def potentials = getPotentialDriverClassNames()
 
-		def driverClass
-		for (potential in potentials) {
-			driverClass = attemptToLoadDriverClass(potential)
-			if (driverClass) {
-				break
-			}
-		}
+        def driverClass
+        for (potential in potentials) {
+            driverClass = attemptToLoadDriverClass(potential)
+            if (driverClass) {
+                break
+            }
+        }
 
-		if (driverClass) {
-			driverClass.newInstance()
-		} else {
-			throw new UnableToLoadAnyDriversException(potentials as String[])
-		}
-	}
+        if (driverClass) {
+            driverClass.newInstance()
+        } else {
+            throw new UnableToLoadAnyDriversException(potentials as String[])
+        }
+    }
 
-	protected attemptToLoadDriverClass(String driverClassName) {
-		try {
-			classLoader.loadClass(driverClassName)
-		} catch (ClassNotFoundException e) {
-			null
-		}
-	}
+    protected attemptToLoadDriverClass(String driverClassName) {
+        try {
+            classLoader.loadClass(driverClassName)
+        } catch (ClassNotFoundException e) {
+            null
+        }
+    }
 
-	protected getPotentialDriverClassNames() {
-		driverNames.split(DRIVER_SEPARATOR).collect {
-			DriverRegistry.translateFromShortNameIfRequired(it)
-		}
-	}
+    protected getPotentialDriverClassNames() {
+        driverNames.split(DRIVER_SEPARATOR).collect {
+            DriverRegistry.translateFromShortNameIfRequired(it)
+        }
+    }
 
 }

@@ -19,43 +19,43 @@ import geb.test.GebSpecWithCallbackServer
 
 class IntroSamplesSpec extends GebSpecWithCallbackServer {
 
-	def "dollar method"() {
-		given:
-		html {
-			div(title: "section", class: "main")
-		}
+    def "dollar method"() {
+        given:
+        html {
+            div(title: "section", class: "main")
+        }
 
-		expect:
-		// tag::dollar_examples[]
-		$("div") //<1>
+        expect:
+        // tag::dollar_examples[]
+        $("div") //<1>
 
-		$("div", 0) //<2>
+        $("div", 0) //<2>
 
-		$("div", title: "section") //<3>
+        $("div", title: "section") //<3>
 
-		$("div", 0, title: "section") //<4>
+        $("div", 0, title: "section") //<4>
 
-		$("div.main") //<5>
+        $("div.main") //<5>
 
-		$("div.main", 0) //<6>
-		// end::dollar_examples[]
-	}
+        $("div.main", 0) //<6>
+        // end::dollar_examples[]
+    }
 
-	def "refining content"() {
-		given:
-		html {
-			div {
-				p {
-					table(cellspacing: 0)
-				}
-			}
-		}
+    def "refining content"() {
+        given:
+        html {
+            div {
+                p {
+                    table(cellspacing: 0)
+                }
+            }
+        }
 
-		expect:
-		// tag::refining_content[]
-		$("p", 0).parent() //<1>
+        expect:
+        // tag::refining_content[]
+        $("p", 0).parent() //<1>
 
-		$("p").find("table", cellspacing: '0') //<2>
-		// end::refining_content[]
-	}
+        $("p").find("table", cellspacing: '0') //<2>
+        // end::refining_content[]
+    }
 }

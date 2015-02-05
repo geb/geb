@@ -26,55 +26,55 @@ import geb.error.InvalidModuleBaseException
  */
 class FormElement extends Module {
 
-	private final static SUPPORTED_TAGS = ['button', 'input', 'option', 'select', 'textarea']
-	private final static String DISABLED = "disabled"
-	private final static String READONLY = "readonly"
-	private final static String TRUE = "true"
+    private final static SUPPORTED_TAGS = ['button', 'input', 'option', 'select', 'textarea']
+    private final static String DISABLED = "disabled"
+    private final static String READONLY = "readonly"
+    private final static String TRUE = "true"
 
-	protected void initialized() {
-		if (!empty) {
-			if (!SUPPORTED_TAGS.contains(tag())) {
-				throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag()}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
-			}
-		}
-	}
+    protected void initialized() {
+        if (!empty) {
+            if (!SUPPORTED_TAGS.contains(tag())) {
+                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag()}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
+            }
+        }
+    }
 
-	/**
-	 * Allows to check if the first element of base navigator for this module is disabled based on the value of it's {@code disabled} attribute.
-	 * @return true when the first element of base navigator is disabled
-	 */
-	boolean isDisabled() {
-		def value = getAttribute(DISABLED)
-		// Different drivers return different values here
-		(value == DISABLED || value == TRUE)
-	}
+    /**
+     * Allows to check if the first element of base navigator for this module is disabled based on the value of it's {@code disabled} attribute.
+     * @return true when the first element of base navigator is disabled
+     */
+    boolean isDisabled() {
+        def value = getAttribute(DISABLED)
+        // Different drivers return different values here
+        (value == DISABLED || value == TRUE)
+    }
 
-	/**
-	 * Shorthand for {@code !disabled}
-	 * @return true when the first element of base navigator is enabled
-	 *
-	 * @see #isDisabled()
-	 */
-	boolean isEnabled() {
-		!disabled
-	}
+    /**
+     * Shorthand for {@code !disabled}
+     * @return true when the first element of base navigator is enabled
+     *
+     * @see #isDisabled()
+     */
+    boolean isEnabled() {
+        !disabled
+    }
 
-	/**
-	 * Allows to check if the first element of base navigator for this module is read-only based on the value of it's {@code readonly} attribute.
-	 * @return true when the first element of base navigator is read-only
-	 */
-	boolean isReadOnly() {
-		def value = getAttribute(READONLY)
-		(value == READONLY || value == TRUE)
-	}
+    /**
+     * Allows to check if the first element of base navigator for this module is read-only based on the value of it's {@code readonly} attribute.
+     * @return true when the first element of base navigator is read-only
+     */
+    boolean isReadOnly() {
+        def value = getAttribute(READONLY)
+        (value == READONLY || value == TRUE)
+    }
 
-	/**
-	 * Shorthand for {@code !readOnly}.
-	 * @return true when the first element of base navigator is editable
-	 *
-	 * @see #isReadOnly()
-	 */
-	boolean isEditable() {
-		!readOnly
-	}
+    /**
+     * Shorthand for {@code !readOnly}.
+     * @return true when the first element of base navigator is editable
+     *
+     * @see #isReadOnly()
+     */
+    boolean isEditable() {
+        !readOnly
+    }
 }

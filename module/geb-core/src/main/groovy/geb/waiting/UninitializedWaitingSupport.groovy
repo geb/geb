@@ -18,29 +18,29 @@ package geb.waiting
 import geb.Initializable
 
 class UninitializedWaitingSupport implements WaitingSupport {
-	private final Initializable initializable
+    private final Initializable initializable
 
-	UninitializedWaitingSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
+    UninitializedWaitingSupport(Initializable initializable) {
+        this.initializable = initializable
+    }
 
-	@Override
-	def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def <T> T waitFor(Map params = [:], Closure<T> block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def <T> T waitFor(Map params = [:], Closure<T> block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+        throw initializable.uninitializedException()
+    }
 }

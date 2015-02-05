@@ -19,9 +19,9 @@ import geb.test.GebSpecWithCallbackServer
 
 class WaitingSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		callbackServer.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
 				<html>
 				<head>
 				  <script type="text/javascript" charset="utf-8">
@@ -36,6 +36,6 @@ class WaitingSpec extends GebSpecWithCallbackServer {
 				</body>
 				</html>
 			"""
-		}
-	}
+        }
+    }
 }

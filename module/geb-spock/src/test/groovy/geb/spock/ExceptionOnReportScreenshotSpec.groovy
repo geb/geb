@@ -23,29 +23,30 @@ import static org.mortbay.jetty.HttpHeaders.*
 
 @Stepwise
 class ExceptionOnReportScreenshotSpec extends GebReportingSpec {
-	@Shared server = new CallbackHttpServer()
+    @Shared
+        server = new CallbackHttpServer()
 
-	def setupSpec() {
-		server.start()
-		server.get = { req, HttpServletResponse res ->
-			res.addHeader(CONTENT_TYPE, 'application/xml')
-			res.outputStream << '''<?xml version="1.0"?>
+    def setupSpec() {
+        server.start()
+        server.get = { req, HttpServletResponse res ->
+            res.addHeader(CONTENT_TYPE, 'application/xml')
+            res.outputStream << '''<?xml version="1.0"?>
 			<test></test>
 			'''
-		}
-	}
+        }
+    }
 
-	def setup() {
-		baseUrl = server.baseUrl
-	}
+    def setup() {
+        baseUrl = server.baseUrl
+    }
 
-	def "a request is made"() {
-		given:
-		go("/") // make a request
-	}
+    def "a request is made"() {
+        given:
+        go("/") // make a request
+    }
 
-	def "an error screenshot is taken"() {
-		expect:
-		new File(reportGroupDir, '001-001-a request is made-end.png').exists()
-	}
+    def "an error screenshot is taken"() {
+        expect:
+        new File(reportGroupDir, '001-001-a request is made-end.png').exists()
+    }
 }

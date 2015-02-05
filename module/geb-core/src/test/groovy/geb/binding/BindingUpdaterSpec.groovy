@@ -20,104 +20,104 @@ import geb.test.GebSpecWithCallbackServer
 
 class BindingUpdaterSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		callbackServer.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<p>content</p>
 			</body>
 			</html>"""
-		}
-		go "/"
-	}
+        }
+        go "/"
+    }
 
-	def binding = new Binding()
-	def updater = new BindingUpdater(binding, browser)
+    def binding = new Binding()
+    def updater = new BindingUpdater(binding, browser)
 
-	def "updater lifecycle"() {
-		when:
-		binding.browser
+    def "updater lifecycle"() {
+        when:
+        binding.browser
 
-		then:
-		thrown MissingPropertyException
+        then:
+        thrown MissingPropertyException
 
-		when:
-		updater.initialize()
+        when:
+        updater.initialize()
 
-		then:
-		binding.browser.is(browser)
-		binding.$.call("p").text() == "content"
-		binding.page.is(browser.page)
+        then:
+        binding.browser.is(browser)
+        binding.$.call("p").text() == "content"
+        binding.page.is(browser.page)
 
-		when:
-		updater.remove()
+        when:
+        updater.remove()
 
-		and:
-		binding.browser == null
+        and:
+        binding.browser == null
 
-		then:
-		thrown MissingPropertyException
+        then:
+        thrown MissingPropertyException
 
-		when:
-		page BindingUpdaterSpecPage1
+        when:
+        page BindingUpdaterSpecPage1
 
-		and:
-		binding.page
+        and:
+        binding.page
 
-		then:
-		thrown MissingPropertyException
-	}
+        then:
+        thrown MissingPropertyException
+    }
 
-	def "dollar function dispatch works in binding"() {
-		given:
-		def shell = new GroovyShell(binding)
+    def "dollar function dispatch works in binding"() {
+        given:
+        def shell = new GroovyShell(binding)
 
-		when:
-		updater.initialize()
+        when:
+        updater.initialize()
 
-		then:
-		shell.evaluate("\$('p', text: 'content').size()") == 1
-	}
+        then:
+        shell.evaluate("\$('p', text: 'content').size()") == 1
+    }
 
-	def "page changing"() {
-		given:
-		updater.initialize()
+    def "page changing"() {
+        given:
+        updater.initialize()
 
-		when:
-		page BindingUpdaterSpecPage1
+        when:
+        page BindingUpdaterSpecPage1
 
-		then:
-		binding.page instanceof BindingUpdaterSpecPage1
+        then:
+        binding.page instanceof BindingUpdaterSpecPage1
 
-		when:
-		page BindingUpdaterSpecPage2
+        when:
+        page BindingUpdaterSpecPage2
 
-		then:
-		binding.page instanceof BindingUpdaterSpecPage2
-	}
+        then:
+        binding.page instanceof BindingUpdaterSpecPage2
+    }
 
-	def "dispatching with wrong args produces MME"() {
-		when:
-		updater.initialize()
+    def "dispatching with wrong args produces MME"() {
+        when:
+        updater.initialize()
 
-		and:
-		binding.go(123)
+        and:
+        binding.go(123)
 
-		then:
-		thrown MissingMethodException
-	}
+        then:
+        thrown MissingMethodException
+    }
 
 }
 
 class BindingUpdaterSpecPage1 extends Page {
-	static content = {
-		p1 { $("p") }
-	}
+    static content = {
+        p1 { $("p") }
+    }
 }
 
 class BindingUpdaterSpecPage2 extends Page {
-	static content = {
-		p2 { $("p") }
-	}
+    static content = {
+        p2 { $("p") }
+    }
 }

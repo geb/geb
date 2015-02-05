@@ -20,41 +20,42 @@ import geb.navigator.Navigator
 
 abstract class PageContentSupport {
 
-	abstract getContent(String name, Object[] args)
+    abstract getContent(String name, Object[] args)
 
-	abstract Navigator getNavigator()
+    abstract Navigator getNavigator()
 
-	abstract PageContentContainer getOwner()
+    abstract PageContentContainer getOwner()
 
-	def methodMissing(String name, args) {
-		try {
-			getContent(name, * args)
-		} catch (UndefinedPageContentException e1) {
-			getNavigator().methodMissing(name, args)
-		}
-	}
+    def methodMissing(String name, args) {
+        try {
+            getContent(name, *args)
+        } catch (UndefinedPageContentException e1) {
+            getNavigator().methodMissing(name, args)
+        }
+    }
 
-	def propertyMissing(String name) {
-		try {
-			getContent(name)
-		} catch (UndefinedPageContentException e1) {
-			try {
-				getNavigator().propertyMissing(name)
-			} catch (MissingPropertyException e2) {
-				throw new MissingPropertyException("Unable to resolve $name as content for ${owner}, or as a property on its Navigator context. Is $name a class you forgot to import?", name, owner.getClass())
-			}
-		}
-	}
+    def propertyMissing(String name) {
+        try {
+            getContent(name)
+        } catch (UndefinedPageContentException e1) {
+            try {
+                getNavigator().propertyMissing(name)
+            } catch (MissingPropertyException e2) {
+                throw new MissingPropertyException("Unable to resolve $name as content for ${owner}, or as a property on its Navigator context. Is $name a class you forgot to import?", name,
+                    owner.getClass())
+            }
+        }
+    }
 
-	def propertyMissing(String name, val) {
-		try {
-			getContent(name).value(val)
-		} catch (UndefinedPageContentException e) {
-			try {
-				getNavigator().propertyMissing(name, val)
-			} catch (MissingPropertyException e1) {
-				throw new MissingPropertyException(name, owner.getClass())
-			}
-		}
-	}
+    def propertyMissing(String name, val) {
+        try {
+            getContent(name).value(val)
+        } catch (UndefinedPageContentException e) {
+            try {
+                getNavigator().propertyMissing(name, val)
+            } catch (MissingPropertyException e1) {
+                throw new MissingPropertyException(name, owner.getClass())
+            }
+        }
+    }
 }

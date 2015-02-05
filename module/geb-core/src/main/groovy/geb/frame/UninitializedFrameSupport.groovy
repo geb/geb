@@ -21,34 +21,34 @@ import geb.content.SimplePageContent
 import geb.navigator.Navigator
 
 class UninitializedFrameSupport implements FrameSupport {
-	private final Initializable initializable
+    private final Initializable initializable
 
-	UninitializedFrameSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
+    UninitializedFrameSupport(Initializable initializable) {
+        this.initializable = initializable
+    }
 
-	@Override
-	def withFrame(Object frame, Class<? extends Page> pageClass = null, Closure block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withFrame(Object frame, Class<? extends Page> pageClass = null, Closure block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def withFrame(Object frame, Page page, Closure block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withFrame(Object frame, Page page, Closure block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def withFrame(Navigator frame, Class<? extends Page> pageClass = null, Closure block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withFrame(Navigator frame, Class<? extends Page> pageClass = null, Closure block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def withFrame(Navigator frame, Page pageClass, Closure block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withFrame(Navigator frame, Page pageClass, Closure block) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def withFrame(SimplePageContent frame, Closure block) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withFrame(SimplePageContent frame, Closure block) {
+        throw initializable.uninitializedException()
+    }
 }

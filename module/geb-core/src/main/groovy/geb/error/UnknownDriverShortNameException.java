@@ -18,8 +18,8 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 public class UnknownDriverShortNameException extends GebException {
 
-	public UnknownDriverShortNameException(String unknown, String[] knowns) {
-		super(String.format("The value '%s' is not a valid driver short name (valid: %s)", unknown, DefaultGroovyMethods.join(knowns, ", ")));
-	}
+    public UnknownDriverShortNameException(String unknown, String[] knowns) {
+        super(String.format("The value '%s' is not a valid driver short name (valid: %s)", unknown, DefaultGroovyMethods.join(knowns, ", ")));
+    }
 
 }

@@ -21,53 +21,53 @@ import geb.test.GebSpecWithCallbackServer
 @CrossBrowser
 class FindViaTextSpec extends GebSpecWithCallbackServer {
 
-	def setup() {
-		responseHtml {
-			table {
-				tr {
-					td "Single-Line Content"
-					td {
-						mkp.yieldUnescaped "First Line<br/>Second Line"
-					}
-				}
-			}
-		}
-		go()
-	}
+    def setup() {
+        responseHtml {
+            table {
+                tr {
+                    td "Single-Line Content"
+                    td {
+                        mkp.yieldUnescaped "First Line<br/>Second Line"
+                    }
+                }
+            }
+        }
+        go()
+    }
 
-	def 'Get single-line td with text'() {
-		expect:
-		$('td', text: 'Single-Line Content')
-	}
+    def 'Get single-line td with text'() {
+        expect:
+        $('td', text: 'Single-Line Content')
+    }
 
-	def 'Get single-line td using contains'() {
-		expect:
-		$('td', text: contains('Single-Line'))
-	}
+    def 'Get single-line td using contains'() {
+        expect:
+        $('td', text: contains('Single-Line'))
+    }
 
-	def 'Get single-line td using startsWith'() {
-		expect:
-		$('td', text: startsWith('Single-Line'))
-	}
+    def 'Get single-line td using startsWith'() {
+        expect:
+        $('td', text: startsWith('Single-Line'))
+    }
 
-	def 'Get multi-line td with text'() {
-		expect:
-		$('td', text: "First Line\nSecond Line")
-	}
+    def 'Get multi-line td with text'() {
+        expect:
+        $('td', text: "First Line\nSecond Line")
+    }
 
-	def 'Get multi-line td using startsWith'() {
-		expect:
-		$('td', text: startsWith('First Line'))
-	}
+    def 'Get multi-line td using startsWith'() {
+        expect:
+        $('td', text: startsWith('First Line'))
+    }
 
-	def 'Get multi-line td using contains (match first line)'() {
-		expect:
-		$('td', text: contains('First Line'))
-	}
+    def 'Get multi-line td using contains (match first line)'() {
+        expect:
+        $('td', text: contains('First Line'))
+    }
 
-	def 'Get multi-line td using contains (match second line)'() {
-		expect:
-		$('td', text: contains('Second Line'))
-	}
+    def 'Get multi-line td using contains (match second line)'() {
+        expect:
+        $('td', text: contains('Second Line'))
+    }
 
 }

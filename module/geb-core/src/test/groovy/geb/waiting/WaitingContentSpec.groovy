@@ -22,136 +22,136 @@ import spock.lang.Unroll
 
 class WaitingContentSpec extends WaitingSpec {
 
-	def params = [:]
-	def factory = { $("div") }
-	def showDelay = 1
+    def params = [:]
+    def factory = { $("div") }
+    def showDelay = 1
 
-	protected getContent() {
-		DynamicallySpecifiedContentPage.content = {
-			delegate.div(params, factory)
-		}
+    protected getContent() {
+        DynamicallySpecifiedContentPage.content = {
+            delegate.div(params, factory)
+        }
 
-		go()
-		page DynamicallySpecifiedContentPage
-		js.showIn(showDelay)
-		div
-	}
+        go()
+        page DynamicallySpecifiedContentPage
+        js.showIn(showDelay)
+        div
+    }
 
-	def "no wait"() {
-		when:
-		content
+    def "no wait"() {
+        when:
+        content
 
-		then:
-		thrown RequiredPageContentNotPresent
+        then:
+        thrown RequiredPageContentNotPresent
 
-	}
+    }
 
-	def "default wait"() {
-		when:
-		params = [wait: true]
+    def "default wait"() {
+        when:
+        params = [wait: true]
 
-		then:
-		content.text() == "a"
-	}
+        then:
+        content.text() == "a"
+    }
 
-	def "wait timeout"() {
-		when:
-		showDelay = 4
-		params = [wait: 0.5]
+    def "wait timeout"() {
+        when:
+        showDelay = 4
+        params = [wait: 0.5]
 
-		and:
-		content
+        and:
+        content
 
-		then:
-		thrown WaitTimeoutException
-	}
+        then:
+        thrown WaitTimeoutException
+    }
 
-	def "custom retry interval"() {
-		when:
-		params = [wait: [5, 1]]
+    def "custom retry interval"() {
+        when:
+        params = [wait: [5, 1]]
 
-		then:
-		content
-	}
+        then:
+        content
+    }
 
-	def "wait preset"() {
-		when:
-		params = [wait: "somepreset"]
+    def "wait preset"() {
+        when:
+        params = [wait: "somepreset"]
 
-		then:
-		content
-	}
+        then:
+        content
+    }
 
-	@Unroll
-	def "invalid wait values"() {
-		when:
-		params = [wait: value]
+    @Unroll
+    def "invalid wait values"() {
+        when:
+        params = [wait: value]
 
-		and:
-		content
+        and:
+        content
 
-		then:
-		thrown IllegalArgumentException
+        then:
+        thrown IllegalArgumentException
 
-		where:
-		value << [[], [1], [1, 2, 3], ["asds", "asdas"]]
-	}
+        where:
+        value << [[], [1], [1, 2, 3], ["asds", "asdas"]]
+    }
 
-	def "waiting for non content - fail"() {
-		given:
-		factory = { false }
-		params = [wait: 1]
+    def "waiting for non content - fail"() {
+        given:
+        factory = { false }
+        params = [wait: 1]
 
-		when:
-		content
+        when:
+        content
 
-		then:
-		thrown WaitTimeoutException
-	}
+        then:
+        thrown WaitTimeoutException
+    }
 
-	def "waiting for non content - pass"() {
-		when:
-		def counter = 0
-		factory = { counter++ > 3 }
-		params = [wait: [3, 0.1]]
+    def "waiting for non content - pass"() {
+        when:
+        def counter = 0
+        factory = { counter++ > 3 }
+        params = [wait: [3, 0.1]]
 
-		then:
-		content
-	}
+        then:
+        content
+    }
 
-	@Unroll
-	def "content with wait option set throws timeout exception with power assertion error in cause for '#contentName'"() {
-		when:
-		to StaticallySpecifiedContentPage
-		page[contentName]
+    @Unroll
+    def "content with wait option set throws timeout exception with power assertion error in cause for '#contentName'"() {
+        when:
+        to StaticallySpecifiedContentPage
+        page[contentName]
 
-		then:
-		WaitTimeoutException exception = thrown()
-		exception.cause in PowerAssertionError
-		exception.cause.message.contains('$("div")')
+        then:
+        WaitTimeoutException exception = thrown()
+        exception.cause in PowerAssertionError
+        exception.cause.message.contains('$("div")')
 
-		where:
-		contentName << ['waitContent', 'waitContentExplicitlyRequired']
-	}
+        where:
+        contentName << ['waitContent', 'waitContentExplicitlyRequired']
+    }
 
-	def "content with wait option returns content"() {
-		when:
-		to StaticallySpecifiedContentPage
-		js.showIn(0)
+    def "content with wait option returns content"() {
+        when:
+        to StaticallySpecifiedContentPage
+        js.showIn(0)
 
-		then:
-		waitContent.text() == "a"
-	}
+        then:
+        waitContent.text() == "a"
+    }
 
 }
 
 class DynamicallySpecifiedContentPage extends Page {
-	static content = null
+    static content = null
 }
 
 class StaticallySpecifiedContentPage extends Page {
-	static content = {
-		waitContent(wait: 1) { $("div") }
-		waitContentExplicitlyRequired(wait: 1, required: true) { $("div") }
-	}
+    static content = {
+        waitContent(wait: 1) { $("div") }
+        waitContentExplicitlyRequired(wait: 1, required: true) { $("div") }
+    }
 }

@@ -21,16 +21,16 @@ import org.junit.Test
 
 class JUnit4SmokeTest extends GebReportingTest {
 
-	@Test
-	void defaultLocationIsApplicatioRoot() {
-		to IndexPage
-		assert at(IndexPage)
-	}
+    @Test
+    void defaultLocationIsApplicatioRoot() {
+        to IndexPage
+        assert at(IndexPage)
+    }
 
-	@Test
-	void pageUrlsAreRelativeToApp() {
-		to OtherPage
-		assert at(OtherPage)
-	}
-	
+    @Test
+    void pageUrlsAreRelativeToApp() {
+        to OtherPage
+        assert at(OtherPage)
+    }
+
 }

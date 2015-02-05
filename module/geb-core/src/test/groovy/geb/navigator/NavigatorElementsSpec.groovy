@@ -23,54 +23,54 @@ import geb.test.GebSpecWithCallbackServer
 @Android
 class NavigatorElementsSpec extends GebSpecWithCallbackServer {
 
-	def getElement() {
-		given:
-		html {
-			div(id: "a", "a")
-			div(id: "b", "b")
-			div(id: "c", "c")
-		}
+    def getElement() {
+        given:
+        html {
+            div(id: "a", "a")
+            div(id: "b", "b")
+            div(id: "c", "c")
+        }
 
-		expect:
-		$("div").getElement(0).getAttribute("id") == "a"
-		$("div").getElement(1).getAttribute("id") == "b"
-		$("foo").getElement(0) == null
-		$("foo").getElement(10) == null
-	}
+        expect:
+        $("div").getElement(0).getAttribute("id") == "a"
+        $("div").getElement(1).getAttribute("id") == "b"
+        $("foo").getElement(0) == null
+        $("foo").getElement(10) == null
+    }
 
-	def firstElement() {
-		given:
-		html {
-			div(id: "a", 'class': "a1 a2 a3", "a")
-			div(id: "b", 'class': "b1", "b")
-		}
+    def firstElement() {
+        given:
+        html {
+            div(id: "a", 'class': "a1 a2 a3", "a")
+            div(id: "b", 'class': "b1", "b")
+        }
 
-		expect:
-		$("div").firstElement().getAttribute("id") == "a"
-		$("foo").firstElement() == null
-	}
+        expect:
+        $("div").firstElement().getAttribute("id") == "a"
+        $("foo").firstElement() == null
+    }
 
-	def lastElement() {
-		given:
-		html {
-			div(id: "a", 'class': "a1 a2 a3", "a")
-			div(id: "b", 'class': "b1", "b")
-		}
+    def lastElement() {
+        given:
+        html {
+            div(id: "a", 'class': "a1 a2 a3", "a")
+            div(id: "b", 'class': "b1", "b")
+        }
 
-		expect:
-		$("div").lastElement().getAttribute("id") == "b"
-		$("foo").lastElement() == null
-	}
+        expect:
+        $("div").lastElement().getAttribute("id") == "b"
+        $("foo").lastElement() == null
+    }
 
-	def allElements() {
-		when:
-		html {
-			div(id: "a", "a")
-			div(id: "b", "b")
-			div(id: "c", "c")
-		}
+    def allElements() {
+        when:
+        html {
+            div(id: "a", "a")
+            div(id: "b", "b")
+            div(id: "c", "c")
+        }
 
-		then:
-		$("div").allElements()*.getAttribute("id") == ["a", "b", "c"]
-	}
+        then:
+        $("div").allElements()*.getAttribute("id") == ["a", "b", "c"]
+    }
 }

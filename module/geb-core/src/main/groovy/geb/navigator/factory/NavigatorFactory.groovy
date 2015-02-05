@@ -25,33 +25,33 @@ import org.openqa.selenium.WebElement
  */
 interface NavigatorFactory {
 
-	/**
-	 * The base for all content lookups from this factory.
-	 *
-	 * @return The base for all content lookups from this factory.
-	 */
-	Navigator getBase()
+    /**
+     * The base for all content lookups from this factory.
+     *
+     * @return The base for all content lookups from this factory.
+     */
+    Navigator getBase()
 
-	/**
-	 * Create a navigator, backed by the given web elements.
-	 *
-	 * @param elements The web elements to back the navigator.
-	 * @return The created navigator
-	 */
-	Navigator createFromWebElements(Iterable<WebElement> elements)
+    /**
+     * Create a navigator, backed by the given web elements.
+     *
+     * @param elements The web elements to back the navigator.
+     * @return The created navigator
+     */
+    Navigator createFromWebElements(Iterable<WebElement> elements)
 
-	/**
-	 * Create a navigator, backed by the given navigators.
-	 * @param navigators The navigators to back the navigator
-	 * @return The created navigator
-	 */
-	Navigator createFromNavigators(Iterable<Navigator> navigators)
+    /**
+     * Create a navigator, backed by the given navigators.
+     * @param navigators The navigators to back the navigator
+     * @return The created navigator
+     */
+    Navigator createFromNavigators(Iterable<Navigator> navigators)
 
-	/**
-	 * Create a new factory, relative to the given navigator.
-	 *
-	 * @param newBase The base to use for the new navigator factory.
-	 * @return The new navigator factory.
-	 */
-	NavigatorFactory relativeTo(Navigator newBase)
+    /**
+     * Create a new factory, relative to the given navigator.
+     *
+     * @param newBase The base to use for the new navigator factory.
+     * @return The new navigator factory.
+     */
+    NavigatorFactory relativeTo(Navigator newBase)
 }

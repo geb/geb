@@ -21,37 +21,37 @@ import geb.test.GebSpecWithCallbackServer
 @CrossBrowser
 class FormElementSpec extends GebSpecWithCallbackServer {
 
-	def disabled() {
-		given:
-		html {
-			input(id: "noDisabledAttr")
-			input(id: "disabledAttr", disabled: 'disabled')
-			input(id: "disabledAttr2", disabled: 'xyz')
-		}
+    def disabled() {
+        given:
+        html {
+            input(id: "noDisabledAttr")
+            input(id: "disabledAttr", disabled: 'disabled')
+            input(id: "disabledAttr2", disabled: 'xyz')
+        }
 
-		expect:
-		$("#noDisabledAttr").module(FormElement).enabled
-		!$("#noDisabledAttr").module(FormElement).disabled
-		$("#disabledAttr").module(FormElement).disabled
-		!$("#disabledAttr").module(FormElement).enabled
-		$("#disabledAttr2").module(FormElement).disabled
-		!$("#disabledAttr2").module(FormElement).enabled
-	}
+        expect:
+        $("#noDisabledAttr").module(FormElement).enabled
+        !$("#noDisabledAttr").module(FormElement).disabled
+        $("#disabledAttr").module(FormElement).disabled
+        !$("#disabledAttr").module(FormElement).enabled
+        $("#disabledAttr2").module(FormElement).disabled
+        !$("#disabledAttr2").module(FormElement).enabled
+    }
 
-	def readOnly() {
-		given:
-		html {
-			input(id: "noReadonlyAttr")
-			input(id: "readonlyAttr", readonly: 'readonly')
-			input(id: "readonlyAttr2", readonly: 'xyz')
-		}
+    def readOnly() {
+        given:
+        html {
+            input(id: "noReadonlyAttr")
+            input(id: "readonlyAttr", readonly: 'readonly')
+            input(id: "readonlyAttr2", readonly: 'xyz')
+        }
 
-		expect:
-		$("#noReadonlyAttr").module(FormElement).editable
-		!$("#noReadonlyAttr").module(FormElement).readOnly
-		$("#readonlyAttr").module(FormElement).readOnly
-		!$("#readonlyAttr").module(FormElement).editable
-		$("#readonlyAttr2").module(FormElement).readOnly
-		!$("#readonlyAttr2").module(FormElement).editable
-	}
+        expect:
+        $("#noReadonlyAttr").module(FormElement).editable
+        !$("#noReadonlyAttr").module(FormElement).readOnly
+        $("#readonlyAttr").module(FormElement).readOnly
+        !$("#readonlyAttr").module(FormElement).editable
+        $("#readonlyAttr2").module(FormElement).readOnly
+        !$("#readonlyAttr2").module(FormElement).editable
+    }
 }

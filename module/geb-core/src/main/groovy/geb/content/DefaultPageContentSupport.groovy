@@ -20,32 +20,32 @@ import geb.navigator.factory.NavigatorFactory
 
 class DefaultPageContentSupport extends PageContentSupport {
 
-	private final PageContentContainer owner
-	private final Map<String, PageContentTemplate> contentTemplates
-	private final NavigatorFactory navigatorFactory
-	private final Navigator navigator
+    private final PageContentContainer owner
+    private final Map<String, PageContentTemplate> contentTemplates
+    private final NavigatorFactory navigatorFactory
+    private final Navigator navigator
 
-	DefaultPageContentSupport(PageContentContainer owner, Map<String, PageContentTemplate> contentTemplates, NavigatorFactory navigatorFactory, Navigator navigator = null) {
-		this.owner = owner
-		this.contentTemplates = contentTemplates ?: [:]
-		this.navigatorFactory = navigatorFactory
-		this.navigator = navigator
-	}
+    DefaultPageContentSupport(PageContentContainer owner, Map<String, PageContentTemplate> contentTemplates, NavigatorFactory navigatorFactory, Navigator navigator = null) {
+        this.owner = owner
+        this.contentTemplates = contentTemplates ?: [:]
+        this.navigatorFactory = navigatorFactory
+        this.navigator = navigator
+    }
 
-	Navigator getNavigator() {
-		navigator ?: navigatorFactory.base
-	}
+    Navigator getNavigator() {
+        navigator ?: navigatorFactory.base
+    }
 
-	def getContent(String name, Object[] args) {
-		def contentTemplate = contentTemplates[name]
-		if (contentTemplate) {
-			contentTemplate.get(* args)
-		} else {
-			throw new UndefinedPageContentException(this, name)
-		}
-	}
+    def getContent(String name, Object[] args) {
+        def contentTemplate = contentTemplates[name]
+        if (contentTemplate) {
+            contentTemplate.get(*args)
+        } else {
+            throw new UndefinedPageContentException(this, name)
+        }
+    }
 
-	PageContentContainer getOwner() {
-		this.owner
-	}
+    PageContentContainer getOwner() {
+        this.owner
+    }
 }

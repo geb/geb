@@ -21,40 +21,40 @@ import org.openqa.selenium.WebElement
 
 abstract class AbstractNavigatorFactory implements NavigatorFactory {
 
-	private final Browser browser
-	private final InnerNavigatorFactory innerNavigatorFactory
+    private final Browser browser
+    private final InnerNavigatorFactory innerNavigatorFactory
 
-	AbstractNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
-		this.browser = browser
-		this.innerNavigatorFactory = innerNavigatorFactory
-	}
+    AbstractNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
+        this.browser = browser
+        this.innerNavigatorFactory = innerNavigatorFactory
+    }
 
-	protected Browser getBrowser() {
-		browser
-	}
+    protected Browser getBrowser() {
+        browser
+    }
 
-	Navigator createFromWebElements(Iterable<WebElement> elements) {
-		List<WebElement> filtered = []
-		elements.each {
-			if (it != null) {
-				filtered << it
-			}
-		}
-		innerNavigatorFactory.createNavigator(browser, filtered)
-	}
+    Navigator createFromWebElements(Iterable<WebElement> elements) {
+        List<WebElement> filtered = []
+        elements.each {
+            if (it != null) {
+                filtered << it
+            }
+        }
+        innerNavigatorFactory.createNavigator(browser, filtered)
+    }
 
-	Navigator createFromNavigators(Iterable<Navigator> navigators) {
-		List<WebElement> filtered = []
-		navigators.each {
-			if (it != null) {
-				filtered.addAll(it.allElements())
-			}
-		}
-		innerNavigatorFactory.createNavigator(browser, filtered)
-	}
+    Navigator createFromNavigators(Iterable<Navigator> navigators) {
+        List<WebElement> filtered = []
+        navigators.each {
+            if (it != null) {
+                filtered.addAll(it.allElements())
+            }
+        }
+        innerNavigatorFactory.createNavigator(browser, filtered)
+    }
 
-	NavigatorFactory relativeTo(Navigator newBase) {
-		new NavigatorBackedNavigatorFactory(newBase, innerNavigatorFactory)
-	}
+    NavigatorFactory relativeTo(Navigator newBase) {
+        new NavigatorBackedNavigatorFactory(newBase, innerNavigatorFactory)
+    }
 
 }

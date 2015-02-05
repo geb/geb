@@ -22,36 +22,36 @@ import org.openqa.selenium.WebElement
 
 class CustomNavigatorSpec extends GebSpecWithCallbackServer {
 
-	def setup() {
-		_browser = null
-		browser.config.rawConfig.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
-			new CustomNavigatorSpecCustomNavigator(browser, elements)
-		}
+    def setup() {
+        _browser = null
+        browser.config.rawConfig.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+            new CustomNavigatorSpecCustomNavigator(browser, elements)
+        }
 
-		responseHtml {
-			body {
-				input type: 'text', value: 'some text'
-			}
-		}
+        responseHtml {
+            body {
+                input type: 'text', value: 'some text'
+            }
+        }
 
-		go()
-	}
+        go()
+    }
 
-	def "can use not overridden methods from NonEmptyNavigator"() {
-		given:
-		def input = $('input')
+    def "can use not overridden methods from NonEmptyNavigator"() {
+        given:
+        def input = $('input')
 
-		when:
-		input.value('some other text')
+        when:
+        input.value('some other text')
 
-		then:
-		input.value() == 'some other text'
-	}
+        then:
+        input.value() == 'some other text'
+    }
 
-	def "can use field access notation to access attributes"() {
-		expect:
-		$('input').@type == 'text'
-	}
+    def "can use field access notation to access attributes"() {
+        expect:
+        $('input').@type == 'text'
+    }
 }
 
 @InheritConstructors

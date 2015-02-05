@@ -21,37 +21,37 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 abstract class CloudDriverFactory {
 
-	abstract String assembleProviderUrl(String username, String password)
+    abstract String assembleProviderUrl(String username, String password)
 
-	@SuppressWarnings("UnusedMethodParameter")
-	protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
-	}
+    @SuppressWarnings("UnusedMethodParameter")
+    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+    }
 
-	WebDriver create(String username, String key, Map<String, Object> capabilities) {
-		create("", username, key, capabilities)
-	}
+    WebDriver create(String username, String key, Map<String, Object> capabilities) {
+        create("", username, key, capabilities)
+    }
 
-	WebDriver create(String specification, String username, String key, Map<String, Object> additionalCapabilities = [:]) {
-		def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
-		Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
-		if (!remoteWebDriverClass) {
-			throw new ClassNotFoundException('org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create RemoteWebDriverInstances')
-		}
+    WebDriver create(String specification, String username, String key, Map<String, Object> additionalCapabilities = [:]) {
+        def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
+        Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
+        if (!remoteWebDriverClass) {
+            throw new ClassNotFoundException('org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create RemoteWebDriverInstances')
+        }
 
-		def url = new URL(assembleProviderUrl(username, key))
+        def url = new URL(assembleProviderUrl(username, key))
 
-		Properties capabilities = new Properties()
-		if (specification) {
-			capabilities.load(new StringReader(specification))
-		}
-		capabilities.putAll(additionalCapabilities)
+        Properties capabilities = new Properties()
+        if (specification) {
+            capabilities.load(new StringReader(specification))
+        }
+        capabilities.putAll(additionalCapabilities)
 
-		def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance()
-		capabilities.each { capability, value ->
-			browser.setCapability(capability, value)
-		}
-		configureCapabilities(browser)
+        def browser = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance()
+        capabilities.each { capability, value ->
+            browser.setCapability(capability, value)
+        }
+        configureCapabilities(browser)
 
-		remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, browser)
-	}
+        remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, browser)
+    }
 }

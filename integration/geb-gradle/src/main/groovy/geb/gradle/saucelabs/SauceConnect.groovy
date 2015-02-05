@@ -22,38 +22,38 @@ import org.gradle.api.artifacts.Configuration
 import org.slf4j.Logger
 
 class SauceConnect extends ExternalTunnel {
-	final protected SauceAccount account
-	final protected Configuration connectConfiguration
-	final protected File sauceConnectDir
+    final protected SauceAccount account
+    final protected Configuration connectConfiguration
+    final protected File sauceConnectDir
 
-	final String outputPrefix = 'sauce-connect'
-	final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
+    final String outputPrefix = 'sauce-connect'
+    final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
-	int port = 4445
-	List<String> additionalOptions = []
+    int port = 4445
+    List<String> additionalOptions = []
 
-	File getSauceConnectExecutable() {
-		def operations = new SauceConnectOperations(connectConfiguration)
-		def directory = new File(sauceConnectDir, operations.operatingSystem.directory)
-		new File(directory, operations.operatingSystem.executable)
-	}
+    File getSauceConnectExecutable() {
+        def operations = new SauceConnectOperations(connectConfiguration)
+        def directory = new File(sauceConnectDir, operations.operatingSystem.directory)
+        new File(directory, operations.operatingSystem.executable)
+    }
 
-	SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration, File sauceConnectDir) {
-		super(project, logger)
-		this.account = account
-		this.connectConfiguration = connectConfiguration
-		this.sauceConnectDir = sauceConnectDir
-	}
+    SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration, File sauceConnectDir) {
+        super(project, logger)
+        this.account = account
+        this.connectConfiguration = connectConfiguration
+        this.sauceConnectDir = sauceConnectDir
+    }
 
-	@Override
-	void validateState() {
-		if (!account.username || !account.accessKey) {
-			throw new InvalidUserDataException('No sauce labs username or passwords set')
-		}
-	}
+    @Override
+    void validateState() {
+        if (!account.username || !account.accessKey) {
+            throw new InvalidUserDataException('No sauce labs username or passwords set')
+        }
+    }
 
-	@Override
-	List<String> assembleCommandLine() {
-		[sauceConnectExecutable.absolutePath, '--user', account.username, '--api-key',  account.accessKey, '--se-port', port] + additionalOptions
-	}
+    @Override
+    List<String> assembleCommandLine() {
+        [sauceConnectExecutable.absolutePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port] + additionalOptions
+    }
 }

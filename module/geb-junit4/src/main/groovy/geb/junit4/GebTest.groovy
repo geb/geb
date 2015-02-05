@@ -21,44 +21,44 @@ import org.junit.After
 
 class GebTest {
 
-	String gebConfEnv = null
-	String gebConfScript = null
+    String gebConfEnv = null
+    String gebConfScript = null
 
-	private Browser browser
+    private Browser browser
 
-	Configuration createConf() {
-		new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)
-	}
+    Configuration createConf() {
+        new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)
+    }
 
-	Browser createBrowser() {
-		new Browser(createConf())
-	}
+    Browser createBrowser() {
+        new Browser(createConf())
+    }
 
-	Browser getBrowser() {
-		if (browser == null) {
-			browser = createBrowser()
-		}
-		browser
-	}
+    Browser getBrowser() {
+        if (browser == null) {
+            browser = createBrowser()
+        }
+        browser
+    }
 
-	@After
-	void resetBrowser() {
-		if (browser?.config?.autoClearCookies) {
-			browser.clearCookiesQuietly()
-		}
-		browser = null
-	}
+    @After
+    void resetBrowser() {
+        if (browser?.config?.autoClearCookies) {
+            browser.clearCookiesQuietly()
+        }
+        browser = null
+    }
 
-	def methodMissing(String name, args) {
-		getBrowser()."$name"(* args)
-	}
+    def methodMissing(String name, args) {
+        getBrowser()."$name"(*args)
+    }
 
-	def propertyMissing(String name) {
-		getBrowser()."$name"
-	}
+    def propertyMissing(String name) {
+        getBrowser()."$name"
+    }
 
-	def propertyMissing(String name, value) {
-		getBrowser()."$name" = value
-	}
+    def propertyMissing(String name, value) {
+        getBrowser()."$name" = value
+    }
 
 }

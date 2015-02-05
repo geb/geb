@@ -24,51 +24,51 @@ import geb.Page
 
 class DefaultFrameSupport implements FrameSupport {
 
-	Browser browser
+    Browser browser
 
-	DefaultFrameSupport(Browser browser) {
-		this.browser = browser
-	}
+    DefaultFrameSupport(Browser browser) {
+        this.browser = browser
+    }
 
-	def withFrame(frame, Class<? extends Page> page = null, Closure block) {
-		executeWithFrame(frame, page, block)
-	}
+    def withFrame(frame, Class<? extends Page> page = null, Closure block) {
+        executeWithFrame(frame, page, block)
+    }
 
-	def withFrame(frame, Page page, Closure block) {
-		executeWithFrame(frame, page, block)
-	}
+    def withFrame(frame, Page page, Closure block) {
+        executeWithFrame(frame, page, block)
+    }
 
-	def withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure block) {
-		executeWithFrame(frameNavigator, page, block)
-	}
+    def withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure block) {
+        executeWithFrame(frameNavigator, page, block)
+    }
 
-	def withFrame(Navigator frameNavigator, Page page, Closure block) {
-		executeWithFrame(frameNavigator, page, block)
-	}
+    def withFrame(Navigator frameNavigator, Page page, Closure block) {
+        executeWithFrame(frameNavigator, page, block)
+    }
 
-	def withFrame(SimplePageContent frame, Closure block) {
-		executeWithFrame(frame, frame.templateParams.page, block)
-	}
+    def withFrame(SimplePageContent frame, Closure block) {
+        executeWithFrame(frame, frame.templateParams.page, block)
+    }
 
-	private executeWithFrame(frame, def page, Closure block) {
-		def originalPage = browser.page
-		browser.driver.switchTo().frame(frame)
-		if (page) {
-			browser.page(page)
-		}
-		try {
-			block.call()
-		} finally {
-			browser.page(originalPage)
-			browser.driver.switchTo().defaultContent()
-		}
-	}
+    private executeWithFrame(frame, def page, Closure block) {
+        def originalPage = browser.page
+        browser.driver.switchTo().frame(frame)
+        if (page) {
+            browser.page(page)
+        }
+        try {
+            block.call()
+        } finally {
+            browser.page(originalPage)
+            browser.driver.switchTo().defaultContent()
+        }
+    }
 
-	private executeWithFrame(Navigator frameNavigator, def page, Closure block) {
-		WebElement element = frameNavigator.firstElement()
-		if (element == null) {
-			throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")
-		}
-		executeWithFrame(element, page, block)
-	}
+    private executeWithFrame(Navigator frameNavigator, def page, Closure block) {
+        WebElement element = frameNavigator.firstElement()
+        if (element == null) {
+            throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")
+        }
+        executeWithFrame(element, page, block)
+    }
 }

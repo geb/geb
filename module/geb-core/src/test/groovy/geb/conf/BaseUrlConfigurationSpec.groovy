@@ -21,58 +21,58 @@ import spock.lang.Unroll
 
 class BaseUrlConfigurationSpec extends Specification {
 
-	def getBaseUrl(String constructorBaseUrl, String configBaseUrl) {
-		def c = new ConfigObject()
-		c.cacheDriver = false
-		if (configBaseUrl) {
-			c.baseUrl = configBaseUrl
-		}
+    def getBaseUrl(String constructorBaseUrl, String configBaseUrl) {
+        def c = new ConfigObject()
+        c.cacheDriver = false
+        if (configBaseUrl) {
+            c.baseUrl = configBaseUrl
+        }
 
-		def args = [:]
-		if (constructorBaseUrl) {
-			args.baseUrl = constructorBaseUrl
-		}
+        def args = [:]
+        if (constructorBaseUrl) {
+            args.baseUrl = constructorBaseUrl
+        }
 
-		new Browser(args, new Configuration(c)).baseUrl
-	}
+        new Browser(args, new Configuration(c)).baseUrl
+    }
 
-	@Unroll("expectedBaseUrl = #expectedBaseUrl with (#constructor, #config)")
-	def "calculate base url"() {
-		expect:
-		getBaseUrl(constructor, config) == expectedBaseUrl
+    @Unroll("expectedBaseUrl = #expectedBaseUrl with (#constructor, #config)")
+    def "calculate base url"() {
+        expect:
+        getBaseUrl(constructor, config) == expectedBaseUrl
 
-		where:
-		constructor | config | expectedBaseUrl
-		null        | null   | null
-		null        | "abc"  | "abc"
-		"abc"       | null   | "abc"
-		"abc"       | "def"  | "abc"
-	}
+        where:
+        constructor | config | expectedBaseUrl
+        null        | null   | null
+        null        | "abc"  | "abc"
+        "abc"       | null   | "abc"
+        "abc"       | "def"  | "abc"
+    }
 
-	def "can set explicit base on configuration"() {
-		given:
-		def c = new Configuration()
-		c.cacheDriver = false
-		c.baseUrl = "abc"
+    def "can set explicit base on configuration"() {
+        given:
+        def c = new Configuration()
+        c.cacheDriver = false
+        c.baseUrl = "abc"
 
-		when:
-		def b = new Browser(c)
+        when:
+        def b = new Browser(c)
 
-		then:
-		b.baseUrl == "abc"
-	}
+        then:
+        b.baseUrl == "abc"
+    }
 
-	def "null base url throws reasonable error message"() {
-		given:
-		def c = new Configuration()
-		c.baseUrl = null
-		def b = new Browser(c)
+    def "null base url throws reasonable error message"() {
+        given:
+        def c = new Configuration()
+        c.baseUrl = null
+        def b = new Browser(c)
 
-		when:
-		b.go("abc")
+        when:
+        b.go("abc")
 
-		then:
-		thrown(geb.error.NoBaseUrlDefinedException)
-	}
+        then:
+        thrown(geb.error.NoBaseUrlDefinedException)
+    }
 
 }

@@ -23,47 +23,47 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4)
 class GebTestTest extends GebTest {
 
-	def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer()
 
-	@Before
-	void setUp() {
-		server.start()
-		server.get = { req, res ->
-			res.outputStream << """
+    @Before
+    void setUp() {
+        server.start()
+        server.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<div class="d1" id="d1">d1</div>
 			</body>
 			</html>"""
-		}
-		browser.baseUrl = server.baseUrl
-	}
+        }
+        browser.baseUrl = server.baseUrl
+    }
 
-	@Test
-	void missingMethodsAreInvokedOnTheDriverInstance() {
-		// This also verifies that the driver instance is instantiated correctly
-		go("/")
-	}
+    @Test
+    void missingMethodsAreInvokedOnTheDriverInstance() {
+        // This also verifies that the driver instance is instantiated correctly
+        go("/")
+    }
 
-	@Test
-	void missingPropertyAccessesAreRequestedOnTheDriverInstance() {
-		page SomePage
-		assert prop == 1
-	}
+    @Test
+    void missingPropertyAccessesAreRequestedOnTheDriverInstance() {
+        page SomePage
+        assert prop == 1
+    }
 
-	@Test
-	void missingPropertyAssignmentsAreForwardedToTheDriverInstance() {
-		page SomePage
-		prop = 2
-		assert prop == 2
-	}
+    @Test
+    void missingPropertyAssignmentsAreForwardedToTheDriverInstance() {
+        page SomePage
+        prop = 2
+        assert prop == 2
+    }
 
-	@After
-	void tearDown() {
-		server.stop()
-	}
+    @After
+    void tearDown() {
+        server.stop()
+    }
 }
 
 class SomePage extends Page {
-	def prop = 1
+    def prop = 1
 }

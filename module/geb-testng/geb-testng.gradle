@@ -1,17 +1,17 @@
 dependencies {
-	compile "org.testng:testng:6.0.1"
+    compile "org.testng:testng:6.0.1"
 }
 
 test {
-	useTestNG()
+    useTestNG()
 }
 
 modifyPom { pom ->
-	pom.project {
-		name "Geb for TestNG"
-		description "Geb (pronounced \"jeb\") integration with the TestNG test framework."
-	}
-	
-	// User provides their own testng
-	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.testng" })
+    pom.project {
+        name "Geb for TestNG"
+        description "Geb (pronounced \"jeb\") integration with the TestNG test framework."
+    }
+
+    // User provides their own testng
+    pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.testng" })
 }

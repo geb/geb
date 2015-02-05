@@ -18,16 +18,16 @@ import spock.lang.Specification
 
 class ExampleSpec extends Specification {
 
-	def featureMethod() {
-		expect:
-		waitFor { 1 == 2}
-	}
+    def featureMethod() {
+        expect:
+        waitFor { 1 == 2}
+    }
 
-	def helperMethod() {
-		waitFor { 3 == 4 }
-	}
+    def helperMethod() {
+        waitFor { 3 == 4 }
+    }
 
-	private waitFor(Closure c) {
-		c()
-	}
+    private waitFor(Closure c) {
+        c()
+    }
 }

@@ -25,152 +25,152 @@ import spock.lang.Specification
 
 class ConfigurationDriverCreationSpec extends Specification {
 
-	@Shared
-		classLoader
+    @Shared
+        classLoader
 
-	def d
+    def d
 
-	def setupSpec() {
-		// We have to remove the ie driver from the classpath
-		def thisLoader = getClass().classLoader
-		def classpath = thisLoader.getURLs().findAll { !it.path.contains("selenium-ie-driver") }
-		classLoader = new URLClassLoader(classpath as URL[], thisLoader.parent)
-		Thread.currentThread().contextClassLoader = classLoader
-	}
+    def setupSpec() {
+        // We have to remove the ie driver from the classpath
+        def thisLoader = getClass().classLoader
+        def classpath = thisLoader.getURLs().findAll { !it.path.contains("selenium-ie-driver") }
+        classLoader = new URLClassLoader(classpath as URL[], thisLoader.parent)
+        Thread.currentThread().contextClassLoader = classLoader
+    }
 
-	def p(m = [:]) {
-		def p = new Properties()
-		p.putAll(m)
-		p
-	}
+    def p(m = [:]) {
+        def p = new Properties()
+        p.putAll(m)
+        p
+    }
 
-	def c(m = [:]) {
-		def c = loadClass(ConfigObject).newInstance()
-		c.putAll(m)
-		c
-	}
+    def c(m = [:]) {
+        def c = loadClass(ConfigObject).newInstance()
+        c.putAll(m)
+        c
+    }
 
-	def conf(Object[] args) {
-		def configurationArguments = args.size() < 2 ? [args.size() == 0 ? null : args[0], p()] : args
+    def conf(Object[] args) {
+        def configurationArguments = args.size() < 2 ? [args.size() == 0 ? null : args[0], p()] : args
 
-		def conf = loadClass(Configuration).newInstance(*configurationArguments)
-		conf.cacheDriver = false
-		conf
-	}
+        def conf = loadClass(Configuration).newInstance(*configurationArguments)
+        conf.cacheDriver = false
+        conf
+    }
 
-	def loadClass(Class clazz) {
-		classLoader.loadClass(clazz.name)
-	}
+    def loadClass(Class clazz) {
+        classLoader.loadClass(clazz.name)
+    }
 
-	boolean isInstanceOf(Class clazz, Object instance) {
-		loadClass(clazz).isInstance(instance)
-	}
+    boolean isInstanceOf(Class clazz, Object instance) {
+        loadClass(clazz).isInstance(instance)
+    }
 
-	def cleanup() {
-		d?.quit()
-	}
+    def cleanup() {
+        d?.quit()
+    }
 
-	def cleanupSpec() {
-		Thread.currentThread().contextClassLoader = null
-	}
+    def cleanupSpec() {
+        Thread.currentThread().contextClassLoader = null
+    }
 
-	def "no property"() {
-		when:
-		d = conf().driver
-		then:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
+    def "no property"() {
+        when:
+        d = conf().driver
+        then:
+        isInstanceOf(HtmlUnitDriver, d)
+    }
 
-	def "specific short name"() {
-		when:
-		d = conf(c(), p("geb.driver": "htmlunit")).driver
-		then:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
+    def "specific short name"() {
+        when:
+        d = conf(c(), p("geb.driver": "htmlunit")).driver
+        then:
+        isInstanceOf(HtmlUnitDriver, d)
+    }
 
-	def "specific valid short name but not available"() {
-		when:
-		conf(c(), p("geb.driver": "ie")).driver
-		then:
-		Exception e = thrown()
-		isInstanceOf(UnableToLoadAnyDriversException, e)
-	}
+    def "specific valid short name but not available"() {
+        when:
+        conf(c(), p("geb.driver": "ie")).driver
+        then:
+        Exception e = thrown()
+        isInstanceOf(UnableToLoadAnyDriversException, e)
+    }
 
-	def "specific invalid shortname"() {
-		when:
-		conf(c(), p("geb.driver": "garbage")).driver
-		then:
-		Exception e = thrown()
-		isInstanceOf(UnknownDriverShortNameException, e)
-	}
+    def "specific invalid shortname"() {
+        when:
+        conf(c(), p("geb.driver": "garbage")).driver
+        then:
+        Exception e = thrown()
+        isInstanceOf(UnknownDriverShortNameException, e)
+    }
 
-	def "specific list of drivers"() {
-		when:
-		d = conf(c(), p("geb.driver": "ie:htmlunit")).driver
-		then:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
+    def "specific list of drivers"() {
+        when:
+        d = conf(c(), p("geb.driver": "ie:htmlunit")).driver
+        then:
+        isInstanceOf(HtmlUnitDriver, d)
+    }
 
-	def "specific valid class name"() {
-		when:
-		d = conf(c(), p("geb.driver": HtmlUnitDriver.name)).driver
-		then:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
+    def "specific valid class name"() {
+        when:
+        d = conf(c(), p("geb.driver": HtmlUnitDriver.name)).driver
+        then:
+        isInstanceOf(HtmlUnitDriver, d)
+    }
 
-	def "specific invalid class name"() {
-		when:
-		d = conf(c(), p("geb.driver": "a.b.c")).driver
-		then:
-		Exception e = thrown()
-		isInstanceOf(UnableToLoadAnyDriversException, e)
-	}
+    def "specific invalid class name"() {
+        when:
+        d = conf(c(), p("geb.driver": "a.b.c")).driver
+        then:
+        Exception e = thrown()
+        isInstanceOf(UnableToLoadAnyDriversException, e)
+    }
 
-	def "specify instance"() {
-		when:
-		def driver = loadClass(HtmlUnitDriver).newInstance()
-		d = conf(c(driver: driver)).driver
-		then:
-		Exception e = thrown()
-		isInstanceOf(IllegalStateException, e)
-	}
+    def "specify instance"() {
+        when:
+        def driver = loadClass(HtmlUnitDriver).newInstance()
+        d = conf(c(driver: driver)).driver
+        then:
+        Exception e = thrown()
+        isInstanceOf(IllegalStateException, e)
+    }
 
-	def "specify driver name in config"() {
-		when:
-		d = conf(c(driver: HtmlUnitDriver.name)).driver
-		then:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
+    def "specify driver name in config"() {
+        when:
+        d = conf(c(driver: HtmlUnitDriver.name)).driver
+        then:
+        isInstanceOf(HtmlUnitDriver, d)
+    }
 
-	def "specify driver names in config"() {
-		when:
-		d = conf(c(driver: "ie:htmlunit")).driver
-		then:
-		isInstanceOf(HtmlUnitDriver, d)
-	}
+    def "specify driver names in config"() {
+        when:
+        d = conf(c(driver: "ie:htmlunit")).driver
+        then:
+        isInstanceOf(HtmlUnitDriver, d)
+    }
 
-	def "specify creation closure"() {
-		when:
-		def config = new ConfigObject()
-		config.cacheDriver = false
-		config.driver = { new HtmlUnitDriver() }
-		d = new Configuration(config, p()).driver
+    def "specify creation closure"() {
+        when:
+        def config = new ConfigObject()
+        config.cacheDriver = false
+        config.driver = { new HtmlUnitDriver() }
+        d = new Configuration(config, p()).driver
 
-		then:
-		d instanceof HtmlUnitDriver
-	}
+        then:
+        d instanceof HtmlUnitDriver
+    }
 
-	@Issue('http://jira.codehaus.org/browse/GEB-231')
-	def "DriverCreationException is thrown when creation closure returns something that is not a driver instance"() {
-		given:
-		def config = new ConfigObject()
-		config.cacheDriver = false
-		config.driver = { 'not a driver' }
+    @Issue('http://jira.codehaus.org/browse/GEB-231')
+    def "DriverCreationException is thrown when creation closure returns something that is not a driver instance"() {
+        given:
+        def config = new ConfigObject()
+        config.cacheDriver = false
+        config.driver = { 'not a driver' }
 
-		when:
-		new Configuration(config).driver
+        when:
+        new Configuration(config).driver
 
-		then:
-		thrown(DriverCreationException)
-	}
+        then:
+        thrown(DriverCreationException)
+    }
 }

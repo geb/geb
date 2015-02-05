@@ -24,95 +24,95 @@ import geb.waiting.WaitTimeoutException
 
 class PageContentTemplate {
 
-	final Browser browser
-	final PageContentContainer owner
-	final String name
-	final PageContentTemplateParams params
-	final Closure factory
-	final NavigatorFactory navigatorFactory
+    final Browser browser
+    final PageContentContainer owner
+    final String name
+    final PageContentTemplateParams params
+    final Closure factory
+    final NavigatorFactory navigatorFactory
 
-	private cache = [:]
+    private cache = [:]
 
-	PageContentTemplate(Browser browser, PageContentContainer owner, String name, Map<String, ?> params, Closure factory, NavigatorFactory navigatorFactory) {
-		this.browser = browser
-		this.owner = owner
-		this.name = name
-		this.params = new PageContentTemplateParams(this, params)
-		this.factory = factory
-		this.navigatorFactory = navigatorFactory
-	}
+    PageContentTemplate(Browser browser, PageContentContainer owner, String name, Map<String, ?> params, Closure factory, NavigatorFactory navigatorFactory) {
+        this.browser = browser
+        this.owner = owner
+        this.name = name
+        this.params = new PageContentTemplateParams(this, params)
+        this.factory = factory
+        this.navigatorFactory = navigatorFactory
+    }
 
-	String toString() {
-		"$name - $owner"
-	}
+    String toString() {
+        "$name - $owner"
+    }
 
-	Page getPage() {
-		owner instanceof Page ? owner : owner.getPage()
-	}
+    Page getPage() {
+        owner instanceof Page ? owner : owner.getPage()
+    }
 
-	Configuration getConfig() {
-		browser.config
-	}
+    Configuration getConfig() {
+        browser.config
+    }
 
-	def get(Object[] args) {
-		params.cache ? fromCache(* args) : create(* args)
-	}
+    def get(Object[] args) {
+        params.cache ? fromCache(*args) : create(*args)
+    }
 
-	private create(Object[] args) {
-		def createAction = {
-			def factoryReturn = invokeFactory(* args)
-			def creation = wrapFactoryReturn(factoryReturn, * args)
-			if (params.required) {
-				if (creation instanceof TemplateDerivedPageContent) {
-					creation.require()
-				} else if (creation == null) {
-					throw new RequiredPageValueNotPresent(this, * args)
-				}
-			}
-			creation
-		}
+    private create(Object[] args) {
+        def createAction = {
+            def factoryReturn = invokeFactory(*args)
+            def creation = wrapFactoryReturn(factoryReturn, *args)
+            if (params.required) {
+                if (creation instanceof TemplateDerivedPageContent) {
+                    creation.require()
+                } else if (creation == null) {
+                    throw new RequiredPageValueNotPresent(this, *args)
+                }
+            }
+            creation
+        }
 
-		def wait = config.getWaitForParam(params.wait)
-		if (wait) {
-			try {
-				wait.waitFor(createAction)
-			} catch (WaitTimeoutException e) {
-				if (params.required) {
-					throw e
-				}
-				e.lastEvaluationValue
-			}
-		} else {
-			createAction()
-		}
-	}
+        def wait = config.getWaitForParam(params.wait)
+        if (wait) {
+            try {
+                wait.waitFor(createAction)
+            } catch (WaitTimeoutException e) {
+                if (params.required) {
+                    throw e
+                }
+                e.lastEvaluationValue
+            }
+        } else {
+            createAction()
+        }
+    }
 
-	private fromCache(Object[] args) {
-		def argsHash = Arrays.deepHashCode(args)
-		if (!cache.containsKey(argsHash)) {
-			cache[argsHash] = create(* args)
-		}
-		cache[argsHash]
-	}
+    private fromCache(Object[] args) {
+        def argsHash = Arrays.deepHashCode(args)
+        if (!cache.containsKey(argsHash)) {
+            cache[argsHash] = create(*args)
+        }
+        cache[argsHash]
+    }
 
-	private invokeFactory(Object[] args) {
-		factory.delegate = createFactoryDelegate(args)
-		factory.resolveStrategy = Closure.DELEGATE_FIRST
-		factory(* args)
-	}
+    private invokeFactory(Object[] args) {
+        factory.delegate = createFactoryDelegate(args)
+        factory.resolveStrategy = Closure.DELEGATE_FIRST
+        factory(*args)
+    }
 
-	private createFactoryDelegate(Object[] args) {
-		new PageContentTemplateFactoryDelegate(this, args)
-	}
+    private createFactoryDelegate(Object[] args) {
+        new PageContentTemplateFactoryDelegate(this, args)
+    }
 
-	private wrapFactoryReturn(factoryReturn, Object[] args) {
-		if (Navigator.isInstance(factoryReturn)) {
-			def pageContent = new SimplePageContent()
-			pageContent.init(this, factoryReturn, * args)
-			pageContent
-		} else {
-			factoryReturn
-		}
-	}
+    private wrapFactoryReturn(factoryReturn, Object[] args) {
+        if (Navigator.isInstance(factoryReturn)) {
+            def pageContent = new SimplePageContent()
+            pageContent.init(this, factoryReturn, *args)
+            pageContent
+        } else {
+            factoryReturn
+        }
+    }
 
 }

@@ -25,107 +25,107 @@ import spock.lang.IgnoreIf
 @IgnoreIf({ System.getProperty("geb.saucelabs.browser")?.contains('safari') })
 class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 
-	def setup() {
-		html {
-			body {
-				input(id: 'first-input', value: '')
-				input(id: 'second-input', value: '')
-			}
-		}
-	}
+    def setup() {
+        html {
+            body {
+                input(id: 'first-input', value: '')
+                input(id: 'second-input', value: '')
+            }
+        }
+    }
 
-	def "navigators are unpacked in interact block"() {
-		when:
-		interact {
-			moveToElement $('#first-input')
-			click()
-			sendKeys 'GEB'
-			moveToElement $('#second-input')
-			click()
-			sendKeys 'geb'
-		}
+    def "navigators are unpacked in interact block"() {
+        when:
+        interact {
+            moveToElement $('#first-input')
+            click()
+            sendKeys 'GEB'
+            moveToElement $('#second-input')
+            click()
+            sendKeys 'geb'
+        }
 
-		then:
-		$('#first-input').value() == 'GEB'
-		$('#second-input').value() == 'geb'
-	}
+        then:
+        $('#first-input').value() == 'GEB'
+        $('#second-input').value() == 'geb'
+    }
 
-	def "content items are unpacked in interact block"() {
-		given:
-		at InteractionPage
+    def "content items are unpacked in interact block"() {
+        given:
+        at InteractionPage
 
-		when:
-		interact {
-			moveToElement interactions.first
-			click()
-			sendKeys 'GEB'
-			moveToElement interactions.second
-			click()
-			sendKeys 'geb'
-		}
+        when:
+        interact {
+            moveToElement interactions.first
+            click()
+            sendKeys 'GEB'
+            moveToElement interactions.second
+            click()
+            sendKeys 'geb'
+        }
 
-		then:
-		interactions.first == 'GEB'
-		interactions.second == 'geb'
-	}
+        then:
+        interactions.first == 'GEB'
+        interactions.second == 'geb'
+    }
 
-	def "can use interaction blocks in page classes"() {
-		given:
-		at InteractionPage
+    def "can use interaction blocks in page classes"() {
+        given:
+        at InteractionPage
 
-		when:
-		fillInputs()
+        when:
+        fillInputs()
 
-		then:
-		interactions.first == 'GEB'
-		interactions.second == 'geb'
-	}
+        then:
+        interactions.first == 'GEB'
+        interactions.second == 'geb'
+    }
 
-	def "can use interaction blocks in module classes"() {
-		given:
-		at InteractionPage
+    def "can use interaction blocks in module classes"() {
+        given:
+        at InteractionPage
 
-		when:
-		interactions.fillInputs()
+        when:
+        interactions.fillInputs()
 
-		then:
-		interactions.first == 'GEB'
-		interactions.second == 'geb'
-	}
+        then:
+        interactions.first == 'GEB'
+        interactions.second == 'geb'
+    }
 }
 
 class InteractionPage extends Page {
-	static at = { true }
-	static content = {
-		interactions { module InteractionsModule }
-	}
+    static at = { true }
+    static content = {
+        interactions { module InteractionsModule }
+    }
 
-	void fillInputs() {
-		interact {
-			moveToElement interactions.first
-			click()
-			sendKeys 'GEB'
-			moveToElement interactions.second
-			click()
-			sendKeys 'geb'
-		}
-	}
+    void fillInputs() {
+        interact {
+            moveToElement interactions.first
+            click()
+            sendKeys 'GEB'
+            moveToElement interactions.second
+            click()
+            sendKeys 'geb'
+        }
+    }
 }
 
 class InteractionsModule extends Module {
-	static content = {
-		first { $('#first-input') }
-		second { $('#second-input') }
-	}
+    static content = {
+        first { $('#first-input') }
+        second { $('#second-input') }
+    }
 
-	void fillInputs() {
-		interact {
-			moveToElement first
-			delegate.click()
-			sendKeys 'GEB'
-			moveToElement second
-			delegate.click()
-			sendKeys 'geb'
-		}
-	}
+    void fillInputs() {
+        interact {
+            moveToElement first
+            delegate.click()
+            sendKeys 'GEB'
+            moveToElement second
+            delegate.click()
+            sendKeys 'geb'
+        }
+    }
 }

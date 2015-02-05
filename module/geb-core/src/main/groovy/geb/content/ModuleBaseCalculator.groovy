@@ -21,25 +21,25 @@ import geb.navigator.factory.NavigatorFactory
 
 class ModuleBaseCalculator {
 
-	static NavigatorFactory calculate(Module module, NavigatorFactory navigatorFactory, Map params = [:]) {
-		def moduleClass = module.getClass()
-		def moduleBaseDefinition = moduleClass.base
-		if (!moduleBaseDefinition) {
-			navigatorFactory
-		} else {
-			// Clone it because the same closure may be used
-			// via through a subclass and have a different base
-			def moduleBaseDefinitionClone = moduleBaseDefinition.clone()
-			moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(module, navigatorFactory, params)
-			moduleBaseDefinitionClone.resolveStrategy = Closure.DELEGATE_FIRST
-			def moduleBase = moduleBaseDefinitionClone()
+    static NavigatorFactory calculate(Module module, NavigatorFactory navigatorFactory, Map params = [:]) {
+        def moduleClass = module.getClass()
+        def moduleBaseDefinition = moduleClass.base
+        if (!moduleBaseDefinition) {
+            navigatorFactory
+        } else {
+            // Clone it because the same closure may be used
+            // via through a subclass and have a different base
+            def moduleBaseDefinitionClone = moduleBaseDefinition.clone()
+            moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(module, navigatorFactory, params)
+            moduleBaseDefinitionClone.resolveStrategy = Closure.DELEGATE_FIRST
+            def moduleBase = moduleBaseDefinitionClone()
 
-			if (!(moduleBase instanceof Navigator)) {
-				throw new InvalidPageContent("The static 'base' parameter of module class $moduleClass did not return a Navigator")
-			}
+            if (!(moduleBase instanceof Navigator)) {
+                throw new InvalidPageContent("The static 'base' parameter of module class $moduleClass did not return a Navigator")
+            }
 
-			navigatorFactory.relativeTo(moduleBase)
-		}
-	}
+            navigatorFactory.relativeTo(moduleBase)
+        }
+    }
 
 }

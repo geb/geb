@@ -21,18 +21,18 @@ package geb.waiting
  * @see geb.waiting.WaitingSupport
  */
 class UnknownWaitForEvaluationResult {
-	/** holds a Throwable that was returned from last closure evaluation in a waitFor() call */
-	Throwable thrown
+    /** holds a Throwable that was returned from last closure evaluation in a waitFor() call */
+    Throwable thrown
 
-	UnknownWaitForEvaluationResult(Throwable thrown) {
-		this.thrown = thrown
-	}
+    UnknownWaitForEvaluationResult(Throwable thrown) {
+        this.thrown = thrown
+    }
 
-	boolean asBoolean() {
-		false
-	}
+    boolean asBoolean() {
+        false
+    }
 
-	String toString() {
-		"Last waitFor evaluation value is unknown because the following exception was thrown from the evaluated closure: $thrown"
-	}
+    String toString() {
+        "Last waitFor evaluation value is unknown because the following exception was thrown from the evaluated closure: $thrown"
+    }
 }

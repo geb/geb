@@ -20,57 +20,57 @@ import geb.test.*
 
 class SelectFactorySpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		callbackServer.get = { req, res ->
-			res.outputStream << """
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<select name="s"/>
 			</body>
 			</html>"""
-		}
-	}
+        }
+    }
 
-	def setup() {
-		go()
-	}
+    def setup() {
+        go()
+    }
 
-	def factory
+    def factory
 
-	def getSelect() {
-		factory.createSelectFor(s().firstElement())
-	}
+    def getSelect() {
+        factory.createSelectFor(s().firstElement())
+    }
 
-	def "will load successfully when select is available"() {
-		when:
-		factory = new SelectFactory()
+    def "will load successfully when select is available"() {
+        when:
+        factory = new SelectFactory()
 
-		then:
-		select instanceof Select
-	}
+        then:
+        select instanceof Select
+    }
 
-	def "will give nice error message when select is not available"() {
-		given:
-		factory = new SelectFactory() {
-			protected ClassLoader getClassLoaderToUse() {
-				new ClassLoader() {
-					protected Class loadClass(String name, boolean resolve) {
-						if (name == SelectFactory.SELECT_CLASS_NAME) {
-							throw new ClassNotFoundException()
-						} else {
-							super.loadClass(name, resolve)
-						}
-					}
-				}
-			}
-		}
+    def "will give nice error message when select is not available"() {
+        given:
+        factory = new SelectFactory() {
+            protected ClassLoader getClassLoaderToUse() {
+                new ClassLoader() {
+                    protected Class loadClass(String name, boolean resolve) {
+                        if (name == SelectFactory.SELECT_CLASS_NAME) {
+                            throw new ClassNotFoundException()
+                        } else {
+                            super.loadClass(name, resolve)
+                        }
+                    }
+                }
+            }
+        }
 
-		when:
-		getSelect()
+        when:
+        getSelect()
 
-		then:
-		def e = thrown(ClassNotFoundException)
-		e.message.contains "This class is part of the selenium-support jar"
-	}
+        then:
+        def e = thrown(ClassNotFoundException)
+        e.message.contains "This class is part of the selenium-support jar"
+    }
 
 }

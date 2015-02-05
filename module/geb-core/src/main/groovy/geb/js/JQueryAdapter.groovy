@@ -19,18 +19,18 @@ import geb.navigator.Navigator
 
 class JQueryAdapter {
 
-	private final Navigator navigator
+    private final Navigator navigator
 
-	JQueryAdapter(Navigator navigator) {
-		this.navigator = navigator
-	}
+    JQueryAdapter(Navigator navigator) {
+        this.navigator = navigator
+    }
 
-	private callJQueryMethod(String name, args) {
-		def browser = navigator.browser
-		def elements = navigator.allElements()
+    private callJQueryMethod(String name, args) {
+        def browser = navigator.browser
+        def elements = navigator.allElements()
 
-		if (elements) {
-			browser.js.exec(* elements, "EOE", * args, """
+        if (elements) {
+            browser.js.exec(*elements, "EOE", *args, """
 				var elements = new Array();
 				var callArgs = new Array();
 				var collectingElements = true;
@@ -51,20 +51,20 @@ class JQueryAdapter {
 				var r = o.${name}.apply(o, callArgs);
 				return (r instanceof jQuery) ? r.toArray() : r;
 			""")
-		} else {
-			null
-		}
-	}
+        } else {
+            null
+        }
+    }
 
-	def methodMissing(String name, args) {
-		def result = callJQueryMethod(name, args)
-		if (result instanceof WebElement) {
-			navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
-		} else if (result instanceof List) {
-			navigator.browser.navigatorFactory.createFromWebElements(result)
-		} else {
-			result
-		}
-	}
+    def methodMissing(String name, args) {
+        def result = callJQueryMethod(name, args)
+        if (result instanceof WebElement) {
+            navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
+        } else if (result instanceof List) {
+            navigator.browser.navigatorFactory.createFromWebElements(result)
+        } else {
+            result
+        }
+    }
 
 }

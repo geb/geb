@@ -16,13 +16,13 @@
 package browser
 
 class Browser extends geb.Browser {
-	static String serverBaseUrl
+    static String serverBaseUrl
 
-	Browser() {
-		browser.baseUrl = serverBaseUrl
-	}
+    Browser() {
+        browser.baseUrl = serverBaseUrl
+    }
 
-	static Browser drive(Closure script) {
-		drive(new Browser(), script)
-	}
+    static Browser drive(Closure script) {
+        drive(new Browser(), script)
+    }
 }

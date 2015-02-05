@@ -20,24 +20,24 @@ import geb.test.GebSpecWithCallbackServer
 
 class ModuleFromNavigatorSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		responseHtml {
-			body {
-				div(class: 'module-base')
-			}
-		}
+    def setupSpec() {
+        responseHtml {
+            body {
+                div(class: 'module-base')
+            }
+        }
 
-		go()
-	}
+        go()
+    }
 
-	def 'can create a module from a navigator'() {
-		when:
-		def module = $('div').module(ModuleFromNavigatorSpecModule)
+    def 'can create a module from a navigator'() {
+        when:
+        def module = $('div').module(ModuleFromNavigatorSpecModule)
 
-		then:
-		module instanceof ModuleFromNavigatorSpecModule
-		module.hasClass("module-base")
-	}
+        then:
+        module instanceof ModuleFromNavigatorSpecModule
+        module.hasClass("module-base")
+    }
 }
 
 class ModuleFromNavigatorSpecModule extends Module {

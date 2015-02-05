@@ -18,5 +18,5 @@ package geb
 import geb.error.GebException
 
 interface Initializable {
-	GebException uninitializedException()
+    GebException uninitializedException()
 }

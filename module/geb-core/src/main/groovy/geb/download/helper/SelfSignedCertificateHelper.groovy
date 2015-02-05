@@ -19,36 +19,36 @@ import javax.net.ssl.*
 import java.security.KeyStore
 
 class SelfSignedCertificateHelper {
-	URL keystoreUrl
-	String keystoreFilePassword
+    URL keystoreUrl
+    String keystoreFilePassword
 
-	SelfSignedCertificateHelper(URL keystoreUrl, String keystoreFilePassword) {
-		this.keystoreUrl = keystoreUrl
-		this.keystoreFilePassword = keystoreFilePassword
-	}
+    SelfSignedCertificateHelper(URL keystoreUrl, String keystoreFilePassword) {
+        this.keystoreUrl = keystoreUrl
+        this.keystoreFilePassword = keystoreFilePassword
+    }
 
-	void acceptCertificatesFor(HttpsURLConnection con) {
-		con.setSSLSocketFactory(socketFactory)
-		con.setHostnameVerifier(hostnameVerifier)
-	}
+    void acceptCertificatesFor(HttpsURLConnection con) {
+        con.setSSLSocketFactory(socketFactory)
+        con.setHostnameVerifier(hostnameVerifier)
+    }
 
-	private SSLSocketFactory getSocketFactory() {
-		def keyStore = KeyStore.getInstance(KeyStore.defaultType)
-		keyStore.load(keystoreUrl.openStream(), keystoreFilePassword.toCharArray())
-		TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.defaultAlgorithm)
-		tmf.init(keyStore)
-		SSLContext ctx = SSLContext.getInstance('TLS')
-		ctx.init(null, tmf.trustManagers, null)
-		ctx.socketFactory
-	}
+    private SSLSocketFactory getSocketFactory() {
+        def keyStore = KeyStore.getInstance(KeyStore.defaultType)
+        keyStore.load(keystoreUrl.openStream(), keystoreFilePassword.toCharArray())
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.defaultAlgorithm)
+        tmf.init(keyStore)
+        SSLContext ctx = SSLContext.getInstance('TLS')
+        ctx.init(null, tmf.trustManagers, null)
+        ctx.socketFactory
+    }
 
-	private HostnameVerifier getHostnameVerifier() {
-		new HostnameVerifier() {
-			@Override
-			boolean verify(String hostname, SSLSession sslSession) {
-				true
-			}
-		}
-	}
+    private HostnameVerifier getHostnameVerifier() {
+        new HostnameVerifier() {
+            @Override
+            boolean verify(String hostname, SSLSession sslSession) {
+                true
+            }
+        }
+    }
 
 }

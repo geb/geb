@@ -19,24 +19,24 @@ import geb.Initializable
 import geb.navigator.Navigator
 
 class UninitializedPageContentSupport extends PageContentSupport {
-	private final Initializable initializable
+    private final Initializable initializable
 
-	UninitializedPageContentSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
+    UninitializedPageContentSupport(Initializable initializable) {
+        this.initializable = initializable
+    }
 
-	@Override
-	def getContent(String name, Object[] args) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def getContent(String name, Object[] args) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	Navigator getNavigator() {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    Navigator getNavigator() {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	PageContentContainer getOwner() {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    PageContentContainer getOwner() {
+        throw initializable.uninitializedException()
+    }
 }

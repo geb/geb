@@ -19,14 +19,14 @@ import geb.Initializable
 
 class UninitializedInteractionSupport implements InteractionsSupport {
 
-	private final Initializable initializable
+    private final Initializable initializable
 
-	UninitializedInteractionSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
+    UninitializedInteractionSupport(Initializable initializable) {
+        this.initializable = initializable
+    }
 
-	@Override
-	void interact(Closure interactionClosure) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    void interact(Closure interactionClosure) {
+        throw initializable.uninitializedException()
+    }
 }

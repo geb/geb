@@ -21,14 +21,15 @@ import spock.lang.Specification
 
 abstract class DriveMethodSupportingSpecWithServer extends Specification {
 
-	@Shared CallbackHttpServer server = new CallbackHttpServer()
+    @Shared
+    CallbackHttpServer server = new CallbackHttpServer()
 
-	def setupSpec() {
-		server.start()
-		Browser.serverBaseUrl = server.baseUrl
-	}
+    def setupSpec() {
+        server.start()
+        Browser.serverBaseUrl = server.baseUrl
+    }
 
-	def cleanupSpec() {
-		server?.stop()
-	}
+    def cleanupSpec() {
+        server?.stop()
+    }
 }

@@ -16,5 +16,5 @@
 package geb.interaction
 
 interface InteractionsSupport {
-	void interact(Closure interactionClosure)
+    void interact(Closure interactionClosure)
 }

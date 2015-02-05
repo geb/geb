@@ -17,20 +17,20 @@ package geb.js
 
 interface AlertAndConfirmSupport {
 
-	def withAlert(Closure actions)
+    def withAlert(Closure actions)
 
-	def withAlert(Map params, Closure actions)
+    def withAlert(Map params, Closure actions)
 
-	void withNoAlert(Closure actions)
+    void withNoAlert(Closure actions)
 
-	def withConfirm(Map params, Closure actions)
+    def withConfirm(Map params, Closure actions)
 
-	def withConfirm(Closure actions)
+    def withConfirm(Closure actions)
 
-	def withConfirm(boolean ok, Closure actions)
+    def withConfirm(boolean ok, Closure actions)
 
-	def withConfirm(Map params, boolean ok, Closure actions)
+    def withConfirm(Map params, boolean ok, Closure actions)
 
-	void withNoConfirm(Closure actions)
+    void withNoConfirm(Closure actions)
 
 }

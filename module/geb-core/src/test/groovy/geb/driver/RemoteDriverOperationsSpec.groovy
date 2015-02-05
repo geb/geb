@@ -20,28 +20,30 @@ import spock.lang.Unroll
 
 class RemoteDriverOperationsSpec extends Specification {
 
-	@Shared nonRemoteClassLoader
-	@Shared withRemoteClassLoader
+    @Shared
+        nonRemoteClassLoader
+    @Shared
+        withRemoteClassLoader
 
-	def setupSpec() {
-		withRemoteClassLoader = getClass().classLoader
+    def setupSpec() {
+        withRemoteClassLoader = getClass().classLoader
 
-		def classpath = withRemoteClassLoader.getURLs().findAll { it.path.contains("groovy-all") }
-		nonRemoteClassLoader = new URLClassLoader(classpath as URL[], withRemoteClassLoader.parent)
-	}
+        def classpath = withRemoteClassLoader.getURLs().findAll { it.path.contains("groovy-all") }
+        nonRemoteClassLoader = new URLClassLoader(classpath as URL[], withRemoteClassLoader.parent)
+    }
 
-	@Unroll("remote driver availability test - available = #isAvailable")
-	def "remote driver availability test"() {
-		when:
-		def o = new RemoteDriverOperations(classLoader)
+    @Unroll("remote driver availability test - available = #isAvailable")
+    def "remote driver availability test"() {
+        when:
+        def o = new RemoteDriverOperations(classLoader)
 
-		then:
-		o.remoteDriverAvailable == isAvailable
+        then:
+        o.remoteDriverAvailable == isAvailable
 
-		where:
-		classLoader           | isAvailable
-		nonRemoteClassLoader  | false
-		withRemoteClassLoader | true
-	}
+        where:
+        classLoader           | isAvailable
+        nonRemoteClassLoader  | false
+        withRemoteClassLoader | true
+    }
 
 }

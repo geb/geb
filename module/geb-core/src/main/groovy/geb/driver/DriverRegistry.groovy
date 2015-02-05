@@ -19,26 +19,26 @@ import geb.error.UnknownDriverShortNameException
 
 class DriverRegistry {
 
-	private static final Map<String, String> DRIVERS = [
-		htmlunit: "org.openqa.selenium.htmlunit.HtmlUnitDriver",
-		firefox: "org.openqa.selenium.firefox.FirefoxDriver",
-		ie: "org.openqa.selenium.ie.InternetExplorerDriver",
-		chrome: "org.openqa.selenium.chrome.ChromeDriver"
-	]
+    private static final Map<String, String> DRIVERS = [
+        htmlunit: "org.openqa.selenium.htmlunit.HtmlUnitDriver",
+        firefox: "org.openqa.selenium.firefox.FirefoxDriver",
+        ie: "org.openqa.selenium.ie.InternetExplorerDriver",
+        chrome: "org.openqa.selenium.chrome.ChromeDriver"
+    ]
 
-	static String translateFromShortNameIfRequired(String name) {
-		if (!name.contains(".")) {
-			if (DRIVERS.containsKey(name)) {
-				DRIVERS[name]
-			} else {
-				throw new UnknownDriverShortNameException(name)
-			}
-		} else {
-			name
-		}
-	}
+    static String translateFromShortNameIfRequired(String name) {
+        if (!name.contains(".")) {
+            if (DRIVERS.containsKey(name)) {
+                DRIVERS[name]
+            } else {
+                throw new UnknownDriverShortNameException(name)
+            }
+        } else {
+            name
+        }
+    }
 
-	static String[] getKnownDriverClassNamesInPreferenceOrder() {
-		DRIVERS.values() as String[]
-	}
+    static String[] getKnownDriverClassNamesInPreferenceOrder() {
+        DRIVERS.values() as String[]
+    }
 }

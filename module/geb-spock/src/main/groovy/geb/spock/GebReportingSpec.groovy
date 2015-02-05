@@ -21,27 +21,29 @@ import org.junit.rules.TestName
 
 class GebReportingSpec extends GebSpec {
 
-	// Ridiculous name to avoid name clashes
-	@Rule TestName gebReportingSpecTestName
-	private int gebReportingPerTestCounter = 1
-	@Shared private int gebReportingSpecTestCounter = 1
+    // Ridiculous name to avoid name clashes
+    @Rule
+    TestName gebReportingSpecTestName
+    private int gebReportingPerTestCounter = 1
+    @Shared
+    private int gebReportingSpecTestCounter = 1
 
-	def setupSpec() {
-		reportGroup getClass()
-		cleanReportGroupDir()
-	}
+    def setupSpec() {
+        reportGroup getClass()
+        cleanReportGroupDir()
+    }
 
-	def setup() {
-		reportGroup getClass()
-	}
+    def setup() {
+        reportGroup getClass()
+    }
 
-	def cleanup() {
-		report "end"
-		++gebReportingSpecTestCounter
-	}
+    def cleanup() {
+        report "end"
+        ++gebReportingSpecTestCounter
+    }
 
-	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
-	}
+    void report(String label = "") {
+        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
+    }
 
 }

@@ -25,71 +25,71 @@ import org.gradle.api.tasks.testing.Test
 
 class SaucePlugin implements Plugin<Project> {
 
-	public static final String CLOSE_TUNNEL_TASK_NAME = 'closeSauceTunnel'
-	public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openSauceTunnelInBackground'
-	public static final String UNPACK_CONNECT_TASK_NAME = 'unpackSauceConnect'
-	Project project
+    public static final String CLOSE_TUNNEL_TASK_NAME = 'closeSauceTunnel'
+    public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openSauceTunnelInBackground'
+    public static final String UNPACK_CONNECT_TASK_NAME = 'unpackSauceConnect'
+    Project project
 
-	@Override
-	void apply(Project project) {
-		this.project = project
+    @Override
+    void apply(Project project) {
+        this.project = project
 
-		project.configurations.create('sauceConnect')
+        project.configurations.create('sauceConnect')
 
-		project.task(UNPACK_CONNECT_TASK_NAME, type: UnpackSauceConnect)
+        project.task(UNPACK_CONNECT_TASK_NAME, type: UnpackSauceConnect)
 
-		project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
+        project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
 
-		addTunnelTasks()
-		addSauceTasks()
-	}
+        addTunnelTasks()
+        addSauceTasks()
+    }
 
-	void addSauceTasks() {
-		def allSauceLabsTests = project.task("allSauceLabsTests") {
-			group "Sauce Test"
-		}
+    void addSauceTasks() {
+        def allSauceLabsTests = project.task("allSauceLabsTests") {
+            group "Sauce Test"
+        }
 
-		project.sauceLabs.browsers.all { BrowserSpec browser ->
-			def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
-				group allSauceLabsTests.group
-				task.dependsOn OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-				allSauceLabsTests.dependsOn task
-				finalizedBy CLOSE_TUNNEL_TASK_NAME
+        project.sauceLabs.browsers.all { BrowserSpec browser ->
+            def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
+                group allSauceLabsTests.group
+                task.dependsOn OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
+                allSauceLabsTests.dependsOn task
+                finalizedBy CLOSE_TUNNEL_TASK_NAME
 
-				systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
+                systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
 
-				browser.testTask = task
-				browser.configureTestTask()
-			}
+                browser.testTask = task
+                browser.configureTestTask()
+            }
 
-			def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {
-				from testTask.reports.junitXml.destination
-				into "${testTask.reports.junitXml.destination}-decorated"
-				filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
-			}
+            def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {
+                from testTask.reports.junitXml.destination
+                into "${testTask.reports.junitXml.destination}-decorated"
+                filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
+            }
 
-			testTask.finalizedBy decorateReportsTask
-		}
-	}
+            testTask.finalizedBy decorateReportsTask
+        }
+    }
 
-	void addTunnelTasks() {
-		project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
-			tunnel = project.sauceLabs.connect
-		}
+    void addTunnelTasks() {
+        project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
+            tunnel = project.sauceLabs.connect
+        }
 
-		def openSauceTunnel = project.task('openSauceTunnel', type: StartExternalTunnel)
+        def openSauceTunnel = project.task('openSauceTunnel', type: StartExternalTunnel)
 
-		def openSauceTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
-			inBackground = true
-			finalizedBy CLOSE_TUNNEL_TASK_NAME
-		}
+        def openSauceTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
+            inBackground = true
+            finalizedBy CLOSE_TUNNEL_TASK_NAME
+        }
 
-		[openSauceTunnel, openSauceTunnelInBackground].each {
-			it.configure {
-				dependsOn UNPACK_CONNECT_TASK_NAME
-				tunnel = project.sauceLabs.connect
-				workingDir = project.buildDir
-			}
-		}
-	}
+        [openSauceTunnel, openSauceTunnelInBackground].each {
+            it.configure {
+                dependsOn UNPACK_CONNECT_TASK_NAME
+                tunnel = project.sauceLabs.connect
+                workingDir = project.buildDir
+            }
+        }
+    }
 }

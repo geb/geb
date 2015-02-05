@@ -1,26 +1,26 @@
 include "module:geb-core",
-	"module:geb-spock",
-	"module:geb-junit3",
-	"module:geb-junit4",
-	"module:geb-testng",
-	"module:geb-implicit-assertions",
-	"module:geb-ast",
-	"module:geb-waiting",
-	"internal:test-support",
-	"integration:geb-grails",
-	"integration:geb-gradle",
-	"doc:manual",
-	"doc:new-manual",
-	"doc:site"
+    "module:geb-spock",
+    "module:geb-junit3",
+    "module:geb-junit4",
+    "module:geb-testng",
+    "module:geb-implicit-assertions",
+    "module:geb-ast",
+    "module:geb-waiting",
+    "internal:test-support",
+    "integration:geb-grails",
+    "integration:geb-gradle",
+    "doc:manual",
+    "doc:new-manual",
+    "doc:site"
 
 rootProject.name = 'geb'
 
 def setBuildFile(project) {
-	project.buildFileName = "${project.name}.gradle"
+    project.buildFileName = "${project.name}.gradle"
 
-	project.children.each {
-		setBuildFile(it)
-	}
+    project.children.each {
+        setBuildFile(it)
+    }
 }
 
 setBuildFile(rootProject)

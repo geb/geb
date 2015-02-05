@@ -22,47 +22,47 @@ import org.testng.annotations.AfterMethod
 
 class GebTest {
 
-	String gebConfEnv = null
-	String gebConfScript = null
+    String gebConfEnv = null
+    String gebConfScript = null
 
-	private Browser browser
+    private Browser browser
 
-	Configuration createConf() {
-		new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-	}
+    Configuration createConf() {
+        new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
+    }
 
-	Browser createBrowser() {
-		new Browser(createConf())
-	}
+    Browser createBrowser() {
+        new Browser(createConf())
+    }
 
-	Browser getBrowser() {
-		if (browser == null) {
-			browser = createBrowser()
-		}
-		browser
-	}
+    Browser getBrowser() {
+        if (browser == null) {
+            browser = createBrowser()
+        }
+        browser
+    }
 
-	void resetBrowser() {
-		browser = null
-	}
+    void resetBrowser() {
+        browser = null
+    }
 
-	def methodMissing(String name, args) {
-		getBrowser()."$name"(* args)
-	}
+    def methodMissing(String name, args) {
+        getBrowser()."$name"(*args)
+    }
 
-	def propertyMissing(String name) {
-		getBrowser()."$name"
-	}
+    def propertyMissing(String name) {
+        getBrowser()."$name"
+    }
 
-	def propertyMissing(String name, value) {
-		getBrowser()."$name" = value
-	}
+    def propertyMissing(String name, value) {
+        getBrowser()."$name" = value
+    }
 
-	@AfterMethod
-	void clearBrowserCookies() {
-		if (browser?.config?.autoClearCookies) {
-			browser?.clearCookiesQuietly()
-		}
-	}
+    @AfterMethod
+    void clearBrowserCookies() {
+        if (browser?.config?.autoClearCookies) {
+            browser?.clearCookiesQuietly()
+        }
+    }
 
 }

@@ -26,41 +26,42 @@ import javax.net.ssl.HttpsURLConnection
 
 class HttpsDownloadingSpec extends GebSpecWithServer {
 
-	@Shared CallbackHttpsServer httpsServer = new CallbackHttpsServer()
+    @Shared
+    CallbackHttpsServer httpsServer = new CallbackHttpsServer()
 
-	private static final Closure<Void> CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT = { HttpURLConnection connection ->
-		if (connection instanceof HttpsURLConnection) {
-			def helper = new SelfSignedCertificateHelper(getClass().getResource('/keystore.jks'), 'password')
-			helper.acceptCertificatesFor(connection as HttpsURLConnection)
-		}
-	}
-	Configuration config
-	ConfigObject rawConfig
+    private static final Closure<Void> CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT = { HttpURLConnection connection ->
+        if (connection instanceof HttpsURLConnection) {
+            def helper = new SelfSignedCertificateHelper(getClass().getResource('/keystore.jks'), 'password')
+            helper.acceptCertificatesFor(connection as HttpsURLConnection)
+        }
+    }
+    Configuration config
+    ConfigObject rawConfig
 
-	def setup() {
-		config = browser.config
-		rawConfig = config.rawConfig
+    def setup() {
+        config = browser.config
+        rawConfig = config.rawConfig
 
-		httpsServer.get = { req, res ->
-			res.contentType = "text/plain"
-			res.outputStream << "from https"
-		}
-	}
+        httpsServer.get = { req, res ->
+            res.contentType = "text/plain"
+            res.outputStream << "from https"
+        }
+    }
 
-	TestHttpServer getServerInstance() {
-		httpsServer
-	}
+    TestHttpServer getServerInstance() {
+        httpsServer
+    }
 
-	void 'can download from endpoints with self-signed certificates'() {
-		expect:
-		downloadText(browser.baseUrl, CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT) == 'from https'
-	}
+    void 'can download from endpoints with self-signed certificates'() {
+        expect:
+        downloadText(browser.baseUrl, CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT) == 'from https'
+    }
 
-	void 'download connections can be configured globally'() {
-		when:
-		rawConfig.defaultDownloadConfig = CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT
+    void 'download connections can be configured globally'() {
+        when:
+        rawConfig.defaultDownloadConfig = CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT
 
-		then:
-		downloadText(browser.baseUrl) == 'from https'
-	}
+        then:
+        downloadText(browser.baseUrl) == 'from https'
+    }
 }

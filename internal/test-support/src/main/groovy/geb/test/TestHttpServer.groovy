@@ -21,48 +21,48 @@ import org.mortbay.jetty.bio.SocketConnector
 import org.mortbay.jetty.servlet.Context
 
 abstract class TestHttpServer {
-	protected server
-	boolean started
+    protected server
+    boolean started
 
-	void start(int port = 0) {
-		if (!started) {
-			server = new Server()
-			server.addConnector(createConnector(port))
-			def context = new Context(server, "/")
-			addServlets(context)
-			server.start()
-			started = true
-		}
-	}
+    void start(int port = 0) {
+        if (!started) {
+            server = new Server()
+            server.addConnector(createConnector(port))
+            def context = new Context(server, "/")
+            addServlets(context)
+            server.start()
+            started = true
+        }
+    }
 
-	void stop() {
-		if (started) {
-			server.stop()
-			started = false
-		}
-	}
+    void stop() {
+        if (started) {
+            server.stop()
+            started = false
+        }
+    }
 
-	def getPort() {
-		server?.connectors[0].localPort
-	}
+    def getPort() {
+        server?.connectors[0].localPort
+    }
 
-	String getProtocol() {
-		'http'
-	}
+    String getProtocol() {
+        'http'
+    }
 
-	def getBaseUrl() {
-		"$protocol://localhost:$port/"
-	}
+    def getBaseUrl() {
+        "$protocol://localhost:$port/"
+    }
 
-	def getBaseUrlAsUrl() {
-		new URL(getBaseUrl())
-	}
+    def getBaseUrlAsUrl() {
+        new URL(getBaseUrl())
+    }
 
-	abstract protected addServlets(Context context)
+    abstract protected addServlets(Context context)
 
-	protected Connector createConnector(int port) {
-		def connector = new SocketConnector()
-		connector.port = port
-		connector
-	}
+    protected Connector createConnector(int port) {
+        def connector = new SocketConnector()
+        connector.port = port
+        connector
+    }
 }

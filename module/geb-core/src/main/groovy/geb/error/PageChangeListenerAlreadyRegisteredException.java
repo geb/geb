@@ -19,8 +19,8 @@ import geb.PageChangeListener;
 
 public class PageChangeListenerAlreadyRegisteredException extends GebException {
 
-	public PageChangeListenerAlreadyRegisteredException(Browser browser, PageChangeListener listener) {
-		super(String.format("Attempt to register duplicate page change listener '%s' for browser '%s'", listener, browser));
-	}
+    public PageChangeListenerAlreadyRegisteredException(Browser browser, PageChangeListener listener) {
+        super(String.format("Attempt to register duplicate page change listener '%s' for browser '%s'", listener, browser));
+    }
 
 }

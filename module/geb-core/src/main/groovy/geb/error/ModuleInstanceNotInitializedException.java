@@ -17,7 +17,7 @@ package geb.error;
 
 public class ModuleInstanceNotInitializedException extends GebException {
 
-	public ModuleInstanceNotInitializedException(String message) {
-		super(message);
-	}
+    public ModuleInstanceNotInitializedException(String message) {
+        super(message);
+    }
 }

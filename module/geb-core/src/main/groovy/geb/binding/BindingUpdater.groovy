@@ -21,90 +21,90 @@ import geb.PageChangeListener
 
 class BindingUpdater {
 
-	final Browser browser
-	final Binding binding
+    final Browser browser
+    final Binding binding
 
-	protected final PageChangeListener pageChangeListener
+    protected final PageChangeListener pageChangeListener
 
-	static public final FORWARDED_BROWSER_METHODS = [
-		"go", "to", "via", "at",
-		"waitFor",
-		"withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
-		"download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
-		"report", "reportGroup", "cleanReportGroupDir"
-	].asImmutable()
+    static public final FORWARDED_BROWSER_METHODS = [
+        "go", "to", "via", "at",
+        "waitFor",
+        "withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
+        "download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
+        "report", "reportGroup", "cleanReportGroupDir"
+    ].asImmutable()
 
-	protected BindingUpdater(Binding binding, Browser browser) {
-		this.binding = binding
-		this.browser = browser
-		this.pageChangeListener = createPageChangeListener(binding, browser)
-	}
+    protected BindingUpdater(Binding binding, Browser browser) {
+        this.binding = binding
+        this.browser = browser
+        this.pageChangeListener = createPageChangeListener(binding, browser)
+    }
 
-	private class BindingUpdatingPageChangeListener implements PageChangeListener {
-		@Override
-		void pageWillChange(Browser browser, Page oldPage, Page newPage) {
-			binding.setVariable("page", newPage)
-			binding.setVariable("\$", new InvocationForwarding("\$", newPage))
-		}
+    private class BindingUpdatingPageChangeListener implements PageChangeListener {
+        @Override
+        void pageWillChange(Browser browser, Page oldPage, Page newPage) {
+            binding.setVariable("page", newPage)
+            binding.setVariable("\$", new InvocationForwarding("\$", newPage))
+        }
 
-		void clearBinding() {
-			binding.variables.remove("page")
-			binding.variables.remove("\$")
-		}
-	}
+        void clearBinding() {
+            binding.variables.remove("page")
+            binding.variables.remove("\$")
+        }
+    }
 
-	@SuppressWarnings("UnusedMethodParameter")
-	protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
-		new BindingUpdatingPageChangeListener()
-	}
+    @SuppressWarnings("UnusedMethodParameter")
+    protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
+        new BindingUpdatingPageChangeListener()
+    }
 
-	private static class InvocationForwarding extends Closure {
-		private final String methodName
-		private final Object target
+    private static class InvocationForwarding extends Closure {
+        private final String methodName
+        private final Object target
 
-		InvocationForwarding(String theMethodName, Object theTarget) {
-			super(theTarget)
+        InvocationForwarding(String theMethodName, Object theTarget) {
+            super(theTarget)
 
-			methodName = theMethodName
-			target = theTarget
-		}
+            methodName = theMethodName
+            target = theTarget
+        }
 
-		protected doCall(Object[] args) {
-			target."$methodName"(* args)
-		}
-	}
+        protected doCall(Object[] args) {
+            target."$methodName"(*args)
+        }
+    }
 
-	/**
-	 * Populates the binding and starts the updater updating the binding as necessary.
-	 */
-	BindingUpdater initialize() {
-		binding.browser = browser
-		binding.js = browser.js
+    /**
+     * Populates the binding and starts the updater updating the binding as necessary.
+     */
+    BindingUpdater initialize() {
+        binding.browser = browser
+        binding.js = browser.js
 
-		FORWARDED_BROWSER_METHODS.each {
-			binding.setVariable(it, new InvocationForwarding(it, browser))
-		}
+        FORWARDED_BROWSER_METHODS.each {
+            binding.setVariable(it, new InvocationForwarding(it, browser))
+        }
 
-		browser.registerPageChangeListener(pageChangeListener)
+        browser.registerPageChangeListener(pageChangeListener)
 
-		this
-	}
+        this
+    }
 
-	/**
-	 * Removes everything from the binding and stops updating it.
-	 */
-	BindingUpdater remove() {
-		browser.removePageChangeListener(pageChangeListener)
-		pageChangeListener.clearBinding()
+    /**
+     * Removes everything from the binding and stops updating it.
+     */
+    BindingUpdater remove() {
+        browser.removePageChangeListener(pageChangeListener)
+        pageChangeListener.clearBinding()
 
-		binding.variables.remove('browser')
-		binding.variables.remove('js')
+        binding.variables.remove('browser')
+        binding.variables.remove('js')
 
-		FORWARDED_BROWSER_METHODS.each {
-			binding.variables.remove(it)
-		}
+        FORWARDED_BROWSER_METHODS.each {
+            binding.variables.remove(it)
+        }
 
-		this
-	}
+        this
+    }
 
 }

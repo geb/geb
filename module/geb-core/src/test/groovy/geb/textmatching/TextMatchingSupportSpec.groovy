@@ -19,89 +19,89 @@ import spock.lang.Unroll
 
 class TextMatchingSupportSpec extends Specification {
 
-	def matchers = new TextMatchingSupport()
+    def matchers = new TextMatchingSupport()
 
-	// Can't have expected in name due to
-	// http://code.google.com/p/spock/issues/detail?id=115
-	@Unroll("pattern methods: #method - #input")
-	def "t"() {
-		expect:
-		matchers."$method"(input).pattern.toString() == expected
-		where:
-		method          | input | expected
-		"contains"      | "."   | ".*\\Q.\\E.*"
-		"iContains"     | "."   | "(?i).*\\Q.\\E.*"
-		"startsWith"    | "."   | "\\Q.\\E.*"
-		"iStartsWith"   | "."   | "(?i)\\Q.\\E.*"
-		"endsWith"      | "."   | ".*\\Q.\\E"
-		"iEndsWith"     | "."   | "(?i).*\\Q.\\E"
-		"containsWord"  | "."   | "(^|.+\\s)\\Q.\\E(\$|\\s.+)"
-		"iContainsWord" | "."   | "(?i)(^|.+\\s)\\Q.\\E(\$|\\s.+)"
-		"contains"      | ~"."  | ".*..*"
-		"iContains"     | ~"."  | "(?i).*..*"
-		"startsWith"    | ~"."  | "..*"
-		"iStartsWith"   | ~"."  | "(?i)..*"
-		"endsWith"      | ~"."  | ".*."
-		"iEndsWith"     | ~"."  | "(?i).*."
-		"containsWord"  | ~"."  | "(^|.+\\s).(\$|\\s.+)"
-		"iContainsWord" | ~"."  | "(?i)(^|.+\\s).(\$|\\s.+)"
-	}
+    // Can't have expected in name due to
+    // http://code.google.com/p/spock/issues/detail?id=115
+    @Unroll("pattern methods: #method - #input")
+    def "t"() {
+        expect:
+        matchers."$method"(input).pattern.toString() == expected
+        where:
+        method          | input | expected
+        "contains"      | "."   | ".*\\Q.\\E.*"
+        "iContains"     | "."   | "(?i).*\\Q.\\E.*"
+        "startsWith"    | "."   | "\\Q.\\E.*"
+        "iStartsWith"   | "."   | "(?i)\\Q.\\E.*"
+        "endsWith"      | "."   | ".*\\Q.\\E"
+        "iEndsWith"     | "."   | "(?i).*\\Q.\\E"
+        "containsWord"  | "."   | "(^|.+\\s)\\Q.\\E(\$|\\s.+)"
+        "iContainsWord" | "."   | "(?i)(^|.+\\s)\\Q.\\E(\$|\\s.+)"
+        "contains"      | ~"."  | ".*..*"
+        "iContains"     | ~"."  | "(?i).*..*"
+        "startsWith"    | ~"."  | "..*"
+        "iStartsWith"   | ~"."  | "(?i)..*"
+        "endsWith"      | ~"."  | ".*."
+        "iEndsWith"     | ~"."  | "(?i).*."
+        "containsWord"  | ~"."  | "(^|.+\\s).(\$|\\s.+)"
+        "iContainsWord" | ~"."  | "(?i)(^|.+\\s).(\$|\\s.+)"
+    }
 
-	@Unroll("negated pattern methods: #method - #input")
-	def "negated"() {
-		when:
-		def matcher = matchers."$method"(input)
+    @Unroll("negated pattern methods: #method - #input")
+    def "negated"() {
+        when:
+        def matcher = matchers."$method"(input)
 
-		then:
-		matcher instanceof NegatedTextMatcher
+        then:
+        matcher instanceof NegatedTextMatcher
 
-		and:
-		matcher.matcher instanceof PatternTextMatcher
+        and:
+        matcher.matcher instanceof PatternTextMatcher
 
-		and:
-		matcher.matcher.pattern.toString() == expected
+        and:
+        matcher.matcher.pattern.toString() == expected
 
-		where:
-		method             | input | expected
-		"notContains"      | "."   | ".*\\Q.\\E.*"
-		"iNotContains"     | "."   | "(?i).*\\Q.\\E.*"
-		"notStartsWith"    | "."   | "\\Q.\\E.*"
-		"iNotStartsWith"   | "."   | "(?i)\\Q.\\E.*"
-		"notEndsWith"      | "."   | ".*\\Q.\\E"
-		"iNotEndsWith"     | "."   | "(?i).*\\Q.\\E"
-		"notContainsWord"  | "."   | "(^|.+\\s)\\Q.\\E(\$|\\s.+)"
-		"iNotContainsWord" | "."   | "(?i)(^|.+\\s)\\Q.\\E(\$|\\s.+)"
-		"notContains"      | ~"."  | ".*..*"
-		"iNotContains"     | ~"."  | "(?i).*..*"
-		"notStartsWith"    | ~"."  | "..*"
-		"iNotStartsWith"   | ~"."  | "(?i)..*"
-		"notEndsWith"      | ~"."  | ".*."
-		"iNotEndsWith"     | ~"."  | "(?i).*."
-		"notContainsWord"  | ~"."  | "(^|.+\\s).(\$|\\s.+)"
-		"iNotContainsWord" | ~"."  | "(?i)(^|.+\\s).(\$|\\s.+)"
-	}
+        where:
+        method             | input | expected
+        "notContains"      | "."   | ".*\\Q.\\E.*"
+        "iNotContains"     | "."   | "(?i).*\\Q.\\E.*"
+        "notStartsWith"    | "."   | "\\Q.\\E.*"
+        "iNotStartsWith"   | "."   | "(?i)\\Q.\\E.*"
+        "notEndsWith"      | "."   | ".*\\Q.\\E"
+        "iNotEndsWith"     | "."   | "(?i).*\\Q.\\E"
+        "notContainsWord"  | "."   | "(^|.+\\s)\\Q.\\E(\$|\\s.+)"
+        "iNotContainsWord" | "."   | "(?i)(^|.+\\s)\\Q.\\E(\$|\\s.+)"
+        "notContains"      | ~"."  | ".*..*"
+        "iNotContains"     | ~"."  | "(?i).*..*"
+        "notStartsWith"    | ~"."  | "..*"
+        "iNotStartsWith"   | ~"."  | "(?i)..*"
+        "notEndsWith"      | ~"."  | ".*."
+        "iNotEndsWith"     | ~"."  | "(?i).*."
+        "notContainsWord"  | ~"."  | "(^|.+\\s).(\$|\\s.+)"
+        "iNotContainsWord" | ~"."  | "(?i)(^|.+\\s).(\$|\\s.+)"
+    }
 
-	@Unroll("#method matches \"#input\" as expected in text:\"#text\"")
-	def "patterns"() {
-		expect:
-		matchers."$method"(input).matches(text) == expected
+    @Unroll("#method matches \"#input\" as expected in text:\"#text\"")
+    def "patterns"() {
+        expect:
+        matchers."$method"(input).matches(text) == expected
 
-		where:
-		method          | input     | expected | text
-		"contains"      | "Verbum"  | true     | "Geb'sVerbumEstLegis"
-		"contains"      | ~"Verbum" | true     | "Geb'sVerbumEstLegis"
-		"iContains"     | "WorD"    | true     | "blasdf \t\n\nwORdsdfd"
-		"iContains"     | ~"WorD"   | true     | "blasdf \t\n\nwORdsdfd"
-		"iContainsWord" | "Button"  | true     | "    \n\n\nbutton"
-		"iContainsWord" | ~"Button" | true     | "    \n\n\nbutton"
-		"iContainsWord" | "verbum"  | true     | "Geb's Verbum Est Legis"
-		"iContainsWord" | ~"verbum" | true     | "Geb's Verbum Est Legis"
-		"iContainsWord" | ~"verbum" | false    | "i dont know latin"
-		"containsWord"  | "noun"    | true     | "adjective noun verb"
-		"containsWord"  | "noun"    | true     | "adjective noun"
-		"containsWord"  | "noun"    | true     | "noun verb"
-		"containsWord"  | ~"noun"   | true     | "noun verb"
-		"containsWord"  | ~"noun"   | false    | "non-noun verb"
-		"containsWord"  | "noun"    | false    | "noune verb"
-	}
+        where:
+        method          | input     | expected | text
+        "contains"      | "Verbum"  | true     | "Geb'sVerbumEstLegis"
+        "contains"      | ~"Verbum" | true     | "Geb'sVerbumEstLegis"
+        "iContains"     | "WorD"    | true     | "blasdf \t\n\nwORdsdfd"
+        "iContains"     | ~"WorD"   | true     | "blasdf \t\n\nwORdsdfd"
+        "iContainsWord" | "Button"  | true     | "    \n\n\nbutton"
+        "iContainsWord" | ~"Button" | true     | "    \n\n\nbutton"
+        "iContainsWord" | "verbum"  | true     | "Geb's Verbum Est Legis"
+        "iContainsWord" | ~"verbum" | true     | "Geb's Verbum Est Legis"
+        "iContainsWord" | ~"verbum" | false    | "i dont know latin"
+        "containsWord"  | "noun"    | true     | "adjective noun verb"
+        "containsWord"  | "noun"    | true     | "adjective noun"
+        "containsWord"  | "noun"    | true     | "noun verb"
+        "containsWord"  | ~"noun"   | true     | "noun verb"
+        "containsWord"  | ~"noun"   | false    | "non-noun verb"
+        "containsWord"  | "noun"    | false    | "noune verb"
+    }
 }

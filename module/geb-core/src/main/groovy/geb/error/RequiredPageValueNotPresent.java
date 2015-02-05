@@ -19,14 +19,14 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 public class RequiredPageValueNotPresent extends GebAssertionError {
 
-	private final PageContentTemplate template;
+    private final PageContentTemplate template;
 
-	public RequiredPageValueNotPresent(PageContentTemplate template, Object[] args) {
-		super(String.format("Template '%s' returned null for args: '%s'", template, DefaultGroovyMethods.toString(args)));
-		this.template = template;
-	}
+    public RequiredPageValueNotPresent(PageContentTemplate template, Object[] args) {
+        super(String.format("Template '%s' returned null for args: '%s'", template, DefaultGroovyMethods.toString(args)));
+        this.template = template;
+    }
 
-	public PageContentTemplate getTemplate() {
-		return template;
-	}
+    public PageContentTemplate getTemplate() {
+        return template;
+    }
 }

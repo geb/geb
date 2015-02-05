@@ -1,10 +1,10 @@
 dependencies {
-	testCompile spockDependency
+    testCompile spockDependency
 }
 
 modifyPom { pom ->
-	pom.project {
-		name "Geb Implicit Assertions"
-		description "Geb (pronounced \"jeb\") implicit assertion transform (used in conjunction with geb-core)."
-	}
+    pom.project {
+        name "Geb Implicit Assertions"
+        description "Geb (pronounced \"jeb\") implicit assertion transform (used in conjunction with geb-core)."
+    }
 }

@@ -20,12 +20,12 @@ package geb.navigator
  */
 class AttributeAccessingMetaClass extends DelegatingMetaClass {
 
-	AttributeAccessingMetaClass(MetaClass delegate) {
-		super(delegate)
-	}
+    AttributeAccessingMetaClass(MetaClass delegate) {
+        super(delegate)
+    }
 
-	Object getAttribute(Object object, String attribute) {
-		object.getProperty("@$attribute")
-	}
+    Object getAttribute(Object object, String attribute) {
+        object.getProperty("@$attribute")
+    }
 
 }

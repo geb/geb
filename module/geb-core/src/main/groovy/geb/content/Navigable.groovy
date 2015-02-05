@@ -21,35 +21,35 @@ import org.openqa.selenium.WebElement
 
 interface Navigable extends Locator {
 
-	Navigator find()
+    Navigator find()
 
-	Navigator $()
+    Navigator $()
 
-	Navigator find(int index)
+    Navigator find(int index)
 
-	Navigator find(Range<Integer> range)
+    Navigator find(Range<Integer> range)
 
-	Navigator $(int index)
+    Navigator $(int index)
 
-	Navigator $(Range<Integer> range)
+    Navigator $(Range<Integer> range)
 
-	Navigator $(Navigator[] navigators)
+    Navigator $(Navigator[] navigators)
 
-	Navigator $(WebElement[] elements)
+    Navigator $(WebElement[] elements)
 
-	/**
-	 * Create and initialize an instance of the given module class.
-	 *
-	 * @param moduleClass a class extending {@link geb.Module}
-	 * @return an initialized instance of the module class passed as the argument
-	 */
-	public <T extends Module> T module(Class<T> moduleClass)
+    /**
+     * Create and initialize an instance of the given module class.
+     *
+     * @param moduleClass a class extending {@link geb.Module}
+     * @return an initialized instance of the module class passed as the argument
+     */
+    public <T extends Module> T module(Class<T> moduleClass)
 
-	/**
-	 * Initialize a module instance.
-	 *
-	 * @param module an instance of a class extending {@link geb.Module}
-	 * @return the initialized instance passed as the argument
-	 */
-	public <T extends Module> T module(T module)
+    /**
+     * Initialize a module instance.
+     *
+     * @param module an instance of a class extending {@link geb.Module}
+     * @return the initialized instance passed as the argument
+     */
+    public <T extends Module> T module(T module)
 }

@@ -21,22 +21,22 @@ package geb
  */
 interface BuildAdapter {
 
-	/**
-	 * Provides the default baseUrl to use when no value has been configured.
-	 * <p>
-	 * This method may return {@code null}.
-	 *
-	 * @see geb.Configuration#getBaseUrl()
-	 */
-	String getBaseUrl()
+    /**
+     * Provides the default baseUrl to use when no value has been configured.
+     * <p>
+     * This method may return {@code null}.
+     *
+     * @see geb.Configuration#getBaseUrl()
+     */
+    String getBaseUrl()
 
-	/**
-	 * Provides the default location to write report files.
-	 * <p>
-	 * This method may return {@code null}.
-	 *
-	 * @see geb.Configuration#getReportsDir()
-	 */
-	File getReportsDir()
+    /**
+     * Provides the default location to write report files.
+     * <p>
+     * This method may return {@code null}.
+     *
+     * @see geb.Configuration#getReportsDir()
+     */
+    File getReportsDir()
 
 }

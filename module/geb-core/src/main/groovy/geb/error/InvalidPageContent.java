@@ -16,11 +16,11 @@ package geb.error;
 
 public class InvalidPageContent extends GebException {
 
-	public InvalidPageContent(Object message, Throwable cause) {
-		super(message, cause);
-	}
+    public InvalidPageContent(Object message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public InvalidPageContent(Object message) {
-		super(message);
-	}
+    public InvalidPageContent(Object message) {
+        super(message);
+    }
 }

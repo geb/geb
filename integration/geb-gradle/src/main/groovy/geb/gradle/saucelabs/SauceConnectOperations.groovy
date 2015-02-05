@@ -20,41 +20,41 @@ import org.gradle.api.artifacts.Configuration
 
 class SauceConnectOperations {
 
-	private URLClassLoader sauceConnectManagerClassLoader
+    private URLClassLoader sauceConnectManagerClassLoader
 
-	Configuration sauceConnectConfiguration
+    Configuration sauceConnectConfiguration
 
-	SauceConnectOperations(Configuration sauceConnectConfiguration) {
-		this.sauceConnectConfiguration = sauceConnectConfiguration
-	}
+    SauceConnectOperations(Configuration sauceConnectConfiguration) {
+        this.sauceConnectConfiguration = sauceConnectConfiguration
+    }
 
-	def getOperatingSystem() {
-		loadOperatingSystemClass().operatingSystem
-	}
+    def getOperatingSystem() {
+        loadOperatingSystemClass().operatingSystem
+    }
 
-	Class loadSauceConnectFourManagerClass() {
-		loadClass("com.saucelabs.ci.sauceconnect.SauceConnectFourManager")
-	}
+    Class loadSauceConnectFourManagerClass() {
+        loadClass("com.saucelabs.ci.sauceconnect.SauceConnectFourManager")
+    }
 
-	private Class loadOperatingSystemClass() {
-		loadClass('com.saucelabs.ci.sauceconnect.SauceConnectFourManager$OperatingSystem')
-	}
+    private Class loadOperatingSystemClass() {
+        loadClass('com.saucelabs.ci.sauceconnect.SauceConnectFourManager$OperatingSystem')
+    }
 
-	protected URLClassLoader getSauceConnectManagerClassLoader() {
-		if (!sauceConnectManagerClassLoader) {
-			if (sauceConnectConfiguration.empty) {
-				throw new InvalidUserDataException("'sauceConnect' configuration is empty, please add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it")
-			}
-			sauceConnectManagerClassLoader = new URLClassLoader(sauceConnectConfiguration.files*.toURI()*.toURL() as URL[])
-		}
-		sauceConnectManagerClassLoader
-	}
+    protected URLClassLoader getSauceConnectManagerClassLoader() {
+        if (!sauceConnectManagerClassLoader) {
+            if (sauceConnectConfiguration.empty) {
+                throw new InvalidUserDataException("'sauceConnect' configuration is empty, please add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it")
+            }
+            sauceConnectManagerClassLoader = new URLClassLoader(sauceConnectConfiguration.files*.toURI()*.toURL() as URL[])
+        }
+        sauceConnectManagerClassLoader
+    }
 
-	private Class loadClass(String name) {
-		try {
-			getSauceConnectManagerClassLoader().loadClass(name)
-		} catch (ClassNotFoundException e) {
-			throw new InvalidUserDataException("Could not load '$name' class, did you add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to 'sauceConnect' configuration?", e)
-		}
-	}
+    private Class loadClass(String name) {
+        try {
+            getSauceConnectManagerClassLoader().loadClass(name)
+        } catch (ClassNotFoundException e) {
+            throw new InvalidUserDataException("Could not load '$name' class, did you add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to 'sauceConnect' configuration?", e)
+        }
+    }
 }

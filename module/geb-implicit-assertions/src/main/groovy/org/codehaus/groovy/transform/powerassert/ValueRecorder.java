@@ -20,29 +20,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Records values produced during evaluation of an assertion statement's truth
- * expression.
+ * Records values produced during evaluation of an assertion statement's truth expression.
  *
  * @author Peter Niederwieser
  */
 public class ValueRecorder {
-	// used for code generation
-	public static final String RECORD_METHOD_NAME = "record";
-	// used for code generation
-	public static final String CLEAR_METHOD_NAME = "clear";
+    // used for code generation
+    public static final String RECORD_METHOD_NAME = "record";
+    // used for code generation
+    public static final String CLEAR_METHOD_NAME = "clear";
 
-	private final List<Value> values = new ArrayList<Value>();
+    private final List<Value> values = new ArrayList<Value>();
 
-	public void clear() {
-		values.clear();
-	}
+    public void clear() {
+        values.clear();
+    }
 
-	public Object record(Object value, int anchor) {
-		values.add(new Value(value, anchor));
-		return value;
-	}
+    public Object record(Object value, int anchor) {
+        values.add(new Value(value, anchor));
+        return value;
+    }
 
-	public List<Value> getValues() {
-		return values;
-	}
+    public List<Value> getValues() {
+        return values;
+    }
 }

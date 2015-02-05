@@ -18,19 +18,19 @@ package grails.plugin.geb
 import geb.spock.GebReportingSpec
 
 class SmokeSpec extends GebReportingSpec {
-	
-	def "default location is application root"() {
-		when:
-		to IndexPage
-		then:
-		at IndexPage
-	}
 
-	def "page urls are relative to app"() {
-		when:
-		to OtherPage
-		then:
-		at OtherPage
-	}
-	
+    def "default location is application root"() {
+        when:
+        to IndexPage
+        then:
+        at IndexPage
+    }
+
+    def "page urls are relative to app"() {
+        when:
+        to OtherPage
+        then:
+        at OtherPage
+    }
+
 }

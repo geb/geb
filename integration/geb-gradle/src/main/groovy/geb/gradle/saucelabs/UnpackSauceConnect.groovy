@@ -23,20 +23,20 @@ import org.gradle.api.tasks.TaskAction
 
 class UnpackSauceConnect extends DefaultTask {
 
-	@InputFiles
-	Configuration getSauceConnectConfiguration() {
-		project.configurations.sauceConnect
-	}
+    @InputFiles
+    Configuration getSauceConnectConfiguration() {
+        project.configurations.sauceConnect
+    }
 
-	@OutputDirectory
-	File getSauceConnectDir() {
-		new File(project.buildDir, "sauce-connect")
-	}
+    @OutputDirectory
+    File getSauceConnectDir() {
+        new File(project.buildDir, "sauce-connect")
+    }
 
-	@TaskAction
-	void unpack() {
-		def operations = new SauceConnectOperations(sauceConnectConfiguration)
-		def manager = operations.loadSauceConnectFourManagerClass().newInstance()
-		manager.extractZipFile(sauceConnectDir, operations.operatingSystem)
-	}
+    @TaskAction
+    void unpack() {
+        def operations = new SauceConnectOperations(sauceConnectConfiguration)
+        def manager = operations.loadSauceConnectFourManagerClass().newInstance()
+        manager.extractZipFile(sauceConnectDir, operations.operatingSystem)
+    }
 }

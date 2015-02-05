@@ -17,6 +17,7 @@ package intro
 
 // tag::imports[]
 import geb.Browser
+
 // end::imports[]
 import geb.driver.CachingDriverFactory
 import intro.page.GebHomePage
@@ -25,41 +26,41 @@ import spock.lang.Specification
 
 class ScriptingSpec extends Specification {
 
-	void setupSpec() {
-		CachingDriverFactory.clearCache()
-	}
+    void setupSpec() {
+        CachingDriverFactory.clearCache()
+    }
 
-	void cleanupSpec() {
-		CachingDriverFactory.clearCache()
-	}
+    void cleanupSpec() {
+        CachingDriverFactory.clearCache()
+    }
 
-	def "inline"() {
-		expect:
-		// tag::inline[]
-		Browser.drive {
-			go "http://gebish.org"
+    def "inline"() {
+        expect:
+        // tag::inline[]
+        Browser.drive {
+            go "http://gebish.org"
 
-			assert title == "Geb - Very Groovy Browser Automation" // <1>
+            assert title == "Geb - Very Groovy Browser Automation" // <1>
 
-			$("#sidebar .sidemenu a", text: "jQuery-like API").click()//<2>
+            $("#sidebar .sidemenu a", text: "jQuery-like API").click()//<2>
 
-			assert $("#main h1")*.text() == ["Navigating Content", "Form Control Shortcuts"] //<3>
-			assert $("#sidebar .sidemenu a", text: "jQuery-like API").parent().hasClass("selected")// <4>
-		}
-		// end::inline[]
-	}
+            assert $("#main h1")*.text() == ["Navigating Content", "Form Control Shortcuts"] //<3>
+            assert $("#sidebar .sidemenu a", text: "jQuery-like API").parent().hasClass("selected")// <4>
+        }
+        // end::inline[]
+    }
 
-	def "using page objects"() {
-		expect:
-		// tag::using_page_objects[]
-		Browser.drive {
-			to GebHomePage //<1>
+    def "using page objects"() {
+        expect:
+        // tag::using_page_objects[]
+        Browser.drive {
+            to GebHomePage //<1>
 
-			highlights.jQueryLikeApi.click()
+            highlights.jQueryLikeApi.click()
 
-			assert sectionTitles == ["Navigating Content", "Form Control Shortcuts"]
-			assert highlights.jQueryLikeApi.selected
-		}
-		// end::using_page_objects[]
-	}
+            assert sectionTitles == ["Navigating Content", "Form Control Shortcuts"]
+            assert highlights.jQueryLikeApi.selected
+        }
+        // end::using_page_objects[]
+    }
 }

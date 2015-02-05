@@ -19,71 +19,71 @@ import geb.test.*
 
 class BadContentDefinitionsSpec extends GebSpec {
 
-	def "no args"() {
-		when:
-		page BadContentDefinitionsSpecNoArgs
-		then:
-		thrown(InvalidPageContent)
-	}
+    def "no args"() {
+        when:
+        page BadContentDefinitionsSpecNoArgs
+        then:
+        thrown(InvalidPageContent)
+    }
 
-	def "non map arg"() {
-		when:
-		page BadContentDefinitionsSpecNonMap
-		then:
-		thrown(InvalidPageContent)
-	}
+    def "non map arg"() {
+        when:
+        page BadContentDefinitionsSpecNonMap
+        then:
+        thrown(InvalidPageContent)
+    }
 
-	def "non closure factory"() {
-		when:
-		page BadContentDefinitionsSpecNonClosureFactory
-		then:
-		thrown(InvalidPageContent)
-	}
+    def "non closure factory"() {
+        when:
+        page BadContentDefinitionsSpecNonClosureFactory
+        then:
+        thrown(InvalidPageContent)
+    }
 
-	def "non map & non closure factory"() {
-		when:
-		page BadContentDefinitionsSpecNonMapNonClosureFactory
-		then:
-		thrown(InvalidPageContent)
-	}
+    def "non map & non closure factory"() {
+        when:
+        page BadContentDefinitionsSpecNonMapNonClosureFactory
+        then:
+        thrown(InvalidPageContent)
+    }
 
-	def "more than two args"() {
-		when:
-		page BadContentDefinitionsSpecThreeArgs
-		then:
-		thrown(InvalidPageContent)
-	}
+    def "more than two args"() {
+        when:
+        page BadContentDefinitionsSpecThreeArgs
+        then:
+        thrown(InvalidPageContent)
+    }
 
-	def "unknownElementAliased"() {
-		when:
-		page BadContentDefinitionsSpecUnknownElementAliased
-		then:
-		InvalidPageContent e = thrown()
-		e.message == "Definition of page component template 'foo' of '${BadContentDefinitionsSpecUnknownElementAliased.name}' aliases an unknown element 'bar'"
-	}
+    def "unknownElementAliased"() {
+        when:
+        page BadContentDefinitionsSpecUnknownElementAliased
+        then:
+        InvalidPageContent e = thrown()
+        e.message == "Definition of page component template 'foo' of '${BadContentDefinitionsSpecUnknownElementAliased.name}' aliases an unknown element 'bar'"
+    }
 
 }
 
 class BadContentDefinitionsSpecNoArgs extends Page {
-	static content = { foo() }
+    static content = { foo() }
 }
 
 class BadContentDefinitionsSpecNonMap extends Page {
-	static content = { foo(1) }
+    static content = { foo(1) }
 }
 
 class BadContentDefinitionsSpecNonClosureFactory extends Page {
-	static content = { foo([:], 1) }
+    static content = { foo([:], 1) }
 }
 
 class BadContentDefinitionsSpecNonMapNonClosureFactory extends Page {
-	static content = { foo(1, 1) }
+    static content = { foo(1, 1) }
 }
 
 class BadContentDefinitionsSpecThreeArgs extends Page {
-	static content = { foo(1, 1, 2) }
+    static content = { foo(1, 1, 2) }
 }
 
 class BadContentDefinitionsSpecUnknownElementAliased extends Page {
-	static content = { foo(aliases: 'bar') }
+    static content = { foo(aliases: 'bar') }
 }

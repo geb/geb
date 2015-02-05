@@ -25,35 +25,35 @@ import java.lang.reflect.Method
 
 class GebReportingTest extends GebTest {
 
-	public static final END_OF_METHOD_REPORT_LABEL = "end"
-	private testMethodNumber = 0
-	private reportNumberInTestMethod = 1
-	def testMethodName = ""
+    public static final END_OF_METHOD_REPORT_LABEL = "end"
+    private testMethodNumber = 0
+    private reportNumberInTestMethod = 1
+    def testMethodName = ""
 
-	void report(String label = "") {
-		browser.report(ReporterSupport.toTestReportLabel(testMethodNumber, reportNumberInTestMethod++, testMethodName, label))
-	}
+    void report(String label = "") {
+        browser.report(ReporterSupport.toTestReportLabel(testMethodNumber, reportNumberInTestMethod++, testMethodName, label))
+    }
 
-	@SuppressWarnings("GroovyUnusedDeclaration")
-	@BeforeClass
-	void initReportGroupDir() {
-		browser.reportGroup getClass()
-		browser.cleanReportGroupDir()
-	}
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    @BeforeClass
+    void initReportGroupDir() {
+        browser.reportGroup getClass()
+        browser.cleanReportGroupDir()
+    }
 
-	@SuppressWarnings("GroovyUnusedDeclaration")
-	@BeforeMethod
-	void setupReporting(Method method) {
-		reportNumberInTestMethod = 1
-		++testMethodNumber
-		testMethodName = method.name
-	}
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    @BeforeMethod
+    void setupReporting(Method method) {
+        reportNumberInTestMethod = 1
+        ++testMethodNumber
+        testMethodName = method.name
+    }
 
-	@AfterMethod
-	void reportingAfter(ITestResult testResult) {
-		if (!browser.config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status) {
-			report(END_OF_METHOD_REPORT_LABEL)
-		}
-	}
+    @AfterMethod
+    void reportingAfter(ITestResult testResult) {
+        if (!browser.config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status) {
+            report(END_OF_METHOD_REPORT_LABEL)
+        }
+    }
 
 }

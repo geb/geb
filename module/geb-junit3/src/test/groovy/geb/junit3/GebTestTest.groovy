@@ -19,44 +19,44 @@ import geb.Page
 
 class GebTestTest extends GebTest {
 
-	def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer()
 
-	void setUp() {
-		server.start()
-		server.get = { req, res ->
-			res.outputStream << """
+    void setUp() {
+        server.start()
+        server.get = { req, res ->
+            res.outputStream << """
 			<html>
 			<body>
 				<div class="d1" id="d1">d1</div>
 			</body>
 			</html>"""
-		}
-		super.setUp()
-		browser.baseUrl = server.baseUrl
-	}
+        }
+        super.setUp()
+        browser.baseUrl = server.baseUrl
+    }
 
-	void testMissingMethodsAreInvokedOnTheDriverInstance() {
-		// This also verifies that the driver instance is instantiated correctly
-		go("/")
-	}
+    void testMissingMethodsAreInvokedOnTheDriverInstance() {
+        // This also verifies that the driver instance is instantiated correctly
+        go("/")
+    }
 
-	void testMissingPropertyAccessesAreRequestedOnTheDriverInstance() {
-		page SomePage
-		assert prop == 1
-	}
+    void testMissingPropertyAccessesAreRequestedOnTheDriverInstance() {
+        page SomePage
+        assert prop == 1
+    }
 
-	void testMissingPropertyAssignmentsAreForwardedToTheDriverInstance() {
-		page SomePage
-		prop = 2
-		assert prop == 2
-	}
+    void testMissingPropertyAssignmentsAreForwardedToTheDriverInstance() {
+        page SomePage
+        prop = 2
+        assert prop == 2
+    }
 
-	void tearDown() {
-		server.stop()
-		super.tearDown()
-	}
+    void tearDown() {
+        server.stop()
+        super.tearDown()
+    }
 }
 
 class SomePage extends Page {
-	def prop = 1
+    def prop = 1
 }

@@ -22,71 +22,71 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 abstract class ExternalTunnel {
-	final protected Project project
-	final protected Logger logger
+    final protected Project project
+    final protected Logger logger
 
-	protected Process tunnelProcess
+    protected Process tunnelProcess
 
-	long timeout = 3
-	TimeUnit timeoutUnit = TimeUnit.MINUTES
+    long timeout = 3
+    TimeUnit timeoutUnit = TimeUnit.MINUTES
 
-	ExternalTunnel(Project project, Logger logger) {
-		this.project = project
-		this.logger = logger
-	}
+    ExternalTunnel(Project project, Logger logger) {
+        this.project = project
+        this.logger = logger
+    }
 
-	void validateState() {
-	}
+    void validateState() {
+    }
 
-	abstract String getOutputPrefix()
+    abstract String getOutputPrefix()
 
-	abstract List<String> assembleCommandLine()
+    abstract List<String> assembleCommandLine()
 
-	abstract String getTunnelReadyMessage()
+    abstract String getTunnelReadyMessage()
 
-	void startTunnel(File workingDir, boolean background) {
-		validateState()
+    void startTunnel(File workingDir, boolean background) {
+        validateState()
 
-		def command = assembleCommandLine()*.toString()
-		logger.debug("Executing command: {}", command)
-		if (background) {
-			workingDir.mkdirs()
-			tunnelProcess = new ProcessBuilder(command).
-				redirectErrorStream(true).
-				directory(workingDir).
-				start()
+        def command = assembleCommandLine()*.toString()
+        logger.debug("Executing command: {}", command)
+        if (background) {
+            workingDir.mkdirs()
+            tunnelProcess = new ProcessBuilder(command).
+                redirectErrorStream(true).
+                directory(workingDir).
+                start()
 
-			def latch = new CountDownLatch(1)
-			Thread.start {
-				try {
-					tunnelProcess.inputStream.eachLine { String line ->
-						if (latch.count) {
-							logger.info "$outputPrefix: $line"
-							if (line.contains(tunnelReadyMessage)) {
-								latch.countDown()
-							}
-						} else {
-							logger.debug "$outputPrefix: $line"
-						}
-					}
-				} catch (IOException ignore) {
-				}
-			}
+            def latch = new CountDownLatch(1)
+            Thread.start {
+                try {
+                    tunnelProcess.inputStream.eachLine { String line ->
+                        if (latch.count) {
+                            logger.info "$outputPrefix: $line"
+                            if (line.contains(tunnelReadyMessage)) {
+                                latch.countDown()
+                            }
+                        } else {
+                            logger.debug "$outputPrefix: $line"
+                        }
+                    }
+                } catch (IOException ignore) {
+                }
+            }
 
-			if (!latch.await(timeout, timeoutUnit)) {
-				throw new RuntimeException("Timeout waiting for tunnel to open")
-			}
-		} else {
-			project.exec {
-				commandLine command
-			}
-		}
-	}
+            if (!latch.await(timeout, timeoutUnit)) {
+                throw new RuntimeException("Timeout waiting for tunnel to open")
+            }
+        } else {
+            project.exec {
+                commandLine command
+            }
+        }
+    }
 
-	void stopTunnel() {
-		if (tunnelProcess) {
-			logger.info "disconnecting tunnel"
-			tunnelProcess.destroy()
-		}
-	}
+    void stopTunnel() {
+        if (tunnelProcess) {
+            logger.info "disconnecting tunnel"
+            tunnelProcess.destroy()
+        }
+    }
 }

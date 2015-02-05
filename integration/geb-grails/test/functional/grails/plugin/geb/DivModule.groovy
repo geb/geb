@@ -19,8 +19,8 @@ import geb.Module
 
 class DivModule extends Module {
 
-	static base = { $() }
-	static content = {
-		div { $("div") }
-	}
+    static base = { $() }
+    static content = {
+        div { $("div") }
+    }
 }

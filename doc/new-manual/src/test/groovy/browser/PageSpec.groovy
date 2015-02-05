@@ -21,27 +21,27 @@ import javax.servlet.http.HttpServletRequest
 
 class PageSpec extends DriveMethodSupportingSpecWithServer {
 
-	def "using pages"() {
-		when:
-		server.html { HttpServletRequest request ->
-			if (request.requestURI.endsWith("/signup")) {
-				h1("Signup Page")
-			}
-		}
+    def "using pages"() {
+        when:
+        server.html { HttpServletRequest request ->
+            if (request.requestURI.endsWith("/signup")) {
+                h1("Signup Page")
+            }
+        }
 
-		then:
-		// tag::using_pages[]
-		Browser.drive {
-			to SignupPage
-			assert $("h1").text() == "Signup Page"
-			assert page instanceof SignupPage
-		}
-		// end::using_pages[]
-	}
+        then:
+        // tag::using_pages[]
+        Browser.drive {
+            to SignupPage
+            assert $("h1").text() == "Signup Page"
+            assert page instanceof SignupPage
+        }
+        // end::using_pages[]
+    }
 }
 
 // tag::signup_page[]
 class SignupPage extends Page {
-	static url = "signup"
+    static url = "signup"
 }
 // end::signup_page[]

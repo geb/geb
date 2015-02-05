@@ -20,32 +20,32 @@ import geb.error.InvalidModuleBaseException
 
 class Checkbox extends Module {
 
-	@Override
-	protected void initialized() {
-		if (!empty) {
-			if (tag() != "input") {
-				throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was '${tag()}' but only input is allowed as the base element.")
-			}
-			def type = getAttribute("type")
-			if (type != "checkbox") {
-				throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was an input of type '$type' but only input of type checkbox is allowed as the base element.")
-			}
-		}
-	}
+    @Override
+    protected void initialized() {
+        if (!empty) {
+            if (tag() != "input") {
+                throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was '${tag()}' but only input is allowed as the base element.")
+            }
+            def type = getAttribute("type")
+            if (type != "checkbox") {
+                throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was an input of type '$type' but only input of type checkbox is allowed as the base element.")
+            }
+        }
+    }
 
-	void check() {
-		value(true)
-	}
+    void check() {
+        value(true)
+    }
 
-	void uncheck() {
-		value(false)
-	}
+    void uncheck() {
+        value(false)
+    }
 
-	boolean isChecked() {
-		this.value()
-	}
+    boolean isChecked() {
+        this.value()
+    }
 
-	boolean isUnchecked() {
-		!checked
-	}
+    boolean isUnchecked() {
+        !checked
+    }
 }

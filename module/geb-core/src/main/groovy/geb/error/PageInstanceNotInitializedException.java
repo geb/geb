@@ -17,7 +17,7 @@ package geb.error;
 
 public class PageInstanceNotInitializedException extends GebException {
 
-	public PageInstanceNotInitializedException(String message) {
-		super(message);
-	}
+    public PageInstanceNotInitializedException(String message) {
+        super(message);
+    }
 }

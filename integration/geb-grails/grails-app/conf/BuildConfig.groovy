@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 grails.project.dependency.resolution = {
-	inherits( "global" )
-	repositories {
-		grailsCentral()
-		grailsHome()
-		mavenCentral()
-	}
-	
-	plugins {
-	}
+    inherits("global")
+    repositories {
+        grailsCentral()
+        grailsHome()
+        mavenCentral()
+    }
+
+    plugins {
+    }
 }

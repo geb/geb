@@ -17,7 +17,7 @@
 package geb.error;
 
 public class NoNewWindowException extends GebException {
-	public NoNewWindowException(String message) {
-		super(message);
-	}
+    public NoNewWindowException(String message) {
+        super(message);
+    }
 }

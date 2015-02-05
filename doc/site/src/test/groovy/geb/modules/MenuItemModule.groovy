@@ -19,8 +19,8 @@ import geb.Module
 
 class MenuItemModule extends Module {
 
-	static content = {
-		name { $('span').text() }
-		links { $('.link-list li a') }
-	}
+    static content = {
+        name { $('span').text() }
+        links { $('.link-list li a') }
+    }
 }

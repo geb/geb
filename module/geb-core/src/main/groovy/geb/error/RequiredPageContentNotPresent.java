@@ -16,15 +16,15 @@ package geb.error;
 
 public class RequiredPageContentNotPresent extends GebAssertionError {
 
-	private final Object content;
-	
-	public RequiredPageContentNotPresent(Object content) {
-		super(String.format("The required page content '%s' is not present", content));
-		this.content = content;
-	}
+    private final Object content;
 
-	public Object getContent() {
-		return content;
-	}
+    public RequiredPageContentNotPresent(Object content) {
+        super(String.format("The required page content '%s' is not present", content));
+        this.content = content;
+    }
+
+    public Object getContent() {
+        return content;
+    }
 
 }

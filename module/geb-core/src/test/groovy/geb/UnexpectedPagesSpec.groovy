@@ -22,183 +22,183 @@ import spock.lang.Unroll
 
 class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
-	def setup() {
-		responseHtml { request ->
-			head {
-				title(request.parameterMap.title.first())
-			}
-		}
-	}
+    def setup() {
+        responseHtml { request ->
+            head {
+                title(request.parameterMap.title.first())
+            }
+        }
+    }
 
-	void 'unxepected pages don not need to be defined'() {
-		expect:
-		to ExpectedPage
-	}
+    void 'unxepected pages don not need to be defined'() {
+        expect:
+        to ExpectedPage
+    }
 
-	private void defineUnexpectedPages() {
-		browser.config.unexpectedPages = [UnexpectedPage, AnotherUnexpectedPage]
-	}
+    private void defineUnexpectedPages() {
+        browser.config.unexpectedPages = [UnexpectedPage, AnotherUnexpectedPage]
+    }
 
-	@Unroll
-	void 'verify that page response is configured as expected'() {
-		given:
-		defineUnexpectedPages()
+    @Unroll
+    void 'verify that page response is configured as expected'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		go "?title=$pageTitle"
+        when:
+        go "?title=$pageTitle"
 
-		then:
-		title == pageTitle
+        then:
+        title == pageTitle
 
-		where:
-		pageTitle << ['expected', 'unexpected']
-	}
+        where:
+        pageTitle << ['expected', 'unexpected']
+    }
 
-	void 'an exception is not thrown when we are not at unexpected page'() {
-		given:
-		defineUnexpectedPages()
+    void 'an exception is not thrown when we are not at unexpected page'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via ExpectedPage
+        when:
+        via ExpectedPage
 
-		then:
-		at ExpectedPage
-	}
+        then:
+        at ExpectedPage
+    }
 
-	void 'an exception is thrown when we end up at an unexpected page'() {
-		given:
-		defineUnexpectedPages()
+    void 'an exception is thrown when we end up at an unexpected page'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via UnexpectedPage
-		at ExpectedPage
+        when:
+        via UnexpectedPage
+        at ExpectedPage
 
-		then:
-		UnexpectedPageException e = thrown()
-		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when expected to be at geb.ExpectedPage'
-	}
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when expected to be at geb.ExpectedPage'
+    }
 
-	void 'it is possible to do at checking for an unexpected page'() {
-		given:
-		defineUnexpectedPages()
+    void 'it is possible to do at checking for an unexpected page'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via UnexpectedPage
+        when:
+        via UnexpectedPage
 
-		then:
-		at UnexpectedPage
-	}
+        then:
+        at UnexpectedPage
+    }
 
-	void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible pages'() {
-		given:
-		defineUnexpectedPages()
+    void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible pages'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via UnexpectedPage
-		page(ExpectedPage, AnotherExpectedPage)
+        when:
+        via UnexpectedPage
+        page(ExpectedPage, AnotherExpectedPage)
 
-		then:
-		UnexpectedPageException e = thrown()
-		e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [class geb.ExpectedPage, class geb.AnotherExpectedPage])'
-	}
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [class geb.ExpectedPage, class geb.AnotherExpectedPage])'
+    }
 
-	void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible parametrized page instances'() {
-		given:
-		defineUnexpectedPages()
+    void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible parametrized page instances'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via UnexpectedPage
-		page(new ParametrizedPage(condition: true), new ParametrizedPage(condition: true))
+        when:
+        via UnexpectedPage
+        page(new ParametrizedPage(condition: true), new ParametrizedPage(condition: true))
 
-		then:
-		UnexpectedPageException e = thrown()
-		e.getMessage() == "An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [${ParametrizedPage.name}, ${ParametrizedPage.name}])"
-	}
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == "An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [${ParametrizedPage.name}, ${ParametrizedPage.name}])"
+    }
 
-	void 'it is possible to pass an unexpected page when setting a page from a list of possible pages'() {
-		given:
-		defineUnexpectedPages()
+    void 'it is possible to pass an unexpected page when setting a page from a list of possible pages'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via AnotherUnexpectedPage
-		page(ExpectedPage, AnotherExpectedPage, AnotherUnexpectedPage)
+        when:
+        via AnotherUnexpectedPage
+        page(ExpectedPage, AnotherExpectedPage, AnotherUnexpectedPage)
 
-		then:
-		page.getClass() == AnotherUnexpectedPage
-	}
+        then:
+        page.getClass() == AnotherUnexpectedPage
+    }
 
-	void 'isAt returns false if we end up at an unexpected page'() {
-		given:
-		defineUnexpectedPages()
+    void 'isAt returns false if we end up at an unexpected page'() {
+        given:
+        defineUnexpectedPages()
 
-		when:
-		via UnexpectedPage
+        when:
+        via UnexpectedPage
 
-		then:
-		!isAt(ExpectedPage)
-	}
+        then:
+        !isAt(ExpectedPage)
+    }
 
-	void 'when at-check-waiting enabled should not wait for unexpected pages'() {
-		given:
-		defineUnexpectedPages()
-		browser.config.atCheckWaiting = true
+    void 'when at-check-waiting enabled should not wait for unexpected pages'() {
+        given:
+        defineUnexpectedPages()
+        browser.config.atCheckWaiting = true
 
-		when:
-		via ExpectedPage
+        when:
+        via ExpectedPage
 
-		then:
-		at(ExpectedPage)
-	}
+        then:
+        at(ExpectedPage)
+    }
 
-	@Unroll
-	void "an informative exception is thrown when unexpected pages config list contains something that is not a page class"() {
-		given:
-		browser.config.rawConfig.unexpectedPages = configValue
+    @Unroll
+    void "an informative exception is thrown when unexpected pages config list contains something that is not a page class"() {
+        given:
+        browser.config.rawConfig.unexpectedPages = configValue
 
-		when:
-		browser.config.unexpectedPages
+        when:
+        browser.config.unexpectedPages
 
-		then:
-		InvalidGebConfiguration e = thrown()
-		e.message == "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$message\". Did you forget to include some imports in your config file?"
+        then:
+        InvalidGebConfiguration e = thrown()
+        e.message == "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$message\". Did you forget to include some imports in your config file?"
 
-		where:
-		configValue    | message
-		["foo"]        | '[foo]'
-		"foo"          | 'foo'
-		UnexpectedPage | "class geb.UnexpectedPage"
-	}
+        where:
+        configValue    | message
+        ["foo"]        | '[foo]'
+        "foo"          | 'foo'
+        UnexpectedPage | "class geb.UnexpectedPage"
+    }
 }
 
 class UnexpectedPage extends Page {
 
-	static url = "?title=unexpected"
+    static url = "?title=unexpected"
 
-	static at = { title == 'unexpected' }
+    static at = { title == 'unexpected' }
 }
 
 class AnotherUnexpectedPage extends Page {
 
-	static url = "?title=anotherUnexpected"
+    static url = "?title=anotherUnexpected"
 
-	static at = { title == 'anotherUnexpected' }
+    static at = { title == 'anotherUnexpected' }
 }
 
 class ExpectedPage extends Page {
 
-	static url = "?title=expected"
+    static url = "?title=expected"
 
-	static at = { title == 'expected' }
+    static at = { title == 'expected' }
 }
 
 class AnotherExpectedPage extends Page {
-	static url = "?title=anotherExpected"
+    static url = "?title=anotherExpected"
 
-	static at = { title == 'anotherExpected' }
+    static at = { title == 'anotherExpected' }
 }
 
 class ParametrizedPage extends Page {
-	boolean condition
+    boolean condition
 
-	static at = { condition }
+    static at = { condition }
 }

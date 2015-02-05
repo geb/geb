@@ -1,13 +1,13 @@
 apply plugin: 'groovy'
 
 dependencies {
-	compile localGroovy()
-	compile gradleApi()
+    compile localGroovy()
+    compile gradleApi()
 }
 
 modifyPom { pom ->
-	pom.project {
-		name "Geb Gradle plugins"
-		description "Gradle plugins for Geb (pronounced \"jeb\")."
-	}
+    pom.project {
+        name "Geb Gradle plugins"
+        description "Gradle plugins for Geb (pronounced \"jeb\")."
+    }
 }

@@ -18,34 +18,34 @@ package geb.js
 import geb.Initializable
 
 class UninitializedAlertAndConfirmSupport implements AlertAndConfirmSupport {
-	private final Initializable initializable
+    private final Initializable initializable
 
-	UninitializedAlertAndConfirmSupport(Initializable initializable) {
-		this.initializable = initializable
-	}
+    UninitializedAlertAndConfirmSupport(Initializable initializable) {
+        this.initializable = initializable
+    }
 
-	@Override
-	def withAlert(Map params = [:], Closure actions) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withAlert(Map params = [:], Closure actions) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	void withNoAlert(Closure actions) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    void withNoAlert(Closure actions) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def withConfirm(boolean ok, Closure actions) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withConfirm(boolean ok, Closure actions) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
+        throw initializable.uninitializedException()
+    }
 
-	@Override
-	void withNoConfirm(Closure actions) {
-		throw initializable.uninitializedException()
-	}
+    @Override
+    void withNoConfirm(Closure actions) {
+        throw initializable.uninitializedException()
+    }
 }

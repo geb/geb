@@ -18,9 +18,9 @@ package geb.transform
 import geb.navigator.AttributeAccessingMetaClass
 
 class AttributeAccessingMetaClassRegistrar {
-	static void registerFor(Class c) {
-		def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(c))
-		mc.initialize()
-		c.metaClass = mc
-	}
+    static void registerFor(Class c) {
+        def mc = new AttributeAccessingMetaClass(new ExpandoMetaClass(c))
+        mc.initialize()
+        c.metaClass = mc
+    }
 }

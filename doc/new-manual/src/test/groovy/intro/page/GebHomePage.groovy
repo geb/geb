@@ -17,18 +17,19 @@ package intro.page
 
 // tag::imports[]
 import geb.Page
+
 // end::imports[]
 import intro.module.HighlightsModule
 
 // tag::class[]
 class GebHomePage extends Page {
-	static url = "http://gebish.org" //<5>
+    static url = "http://gebish.org" //<5>
 
-	static at = { title == "Geb - Very Groovy Browser Automation" } //<6>
+    static at = { title == "Geb - Very Groovy Browser Automation" } //<6>
 
-	static content = {
-		highlights { $("#sidebar .sidemenu").module(HighlightsModule) } //<7>
-		sectionTitles { $("#main h1")*.text() } //<8>
-	}
+    static content = {
+        highlights { $("#sidebar .sidemenu").module(HighlightsModule) } //<7>
+        sectionTitles { $("#main h1")*.text() } //<8>
+    }
 }
 // end::class[]

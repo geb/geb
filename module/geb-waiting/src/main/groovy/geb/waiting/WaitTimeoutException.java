@@ -24,37 +24,37 @@ import geb.error.GebException;
  */
 public class WaitTimeoutException extends GebException {
 
-	protected Object lastEvaluationValue;
+    protected Object lastEvaluationValue;
 
-	protected Wait wait;
+    protected Wait wait;
 
-	public WaitTimeoutException(Wait wait) {
-		this(wait, null, null);
-	}
+    public WaitTimeoutException(Wait wait) {
+        this(wait, null, null);
+    }
 
-	public WaitTimeoutException(Wait wait, Throwable cause) {
-		this(wait, cause, null);
-	}
+    public WaitTimeoutException(Wait wait, Throwable cause) {
+        this(wait, cause, null);
+    }
 
-	public WaitTimeoutException(Wait wait, Throwable cause, Object lastEvaluationValue) {
-		super(toMessage(wait, cause), cause);
-		this.wait = wait;
-		this.lastEvaluationValue = lastEvaluationValue;
-	}
+    public WaitTimeoutException(Wait wait, Throwable cause, Object lastEvaluationValue) {
+        super(toMessage(wait, cause), cause);
+        this.wait = wait;
+        this.lastEvaluationValue = lastEvaluationValue;
+    }
 
-	public Object getLastEvaluationValue() {
-		return lastEvaluationValue;
-	}
+    public Object getLastEvaluationValue() {
+        return lastEvaluationValue;
+    }
 
-	private static String toMessage(Wait wait, Throwable cause) {
-		StringBuilder message = new StringBuilder(String.format("condition did not pass in %s seconds", wait.getTimeout()));
-		if (wait.getCustomMessage() != null) {
-			message.append(String.format("(%s)", wait.getCustomMessage()));
-		}
-		if (cause != null) {
-			message.append(" (failed with exception)");
-		}
-		return message.toString();
-	}
+    private static String toMessage(Wait wait, Throwable cause) {
+        StringBuilder message = new StringBuilder(String.format("condition did not pass in %s seconds", wait.getTimeout()));
+        if (wait.getCustomMessage() != null) {
+            message.append(String.format("(%s)", wait.getCustomMessage()));
+        }
+        if (cause != null) {
+            message.append(" (failed with exception)");
+        }
+        return message.toString();
+    }
 
 }

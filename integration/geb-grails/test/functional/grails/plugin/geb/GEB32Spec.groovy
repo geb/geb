@@ -20,14 +20,14 @@ import spock.lang.Issue
 
 @Issue("http://jira.codehaus.org/browse/GEB-32")
 class GEB32Spec extends GebReportingSpec {
-	
-	def "can resolve module base"() {
-		when:
-		to IndexPage
 
-		then:
-		divModule.div.present
-	}
+    def "can resolve module base"() {
+        when:
+        to IndexPage
+
+        then:
+        divModule.div.present
+    }
 
 }
 

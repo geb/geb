@@ -24,29 +24,29 @@ import spock.lang.Timeout
  */
 class WaitSpec extends Specification {
 
-	@Timeout(5)
-	def "wait algorithm handles cases where the block takes a long time"() {
-		given:
-		def wait = new Wait(2, 0.5)
+    @Timeout(5)
+    def "wait algorithm handles cases where the block takes a long time"() {
+        given:
+        def wait = new Wait(2, 0.5)
 
-		when:
-		wait.waitFor { sleep 3000 }
+        when:
+        wait.waitFor { sleep 3000 }
 
-		then:
-		thrown WaitTimeoutException
-	}
+        then:
+        thrown WaitTimeoutException
+    }
 
-	def "waitFor block contents are implicitly asserted"() {
-		given:
-		def wait = new Wait(0.5)
+    def "waitFor block contents are implicitly asserted"() {
+        given:
+        def wait = new Wait(0.5)
 
-		when:
-		wait.waitFor { 'not empty'.empty }
+        when:
+        wait.waitFor { 'not empty'.empty }
 
-		then:
-		WaitTimeoutException exception = thrown()
-		exception.cause in PowerAssertionError
-		exception.cause.message.contains("'not empty'.empty")
-	}
+        then:
+        WaitTimeoutException exception = thrown()
+        exception.cause in PowerAssertionError
+        exception.cause.message.contains("'not empty'.empty")
+    }
 
 }

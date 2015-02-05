@@ -18,23 +18,23 @@ package geb.gradle.browserstack
 import org.gradle.api.tasks.testing.Test
 
 class BrowserStackAccount {
-	public static final String USER_ENV_VAR = "GEB_BROWSERSTACK_USERNAME"
-	public static final String ACCESS_KEY_ENV_VAR = "GEB_BROWSERSTACK_AUTHKEY"
-	public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
+    public static final String USER_ENV_VAR = "GEB_BROWSERSTACK_USERNAME"
+    public static final String ACCESS_KEY_ENV_VAR = "GEB_BROWSERSTACK_AUTHKEY"
+    public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
 
-	String username
-	String accessKey
-	String localId
+    String username
+    String accessKey
+    String localId
 
-	void configure(Test test) {
-		if (username) {
-			test.environment(USER_ENV_VAR, username)
-		}
-		if (accessKey) {
-			test.environment(ACCESS_KEY_ENV_VAR, accessKey)
-		}
-		if (localId) {
-			test.environment(LOCAL_ID_ENV_VAR, localId)
-		}
-	}
+    void configure(Test test) {
+        if (username) {
+            test.environment(USER_ENV_VAR, username)
+        }
+        if (accessKey) {
+            test.environment(ACCESS_KEY_ENV_VAR, accessKey)
+        }
+        if (localId) {
+            test.environment(LOCAL_ID_ENV_VAR, localId)
+        }
+    }
 }

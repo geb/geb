@@ -16,8 +16,8 @@ package geb.error;
 
 public class GebAssertionError extends AssertionError {
 
-	public GebAssertionError(Object detailMessage) {
-		super(detailMessage.toString());
-	}
+    public GebAssertionError(Object detailMessage) {
+        super(detailMessage.toString());
+    }
 
 }

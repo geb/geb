@@ -31,101 +31,101 @@ import static ratpack.test.http.TestHttpClients.testHttpClient
 @Stepwise
 class SiteSmokeSpec extends GebSpec {
 
-	@Shared
-	def app = new LocalScriptApplicationUnderTest()
+    @Shared
+    def app = new LocalScriptApplicationUnderTest()
 
-	private getMenuItemElements() {
-		def html = Jsoup.parse(testHttpClient(app).get().body.text)
-		html.select('#header-content > ul > li')
-	}
+    private getMenuItemElements() {
+        def html = Jsoup.parse(testHttpClient(app).get().body.text)
+        html.select('#header-content > ul > li')
+    }
 
-	private manualLinksData() {
-		def links = menuItemElements.first().select('a')
-		links.collect { [it.text() - ' - current', it.attr('href')] }
-	}
+    private manualLinksData() {
+        def links = menuItemElements.first().select('a')
+        links.collect { [it.text() - ' - current', it.attr('href')] }
+    }
 
-	private apiLinksData() {
-		[menuItemElements.get(1).select('a').first().attr('href'), 'manual/0.7.0/api/']
-	}
+    private apiLinksData() {
+        [menuItemElements.get(1).select('a').first().attr('href'), 'manual/0.7.0/api/']
+    }
 
-	def setup() {
-		browser.baseUrl = app.address.toString()
-	}
+    def setup() {
+        browser.baseUrl = app.address.toString()
+    }
 
-	def cleanupSpec() {
-		app.stop()
-	}
+    def cleanupSpec() {
+        app.stop()
+    }
 
-	void 'index'() {
-		when:
-		go()
+    void 'index'() {
+        when:
+        go()
 
-		then:
-		at ContentPage
-		firstHeaderText == 'What is it?'
-	}
+        then:
+        at ContentPage
+        firstHeaderText == 'What is it?'
+    }
 
-	void 'requesting a non-existing page'() {
-		when:
-		go('idontexist')
+    void 'requesting a non-existing page'() {
+        when:
+        go('idontexist')
 
-		then:
-		at NotFoundPage
-	}
+        then:
+        at NotFoundPage
+    }
 
-	@Unroll
-	void 'highlight pages - #pagePath'() {
-		when:
-		go(pagePath)
+    @Unroll
+    void 'highlight pages - #pagePath'() {
+        when:
+        go(pagePath)
 
-		then:
-		at ContentPage
-		firstHeaderText == pageHeader
+        then:
+        at ContentPage
+        firstHeaderText == pageHeader
 
-		where:
-		pagePath       | pageHeader
-		'crossbrowser' | 'Cross Browser Automation'
-		'content'      | 'Navigating Content'
-		'pages'        | 'Page Objects'
-		'async'        | 'Asynchronicity'
-		'testing'      | 'Testing'
-		'integration'  | 'Build System Integration'
-	}
+        where:
+        pagePath       | pageHeader
+        'crossbrowser' | 'Cross Browser Automation'
+        'content'      | 'Navigating Content'
+        'pages'        | 'Page Objects'
+        'async'        | 'Asynchronicity'
+        'testing'      | 'Testing'
+        'integration'  | 'Build System Integration'
+    }
 
-	void 'manual and api links are available'() {
-		when:
-		go()
+    void 'manual and api links are available'() {
+        when:
+        go()
 
-		then:
-		at ContentPage
-		menuItems[0].name == 'Manual'
-		menuItems[0].links
-		menuItems[1].name == 'API'
-		menuItems[1].links
-	}
+        then:
+        at ContentPage
+        menuItems[0].name == 'Manual'
+        menuItems[0].links
+        menuItems[1].name == 'API'
+        menuItems[1].links
+    }
 
-	@Unroll
-	void 'manual - #manualVersion'() {
-		when:
-		go(link)
+    @Unroll
+    void 'manual - #manualVersion'() {
+        when:
+        go(link)
 
-		then:
-		at ManualPage
-		version == manualVersion
+        then:
+        at ManualPage
+        version == manualVersion
 
-		where:
-		[manualVersion, link] << manualLinksData()
-	}
+        where:
+        [manualVersion, link] << manualLinksData()
+    }
 
-	@Unroll
-	void 'api - #link'() {
-		when:
-		go(link)
+    @Unroll
+    void 'api - #link'() {
+        when:
+        go(link)
 
-		then:
-		at ApiPage
+        then:
+        at ApiPage
 
-		where:
-		link << apiLinksData()
-	}
+        where:
+        link << apiLinksData()
+    }
 }

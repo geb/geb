@@ -19,51 +19,51 @@ import spock.lang.Specification
 
 class ReporterSupportSpec extends Specification {
 
-	def reportDir = new File("build/tmp/ReporterSupportSpec")
+    def reportDir = new File("build/tmp/ReporterSupportSpec")
 
-	def setup() {
-		assert (!reportDir.exists() || reportDir.deleteDir()) && reportDir.mkdirs()
-	}
+    def setup() {
+        assert (!reportDir.exists() || reportDir.deleteDir()) && reportDir.mkdirs()
+    }
 
-	def "report filename escaping"() {
-		given:
-		def reporter = new ReporterSupport() {
-			void writeReport(ReportState reportState) {
-				getFile(reportState.outputDir, reportState.label, "12 | 34") << "content"
-			}
-		}
+    def "report filename escaping"() {
+        given:
+        def reporter = new ReporterSupport() {
+            void writeReport(ReportState reportState) {
+                getFile(reportState.outputDir, reportState.label, "12 | 34") << "content"
+            }
+        }
 
-		when:
-		reporter.writeReport(new ReportState(null, "12 | 34", reportDir))
+        when:
+        reporter.writeReport(new ReportState(null, "12 | 34", reportDir))
 
-		then:
-		new File(reportDir, "12 _ 34.12 _ 34").exists()
-	}
+        then:
+        new File(reportDir, "12 _ 34.12 _ 34").exists()
+    }
 
-	def "listener added more than once is not called twice"() {
-		given:
-		def l1 = Mock(ReportingListener)
-		def l2 = Mock(ReportingListener)
-		def f = new File("foo")
-		def files = [f]
-		def state = new ReportState(null, "foo", reportDir)
-		def reporter = new ReporterSupport() {
-			void writeReport(ReportState reportState) {
-				notifyListeners(reportState, files)
-			}
-		}
+    def "listener added more than once is not called twice"() {
+        given:
+        def l1 = Mock(ReportingListener)
+        def l2 = Mock(ReportingListener)
+        def f = new File("foo")
+        def files = [f]
+        def state = new ReportState(null, "foo", reportDir)
+        def reporter = new ReporterSupport() {
+            void writeReport(ReportState reportState) {
+                notifyListeners(reportState, files)
+            }
+        }
 
-		when:
-		2.times { reporter.addListener(l1) }
-		2.times { reporter.addListener(l2) }
-		reporter.writeReport(state)
+        when:
+        2.times { reporter.addListener(l1) }
+        2.times { reporter.addListener(l2) }
+        reporter.writeReport(state)
 
-		then:
-		1 * l1.onReport(reporter, state, files)
-		1 * l2.onReport(reporter, state, files)
-	}
+        then:
+        1 * l1.onReport(reporter, state, files)
+        1 * l2.onReport(reporter, state, files)
+    }
 
-	def cleanup() {
-		reportDir.deleteDir()
-	}
+    def cleanup() {
+        reportDir.deleteDir()
+    }
 }

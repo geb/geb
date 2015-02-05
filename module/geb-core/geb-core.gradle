@@ -5,91 +5,91 @@ apply plugin: "geb-saucelabs"
 apply plugin: "geb-browserstack"
 
 repositories {
-	maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
+    maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
 }
 
 dependencies {
-	compile seleniumDependency, seleniumSupportDependency
-	
-	compile project(":module:geb-ast")
-	compile project(":module:geb-waiting")
+    compile seleniumDependency, seleniumSupportDependency
 
-	sauceConnect "com.saucelabs:ci-sauce:1.81"
+    compile project(":module:geb-ast")
+    compile project(":module:geb-waiting")
+
+    sauceConnect "com.saucelabs:ci-sauce:1.81"
 }
 
 test {
-	maxParallelForks (Math.max(2, Runtime.runtime.availableProcessors().intdiv(2)))
+    maxParallelForks(Math.max(2, Runtime.runtime.availableProcessors().intdiv(2)))
 }
 
 task allCrossBrowserTests {
-	dependsOn 'allSauceLabsTests', 'allBrowserStackTests'
+    dependsOn 'allSauceLabsTests', 'allBrowserStackTests'
 }
 
 sauceLabs {
-	browsers {
-		chrome_linux
-		firefox_linux
-		safari_mac_7 {
-			capabilities platform: "OS X 10.9"
-		}
-	}
-	task {
-		testClassesDir = test.testClassesDir
-		testSrcDirs = test.testSrcDirs
-		classpath = test.classpath
-		maxParallelForks 3
-	}
-	account {
-		username = System.getenv(SauceAccount.USER_ENV_VAR)
-		accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
-	}
-	connect {
-		timeout 15 // minutes
-	}
+    browsers {
+        chrome_linux
+        firefox_linux
+        safari_mac_7 {
+            capabilities platform: "OS X 10.9"
+        }
+    }
+    task {
+        testClassesDir = test.testClassesDir
+        testSrcDirs = test.testSrcDirs
+        classpath = test.classpath
+        maxParallelForks 3
+    }
+    account {
+        username = System.getenv(SauceAccount.USER_ENV_VAR)
+        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
+    }
+    connect {
+        timeout 15 // minutes
+    }
 }
 
 browserStack {
-	def applicationAddresses = [8000, 8080, 8888, 9000, 9090].collect { "http://localhost:$it" }
-	application(*applicationAddresses)
-	browsers {
-		nexus4 {
-			capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
-		}
-		chrome_mac
-		chrome_windows
-		firefox_windows
-		firefox_mac
-		delegate."internet explorer_windows_8"
-		delegate."internet explorer_windows_9"
-		delegate."internet explorer_windows_10"
-		delegate."internet explorer_windows_11"
+    def applicationAddresses = [8000, 8080, 8888, 9000, 9090].collect { "http://localhost:$it" }
+    application(*applicationAddresses)
+    browsers {
+        nexus4 {
+            capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
+        }
+        chrome_mac
+        chrome_windows
+        firefox_windows
+        firefox_mac
+        delegate."internet explorer_windows_8"
+        delegate."internet explorer_windows_9"
+        delegate."internet explorer_windows_10"
+        delegate."internet explorer_windows_11"
 
-	}
-	task {
-		testClassesDir = test.testClassesDir
-		testSrcDirs = test.testSrcDirs
-		classpath = test.classpath
-		maxParallelForks 5
-	}
-	account {
-		username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
-		accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
-	}
+    }
+    task {
+        testClassesDir = test.testClassesDir
+        testSrcDirs = test.testSrcDirs
+        classpath = test.classpath
+        maxParallelForks 5
+    }
+    account {
+        username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
+        accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
+    }
 }
 
 task nonIeBrowserStackTests {
-	dependsOn 'nexus4Test', 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
+    dependsOn 'nexus4Test', 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
 }
 
 task ieBrowserStackTests {
-	dependsOn 'internet explorerWindows8Test', 'internet explorerWindows9Test', 'internet explorerWindows10Test', 'internet explorerWindows11Test'
+    dependsOn 'internet explorerWindows8Test', 'internet explorerWindows9Test', 'internet explorerWindows10Test', 'internet explorerWindows11Test'
 }
 
 modifyPom { pom ->
-	pom.project {
-		name "Geb Core"
-		description "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
-	}
-	
-	pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
+    pom.project {
+        name "Geb Core"
+        description "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
+    }
+
+    pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
 }

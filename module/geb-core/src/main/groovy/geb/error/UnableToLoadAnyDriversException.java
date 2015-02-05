@@ -18,8 +18,8 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 public class UnableToLoadAnyDriversException extends GebException {
 
-	public UnableToLoadAnyDriversException(String[] attemptedDriverClassNames) {
-		super(String.format("Unable to load any drivers from: [%s]", DefaultGroovyMethods.join(attemptedDriverClassNames, ", ")));
-	}
+    public UnableToLoadAnyDriversException(String[] attemptedDriverClassNames) {
+        super(String.format("Unable to load any drivers from: [%s]", DefaultGroovyMethods.join(attemptedDriverClassNames, ", ")));
+    }
 
 }

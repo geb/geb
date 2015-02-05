@@ -1,5 +1,5 @@
 <html>
 <body>
-  <div>page</div>
+<div>page</div>
 </body>
 </html>

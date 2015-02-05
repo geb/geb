@@ -16,51 +16,51 @@
 package org.codehaus.groovy.ast.expr;
 
 //import org.apache.log4j.Logger;
+
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.GroovyCodeVisitor;
 
 import java.lang.reflect.Method;
 
 /**
- * Represents a regular expression of the form ~<double quoted string> which creates
- * a regular expression.
+ * Represents a regular expression of the form ~<double quoted string> which creates a regular expression.
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  */
 @Deprecated
 public class RegexExpression extends Expression {
 
-	//private static final Logger LOG = Logger.getLogger(RegexExpression.class);
+    //private static final Logger LOG = Logger.getLogger(RegexExpression.class);
 
-	private final Expression string;
+    private final Expression string;
 
-	public RegexExpression(Expression string) {
-		this.string = string;
-		super.setType(ClassHelper.PATTERN_TYPE);
-	}
+    public RegexExpression(Expression string) {
+        this.string = string;
+        super.setType(ClassHelper.PATTERN_TYPE);
+    }
 
-	@SuppressWarnings("PMD.EmptyCatchBlock")
-	public void visit(GroovyCodeVisitor visitor) {
+    @SuppressWarnings("PMD.EmptyCatchBlock")
+    public void visit(GroovyCodeVisitor visitor) {
 
-		// find the visitRegexExpression if it exists, ignore otherwise
-		try {
-			Method method = visitor.getClass().getMethod("visitRegexExpression", RegexExpression.class);
-			method.invoke(visitor, this);
-		} catch (NoSuchMethodException ignored) {
-			// no method is the most likely case
-		}catch (Exception e) {
-			//LOG.error("An exception occurred dispatching to visitRegexExpression", e);
-		}
-	}
+        // find the visitRegexExpression if it exists, ignore otherwise
+        try {
+            Method method = visitor.getClass().getMethod("visitRegexExpression", RegexExpression.class);
+            method.invoke(visitor, this);
+        } catch (NoSuchMethodException ignored) {
+            // no method is the most likely case
+        } catch (Exception e) {
+            //LOG.error("An exception occurred dispatching to visitRegexExpression", e);
+        }
+    }
 
-	public Expression transformExpression(ExpressionTransformer transformer) {
-		Expression ret = new RegexExpression(transformer.transform(string));
-		ret.setSourcePosition(this);
-		return ret;
-	}
+    public Expression transformExpression(ExpressionTransformer transformer) {
+        Expression ret = new RegexExpression(transformer.transform(string));
+        ret.setSourcePosition(this);
+        return ret;
+    }
 
-	public Expression getRegex() {
-		return string;
-	}
+    public Expression getRegex() {
+        return string;
+    }
 
 }

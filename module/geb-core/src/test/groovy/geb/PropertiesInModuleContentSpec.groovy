@@ -21,51 +21,51 @@ import javax.servlet.http.HttpServletRequest
 
 class PropertiesInModuleContentSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		responseHtml { HttpServletRequest request ->
-			switch (request.requestURI) {
-				case '/source':
-					body {
-						a('link', href: 'destination')
-					}
-					break
-				case '/destination':
-					head {
-						title 'Destination Page'
-					}
-					break
-			}
-		}
-	}
+    def setupSpec() {
+        responseHtml { HttpServletRequest request ->
+            switch (request.requestURI) {
+                case '/source':
+                    body {
+                        a('link', href: 'destination')
+                    }
+                    break
+                case '/destination':
+                    head {
+                        title 'Destination Page'
+                    }
+                    break
+            }
+        }
+    }
 
-	def 'module properties can be used in module content block'() {
-		given:
-		to SourcePropertiesInModuleContentPage
+    def 'module properties can be used in module content block'() {
+        given:
+        to SourcePropertiesInModuleContentPage
 
-		when:
-		moduleWithPropertyInContent.link.click()
+        when:
+        moduleWithPropertyInContent.link.click()
 
-		then:
-		at DestinationPropertiesInModuleContentPage
-	}
+        then:
+        at DestinationPropertiesInModuleContentPage
+    }
 }
 
 class ModuleWithPropertyInContent extends Module {
-	Class<? extends Page> destinationPage
+    Class<? extends Page> destinationPage
 
-	static content = {
-		link(to: destinationPage) { $('a') }
-	}
+    static content = {
+        link(to: destinationPage) { $('a') }
+    }
 }
 
 class SourcePropertiesInModuleContentPage extends Page {
-	static url = 'source'
+    static url = 'source'
 
-	static content = {
-		moduleWithPropertyInContent { module(ModuleWithPropertyInContent, destinationPage: DestinationPropertiesInModuleContentPage) }
-	}
+    static content = {
+        moduleWithPropertyInContent { module(ModuleWithPropertyInContent, destinationPage: DestinationPropertiesInModuleContentPage) }
+    }
 }
 
 class DestinationPropertiesInModuleContentPage extends Page {
-	static at = { title == 'Destination Page' }
+    static at = { title == 'Destination Page' }
 }

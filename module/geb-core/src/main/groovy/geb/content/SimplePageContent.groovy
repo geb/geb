@@ -19,29 +19,29 @@ import geb.navigator.Navigator
 @SuppressWarnings("EqualsAndHashCode")
 class SimplePageContent extends TemplateDerivedPageContent {
 
-	void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-		super.init(template, navigator, *args)
-	}
+    void init(PageContentTemplate template, Navigator navigator, Object[] args) {
+        super.init(template, navigator, *args)
+    }
 
-	@Override
-	boolean equals(Object o) {
-		if (o in SimplePageContent) {
-			super.equals(o)
-			false
-		} else {
-			def values = iterator()*.value().findAll { it != null }
-			def value
-			switch (values.size()) {
-				case 0:
-					value = null
-					break
-				case 1:
-					value = values.first()
-					break
-				default:
-					value = values
-			}
-			value == o
-		}
-	}
+    @Override
+    boolean equals(Object o) {
+        if (o in SimplePageContent) {
+            super.equals(o)
+            false
+        } else {
+            def values = iterator()*.value().findAll { it != null }
+            def value
+            switch (values.size()) {
+                case 0:
+                    value = null
+                    break
+                case 1:
+                    value = values.first()
+                    break
+                default:
+                    value = values
+            }
+            value == o
+        }
+    }
 }

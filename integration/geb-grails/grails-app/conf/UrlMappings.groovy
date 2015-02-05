@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 class UrlMappings {
-	static mappings = {
-		"/$controller/$action?/$id?"()
-		"/index"(view:"/index")
-		"500"(view:'/error')
-	}
+    static mappings = {
+        "/$controller/$action?/$id?"()
+        "/index"(view: "/index")
+        "500"(view: '/error')
+    }
 }

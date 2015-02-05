@@ -23,25 +23,25 @@ import geb.test.GebSpecWithCallbackServer
 @Android
 class NavigatorCssSpec extends GebSpecWithCallbackServer {
 
-	def setupSpec() {
-		responseHtml {
-			body {
-				div(class: 'styled', style: 'float: left', 'text')
-			}
-		}
-	}
+    def setupSpec() {
+        responseHtml {
+            body {
+                div(class: 'styled', style: 'float: left', 'text')
+            }
+        }
+    }
 
-	def setup() {
-		go()
-	}
+    def setup() {
+        go()
+    }
 
-	void 'getting css values'() {
-		expect:
-		$('.styled').css('float') == 'left'
-	}
+    void 'getting css values'() {
+        expect:
+        $('.styled').css('float') == 'left'
+    }
 
-	void 'getting css values for empty navigator'() {
-		expect:
-		$('p').css('float') == null
-	}
+    void 'getting css values for empty navigator'() {
+        expect:
+        $('p').css('float') == null
+    }
 }

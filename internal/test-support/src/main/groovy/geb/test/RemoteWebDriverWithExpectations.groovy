@@ -22,96 +22,96 @@ import org.openqa.selenium.remote.Response
 @InheritConstructors
 class RemoteWebDriverWithExpectations extends RemoteWebDriver {
 
-	private final static List<String> IGNORED_COMMANDS = ['newSession', 'getPageSource', 'quit', 'screenshot', 'deleteAllCookies']
+    private final static List<String> IGNORED_COMMANDS = ['newSession', 'getPageSource', 'quit', 'screenshot', 'deleteAllCookies']
 
-	private List<Command> executedCommands = []
+    private List<Command> executedCommands = []
 
-	void resetExpectations() {
-		try {
-			def unexpected = executedCommands.find { !it.matched }
-			if (unexpected) {
-				throw new UnexpectedCommandException(unexpected)
-			}
-		} finally {
-			executedCommands = []
-		}
-	}
+    void resetExpectations() {
+        try {
+            def unexpected = executedCommands.find { !it.matched }
+            if (unexpected) {
+                throw new UnexpectedCommandException(unexpected)
+            }
+        } finally {
+            executedCommands = []
+        }
+    }
 
-	void ensureExecuted(Map<String, ?> parameters = [:], String command) {
-		def executed = executedCommands.find { it.matches(command, parameters) }
-		if (!executed) {
-			throw new CommandNotExecutedException(new Command(command: command, parameters: parameters))
-		}
-	}
+    void ensureExecuted(Map<String, ?> parameters = [:], String command) {
+        def executed = executedCommands.find { it.matches(command, parameters) }
+        if (!executed) {
+            throw new CommandNotExecutedException(new Command(command: command, parameters: parameters))
+        }
+    }
 
-	@Override
-	protected Response execute(String command, Map<String, ?> parameters) {
-		if (!IGNORED_COMMANDS.contains(command)) {
-			executedCommands << new Command(command: command, parameters: parameters)
-		}
-		super.execute(command, parameters)
-	}
+    @Override
+    protected Response execute(String command, Map<String, ?> parameters) {
+        if (!IGNORED_COMMANDS.contains(command)) {
+            executedCommands << new Command(command: command, parameters: parameters)
+        }
+        super.execute(command, parameters)
+    }
 
-	void getCurrentUrlExecuted() {
-		ensureExecuted('getCurrentUrl')
-	}
+    void getCurrentUrlExecuted() {
+        ensureExecuted('getCurrentUrl')
+    }
 
-	void getUrlExecuted(String url) {
-		getCurrentUrlExecuted()
-		ensureExecuted('get', url: url)
-	}
+    void getUrlExecuted(String url) {
+        getCurrentUrlExecuted()
+        ensureExecuted('get', url: url)
+    }
 
-	void getTitleExecuted() {
-		ensureExecuted('getTitle')
-	}
+    void getTitleExecuted() {
+        ensureExecuted('getTitle')
+    }
 
-	void findByTagNameExecuted(String tagName) {
-		ensureExecuted('findElement', using: 'tag name', value: tagName)
-	}
+    void findByTagNameExecuted(String tagName) {
+        ensureExecuted('findElement', using: 'tag name', value: tagName)
+    }
 
-	void findChildElementsByNameExecuted(String name) {
-		ensureExecuted('findChildElements', using: 'name', value: name)
-	}
+    void findChildElementsByNameExecuted(String name) {
+        ensureExecuted('findChildElements', using: 'name', value: name)
+    }
 
-	void findRootElementExecuted() {
-		findByTagNameExecuted('html')
-	}
+    void findRootElementExecuted() {
+        findByTagNameExecuted('html')
+    }
 
-	void findChildElementsByCssExecuted(String selector) {
-		ensureExecuted('findChildElements', using: 'css selector', value: selector)
-	}
+    void findChildElementsByCssExecuted(String selector) {
+        ensureExecuted('findChildElements', using: 'css selector', value: selector)
+    }
 
-	private static class Command {
+    private static class Command {
 
-		String command
-		Map<String, ?> parameters = [:]
+        String command
+        Map<String, ?> parameters = [:]
 
-		boolean matched = false
+        boolean matched = false
 
-		@Override
-		String toString() {
-			def parametersString = parameters ? parameters.toString() : ''
-			"$command${parametersString ? ", parameters: $parametersString" : ''}"
-		}
+        @Override
+        String toString() {
+            def parametersString = parameters ? parameters.toString() : ''
+            "$command${parametersString ? ", parameters: $parametersString" : ''}"
+        }
 
-		boolean matches(String command, Map<String, ?> parameters) {
-			def matches = !matched && command == this.command && this.parameters.subMap(parameters.keySet()) == parameters
-			matched = (matched || matches)
-			matches
-		}
-	}
+        boolean matches(String command, Map<String, ?> parameters) {
+            def matches = !matched && command == this.command && this.parameters.subMap(parameters.keySet()) == parameters
+            matched = (matched || matches)
+            matches
+        }
+    }
 
-	private static class UnexpectedCommandException extends Exception {
+    private static class UnexpectedCommandException extends Exception {
 
-		UnexpectedCommandException(Command unexpectedCommand) {
-			super("An unexpected command has been issued: $unexpectedCommand")
-		}
-	}
+        UnexpectedCommandException(Command unexpectedCommand) {
+            super("An unexpected command has been issued: $unexpectedCommand")
+        }
+    }
 
-	private static class CommandNotExecutedException extends Exception {
+    private static class CommandNotExecutedException extends Exception {
 
-		CommandNotExecutedException(Command expectedCommand) {
-			super("A command has been expected but has not been executed: $expectedCommand")
-		}
-	}
+        CommandNotExecutedException(Command expectedCommand) {
+            super("A command has been expected but has not been executed: $expectedCommand")
+        }
+    }
 }

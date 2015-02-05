@@ -29,38 +29,38 @@ import org.codehaus.groovy.ast.ModuleNode
 
 class TransformTestHelper {
 
-	Class parse(File input) {
-		new TestHarnessClassLoader().parseClass(input)
-	}
+    Class parse(File input) {
+        new TestHarnessClassLoader().parseClass(input)
+    }
 
-	interface Transforms {
-		void add(ASTTransformation transform, CompilePhase phase)
-	}
+    interface Transforms {
+        void add(ASTTransformation transform, CompilePhase phase)
+    }
 
-	@SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
-	protected configure(Transforms transforms) {
-	}
+    @SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
+    protected configure(Transforms transforms) {
+    }
 
-	@SuppressWarnings('SpaceAfterClosingBrace')
-	private class TestHarnessClassLoader extends GroovyClassLoader {
-		protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource codeSource) {
-			CompilationUnit cu = super.createCompilationUnit(config, codeSource)
-			configure(
-				new Transforms() {
-					void add(ASTTransformation transform, CompilePhase phase) {
-						cu.addPhaseOperation(
-							new PrimaryClassNodeOperation() {
-								@Override
-								void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-									transform.visit([new ModuleNode(source)] as ASTNode[], source)
-								}
-							}, phase.phaseNumber
-						)
-					}
-				}
-			)
-			cu
-		}
-	}
+    @SuppressWarnings('SpaceAfterClosingBrace')
+    private class TestHarnessClassLoader extends GroovyClassLoader {
+        protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource codeSource) {
+            CompilationUnit cu = super.createCompilationUnit(config, codeSource)
+            configure(
+                new Transforms() {
+                    void add(ASTTransformation transform, CompilePhase phase) {
+                        cu.addPhaseOperation(
+                            new PrimaryClassNodeOperation() {
+                                @Override
+                                void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
+                                    transform.visit([new ModuleNode(source)] as ASTNode[], source)
+                                }
+                            }, phase.phaseNumber
+                        )
+                    }
+                }
+            )
+            cu
+        }
+    }
 
 }

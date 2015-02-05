@@ -28,260 +28,260 @@ import static java.util.Collections.EMPTY_LIST
  */
 class EmptyNavigator extends AbstractNavigator {
 
-	EmptyNavigator(Browser browser) {
-		super(browser)
-	}
+    EmptyNavigator(Browser browser) {
+        super(browser)
+    }
 
-	@Override
-	Navigator find(String selector) { this }
+    @Override
+    Navigator find(String selector) { this }
 
-	@Override
-	Navigator find(By bySelector) {
-		this
-	}
+    @Override
+    Navigator find(By bySelector) {
+        this
+    }
 
-	@Override
-	Navigator filter(String selector) { this }
+    @Override
+    Navigator filter(String selector) { this }
 
-	@Override
-	Navigator filter(Map<String, Object> predicates) { this }
+    @Override
+    Navigator filter(Map<String, Object> predicates) { this }
 
-	@Override
-	Navigator not(String selector) { this }
+    @Override
+    Navigator not(String selector) { this }
 
-	@Override
-	Navigator not(Map<String, Object> predicates, String selector) { this }
+    @Override
+    Navigator not(Map<String, Object> predicates, String selector) { this }
 
-	@Override
-	Navigator not(Map<String, Object> predicates) { this }
+    @Override
+    Navigator not(Map<String, Object> predicates) { this }
 
-	@Override
-	Navigator click() { this }
+    @Override
+    Navigator click() { this }
 
-	@Override
-	Navigator click(Class<? extends Page> pageClass, Wait wait = null) {
-		throw new UnsupportedOperationException("not supported on empty navigator objects")
-	}
+    @Override
+    Navigator click(Class<? extends Page> pageClass, Wait wait = null) {
+        throw new UnsupportedOperationException("not supported on empty navigator objects")
+    }
 
-	@Override
-	Navigator click(Page pageInstance, Wait wait = null) {
-		throw new UnsupportedOperationException("not supported on empty navigator objects")
-	}
+    @Override
+    Navigator click(Page pageInstance, Wait wait = null) {
+        throw new UnsupportedOperationException("not supported on empty navigator objects")
+    }
 
-	@Override
-	Navigator click(List potentialPages, Wait wait = null) {
-		throw new UnsupportedOperationException("not supported on empty navigator objects")
-	}
+    @Override
+    Navigator click(List potentialPages, Wait wait = null) {
+        throw new UnsupportedOperationException("not supported on empty navigator objects")
+    }
 
-	@Override
-	Navigator head() { this }
+    @Override
+    Navigator head() { this }
 
-	@Override
-	Navigator first() { this }
+    @Override
+    Navigator first() { this }
 
-	@Override
-	Collection<WebElement> allElements() { EMPTY_LIST }
+    @Override
+    Collection<WebElement> allElements() { EMPTY_LIST }
 
-	@Override
-	WebElement getElement(int index) { null }
+    @Override
+    WebElement getElement(int index) { null }
 
-	@Override
-	List<WebElement> getElements(Range range) { EMPTY_LIST }
+    @Override
+    List<WebElement> getElements(Range range) { EMPTY_LIST }
 
-	@Override
-	List<WebElement> getElements(Collection indexes) { EMPTY_LIST }
+    @Override
+    List<WebElement> getElements(Collection indexes) { EMPTY_LIST }
 
-	@Override
-	boolean hasClass(String valueToContain) { false }
+    @Override
+    boolean hasClass(String valueToContain) { false }
 
-	@Override
-	boolean is(String tag) { false }
+    @Override
+    boolean is(String tag) { false }
 
-	@Override
-	boolean isEmpty() { true }
+    @Override
+    boolean isEmpty() { true }
 
-	@Override
-	Navigator last() { this }
+    @Override
+    Navigator last() { this }
 
-	@Override
-	Navigator tail() { this }
+    @Override
+    Navigator tail() { this }
 
-	@Override
-	Navigator next() { this }
+    @Override
+    Navigator next() { this }
 
-	@Override
-	Navigator next(Map<String, Object> attributes) { this }
+    @Override
+    Navigator next(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator next(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator next(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator nextAll() { this }
+    @Override
+    Navigator nextAll() { this }
 
-	@Override
-	Navigator nextAll(Map<String, Object> attributes) { this }
+    @Override
+    Navigator nextAll(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator nextAll(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator nextAll(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator nextUntil(Map<String, Object> attributes) { this }
+    @Override
+    Navigator nextUntil(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator nextUntil(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator nextUntil(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator previous() { this }
+    @Override
+    Navigator previous() { this }
 
-	@Override
-	Navigator previous(Map<String, Object> attributes) { this }
+    @Override
+    Navigator previous(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator previous(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator previous(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator prevAll() { this }
+    @Override
+    Navigator prevAll() { this }
 
-	@Override
-	Navigator prevAll(Map<String, Object> attributes) { this }
+    @Override
+    Navigator prevAll(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator prevAll(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator prevAll(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator prevUntil(Map<String, Object> attributes) { this }
+    @Override
+    Navigator prevUntil(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator prevUntil(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator prevUntil(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator parent() { this }
+    @Override
+    Navigator parent() { this }
 
-	@Override
-	Navigator parent(Map<String, Object> attributes) { this }
+    @Override
+    Navigator parent(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator parent(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator parent(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator parents() { this }
+    @Override
+    Navigator parents() { this }
 
-	@Override
-	Navigator parents(Map<String, Object> attributes) { this }
+    @Override
+    Navigator parents(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator parents(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator parents(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator parentsUntil(Map<String, Object> attributes) { this }
+    @Override
+    Navigator parentsUntil(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator parentsUntil(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator parentsUntil(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator closest(Map<String, Object> attributes) { this }
+    @Override
+    Navigator closest(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator closest(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator closest(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator children() { this }
+    @Override
+    Navigator children() { this }
 
-	@Override
-	Navigator children(Map<String, Object> attributes) { this }
+    @Override
+    Navigator children(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator children(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator children(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator siblings() { this }
+    @Override
+    Navigator siblings() { this }
 
-	@Override
-	Navigator siblings(Map<String, Object> attributes) { this }
+    @Override
+    Navigator siblings(Map<String, Object> attributes) { this }
 
-	@Override
-	Navigator siblings(Map<String, Object> attributes = [:], String selector) { this }
+    @Override
+    Navigator siblings(Map<String, Object> attributes = [:], String selector) { this }
 
-	@Override
-	Navigator remove(int index) { this }
+    @Override
+    Navigator remove(int index) { this }
 
-	@Override
-	int size() { 0 }
+    @Override
+    int size() { 0 }
 
-	@Override
-	boolean isDisplayed() { false }
+    @Override
+    boolean isDisplayed() { false }
 
-	@Override
-	boolean isDisabled() {
-		throw new UnsupportedOperationException("Cannot check value of 'disabled' attribute for an EmptyNavigator")
-	}
+    @Override
+    boolean isDisabled() {
+        throw new UnsupportedOperationException("Cannot check value of 'disabled' attribute for an EmptyNavigator")
+    }
 
-	@Override
-	boolean isEnabled() {
-		throw new UnsupportedOperationException("Cannot check value of 'disabled' attribute for an EmptyNavigator")
-	}
+    @Override
+    boolean isEnabled() {
+        throw new UnsupportedOperationException("Cannot check value of 'disabled' attribute for an EmptyNavigator")
+    }
 
-	@Override
-	boolean isReadOnly() {
-		throw new UnsupportedOperationException("Cannot check value of 'readonly' attribute for an EmptyNavigator")
-	}
+    @Override
+    boolean isReadOnly() {
+        throw new UnsupportedOperationException("Cannot check value of 'readonly' attribute for an EmptyNavigator")
+    }
 
-	@Override
-	boolean isEditable() {
-		throw new UnsupportedOperationException("Cannot check value of 'readonly' attribute for an EmptyNavigator")
-	}
+    @Override
+    boolean isEditable() {
+        throw new UnsupportedOperationException("Cannot check value of 'readonly' attribute for an EmptyNavigator")
+    }
 
-	@Override
-	String tag() { null }
+    @Override
+    String tag() { null }
 
-	@Override
-	String text() { null }
+    @Override
+    String text() { null }
 
-	@Override
-	String getAttribute(String name) { null }
+    @Override
+    String getAttribute(String name) { null }
 
-	@Override
-	List<String> classes() { EMPTY_LIST }
+    @Override
+    List<String> classes() { EMPTY_LIST }
 
-	@Override
-	def value() { null }
+    @Override
+    def value() { null }
 
-	@Override
-	Navigator leftShift(value) { this }
+    @Override
+    Navigator leftShift(value) { this }
 
-	@Override
-	Navigator getAt(int index) { this }
+    @Override
+    Navigator getAt(int index) { this }
 
-	@Override
-	Navigator getAt(Range range) { this }
+    @Override
+    Navigator getAt(Range range) { this }
 
-	@Override
-	Navigator getAt(Collection indexes) { this }
+    @Override
+    Navigator getAt(Collection indexes) { this }
 
-	@Override
-	Navigator verifyNotEmpty() { throw new EmptyNavigatorException() }
+    @Override
+    Navigator verifyNotEmpty() { throw new EmptyNavigatorException() }
 
-	@Override
-	Navigator value(value) { this }
+    @Override
+    Navigator value(value) { this }
 
-	@Override
-	Navigator unique() { this }
+    @Override
+    Navigator unique() { this }
 
-	@Override
-	String toString() { "[]" }
+    @Override
+    String toString() { "[]" }
 
-	def methodMissing(String name, arguments) {
-		if (arguments) {
-			throw new MissingMethodException(name, getClass(), arguments)
-		}
-		this
-	}
+    def methodMissing(String name, arguments) {
+        if (arguments) {
+            throw new MissingMethodException(name, getClass(), arguments)
+        }
+        this
+    }
 
-	def propertyMissing(String name) {
-		if (name.startsWith("@")) {
-			null
-		} else {
-			throw new MissingPropertyException(name, getClass())
-		}
-	}
+    def propertyMissing(String name) {
+        if (name.startsWith("@")) {
+            null
+        } else {
+            throw new MissingPropertyException(name, getClass())
+        }
+    }
 }

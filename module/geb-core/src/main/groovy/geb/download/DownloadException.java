@@ -21,18 +21,18 @@ import java.net.HttpURLConnection;
 
 public class DownloadException extends GebException {
 
-	final private HttpURLConnection connection;
+    final private HttpURLConnection connection;
 
-	public DownloadException(HttpURLConnection connection, CharSequence message) {
-		this(connection, message, null);
-	}
+    public DownloadException(HttpURLConnection connection, CharSequence message) {
+        this(connection, message, null);
+    }
 
-	public DownloadException(HttpURLConnection connection, CharSequence message, Throwable cause) {
-		super(message, cause);
-		this.connection = connection;
-	}
+    public DownloadException(HttpURLConnection connection, CharSequence message, Throwable cause) {
+        super(message, cause);
+        this.connection = connection;
+    }
 
-	public HttpURLConnection getConnection() {
-		return connection;
-	}
+    public HttpURLConnection getConnection() {
+        return connection;
+    }
 }

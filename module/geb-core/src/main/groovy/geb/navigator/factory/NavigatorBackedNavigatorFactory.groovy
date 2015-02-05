@@ -19,11 +19,11 @@ import geb.navigator.Navigator
 
 class NavigatorBackedNavigatorFactory extends AbstractNavigatorFactory {
 
-	final Navigator base
+    final Navigator base
 
-	NavigatorBackedNavigatorFactory(Navigator navigator, InnerNavigatorFactory innerNavigatorFactory) {
-		super(navigator.browser, innerNavigatorFactory)
-		base = navigator
-	}
+    NavigatorBackedNavigatorFactory(Navigator navigator, InnerNavigatorFactory innerNavigatorFactory) {
+        super(navigator.browser, innerNavigatorFactory)
+        base = navigator
+    }
 
 }

@@ -27,42 +27,42 @@ import org.openqa.selenium.WebDriverException
  */
 class ScreenshotReporter extends ReporterSupport {
 
-	void writeReport(ReportState reportState) {
-		// note - this is not covered by tests unless using a driver that can take screenshots
-		def screenshotDriver = determineScreenshotDriver(reportState.browser)
-		if (screenshotDriver) {
-			def decoded
-			try {
-				def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
-				decoded = Base64.decode(rawBase64 as String)
+    void writeReport(ReportState reportState) {
+        // note - this is not covered by tests unless using a driver that can take screenshots
+        def screenshotDriver = determineScreenshotDriver(reportState.browser)
+        if (screenshotDriver) {
+            def decoded
+            try {
+                def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
+                decoded = Base64.decode(rawBase64 as String)
 
-				// WebDriver has a bug where sometimes the screenshot has been encoded twice
-				if (!PngUtils.isPng(decoded)) {
-					decoded = Base64.decode(decoded)
-				}
-			} catch (WebDriverException e) {
-				decoded = new ExceptionToPngConverter(e).convert('An exception has been thrown while getting the screenshot:')
-			}
+                // WebDriver has a bug where sometimes the screenshot has been encoded twice
+                if (!PngUtils.isPng(decoded)) {
+                    decoded = Base64.decode(decoded)
+                }
+            } catch (WebDriverException e) {
+                decoded = new ExceptionToPngConverter(e).convert('An exception has been thrown while getting the screenshot:')
+            }
 
-			def file = saveScreenshotPngBytes(reportState.outputDir, reportState.label, decoded)
-			notifyListeners(reportState, [file])
-		}
-	}
+            def file = saveScreenshotPngBytes(reportState.outputDir, reportState.label, decoded)
+            notifyListeners(reportState, [file])
+        }
+    }
 
-	protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
-		def file = getFile(outputDir, label, 'png')
-		file.withOutputStream { it << bytes }
-		file
-	}
+    protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
+        def file = getFile(outputDir, label, 'png')
+        file.withOutputStream { it << bytes }
+        file
+    }
 
-	protected static TakesScreenshot determineScreenshotDriver(Browser browser) {
-		if (browser.driver instanceof TakesScreenshot) {
-			browser.driver as TakesScreenshot
-		} else if (browser.augmentedDriver instanceof TakesScreenshot) {
-			browser.augmentedDriver as TakesScreenshot
-		} else {
-			null
-		}
-	}
+    protected static TakesScreenshot determineScreenshotDriver(Browser browser) {
+        if (browser.driver instanceof TakesScreenshot) {
+            browser.driver as TakesScreenshot
+        } else if (browser.augmentedDriver instanceof TakesScreenshot) {
+            browser.augmentedDriver as TakesScreenshot
+        } else {
+            null
+        }
+    }
 
 }
