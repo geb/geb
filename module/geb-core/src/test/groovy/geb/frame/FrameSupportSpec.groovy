@@ -152,6 +152,45 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         page.returnValueOfWithFrameCallForPageContent == 'footer'
         mod.callAllVariantsOfWithFrame() == 3
     }
+
+    def "ensure page context changes to given frame page only if its at verification is true"() {
+        when:
+        withFrame(footer, FrameSupportSpecPageWithPassingAtChecker) {
+            assert page in FrameSupportSpecPageWithPassingAtChecker
+        }
+        then:
+        page in FrameSupportSpecPage
+    }
+
+    def "ensure exception is thrown while changing page context for a given frame page when its at verification fails"() {
+        when:
+        withFrame(footer, FrameSupportSpecPageWithFailingAtChecker) {
+        }
+        then:
+        thrown(AssertionError)
+        page in FrameSupportSpecPage
+    }
+
+    def "ensure page context changes to given frame page instance only if its at verification is true"() {
+        def parameterizedPage = new FrameSupportSpecParametrizedPage(tag: "span")
+        when:
+        withFrame(footer, parameterizedPage) {
+            assert page == parameterizedPage
+        }
+        then:
+        page in FrameSupportSpecPage
+    }
+
+    def "ensure exception is thrown while changing page context for a given frame page instance when its at verification fails"() {
+        def parameterizedPage = new FrameSupportSpecParametrizedPage(tag: "test")
+        when:
+        withFrame(footer, parameterizedPage) {
+
+        }
+        then:
+        thrown(AssertionError)
+        page in FrameSupportSpecPage
+    }
 }
 
 class FrameSupportSpecPage extends Page {
@@ -201,5 +240,17 @@ class FrameSupportSpecParametrizedPage extends Page {
     def getElementText() {
         element.text()
     }
+}
+
+class FrameSupportSpecPageWithPassingAtChecker extends Page {
+    static at = { span.text() == "footer" }
+
+    static content = {
+        span { $("span") }
+    }
+}
+
+class FrameSupportSpecPageWithFailingAtChecker extends Page {
+    static at = { false }
 }
 
