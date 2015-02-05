@@ -54,6 +54,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&
 * https://github.com/adjohnson916[Anders D. Johnson] - Doc improvements
 * https://github.com/azusa[Hiroyuki Ohnaka] - Doc improvements
 * https://github.com/bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
+* https://github.com/vijaybolleypally[Vijay Bolleypally] - Added verification of at checkers for pages passed to `withFrame()` methods
 
 == History
 
