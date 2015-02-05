@@ -158,6 +158,7 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         withFrame(footer, FrameSupportSpecPageWithPassingAtChecker) {
             assert page in FrameSupportSpecPageWithPassingAtChecker
         }
+
         then:
         page in FrameSupportSpecPage
     }
@@ -166,6 +167,7 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         when:
         withFrame(footer, FrameSupportSpecPageWithFailingAtChecker) {
         }
+
         then:
         thrown(AssertionError)
         page in FrameSupportSpecPage
@@ -177,6 +179,7 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         withFrame(footer, parameterizedPage) {
             assert page == parameterizedPage
         }
+
         then:
         page in FrameSupportSpecPage
     }
@@ -185,8 +188,8 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         def parameterizedPage = new FrameSupportSpecParametrizedPage(tag: "test")
         when:
         withFrame(footer, parameterizedPage) {
-
         }
+
         then:
         thrown(AssertionError)
         page in FrameSupportSpecPage
