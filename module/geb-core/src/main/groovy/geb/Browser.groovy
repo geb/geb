@@ -36,7 +36,7 @@ import org.openqa.selenium.WebDriverException
 @SuppressWarnings("UnnecessaryPublicModifier")
 class Browser {
 
-    private static final String UTF8 = "UTF-8"
+    public static final String UTF8 = "UTF-8"
 
     private Page page
     private final Configuration config

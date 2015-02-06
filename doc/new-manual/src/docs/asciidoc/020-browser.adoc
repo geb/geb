@@ -140,52 +140,20 @@ See the section on <<advanced-page-navigation,advanced page navigation>> for mor
 
 You can also make a new request to a URL without setting or changing the page using the link:api/geb/Browser.html#go()[`go()`] methods.
 
+[source,groovy]
 ----
-import geb.Page
-import geb.spock.GebSpec
-
-class GoogleSpec extends GebSpec {
-
-    def "go method does NOT set the page"() {
-        given:
-        Page oldPage = page
-
-        when:
-        go "http://google.com"
-
-        then:
-        oldPage == page
-        driver.currentUrl == "http://google.com"
-    }
-
-    def "to method does set the page and change the current url"() {
-        given:
-        Page oldPage = page
-
-        when:
-        to GoogleHomePage
-
-        then:
-        oldPage != page
-        driver.currentUrl == "http://google.com"
-    }
-}
+include::{testDir}/browser/GoogleSpec.groovy[tag=class]
 ----
 
-The following examples use a baseUrl of “`http://myapp.com/`”.
+The following examples use a baseUrl of “`\http://localhost/`”.
 
+[source,groovy]
 ----
-Browser.drive {
-    // Go to the Base URL
-    go()
-
-    // Go to a URL relative to Base URL
-    go "signup"
-
-    // Go to a URL with request params, i.e http://myapp.com/signup?param1=value1&param2=value2
-    go "signup", param1: "value1", param2: "value2"
-}
+include::{testDir}/browser/GoSpec.groovy[tag=examples,indent=0]
 ----
+<1> Go to the base URL.
+<2> Go to a URL relative to base URL.
+<3> Go to a URL with request params i.e http://localhost/signup?param1=value1&param2=value2
 
 [[the-page]]
 == The `Page`
