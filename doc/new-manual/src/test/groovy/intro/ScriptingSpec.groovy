@@ -17,7 +17,6 @@ package intro
 
 // tag::imports[]
 import geb.Browser
-
 // end::imports[]
 import geb.driver.CachingDriverFactory
 import intro.page.GebHomePage

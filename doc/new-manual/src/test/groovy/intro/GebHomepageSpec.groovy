@@ -17,7 +17,6 @@ package intro
 
 // tag::imports[]
 import geb.spock.GebSpec
-
 // end::imports[]
 import intro.page.GebHomePage
 

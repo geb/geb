@@ -18,16 +18,12 @@ package browser
 // tag::driver_imports[]
 // tag::imports[]
 import geb.Browser
-
 // end::imports[]
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
-
 // end::driver_imports[]
 // tag::configuration_imports[]
 import geb.ConfigurationLoader
-
 // end::configuration_imports[]
-
 import spock.lang.Specification
 
 class BrowserCreationSpec extends Specification {

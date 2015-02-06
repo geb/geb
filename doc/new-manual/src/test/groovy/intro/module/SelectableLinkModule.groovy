@@ -17,7 +17,6 @@ package intro.module
 
 // tag::imports[]
 import geb.Module
-
 // end::imports[]
 
 // tag::class[]

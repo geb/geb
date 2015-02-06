@@ -17,7 +17,6 @@ package intro.page
 
 // tag::imports[]
 import geb.Page
-
 // end::imports[]
 import intro.module.HighlightsModule
 
