@@ -60,7 +60,7 @@ Geb integrations typically remove the need to construct a browser object and do 
 
 == The `drive()` method
 
-The Browser class features a static method, `{drive-method}`, that makes Geb scripting a little more convenient.
+The Browser class features a static method, `{drive-method-api}`, that makes Geb scripting a little more convenient.
 
 [source,groovy,indent=0]
 ----
@@ -83,7 +83,7 @@ The `drive()` method always returns the browser object that was used, so if you 
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/DriveSpec.groovy[tag=quit]
+include::{testDir}/browser/QuitSpec.groovy[tag=quit]
 ----
 
 [TIP]
@@ -158,127 +158,118 @@ include::{testDir}/browser/GoSpec.groovy[tag=examples,indent=0]
 [[the-page]]
 == The `Page`
 
-Browser instances hold a reference to a _page_. This page instance is retrievable via the link:api/geb/Browser.html#getPage()[`page`] property. Initially, all browser instances have a page of type link:api/geb/Page.html[`Page`] which provides the basic navigation functions and is the superclass for all page objects.
+Browser instances hold a reference to a _page_. This page instance is retrievable via the link:api/geb/Browser.html#getPage()[`page`] property.
+Initially, all browser instances have a page of type link:api/geb/Page.html[`Page`] which provides the basic navigation functions and is the superclass for all page objects.
 
-However, the page property is rarely accessed directly. The browser object will _forward_ any method calls or property read/writes that it can't handle to the current page instance. 
+However, the page property is rarely accessed directly.
+The browser object will _forward_ any method calls or property read/writes that it can't handle to the current page instance.
 
+[source,groovy,indent=0]
 ----
-Browser.drive {
-    go "signup"
-
-    // The following two lines are equivalent
-    assert $("h1").text() == "Signup Page"
-    assert page.$("h1").text() == "Signup Page"
-}
+include::{testDir}/browser/DriveSpec.groovy[tag=browser_delegates_to_page]
 ----
+<1> These two calls are equivalent.
 
-The _page_ is providing the $() function, not the browser. This forwarding facilitates very concise code, void of unnecessary noise.
+The _page_ is providing the `$()` function, not the browser. This forwarding facilitates very concise code, void of unnecessary noise.
 
-____
-
-for more information on the $() function which is used to interact with page content, see the section on the [Navigator API][navigator].
-
-____
+[NOTE]
+====
+For more information on the `$()` function which is used to interact with page content, see the section on the <<navigator,Navigator API>>.
+====
 
 When using the Page Object pattern, you create subclasses of link:api/geb/Page.html[`Page`] that define content via a powerful DSL that allows you to refer to content by meaningful names instead of tag names or CSS expressions.
 
+[source,groovy]
 ----
-class SignupPage extends Page {
-    static url = "signup"
-    static content = {
-        heading { $("h1").text() }
-    }
-}
+include::{testDir}/browser/PageSpec.groovy[tag=signup_page_with_content,indent=0]
 
-Browser.drive {
-    to SignupPage
-    assert heading == "Signup Page"
-}
+include::{testDir}/browser/PageSpec.groovy[tag=using_pages_content,indent=0]
 ----
 
-Page objects are discussed in depth in the link:pages.html[pages] chapter, which also explores the Content DSL.
+Page objects are discussed in depth in the <<pages>> chapter, which also explores the Content DSL.
 
 :numbered!:
 
 === Changing the page
 
-We have already seen that that `to()` methods change the browser's page instance. It is also possible to change the page instance without initiating a new request with the `page()` methods.
+We have already seen that that `to()` methods change the browser's page instance.
+It is also possible to change the page instance without initiating a new request with the `page()` methods.
 
-The link:api/geb/Browser.html#page(Class%3C%3F%20extends%20Page%3E)[`page(Class&lt;? extends Page&gt; pageType)`] method allows you to change the page to a new instance of _the given class_. The class must be link:api/geb/Page.html[Page] or a subclass thereof. This method *does not* verify that the given page actually matches the content (at checking is discussed shortly).
+The `{page-method-taking-class-api}` method allows you to change the page to a new instance of *the given class*.
+The class must be `{page-api}` or a subclass thereof.
+This method *does not* verify that the given page actually matches the content (at checking is discussed shortly).
 
-The link:api/geb/Browser.html#page(T)[`page(Page pageInstance)`] method allows you to change the page to _the given instance_. Similarly to the method taking a page class it *does not* verify that the given page actually matches the content.
+The `{page-method-taking-instance-api}` method allows you to change the page to *the given instance*.
+Similarly to the method taking a page class it *does not* verify that the given page actually matches the content.
 
-The link:api/geb/Browser.html#page(Class%3C%3F%20extends%20Page%3E)[`page(Class&lt;? extends Page&gt;[] potentialPageTypes)`] method allows you to specify a number of _potential_ page types. Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each page's at checker. All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+The `{page-method-taking-classes-array-api}` method allows you to specify a number of _potential_ page types.
+Each of the potential pages is instantiated and checked to see if it matches the content the browser is actually currently at by running each page's at checker.
+All of the page classes passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
-The link:api/geb/Browser.html#page(T)[`page(Page[] potentialPageInstances)`] method allows you to specify a number of _potential_ page instances. Each of the potential page instances is initialized and checked to see if it matches the content the browser is actually currently at by running each pages at checker. All of the page instances passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+The `{page-method-taking-instances-array-api}` method allows you to specify a number of _potential_ page instances.
+Each of the potential page instances is initialized and checked to see if it matches the content the browser is actually currently at by running each pages at checker.
+All of the page instances passed in must have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
-These methods are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when clicked (see the section on the link:pages.html#to[`to` attribute of the Content DSL] for more information about this). However, should you need to manually change the page type, they are there.
+These two methods taking arrays as arguments are not typically used explicitly but are used by the `to()` method and content definitions that specify the page that the content navigates to when
+clicked (see the section on the <<content-dsl-to,`to` attribute of the Content DSL>> for more information about this).
+However, should you need to manually change the page type, they are there.
 
 :numbered:
 
 == At checking
 
-Pages define an [“at checker”][page-at] that the browser uses for checking if it is pointing at a given page.
+Pages define an <<at-checker,“at checker”>> that the browser uses for checking if it is pointing at a given page.
 
+[source,groovy]
 ----
-class SignupPage extends Page {
-    static at = {
-        $("h1").text() == "Signup Page"
-    }
-}
+include::{testDir}/browser/PageSpec.groovy[tag=signup_page_with_at_checker,indent=0]
 
-Browser.drive {
-    to SignupPage
-}
+include::{testDir}/browser/PageSpec.groovy[tag=using_to,indent=0]
 ----
 
-____
+[WARNING]
+====
+Not using explicit `return` statements in “at checkers” is preferred.
+Geb transforms all “at checkers” so that each statement in them is asserted (just like for `then:` blocks in Spock specifications).
+Thanks to that you can immediately see evaluated values of your “at checker” if it fails.
+See the <<at-checker,“at checker”>> section for more details.
+====
 
-Not using explicit `return` statements in “at” checkers is preferred. Geb transforms all “at” checkers so that each statement in them is asserted (just like for `then:` blocks in Spock specifications). Thanks to that you can immediately see evaluated values of your “at” checker if it fails. See the [“at checker”][page-at] section for more details.
+The `to()` method that takes a single page type or instance *verifies* that the the browser ends up at the given page.
+If the request may initiate a redirect and take the browser to a different page you should use `{via-method-api}` method:
 
-____
-
-The `to()` method that takes a single page type *verifies* that the the browser ends up at the given type. If the request may initiate a redirect and take the browser to a different page you should use `via()` method:
-
+[source,groovy]
 ----
-Browser.drive {
-    via SecurePage
-    at AccessDeniedPage
-}
-----
-
-Browser objects have an link:api/geb/Browser.html#at(Class%3CT%3E)[`at(Class pageType)`] method that tests whether or not the browser is currently at the type of page modeled by the given page object type.
-
-The `at AccessDeniedPage` method call will either return a page instance or throw an `AssertionError` even if there are no explicit assertions in the “at” checker if the checker doesn't pass.
-
-It's always a good idea to either use just the `to()` method or the `via()` method followed by an `at()` check whenever the page changes in order to _fail fast_. Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content lookups having strange results.
-
-If you pass a page class that doesn't define an “at” checker to `at()` you will get an `UndefinedAtCheckerException` - “at” checkers are mandatory when doing explicit at checks. This is not the case when implicit at checks are being performed, like when using `to()`. This is done to make you aware that you probably want to define an “at” checker when explicitly verifing if you're at a given page but not forcing you to do so when using implicit at checking.
-
-Pages can also define content that declares what the browser's page type should change to when that content is clicked. After clicking on such content page is automatically at verified (see the DSL reference for the link:pages.html#to[`to`] parameter).
-
-----
-class LoginPage extends Page {
-    static url = "/login"
-    static content = {
-        loginButton(to: AdminPage) { $("input", type: "submit", name: "login") }
-    }
-}
-
-class AdminPage extends Page {
-    static at = {
-        assert $("h1").text() == "Admin Page"
-    }
-}
-
-Browser.drive {
-    to LoginPage
-    loginButton.click()
-    at AdminPage
-}
+include::{testDir}/browser/ViaSpec.groovy[tag=using_via,indent=0]
 ----
 
-The `at()` method will also update the browser's page instance to the given page type if its at checker is successful.
+Browser objects have `{at-method-taking-class-api}` and `{at-method-taking-class-api}` methods that test whether or not the browser is currently at the page modeled by the given page
+class or instance.
+
+The `at AccessDeniedPage` method call return a page instance if the “at checker” is fulfilled.
+If on the other hand it is not then an `AssertionError` will be thrown even if there are no explicit assertions in the “at checker” (the default, see the section on <<implicit-assertions>> for
+details) or return null if implicit assertions are disabled.
+
+It's always a good idea to either use the `to()` method which implicitly verifies the “at checker” or the `via()` method followed by an `at()` check whenever the page changes in order to _fail fast_.
+Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content look-ups returning strange results.
+
+If you pass a page class or instance  that doesn't define an “at checker” to `at()` you will get an `UndefinedAtCheckerException` - “at checkers” are mandatory when doing explicit “at checks”.
+This is not the case when implicit “at checks” are being performed, like when using `to()`.
+This behaviour is intended to make you aware that you probably want to define an “at checker” when explicitly verifying if you're at a given page but not forcing you to do so when using implicit
+“at checking”.
+
+The `at()` method will also update the browser's page instance if the “at checker” is successful.
+This means that you don't have to manually set browser's page to the new one after “at checking”.
+
+Pages can also define content that declares what the browser's page type should change to when that content is clicked.
+After clicking on such content the declared page is automatically ”at checked” if it defines an “at checker” (see the content DSL reference for the <<content-dsl-to,`to`>> parameter).
+
+[source,groovy]
+----
+include::{testDir}/browser/ContentDslToParameterSpec.groovy[tag=pages,indent=0]
+
+include::{testDir}/browser/ContentDslToParameterSpec.groovy[tag=to_parameter,indent=0]
+----
 
 == Page change listening
 

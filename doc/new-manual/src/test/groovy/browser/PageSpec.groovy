@@ -21,15 +21,16 @@ import javax.servlet.http.HttpServletRequest
 
 class PageSpec extends DriveMethodSupportingSpecWithServer {
 
-    def "using pages"() {
-        when:
+    def setup() {
         server.html { HttpServletRequest request ->
             if (request.requestURI.endsWith("/signup")) {
                 h1("Signup Page")
             }
         }
+    }
 
-        then:
+    def "using pages"() {
+        expect:
         // tag::using_pages[]
         Browser.drive {
             to SignupPage
@@ -38,10 +39,46 @@ class PageSpec extends DriveMethodSupportingSpecWithServer {
         }
         // end::using_pages[]
     }
+
+    def "using page content"() {
+        expect:
+        // tag::using_pages_content[]
+        Browser.drive {
+            to SignupPage
+            assert heading == "Signup Page"
+        }
+        // end::using_pages_content[]
+    }
+
+    def "using to method"() {
+        expect:
+        // tag::using_to[]
+        Browser.drive {
+            to SignupPage
+        }
+        // end::using_to[]
+    }
 }
 
 // tag::signup_page[]
+// tag::signup_page_with_at_checker[]
+// tag::signup_page_with_content[]
 class SignupPage extends Page {
     static url = "signup"
+    // end::signup_page[]
+
+    // end::signup_page_with_content[]
+    static at = {
+        $("h1").text() == "Signup Page"
+    }
+    // end::signup_page_with_at_checker[]
+    // tag::signup_page_with_content[]
+    static content = {
+        heading { $("h1").text() }
+    }
+    // tag::signup_page[]
+    // tag::signup_page_with_at_checker[]
 }
 // end::signup_page[]
+// end::signup_page_with_at_checker[]
+// end::signup_page_with_content[]

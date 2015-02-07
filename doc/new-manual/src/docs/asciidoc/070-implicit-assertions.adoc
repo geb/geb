@@ -1,3 +1,4 @@
+[[implicit-assertions]]
 = Implicit assertions
 
 As of Geb 0.7.0, certain parts of Geb utilise “*implicit assertions*”. This sole goal of this feature is to provide more informative error messages. Put simply, it means that for a given block of code, all _expressions_ are automatically turned into assertions. So the following code:

@@ -21,14 +21,15 @@ import javax.servlet.http.HttpServletRequest
 
 class DriveSpec extends DriveMethodSupportingSpecWithServer {
 
-    def "signup"() {
-        given:
+    def setup() {
         server.html { HttpServletRequest request ->
             if (request.requestURI.endsWith("/signup")) {
                 h1("Signup Page")
             }
         }
+    }
 
+    def "signup"() {
         expect:
         // tag::using_drive[]
         Browser.drive {
@@ -45,15 +46,17 @@ class DriveSpec extends DriveMethodSupportingSpecWithServer {
         // end::explicit[]
     }
 
-    def "quit"() {
+    def "calling methods on browser is like calling them on the page"() {
         expect:
-        // tag::quit[]
+        // tag::browser_delegates_to_page[]
         Browser.drive {
-            //…
-        }.quit()
-        // end::quit[]
-        cleanup:
-        CachingDriverFactory.clearCacheCache()
+            go "signup"
+
+            assert $("h1").text() == "Signup Page" //<1>
+            assert page.$("h1").text() == "Signup Page" //<1>
+        }
+        // end::browser_delegates_to_page[]
     }
+
 }
 

@@ -15,14 +15,18 @@
  */
 package browser
 
-class Browser extends geb.Browser {
-    static String serverBaseUrl
+import geb.driver.CachingDriverFactory
+import spock.lang.Specification
 
-    Browser() {
-        browser.baseUrl = serverBaseUrl
-    }
-
-    static Browser drive(@DelegatesTo(Browser) Closure script) {
-        drive(new Browser(), script)
+class QuitSpec extends Specification {
+    def "quit"() {
+        expect:
+        // tag::quit[]
+        Browser.drive {
+            //…
+        }.quit()
+        // end::quit[]
+        cleanup:
+        CachingDriverFactory.clearCacheCache()
     }
 }

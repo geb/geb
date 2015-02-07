@@ -38,7 +38,7 @@
 :httpurlconnection: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
 :configuration-api: link:api/geb/Configuration.html[Configuration]
 :browser-api: link:api/geb/Browser.html[Browser]
-:page-api: link:api/geb/Page.html
+:page-api: link:api/geb/Page.html[Page]
 :module-api: link:api/geb/Module.html
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :bindingupdater-api: link:api/geb/binding/BindingUpdater.html
@@ -50,4 +50,11 @@
 :page-option: pages.html#page
 :switch-frame-and-page: pages.html#switching_pages_and_frames_at_once
 :groovy-truth: http://docs.codehaus.org/display/GROOVY/Groovy+Truth
-:drive-method: link:api/geb/Browser.html#drive(groovy.lang.Closure)[drive()]
+:drive-method-api: link:api/geb/Browser.html#drive(groovy.lang.Closure)[drive()]
+:page-method-taking-class-api: link:api/geb/Browser.html#page(Class<T>)[<T extends Page> T page(Class<T> pageType)]
+:page-method-taking-instance-api: link:api/geb/Browser.html#page(T)[<T extends Page> T page(T pageInstance)]
+:page-method-taking-classes-array-api: link:api/geb/Browser.html#page(page(Class<?%20extends%20Page>))[Page page(Class<? extends Page>[\] potentialPageTypes)]
+:page-method-taking-instances-array-api: link:api/geb/Browser.html#page(geb.Page)[Page page(Page[\] potentialPageInstances)]
+:at-method-taking-class-api: link:api/geb/Browser.html#at(Class<T>)[<T extends Page> T at(Class<T> pageType)]
+:at-method-taking-class-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
+:via-method-api: link:api/geb/Browser.html#via(Class<T>, java.lang.Object)[via()]
