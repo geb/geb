@@ -62,6 +62,8 @@ class CallbackHttpServer extends TestHttpServer {
 
     void responseHtml(String html) {
         get = { HttpServletRequest request, HttpServletResponse response ->
+            response.setContentType("text/html")
+            response.setCharacterEncoding(UTF8)
             response.writer << html
         }
     }

@@ -695,7 +695,7 @@ class Browser {
         driver.windowHandles
     }
 
-    private switchToWindow(String window) {
+    protected switchToWindow(String window) {
         driver.switchTo().window(window)
     }
 
@@ -979,7 +979,7 @@ class Browser {
         }
     }
 
-    private void verifyAtIfPresent(def targetPage) {
+    protected void verifyAtIfPresent(def targetPage) {
         if (targetPage) {
             try {
                 if (!at(targetPage)) {

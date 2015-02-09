@@ -15,8 +15,6 @@
  */
 package browser
 
-import geb.driver.CachingDriverFactory
-
 import javax.servlet.http.HttpServletRequest
 
 class DriveSpec extends DriveMethodSupportingSpecWithServer {

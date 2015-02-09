@@ -69,7 +69,9 @@ class RecordingPageChangeListener implements PageChangeListener {
     }
 }
 
-class FirstPage extends Page {}
+class FirstPage extends Page {
+}
 
-class SecondPage extends Page {}
+class SecondPage extends Page {
+}
 // end::helper_classes[]

@@ -15,6 +15,8 @@
  */
 package intro
 
+import geb.driver.CachingDriverFactory
+
 // tag::imports[]
 import geb.spock.GebSpec
 // end::imports[]
@@ -22,6 +24,14 @@ import intro.page.GebHomePage
 
 // tag::class[]
 class GebHomepageSpec extends GebSpec {
+
+    def setup() {
+        browser.driver.javascriptEnabled = false
+    }
+
+    def cleanup() {
+        CachingDriverFactory.clearCache()
+    }
 
     def "can access The Book of Geb via homepage"() {
         when:

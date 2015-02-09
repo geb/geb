@@ -25,7 +25,7 @@ class ViaSpec extends DriveMethodSupportingSpecWithServer {
     def "using via"() {
         given:
         server.html { HttpServletRequest request, HttpServletResponse response ->
-            switch(request.requestURL.toString()) {
+            switch (request.requestURL.toString()) {
                 case ~/.*secure/:
                     response.sendRedirect("$server.baseUrl/accessDenied")
                     break

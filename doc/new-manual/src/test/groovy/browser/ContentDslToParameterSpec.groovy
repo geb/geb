@@ -24,7 +24,7 @@ class ContentDslToParameterSpec extends DriveMethodSupportingSpecWithServer {
     def "using content dsl to parameter"() {
         given:
         server.html { HttpServletRequest request ->
-            switch(request.requestURL.toString()) {
+            switch (request.requestURL.toString()) {
                 case ~/.*login/:
                     form(action: "admin") {
                         input(type: "text", name: "username")
