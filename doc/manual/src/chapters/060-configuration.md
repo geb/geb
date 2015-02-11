@@ -174,6 +174,8 @@ At checkers can be configured to be implictly wrapped with `waitFor` calls. This
 
 The possible values for the `atCheckWaiting` option are consistent with the [ones for `wait` option of content definitions](pages.html#wait).
 
+["atCheckWaiting" value configured at page level](pages.html#page_level_atcheckwaiting_configuration) takes priority over value that is configured in GebConfig.groovy
+
 ### Waiting for base navigator
 
 Sometimes Firefox driver times out when trying to find the root HTML element of the page. This manifests itself in an error similar to:

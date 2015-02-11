@@ -85,6 +85,17 @@ class Page implements Navigable, PageContentContainer, Initializable {
      */
     static url = ""
 
+    /**
+     * The wait time configuration for 'at' checking specific to this page
+     * <p>
+     * Subclasses can specify atCheckWaiting value, value specified in page takes priority over atCheckWaiting in GebConfig.groovy
+     * <p>
+     * Possible values for the atCheckWaiting option are consistent with the ones for wait option of content definitions
+     * <p>
+     * This implementation does not have any value for  atCheckWaiting(i.e. this property is {@code null})
+     */
+    static atCheckWaiting = null
+
     private Browser browser
 
     @Delegate
@@ -204,7 +215,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
         if (verifier) {
             verifier.delegate = this
             verifier.resolveStrategy = Closure.DELEGATE_FIRST
-            def atCheckWaiting = getInitializedBrowser().config.atCheckWaiting
+            def atCheckWaiting = getConfiguredAtCheckWaiting()
             if (atCheckWaiting && allowAtCheckWaiting) {
                 try {
                     atCheckWaiting.waitFor(verifier)
@@ -304,6 +315,25 @@ class Page implements Navigable, PageContentContainer, Initializable {
      */
     @SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
     void onUnload(Page nextPage) {
+    }
+
+    /**
+     * This implementation is to override globally(in GebConfig.groovy) set ‘atCheckWaiting’ at page level
+     *
+     * @return Wait configuration based on 'atCheckWaiting' property value
+     */
+    def getConfiguredAtCheckWaiting() {
+        this.class.atCheckWaiting ? getPageAtCheckWaiting() : getInitializedBrowser().config.atCheckWaiting
+    }
+
+    /**
+     * This implementation is to get Wait configuration set at page level
+     *
+     * @return Wait configuration based on 'atCheckWaiting' property value set at page level
+     */
+    def getPageAtCheckWaiting() {
+        def atCheckWaitingValue = this.class.atCheckWaiting
+        getInitializedBrowser().config.getWaitForParam(atCheckWaitingValue)
     }
 
     Navigator find() {

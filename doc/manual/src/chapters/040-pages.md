@@ -516,6 +516,18 @@ Finally, you can still explicitly check if the browser is at an unexpected page 
 
     at PageNotFoundPage
 
+### Page level ‘atCheckWaiting’ Configuration
+
+At checkers for a specific page can be configured to be implicitly wrapped with waitFor calls. This can be set with `static` `atCheckWaiting` property
+
+    class ExamplePage extends Page {
+        static atCheckWaiting = true
+    }
+
+The possible values for the `atCheckWaiting` option are consistent with the [ones for `wait` option of content definitions](pages.html#wait).
+
+"atCheckWaiting" value configured at page level takes priority over value that is configured in `GebConfig.groovy`
+
 ## Page URLs
 
 Pages can define URLs via the `static` `url` property.

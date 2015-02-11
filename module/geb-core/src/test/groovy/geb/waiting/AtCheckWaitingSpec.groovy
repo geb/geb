@@ -93,8 +93,85 @@ class AtCheckWaitingSpec extends WaitingSpec {
         then:
         !isAt(AtCheckWaitingSpecPage)
     }
+
+    void 'at check waiting can be configured at page level'() {
+        given:
+        via AtCheckWaitingDefinedInPage
+
+        when:
+        js.showIn(0.5)
+
+        then:
+        isAt(AtCheckWaitingDefinedInPage)
+    }
+
+    void 'verify atCheckWaiting in page takes high priority over atCheckWaiting value in rawConfig'() {
+        given:
+        rawConfig.atCheckWaiting = 0.1
+        via AtCheckWaitingDefinedInPage
+
+        when:
+        js.showIn(0.5)
+
+        then:
+        isAt(AtCheckWaitingDefinedInPage)
+    }
+
+    void 'verify atCheckWaiting in page takes high priority over atCheckWaiting value set in config file'() {
+        given:
+        config.atCheckWaiting = true
+        via AtCheckWaitingDefinedInPage
+
+        when:
+        js.showIn(1.2)
+
+        then:
+        !isAt(AtCheckWaitingDefinedInPage)
+    }
+
+    @Unroll
+    void 'verify possible values for atCheckWaiting property in page level are consistent with the ones for wait option of content definitions'() {
+        given:
+        def parameterizedPage = new AtCheckWaitingDefinedInPage(atCheckWaiting: waitFor)
+        via parameterizedPage
+
+        when:
+        js.showIn(0.3)
+
+        then:
+        browser.page.verifyAtSafely()
+
+        where:
+        waitFor << [true, 'forAtCheck', 0.4, [0.5, 0.2]]
+    }
+
+    void 'verify atCheckWaiting value configured in one page is not carry forwarded to other pages'() {
+        given:
+        rawConfig.atCheckWaiting = 0.2
+        def parameterizedPage = new AtCheckWaitingDefinedInPage(atCheckWaiting: 0.4)
+        via parameterizedPage
+
+        when:
+        js.showIn(0.3)
+
+        then:
+        isAt(parameterizedPage)
+
+        when:
+        via AtCheckWaitingSpecPage
+        js.showIn(0.1)
+
+        then:
+        isAt(AtCheckWaitingSpecPage)
+    }
 }
 
 class AtCheckWaitingSpecPage extends Page {
+    static at = { $("div", text: "a") }
+}
+
+class AtCheckWaitingDefinedInPage extends Page {
+    static atCheckWaiting = "forAtCheck"
+
     static at = { $("div", text: "a") }
 }
