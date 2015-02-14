@@ -320,6 +320,7 @@ Then, on click, the browser's page is set to the first page in the list whose at
 
 All of the page classes and classes of the page instances passed in when using any variant of the `to` option have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
 
+[[content-dsl-wait]]
 ==== `wait`
 
 Default value: `false`
@@ -627,6 +628,22 @@ Browser.drive {
 ----
 
 See the section on link:browser.html#the_base_url[the base url] for notes about URLs and slashes.
+
+[[page-level-at-check-waiting]]
+=== Page level `atCheckWaiting` configuration
+
+At checkers for a specific page can be configured to be implicitly wrapped with `waitFor()` calls.
+This can be set with a static `atCheckWaiting` property.
+
+----
+class ExamplePage extends Page {
+    static atCheckWaiting = true
+}
+----
+
+The possible values for the `atCheckWaiting` option are consistent with the <<content-dsl-wait,ones for `wait` option of content definitions>>.
+
+The `atCheckWaiting` value configured at page level takes priority over the global value configured via <<at-check-waiting,configuration>>.
 
 [[advanced-page-navigation]]
 == Advanced page navigation

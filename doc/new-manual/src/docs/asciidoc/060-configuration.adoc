@@ -185,15 +185,18 @@ waiting {
 
 Here we have defined two presets, `slow` and `quick`. Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of `0.1`).
 
+[[at-check-waiting]]
 === Waiting in “at” checkers
 
-At checkers can be configured to be implictly wrapped with `waitFor` calls. This can be set with:
+At checkers can be configured to be implictly wrapped with `waitFor()` calls. This can be set with:
 
 ----
 atCheckWaiting = true
 ----
 
 The possible values for the `atCheckWaiting` option are consistent with the link:pages.html#wait[ones for `wait` option of content definitions].
+
+This global setting can also be overridden on a <<page-level-at-check-waiting,per page class basis>>.
 
 === Waiting for base navigator
 
