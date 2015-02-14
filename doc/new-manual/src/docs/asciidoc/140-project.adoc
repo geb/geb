@@ -54,7 +54,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&
 * https://github.com/adjohnson916[Anders D. Johnson] - Doc improvements
 * https://github.com/azusa[Hiroyuki Ohnaka] - Doc improvements
 * https://github.com/bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
-* https://github.com/vijaybolleypally[Vijay Bolleypally] - Added verification of at checkers for pages passed to `withFrame()` methods
+* https://github.com/vijaybolleypally[Vijay Bolleypally] - Various fixes
 
 == History
 
@@ -75,6 +75,7 @@ This page lists the high level changes between versions of Geb.
 * New `Navigator.module(Class&lt;? extends Module&gt;)` and `Navigable.module(Class&lt;? extends Module&gt;)`. [http://jira.codehaus.org/browse/GEB-312[GEB-312]]
 * New `Navigable.module(Module)` and `Navigable.module(Module)`. [http://jira.codehaus.org/browse/GEB-311[GEB-311]]
 * Support for using `interact {}` blocks in modules. [http://jira.codehaus.org/browse/GEB-364[GEB-364]]
+* Support page level `atCheckWaiting` configuration. [http://jira.codehaus.org/browse/GEB-287[GEB-287]]
 
 ==== Fixes
 
