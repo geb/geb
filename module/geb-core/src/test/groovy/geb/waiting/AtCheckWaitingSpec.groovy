@@ -105,7 +105,7 @@ class AtCheckWaitingSpec extends WaitingSpec {
         isAt(AtCheckWaitingDefinedInPage)
     }
 
-    void 'verify atCheckWaiting in page takes high priority over atCheckWaiting value in rawConfig'() {
+    void 'verify atCheckWaiting in page has priority over atCheckWaiting value in config'() {
         given:
         rawConfig.atCheckWaiting = 0.1
         via AtCheckWaitingDefinedInPage
@@ -117,52 +117,19 @@ class AtCheckWaitingSpec extends WaitingSpec {
         isAt(AtCheckWaitingDefinedInPage)
     }
 
-    void 'verify atCheckWaiting in page takes high priority over atCheckWaiting value set in config file'() {
-        given:
-        config.atCheckWaiting = true
-        via AtCheckWaitingDefinedInPage
-
-        when:
-        js.showIn(1.2)
-
-        then:
-        !isAt(AtCheckWaitingDefinedInPage)
-    }
-
     @Unroll
-    void 'verify possible values for atCheckWaiting property in page level are consistent with the ones for wait option of content definitions'() {
+    void 'verify possible values for atCheckWaiting property in page level are consistent with the ones for wait option of content definitions - #pageClass.simpleName'() {
         given:
-        def parameterizedPage = new AtCheckWaitingDefinedInPage(atCheckWaiting: waitFor)
-        via parameterizedPage
+        via pageClass
 
         when:
-        js.showIn(0.3)
+        js.showIn(0.2)
 
         then:
         browser.page.verifyAtSafely()
 
         where:
-        waitFor << [true, 'forAtCheck', 0.4, [0.5, 0.2]]
-    }
-
-    void 'verify atCheckWaiting value configured in one page is not carry forwarded to other pages'() {
-        given:
-        rawConfig.atCheckWaiting = 0.2
-        def parameterizedPage = new AtCheckWaitingDefinedInPage(atCheckWaiting: 0.4)
-        via parameterizedPage
-
-        when:
-        js.showIn(0.3)
-
-        then:
-        isAt(parameterizedPage)
-
-        when:
-        via AtCheckWaitingSpecPage
-        js.showIn(0.1)
-
-        then:
-        isAt(AtCheckWaitingSpecPage)
+        pageClass << [BooleanAtCheckWaitingSpecPage, NumberAtCheckWaitingSpecPage, ListOfNumbersAtCheckWaitingSpecPage]
     }
 }
 
@@ -170,8 +137,18 @@ class AtCheckWaitingSpecPage extends Page {
     static at = { $("div", text: "a") }
 }
 
-class AtCheckWaitingDefinedInPage extends Page {
+class AtCheckWaitingDefinedInPage extends AtCheckWaitingSpecPage {
     static atCheckWaiting = "forAtCheck"
+}
 
-    static at = { $("div", text: "a") }
+class BooleanAtCheckWaitingSpecPage extends AtCheckWaitingSpecPage {
+    static atCheckWaiting = true
+}
+
+class NumberAtCheckWaitingSpecPage extends AtCheckWaitingSpecPage {
+    static atCheckWaiting = 0.4
+}
+
+class ListOfNumbersAtCheckWaitingSpecPage extends AtCheckWaitingSpecPage {
+    static atCheckWaiting = [0.5, 0.2]
 }

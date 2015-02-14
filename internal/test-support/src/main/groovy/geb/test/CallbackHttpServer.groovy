@@ -16,6 +16,7 @@
 package geb.test
 
 import groovy.xml.MarkupBuilder
+import org.apache.http.entity.ContentType
 import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
 
@@ -39,7 +40,7 @@ class CallbackHttpServer extends TestHttpServer {
         get = { HttpServletRequest request, HttpServletResponse response ->
             synchronized (this) { // MarkupBuilder has some static state, so protect
                 try {
-                    response.setContentType("text/html")
+                    response.setContentType(ContentType.TEXT_HTML.toString())
                     response.setCharacterEncoding(UTF8)
                     def writer = new OutputStreamWriter(response.outputStream, UTF8)
                     writer << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
@@ -62,7 +63,7 @@ class CallbackHttpServer extends TestHttpServer {
 
     void responseHtml(String html) {
         get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setContentType("text/html")
+            response.setContentType(ContentType.TEXT_HTML.toString())
             response.setCharacterEncoding(UTF8)
             response.writer << html
         }
