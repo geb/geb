@@ -305,15 +305,16 @@ then a link:api/geb/error/PageChangeListenerAlreadyRegisteredException.html[`Pag
 When you're working with an application that opens new windows or tabs, for example when clicking on a link with a target attribute set, you can use `withWindow()` and `withNewWindow()` methods to
 execute code in the context of other windows.
 
-If you really need to know the name of the current window or all the names of open windows use link:api/geb/Browser.html#getCurrentWindow()[`getCurrentWindow()`] and
-link:api/geb/Browser.html#getAvailableWindows()[`getAvailableWindows()`] methods but `withWindow()` and `withNewWindow()` are the preferred methods when it comes to dealing with multiple windows.
+If you really need to know the name of the current window or all the names of open windows use link:api/geb/Browser.html#getCurrentWindow()[`Browser.getCurrentWindow()`] and
+link:api/geb/Browser.html#getAvailableWindows()[`Browser.getAvailableWindows()`] methods but `withWindow()` and `withNewWindow()` are the preferred methods when it comes to dealing with multiple
+windows.
 
 === Already opened windows
 
-If you know the name of the window in which context you want to execute the code you can use
+If you know the name of the window in context of which you want to execute the code you can use
 `link:api/geb/Browser.html#withWindow(java.lang.String,%20groovy.lang.Closure)["withWindow(String windowName, Closure block)"]`.
 
-Given this HTML:
+Given that this HTML is rendered for the `baseUrl`:
 
 [source,html,indent=0]
 ----
@@ -329,9 +330,14 @@ include::{testDir}/browser/WithWindowSpec.groovy[tag=using_name]
 
 If you don't know the name of the window but you know something about the content of the window you can use the
 `link:api/geb/Browser.html#withWindow(groovy.lang.Closure,%20groovy.lang.Closure)["withWindow(Closure specification, Closure block)"]` method.
-The first closure passed should return true for the window, or windows, you want to use as context.
-Note that if there is no window for which the window specification closure returns true then
-http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchWindowException.html[`NoSuchWindowException`] is thrown.
+The first closure passed should return true for the window, or windows, you want to use as context for execution of the second closure.
+
+[WARNING]
+====
+If there is no window for which the window specification closure returns `true` then
+http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/NoSuchWindowException.html[`NoSuchWindowException`] is thrown.
+====
+
 So given:
 
 [source,html,indent=0]
@@ -346,9 +352,12 @@ This code passes:
 include::{testDir}/browser/WithWindowSpec.groovy[tag=using_closure]
 ----
 
+[NOTE]
+====
 If code of the closure passed as the last argument changes browser's current page instance
 (e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or link:api/geb/Browser.html#at(Class<T>)[`at(Page)`]) then it will be reverted to its original value after returning from
 `withWindow()`.
+====
 
 ==== `withWindow()` options
 
@@ -377,68 +386,87 @@ reverted to its original value afterwards. If the page class defines an “at ch
 
 === Newly opened windows
 
-If you wish to execute code in a window that is newly opened by some of your actions, use the link:api/geb/Browser.html#withNewWindow(groovy.lang.Closure,%20groovy.lang.Closure)["`withNewWindow(Closure windowOpeningBlock, Closure block)`"] method. Given HTML as above the following will pass:
+If you wish to execute code in a window that is newly opened by some of your actions, use the
+`link:api/geb/Browser.html#withNewWindow(groovy.lang.Closure,%20groovy.lang.Closure)["withNewWindow(Closure windowOpeningBlock, Closure block)"]` method.
+Given that this HTML is rendered for the `baseUrl`:
 
+[source,html,indent=0]
 ----
-withNewWindow({ $('a').click() }) {
-    assert title == 'Geb - Very Groovy Browser Automation'
+include::{testDir}/browser/WithNewWindowSpec.groovy[tag=html]
+----
+
+The following will pass:
+
+[source,groovy,indent=0]
+----
+include::{testDir}/browser/WithNewWindowSpec.groovy[tag=new_window]
+----
+
+[WARNING]
+====
+If the first parameter opens none or more than one window, then link:api/geb/error/NoNewWindowException.html[`NoNewWindowException`] is thrown.
+====
+
+[NOTE]
+====
+If code of the closure passed as the last argument changes browser's current page instance (e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or
+link:api/geb/Browser.html#at(Class%3CT%3E)[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
+====
+
+==== `withNewWindow()` options
+
+There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withNewWindow()`] call which make working
+with newly opened windows even simpler. The general syntax is:
+
+[source,groovy]
+----
+withNewWindow({ «window opening action» }, «option name»: «option value», ...) {
+    «action executed within the context of the window»
 }
 ----
 
-Note that if the first parameter opens none or more than one window, then link:api/geb/error/NoNewWindowException.html[`NoNewWindowException`] is thrown.
-
-If code of the closure passed as the last argument changes browser's current page instance (e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or link:api/geb/Browser.html#at(Class%3CT%3E)[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
-
-[discrete]
-==== Passing options when working with newly opened windows
-
-There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withNewWindow()`] call which make working with newly opened windows even simpler. The general syntax is:
-
-----
-withNewWindow({ «window opening action» }, «option name»: «option value», ...) { «action executed within the context of the window» }
-----
-
-[discrete]
 ===== `close`
 
 Default value: `true`
 
-If you pass any truly value as `close` option then the newly opened window will be closed after the execution of the closure passed as the last argument to the `withNewWindow()` call.
+If you pass any _truthy_ value as `close` option then the newly opened window will be closed after the execution of the closure passed as the last argument to the `withNewWindow()` call.
 
-[discrete]
 ===== `page`
 
 Default value: `null`
 
-If you pass a class or an instance of a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be reverted to its original value afterwards.
+If you pass a class or an instance of a class that extends `Page` as `page` option then browser's page will be set to that value before executing the closure passed as the last argument and will be
+reverted to its original value afterwards.
 
-[discrete]
 ===== `wait`
 
 Default value: `null`
 
-You can specify `wait` option if the action defined in the window opening closure passed as the first argument is asynchronous and you need to wait for the new window to be opened. The possible values for the `wait` option are consistent with the link:pages.html#wait[ones for `wait` option of content definitions].
+You can specify `wait` option if the action defined in the window opening closure passed as the first argument is asynchronous and you need to wait for the new window to be opened.
+The possible values for the `wait` option are consistent with the <<content-dsl-wait,ones for `wait` option of content definitions>>.
 
-Given the following HTML:
+Given that the following HTML is rendered for the `baseUrl`:
 
+[source,html,indent=0]
 ----
-<a href="http://www.gebish.org" target="_blank" id="new-window-link">Geb</a>
+include::{testDir}/browser/WithNewWindowSpec.groovy[tag=waiting_html]
 ----
 
-the following will pass:
+together with the following javascript:
 
+[source,javascript,indent=0]
 ----
-withNewWindow({
-    js.exec """
-         setTimeout(function() {
-          document.getElementById('new-window-link').click();
-         }, 200);
-       """
-}, wait: true) {
-    assert title == 'Geb - Very Groovy Browser Automation'
-}
+include::{testDir}/browser/WithNewWindowSpec.groovy[tag=js]
+----
+
+then the following will pass:
+
+[source,groovy,indent=0]
+----
+include::{testDir}/browser/WithNewWindowSpec.groovy[tag=new_window_with_wait]
 ----
 
 == Quitting the browser
 
-The browser object has link:api/geb/Browser.html#quit()[`quit()`] and link:api/geb/Browser.html#close()[`close()`] methods (that simply delegate to the underlying driver). See the section on link:driver.html[driver management] for more information on when and why you need to quit the browser.
+The browser object has link:api/geb/Browser.html#quit()[`quit()`] and link:api/geb/Browser.html#close()[`close()`] methods (that simply delegate to the underlying driver).
+See the section on <<driver-management,driver management>> for more information on when and why you need to quit the browser.
