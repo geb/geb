@@ -369,8 +369,8 @@ class Browser {
      *
      * @return true if browser is at the given page otherwise false
      */
-    boolean isAt(Class<? extends Page> pageType, boolean allowAtCheckWaiting = true) {
-        isAt(createPage(pageType), allowAtCheckWaiting)
+    boolean isAt(Class<? extends Page> pageType, boolean honourGlobalAtCheckWaiting = true) {
+        isAt(createPage(pageType), honourGlobalAtCheckWaiting)
     }
 
     /**
@@ -386,9 +386,9 @@ class Browser {
      *
      * @return true if browser is at the given page otherwise false
      */
-    boolean isAt(Page page, boolean allowAtCheckWaiting = true) {
+    boolean isAt(Page page, boolean honourGlobalAtCheckWaiting = true) {
         initialisePage(page)
-        def isAt = page.verifyAtSafely(allowAtCheckWaiting)
+        def isAt = page.verifyAtSafely(honourGlobalAtCheckWaiting)
         if (isAt) {
             makeCurrentPage(page)
         }

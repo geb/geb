@@ -193,9 +193,9 @@ class Page implements Navigable, PageContentContainer, Initializable {
      * @return whether the at checker succeeded or not.
      * @see #verifyAt()
      */
-    boolean verifyAtSafely(boolean allowAtCheckWaiting = true) {
+    boolean verifyAtSafely(boolean honourGlobalAtCheckWaiting = true) {
         try {
-            verifyThisPageAtOnly(allowAtCheckWaiting)
+            verifyThisPageAtOnly(honourGlobalAtCheckWaiting)
         } catch (AssertionError e) {
             false
         } catch (RequiredPageContentNotPresent e) {
@@ -211,13 +211,13 @@ class Page implements Navigable, PageContentContainer, Initializable {
      * @return whether the at checker succeeded or not.
      * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
      */
-    private boolean verifyThisPageAtOnly(boolean allowAtCheckWaiting) {
+    private boolean verifyThisPageAtOnly(boolean honourGlobalAtCheckWaiting) {
         Closure verifier = getClass().at?.clone()
         if (verifier) {
             verifier.delegate = this
             verifier.resolveStrategy = Closure.DELEGATE_FIRST
-            def atCheckWaiting = getEffectiveAtCheckWaitingConfiguration()
-            if (atCheckWaiting && allowAtCheckWaiting) {
+            def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
+            if (atCheckWaiting) {
                 try {
                     atCheckWaiting.waitFor(verifier)
                 } catch (WaitTimeoutException e) {
@@ -318,11 +318,15 @@ class Page implements Navigable, PageContentContainer, Initializable {
     void onUnload(Page nextPage) {
     }
 
-    private Wait getEffectiveAtCheckWaitingConfiguration() {
-        getClass().atCheckWaiting != null ? getPageAtCheckWaiting() : getInitializedBrowser().config.atCheckWaiting
+    private Wait getGlobalAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
+        honourGlobalAtCheckWaiting ? getInitializedBrowser().config.atCheckWaiting : null
     }
 
-    private Wait getPageAtCheckWaiting() {
+    private Wait getEffectiveAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
+        getClass().atCheckWaiting != null ? pageLevelAtCheckWaiting : getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
+    }
+
+    protected Wait getPageLevelAtCheckWaiting() {
         def atCheckWaitingValue = getClass().atCheckWaiting
         getInitializedBrowser().config.getWaitForParam(atCheckWaitingValue)
     }

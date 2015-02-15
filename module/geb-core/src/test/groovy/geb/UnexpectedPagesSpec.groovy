@@ -24,8 +24,18 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         responseHtml { request ->
+            def titleValue = request.parameterMap.title.first()
+            def delayed = request.parameterMap.delayed
             head {
-                title(request.parameterMap.title.first())
+                if (!delayed) {
+                    title(titleValue)
+                } else {
+                    script(type: "text/javascript", charset: "utf-8", """
+                        setTimeout(function() {
+                            document.title = "$titleValue";
+                        }, 100);
+                    """)
+                }
             }
         }
     }
@@ -35,15 +45,12 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         to ExpectedPage
     }
 
-    private void defineUnexpectedPages() {
-        browser.config.unexpectedPages = [UnexpectedPage, AnotherUnexpectedPage]
+    private void defineUnexpectedPages(Class<? extends Page>[] unexpectedPages = ([UnexpectedPage, AnotherUnexpectedPage] as Class<? extends Page>[])) {
+        browser.config.unexpectedPages = unexpectedPages.toList()
     }
 
     @Unroll
     void 'verify that page response is configured as expected'() {
-        given:
-        defineUnexpectedPages()
-
         when:
         go "?title=$pageTitle"
 
@@ -54,9 +61,31 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         pageTitle << ['expected', 'unexpected']
     }
 
+    void 'verify that page response is configured as expected for unexpected page with wait'() {
+        when:
+        go "?title=unexpected&delayed=true"
+
+        then:
+        !title
+
+        and:
+        waitFor { title == "unexpected" }
+    }
+
     void 'an exception is not thrown when we are not at unexpected page'() {
         given:
         defineUnexpectedPages()
+
+        when:
+        via ExpectedPage
+
+        then:
+        at ExpectedPage
+    }
+
+    void 'an exception is not thrown when we are not at unexpected page and one of unexpected pages has atCheckWaiting specified'() {
+        given:
+        defineUnexpectedPages(UnexpectedPageWithWaiting)
 
         when:
         via ExpectedPage
@@ -76,6 +105,19 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         then:
         UnexpectedPageException e = thrown()
         e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when expected to be at geb.ExpectedPage'
+    }
+
+    void 'atCheckWaiting configuration on page level is honoured for pages configured as unexpected'() {
+        given:
+        defineUnexpectedPages(UnexpectedPageWithWaiting)
+
+        when:
+        via UnexpectedPageWithWaiting
+        at ExpectedPage
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.UnexpectedPageWithWaiting was encountered when expected to be at geb.ExpectedPage'
     }
 
     void 'it is possible to do at checking for an unexpected page'() {
@@ -144,10 +186,10 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         browser.config.atCheckWaiting = true
 
         when:
-        via ExpectedPage
+        via UnexpectedPageWithWaiting
 
         then:
-        at(ExpectedPage)
+        at(UnexpectedPageWithWaiting)
     }
 
     @Unroll
@@ -173,6 +215,15 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 class UnexpectedPage extends Page {
 
     static url = "?title=unexpected"
+
+    static at = { title == 'unexpected' }
+}
+
+class UnexpectedPageWithWaiting extends Page {
+
+    static atCheckWaiting = 0.2
+
+    static url = "?title=unexpected&delayed=true"
 
     static at = { title == 'unexpected' }
 }

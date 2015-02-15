@@ -606,6 +606,16 @@ Finally, you can still explicitly check if the browser is at an unexpected page 
 at PageNotFoundPage
 ----
 
+[IMPORTANT]
+====
+The <<at-check-waiting,global `atCheckWaiting` configuration>> does not apply when checking for unexpected pages.
+That is, even if configuration calls for implicitly wrapping “at checks” in a `waitFor()` call it is not done when verifying “at checkers” of unexpected pages.
+This is due to the fact that “at checkers” for unexpected pages are not fulfilled for most of the time and they are checked for every `at()` and `to()` call thus wrapping them in an implicit
+`waitFor()` call would make these methods extremely slow.
+The <<page-level-at-check-waiting, page level `atCheckWaiting` configuration>> on the other hand applies to unexpected pages so you can use it if you actually need to wait around “at checkers”
+of such pages.
+====
+
 :numbered:
 
 == Page URLs
