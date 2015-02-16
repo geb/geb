@@ -9,6 +9,7 @@ One of the key design principles that WebDriver embraces is that tests/scripts s
 
 ____
 
+[[driver-management]]
 == Explicit driver management
 
 One option for specifying the driver implementation is to construct the driver instance and pass it to the `geb.Browser` to be used link:browser.html[when it is constructed].
