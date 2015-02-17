@@ -51,11 +51,11 @@ class GebSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner{
     statement = possiblyExpectingExceptions(frameworkMethod, testInstance, statement);
     statement = withBefores(frameworkMethod, testInstance, statement);
 
-    //with TauliaRules
-    statement = withRules(frameworkMethod, testInstance, statement, getTauliaRules(testInstance));
+    //with GebRules
+    statement = withRules(frameworkMethod, testInstance, statement, getGebRules(testInstance));
 
-    //with TauliaAfters
-    statement = withTauliaAfters(testInstance, statement);
+    //with withGebAfters
+    statement = withGebAfters(testInstance, statement);
 
     //with JUnit Afters
     statement = withAfters(frameworkMethod, testInstance, statement);
@@ -103,15 +103,15 @@ class GebSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner{
    * @param target the test case instance
    * @return a list of TestRules that should be applied when executing this test
    */
-  protected List<TestRule> getTauliaRules(Object target) {
+  protected List<TestRule> getGebRules(Object target) {
     List<TestRule> result = getTestClass().getAnnotatedMethodValues(target, GebRule.class, TestRule.class);
     result.addAll(getTestClass().getAnnotatedFieldValues(target, GebRule.class, TestRule.class));
     return result;
   }
 
-  protected Statement withTauliaAfters(Object target, Statement statement) {
-    List<FrameworkMethod> tauliaAfters = getTestClass().getAnnotatedMethods(GebAfter.class);
-    return tauliaAfters.isEmpty() ? statement : new RunAfters(statement, tauliaAfters,
+  protected Statement withGebAfters(Object target, Statement statement) {
+    List<FrameworkMethod> gebAfters = getTestClass().getAnnotatedMethods(GebAfter.class);
+    return gebAfters.isEmpty() ? statement : new RunAfters(statement, gebAfters,
     target);
   }
 

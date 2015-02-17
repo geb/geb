@@ -52,9 +52,9 @@ class GebBlockJUnit4ClassRunner extends BlockJUnit4ClassRunner{
     statement = withBefores(frameworkMethod, testInstance, statement);
 
     //with GebRules
-    statement = withRules(frameworkMethod, testInstance, statement, getTauliaRules(testInstance));
+    statement = withRules(frameworkMethod, testInstance, statement, getGebRules(testInstance));
 
-    //with TauliaAfters
+    //with GebAfters
     statement = withGebAfters(testInstance, statement);
 
     //with JUnit Afters
@@ -103,15 +103,15 @@ class GebBlockJUnit4ClassRunner extends BlockJUnit4ClassRunner{
    * @param target the test case instance
    * @return a list of TestRules that should be applied when executing this test
    */
-  protected List<TestRule> getTauliaRules(Object target) {
+  protected List<TestRule> getGebRules(Object target) {
     List<TestRule> result = getTestClass().getAnnotatedMethodValues(target, GebRule.class, TestRule.class);
     result.addAll(getTestClass().getAnnotatedFieldValues(target, GebRule.class, TestRule.class));
     return result;
   }
 
   protected Statement withGebAfters(Object target, Statement statement) {
-    List<FrameworkMethod> tauliaAfters = getTestClass().getAnnotatedMethods(GebAfter.class);
-    return tauliaAfters.isEmpty() ? statement : new RunAfters(statement, tauliaAfters,
+    List<FrameworkMethod> gebAfters = getTestClass().getAnnotatedMethods(GebAfter.class);
+    return gebAfters.isEmpty() ? statement : new RunAfters(statement, gebAfters,
     target);
   }
 
