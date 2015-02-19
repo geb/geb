@@ -108,6 +108,31 @@ interface Navigator extends Iterable<Navigator>, Locator {
     Navigator not(Map<String, Object> predicates)
 
     /**
+     * Filters the set of elements represented by this Navigator to exclude that have one or more descendants
+     * that match the selector.
+     * @param selector a CSS selector
+     * @return a new Navigator instance
+     */
+    Navigator hasNot(String selector)
+
+    /**
+     * Filters the set of elements represented by this Navigator to exclude that have one or more descendants
+     * that match the selector and attributes as defined in the predicate.
+     * @param selector a CSS selector
+     * @param predicates a Map with keys representing attributes and values representing excluded values or patterns
+     * @return a new Navigator instance
+     */
+    Navigator hasNot(Map<String, Object> predicates, String selector)
+
+    /**
+     * Filters the set of elements represented by this Navigator to exclude that have one or more descendants
+     * that match the attributes as defined in the predicate.
+     * @param predicates a Map with keys representing attributes and values representing excluded values or patterns
+     * @return a new Navigator instance
+     */
+    Navigator hasNot(Map<String, Object> predicates)
+
+    /**
      * Gets the wrapped element at the given index.
      * <p>
      * When no such element exists, an empty Navigator instance is returned.
