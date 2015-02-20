@@ -117,7 +117,7 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
                 input(class: "b-1 z-1", name: "someName", type: "checkbox")
             }
             div(id: "c") {
-                input(class: "c-1 z-1" ,type: "text")
+                input(class: "c-1 z-1", type: "text")
             }
         }
 

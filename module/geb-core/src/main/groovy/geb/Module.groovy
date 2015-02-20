@@ -652,7 +652,6 @@ class Module implements Navigator, PageContentContainer, Initializable {
         getInitializedNavigator().hasNot(predicates, selector)
     }
 
-
     @Override
     Navigator find(Map<String, Object> predicates) {
         getInitializedNavigator().find(predicates)
