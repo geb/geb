@@ -111,26 +111,22 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         when:
         html {
             div(id: "a") {
-                div("class": "a-1 z-1", "a")
-                input(type: "text")
+                input(class: "a-1 z-1", type: "text")
             }
             div(id: "b") {
-                div("class": "b-1 z-1", "b")
-                input(name: "someName", type: "checkbox")
+                input(class: "b-1 z-1", name: "someName", type: "checkbox")
             }
             div(id: "c") {
-                div("class": "c-1 z-1", "c")
-                input(type: "text")
+                input(class: "c-1 z-1" ,type: "text")
             }
         }
 
         then:
         $("div").hasNot(".z-1").size() == 0
         $("div").hasNot(".b-1")*.@id == ["a", "c"]
-        $("div").hasNot("input", name: "someName")*.@id == ["a", "b"]
-        $("div").hasNot("div", text: "b")*.@id == ["a", "b"]
+        $("div").hasNot("input", name: "someName")*.@id == ["a", "c"]
         $("div").hasNot("input", type: "text")*.@id == ["b"]
-        $("div").hasNot(text: ~/[abc]/) == []
+        $("div").hasNot(type: "text")*.@id == ["b"]
     }
 
     def not() {
