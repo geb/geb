@@ -13,32 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package browser
+package driver
 
+// tag::import[]
+import com.gargoylesoftware.htmlunit.ThreadedRefreshHandler
+// end::import[]
 import fixture.Browser
 import fixture.DriveMethodSupportingSpecWithServer
 
-class GoSpec extends DriveMethodSupportingSpecWithServer {
-
-    def "go method examples"() {
+class HtmlUnitRefreshHandlerSpec extends DriveMethodSupportingSpecWithServer {
+    def "can change refresh handler"() {
         expect:
-        // tag::examples[]
+        // tag::changing_handler[]
         Browser.drive {
-            go() //<1>
-
-            // end::examples[]
-            assert currentUrl.endsWith("/")
-            // tag::examples[]
-            go "signup" //<2>
-
-            // end::examples[]
-            assert currentUrl.endsWith("signup")
-            // tag::examples[]
-            go "signup", param1: "value1", param2: "value2" //<3>
-            // end::examples[]
-            assert currentUrl.endsWith("signup?param1=value1&param2=value2")
-            // tag::examples[]
+            driver.webClient.refreshHandler = new ThreadedRefreshHandler()
+            // <1>
         }
-        // end::examples[]
+        // end::changing_handler[]
     }
 }

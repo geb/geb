@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package browser
+package fixture
 
 import geb.test.CallbackHttpServer
 import spock.lang.Shared

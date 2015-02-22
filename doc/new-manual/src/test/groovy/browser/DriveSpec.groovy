@@ -15,6 +15,9 @@
  */
 package browser
 
+import fixture.Browser
+import fixture.DriveMethodSupportingSpecWithServer
+
 import javax.servlet.http.HttpServletRequest
 
 class DriveSpec extends DriveMethodSupportingSpecWithServer {

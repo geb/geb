@@ -51,6 +51,7 @@ ____
 
 == Config options
 
+[[driver-implementation-configuration]]
 === Driver implementation
 
 The driver to use is specified by the config key `driver`, or the system property `geb.driver`.
@@ -135,6 +136,7 @@ innerNavigatorFactory = { Browser browser, List<org.openqa.selenium.WebElement> 
 
 This is a rather advanced use case. If you need to do this, check out the source code or get in touch via the mailing list if you need help.
 
+[[driver-caching-configuration]]
 === Driver caching
 
 Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. link:driver.html#implicit_lifecycle[the implicit driver lifecycle]) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become link:driver.html#explicit_lifecycle[responsible for quitting] every driver that is created at the appropriate time.

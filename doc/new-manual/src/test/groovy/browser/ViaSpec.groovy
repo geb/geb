@@ -15,6 +15,8 @@
  */
 package browser
 
+import fixture.Browser
+import fixture.DriveMethodSupportingSpecWithServer
 import geb.Page
 
 import javax.servlet.http.HttpServletRequest

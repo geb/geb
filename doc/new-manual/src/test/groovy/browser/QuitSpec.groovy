@@ -15,6 +15,7 @@
  */
 package browser
 
+import fixture.Browser
 import geb.driver.CachingDriverFactory
 import spock.lang.Specification
 

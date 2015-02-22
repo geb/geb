@@ -90,6 +90,7 @@ The report file name format is:
 
 Reporting is an extremely useful feature and can help you diagnose test failures much easier. Wherever possible, favour the use of the auto-reporting base classes.
 
+[[cookie-management-in-tests]]
 === Cookie management
 
 The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies at the end of each test method. For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method in `geb.testng.GebTest`.

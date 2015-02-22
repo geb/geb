@@ -1,57 +1,55 @@
 [[driver]]
 = The WebDriver implementation
 
-A `geb.Browser` instance interacts with an actual browser via an instance of [WebDriver][webdriver-api]. The browser's driver can always be retrieved via the `WebDriver getDriver()` method.
+A `{browser-api}` instance interacts with an actual browser via an instance of `{webdriver-api}`.
+The browser's driver can always be retrieved via the `{browser-get-driver-api}` method.
 
-____
-
-One of the key design principles that WebDriver embraces is that tests/scripts should be written to the [WebDriver API][webdriver-api] making them agnostic to the actual browser being driven, and therefore portable. Geb always supports this goal. However, the reality is that there are still quirks and behavioural differences between driver implementations. Each release of WebDriver has historically worked to minimise these issues so expect the situation to improve over time as WebDriver matures.
-
-____
+[NOTE]
+====
+One of the key design principles that WebDriver embraces is that tests/scripts should be written to the `{webdriver-api}` API making them agnostic to the actual browser being driven,
+and therefore portable.
+Geb always supports this goal.
+However, the reality is that there are still quirks and behavioural differences between driver implementations.
+Each release of WebDriver has historically worked to minimise these issues so expect the situation to improve over time as WebDriver matures.
+====
 
 [[driver-management]]
 == Explicit driver management
 
-One option for specifying the driver implementation is to construct the driver instance and pass it to the `geb.Browser` to be used link:browser.html[when it is constructed].
+One option for specifying the driver implementation is to construct the driver instance and pass it to the `Browser` to be used <<browser,when it is constructed>>.
 
 However, where possible prefer implicit driver management which is discussed later in this chapter.
 
 [discrete]
 === Explicit lifecycle
 
-When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time. This can be done via the methods on the webdriver instance (obtainable via `geb.Browser#getDriver()`) or by calling the link:browser.html#quitting_the_browser[delegating methods on the browser object].
+When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time.
+This can be done via the methods on the `WebDriver` instance (obtainable via `{browser-get-driver-api}`) or by calling the <<quiting-the-browser,delegating methods on the browser object>>.
 
 == Implicit driver management
 
-If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the link:configuration.html#driver_implementation[configuration mechanism].
+If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the ,,driver-implementation-configuration,configuration mechanism>>.
 
 [discrete]
 === Implicit lifecycle
 
-By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver. This avoids the overhead of creating a new driver each time, which can be significant when working with a real browser.
+By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver.
+This avoids the overhead of creating a new driver each time, which can be significant when working with a real browser.
 
-This means that you may need to call the `clearCookies()` method on the browser in order not to get strange results due to cookies from previous executions.
+This means that you may need to call the `{browser-clear-cookies-api}` method on the browser in order not to get strange results due to cookies from previous executions.
 
-____
+[TIP]
+====
+Some of the integrations (e.g. Spock, JUnit) automatically clear the browser cookies at appropriate times such as after each test.
+Consult the section on <<cookie-management-in-tests,testing>> for specifics.
+====
 
-Note that some of the integrations (e.g. Spock, JUnit) automatically clear the browser cookies at appropriate times such as after each test. Consult the section on link:testing.html#cookie_management[testing] for specifics.
+The shared driver will be closed and quited when the JVM shuts down.
 
-____
+A new driver can be forced at anytime by calling either of `{clear-browser-cache-api}` or `{clear-browser-cache-and-quit-api}` both of which are `static`.
+After calling any of these methods, the next request for a default driver will result in a new driver instance being created.
 
-The shared driver will be closed and quitted when the JVM shuts down.
-
-A new driver can be forced at anytime by calling either of the following `static` methods on the `CachingDriverFactory` class…
-
-----
-import geb.driver.CachingDriverFactory
-
-def cachedDriver = CachingDriverFactory.clearCache()
-def cachedDriver = CachingDriverFactory.clearCacheAndQuitDriver()
-----
-
-After calling either of this methods, the next request for a default driver will result in a new driver instance being created.
-
-This caching behavior is link:configuration.html#driver_caching[configurable]. 
+This caching behavior is <<driver-caching-configuration,configurable>>.
 
 == Driver quirks
 
@@ -63,16 +61,16 @@ This section details various quirks or issues that have been encountered with di
 [discrete]
 ==== Dealing with pages that use HTML refreshes
 
-The default behaviour of the HTMLUnit driver is to immediately refresh the page as soon as it encounters a `&lt;meta http-equiv=&quot;refresh&quot; content=&quot;5&quot;&gt;` regardless of the specified time. The solution is to use a refresh handler that handles the refresh asynchronously.
+The default behaviour of the HTMLUnit driver is to immediately refresh the page as soon as it encounters a `<meta http-equiv="refresh" content="5">` regardless of the specified time.
+The solution is to use a refresh handler that handles the refresh asynchronously.
 
+[source,groovy]
 ----
-import com.gargoylesoftware.htmlunit.ThreadedRefreshHandler
+include::{testDir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=import,indent=0]
 
-Browser.drive {
-  driver.webClient.refreshHandler = new ThreadedRefreshHandler()
-  …
-}
+include::{testDir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=changing_handler,indent=0]
 ----
+<1> From here on refresh meta tag value will be respected.
 
 See http://markmail.org/thread/bu3g56oxz2uqzq43[this mailing list thread] for details.
 

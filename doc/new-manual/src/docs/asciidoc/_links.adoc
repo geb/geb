@@ -58,3 +58,7 @@
 :at-method-taking-class-api: link:api/geb/Browser.html#at(Class<T>)[<T extends Page> T at(Class<T> pageType)]
 :at-method-taking-class-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
 :via-method-api: link:api/geb/Browser.html#via(Class<T>, java.lang.Object)[via()]
+:browser-get-driver-api: link:api/geb/Browser.html#getDriver()[getDriver()]
+:browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]
+:clear-browser-cache-api: link:api/geb/driver/CachingDriverFactory.html#clearCache()[CachingDriverFactory.clearCache()]
+:clear-browser-cache-and-quit-api: link:api/geb/driver/CachingDriverFactory.html#clearCacheAndQuitDriver()[CachingDriverFactory.clearCacheAndQuitDriver()]

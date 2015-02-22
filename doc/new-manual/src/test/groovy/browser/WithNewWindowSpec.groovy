@@ -15,6 +15,9 @@
  */
 package browser
 
+import fixture.Browser
+import fixture.DriveMethodSupportingSpecWithServer
+
 class WithNewWindowSpec extends DriveMethodSupportingSpecWithServer {
 
     def "using withNewWindow"() {

@@ -15,6 +15,7 @@
  */
 package browser
 
+import fixture.DriveMethodSupportingSpecWithServer
 import geb.Page
 import geb.PageChangeListener
 import geb.Browser

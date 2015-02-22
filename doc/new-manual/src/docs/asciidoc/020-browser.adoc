@@ -1,3 +1,4 @@
+[[browser]]
 = The `Browser`
 
 The entry point to Geb is the `{browser-api}` object.
@@ -466,6 +467,7 @@ then the following will pass:
 include::{testDir}/browser/WithNewWindowSpec.groovy[tag=new_window_with_wait]
 ----
 
+[quiting-the-browser]
 == Quitting the browser
 
 The browser object has link:api/geb/Browser.html#quit()[`quit()`] and link:api/geb/Browser.html#close()[`close()`] methods (that simply delegate to the underlying driver).

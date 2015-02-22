@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package browser
+package fixture
 
 class Browser extends geb.Browser {
     static String serverBaseUrl
