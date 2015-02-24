@@ -133,6 +133,23 @@ interface Navigator extends Iterable<Navigator>, Locator {
     Navigator hasNot(Map<String, Object> predicates)
 
     /**
+     * Filters the set of elements represented by this Navigator to exclude that have one or more descendants
+     * that match the bySelector.
+     * @param bySelector a WebDriver By selector
+     * @return a new Navigator instance
+     */
+    Navigator hasNot(By bySelector)
+
+    /**
+     * Filters the set of elements represented by this Navigator to exclude that have one or more descendants
+     * that match the bySelector and attributes as defined in the predicate.
+     * @param bySelector a WebDriver By selector
+     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @return a new Navigator instance
+     */
+    Navigator hasNot(Map<String, Object> predicates, By bySelector)
+
+    /**
      * Gets the wrapped element at the given index.
      * <p>
      * When no such element exists, an empty Navigator instance is returned.
