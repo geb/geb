@@ -171,9 +171,21 @@ Or select the `div` containing the `input` with a type attribute of "text" like 
 
     $("div").has("input", type: "text")
 
+We can select the `div` that does not contain the `p` with…
+
+    $("div").hasNot("p")
+
+Or select the `div` that does not contain the `input` with a type attribute of "text" like so…
+
+    $("div").hasNot("input", type: "text")
+
+Or select the two `div` that do not contain `input` with a type attribute of "submit" like so…
+
+    $("div").hasNot("input", type: "submit")
+
 The `find` and `$` methods support the **exact same argument types as the $ function**.
 
-The `filter`, `not` and `has` methods have the same signatures - they accept: a selector string, a predicates map or both.
+The `filter`, `not`, `has` and `hasNot` methods have the same signatures - they accept: a selector string, a predicates map or both.
 
 These methods return a new navigator object that represents the new content.
 
