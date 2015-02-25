@@ -18,6 +18,7 @@ package geb.navigator
 import geb.Page
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
+import org.openqa.selenium.By
 import spock.lang.Unroll
 
 @Unroll
@@ -127,6 +128,9 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         $("div").hasNot("input", name: "someName")*.@id == ["a", "c"]
         $("div").hasNot("input", type: "text")*.@id == ["b"]
         $("div").hasNot(type: "text")*.@id == ["b"]
+        $("div").hasNot(By.className("b-1"))*.@id == ["a", "c"]
+        $("div").hasNot(By.tagName("input")).size() == 0
+        $("div").hasNot(By.tagName("input"), name: "someName")*.@id == ["a", "c"]
     }
 
     def not() {
