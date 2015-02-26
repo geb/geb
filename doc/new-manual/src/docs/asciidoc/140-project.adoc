@@ -77,6 +77,7 @@ This page lists the high level changes between versions of Geb.
 * New `Navigable.module(Module)` and `Navigable.module(Module)`. [http://jira.codehaus.org/browse/GEB-311[GEB-311]]
 * Support for using `interact {}` blocks in modules. [http://jira.codehaus.org/browse/GEB-364[GEB-364]]
 * Support page level `atCheckWaiting` configuration. [http://jira.codehaus.org/browse/GEB-287[GEB-287]]
+* `Navigator` elements can now also be filtered using `hasNot()` method. [http://jira.codehaus.org/browse/GEB-370[GEB-370]]
 
 ==== Fixes
 
