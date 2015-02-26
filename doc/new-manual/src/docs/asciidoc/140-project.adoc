@@ -55,6 +55,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&
 * https://github.com/azusa[Hiroyuki Ohnaka] - Doc improvements
 * https://github.com/bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
 * https://github.com/vijaybolleypally[Vijay Bolleypally] - Various fixes
+* https://github.com/pierre-hilt[Pierre Hilt] - `hasNot()` filtering
 
 == History
 
