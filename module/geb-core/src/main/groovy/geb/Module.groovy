@@ -643,7 +643,7 @@ class Module implements Navigator, PageContentContainer, Initializable {
     }
 
     @Override
-    Navigator hasNot(Map<String, Object> predicates =[:], String selector) {
+    Navigator hasNot(Map<String, Object> predicates = [:], String selector) {
         getInitializedNavigator().hasNot(predicates, selector)
     }
 
