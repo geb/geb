@@ -244,6 +244,36 @@ abstract class AbstractNavigator implements Navigator {
         }
     }
 
+    Navigator hasNot(String selector) {
+        findAll { Navigator it ->
+            it.find(selector).empty
+        }
+    }
+
+    Navigator hasNot(Map<String, Object> predicates) {
+        findAll { Navigator it ->
+            it.find(predicates).empty
+        }
+    }
+
+    Navigator hasNot(Map<String, Object> predicates, String selector) {
+        findAll { Navigator it ->
+            it.find(predicates, selector).empty
+        }
+    }
+
+    Navigator hasNot(By bySelector) {
+        findAll { Navigator it ->
+            it.find(bySelector).empty
+        }
+    }
+
+    Navigator hasNot(Map<String, Object> predicates, By bySelector) {
+        findAll { Navigator it ->
+            it.find(predicates, bySelector).empty
+        }
+    }
+
     Navigator eq(int index) {
         this[index]
     }

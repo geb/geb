@@ -18,6 +18,7 @@ package geb.navigator
 import geb.Page
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
+import org.openqa.selenium.By
 import spock.lang.Unroll
 
 @Unroll
@@ -105,6 +106,31 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         $("div").has("div", text: "b")*.@id == ["b"]
         $("div").has("input", type: "text")*.@id == ["a", "c"]
         $("div").has(text: ~/[abc]/)*.@id == ["a", "b", "c"]
+    }
+
+    def hasNot() {
+        when:
+        html {
+            div(id: "a") {
+                input(class: "a-1 z-1", type: "text")
+            }
+            div(id: "b") {
+                input(class: "b-1 z-1", name: "someName", type: "checkbox")
+            }
+            div(id: "c") {
+                input(class: "c-1 z-1", type: "text")
+            }
+        }
+
+        then:
+        $("div").hasNot(".z-1").size() == 0
+        $("div").hasNot(".b-1")*.@id == ["a", "c"]
+        $("div").hasNot("input", name: "someName")*.@id == ["a", "c"]
+        $("div").hasNot("input", type: "text")*.@id == ["b"]
+        $("div").hasNot(type: "text")*.@id == ["b"]
+        $("div").hasNot(By.className("b-1"))*.@id == ["a", "c"]
+        $("div").hasNot(By.tagName("input")).size() == 0
+        $("div").hasNot(By.tagName("input"), name: "someName")*.@id == ["a", "c"]
     }
 
     def not() {

@@ -55,6 +55,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Hiroyuki Ohnaka](https://github.com/azusa) - Doc improvements
 * [Erik Pragt](https://github.com/bodiam) - Migration of the manual to AsciiDoc
 * [Vijay Bolleypally](https://github.com/vijaybolleypally) - Added verification of at checkers for pages passed to `withFrame()` methods
+* [Pierre Hilt](https://github.com/pierre-hilt) - `hasNot()` filtering
 
 ## History
 
