@@ -48,7 +48,7 @@ ratpack {
                 ]
 
                 def page = pathTokens.page ?: 'index'
-                if (page in (highlightPages.keySet() + 'index')) {
+                if (page in (highlightPages.keySet() + ['index', 'lists'])) {
                     def model = [
                         oldManuals    : launchConfig.getOther('old', '').tokenize(','),
                         currentManual : launchConfig.getOther('current', ''),
