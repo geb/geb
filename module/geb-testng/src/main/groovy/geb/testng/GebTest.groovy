@@ -63,6 +63,7 @@ class GebTest {
         if (browser?.config?.autoClearCookies) {
             browser?.clearCookiesQuietly()
         }
+        resetBrowser()
     }
 
 }
