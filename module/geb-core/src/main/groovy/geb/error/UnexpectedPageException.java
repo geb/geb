@@ -52,4 +52,8 @@ public class UnexpectedPageException extends GebException {
     public UnexpectedPageException(Class<? extends Page> actualPage, Page[] potentials) {
         super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getName(), DefaultGroovyMethods.toString(potentials)));
     }
+
+	public UnexpectedPageException(List<Class<? extends Page>> potentials, List<Throwable> exceptionDetails) {
+		super(String.format("Unable to find page match (given potentials: %s) failed with (respective errors :\n %s)", DefaultGroovyMethods.toString(potentials), DefaultGroovyMethods.toString(exceptionDetails)));
+	}
 }

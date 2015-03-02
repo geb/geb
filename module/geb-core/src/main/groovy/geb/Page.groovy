@@ -206,6 +206,26 @@ class Page implements Navigable, PageContentContainer, Initializable {
     }
 
     /**
+     * Executes this page's "at checker" and returns caused exception.
+     *
+     * @param honourGlobalAtCheckWaiting
+     * @return exception i.e thrown while verifying at checker for current page (returns null if at verification is success)
+     */
+    Throwable verifyAtAndReturnCaughtException(boolean honourGlobalAtCheckWaiting = true) {
+        Throwable caughtException = null
+        try {
+            verifyThisPageAtOnly(honourGlobalAtCheckWaiting)
+        } catch (AssertionError e) {
+            caughtException = e
+        } catch (RequiredPageContentNotPresent e) {
+            caughtException = e
+        } catch (ImplicitWaitTimeoutException e) {
+            caughtException = e
+        }
+        caughtException
+    }
+
+    /**
      * Executes this page's "at checker".
      *
      * @return whether the at checker succeeded or not.
