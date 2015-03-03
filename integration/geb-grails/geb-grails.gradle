@@ -6,7 +6,7 @@ buildscript {
         maven { url 'http://repo.grails.org/grails/repo' }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:2.1.2"
+        classpath "org.grails:grails-gradle-plugin:2.2.0.RC1"
     }
 }
 
