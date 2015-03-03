@@ -53,6 +53,7 @@ dependencies {
 
     test "org.grails.plugins:spock:0.7"
     test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
+    test spockDependency
 }
 
 
