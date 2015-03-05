@@ -72,19 +72,16 @@ When matching, a single positive integer or integer range can be given to restri
 
 Consider the following html…
 
+[source,html]
 ----
-<p>a</p>
-<p>b</p>
-<p>c</p>
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges_html,indent=0]
 ----
 
 We can use indexes to match content like so…
 
+[source,groovy]
 ----
-$("p", 0).text() == "a"
-$("p", 2).text() == "c"
-$("p", 0..1)*.text() = ["a", "b"]
-$("p", 1..2)*.text() = ["b", "c"]
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges,indent=0]
 ----
 
 See below for an explanation of the `text()` method and the use of the spread operator.

@@ -71,4 +71,28 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
         $(By.xpath('//p[@class="xpath"]'))
         // end::by_selectors[]
     }
+
+    def "indexes and ranges"() {
+        given:
+        responseHtml """
+            <html>
+                // tag::indexes_and_ranges_html[]
+                <p>a</p>
+                <p>b</p>
+                <p>c</p>
+                // end::indexes_and_ranges_html[]
+            </html>
+        """
+
+        when:
+        go()
+
+        then:
+        // tag::indexes_and_ranges[]
+        $("p", 0).text() == "a"
+        $("p", 2).text() == "c"
+        $("p", 0..1)*.text() == ["a", "b"]
+        $("p", 1..2)*.text() == ["b", "c"]
+        // end::indexes_and_ranges[]
+    }
 }
