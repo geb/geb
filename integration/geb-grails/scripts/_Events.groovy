@@ -26,14 +26,15 @@ def runningTests = false
 // For Grails 2.3 spock is part of core so the spock plugin should no
 // longer be used. Try to support both configurations.
 tryToLoadTestTypes = {
-    if (!tryToLoadTestType("spock", coreSpecTestTypeClassName)) {
-        tryToLoadTestType("spock", pluginSpecTestTypeClassName)
+    if (!tryToLoadTestType(coreSpecTestTypeClassName)) {
+        tryToLoadTestType(pluginSpecTestTypeClassName)
     }
 }
 
-tryToLoadTestType = { name, typeClassName ->
+tryToLoadTestType = { typeClassName ->
+    def name = "spock"
     if (name in loadedTestTypes) {
-        return
+        return true
     }
     if (!binding.variables.containsKey("functionalTests")) {
         return
