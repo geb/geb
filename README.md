@@ -60,4 +60,4 @@ To run the entire test suite, run…
     
 ## Development Mailing List
 
-If you want to do some work on Geb and want some help, you can join the `dev@geb.codehaus.org` mailing list via [Codehaus' Xircles](http://xircles.codehaus.org/projects/geb/lists "Codehaus: Geb: Lists").
+If you want to do some work on Geb and want some help, you can join the `geb-dev@googlegroups.com` mailing list via [Google Groups](https://groups.google.com/d/forum/geb-dev).
