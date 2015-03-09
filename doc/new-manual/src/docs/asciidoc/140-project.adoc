@@ -8,9 +8,9 @@ The API reference can be found link:api/index.html[here].
 
 == Support &amp; development
 
-Support for Geb is offered on the link:mailto:&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g[&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/user@geb.codehaus.org[here].
+Support for Geb is offered on the link:mailto:geb-user@googlegroups.com[geb-user@googlegroups.com] mailing list, which can be subscribed to https://groups.google.com/forum/#!forum/geb-user[here].
 
-Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&#x76;&#x40;&#103;&#101;b&#x2e;&#x63;o&#100;&#x65;&#x68;&#97;&#117;&#115;&#46;&#111;&#x72;&#x67;[&#x64;&#101;&#x76;&#x40;&#103;&#101;b&#x2e;&#x63;o&#100;&#x65;&#x68;&#97;&#117;&#115;&#46;&#111;&#x72;&#x67;] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/dev@geb.codehaus.org[here].
+Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googlegroups.com[geb-dev@googlegroups.com] mailing list, which can be subscribed to https://groups.google.com/d/forum/geb-dev[here].
 
 == Credits
 

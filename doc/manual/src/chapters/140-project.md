@@ -8,9 +8,9 @@ The API reference can be found [here](api/index.html).
 
 ## Support & Development
 
-Support for Geb is offered on the user@geb.codehaus.org mailing list, which can be subscribed to [here](http://xircles.codehaus.org/lists/user@geb.codehaus.org).
+Support for Geb is offered on the geb-user@googlegroups.com mailing list, which can be subscribed to [here](https://groups.google.com/forum/#!forum/geb-user).
 
-Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mailing list, which can be subscribed to [here](http://xircles.codehaus.org/lists/dev@geb.codehaus.org).
+Ideas and new features for Geb can be discussed on the geb-dev@googlegroups.com mailing list, which can be subscribed to [here](https://groups.google.com/d/forum/geb-dev).
 
 ## Credits
 
