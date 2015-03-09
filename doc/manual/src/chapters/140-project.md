@@ -56,6 +56,7 @@ Ideas and new features for Geb can be discussed on the geb-dev@googlegroups.com 
 * [Erik Pragt](https://github.com/bodiam) - Migration of the manual to AsciiDoc
 * [Vijay Bolleypally](https://github.com/vijaybolleypally) - Added verification of at checkers for pages passed to `withFrame()` methods
 * [Pierre Hilt](https://github.com/pierre-hilt) - `hasNot()` filtering
+* [Yotaro Takahashi](https://github.com/PoohSunny) - Doc improvements
 
 ## History
 
