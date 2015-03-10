@@ -210,20 +210,6 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         "foo"          | 'foo'
         UnexpectedPage | "class geb.UnexpectedPage"
     }
-
-    void "ensure that an exception message with all page wise error details is thrown when no match is found in given list of pages"() {
-        when:
-        to ExpectedPage
-        page(AnotherExpectedPage, PageWithAtFailureDueToNoPageContent, AnotherExpectedPage)
-
-        then:
-        true
-        UnexpectedPageException e = thrown()
-        e.getMessage().count("Assertion failed") == 2
-        e.getMessage().count("geb.error.RequiredPageContentNotPresent")
-        e.getMessage().contains("(given potentials: [geb.AnotherExpectedPage, geb.PageWithAtFailureDueToNoPageContent, geb.AnotherExpectedPage]) failed with (respective errors :")
-        e.getMessage().contains("The required page content 'unavailableElement - SimplePageContent (owner: geb.PageWithAtFailureDueToNoPageContent, args: [], value: null)' is not present")
-    }
 }
 
 class UnexpectedPage extends Page {
@@ -260,15 +246,6 @@ class AnotherExpectedPage extends Page {
     static url = "?title=anotherExpected"
 
     static at = { title == 'anotherExpected' }
-}
-
-class PageWithAtFailureDueToNoPageContent extends Page {
-    static at = {
-        unavailableElement.displayed
-    }
-    static content = {
-        unavailableElement { $("#invalid") }
-    }
 }
 
 class ParametrizedPage extends Page {

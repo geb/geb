@@ -194,24 +194,16 @@ class Page implements Navigable, PageContentContainer, Initializable {
      * @see #verifyAt()
      */
     boolean verifyAtSafely(boolean honourGlobalAtCheckWaiting = true) {
-        try {
-            verifyThisPageAtOnly(honourGlobalAtCheckWaiting)
-        } catch (AssertionError e) {
-            false
-        } catch (RequiredPageContentNotPresent e) {
-            false
-        } catch (ImplicitWaitTimeoutException e) {
-            false
-        }
+        verifyAtAndStoreCaughtException(honourGlobalAtCheckWaiting).passed
     }
 
     /**
-     * Executes this page's "at checker" and returns caused exception.
+     * Executes this page's "at checker" and sends result of execution to AtVerificationResult class.
      *
      * @param honourGlobalAtCheckWaiting
-     * @return exception i.e thrown while verifying at checker for current page (returns null if at verification is success)
+     * @return instance of AtVerificationResult class which holds current page at result
      */
-    Throwable verifyAtAndReturnCaughtException(boolean honourGlobalAtCheckWaiting = true) {
+    AtVerificationResult verifyAtAndStoreCaughtException(boolean honourGlobalAtCheckWaiting = true) {
         Throwable caughtException = null
         try {
             verifyThisPageAtOnly(honourGlobalAtCheckWaiting)
@@ -222,7 +214,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
         } catch (ImplicitWaitTimeoutException e) {
             caughtException = e
         }
-        caughtException
+        new AtVerificationResult(this, caughtException)
     }
 
     /**

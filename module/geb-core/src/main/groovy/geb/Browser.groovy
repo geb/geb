@@ -994,10 +994,10 @@ class Browser {
 
     private Page verifyPages(List<Page> pages) {
         List listOfPageException = []
+        boolean matchFound = false
         def match = pages.find {
-            boolean matchFound = false
-            Throwable atVerificationResult = it.verifyAtAndReturnCaughtException()
-            if (atVerificationResult == null) {
+            AtVerificationResult atVerificationResult = it.verifyAtAndStoreCaughtException()
+            if (atVerificationResult.isPassed()) {
                 matchFound = true
             } else {
                 listOfPageException.add(atVerificationResult)
@@ -1007,7 +1007,7 @@ class Browser {
         if (match) {
             makeCurrentPage(match)
         } else {
-            throw new UnexpectedPageException(pages, listOfPageException)
+            throw new UnexpectedPageException(listOfPageException)
         }
         match
     }

@@ -369,6 +369,18 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         where:
         contentName << ["linkWithToWaitAndVariantTo", "linkWithToWaitAndVariantToUsingPageInstances"]
     }
+
+    def "ensure that an exception message with all page wise error details is thrown when no match is found in given list of pages"() {
+        when:
+        to PageOrientedSpecPageA
+        page(PageOrientedSpecPageB, PageOrientedSpecPageC)
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage().contains("Unable to find page match (given potential page and there exception are : [")
+        e.getMessage().contains("geb.PageOrientedSpecPageB : geb.error.RequiredPageContentNotPresent: The required page content 'link - SimplePageContent (owner: geb.PageOrientedSpecPageB")
+        e.getMessage().contains("geb.PageOrientedSpecPageC : Assertion failed:")
+    }
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -484,4 +496,8 @@ class PageOrientedSpecParametrizedPage extends Page {
     static content = {
         elementWithId { $(id: id) }
     }
+}
+
+class PageWithAtWaiting extends Page {
+    static at = { waitFor {$('#D')}}
 }
