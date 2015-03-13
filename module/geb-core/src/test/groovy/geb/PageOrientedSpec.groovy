@@ -378,8 +378,8 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         then:
         UnexpectedPageException e = thrown()
         e.getMessage().contains("Unable to find page match (given potential page and there exception are : [")
-        e.getMessage().contains("geb.PageOrientedSpecPageB : geb.error.RequiredPageContentNotPresent: The required page content 'link - SimplePageContent (owner: geb.PageOrientedSpecPageB")
-        e.getMessage().contains("geb.PageOrientedSpecPageC : Assertion failed:")
+        e.getMessage().contains("geb.PageOrientedSpecPageB : Exception message: The required page content 'link - SimplePageContent (owner: geb.PageOrientedSpecPageB")
+        e.getMessage().contains("geb.PageOrientedSpecPageC : Exception message: false")
     }
 }
 
