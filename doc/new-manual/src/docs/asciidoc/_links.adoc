@@ -8,12 +8,12 @@
 :webclient: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 :webdriver: http://code.google.com/p/selenium/[WebDriver]
 :webdriver-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebDriver.html[WebDriver]
-:webelement-api: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html
-:by-api: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/By.html
-:htmlunitdriver: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
-:iedriver: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/ie/InternetExplorerDriver.html
-:firefoxdriver: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/firefox/FirefoxDriver.html
-:chromedriver: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html
+:webelement-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebElement.html
+:by-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/By.html[By]
+:htmlunitdriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
+:iedriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/ie/InternetExplorerDriver.html
+:firefoxdriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/firefox/FirefoxDriver.html
+:chromedriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/chrome/ChromeDriver.html
 :browser: browser.html
 :navigator: <<navigator>>
 :clicking: navigator.html#clicking
@@ -30,7 +30,7 @@
 :testng: http://testng.org/[TestNg]
 :cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
 :geb-cucumber: https://github.com/tomdcc/geb-cucumber
-:javascriptexecutor: http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html
+:javascriptexecutor: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/JavascriptExecutor.html
 :remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver
 :remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer
 :configslurper: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html

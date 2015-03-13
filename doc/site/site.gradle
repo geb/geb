@@ -62,7 +62,7 @@ dependencies {
 
     springloaded "org.springframework:springloaded:1.2.0.RELEASE"
     compile ratpack.dependency("groovy")
-    testCompile "org.spockframework:spock-core:0.7-groovy-2.0",
+    testCompile spockDependency,
         "org.jsoup:jsoup:1.7.3",
         project(':module:geb-spock'),
         htmlUnitDriverDependency,

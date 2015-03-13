@@ -8,9 +8,9 @@ The API reference can be found [here](api/index.html).
 
 ## Support & Development
 
-Support for Geb is offered on the user@geb.codehaus.org mailing list, which can be subscribed to [here](http://xircles.codehaus.org/lists/user@geb.codehaus.org).
+Support for Geb is offered on the geb-user@googlegroups.com mailing list, which can be subscribed to [here](https://groups.google.com/forum/#!forum/geb-user).
 
-Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mailing list, which can be subscribed to [here](http://xircles.codehaus.org/lists/dev@geb.codehaus.org).
+Ideas and new features for Geb can be discussed on the geb-dev@googlegroups.com mailing list, which can be subscribed to [here](https://groups.google.com/d/forum/geb-dev).
 
 ## Credits
 
@@ -56,6 +56,7 @@ Ideas and new features for Geb can be discussed on the dev@geb.codehaus.org mail
 * [Erik Pragt](https://github.com/bodiam) - Migration of the manual to AsciiDoc
 * [Vijay Bolleypally](https://github.com/vijaybolleypally) - Added verification of at checkers for pages passed to `withFrame()` methods
 * [Pierre Hilt](https://github.com/pierre-hilt) - `hasNot()` filtering
+* [Yotaro Takahashi](https://github.com/PoohSunny) - Doc improvements
 
 ## History
 
@@ -83,6 +84,7 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking changes
 * `Page.toString()` now returns full page class name instead of its simple name.
+* Geb is now built with Groovy 2.3.9 and Spock 1.0-groovy-2.3.
 
 #### Deprecations
 * `module(Class<? extends Module>, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class<? extends Module>)` and will be removed in a future version of Geb.

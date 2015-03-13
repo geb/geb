@@ -8,9 +8,9 @@ The API reference can be found link:api/index.html[here].
 
 == Support &amp; development
 
-Support for Geb is offered on the link:mailto:&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g[&#117;s&#101;&#x72;&#x40;&#x67;&#x65;&#98;&#x2e;&#x63;o&#100;&#x65;&#104;a&#117;&#115;&#46;o&#114;g] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/user@geb.codehaus.org[here].
+Support for Geb is offered on the link:mailto:geb-user@googlegroups.com[geb-user@googlegroups.com] mailing list, which can be subscribed to https://groups.google.com/forum/#!forum/geb-user[here].
 
-Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&#x76;&#x40;&#103;&#101;b&#x2e;&#x63;o&#100;&#x65;&#x68;&#97;&#117;&#115;&#46;&#111;&#x72;&#x67;[&#x64;&#101;&#x76;&#x40;&#103;&#101;b&#x2e;&#x63;o&#100;&#x65;&#x68;&#97;&#117;&#115;&#46;&#111;&#x72;&#x67;] mailing list, which can be subscribed to http://xircles.codehaus.org/lists/dev@geb.codehaus.org[here].
+Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googlegroups.com[geb-dev@googlegroups.com] mailing list, which can be subscribed to https://groups.google.com/d/forum/geb-dev[here].
 
 == Credits
 
@@ -56,6 +56,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:&#x64;&#101;&
 * https://github.com/bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
 * https://github.com/vijaybolleypally[Vijay Bolleypally] - Various fixes
 * https://github.com/pierre-hilt[Pierre Hilt] - `hasNot()` filtering
+* https://github.com/PoohSunny[Yotaro Takahashi] - Doc improvements
 
 == History
 
@@ -92,6 +93,7 @@ This page lists the high level changes between versions of Geb.
 
 * `Page.toString()` now returns full page class name instead of its simple name.
 * `MissingPropertyException` is thrown instead of `UnresolvablePropertyException` when content with a given name is not found on page or module.
+* Geb is now built with Groovy 2.3.9 and Spock 1.0-groovy-2.3.
 
 ==== Deprecations
 

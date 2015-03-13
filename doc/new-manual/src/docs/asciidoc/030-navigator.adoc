@@ -1,63 +1,69 @@
 [[navigator]]
 = Interacting with content
 
-Geb provides a concise and Groovy interface to the content and controls in your browser. This is implemented through the `Navigator` API which is a jQuery inspired mechanism for finding, filtering and interacting with DOM elements.
+Geb provides a concise and Groovy interface to the content and controls in your browser.
+This is implemented through the `Navigator` API which is a jQuery inspired mechanism for finding, filtering and interacting with DOM elements.
 
 == The `$()` function
 
-The $ function is the access point to the browser's page content. This returns a `geb.navigator.Navigator` object that is roughly analogous to a jQuery object. It is analogous in that it represents one or more elements on the page and can be used to refine the matched content or query the matched content. When a $ function is called that does not match any content, an “empty” navigator object is returned that represents no content. Operations on “empty” navigators return `null` or another “empty” navigator or other values that make sense (e.g. the `size()` method returns `0`).
+The `$()` function is the access point to the browser's page content.
+It returns a `{navigator-api}` object that is roughly analogous to a jQuery object.
+It is analogous in that it represents one or more elements on the page and can be used to refine the matched content or query the matched content.
+When a `$()` function is called that does not match any content, an “empty” navigator object is returned that represents no content.
+Operations on “empty” navigators return `null` or another “empty” navigator or other values that make sense (e.g. the `size()` method returns `0`).
 
-The signature of the $ function is as follows…
+The signature of the `$()` function is as follows…
 
+[source,groovy]
 ----
 $(«css selector», «index or range», «attribute / text matchers»)
 ----
 
 The following is a concrete example…
 
+[source,groovy]
 ----
-$("h1", 2, class: "heading")
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=concrete_example,indent=0]
 ----
 
 This would find the 3rd (elements are 0 indexed) `h1` element whose `class` _attribute_ is exactly “`heading`”.
 
 All arguments are optional, meaning the following calls are all valid:
 
+[source,groovy]
 ----
-$("div p", 0)
-$("div p", title: "something")
-$(0)
-$(title: "something")
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=other_examples,indent=0]
 ----
 
-____
-
-There is an alias for the dollar function named “find” if a method named “$” is not to your taste (a current limitation of Groovy prevents us supporting a `find()` method like `$()` though, this will be fixed in later versions).
-
-____
+[NOTE]
+====
+There is an alias for the dollar function named “find” if a method named “$” is not to your taste.
+====
 
 === CSS Selectors
 
 You can use any CSS selector that the underlying `WebDriver` supports…
 
+[source,groovy]
 ----
-$("div.some-class p:first[title='something']")
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=css3_selectors,indent=0]
 ----
 
-In the case of the HTMLUnit driver, which does not support CSS selectors at all, only basic CSS 2 type selectors can be used. A future version of the HTMLUnit driver may gain better CSS selector support.
+HTMLUnit driver only partially supports CSS 3.
+A future version of the HTMLUnit driver may gain better CSS 3 support.
 
 === Using WebDriver's `By` class selectors
 
-For all signatures of `$` function that accept a css selector there is an equivalent signature where an instance of WebDriver's [`By`][by-api] class can be used. 
+For all signatures of `$()` function that accept a css selector there is an equivalent signature where an instance of WebDriver's `{by-api}` class can be used instead of a `String`.
 
-Using CSS selectors is the idiomatic way of using Geb and should be preferred to using `By` selectors. It is always possible to select the same elements using a css selector as when using a certain `By` selector apart from certain XPath selectors which is why this convenience mechanism is provided.
+Using CSS selectors is the idiomatic way of using Geb and should be preferred to using `By` selectors.
+It is always possible to select the same elements using a css selector as when using a certain `By` selector apart from certain XPath selectors which is why this convenience mechanism is provided.
 
 Following are some examples of using `By` selectors…
 
+[source,groovy]
 ----
-$(By.id("some-id"))
-$(By.className("some-class"))
-$(By.xpath("//some-xpath")
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=by_selectors,indent=0]
 ----
 
 === Indexes and ranges
@@ -66,19 +72,16 @@ When matching, a single positive integer or integer range can be given to restri
 
 Consider the following html…
 
+[source,html]
 ----
-<p>a</p>
-<p>b</p>
-<p>c</p>
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges_html,indent=0]
 ----
 
 We can use indexes to match content like so…
 
+[source,groovy]
 ----
-$("p", 0).text() == "a"
-$("p", 2).text() == "c"
-$("p", 0..1)*.text() = ["a", "b"]
-$("p", 1..2)*.text() = ["b", "c"]
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges,indent=0]
 ----
 
 See below for an explanation of the `text()` method and the use of the spread operator.

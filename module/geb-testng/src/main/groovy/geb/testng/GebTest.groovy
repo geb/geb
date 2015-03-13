@@ -42,7 +42,11 @@ class GebTest {
         browser
     }
 
+    @AfterMethod
     void resetBrowser() {
+        if (browser?.config?.autoClearCookies) {
+            browser?.clearCookiesQuietly()
+        }
         browser = null
     }
 
@@ -57,12 +61,4 @@ class GebTest {
     def propertyMissing(String name, value) {
         getBrowser()."$name" = value
     }
-
-    @AfterMethod
-    void clearBrowserCookies() {
-        if (browser?.config?.autoClearCookies) {
-            browser?.clearCookiesQuietly()
-        }
-    }
-
 }

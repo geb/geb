@@ -6,7 +6,7 @@ buildscript {
         maven { url 'http://repo.grails.org/grails/repo' }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:2.1.2"
+        classpath "org.grails:grails-gradle-plugin:2.2.0.RC1"
     }
 }
 
@@ -50,9 +50,6 @@ dependencies {
         exclude module: "spock-core"
         exclude module: "groovy-all"
     }
-
-    test "org.grails.plugins:spock:0.7"
-    test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
 }
 
 
