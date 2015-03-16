@@ -16,9 +16,10 @@ package geb.error;
 
 import geb.AtVerificationResult;
 import geb.Page;
+import geb.waiting.ImplicitWaitTimeoutException;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
-import java.util.List;
+import java.util.Map;
 
 public class UnexpectedPageException extends GebException {
 
@@ -50,7 +51,34 @@ public class UnexpectedPageException extends GebException {
         super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getName(), DefaultGroovyMethods.toString(potentials)));
     }
 
-    public UnexpectedPageException(List<AtVerificationResult> atVerificationResults) {
-        super(String.format("Unable to find page match (given potential page and there exception are : %s )", atVerificationResults));
+    public UnexpectedPageException(Map<? extends Page, AtVerificationResult> pageVerificationResults) {
+        super(String.format("Unable to find page match (given potential page and there exception are : %s )", UnexpectedPageException.getErrorMessage(pageVerificationResults)));
+    }
+
+    private static String getErrorMessage(Map<? extends Page, AtVerificationResult> pageVerificationResults) {
+        String errorMessage = "";
+        for (Map.Entry<? extends Page, AtVerificationResult> pageVerificationResult : pageVerificationResults.entrySet()) {
+            Page page = pageVerificationResult.getKey();
+            Throwable errorThrown = pageVerificationResult.getValue().getErrorThrown();
+            String message = "";
+            String stackTraceTag = ": StackTrace : ";
+            if (errorThrown instanceof AssertionError || errorThrown instanceof RequiredPageContentNotPresent) {
+                message += "Exception message: " + errorThrown.getMessage();
+                if (errorThrown.getStackTrace().length > 0) {
+                    message += stackTraceTag + errorThrown.getStackTrace()[0].toString();
+                }
+            } else if (errorThrown instanceof ImplicitWaitTimeoutException) {
+                ImplicitWaitTimeoutException timeoutException = (ImplicitWaitTimeoutException) errorThrown;
+                message += "Timeout exception message: " + timeoutException.getMessage();
+                message += ": Cause message : " + timeoutException.getCause().getMessage();
+                if (timeoutException.getCause().getStackTrace().length > 0) {
+                    message += stackTraceTag + timeoutException.getCause().getStackTrace()[0].toString();
+                }
+            } else {
+                message = DefaultGroovyMethods.toString(errorThrown);
+            }
+            errorMessage += String.format("\n %s : %s", page.getClass().getName(), message);
+        }
+        return errorMessage;
     }
 }

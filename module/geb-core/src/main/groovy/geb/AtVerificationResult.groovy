@@ -14,22 +14,16 @@
  */
 package geb
 
-import geb.error.RequiredPageContentNotPresent
-import geb.waiting.ImplicitWaitTimeoutException
-import org.codehaus.groovy.runtime.DefaultGroovyMethods
-
 /**
  * Created by vijayb on 05-03-2015.
  *
  * Class to hold page data and its at verification result
  */
 class AtVerificationResult {
-    private Page page
     private Throwable errorThrown
     private boolean atResult
 
-    AtVerificationResult(Page page, boolean atResult, Throwable errorThrown) {
-        this.page = page
+    AtVerificationResult(boolean atResult, Throwable errorThrown) {
         this.atResult = atResult
         this.errorThrown = errorThrown
     }
@@ -39,7 +33,7 @@ class AtVerificationResult {
      *
      * @return boolean value representing  at check verification result
      */
-    boolean toBoolean() {
+    boolean asBoolean() {
         errorThrown == null && atResult
     }
 
@@ -50,37 +44,5 @@ class AtVerificationResult {
      */
     Throwable getErrorThrown() {
         errorThrown
-    }
-
-    /**
-     * Returns error message to be displayed while throwing the exception by appending name of page class
-     * and cause for its at check failure
-     *
-     * @return Error message to be displayed while throwing the exception
-     */
-    String toString() {
-        String.format("\n %s : %s", page.getClass().getName(), getErrorMessage())
-    }
-
-    private String getErrorMessage() {
-        String message = ""
-        String stackTraceTag = ": StackTrace : "
-        if (errorThrown instanceof AssertionError || errorThrown instanceof RequiredPageContentNotPresent) {
-            message += "Exception message: " + errorThrown.getMessage()
-            if (errorThrown.getStackTrace().length > 0) {
-                message += stackTraceTag + errorThrown.getStackTrace()[0].toString()
-            }
-
-        } else if (errorThrown instanceof ImplicitWaitTimeoutException) {
-            ImplicitWaitTimeoutException timeoutException = (ImplicitWaitTimeoutException) errorThrown
-            message += "Timeout exception message: " + timeoutException.getMessage()
-            message += ": Cause message : " + timeoutException.getCause().getMessage()
-            if (timeoutException.getCause().getStackTrace().length > 0) {
-                message += stackTraceTag + timeoutException.getCause().getStackTrace()[0].toString()
-            }
-        } else {
-            message = DefaultGroovyMethods.toString(errorThrown)
-        }
-        message
     }
 }
