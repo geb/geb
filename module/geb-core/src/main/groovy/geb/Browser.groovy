@@ -994,15 +994,12 @@ class Browser {
 
     private Page verifyPages(List<Page> pages) {
         List listOfPageException = []
-        boolean matchFound = false
         def match = pages.find {
             AtVerificationResult atVerificationResult = it.verifyAtAndStoreCaughtException()
-            if (atVerificationResult.isPassed()) {
-                matchFound = true
-            } else {
+            if (!atVerificationResult.toBoolean()) {
                 listOfPageException.add(atVerificationResult)
             }
-            matchFound
+            atVerificationResult.toBoolean()
         }
         if (match) {
             makeCurrentPage(match)

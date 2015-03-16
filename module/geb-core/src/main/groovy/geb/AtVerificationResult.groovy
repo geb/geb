@@ -26,25 +26,37 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods
 class AtVerificationResult {
     private Page page
     private Throwable errorThrown
+    private boolean atResult
 
-    AtVerificationResult(Page page, Throwable errorThrown) {
+    AtVerificationResult(Page page, boolean atResult, Throwable errorThrown) {
         this.page = page
+        this.atResult = atResult
         this.errorThrown = errorThrown
     }
 
     /**
-     * Returns true if errorThrown is null(throwable object type)
+     * Returns true if errorThrown is null and at verification result is true
      *
      * @return boolean value representing  at check verification result
      */
-    boolean isPassed() {
-        errorThrown == null
+    boolean toBoolean() {
+        errorThrown == null && atResult
     }
 
     /**
-     * Returns name of page class and cause for its at check failure
+     * Returns the error thrown by the page verification.
      *
-     * @return
+     * @return Error thrown during page at check
+     */
+    Throwable getErrorThrown() {
+        errorThrown
+    }
+
+    /**
+     * Returns error message to be displayed while throwing the exception by appending name of page class
+     * and cause for its at check failure
+     *
+     * @return Error message to be displayed while throwing the exception
      */
     String toString() {
         String.format("\n %s : %s", page.getClass().getName(), getErrorMessage())
