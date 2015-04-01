@@ -44,7 +44,8 @@ class SelectControlSpec extends GebSpecWithCallbackServer {
         $().s1 = "o3"
 
         then:
-        thrown(IllegalArgumentException)
+        IllegalArgumentException e = thrown()
+        e.message.contains 'available values: [o1, o2]'
 
         when:
         $().s1 = "o2"
