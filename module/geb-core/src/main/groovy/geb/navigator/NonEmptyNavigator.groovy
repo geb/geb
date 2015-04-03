@@ -749,8 +749,9 @@ class NonEmptyNavigator extends AbstractNavigator {
                 try {
                     select.selectByVisibleText(valueString)
                 } catch (NoSuchElementException e2) {
-                    def availableValues = select.options.collect{ it.getAttribute('value') }
-                    throw new IllegalArgumentException("couldn't select option with text or value: $valueString, available values: $availableValues")
+                    def availableValues = select.options*.getAttribute("value")
+                    def availableTexts = select.options*.getText()
+                    throw new IllegalArgumentException("Couldn't select option with text or value: $valueString, available texts: $availableTexts, available values: $availableValues")
                 }
             }
         }
