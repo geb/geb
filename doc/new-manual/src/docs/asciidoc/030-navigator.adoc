@@ -88,38 +88,43 @@ See below for an explanation of the `text()` method and the use of the spread op
 
 === Attribute and text matching
 
-Matches can be made on attributes and node text values via Groovy's named parameter syntax. The value `text` is treated specially as a match against the node's text. All other values are matched against their corresponding attribute values.
+Matches can be made on attributes and node text values via Groovy's named parameter syntax.
+The value `text` is treated specially as a match against the node's text.
+All other values are matched against their corresponding attribute values.
 
 Consider the following html…
 
+[source,html]
 ----
-<p attr1="a" attr2="b">p1</p>
-<p attr1="a" attr2="c">p2</p>
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=attributes_html,indent=0]
 ----
 
 We can use attribute matchers like so…
 
+[source,groovy]
 ----
-$("p", attr1: "a").size() == 2
-$("p", attr2: "c").size() == 1
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=attributes,indent=0]
 ----
 
 Attribute values are `and`ed together…
 
+[source,groovy]
 ----
-$("p", attr1: "a", attr2: "b").size() == 1
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=multiple_attributes,indent=0]
 ----
 
 We can use text matchers like so…
 
+[source,groovy]
 ----
-$("p", text: "p1").size() == 1
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=text_matchers,indent=0]
 ----
 
 You can mix attribute and text matchers…
 
+[source,groovy]
 ----
-$("p", text: "p1", attr1: "a").size() == 1
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=matchers_and_attributes,indent=0]
 ----
 
 ==== Using patterns

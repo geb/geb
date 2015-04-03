@@ -95,4 +95,34 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
         $("p", 1..2)*.text() == ["b", "c"]
         // end::indexes_and_ranges[]
     }
+
+    def "attributes and text matching"() {
+        given:
+        responseHtml """
+            <html>
+                // tag::attributes_html[]
+                <p attr1="a" attr2="b">p1</p>
+                <p attr1="a" attr2="c">p2</p>
+                // end::attributes_html[]
+            </html>
+        """
+
+        when:
+        go()
+
+        then:
+        // tag::attributes[]
+        $("p", attr1: "a").size() == 2
+        $("p", attr2: "c").size() == 1
+        // end::attributes[]
+        // tag::multiple_attributes[]
+        $("p", attr1: "a", attr2: "b").size() == 1
+        // end::multiple_attributes[]
+        // tag::text_matchers[]
+        $("p", text: "p1").size() == 1
+        // end::text_matchers[]
+        // tag::matchers_and_attributes[]
+        $("p", text: "p1", attr1: "a").size() == 1
+        // end::matchers_and_attributes[]
+    }
 }
