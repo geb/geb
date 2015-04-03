@@ -57,6 +57,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * https://github.com/vijaybolleypally[Vijay Bolleypally] - Various fixes
 * https://github.com/pierre-hilt[Pierre Hilt] - `hasNot()` filtering
 * https://github.com/PoohSunny[Yotaro Takahashi] - Doc improvements
+* https://github.com/johenberger[Jochen Berger] - Better error reporting when trying to set a nonexistent select option
 
 == History
 
