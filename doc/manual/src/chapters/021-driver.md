@@ -62,4 +62,4 @@ See [this mailing list thread](http://markmail.org/thread/bu3g56oxz2uqzq43 "[geb
 
 HTMLUnit can be very noisy, and it's not clear how to make it not so noisy.
 
-See [this issue](http://jira.codehaus.org/browse/GEB-98) for some tips on how to tune its logging.
+See [this issue](https://github.com/geb/issues/issues/98) for some tips on how to tune its logging.
