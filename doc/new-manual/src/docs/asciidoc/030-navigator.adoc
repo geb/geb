@@ -176,17 +176,26 @@ They simply just return patterns.
 
 The navigator objects implement the Java `Iterable` interface, which allows you to do lots of Groovy stuff like use the `max()` function…
 
+Consider the following html…
+
+[source,html]
 ----
 <p>1</p>
 <p>2</p>
+----
 
-$("p").max { it.text() }.text() == "2"
+You can use the `max()` function on `Navigator` instances…
+
+[source,groovy]
+----
+include::{testDir}/navigator/IterableSpec.groovy[tag=max,indent=0]
 ----
 
 This also means that navigator objects work with the Groovy spread operator…
 
+[source,groovy]
 ----
-$("p")*.text().max() == "2"
+include::{testDir}/navigator/IterableSpec.groovy[tag=spread,indent=0]
 ----
 
 When treating a navigator as `Iterable`, the iterated over content is always the exact matched elements (as opposed to including children).
