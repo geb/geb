@@ -202,71 +202,75 @@ When treating a navigator as `Iterable`, the iterated over content is always the
 
 == Finding &amp; filtering
 
-Navigator objects have `find` and `$` methods for finding descendants, and `filter` and `not` methods for reducing the matched content.
+Navigator objects have `find()` and `$()` methods for finding descendants, and `filter()` and `not()` methods for reducing the matched content.
 
 Consider the following HTML…
 
+[source,html]
 ----
-<div class="a">
-    <p class="b">geb</p>
-</div>
-<div class="b">
-    <input type="text"/>
-</div>
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=html,indent=0]
 ----
 
 We can select `p.b` by…
 
+[source,groovy]
 ----
-$("div").find(".b")
-$("div").$(".b")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=find,indent=0]
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=dollar,indent=0]
 ----
 
 We can select `div.b` by…
 
+[source,groovy]
 ----
-$("div").filter(".b")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=filter,indent=0]
 ----
 
 or…
 
+[source,groovy]
 ----
-$(".b").not("p")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=not,indent=0]
 ----
 
 We can select the `div` containing the `p` with…
 
+[source,groovy]
 ----
-$("div").has("p")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=a_has,indent=0]
 ----
 
 Or select the `div` containing the `input` with a type attribute of "text" like so…
 
+[source,groovy]
 ----
-$("div").has("input", type: "text")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=b_has,indent=0]
 ----
 
 We can select the `div` that does not contain the `p` with…
 
+[source,groovy]
 ----
-$("div").hasNot("p")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=b_has_not,indent=0]
 ----
 
 Or select the `div` that does not contain the `input` with a type attribute of "text" like so…
 
+[source,groovy]
 ----
-$("div").hasNot("input", type: "text")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=a_has_not,indent=0]
 ----
 
 Or select the two `div` that do not contain `input` with a type attribute of "submit" like so…
 
+[source,groovy]
 ----
-$("div").hasNot("input", type: "submit")
+include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=has_not,indent=0]
 ----
 
-The `find` and `$` methods support the *exact same argument types as the $ function*.
+The `find()` and `$()` methods support the *exact same argument types as the `$()` function*.
 
-The `filter`, `not`, `has` and `hasNot` methods have the same signatures - they accept: a selector string, a predicates map or both.
+The `filter()`, `not()`, `has()` and `hasNot()` methods have the same signatures - they accept: a selector string, a predicates map or both.
 
 These methods return a new navigator object that represents the new content.
 
