@@ -131,15 +131,16 @@ include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=matchers_and_attribut
 
 To match the entire value of an attribute or the text you use a `String` value. It is also possible to use a `Pattern` to do regexp matching…
 
+[source,groovy]
 ----
-$("p", text: ~/p./).size() == 2
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=pattern,indent=0]
 ----
 
 Geb also ships with a bunch of shortcut pattern methods…
 
+[source,groovy]
 ----
-$("p", text: startsWith("p")).size() == 2
-$("p", text: endsWith("2")).size() == 1
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=pattern_methods,indent=0]
 ----
 
 The following is the complete listing:
@@ -159,15 +160,17 @@ The following is the complete listing:
 
 All of these methods themselves can take a `String` or a `Pattern`…
 
+[source,groovy]
 ----
-$("p", text: contains(~/\d/)).size() == 2
+include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=pattern_methods_using_pattern,indent=0]
 ----
 
-____
-
-You might be wondering how this magic works, i.e. where these methods come from and where they can be used. They are methods that are available on `geb.Page` and other _places_ where you can use the $ function. They simply just return patterns.
-
-____
+[NOTE]
+====
+You might be wondering how this magic works, i.e. where these methods come from and where they can be used.
+They are methods that are available on `geb.Page` and other _places_ where you can use the $ function.
+They simply just return patterns.
+====
 
 === Navigators are iterable
 
