@@ -284,4 +284,14 @@ class EmptyNavigator extends AbstractNavigator {
             throw new MissingPropertyException(name, getClass())
         }
     }
+
+    @Override
+    int hashCode() {
+        EmptyNavigator.hashCode()
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        obj instanceof EmptyNavigator
+    }
 }

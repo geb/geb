@@ -16,13 +16,10 @@
 package geb.navigator
 
 import geb.Browser
-import geb.Module
 import geb.Page
-import geb.content.ModuleBaseCalculator
 import geb.error.UnableToSetElementException
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
-import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatcher
 import geb.waiting.Wait
 import org.openqa.selenium.By
@@ -871,4 +868,16 @@ class NonEmptyNavigator extends AbstractNavigator {
         }
     }
 
+    @Override
+    int hashCode() {
+        return contextElements.hashCode()
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        if (obj instanceof NonEmptyNavigator) {
+            return contextElements.equals(obj.contextElements)
+        }
+        return false
+    }
 }

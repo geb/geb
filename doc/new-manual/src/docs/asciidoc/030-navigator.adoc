@@ -180,8 +180,7 @@ Consider the following html…
 
 [source,html]
 ----
-<p>1</p>
-<p>2</p>
+include::{testDir}/navigator/IterableSpec.groovy[tag=iterable_html,indent=0]
 ----
 
 You can use the `max()` function on `Navigator` instances…
@@ -199,6 +198,40 @@ include::{testDir}/navigator/IterableSpec.groovy[tag=spread,indent=0]
 ----
 
 When treating a navigator as `Iterable`, the iterated over content is always the exact matched elements (as opposed to including children).
+
+=== `equals()` and `hashCode()`
+
+It's possible to check `Navigator` instances for equality.
+The rules are simple - two empty navigators are always equal and two non empty navigators are only equal if they contain the exact same elements in the same order.
+
+Consider the following HTML…
+
+[source,html]
+----
+include::{testDir}/navigator/EqualsSpec.groovy[tag=html,indent=0]
+----
+
+Here are some examples of equal Navigator instances…
+
+[source,groovy]
+----
+include::{testDir}/navigator/EqualsSpec.groovy[tag=equal,indent=0]
+----
+<1> Two empty navigators
+<2> Two single element navigators containing the same element
+<3> Two single element navigators containing the same element created using different methods
+<4> Two multi element navigators containing the same elements
+<5> Two multi element navigators containing the same elements created using different methods
+
+And some that are not equal…
+
+[source,groovy]
+----
+include::{testDir}/navigator/EqualsSpec.groovy[tag=not_equal,indent=0]
+----
+<1> Empty and not empty navigators
+<2> Single element navigators containing different elements
+<3> Multi element navigators containing the same elements but in a different order
 
 == Finding &amp; filtering
 
