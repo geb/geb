@@ -80,6 +80,7 @@ This page lists the high level changes between versions of Geb.
 * Support for using `interact {}` blocks in modules. [https://github.com/geb/issues/issues/364[#364]]
 * Support page level `atCheckWaiting` configuration. [https://github.com/geb/issues/issues/287[#287]]
 * `Navigator` elements can now also be filtered using `hasNot()` method. [https://github.com/geb/issues/issues/370[#370]]
+* Custom implementation of `equals()` and `hashCode()` methods have been added to classes implementing `Navigator`. [https://github.com/geb/issues/issues/374[#374]]
 
 ==== Fixes
 
