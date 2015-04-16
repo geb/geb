@@ -313,96 +313,80 @@ Navigators also have methods for selecting content _around_ the matched content.
 
 Consider the following HTML…
 
+[source,html]
 ----
-<div class="a">
-    <div class="b">
-        <p class="c"></p>
-        <p class="d"></p>
-        <p class="e"></p>
-    </div>
-    <div class="f"></div>
-</div>
+include::{testDir}/navigator/TraversingSpec.groovy[tag=siblings_html,indent=0]
 ----
 
 You can select content _around_ `p.d` by…
 
+[source,groovy]
 ----
-$("p.d").previous() // 'p.c'
-$("p.e").prevAll() // 'p.c' & 'p.d'
-$("p.d").next() // 'p.e'
-$("p.c").nextAll() // 'p.d' & 'p.e'
-$("p.d").parent() // 'div.b'
-$("p.c").siblings() // 'p.d' & 'p.e'
-$("div.a").children() // 'div.b' & 'div.f'
+include::{testDir}/navigator/TraversingSpec.groovy[tag=siblings,indent=0]
 ----
 
 Consider the following HTML…
 
+[source,html]
 ----
-<p class="a"></p>
-<p class="b"></p>
-<p class="c"></p>
+include::{testDir}/navigator/TraversingSpec.groovy[tag=next_html,indent=0]
 ----
 
 The following code will select `p.b` &amp; `p.c`…
 
+[source,groovy]
 ----
-$("p").next()
+include::{testDir}/navigator/TraversingSpec.groovy[tag=next,indent=0]
 ----
 
-The `previous`, `prevAll`, `next`, `nextAll`, `parent`, `parents`, `closest`, `siblings` and `children` methods can also take CSS selectors and attribute matchers.
+The `previous()`, `prevAll()`, `next()`, `nextAll()`, `parent()`, `parents()`, `closest()`, `siblings()` and `children()` methods can also take CSS selectors and attribute matchers.
 
 Using the same html, the following examples will select `p.c`…
 
+[source,groovy]
 ----
-$("p").next(".c")
-$("p").next(class: "c")
-$("p").next("p", class: "c")
+include::{testDir}/navigator/TraversingSpec.groovy[tag=next_with_args,indent=0]
 ----
 
 Likewise, consider the following HTML…
 
+[source,html]
 ----
-<div class="a">
-    <div class="b">
-        <p></p>
-    </div>
-</div>
+include::{testDir}/navigator/TraversingSpec.groovy[tag=parent_closest_html,indent=0]
 ----
 
 The following examples will select `div.b`…
 
+[source,groovy]
 ----
-$("p").parent(".b")
-$("p").parent(class: "b")
-$("p").parent("div", class: "b")
-----
-
-The `closest` method is a special case in that it will select the first ancestors of the current elements that match a selector. There is no no-argument version of the `closest` method. For example, these will select `div.a`…
-
-----
-$("p").closest(".a")
-$("p").closest(class: "a")
-$("p").closest("div", class: "a")
+include::{testDir}/navigator/TraversingSpec.groovy[tag=parent,indent=0]
 ----
 
-These methods do not take indexes as they automatically select the first matching content. To select multiple elements you can use `prevAll`, `nextAll` and `parents` all of which have no-argument versions and versions that filter by a selector.
+The `closest()` method is a special case in that it will select the first ancestor of the current elements that matches a selector.
+There is no no-argument version of the `closest()` method.
+For example, these will select `div.a`…
 
-The `nextUntil`, `prevUntil` and `parentsUntil` methods return all nodes along the relevant axis _until_ the first one that matches a selector or attributes. Consider the following markup:
-
+[source,groovy]
 ----
-<div class="a"></div>
-<div class="b"></div>
-<div class="c"></div>
-<div class="d"></div>
+include::{testDir}/navigator/TraversingSpec.groovy[tag=closest,indent=0]
+----
+
+These methods do not take indexes as they automatically select the first matching content.
+To select multiple elements you can use `prevAll()`, `nextAll()` and `parents()` all of which have no-argument versions and versions that filter by a selector.
+
+The `nextUntil()`, `prevUntil()` and `parentsUntil()` methods return all nodes along the relevant axis _until_ the first one that matches a selector or attributes.
+Consider the following markup:
+
+[source,html]
+----
+include::{testDir}/navigator/TraversingSpec.groovy[tag=next_until_html,indent=0]
 ----
 
 The following examples will select `div.b` and `div.c`:
 
+[source,groovy]
 ----
-$(".a").nextUntil(".d")
-$(".a").nextUntil(class: "d")
-$(".a").nextUntil("div", class: "d")
+include::{testDir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
 ----
 
 == Composition
