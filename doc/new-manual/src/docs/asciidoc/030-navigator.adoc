@@ -307,6 +307,46 @@ The `filter()`, `not()`, `has()` and `hasNot()` methods have the same signatures
 
 These methods return a new navigator object that represents the new content.
 
+== Composition
+
+It is also possible to compose navigator objects from other navigator objects, for situations where you can't express a content set in one query.
+To do this, simply call the `$()` function and pass in the navigators to compose.
+
+Consider the following markup…
+
+[source,html]
+----
+include::{testDir}/navigator/CompositionSpec.groovy[tag=html,indent=0]
+----
+
+You can then create a new navigator object that represents both the `a` and `b` paragraphs the following way:
+
+[source,groovy]
+----
+include::{testDir}/navigator/CompositionSpec.groovy[tag=dollar,indent=0]
+----
+
+An alternative way is to use the `add()` method of `Navigator` that takes either a `String` or a Webdriver's `By` selector:
+
+[source,groovy]
+----
+include::{testDir}/navigator/CompositionSpec.groovy[tag=add,indent=0]
+----
+
+Finally, you can compose navigator objects from content. So given a page content definition:
+
+[source,groovy]
+----
+include::{testDir}/navigator/CompositionSpec.groovy[tag=content_definition,indent=0]
+----
+
+You can compose content elements into a navigator in the following way:
+
+[source,groovy]
+----
+include::{testDir}/navigator/CompositionSpec.groovy[tag=content,indent=0]
+----
+
 == Traversing
 
 Navigators also have methods for selecting content _around_ the matched content.
@@ -388,32 +428,6 @@ The following examples will select `div.b` and `div.c`:
 ----
 include::{testDir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
 ----
-
-== Composition
-
-It is also possible to compose navigator objects from other navigator objects, for situations where you can't express a content set in one query. To do this, simply call the $ function with the navigators to use…
-
-----
-$($("div.a"), $("div.d"))
-----
-
-This will return a new navigator object that represents only the `a` and `d` divs.
-
-You can compose navigator objects from content. So given a page content definition:
-
-----
-static content = {
-    divElement { divClass -> $('p', 'class': divClass) }
-}
-----
-
-And a call:
-
-----
-$(divElement('a'), divElement('d'))
-----
-
-You will get a navigator that contains the same elements as the one above.
 
 == Clicking
 
