@@ -191,6 +191,7 @@ Page objects are discussed in depth in the <<pages>> chapter, which also explore
 
 :numbered!:
 
+[[changing-pages]]
 === Changing the page
 
 We have already seen that that `to()` methods change the browser's page instance.

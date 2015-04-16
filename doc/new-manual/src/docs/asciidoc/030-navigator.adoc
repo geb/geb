@@ -433,21 +433,25 @@ include::{testDir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
 
 Navigator objects implement the `click()` method, which will instruct the browser to click *only the first item* the navigator has matched.
 
-There are also `click(Class)` , `click(Page)` and `click(List)` methods that are analogous to the browser object's [`page(Class&lt;? extends Page&gt;)` , `page(Page)`, and `page(Class&lt;? extends Page&gt;[])`, `page(Page[])` methods respectively][changing-pages]. This allow page changes to be specified at the same time as click actions.
+There are also `click(Class)` , `click(Page)` and `click(List)` methods that are analogous to the browser object's
+<<changing-pages,`page(Class&lt;? extends Page&gt;)`, `page(Page)`, and `page(Class&lt;? extends Page&gt;[])`, `page(Page[])` methods respectively>>.
+This allow page changes to be specified at the same time as click actions.
 
 For example…
 
+[source,groovy]
 ----
-$("input.loginButton").click(LoginPage)
+include::{testDir}/navigator/ClickingSpec.groovy[tag=click,indent=0]
 ----
 
-Would click the “`input.loginButton`” element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
+Would click the `a.login` element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
 
 All of the page classes passed in when using the list variant have to have an “at” checker defined, otherwise an `UndefinedAtCheckerException` will be thrown.
 
 == Determining visibility
 
-Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not. The `displayed` property of a navigator object that doesn't match anything is always `false`
+Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not.
+The `displayed` property of a navigator object that doesn't match anything is always `false`.
 
 == Size and location
 

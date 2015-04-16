@@ -13,38 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.test
+package navigator
 
-import spock.lang.Shared
+import geb.Page
+import geb.test.GebSpecWithCallbackServer
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class GebSpecWithCallbackServer extends GebSpecWithServer {
+class ClickingSpec extends GebSpecWithCallbackServer {
 
-    @Shared
-    CallbackHttpServer callbackServer = new CallbackHttpServer()
-
-    @Override
-    TestHttpServer getServerInstance() {
-        callbackServer
+    void click() {
+        // tag::click[]
+        $("a.login").click(LoginPage)
+        // end::click[]
     }
 
-    def responseHtml(Closure htmlMarkup) {
-        callbackServer.responseHtml(htmlMarkup)
-    }
+    def "clicking"() {
+        given:
+        html { HttpServletRequest request, HttpServletResponse response ->
+            if (request.requestURI =~ /loginPage/) {
+                title("login page")
+            } else {
+                a(class: "login", href: "/loginPage")
+            }
+        }
 
-    def responseHtml(String html) {
-        callbackServer.responseHtml(html)
-    }
+        when:
+        click()
 
-    void html(Closure html) {
-        responseHtml(html)
-        go()
+        then:
+        page in LoginPage
     }
+}
 
-    void html(String html) {
-        responseHtml(html)
-        go()
-    }
+class LoginPage extends Page {
+    static at = { title == "login page" }
 }
