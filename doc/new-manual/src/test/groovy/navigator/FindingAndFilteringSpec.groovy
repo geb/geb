@@ -93,14 +93,14 @@ class FindingAndFilteringSpec extends GebSpecWithCallbackServer {
 
     def "selectors work as expected"() {
         expect:
-        bParagraphUsingFind().allElements() == $("p.b").allElements()
-        bParagraphUsingDollar().allElements() == $("p.b").allElements()
-        bDivUsingFilter().allElements() == $("div.b").allElements()
-        bDivUsingNot().allElements() == $("div.b").allElements()
-        aDivUsingHas().allElements() == $("div.a").allElements()
-        bDivUsingHas().allElements() == $("div.b").allElements()
-        bDivUsingHasNot().allElements() == $("div.b").allElements()
-        aDivUsingHasNot().allElements() == $("div.a").allElements()
-        divsUsingHasNot().allElements() == $("div").allElements()
+        bParagraphUsingFind() == $("p.b")
+        bParagraphUsingDollar() == $("p.b")
+        bDivUsingFilter() == $("div.b")
+        bDivUsingNot() == $("div.b")
+        aDivUsingHas() == $("div.a")
+        bDivUsingHas() == $("div.b")
+        bDivUsingHasNot() == $("div.b")
+        aDivUsingHasNot() == $("div.a")
+        divsUsingHasNot() == $("div")
     }
 }
