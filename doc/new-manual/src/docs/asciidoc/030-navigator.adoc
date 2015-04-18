@@ -455,24 +455,32 @@ The `displayed` property of a navigator object that doesn't match anything is al
 
 == Size and location
 
-You can obtain the size and location of content on the page. All units are in pixels. The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page (or parent frame) to the top left point of the content.
+You can obtain the size and location of content on the page.
+All units are in pixels.
+The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page
+(or parent frame) to the top left point of the content.
 
 All of these properties operate on the *first* matched element only.
 
+Consider the following html…
+
+[source,html]
 ----
-$("div").height == 20
-$("div").width == 40
-$("div").x == 60
-$("div").y == 80
+include::{testDir}/navigator/SizeAndLocationSpec.groovy[tag=html,indent=0]
+----
+
+The following conditions are satisfied for it…
+
+[source,groovy]
+----
+include::{testDir}/navigator/SizeAndLocationSpec.groovy[tag=single_element,indent=0]
 ----
 
 To obtain any of the properties for all matched elements, you can use the Groovy spread operator.
 
+[source,groovy]
 ----
-$("div")*.height == [20, 30]
-$("div")*.width == [40, 50]
-$("div")*.x == [60, 70]
-$("div")*.y == [80, 90]
+include::{testDir}/navigator/SizeAndLocationSpec.groovy[tag=multiple_elements,indent=0]
 ----
 
 == Accessing tag name, attributes, text and classes
