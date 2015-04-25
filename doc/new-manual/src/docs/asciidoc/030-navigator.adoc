@@ -537,10 +537,18 @@ in accordance with the DOM CSS2 specification - you should directly access the l
 
 == Sending keystrokes
 
-Keystrokes can be sent to any content via the leftShift operator, which is a shortcut for the http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence...)[`sendKeys()`] method of WebDriver.
+Given the following html…
 
+[source,html]
 ----
-$("div") << "abc"
+include::{testDir}/navigator/KeystrokesSpec.groovy[tag=regular_html,indent=0]
+----
+
+You can send keystrokes to the input (and any other content) via the leftShift operator, which is a shortcut for the `{webdriver-send-keys-api}` method of WebDriver.
+
+[source,groovy]
+----
+include::{testDir}/navigator/KeystrokesSpec.groovy[tag=regular_keystrokes,indent=0]
 ----
 
 How content responds to the keystrokes depends on what the content is.
@@ -549,17 +557,18 @@ How content responds to the keystrokes depends on what the content is.
 
 === Non characters (e.g. delete key)
 
-It is possible to send non-textual characters to content by using the WebDriver http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html[Keys] enumeration…
+It is possible to send non-textual characters to content by using the WebDriver `{webdriver-keys-api}` enumeration…
 
+[source,groovy]
 ----
 import org.openqa.selenium.Keys
 
-$("input", name: "firstName") << Keys.chord(Keys.CONTROL, "c")
+$("input") << Keys.chord(Keys.CONTROL, "c")
 ----
 
 Here we are sending a “control-c” to an input.
 
-See the documentation for http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/Keys.html[Keys] for more information on the possible keys.
+See the documentation for `{webdriver-keys-api}` enumeration for more information on the possible keys.
 
 :numbered:
 

@@ -14,6 +14,8 @@
 :iedriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/ie/InternetExplorerDriver.html
 :firefoxdriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/firefox/FirefoxDriver.html
 :chromedriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/chrome/ChromeDriver.html
+:webdriver-send-keys-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence%2E%2E%2E)[sendKeys()]
+:webdriver-keys-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/Keys.html[Keys]
 :browser: browser.html
 :navigator: <<navigator>>
 :clicking: navigator.html#clicking
