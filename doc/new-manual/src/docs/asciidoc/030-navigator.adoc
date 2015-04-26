@@ -668,7 +668,7 @@ include::{testDir}/navigator/SelectSpec.groovy[tag=html,indent=0]
 
 We can select options with…
 
-[source,html]
+[source,groovy]
 ----
 include::{testDir}/navigator/SelectSpec.groovy[tag=setting_value,indent=0]
 ----
@@ -680,26 +680,26 @@ If you attempt to set a select to a value that does not match the value or text 
 
 === Multiple select
 
-If the select has the `multiple` attribute it is set with a array or `Collection` of values. Any options not in the values are un-selected. For example…
+If the select has the `multiple` attribute it is set with a array or `Collection` of values.
+Any options not in the values are un-selected.
+For example…
 
+[source,html]
 ----
-<select name="genres" multiple>
-    <option value="1">Alt folk</option>
-    <option value="2">Chiptunes</option>
-    <option value="3">Electroclash</option>
-    <option value="4">G-Funk</option>
-    <option value="5">Hair metal</option>
-</select>
+include::{testDir}/navigator/MultiSelectSpec.groovy[tag=html,indent=0]
 ----
 
 We can select options with…
 
+
+[source,groovy]
 ----
-$("form").genres = ["2", "3"]                 // second and third options selected by their value attributes
-$("form").genres = [1, 4, 5]                  // first, fourth and fifth options selected by their value attributes
-$("form").genres = ["Alt folk", "Hair metal"] // first and last options selected by their text
-$("form").genres = []                         // all options un-selected
+include::{testDir}/navigator/MultiSelectSpec.groovy[tag=setting_values,indent=0]
 ----
+<1> Second and third options selected by their value attributes.
+<2> First, fourth and fifth options selected by their value attributes with argument coercion.
+<3> First and last options selected by their text.
+<4> All options un-selected.
 
 If the collection being assigned contains a value that does not match the value or text of any options, an `IllegalArgumentException` will be thrown.
 
