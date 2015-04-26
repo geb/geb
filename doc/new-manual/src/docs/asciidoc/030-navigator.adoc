@@ -574,7 +574,12 @@ See the documentation for `{webdriver-keys-api}` enumeration for more informatio
 
 == Accessing input values
 
-The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method. Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator. Calling `value(value)` will set the current value of _all_ elements in the Navigator. The argument can be of any type and will be coerced to a `String` if necessary. The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection of values.
+The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method.
+Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator.
+Calling `value(value)` will set the current value of _all_ elements in the Navigator.
+The argument can be of any type and will be coerced to a `String` if necessary.
+The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection
+of values.
 
 == Form control shortcuts
 
@@ -584,90 +589,73 @@ Geb supports the following shortcuts for dealing with form controls.
 
 Consider the following HTML…
 
+[source,html]
 ----
-<form>
-    <input type="text" name="geb" value="testing" />
-</form>
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=html,indent=0]
 ----
 
 The value can be read and written via property notation…
 
+[source,groovy]
 ----
-$("form").geb == "testing"
-$("form").geb = "goodness"
-$("form").geb == "goodness"
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=value_shortcuts,indent=0]
 ----
 
 These are literally shortcuts for…
 
+[source,groovy]
 ----
-$("form").find("input", name: "geb").value() == "testing"
-$("form").find("input", name: "geb").value("goodness")
-$("form").find("input", name: "geb").value() == "goodness"
-----
-
-There is also a shortcut for obtaining a navigator based on a control name
-
-----
-$("form").geb()
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=value_equivalents,indent=0]
 ----
 
-Which is literally a shortcut for…
+There is also a shortcut for obtaining a navigator based on a control name…
 
+[source,groovy]
 ----
-$("form").find("input", name: "geb")
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=element_shortcut,indent=0]
 ----
 
-____
+[NOTE]
+====
+In the above and below examples with form controls we are using code like `$(&quot;form&quot;).someInput` where we could be using just `someInput` as long as there is only one control with the
+_name_ `someInput` on the page.
+In the examples we are using `$(&quot;form&quot;).someInput` to hopefully be clearer.
+====
 
-In the above and below examples with form controls we are using code like `$(&quot;form&quot;).someInput` where we could be using just `someInput` as long as there is only one control with the _name_ `someInput` on the page. In the examples we are using `$(&quot;form&quot;).someInput` to hopefully be clearer.
+If your content definition (either a page or a module) describes content which is an `input`, `select` or `textarea`, you can access and set its value the same way as described above for forms.
+Given a page and module definitions for the above mentioned HTML:
 
-____
-
-If your content definition (either a page or a module) describes content which is an `input`, `select` or `textarea`, you can access and set its value the same way as described above for forms. Given a page and module definitions for the above mentioned HTML:
-
+[source,groovy]
 ----
-class ShortcutModule extends Module {
-    static content = {
-        geb { $('form').geb() }
-    }
-}
-
-static content = {
-    geb { $('form').geb() }
-    shortcutModule { module ShortcutModule }
-}
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=content_definitions,indent=0]
 ----
 
 The following will pass:
 
+[source,groovy]
 ----
-assert geb == "testing"
-geb = "goodness"
-assert geb == "goodness"
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=content_shortcuts,indent=0]
 ----
 
 As well as:
 
+[source,groovy]
 ----
-assert shortcutModule.geb == "testing"
-shortcutModule.geb = "goodness"
-assert shortcutModule.geb == "goodness"
+include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=module_shortcuts,indent=0]
 ----
-
-____
-
-The following examples describe usage of form controls only using code like `$(&quot;form&quot;).someInput`. Given a content definition `myContent { $(&quot;form&quot;).someInput }`, you can substitute `$(&quot;form&quot;).someInput` in the examples with `myContent`.
-
-____
 
 == Setting form control values
 
-____
+[NOTE]
+====
+The following examples describe usage of form controls only using code like `$(&quot;form&quot;).someInput`.
+Given a content definition `myContent { $(&quot;form&quot;).someInput }`, you can substitute `$(&quot;form&quot;).someInput` in the examples with `myContent`.
+====
 
+[WARNING]
+====
 Trying to set a value on an element which is not one of `input`, `select` or `textarea` will cause an `UnableToSetElementException` to be thrown.
-
-____
+====
 
 === Select
 
