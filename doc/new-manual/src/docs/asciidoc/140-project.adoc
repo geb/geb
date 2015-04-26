@@ -27,7 +27,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * http://github.com/zolotov[Alexander Zolotov] - TestNG Integration
 * http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
 * http://www.desirableobjects.co.uk/[Antony Jones] - Various fixes and patches, doc improvements
-* http://hennr.name/imprint/[Jan-Hendrik Peters] - Doc improvements
+* https://github.com/hennr[Jan-Hendrik Peters] - Doc improvements
 * http://fbflex.wordpress.com/[Tomás Lin] - Doc improvements
 * https://github.com/measlyweasel[Jason Cahoon] - Bug fix around text matchers
 * http://refaktor.blogspot.com/[Tomasz Kalkosiński] - Doc improvements
