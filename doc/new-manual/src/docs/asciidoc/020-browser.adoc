@@ -288,7 +288,7 @@ include::{testDir}/browser/PageChangeListenerSpec.groovy[tag=helper_classes,inde
 include::{testDir}/browser/PageChangeListenerSpec.groovy[tag=using_page_change_listener,indent=0]
 ----
 
-You can remove remove a listener at any time…
+You can remove a listener at any time…
 
 [source,groovy]
 ----
