@@ -707,41 +707,80 @@ If the collection being assigned contains a value that does not match the value 
 
 Checkboxes are generally checked/unchecked by setting their value to `true` or `false`.
 
-You can also check a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.
+Consider the following html…
 
+[source,html]
 ----
-<input type="checkbox" name="pet" value="dogs" />
-<input type="checkbox" name="pet" value="cats" />
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=single_html,indent=0]
 ----
 
-You can select dogs as your pet type, as follows:
+You can set a single checkbox in the following manner…
 
+[source,groovy]
 ----
-$("input", type: "checkbox", name: "pet").value("dogs")
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=single,indent=0]
+----
+
+You can also check a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.:
+
+[source,html]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=multiple_html,indent=0]
+----
+
+You can select dogs as your pet type as follows:
+
+[source,groovy]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=multiple,indent=0]
 ----
 
 Calling `value()` on a checked checkbox will return the value of its `value` attribute, i.e:
 
+[source,html]
 ----
-<input type="checkbox" name="pet" value="dogs" checked="checked"/>
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=checked_html,indent=0]
+----
 
-assert $("input", type: "checkbox", name: "pet").value() == "dogs"
+[source,groovy]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=checked,indent=0]
 ----
 
 Calling `value()` on an unchecked checkbox will return `false`, i.e:
 
+[source,html]
 ----
-<input type="checkbox" name="pet" value="dogs"/>
-
-assert $("input", type: "checkbox", name: "pet").value() == false
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=unchecked_html,indent=0]
 ----
 
-In general you should use [Groovy Truth][groovy-truth] when checking if a checkbox is checked:
-
+[source,groovy]
 ----
-if ($("input", type: "checkbox", name: "pet").value()) {
-    //evaluated only if "pet" checkbox is checked
-}
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=unchecked,indent=0]
+----
+
+In general you should use {groovy-truth} when checking if a checkbox is checked:
+
+[source,html]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth_html,indent=0]
+----
+
+[source,groovy]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth,indent=0]
+----
+
+When checking if a checkbox is checked and there are multiple checkboxes with the same name make sure that you use a navigator that holds only one of them before calling `value()` on it:
+
+[source,html]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth_multiple_html,indent=0]
+----
+
+[source,groovy]
+----
+include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth_multiple,indent=0]
 ----
 
 === Radio

@@ -51,7 +51,7 @@
 :implicit-assertions: implicit-assertions.html
 :page-option: pages.html#page
 :switch-frame-and-page: pages.html#switching_pages_and_frames_at_once
-:groovy-truth: http://docs.codehaus.org/display/GROOVY/Groovy+Truth
+:groovy-truth: http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html[Groovy Truth]
 :drive-method-api: link:api/geb/Browser.html#drive(groovy.lang.Closure)[drive()]
 :page-method-taking-class-api: link:api/geb/Browser.html#page(Class<T>)[<T extends Page> T page(Class<T> pageType)]
 :page-method-taking-instance-api: link:api/geb/Browser.html#page(T)[<T extends Page> T page(T pageInstance)]
