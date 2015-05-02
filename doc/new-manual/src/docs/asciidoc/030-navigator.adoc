@@ -791,53 +791,60 @@ For example, with the following radio buttons…
 
 [source,html]
 ----
-include::{testDir}/navigator/radioSpec.groovy[tag=html,indent=0]
+include::{testDir}/navigator/RadioSpec.groovy[tag=html,indent=0]
 ----
 
 We can select the radios by value…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/radioSpec.groovy[tag=by_value,indent=0]
+include::{testDir}/navigator/RadioSpec.groovy[tag=by_value,indent=0]
 ----
 
 Or by label text…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/radioSpec.groovy[tag=by_label,indent=0]
+include::{testDir}/navigator/RadioSpec.groovy[tag=by_label,indent=0]
 ----
 
 === Text inputs and textareas
 
-In the case of a text `input`, the assigned value becomes the input's _value_ attribute and for a `textarea` effectively becomes the text.
+In the case of a text `input` or a `textarea`, the assigned value becomes the element's _value_ attribute.
+
+[source,html]
+----
+include::{testDir}/navigator/TextInputAndAreaSpec.groovy[tag=html,indent=0]
+----
+
+[source,groovy]
+----
+include::{testDir}/navigator/TextInputAndAreaSpec.groovy[tag=setting_value,indent=0]
+----
 
 It is also possible to append text by using the send keys shorthand…
 
+[source,groovy]
 ----
-<input name="language" value="gro" />
-
-$("form").language() << "ovy"
-assert $("form").language == "groovy"
+include::{testDir}/navigator/TextInputAndAreaSpec.groovy[tag=typing,indent=0]
 ----
 
 Which an also be used for non-character keys…
 
+[source,groovy]
 ----
-<input name="postcode" />
-
 import org.openqa.selenium.Keys
 
-$("form").postcode = "12345"
-$("form").postcode() << Keys.BACK_SPACE
-assert $("form").postcode == "1234"
+$("form").language() << Keys.BACK_SPACE
+$("form").language == "groov"
 ----
 
-____
-
-Note that WebDriver has some issues with textareas and surrounding whitespace. Namely, some drivers implicitly trim whitespace from the beginning and end of the value. You can track this issue here: http://code.google.com/p/selenium/issues/detail?id=2131
-
-____
+[WARNING]
+====
+WebDriver has some issues with textareas and surrounding whitespace.
+Namely, some drivers implicitly trim whitespace from the beginning and end of the value.
+You can track this issue http://code.google.com/p/selenium/issues/detail?id=2131[here].
+====
 
 === File upload
 
