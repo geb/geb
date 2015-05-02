@@ -789,21 +789,23 @@ Radio values are set by assigning the value of the radio button that is to be se
 
 For example, with the following radio buttons…
 
+[source,html]
 ----
-<label for="site-current">Search this site</label>
-<input type="radio" id="site-current" name="site" value="current">
-
-<label>Search Google
-    <input type="radio" name="site" value="google">
-</label>
+include::{testDir}/navigator/radioSpec.groovy[tag=html,indent=0]
 ----
 
-We can select the radios with…
+We can select the radios by value…
 
+[source,groovy]
 ----
-$("form").site = "current"          // selects the first radio by its value
-$("form").site = "Search this site" // selects the first radio by its label
-$("form").site = "Search Google"    // selects the second radio by its label
+include::{testDir}/navigator/radioSpec.groovy[tag=by_value,indent=0]
+----
+
+Or by label text…
+
+[source,groovy]
+----
+include::{testDir}/navigator/radioSpec.groovy[tag=by_label,indent=0]
 ----
 
 === Text inputs and textareas
