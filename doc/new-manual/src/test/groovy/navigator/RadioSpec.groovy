@@ -43,7 +43,7 @@ class RadioSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::by_value[]
-        $("form").site == "current"
+        assert $("form").site == "current"
         // end::by_value[]
 
         when:
@@ -53,7 +53,7 @@ class RadioSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::by_value[]
-        $("form").site == "google"
+        assert $("form").site == "google"
         // end::by_value[]
 
         when:
@@ -63,7 +63,7 @@ class RadioSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::by_label[]
-        $("form").site == "current"
+        assert $("form").site == "current"
         // end::by_label[]
 
         when:
@@ -73,7 +73,7 @@ class RadioSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::by_label[]
-        $("form").site == "google"
+        assert $("form").site == "google"
         // end::by_label[]
     }
 }

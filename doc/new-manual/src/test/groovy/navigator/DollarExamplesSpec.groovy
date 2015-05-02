@@ -89,10 +89,10 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::indexes_and_ranges[]
-        $("p", 0).text() == "a"
-        $("p", 2).text() == "c"
-        $("p", 0..1)*.text() == ["a", "b"]
-        $("p", 1..2)*.text() == ["b", "c"]
+        assert $("p", 0).text() == "a"
+        assert $("p", 2).text() == "c"
+        assert $("p", 0..1)*.text() == ["a", "b"]
+        assert $("p", 1..2)*.text() == ["b", "c"]
         // end::indexes_and_ranges[]
     }
 
@@ -116,17 +116,17 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::attributes[]
-        $("p", attr1: "a").size() == 2
-        $("p", attr2: "c").size() == 1
+        assert $("p", attr1: "a").size() == 2
+        assert $("p", attr2: "c").size() == 1
         // end::attributes[]
         // tag::multiple_attributes[]
-        $("p", attr1: "a", attr2: "b").size() == 1
+        assert $("p", attr1: "a", attr2: "b").size() == 1
         // end::multiple_attributes[]
         // tag::text_matchers[]
-        $("p", text: "p1").size() == 1
+        assert $("p", text: "p1").size() == 1
         // end::text_matchers[]
         // tag::matchers_and_attributes[]
-        $("p", text: "p1", attr1: "a").size() == 1
+        assert $("p", text: "p1", attr1: "a").size() == 1
         // end::matchers_and_attributes[]
     }
 
@@ -139,14 +139,14 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::pattern[]
-        $("p", text: ~/p./).size() == 2
+        assert $("p", text: ~/p./).size() == 2
         // end::pattern[]
         // tag::pattern_methods[]
-        $("p", text: startsWith("p")).size() == 2
-        $("p", text: endsWith("2")).size() == 1
+        assert $("p", text: startsWith("p")).size() == 2
+        assert $("p", text: endsWith("2")).size() == 1
         // end::pattern_methods[]
         // tag::pattern_methods_using_pattern[]
-        $("p", text: contains(~/\d/)).size() == 2
+        assert $("p", text: contains(~/\d/)).size() == 2
         // end::pattern_methods_using_pattern[]
     }
 }

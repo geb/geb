@@ -35,10 +35,10 @@ class IterableSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::max[]
-        $("p").max { it.text() }.text() == "2"
+        assert $("p").max { it.text() }.text() == "2"
         // end::max[]
         // tag::spread[]
-        $("p")*.text().max() == "2"
+        assert $("p")*.text().max() == "2"
         // end::spread[]
     }
 }

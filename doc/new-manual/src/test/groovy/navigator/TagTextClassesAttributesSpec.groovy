@@ -33,20 +33,20 @@ class TagTextClassesAttributesSpec extends GebSpecWithCallbackServer {
     def "single element"() {
         expect:
         // tag::single_element[]
-        $("p").text() == "a"
-        $("p").tag() == "p"
-        $("p").@title == "a"
-        $("p").classes() == ["a", "para"]
+        assert $("p").text() == "a"
+        assert $("p").tag() == "p"
+        assert $("p").@title == "a"
+        assert $("p").classes() == ["a", "para"]
         // end::single_element[]
     }
 
     def "muliple elements"() {
         expect:
         // tag::multiple_elements[]
-        $("p")*.text() == ["a", "b", "c"]
-        $("p")*.tag() == ["p", "p", "p"]
-        $("p")*.@title == ["a", "b", "c"]
-        $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
+        assert $("p")*.text() == ["a", "b", "c"]
+        assert $("p")*.tag() == ["p", "p", "p"]
+        assert $("p")*.@title == ["a", "b", "c"]
+        assert $("p")*.classes() == [["a", "para"], ["b", "para"], ["c", "para"]]
         // end::multiple_elements[]
     }
 }

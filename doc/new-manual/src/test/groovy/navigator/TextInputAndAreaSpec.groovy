@@ -40,8 +40,8 @@ class TextInputAndAreaSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::setting_value[]
-        $("form").language == "gro"
-        $("form").description == "Optionally statically typed dynamic lang"
+        assert $("form").language == "gro"
+        assert $("form").description == "Optionally statically typed dynamic lang"
         // end::setting_value[]
 
         when:
@@ -52,8 +52,8 @@ class TextInputAndAreaSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::typing[]
-        $("form").language == "groovy"
-        $("form").description == "Optionally statically typed dynamic language"
+        assert $("form").language == "groovy"
+        assert $("form").description == "Optionally statically typed dynamic language"
         // end::typing[]
     }
 }

@@ -41,13 +41,13 @@ class TraversingSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::siblings[]
-        $("p.d").previous() == $("p.c")
-        $("p.e").prevAll() == $("p.c").add("p.d")
-        $("p.d").next() == $("p.e")
-        $("p.c").nextAll() == $("p.d").add("p.e")
-        $("p.d").parent() == $("div.b")
-        $("p.c").siblings() == $("p.d").add("p.e")
-        $("div.a").children() == $("div.b").add("div.f")
+        assert $("p.d").previous() == $("p.c")
+        assert $("p.e").prevAll() == $("p.c").add("p.d")
+        assert $("p.d").next() == $("p.e")
+        assert $("p.c").nextAll() == $("p.d").add("p.e")
+        assert $("p.d").parent() == $("div.b")
+        assert $("p.c").siblings() == $("p.d").add("p.e")
+        assert $("div.a").children() == $("div.b").add("div.f")
         // end::siblings[]
     }
 
@@ -70,12 +70,12 @@ class TraversingSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::next[]
-        $("p").next() == $("p.b").add("p.c")
+        assert $("p").next() == $("p.b").add("p.c")
         // end::next[]
         // tag::next_with_args[]
-        $("p").next(".c") == $("p.c").add("p.c")
-        $("p").next(class: "c") == $("p.c").add("p.c")
-        $("p").next("p", class: "c") == $("p.c").add("p.c")
+        assert $("p").next(".c") == $("p.c").add("p.c")
+        assert $("p").next(class: "c") == $("p.c").add("p.c")
+        assert $("p").next("p", class: "c") == $("p.c").add("p.c")
         // end::next_with_args[]
     }
 
@@ -98,14 +98,14 @@ class TraversingSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::parent[]
-        $("p").parent(".b") == $("div.b")
-        $("p").parent(class: "b") == $("div.b")
-        $("p").parent("div", class: "b") == $("div.b")
+        assert $("p").parent(".b") == $("div.b")
+        assert $("p").parent(class: "b") == $("div.b")
+        assert $("p").parent("div", class: "b") == $("div.b")
         // end::parent[]
         // tag::closest[]
-        $("p").closest(".a") == $("div.a")
-        $("p").closest(class: "a") == $("div.a")
-        $("p").closest("div", class: "a") == $("div.a")
+        assert $("p").closest(".a") == $("div.a")
+        assert $("p").closest(class: "a") == $("div.a")
+        assert $("p").closest("div", class: "a") == $("div.a")
         // end::closest[]
     }
 
@@ -127,9 +127,9 @@ class TraversingSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::next_until[]
-        $(".a").nextUntil(".d") == $("div.b").add("div.c")
-        $(".a").nextUntil(class: "d") == $("div.b").add("div.c")
-        $(".a").nextUntil("div", class: "d") == $("div.b").add("div.c")
+        assert $(".a").nextUntil(".d") == $("div.b").add("div.c")
+        assert $(".a").nextUntil(class: "d") == $("div.b").add("div.c")
+        assert $(".a").nextUntil("div", class: "d") == $("div.b").add("div.c")
         // end::next_until[]
     }
 }

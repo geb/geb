@@ -36,7 +36,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
     def "value shortcuts"() {
         expect:
         // tag::value_shortcuts[]
-        $("form").geb == "testing"
+        assert $("form").geb == "testing"
         // end::value_shortcuts[]
 
         when:
@@ -46,14 +46,14 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::value_shortcuts[]
-        $("form").geb == "goodness"
+        assert $("form").geb == "goodness"
         // end::value_shortcuts[]
     }
 
     def "value equivalents"() {
         expect:
         // tag::value_equivalents[]
-        $("form").find("input", name: "geb").value() == "testing"
+        assert $("form").find("input", name: "geb").value() == "testing"
         // end::value_equivalents[]
 
         when:
@@ -63,7 +63,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::value_equivalents[]
-        $("form").find("input", name: "geb").value() == "goodness"
+        assert $("form").find("input", name: "geb").value() == "goodness"
         // end::value_equivalents[]
     }
 
@@ -71,7 +71,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
         expect:
         $("form").geb()
         // tag::element_shortcut[]
-        $("form").geb() == $("form").find("input", name: "geb")
+        assert $("form").geb() == $("form").find("input", name: "geb")
         // end::element_shortcut[]
 
     }
@@ -84,7 +84,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::content_shortcuts[]
-        geb == "testing"
+        assert geb == "testing"
         // end::content_shortcuts[]
 
         when:
@@ -94,7 +94,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::content_shortcuts[]
-        geb == "goodness"
+        assert geb == "goodness"
         // end::content_shortcuts[]
     }
 
@@ -106,7 +106,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::module_shortcuts[]
-        shortcutModule.geb == "testing"
+        assert shortcutModule.geb == "testing"
         // end::module_shortcuts[]
 
         when:
@@ -116,7 +116,7 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::module_shortcuts[]
-        shortcutModule.geb == "goodness"
+        assert shortcutModule.geb == "goodness"
         // end::module_shortcuts[]
     }
 }

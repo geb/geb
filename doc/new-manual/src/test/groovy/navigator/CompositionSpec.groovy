@@ -37,14 +37,14 @@ class CompositionSpec extends GebSpecWithCallbackServer {
     def "dollar"() {
         expect:
         // tag::dollar[]
-        $($("p.a"), $("p.b"))*.text() == ["1", "2"]
+        assert $($("p.a"), $("p.b"))*.text() == ["1", "2"]
         // end::dollar[]
     }
 
     def "add"() {
         expect:
         // tag::add[]
-        $("p.a").add("p.b").add(By.className("c"))*.text() == ["1", "2", "3"]
+        assert $("p.a").add("p.b").add(By.className("c"))*.text() == ["1", "2", "3"]
         // end::add[]
     }
 
@@ -54,7 +54,7 @@ class CompositionSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::content[]
-        $(pElement("a"), pElement("b"))*.text() == ["1", "2"]
+        assert $(pElement("a"), pElement("b"))*.text() == ["1", "2"]
         // end::content[]
     }
 }

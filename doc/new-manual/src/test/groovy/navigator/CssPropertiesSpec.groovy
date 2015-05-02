@@ -31,7 +31,7 @@ class CssPropertiesSpec extends GebSpecWithCallbackServer {
 
         expect:
         // tag::css[]
-        $("div").css("float") == "left"
+        assert $("div").css("float") == "left"
         // end::css[]
     }
 }

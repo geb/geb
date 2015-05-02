@@ -33,20 +33,20 @@ class SizeAndLocationSpec extends GebSpecWithCallbackServer {
     def "single element"() {
         expect:
         // tag::single_element[]
-        $("div").height == 20
-        $("div").width == 40
-        $("div").x == 20
-        $("div").y == 10
+        assert $("div").height == 20
+        assert $("div").width == 40
+        assert $("div").x == 20
+        assert $("div").y == 10
         // end::single_element[]
     }
 
     def "muliple elements"() {
         expect:
         // tag::multiple_elements[]
-        $("div")*.height == [20, 40]
-        $("div")*.width == [40, 100]
-        $("div")*.x == [20, 30]
-        $("div")*.y == [10, 150]
+        assert $("div")*.height == [20, 40]
+        assert $("div")*.width == [40, 100]
+        assert $("div")*.x == [20, 30]
+        assert $("div")*.y == [10, 150]
         // end::multiple_elements[]
     }
 }

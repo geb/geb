@@ -36,7 +36,7 @@ class KeystrokesSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::regular_keystrokes[]
-        $("input").value() == "foo"
+        assert $("input").value() == "foo"
         // end::regular_keystrokes[]
     }
 

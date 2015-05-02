@@ -35,16 +35,16 @@ class EqualsSpec extends GebSpecWithCallbackServer {
 
         then:
         // tag::equal[]
-        $("div") == $(".foo") //<1>
-        $(".a") == $(".a") //<2>
-        $(".a") == $("p").not(".b") //<3>
-        $("p") == $("p") //<4>
-        $("p") == $(".a").add(".b") //<5>
+        assert $("div") == $(".foo") //<1>
+        assert $(".a") == $(".a") //<2>
+        assert $(".a") == $("p").not(".b") //<3>
+        assert $("p") == $("p") //<4>
+        assert $("p") == $(".a").add(".b") //<5>
         // end::equal[]
         // tag::not_equal[]
-        $("div") != $("p") //<1>
-        $(".a") != $(".b") //<2>
-        $(".a").add(".b") != $(".b").add(".a") //<3>
+        assert $("div") != $("p") //<1>
+        assert $(".a") != $(".b") //<2>
+        assert $(".a").add(".b") != $(".b").add(".a") //<3>
         // end::not_equal[]
     }
 }
