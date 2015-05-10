@@ -848,12 +848,20 @@ You can track this issue http://code.google.com/p/selenium/issues/detail?id=2131
 
 === File upload
 
-It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser. However, you can directly set the value of the upload control to the _absolute path_ of a file on the system where the driver is running and on form submission that file will be uploaded.
+It's currently not possible with WebDriver to simulate the process of a user clicking on a file upload control and choosing a file to upload via the normal file chooser.
+However, you can directly set the value of the upload control to the _absolute path_ of a file on the system where the driver is running and on form submission that file will be uploaded.
+So if your html looks like…
 
+[source,html]
 ----
-<input type="file" name="csvFile">
+include::{testDir}/navigator/FileUploadSpec.groovy[tag=html,indent=0]
+----
 
-$("form").csvFile = "/path/to/my/file.csv"
+And the `uploadedFile` variable holds a `File` instance pointing at the file you want to upload then this is how you can set the value of the upload control…
+
+[source,groovy]
+----
+include::{testDir}/navigator/FileUploadSpec.groovy[tag=upload,indent=0]
 ----
 
 == Complex interactions
