@@ -17,9 +17,6 @@ package geb.test
 
 import spock.lang.Shared
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-
 class GebSpecWithCallbackServer extends GebSpecWithServer {
 
     @Shared
