@@ -85,7 +85,7 @@ This page lists the high level changes between versions of Geb.
 
 #### Breaking changes
 * `Page.toString()` now returns full page class name instead of its simple name.
-* Geb is now built with Groovy 2.3.9 and Spock 1.0-groovy-2.3.
+* Geb is now built with Groovy 2.3.10 and Spock 1.0-groovy-2.3.
 
 #### Deprecations
 * `module(Class<? extends Module>, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class<? extends Module>)` and will be removed in a future version of Geb.

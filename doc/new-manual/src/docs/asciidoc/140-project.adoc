@@ -95,7 +95,7 @@ This page lists the high level changes between versions of Geb.
 
 * `Page.toString()` now returns full page class name instead of its simple name.
 * `MissingPropertyException` is thrown instead of `UnresolvablePropertyException` when content with a given name is not found on page or module.
-* Geb is now built with Groovy 2.3.9 and Spock 1.0-groovy-2.3.
+* Geb is now built with Groovy 2.3.10 and Spock 1.0-groovy-2.3.
 
 ==== Deprecations
 
