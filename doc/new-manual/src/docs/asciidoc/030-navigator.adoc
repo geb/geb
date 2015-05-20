@@ -541,29 +541,28 @@ Given the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/KeystrokesSpec.groovy[tag=regular_html,indent=0]
+include::{testDir}/navigator/KeystrokesSpec.groovy[tag=html,indent=0]
 ----
 
 You can send keystrokes to the input (and any other content) via the leftShift operator, which is a shortcut for the `{webdriver-send-keys-api}` method of WebDriver.
 
 [source,groovy]
 ----
-include::{testDir}/navigator/KeystrokesSpec.groovy[tag=regular_keystrokes,indent=0]
+include::{testDir}/navigator/KeystrokesSpec.groovy[tag=keystrokes,indent=0]
 ----
 
 How content responds to the keystrokes depends on what the content is.
 
 :numbered!:
 
-=== Non characters (e.g. delete key)
+=== Non characters (e.g. delete key, key chords, etc.)
 
 It is possible to send non-textual characters to content by using the WebDriver `{webdriver-keys-api}` enumeration…
 
 [source,groovy]
 ----
-import org.openqa.selenium.Keys
-
-$("input") << Keys.chord(Keys.CONTROL, "c")
+include::{real-browser-test-dir}/navigator/NonCharacterKeystrokesSpec.groovy[tag=import,indent=0]
+include::{real-browser-test-dir}/navigator/NonCharacterKeystrokesSpec.groovy[tag=keystrokes,indent=0]
 ----
 
 Here we are sending a “control-c” to an input.

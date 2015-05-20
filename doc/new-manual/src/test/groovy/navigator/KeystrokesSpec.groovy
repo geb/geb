@@ -23,21 +23,21 @@ class KeystrokesSpec extends GebSpecWithCallbackServer {
         given:
         html """
             <html>
-                // tag::regular_html[]
+                // tag::html[]
                 <input type="text"/>
-                // end::regular_html[]
+                // end::html[]
             </html>
         """
 
         when:
-        // tag::regular_keystrokes[]
+        // tag::keystrokes[]
         $("input") << "foo"
-        // end::regular_keystrokes[]
+        // end::keystrokes[]
 
         then:
-        // tag::regular_keystrokes[]
+        // tag::keystrokes[]
         assert $("input").value() == "foo"
-        // end::regular_keystrokes[]
+        // end::keystrokes[]
     }
 
 }

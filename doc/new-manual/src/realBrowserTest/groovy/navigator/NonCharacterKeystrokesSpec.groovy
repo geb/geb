@@ -1,0 +1,64 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package navigator
+
+import geb.test.GebSpecWithCallbackServer
+// tag::import[]
+import org.openqa.selenium.Keys
+
+// end::import[]
+
+class NonCharacterKeystrokesSpec extends GebSpecWithCallbackServer {
+
+    def "sending ctrl+c"() {
+        given:
+        html """
+            <html>
+                ${jquery()}
+                ${javascript '''
+                    $(function() {
+                        $("input").keypress("c", function(event) {
+                            if (event.ctrlKey) {
+                                $(event.target).addClass("chord-recorded");
+                            }
+                        });
+                    });
+                '''}
+                <input type="text"/>
+            </html>
+        """
+
+        when:
+        // tag::keystrokes[]
+        $("input") << Keys.chord(Keys.CONTROL, "c")
+        // end::keystrokes[]
+
+        then:
+        $("input").hasClass("chord-recorded")
+    }
+
+    String jquery() {
+        javascript(getClass().getResource("/jquery-2.1.4.min.js").text)
+    }
+
+    String javascript(String code) {
+        """
+            <script type="text/javascript">
+                $code
+            </script>
+        """
+    }
+}
