@@ -832,10 +832,8 @@ Which an also be used for non-character keys…
 
 [source,groovy]
 ----
-import org.openqa.selenium.Keys
-
-$("form").language() << Keys.BACK_SPACE
-$("form").language == "groov"
+include::{real-browser-test-dir}/navigator/BackspaceSpec.groovy[tag=import,indent=0]
+include::{real-browser-test-dir}/navigator/BackspaceSpec.groovy[tag=backspace,indent=0]
 ----
 
 [WARNING]
