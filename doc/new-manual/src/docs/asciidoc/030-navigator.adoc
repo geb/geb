@@ -865,107 +865,95 @@ include::{test-dir}/navigator/FileUploadSpec.groovy[tag=upload,indent=0]
 
 == Complex interactions
 
-WebDriver supports interactions that are more complex than simply clicking or typing into items, such as dragging. You can use this API from Geb, or use the more Geb friendly `interact {}` DSL (explained below).
+WebDriver supports interactions that are more complex than simply clicking or typing into items, such as dragging.
+You can use this API from Geb, or use the more Geb friendly `interact {}` DSL (explained below).
 
 === Using the WebDriver API directly
 
-A Geb navigator object is built on top of a collection of WebDriver [WebElement][webelement-api] objects. It is possible to access the contained `WebElement`s via the following methods on navigator objects:
+A Geb navigator object is built on top of a collection of WebDriver {webelement-api} objects.
+It is possible to access the contained `WebElement` instances via the following methods on navigator objects:
 
+[source,groovy]
 ----
-WebElement firstElement()
-WebElement lastElement()
-Collection<WebElement> allElements()
+include::{core-source-dir}/geb/navigator/Navigator.groovy[tag=web_element_returning_methods,indent=0]
 ----
 
-By using the methods of the WebDriver http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html[Actions] class with WebElements, complex user gestures can be emulated.
+By using the methods of the WebDriver {actions-api} class with `WebElement` instances, complex user gestures can be emulated.
 
+[[using-actions]]
 === Using `Actions`
 
-Create an Actions instance after obtaining the WebDriver driver:
+Create an `Actions` instance after obtaining the WebDriver driver:
 
+[source,groovy]
 ----
-def actions = new Actions(driver)
-----
-
-Next, use methods of Actions to compose a series of UI actions, then call build() to create a concrete Action:
-
-----
-import org.openqa.selenium.Keys
-
-WebElement someItem = $('li.clicky').firstElement()
-def shiftDoubleClickAction = actions.keyDown(Keys.SHIFT).doubleClick(someItem).keyUp(Keys.SHIFT).build()
+include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=actions_creation,indent=0]
 ----
 
-Finally, call perform() to actually trigger the desired mouse or keyboard behavior:
+Next, use methods of `Actions` to compose a series of UI actions, then call `build()` to create a concrete `Action`:
 
+[source,groovy]
 ----
-shiftDoubleClickAction.perform()
+include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=action_definition,indent=0]
 ----
 
-=== Using interact closures
+Finally, call `perform()` to actually trigger the desired mouse or keyboard behavior:
 
-To cut down on the amount of typing required, use an interact closure instead of using class `Actions` explicitly. When using an interact closure, an `Actions` instance is implicitly created, built into an Action, and performed. As an added bonus, Geb navigators can be passed directly to `Actions` methods within an interact closure.
-
-This interact closure performs the same work as the calls in the 'Using Actions' section:
-
+[source,groovy]
 ----
-import org.openqa.selenium.Keys
+include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=action_execution,indent=0]
+----
 
-interact {
-    keyDown(Keys.SHIFT)
-    doubleClick($('li.clicky'))
-    keyUp(Keys.SHIFT)
-}
+=== Using `interact` closures
+
+To cut down on the amount of typing required, use an `interact` closure instead of using `Actions` class directly.
+When using an interact closure, an `Actions` instance is implicitly created, built into an `Action`, and performed.
+As an added bonus, Geb navigators can be passed directly to `Actions` methods within an interact closure.
+
+This interact closure performs the same work as the calls in the <<using-actions>> section:
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=interact,indent=0]
 ----
 
 This method creates code that is more readable than using `Actions` directly.
 
-For the full list of available interactions, see the documentation for the WebDriver http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/interactions/Actions.html[Actions] class.
+For the full list of available interactions, see the documentation for the WebDriver {actions-api} class.
 
 === Interact examples
 
-Interact closures (or Actions) can be used to perform behaviors that are more complicated than clicking buttons and anchors or typing in input fields. Shift-double-clicking was demonstrated earlier.
+Interact closures (or `Actions`) can be used to perform behaviors that are more complicated than clicking buttons and anchors or typing in input fields.
 
 ==== Drag and drop
 
-clickAndHold, moveByOffset, and then release will drag and drop an element on the page.
+`clickAndHold()`, `moveByOffset()`, and then `release()` will drag and drop an element on the page.
 
+[source,groovy]
 ----
-interact {
-    clickAndHold($('#element'))
-    moveByOffset(400, -150)
-    release()
-}
+include::{real-browser-test-dir}/navigator/DragAndDropSpec.groovy[tag=verbose,indent=0]
 ----
 
-Drag-and-dropping can also be accomplished using the `dragAndDropBy` convenience method from the Actions API:
+Drag-and-dropping can also be accomplished using the `dragAndDropBy()` convenience method from the Actions API:
 
+[source,groovy]
 ----
-interact {
-    dragAndDropBy($('#element'), 400, -150)
-}
+include::{real-browser-test-dir}/navigator/DragAndDropSpec.groovy[tag=convenience,indent=0]
 ----
 
-In this particular example, the element will be clicked then dragged 400 pixels to the right and 150 pixels upward before being released.
+In this particular example, the element will be clicked then dragged 150 pixels to the right and 200 pixels downward before being released.
 
-____
-
-Note that moving to arbitrary locations with the mouse is currently not supported by the HTMLUnit driver, but moving directly to elements is.
-
-____
+[WARNING]
+====
+Moving to arbitrary locations with the mouse is currently not supported by the HTMLUnit driver, but moving directly to elements is.
+====
 
 ==== Control-clicking
 
 Control-clicking several elements, such as items in a list, is performed the same way as shift-clicking.
 
+[source,groovy]
 ----
-import org.openqa.selenium.Keys
-
-interact {
-    keyDown(Keys.CONTROL)
-    click($('ul.multiselect li', text: 'Order 1'))
-    click($('ul.multiselect li', text: 'Order 2'))
-    click($('ul.multiselect li', text: 'Order 3'))
-    keyUp(Keys.CONTROL)
-}
+include::{real-browser-test-dir}/navigator/ControlClickSpec.groovy[tag=import,indent=0]
+include::{real-browser-test-dir}/navigator/ControlClickSpec.groovy[tag=interact,indent=0]
 ----

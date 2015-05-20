@@ -8,8 +8,9 @@
 :webclient: http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 :webdriver: http://code.google.com/p/selenium/[WebDriver]
 :webdriver-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebDriver.html[WebDriver]
-:webelement-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebElement.html
+:webelement-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebElement.html[WebElement]
 :by-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/By.html[By]
+:actions-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/interactions/Actions.html[Actions]
 :htmlunitdriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/htmlunit/HtmlUnitDriver.html
 :iedriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/ie/InternetExplorerDriver.html
 :firefoxdriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/firefox/FirefoxDriver.html

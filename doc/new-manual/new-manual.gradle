@@ -32,6 +32,7 @@ asciidoctor {
         encoding               : 'utf-8',
         'test-dir'             : '../../test/groovy',
         'real-browser-test-dir': '../../realBrowserTest/groovy',
+        'core-source-dir'      : '../../../../../module/geb-core/src/main/groovy',
         numbered               : true,
         sectlinks              : true,
         idprefix               : '',

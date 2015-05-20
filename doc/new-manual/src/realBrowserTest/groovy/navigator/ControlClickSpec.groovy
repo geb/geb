@@ -21,32 +21,42 @@ import org.openqa.selenium.Keys
 
 // end::import[]
 
-class NonCharacterKeystrokesSpec extends GebSpecWithServerUsingJavascript {
+class ControlClickSpec extends GebSpecWithServerUsingJavascript {
 
-    def "sending ctrl+c"() {
+    def "control clicking"() {
         given:
         html """
             <html>
                 ${jquery()}
                 ${javascript '''
                     $(function() {
-                        $("input").keypress("c", function(event) {
+                        $("li").click(function(event) {
                             if (event.ctrlKey) {
-                                $(event.target).addClass("chord-recorded");
+                                $(event.target).addClass("ctrl-clicked");
                             }
                         });
                     });
                 '''}
-                <input type="text"/>
+                <ul class="multiselect">
+                    <li>Order 1</li>
+                    <li>Order 2</li>
+                    <li>Order 3</li>
+                </ul>
             </html>
         """
 
         when:
-        // tag::keystrokes[]
-        $("input") << Keys.chord(Keys.CONTROL, "c")
-        // end::keystrokes[]
+        // tag::interact[]
+        interact {
+            keyDown(Keys.CONTROL)
+            click($("ul.multiselect li", text: "Order 1"))
+            click($("ul.multiselect li", text: "Order 2"))
+            click($("ul.multiselect li", text: "Order 3"))
+            keyUp(Keys.CONTROL)
+        }
+        // end::interact[]
 
         then:
-        $("input").hasClass("chord-recorded")
+        $("ul.multiselect li").every { it.hasClass("ctrl-clicked") }
     }
 }

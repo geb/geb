@@ -841,19 +841,25 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * Returns the first context element (not wrapped).
      * @return the first context element (not wrapped)
      */
+    // tag::web_element_returning_methods[]
     WebElement firstElement()
+    // end::web_element_returning_methods[]
 
     /**
      * Returns the last context element (not wrapped).
      * @return the last context element (not wrapped)
      */
+    // tag::web_element_returning_methods[]
     WebElement lastElement()
+    // end::web_element_returning_methods[]
 
     /**
      * Returns all context elements.
      * @return all context elements
      */
+    // tag::web_element_returning_methods[]
     Collection<WebElement> allElements()
+    // end::web_element_returning_methods[]
 
     Iterator<Navigator> iterator()
 
