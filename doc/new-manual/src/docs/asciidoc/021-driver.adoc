@@ -66,9 +66,9 @@ The solution is to use a refresh handler that handles the refresh asynchronously
 
 [source,groovy]
 ----
-include::{testDir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=import,indent=0]
+include::{test-dir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=import,indent=0]
 
-include::{testDir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=changing_handler,indent=0]
+include::{test-dir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=changing_handler,indent=0]
 ----
 <1> From here on refresh meta tag value will be respected.
 

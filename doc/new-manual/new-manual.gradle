@@ -30,7 +30,7 @@ asciidoctor {
         toc                    : 'left',
         doctype                : 'book',
         encoding               : 'utf-8',
-        testdir                : '../../test/groovy',
+        'test-dir'             : '../../test/groovy',
         'real-browser-test-dir': '../../realBrowserTest/groovy',
         numbered               : true,
         sectlinks              : true,

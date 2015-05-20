@@ -12,25 +12,25 @@ The default constructor of `{browser-api}` simply loads its settings from the co
 
 [source,groovy]
 ----
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=imports]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=imports]
 
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=creation,indent=0]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=creation,indent=0]
 ----
 
 However, if you prefer to specify the driver implementation (or any other settable property on the `{browser-api}`) you can by using Groovy's map constructor syntax.
 
 [source,groovy]
 ----
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=driver_imports]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=driver_imports]
 
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=setting_driver_in_constructor,indent=0]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=setting_driver_in_constructor,indent=0]
 ----
 
 Which is the same as…
 
 [source,groovy]
 ----
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=setting_driver,indent=0]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=setting_driver,indent=0]
 ----
 
 Any property set this way will *override* any settings coming from the config mechanism.
@@ -45,10 +45,10 @@ likely using the link:api/geb/ConfigurationLoader.html[configuration loader].
 
 [source,groovy]
 ----
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=imports]
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=configuration_imports]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=imports]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=configuration_imports]
 
-include::{testDir}/browser/BrowserCreationSpec.groovy[tag=configuration_construction,indent=0]
+include::{test-dir}/browser/BrowserCreationSpec.groovy[tag=configuration_construction,indent=0]
 ----
 
 Wherever possible, you should strive to use the no-arg constructor and manage Geb through the inbuilt <<configuration,configuration mechanism>> as it offers a great deal of flexibility
@@ -65,14 +65,14 @@ The Browser class features a static method, `{drive-method-api}`, that makes Geb
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/DriveSpec.groovy[tag=using_drive]
+include::{test-dir}/browser/DriveSpec.groovy[tag=using_drive]
 ----
 
 Which is equivalent to:
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/DriveSpec.groovy[tag=explicit]
+include::{test-dir}/browser/DriveSpec.groovy[tag=explicit]
 ----
 
 The `drive()` method takes all of the arguments that the `{browser-api}` constructor takes (i.e. none, a `{configuration-api}` and/or property overrides) or an existing browser instance,
@@ -84,7 +84,7 @@ The `drive()` method always returns the browser object that was used, so if you 
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/QuitSpec.groovy[tag=quit]
+include::{test-dir}/browser/QuitSpec.groovy[tag=quit]
 ----
 
 [TIP]
@@ -125,9 +125,9 @@ This is done with the link:api/geb/Browser.html#to(Class%3CT%3E,%20java.lang.Obj
 
 [source,groovy]
 ----
-include::{testDir}/browser/PageSpec.groovy[tag=signup_page]
+include::{test-dir}/browser/PageSpec.groovy[tag=signup_page]
 
-include::{testDir}/browser/PageSpec.groovy[tag=using_pages,indent=0]
+include::{test-dir}/browser/PageSpec.groovy[tag=using_pages,indent=0]
 ----
 
 The `to()` and `via()` method makes a request to the resolved URL and sets the browser's page instance to an instance of the given class. Most Geb scripts and tests start with a `to()` or `via()` call.
@@ -143,14 +143,14 @@ You can also make a new request to a URL without setting or changing the page us
 
 [source,groovy]
 ----
-include::{testDir}/browser/GoogleSpec.groovy[tag=class]
+include::{test-dir}/browser/GoogleSpec.groovy[tag=class]
 ----
 
 The following examples use a baseUrl of “`\http://localhost/`”.
 
 [source,groovy]
 ----
-include::{testDir}/browser/GoSpec.groovy[tag=examples,indent=0]
+include::{test-dir}/browser/GoSpec.groovy[tag=examples,indent=0]
 ----
 <1> Go to the base URL.
 <2> Go to a URL relative to base URL.
@@ -167,7 +167,7 @@ The browser object will _forward_ any method calls or property read/writes that 
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/DriveSpec.groovy[tag=browser_delegates_to_page]
+include::{test-dir}/browser/DriveSpec.groovy[tag=browser_delegates_to_page]
 ----
 <1> These two calls are equivalent.
 
@@ -182,9 +182,9 @@ When using the Page Object pattern, you create subclasses of link:api/geb/Page.h
 
 [source,groovy]
 ----
-include::{testDir}/browser/PageSpec.groovy[tag=signup_page_with_content,indent=0]
+include::{test-dir}/browser/PageSpec.groovy[tag=signup_page_with_content,indent=0]
 
-include::{testDir}/browser/PageSpec.groovy[tag=using_pages_content,indent=0]
+include::{test-dir}/browser/PageSpec.groovy[tag=using_pages_content,indent=0]
 ----
 
 Page objects are discussed in depth in the <<pages>> chapter, which also explores the Content DSL.
@@ -224,9 +224,9 @@ Pages define an <<at-checker,“at checker”>> that the browser uses for checki
 
 [source,groovy]
 ----
-include::{testDir}/browser/PageSpec.groovy[tag=signup_page_with_at_checker,indent=0]
+include::{test-dir}/browser/PageSpec.groovy[tag=signup_page_with_at_checker,indent=0]
 
-include::{testDir}/browser/PageSpec.groovy[tag=using_to,indent=0]
+include::{test-dir}/browser/PageSpec.groovy[tag=using_to,indent=0]
 ----
 
 [WARNING]
@@ -242,7 +242,7 @@ If the request may initiate a redirect and take the browser to a different page 
 
 [source,groovy]
 ----
-include::{testDir}/browser/ViaSpec.groovy[tag=using_via,indent=0]
+include::{test-dir}/browser/ViaSpec.groovy[tag=using_via,indent=0]
 ----
 
 Browser objects have `{at-method-taking-class-api}` and `{at-method-taking-class-api}` methods that test whether or not the browser is currently at the page modeled by the given page
@@ -268,9 +268,9 @@ After clicking on such content the declared page is automatically ”at checked�
 
 [source,groovy]
 ----
-include::{testDir}/browser/ContentDslToParameterSpec.groovy[tag=pages,indent=0]
+include::{test-dir}/browser/ContentDslToParameterSpec.groovy[tag=pages,indent=0]
 
-include::{testDir}/browser/ContentDslToParameterSpec.groovy[tag=to_parameter,indent=0]
+include::{test-dir}/browser/ContentDslToParameterSpec.groovy[tag=to_parameter,indent=0]
 ----
 
 == Page change listening
@@ -283,16 +283,16 @@ Subsequently, each time the page changes `oldPage` will be the page that the bro
 
 [source,groovy]
 ----
-include::{testDir}/browser/PageChangeListenerSpec.groovy[tag=helper_classes,indent=0]
+include::{test-dir}/browser/PageChangeListenerSpec.groovy[tag=helper_classes,indent=0]
 
-include::{testDir}/browser/PageChangeListenerSpec.groovy[tag=using_page_change_listener,indent=0]
+include::{test-dir}/browser/PageChangeListenerSpec.groovy[tag=using_page_change_listener,indent=0]
 ----
 
 You can remove a listener at any time…
 
 [source,groovy]
 ----
-include::{testDir}/browser/PageChangeListenerSpec.groovy[tag=removing_listener,indent=0]
+include::{test-dir}/browser/PageChangeListenerSpec.groovy[tag=removing_listener,indent=0]
 ----
 
 The link:api/geb/Browser.html#removePageChangeListener(geb.PageChangeListener)[`removePageChangeListener(PageChangeListener listener)`] returns `true` if `listener` was registered and has now been
@@ -320,14 +320,14 @@ Given that this HTML is rendered for the `baseUrl`:
 
 [source,html,indent=0]
 ----
-include::{testDir}/browser/WithWindowSpec.groovy[tag=using_name_html]
+include::{test-dir}/browser/WithWindowSpec.groovy[tag=using_name_html]
 ----
 
 This code passes:
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/WithWindowSpec.groovy[tag=using_name]
+include::{test-dir}/browser/WithWindowSpec.groovy[tag=using_name]
 ----
 
 If you don't know the name of the window but you know something about the content of the window you can use the
@@ -344,14 +344,14 @@ So given:
 
 [source,html,indent=0]
 ----
-include::{testDir}/browser/WithWindowSpec.groovy[tag=using_closure_html]
+include::{test-dir}/browser/WithWindowSpec.groovy[tag=using_closure_html]
 ----
 
 This code passes:
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/WithWindowSpec.groovy[tag=using_closure]
+include::{test-dir}/browser/WithWindowSpec.groovy[tag=using_closure]
 ----
 
 [NOTE]
@@ -394,14 +394,14 @@ Given that this HTML is rendered for the `baseUrl`:
 
 [source,html,indent=0]
 ----
-include::{testDir}/browser/WithNewWindowSpec.groovy[tag=html]
+include::{test-dir}/browser/WithNewWindowSpec.groovy[tag=html]
 ----
 
 The following will pass:
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/WithNewWindowSpec.groovy[tag=new_window]
+include::{test-dir}/browser/WithNewWindowSpec.groovy[tag=new_window]
 ----
 
 [WARNING]
@@ -451,21 +451,21 @@ Given that the following HTML is rendered for the `baseUrl`:
 
 [source,html,indent=0]
 ----
-include::{testDir}/browser/WithNewWindowSpec.groovy[tag=waiting_html]
+include::{test-dir}/browser/WithNewWindowSpec.groovy[tag=waiting_html]
 ----
 
 together with the following javascript:
 
 [source,javascript,indent=0]
 ----
-include::{testDir}/browser/WithNewWindowSpec.groovy[tag=js]
+include::{test-dir}/browser/WithNewWindowSpec.groovy[tag=js]
 ----
 
 then the following will pass:
 
 [source,groovy,indent=0]
 ----
-include::{testDir}/browser/WithNewWindowSpec.groovy[tag=new_window_with_wait]
+include::{test-dir}/browser/WithNewWindowSpec.groovy[tag=new_window_with_wait]
 ----
 
 [quiting-the-browser]

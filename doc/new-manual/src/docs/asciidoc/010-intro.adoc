@@ -56,7 +56,7 @@ Let's see some examples:
 
 [source,groovy,indent=0]
 ----
-include::{testdir}/intro/IntroSamplesSpec.groovy[tags=dollar_examples]
+include::{test-dir}/intro/IntroSamplesSpec.groovy[tags=dollar_examples]
 ----
 <1> Match all `"div"` elements on the page.
 <2> Match the first `"div"` element on the page.
@@ -70,7 +70,7 @@ These methods return `Navigator` objects that can be used to further refine the 
 
 [source,groovy,indent=0]
 ----
-include::{testdir}/intro/IntroSamplesSpec.groovy[tags=refining_content]
+include::{test-dir}/intro/IntroSamplesSpec.groovy[tags=refining_content]
 ----
 <1> The parent of the first paragraph.
 <2> All tables with a cellspacing attribute value of 0 that are nested in a paragraph.
@@ -87,9 +87,9 @@ Here's an example of using Geb in an inline (i.e. no page objects or predefined 
 
 [source,groovy]
 ----
-include::{testdir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
+include::{test-dir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
 
-include::{testdir}/intro/ScriptingSpec.groovy[tags=inline,indent=0]
+include::{test-dir}/intro/ScriptingSpec.groovy[tags=inline,indent=0]
 ----
 <1> Check that we are at Geb's homepage.
 <2> Click on the link for information on jQuery-like API.
@@ -102,14 +102,14 @@ This time let us define our content up front using the Page Object pattern…
 
 [source,groovy]
 ----
-include::{testdir}/intro/module/SelectableLinkModule.groovy[tags=imports,indent=0]
-include::{testdir}/intro/page/GebHomePage.groovy[tags=imports,indent=0]
+include::{test-dir}/intro/module/SelectableLinkModule.groovy[tags=imports,indent=0]
+include::{test-dir}/intro/page/GebHomePage.groovy[tags=imports,indent=0]
 
-include::{testdir}/intro/module/SelectableLinkModule.groovy[tags=class,indent=0]
+include::{test-dir}/intro/module/SelectableLinkModule.groovy[tags=class,indent=0]
 
-include::{testdir}/intro/module/HighlightsModule.groovy[tags=class,indent=0]
+include::{test-dir}/intro/module/HighlightsModule.groovy[tags=class,indent=0]
 
-include::{testdir}/intro/page/GebHomePage.groovy[tags=class,indent=0]
+include::{test-dir}/intro/page/GebHomePage.groovy[tags=class,indent=0]
 ----
 <1> Modules are reusable fragments that can be used across pages. Here we are using a module to model a link that can be shown as selected.
 <2> Modules can contain methods that allow to hide document structure details.
@@ -124,9 +124,9 @@ Now our script again, using the above defined content…
 
 [source,groovy]
 ----
-include::{testdir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
+include::{test-dir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
 
-include::{testdir}/intro/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
+include::{test-dir}/intro/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
 ----
 <1> Go to the url defined by `GebHomePage` and also verify it's “at checker”.
 
@@ -140,9 +140,9 @@ Here is our Geb homepage case again, this time using Geb's {spock} integration�
 
 [source,groovy]
 ----
-include::{testdir}/intro/GebHomepageSpec.groovy[tags=imports,indent=0]
+include::{test-dir}/intro/GebHomepageSpec.groovy[tags=imports,indent=0]
 
-include::{testdir}/intro/GebHomepageSpec.groovy[tags=class,indent=0]
+include::{test-dir}/intro/GebHomepageSpec.groovy[tags=class,indent=0]
 ----
 
 For more information on using Geb for web and functional testing, see the <<testing,testing chapter>>.

@@ -23,7 +23,7 @@ The following is a concrete example…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=concrete_example,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=concrete_example,indent=0]
 ----
 
 This would find the 3rd (elements are 0 indexed) `h1` element whose `class` _attribute_ is exactly “`heading`”.
@@ -32,7 +32,7 @@ All arguments are optional, meaning the following calls are all valid:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=other_examples,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=other_examples,indent=0]
 ----
 
 [NOTE]
@@ -46,7 +46,7 @@ You can use any CSS selector that the underlying `WebDriver` supports…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=css3_selectors,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=css3_selectors,indent=0]
 ----
 
 HTMLUnit driver only partially supports CSS 3.
@@ -63,7 +63,7 @@ Following are some examples of using `By` selectors…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=by_selectors,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=by_selectors,indent=0]
 ----
 
 === Indexes and ranges
@@ -74,14 +74,14 @@ Consider the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges_html,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges_html,indent=0]
 ----
 
 We can use indexes to match content like so…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_ranges,indent=0]
 ----
 
 See below for an explanation of the `text()` method and the use of the spread operator.
@@ -96,35 +96,35 @@ Consider the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=attributes_html,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=attributes_html,indent=0]
 ----
 
 We can use attribute matchers like so…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=attributes,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=attributes,indent=0]
 ----
 
 Attribute values are `and`ed together…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=multiple_attributes,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=multiple_attributes,indent=0]
 ----
 
 We can use text matchers like so…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=text_matchers,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=text_matchers,indent=0]
 ----
 
 You can mix attribute and text matchers…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=matchers_and_attributes,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=matchers_and_attributes,indent=0]
 ----
 
 ==== Using patterns
@@ -133,14 +133,14 @@ To match the entire value of an attribute or the text you use a `String` value. 
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=pattern,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=pattern,indent=0]
 ----
 
 Geb also ships with a bunch of shortcut pattern methods…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=pattern_methods,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=pattern_methods,indent=0]
 ----
 
 The following is the complete listing:
@@ -162,7 +162,7 @@ All of these methods themselves can take a `String` or a `Pattern`…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/DollarExamplesSpec.groovy[tag=pattern_methods_using_pattern,indent=0]
+include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=pattern_methods_using_pattern,indent=0]
 ----
 
 [NOTE]
@@ -180,21 +180,21 @@ Consider the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/IterableSpec.groovy[tag=iterable_html,indent=0]
+include::{test-dir}/navigator/IterableSpec.groovy[tag=iterable_html,indent=0]
 ----
 
 You can use the `max()` function on `Navigator` instances…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/IterableSpec.groovy[tag=max,indent=0]
+include::{test-dir}/navigator/IterableSpec.groovy[tag=max,indent=0]
 ----
 
 This also means that navigator objects work with the Groovy spread operator…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/IterableSpec.groovy[tag=spread,indent=0]
+include::{test-dir}/navigator/IterableSpec.groovy[tag=spread,indent=0]
 ----
 
 When treating a navigator as `Iterable`, the iterated over content is always the exact matched elements (as opposed to including children).
@@ -208,14 +208,14 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/EqualsSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/EqualsSpec.groovy[tag=html,indent=0]
 ----
 
 Here are some examples of equal Navigator instances…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/EqualsSpec.groovy[tag=equal,indent=0]
+include::{test-dir}/navigator/EqualsSpec.groovy[tag=equal,indent=0]
 ----
 <1> Two empty navigators
 <2> Two single element navigators containing the same element
@@ -227,7 +227,7 @@ And some that are not equal…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/EqualsSpec.groovy[tag=not_equal,indent=0]
+include::{test-dir}/navigator/EqualsSpec.groovy[tag=not_equal,indent=0]
 ----
 <1> Empty and not empty navigators
 <2> Single element navigators containing different elements
@@ -241,64 +241,64 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=html,indent=0]
 ----
 
 We can select `p.b` by…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=find,indent=0]
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=dollar,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=find,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=dollar,indent=0]
 ----
 
 We can select `div.b` by…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=filter,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=filter,indent=0]
 ----
 
 or…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=not,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=not,indent=0]
 ----
 
 We can select the `div` containing the `p` with…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=a_has,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=a_has,indent=0]
 ----
 
 Or select the `div` containing the `input` with a type attribute of "text" like so…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=b_has,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=b_has,indent=0]
 ----
 
 We can select the `div` that does not contain the `p` with…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=b_has_not,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=b_has_not,indent=0]
 ----
 
 Or select the `div` that does not contain the `input` with a type attribute of "text" like so…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=a_has_not,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=a_has_not,indent=0]
 ----
 
 Or select the two `div` that do not contain `input` with a type attribute of "submit" like so…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FindingAndFilteringSpec.groovy[tag=has_not,indent=0]
+include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=has_not,indent=0]
 ----
 
 The `find()` and `$()` methods support the *exact same argument types as the `$()` function*.
@@ -316,35 +316,35 @@ Consider the following markup…
 
 [source,html]
 ----
-include::{testDir}/navigator/CompositionSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/CompositionSpec.groovy[tag=html,indent=0]
 ----
 
 You can then create a new navigator object that represents both the `a` and `b` paragraphs the following way:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CompositionSpec.groovy[tag=dollar,indent=0]
+include::{test-dir}/navigator/CompositionSpec.groovy[tag=dollar,indent=0]
 ----
 
 An alternative way is to use the `add()` method of `Navigator` that takes either a `String` or a Webdriver's `By` selector:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CompositionSpec.groovy[tag=add,indent=0]
+include::{test-dir}/navigator/CompositionSpec.groovy[tag=add,indent=0]
 ----
 
 Finally, you can compose navigator objects from content. So given a page content definition:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CompositionSpec.groovy[tag=content_definition,indent=0]
+include::{test-dir}/navigator/CompositionSpec.groovy[tag=content_definition,indent=0]
 ----
 
 You can compose content elements into a navigator in the following way:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CompositionSpec.groovy[tag=content,indent=0]
+include::{test-dir}/navigator/CompositionSpec.groovy[tag=content,indent=0]
 ----
 
 == Traversing
@@ -355,28 +355,28 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=siblings_html,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=siblings_html,indent=0]
 ----
 
 You can select content _around_ `p.d` by…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=siblings,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=siblings,indent=0]
 ----
 
 Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=next_html,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=next_html,indent=0]
 ----
 
 The following code will select `p.b` &amp; `p.c`…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=next,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=next,indent=0]
 ----
 
 The `previous()`, `prevAll()`, `next()`, `nextAll()`, `parent()`, `parents()`, `closest()`, `siblings()` and `children()` methods can also take CSS selectors and attribute matchers.
@@ -385,21 +385,21 @@ Using the same html, the following examples will select `p.c`…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=next_with_args,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=next_with_args,indent=0]
 ----
 
 Likewise, consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=parent_closest_html,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=parent_closest_html,indent=0]
 ----
 
 The following examples will select `div.b`…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=parent,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=parent,indent=0]
 ----
 
 The `closest()` method is a special case in that it will select the first ancestor of the current elements that matches a selector.
@@ -408,7 +408,7 @@ For example, these will select `div.a`…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=closest,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=closest,indent=0]
 ----
 
 These methods do not take indexes as they automatically select the first matching content.
@@ -419,14 +419,14 @@ Consider the following markup:
 
 [source,html]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=next_until_html,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=next_until_html,indent=0]
 ----
 
 The following examples will select `div.b` and `div.c`:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
+include::{test-dir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
 ----
 
 == Clicking
@@ -441,7 +441,7 @@ For example…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/ClickingSpec.groovy[tag=click,indent=0]
+include::{test-dir}/navigator/ClickingSpec.groovy[tag=click,indent=0]
 ----
 
 Would click the `a.login` element, then effectively call `browser.page(LoginPage)` and verify that the browser is at the expected page.
@@ -466,21 +466,21 @@ Consider the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/SizeAndLocationSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/SizeAndLocationSpec.groovy[tag=html,indent=0]
 ----
 
 The following conditions are satisfied for it…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/SizeAndLocationSpec.groovy[tag=single_element,indent=0]
+include::{test-dir}/navigator/SizeAndLocationSpec.groovy[tag=single_element,indent=0]
 ----
 
 To obtain any of the properties for all matched elements, you can use the Groovy spread operator.
 
 [source,groovy]
 ----
-include::{testDir}/navigator/SizeAndLocationSpec.groovy[tag=multiple_elements,indent=0]
+include::{test-dir}/navigator/SizeAndLocationSpec.groovy[tag=multiple_elements,indent=0]
 ----
 
 == Accessing tag name, attributes, text and classes
@@ -492,21 +492,21 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/TagTextClassesAttributesSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/TagTextClassesAttributesSpec.groovy[tag=html,indent=0]
 ----
 
 The following assertions are valid…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TagTextClassesAttributesSpec.groovy[tag=single_element,indent=0]
+include::{test-dir}/navigator/TagTextClassesAttributesSpec.groovy[tag=single_element,indent=0]
 ----
 
 To obtain information about all matched content, you use the Groovy _spread operator_…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TagTextClassesAttributesSpec.groovy[tag=multiple_elements,indent=0]
+include::{test-dir}/navigator/TagTextClassesAttributesSpec.groovy[tag=multiple_elements,indent=0]
 ----
 
 == CSS properties
@@ -517,14 +517,14 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/CssPropertiesSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/CssPropertiesSpec.groovy[tag=html,indent=0]
 ----
 
 You can obtain the value of `float` css property in the following way…
 
 [source,css]
 ----
-include::{testDir}/navigator/CssPropertiesSpec.groovy[tag=css,indent=0]
+include::{test-dir}/navigator/CssPropertiesSpec.groovy[tag=css,indent=0]
 ----
 
 [WARNING]
@@ -541,14 +541,14 @@ Given the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/KeystrokesSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/KeystrokesSpec.groovy[tag=html,indent=0]
 ----
 
 You can send keystrokes to the input (and any other content) via the leftShift operator, which is a shortcut for the `{webdriver-send-keys-api}` method of WebDriver.
 
 [source,groovy]
 ----
-include::{testDir}/navigator/KeystrokesSpec.groovy[tag=keystrokes,indent=0]
+include::{test-dir}/navigator/KeystrokesSpec.groovy[tag=keystrokes,indent=0]
 ----
 
 How content responds to the keystrokes depends on what the content is.
@@ -590,28 +590,28 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=html,indent=0]
 ----
 
 The value can be read and written via property notation…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=value_shortcuts,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=value_shortcuts,indent=0]
 ----
 
 These are literally shortcuts for…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=value_equivalents,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=value_equivalents,indent=0]
 ----
 
 There is also a shortcut for obtaining a navigator based on a control name…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=element_shortcut,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=element_shortcut,indent=0]
 ----
 
 [NOTE]
@@ -626,21 +626,21 @@ Given a page and module definitions for the above mentioned HTML:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=content_definitions,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=content_definitions,indent=0]
 ----
 
 The following will pass:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=content_shortcuts,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=content_shortcuts,indent=0]
 ----
 
 As well as:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FormShortcutsSpec.groovy[tag=module_shortcuts,indent=0]
+include::{test-dir}/navigator/FormShortcutsSpec.groovy[tag=module_shortcuts,indent=0]
 ----
 
 == Setting form control values
@@ -662,14 +662,14 @@ Select values are set by assigning the value or text of the required option. Ass
 
 [source,html]
 ----
-include::{testDir}/navigator/SelectSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/SelectSpec.groovy[tag=html,indent=0]
 ----
 
 We can select options with…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/SelectSpec.groovy[tag=setting_value,indent=0]
+include::{test-dir}/navigator/SelectSpec.groovy[tag=setting_value,indent=0]
 ----
 <1> First option selected by its value attribute.
 <2> Second option selected by its value attribute with argument coercion.
@@ -685,7 +685,7 @@ For example…
 
 [source,html]
 ----
-include::{testDir}/navigator/MultiSelectSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/MultiSelectSpec.groovy[tag=html,indent=0]
 ----
 
 We can select options with…
@@ -693,7 +693,7 @@ We can select options with…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/MultiSelectSpec.groovy[tag=setting_values,indent=0]
+include::{test-dir}/navigator/MultiSelectSpec.groovy[tag=setting_values,indent=0]
 ----
 <1> Second and third options selected by their value attributes.
 <2> First, fourth and fifth options selected by their value attributes with argument coercion.
@@ -710,76 +710,76 @@ Consider the following html…
 
 [source,html]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=single_html,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=single_html,indent=0]
 ----
 
 You can set a single checkbox in the following manner…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=single,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=single,indent=0]
 ----
 
 You can also check a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.:
 
 [source,html]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=multiple_html,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple_html,indent=0]
 ----
 
 You can select dogs as your pet type as follows:
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=multiple,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple,indent=0]
 ----
 
 Calling `value()` on a checked checkbox will return the value of its `value` attribute, i.e:
 
 [source,html]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=checked_html,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=checked_html,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=checked,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=checked,indent=0]
 ----
 
 Calling `value()` on an unchecked checkbox will return `false`, i.e:
 
 [source,html]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=unchecked_html,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=unchecked_html,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=unchecked,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=unchecked,indent=0]
 ----
 
 In general you should use {groovy-truth} when checking if a checkbox is checked:
 
 [source,html]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth_html,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=truth_html,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=truth,indent=0]
 ----
 
 When checking if a checkbox is checked and there are multiple checkboxes with the same name make sure that you use a navigator that holds only one of them before calling `value()` on it:
 
 [source,html]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth_multiple_html,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=truth_multiple_html,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{testDir}/navigator/CheckboxSpec.groovy[tag=truth_multiple,indent=0]
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=truth_multiple,indent=0]
 ----
 
 === Radio
@@ -790,21 +790,21 @@ For example, with the following radio buttons…
 
 [source,html]
 ----
-include::{testDir}/navigator/RadioSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/RadioSpec.groovy[tag=html,indent=0]
 ----
 
 We can select the radios by value…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/RadioSpec.groovy[tag=by_value,indent=0]
+include::{test-dir}/navigator/RadioSpec.groovy[tag=by_value,indent=0]
 ----
 
 Or by label text…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/RadioSpec.groovy[tag=by_label,indent=0]
+include::{test-dir}/navigator/RadioSpec.groovy[tag=by_label,indent=0]
 ----
 
 === Text inputs and textareas
@@ -813,19 +813,19 @@ In the case of a text `input` or a `textarea`, the assigned value becomes the el
 
 [source,html]
 ----
-include::{testDir}/navigator/TextInputAndAreaSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/TextInputAndAreaSpec.groovy[tag=html,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TextInputAndAreaSpec.groovy[tag=setting_value,indent=0]
+include::{test-dir}/navigator/TextInputAndAreaSpec.groovy[tag=setting_value,indent=0]
 ----
 
 It is also possible to append text by using the send keys shorthand…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/TextInputAndAreaSpec.groovy[tag=typing,indent=0]
+include::{test-dir}/navigator/TextInputAndAreaSpec.groovy[tag=typing,indent=0]
 ----
 
 Which an also be used for non-character keys…
@@ -853,14 +853,14 @@ So if your html looks like…
 
 [source,html]
 ----
-include::{testDir}/navigator/FileUploadSpec.groovy[tag=html,indent=0]
+include::{test-dir}/navigator/FileUploadSpec.groovy[tag=html,indent=0]
 ----
 
 And the `uploadedFile` variable holds a `File` instance pointing at the file you want to upload then this is how you can set the value of the upload control…
 
 [source,groovy]
 ----
-include::{testDir}/navigator/FileUploadSpec.groovy[tag=upload,indent=0]
+include::{test-dir}/navigator/FileUploadSpec.groovy[tag=upload,indent=0]
 ----
 
 == Complex interactions
