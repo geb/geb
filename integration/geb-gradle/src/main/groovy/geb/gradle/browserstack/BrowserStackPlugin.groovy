@@ -77,7 +77,7 @@ class BrowserStackPlugin implements Plugin<Project> {
             dependsOn downloadBrowserStackTunnel
 
             from(project.zipTree(downloadBrowserStackTunnel.outputs.files.singleFile))
-            into(project.file("${project.rootProject.buildDir}/browserstack/unzipped"))
+            into(project.file("${project.buildDir}/browserstack/unzipped"))
         }
 
         project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
