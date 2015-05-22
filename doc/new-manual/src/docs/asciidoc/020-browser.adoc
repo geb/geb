@@ -59,6 +59,7 @@ and separates your configuration from your code.
 Geb integrations typically remove the need to construct a browser object and do this for you, leaving you to just manage the configuration.
 ====
 
+[[drive]]
 == The `drive()` method
 
 The Browser class features a static method, `{drive-method-api}`, that makes Geb scripting a little more convenient.
