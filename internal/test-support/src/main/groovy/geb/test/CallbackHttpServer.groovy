@@ -72,4 +72,8 @@ class CallbackHttpServer extends TestHttpServer {
     void html(Closure html) {
         responseHtml(html)
     }
+
+    void html(String html) {
+        responseHtml(html)
+    }
 }

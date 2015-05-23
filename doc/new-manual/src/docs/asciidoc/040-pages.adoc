@@ -35,30 +35,30 @@ Geb's support for the Page Object pattern addresses this problem.
 
 == The `Page` superclass
 
-All page objects *must* inherit from [`Page`][page-api].
+All page objects *must* inherit from `{page-api}`.
 
 == The content DSL
 
-Geb features a DSL for defining page content in a _templated_ fashion, which allows very concise yet flexible page definitions. Pages define a `static` closure property called `content` that describes the page content. 
+Geb features a DSL for defining page content in a _templated_ fashion, which allows very concise yet flexible page definitions.
+Pages define a `static` closure property called `content` that describes the page content.
 
 Consider the following HTML…
 
+[source,html]
 ----
-<div id="a">a</div>
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=html,indent=0]
 ----
 
 We could define this content as so…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        theDiv { $('div', id: 'a') }
-    }
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_div,indent=0]
 ----
 
 The structure to the content DSL is…
 
+[source]
 ----
 «name» { «definition» }
 ----
@@ -67,101 +67,69 @@ Where `«definition»` is Groovy code that is evaluated against the instance of 
 
 Here is how it could be used…
 
+[source,groovy]
 ----
-Browser.drive {
-    to ExamplePage
-    assert theDiv.text() == "a"
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_div_usage,indent=0]
 ----
 
-So how is this working? First, remember that the `Browser` instance delegates any method calls or property accesses that it doesn't know about to the current page instance. So the above code is the same as…
+So how is this working?
+First, remember that the `Browser` instance delegates any method calls or property accesses that it doesn't know about to the current page instance.
+So the above code is the same as…
 
+[source,groovy]
 ----
-Browser.drive {
-    to ExamplePage
-    assert page.theDiv.text() == "a"
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=verbose_page_with_div_usage,indent=0]
 ----
 
 Secondly, defined content becomes available as properties and methods on instance of the page…
 
+[source,groovy]
 ----
-Browser.drive {
-    to ExamplePage
-
-    // Following two lines are equivalent
-    assert theDiv.text() == "a"
-    assert theDiv().text() == "a"
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=accessing_content_using_a_method,indent=0]
 ----
 
-The Content DSL actually defines content _templates_. This is best illustrated by example…
+The Content DSL actually defines content _templates_.
+This is best illustrated by example…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        theDiv { id -> $('div', id: id) }
-    }
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=templated_page_with_div,indent=0]
 
-Browser.drive {
-    to ExamplePage
-    assert theDiv("a").text() == "a"
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=templated_page_with_div_usage,indent=0]
 ----
 
 There are no restrictions on what arguments can be passed to content templates.
 
-A content template can return _anything_. Typically they will return a [`Navigator`][navigator-api] object through the use of the `$()` function, but it can be anything.
+A content template can return _anything_.
+Typically they will return a `{navigator-api}` object through the use of the `$()` function, but it can be anything.
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        theDivText { $('div#a').text() }
-    }
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_string_content,indent=0]
 
-Browser.drive {
-    to ExamplePage
-    assert theDivText == "a"
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_string_content_usage,indent=0]
 ----
 
-It's important to realise that `«definition»` code is evaluated against the page instance. This allows code like the following…
+It's important to realise that `«definition»` code is evaluated against the page instance.
+This allows code like the following…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        theDiv { $('div#a') }
-        theDivText { theDiv.text() }
-    }
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_reuse,indent=0]
 ----
 
 And this is not restricted to other content…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    def divId = a
-    static content = {
-        theDiv { $('div', id: divId) }
-        theDivText { theDiv.text() }
-    }
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_field,indent=0]
 ----
 
 Or…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        theDiv { $('div', id: getDivId()) }
-        theDivText { theDiv.text() }
-    }
-    def getDivId() {
-        "a"
-    }
-}
+include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_method,indent=0]
 ----
 
 === Template options
