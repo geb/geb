@@ -76,6 +76,10 @@ This page lists the high level changes between versions of Geb.
 * New `Navigator.module(Class<? extends Module>)` and `Navigable.module(Class<? extends Module>)`. \[[#312](https://github.com/geb/issues/issues/312)\]
 * New `Navigable.module(Module)` and `Navigable.module(Module)`. \[[#311](https://github.com/geb/issues/issues/311)\]
 
+#### Improvements
+
+* Using unrecognized content template parameters result in an `InvalidPageContent` exception to make catching typos in them easier. \[[#377](https://github.com/geb/issues/issues/377)\]
+
 #### Fixes
 
 * Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element. \[[#345](https://github.com/geb/issues/issues/345)\]

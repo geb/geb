@@ -43,7 +43,7 @@ class PageContentTemplate {
     }
 
     String toString() {
-        "$name - $owner"
+        "content template '$name' defined by $owner"
     }
 
     Page getPage() {

@@ -82,8 +82,8 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
 class UrlCalculationSpecPage extends Page {
 
     static content = {
-        requestUrl(dynamic: true) { $("div.url").text() }
-        requestPath(dynamic: true) { $("div.path").text() }
-        requestParams(dynamic: true) { $("div.params").text() }
+        requestUrl { $("div.url").text() }
+        requestPath { $("div.path").text() }
+        requestParams { $("div.params").text() }
     }
 }

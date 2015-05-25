@@ -332,7 +332,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
 
         then:
         InvalidPageContent e = thrown()
-        e.message == "'page' content parameter should be a class that extends Page but it isn't for $contentName - ${pageClass.newInstance()}: $pageParameter"
+        e.message == "'page' content parameter should be a class that extends Page but it isn't for content template '$contentName' defined by ${pageClass.newInstance()}: $pageParameter"
 
         where:
         pageClass                        | contentName  | pageParameter
@@ -368,6 +368,15 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
 
         where:
         contentName << ["linkWithToWaitAndVariantTo", "linkWithToWaitAndVariantToUsingPageInstances"]
+    }
+
+    def "unrecognized content template parameters are reported"() {
+        when:
+        to PageWithContentUsingUnrecognizedParams
+
+        then:
+        InvalidPageContent e = thrown()
+        e.message == "Content template 'withInvalidParams' defined by ${PageWithContentUsingUnrecognizedParams.name} uses unknown content parameters: foo, bar"
     }
 }
 
@@ -483,5 +492,11 @@ class PageOrientedSpecParametrizedPage extends Page {
     static at = { elementWithId }
     static content = {
         elementWithId { $(id: id) }
+    }
+}
+
+class PageWithContentUsingUnrecognizedParams extends Page {
+    static content = {
+        withInvalidParams(foo: 1, bar: 2) { $() }
     }
 }

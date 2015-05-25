@@ -56,14 +56,12 @@ class PageContentTemplateParams {
     final toWait
 
     PageContentTemplateParams(PageContentTemplate owner, Map<String, ?> params) {
-        if (params == null) {
-            params = Collections.emptyMap()
-        }
+        def paramsToProcess = params == null ? Collections.emptyMap() : new HashMap<String, Object>(params)
 
-        required = toBoolean(params, 'required', true)
-        cache = toBoolean(params, 'cache', false)
+        required = toBoolean(paramsToProcess, 'required', true)
+        cache = toBoolean(paramsToProcess, 'cache', false)
 
-        def toParam = params.to
+        def toParam = paramsToProcess.remove("to")
         if (!toParam) {
             toSingle = null
             toList = null
@@ -77,18 +75,23 @@ class PageContentTemplateParams {
             throw new InvalidPageContent("'to' content parameter should be a class that extends Page or a list of classes that extend Page, but it isn't for $owner: $toParam")
         }
 
-        def pageParam = params.page
+        def pageParam = paramsToProcess.remove("page")
         if (pageParam && (!(pageParam instanceof Class) || !Page.isAssignableFrom(pageParam))) {
             throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $owner: $pageParam")
         }
         page = pageParam as Class<? extends Page>
 
-        wait = params.wait
-        toWait = params.toWait
+        wait = paramsToProcess.remove("wait")
+        toWait = paramsToProcess.remove("toWait")
+
+        def unrecognizedParams = paramsToProcess.keySet()
+        if (unrecognizedParams) {
+            throw new InvalidPageContent("${owner.toString().capitalize()} uses unknown content parameters: ${unrecognizedParams.join(", ")}")
+        }
     }
 
     private static boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {
-        params.containsKey(key) ? params[key] : defaultValue as boolean
+        params.containsKey(key) ? params.remove(key) : defaultValue as boolean
     }
 
 }

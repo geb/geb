@@ -82,6 +82,10 @@ This page lists the high level changes between versions of Geb.
 * `Navigator` elements can now also be filtered using `hasNot()` method. [https://github.com/geb/issues/issues/370[#370]]
 * Custom implementation of `equals()` and `hashCode()` methods have been added to classes implementing `Navigator`. [https://github.com/geb/issues/issues/374[#374]]
 
+#### Improvements
+
+* Using unrecognized content template parameters result in an `InvalidPageContent` exception to make catching typos in them easier. [https://github.com/geb/issues/issues/377[#377]]
+
 ==== Fixes
 
 * Improved message thrown from Navigator.isDisabled() and Navigator.isReadOnly() when navigator does not contain a form element. [https://github.com/geb/issues/issues/345[#345]]
