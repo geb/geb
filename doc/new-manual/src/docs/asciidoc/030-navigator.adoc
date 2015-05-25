@@ -429,6 +429,7 @@ The following examples will select `div.b` and `div.c`:
 include::{test-dir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
 ----
 
+[[clicking]]
 == Clicking
 
 Navigator objects implement the `click()` method, which will instruct the browser to click *only the first item* the navigator has matched.

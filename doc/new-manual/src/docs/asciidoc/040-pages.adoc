@@ -136,14 +136,16 @@ include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_me
 
 Template definitions can take different options. The syntax is…
 
+[source]
 ----
 «name»(«options map») { «definition» }
 ----
 
 For example…
 
+[source,groovy]
 ----
-theDiv(cache: false, required: false) { $("div", id: "a") }
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=introduction,indent=0]
 ----
 
 The following are the available options.
@@ -152,27 +154,21 @@ The following are the available options.
 
 Default value: `true`
 
-The `required` option controls whether or not the content returned by the definition has to exist or not. This is only relevant when the definition returns a `Navigator` object (via the `$()` function), it is ignored if the definition returns anything else.
+The `required` option controls whether or not the content returned by the definition has to exist or not.
+This is only relevant when the definition returns a `Navigator` object (via the `$()` function) or `null`, it is ignored if the definition returns anything else.
 
 If the `required` option is set to `true` and the returned content does not exist, a link:api/geb/error/RequiredPageContentNotPresent.html[`RequiredPageContentNotPresent`] exception will be thrown.
 
-----
-class ExamplePage extends Page {
-    static content = {
-        theDiv { $('div', id: "b") }
-    }
-}
+Given a completely empty html document the following will pass…
 
-Browser.drive {
-    to ExamplePage
-    def thrown = false
-    try {
-        theDiv
-    } catch (RequiredPageContentNotPresent e) {
-        thrown = true
-    }
-    assert thrown
-}
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=required_page,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=required,indent=0]
 ----
 
 ==== `cache`
@@ -181,41 +177,18 @@ Default value: `false`
 
 The `cache` option controls whether or not the definition is evaluated each time the content is requested (the content is cached for each unique set of parameters). 
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    def value = 1
-    static content = {
-        theValue(cache: true) { value }
-    }
-}
-
-Browser.drive {
-    to ExamplePage
-    assert theValue == 1
-    value = 2
-    assert theValue == 1
-}
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=cache_page,indent=0]
 ----
 
-With caching disabled…
-
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    def value = 1
-    static content = {
-        theValue(cache: false) { value }
-    }
-}
-
-Browser.drive {
-    to ExamplePage
-    assert theValue == 1
-    value = 2
-    assert theValue == 2
-}
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=cache,indent=0]
 ----
 
-Caching is a performance optimisation and is disabled by default. You may want to enable if you notice that the a particular content definition is taking a long time to resolve.
+Caching is a performance optimisation and is disabled by default.
+You may want to enable if you notice that the a particular content definition is taking a long time to resolve.
 
 [[content-dsl-to]]
 ==== `to`
@@ -224,25 +197,20 @@ Default value: `null`
 
 The `to` option allows the definition of which page the browser will be sent to if the content is clicked.
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        helpLink(to: HelpPage) { $("a", text: "Help") }
-    }
-}
-
-class HelpPage extends Page {}
-
-Browser.drive {
-    to ExamplePage
-    helpLink.click()
-    assert page.class == HelpPage
-}
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to_page,indent=0]
 ----
 
-The `to` value will be implicitly used as an argument to the content's `click()` method, effectively setting the new page type and verifying its at checker. See the section on [clicking content][clicking] for how this changes the browser's page object.
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to,indent=0]
+----
 
-This option also supports all types that can be passed to any of the [`Browser.page()` method variants][changing-pages]:
+The `to` value will be implicitly used as an argument to the content's `click()` method, effectively setting the new page type and verifying its at checker.
+See the section on <<clicking, clicking content>> for how this changes the browser's page object.
+
+This option also supports all types that can be passed to any of the <<changing-pages, `Browser.page()` method variants>>:
 
 * a page instance
 * a list of page classes
@@ -250,15 +218,17 @@ This option also supports all types that can be passed to any of the [`Browser.p
 
 When using lists variants (here shown with page classes)…
 
+[source,groovy]
 ----
-static content = {
-    loginButton(to: [LoginSuccessfulPage, LoginFailedPage]) { $("input.loginButton") }
-}
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to_list_page,indent=0]
 ----
 
-Then, on click, the browser's page is set to the first page in the list whose at checker passes. This is equivalent to the link:api/geb/Browser.html#page(Class%3C%3F%20extends%20Page%3E)[`page(Class&lt;? extends Page&gt;[] potentialPageTypes)`] and link:api/geb/Browser.html#page(T)[`page(Page[] potentialPageInstances)`] browser methods which are explained in the section on [changing pages][changing-pages].
+Then, on click, the browser's page is set to the first page in the list whose at checker passes.
+This is equivalent to the link:api/geb/Browser.html#page(Class%3C%3F%20extends%20Page%3E)[`page(Class&lt;? extends Page&gt;[\])`] and
+link:api/geb/Browser.html#page(T)[`page(Page[\])`] browser methods which are explained in the section on <<changing-pages, changing pages>>.
 
-All of the page classes and classes of the page instances passed in when using any variant of the `to` option have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be thrown.
+All of the page classes and classes of the page instances passed in when using any variant of the `to` option have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be
+thrown.
 
 [[content-dsl-wait]]
 ==== `wait`
