@@ -92,10 +92,10 @@ This page lists the high level changes between versions of Geb.
 * Geb is now built with Groovy 2.3.10 and Spock 1.0-groovy-2.3.
 
 #### Deprecations
-* `module(Class<? extends Module>, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class<? extends Module>)` and will be removed in a future version of Geb.
-* `module(Class<? extends Module>, Map args)` available in content DLS has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
-* `module(Class<? extends Module>, Navigator base, Map args)` available in content DLS has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
-* all variants of `moduleList()` method available in content DLS have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future version of Geb, see [chapter on using modules for repeating content](modules.html#using_modules_for_repeating_content_on_a_page) for examples \[[#362](https://github.com/geb/issues/issues/362)\]
+* `module(Class<? extends Module>, Navigator base)` available in content DSL has been deprecated in favour of `Navigator.module(Class<? extends Module>)` and will be removed in a future version of Geb.
+* `module(Class<? extends Module>, Map args)` available in content DSL has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
+* `module(Class<? extends Module>, Navigator base, Map args)` available in content DSL has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
+* all variants of `moduleList()` method available in content DSL have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future version of Geb, see [chapter on using modules for repeating content](modules.html#using_modules_for_repeating_content_on_a_page) for examples \[[#362](https://github.com/geb/issues/issues/362)\]
 
 ### 0.10.0
 

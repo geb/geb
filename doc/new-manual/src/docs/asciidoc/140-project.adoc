@@ -103,10 +103,10 @@ This page lists the high level changes between versions of Geb.
 
 ==== Deprecations
 
-* `module(Class&lt;? extends Module&gt;, Navigator base)` available in content DLS has been deprecated in favour of `Navigator.module(Class&lt;? extends Module&gt;)` and will be removed in a future version of Geb.
-* `module(Class&lt;? extends Module&gt;, Map args)` available in content DLS has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
-* `module(Class&lt;? extends Module&gt;, Navigator base, Map args)` available in content DLS has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
-* all variants of `moduleList()` method available in content DLS have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future version of Geb, see link:modules.html#using_modules_for_repeating_content_on_a_page[chapter on using modules for repeating content] for examples [https://github.com/geb/issues/issues/362[#362]]
+* `module(Class&lt;? extends Module&gt;, Navigator base)` available in content DSL has been deprecated in favour of `Navigator.module(Class&lt;? extends Module&gt;)` and will be removed in a future version of Geb.
+* `module(Class&lt;? extends Module&gt;, Map args)` available in content DSL has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
+* `module(Class&lt;? extends Module&gt;, Navigator base, Map args)` available in content DSL has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
+* all variants of `moduleList()` method available in content DSL have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future version of Geb, see link:modules.html#using_modules_for_repeating_content_on_a_page[chapter on using modules for repeating content] for examples [https://github.com/geb/issues/issues/362[#362]]
 
 ==== Project related changes
 
