@@ -104,6 +104,69 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         then:
         page instanceof LoginFailedPage
     }
+
+    private void dynamicHtml(String text = "I'm here now", String className = "dynamic") {
+        html """
+            <html>
+                <head>
+                    <script type="text/javascript">
+                        setTimeout(function() {
+                            var p = document.createElement("p");
+                            p.innerHTML = "$text";
+                            p.className = "$className"
+                            document.body.appendChild(p);
+                        }, 500);
+                    </script>
+                </head>
+                <body></body>
+            </html>
+        """
+    }
+
+    def "waiting content"() {
+        given:
+        dynamicHtml()
+
+        expect:
+        // tag::waiting_content[]
+        to DynamicPageWithWaiting
+        assert dynamicallyAdded.text() == "I'm here now"
+        // end::waiting_content[]
+    }
+
+    def "wrapped waiting content"() {
+        given:
+        dynamicHtml()
+
+        expect:
+        // tag::wrapped_waiting_content[]
+        to DynamicPageWithoutWaiting
+        assert waitFor { dynamicallyAdded }.text() == "I'm here now"
+        // end::wrapped_waiting_content[]
+    }
+
+    def "non navigator waiting content"() {
+        given:
+        dynamicHtml("Success", "status")
+
+        expect:
+        // tag::non_navigator_waiting[]
+        to DynamicPageWithNonNavigatorWaitingContent
+        assert success
+        // end::non_navigator_waiting[]
+    }
+
+    def "not required waiting content"() {
+        given:
+        html { }
+        browser.config.defaultWaitTimeout = 0.5
+
+        when:
+        to DynamicPageWithNotRequiredWait
+
+        then:
+        dynamicallyAdded.empty
+    }
 }
 
 class TemplateOptionsIntroductionPage extends Page {
@@ -157,4 +220,37 @@ class LoginSuccessfulPage extends Page {
 
 class LoginFailedPage extends Page {
     static at = { true }
+}
+
+// tag::waiting_page[]
+class DynamicPageWithWaiting extends Page {
+    static content = {
+        dynamicallyAdded(wait: true) { $("p.dynamic") }
+    }
+}
+// end::waiting_page[]
+
+// tag::not_waiting_page[]
+class DynamicPageWithoutWaiting extends Page {
+    static content = {
+        dynamicallyAdded { $("p.dynamic") }
+    }
+}
+// end::not_waiting_page[]
+
+// tag::non_navigator_waiting_page[]
+class DynamicPageWithNonNavigatorWaitingContent extends Page {
+    static content = {
+        status { $("p.status") }
+        success(wait: true) { status.text().contains("Success") }
+    }
+}
+// end::non_navigator_waiting_page[]
+
+class DynamicPageWithNotRequiredWait extends Page {
+    // tag::not_required_waiting_page[]
+    static content = {
+        dynamicallyAdded(wait: true, required: false) { $("p.dynamic") }
+    }
+    // end::not_required_waiting_page[]
 }

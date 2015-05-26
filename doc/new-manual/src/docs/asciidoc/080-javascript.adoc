@@ -126,6 +126,7 @@ js.exec 1, 2, """
 """
 ----
 
+[[waiting]]
 == Waiting
 
 Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX, timers or effects.

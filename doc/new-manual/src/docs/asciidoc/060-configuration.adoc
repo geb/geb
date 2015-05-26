@@ -154,6 +154,7 @@ The link:browser.html#the_base_url[base URL] to be used can be specified by sett
 
 The link:javascript.html#waiting[`waitFor()`] methods available on browser, page and module objects can be affected by configuration (this is also true for link:pages.html#wait[implicitly waiting content]). It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
 
+[[default-waiting-configuration]]
 ==== Defaults
 
 Defaults can be specified via:
@@ -167,6 +168,7 @@ waiting {
 
 Both values are optional and in seconds. If unspecified, the values of `5` for `timeout` and `0.1` for `retryInterval`.
 
+[[waiting-presets]]
 ==== Presets
 
 Presets can be specified via:

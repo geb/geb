@@ -64,3 +64,5 @@
 :browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]
 :clear-browser-cache-api: link:api/geb/driver/CachingDriverFactory.html#clearCache()[CachingDriverFactory.clearCache()]
 :clear-browser-cache-and-quit-api: link:api/geb/driver/CachingDriverFactory.html#clearCacheAndQuitDriver()[CachingDriverFactory.clearCacheAndQuitDriver()]
+:required-page-content-not-present-api: link:api/geb/error/RequiredPageContentNotPresent.html[RequiredPageContentNotPresent]
+:wait-timeout-exception-api: link:api/geb/waiting/WaitTimeoutException.html[WaitTimeoutException]
