@@ -18,6 +18,12 @@ package pages
 import geb.Page
 import geb.error.RequiredPageContentNotPresent
 import geb.test.GebSpecWithCallbackServer
+import org.apache.http.entity.ContentType
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+import static geb.Browser.UTF8
 
 class TemplateOptionsSpec extends GebSpecWithCallbackServer {
 
@@ -167,6 +173,46 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         then:
         dynamicallyAdded.empty
     }
+
+    def "page option"() {
+        callbackServer.get = { HttpServletRequest request, HttpServletResponse response ->
+            response.setContentType(ContentType.TEXT_HTML.toString())
+            response.setCharacterEncoding(UTF8)
+            if (request.requestURI.endsWith("frame.html")) {
+                response.writer << """
+                    // tag::frame_html[]
+                    <html>
+                        <body>
+                            <span>frame text</span>
+                        </body>
+                    </html>
+                    // end::frame_html[]
+                """
+
+            } else {
+                response.writer << """
+                    // tag::page_html[]
+                    <html>
+                        <body>
+                            <frame id="frame-id" src="frame.html"></frame>
+                        <body>
+                    </html>
+                    // end::page_html[]
+                """
+            }
+        }
+
+        expect:
+        // tag::page[]
+        to PageWithFrame
+        withFrame(myFrame) {
+            assert frameContentsText == 'frame text'
+            // end::page[]
+            true
+            // tag::page[]
+        }
+        // end::page[]
+    }
 }
 
 class TemplateOptionsIntroductionPage extends Page {
@@ -254,3 +300,17 @@ class DynamicPageWithNotRequiredWait extends Page {
     }
     // end::not_required_waiting_page[]
 }
+
+// tag::page_page[]
+class PageWithFrame extends Page {
+    static content = {
+        myFrame(page: FrameDescribingPage) { $('#frame-id') }
+    }
+}
+
+class FrameDescribingPage extends Page {
+    static content = {
+        frameContentsText { $('span').text() }
+    }
+}
+// end::page_page[]

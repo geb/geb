@@ -333,43 +333,28 @@ The `page` option allows the definition of a page the browser will be set to if 
 
 Given the following HTML…
 
+[source,html]
 ----
-<html>
-    <body>
-        <frame id="frame-id" src="frame.html"></frame>
-    <body>
-</html>
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page_html,indent=0]
 ----
 
-…and the code for frame.html…
+…and the contents of frame.html…
 
+[source,html]
 ----
-<html>
-    <body>
-        <span>frame text</span>
-    </body>
-</html>
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=frame_html,indent=0]
 ----
 
 …the following will pass…
 
+[source,groovy]
 ----
-class PageWithFrame extends Page {
-    static content = {
-        myFrame(page: FrameDescribingPage) { $('#frame-id') }
-    }
-}
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page_page,indent=0]
+----
 
-class FrameDescribingPage extends Page {
-    static content = {
-        frameContentsText { $('span').text() }
-    }
-}
-
-to PageWithFrame
-withFrame(myFrame) {
-    assert frameContentsText == 'frame text'
-}
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page,indent=0]
 ----
 
 === Aliasing
