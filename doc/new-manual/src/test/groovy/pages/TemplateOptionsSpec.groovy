@@ -102,7 +102,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         loginButton.click()
 
         then:
-        page instanceof LoginFailedPage
+        assert page instanceof LoginFailedPage
     }
 
     private void dynamicHtml(String text = "I'm here now", String className = "dynamic") {

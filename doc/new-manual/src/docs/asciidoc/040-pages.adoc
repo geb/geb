@@ -306,49 +306,24 @@ See the section on <<implicit-assertions, implicit assertions>> for more informa
 
 Default value: `false`
 
-Allowed values are the same as for the <<wait,`wait`>> option.
+Allowed values are the same as for the <<content-dsl-wait,`wait`>> option.
 
-Can be used together with the <<to,`to`>> option to specify that the page changing action performed when the content is clicked is asynchronous. This essentially means that verification of page transition (“at checking”) should be wrapped in a `waitFor()` call.
+Can be used together with the <<content-dsl-to, `to`>> option to specify that the page changing action performed when the content is clicked is asynchronous.
+This essentially means that verification of page transition (“at checking”) should be wrapped in a `waitFor()` call.
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        helpButton(to: HelpPage, toWait: true) { $("button#help") } //page change is asynchronous, e.g. an ajax call is involved
-    }
-}
+include::{real-browser-test-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait_page,indent=0]
+----
+<1> Page change is asynchronous, e.g. an ajax call is involved.
 
-class HelpPage extends Page {
-    static at = { $("#help-contents") }
-}
-
-Browser.drive {
-    to ExamplePage
-    helpButton.click()
-    assert page.class == HelpPage
-}
+[source,groovy]
+----
+include::{real-browser-test-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait,indent=0]
 ----
 
-Is equivalent to:
-
-----
-class ExamplePage extends Page {
-    static content = {
-        helpButton { $("button#help") }
-    }
-}
-
-class HelpPage extends Page {
-    static at = { $("#help-contents") }
-}
-
-Browser.drive {
-    to ExamplePage
-    helpButton.click()
-    waitFor { at HelpPage }
-}
-----
-
-See the link:javascript.html#waiting[section on waiting] for the semantics of the `waitFor()` method, that is used here internally. Like `waitFor()` a link:api/geb/waiting/WaitTimeoutException.html[`WaitTimeoutException`] will be thrown if the wait timeout expires.
+See the <<waiting, section on waiting>> for the semantics of the `waitFor()` method, that is used here internally.
+Like `waitFor()` a `{wait-timeout-exception-api}` will be thrown if the wait timeout expires.
 
 ==== `page`
 
