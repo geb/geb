@@ -361,21 +361,17 @@ include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page,indent=0]
 
 If you wish to have the same content definitions available under different names you can create a content definition that specifies `aliases` parameter:
 
+[source,groovy]
 ----
-class AliasingPage extends Page {
-    static content = {
-       someButton { $("button", text: "foo") }
-       someButtonByAnotherName(aliases: "someButton")
-    }
-}
-
-Browser.drive {
-    to AliasingPage
-    assert someButton.text() == someButtonByAnotherName.text()
-}
+include::{test-dir}/pages/AliasingSpec.groovy[tag=page,indent=0]
 ----
 
-Remember that the aliased content has to be defined before the aliasing content, otherwise you will get a link:api/geb/error/InvalidPageContent.html[`InvalidPageContent`] exception.
+[source,groovy]
+----
+include::{test-dir}/pages/AliasingSpec.groovy[tag=usage,indent=0]
+----
+
+Remember that the aliased content has to be defined before the aliasing content, otherwise you will get a `{invalid-page-content-api}` exception.
 
 [[at-checker]]
 == “At” verification
