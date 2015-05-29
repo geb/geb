@@ -195,7 +195,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * `page` and `close` options can be passed to `withWindow()` calls, see link:browser.html#passing_options_when_working_with_already_opened_windows[this manual section] for more information.
-* Unexpected pages can be specified to fail fast when performing ”at“ checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See link:pages.html#unexpected_pages[this manual section] for details. [https://github.com/geb/issues/issues/70[#70]]
+* Unexpected pages can be specified to fail fast when performing “at” checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See link:pages.html#unexpected_pages[this manual section] for details. [https://github.com/geb/issues/issues/70[#70]]
 * Support for running Geb using SauceLabs provided browsers, see link:cloud-browsers.html[this manual section] for details.
 * New link:api/geb/navigator/Navigator.html#isEnabled()[`isEnabled()`] and link:api/geb/navigator/Navigator.html#isEditable()[`isEditable()`] methods on `Navigator`.
 * Support for ephemeral port allocation with Grails integration
@@ -221,7 +221,7 @@ This page lists the high level changes between versions of Geb.
 
 * Support for dealing with self-signed certificates in Download API using `SelfSignedCertificateHelper`. [https://github.com/geb/issues/issues/150[#150]]
 * Connections created when using Download API can be configured globally using `defaultDownloadConfig` configuration option.
-* New `atCheckWaiting` configuration option allowing to implictly wrap ”at“ checkers in `waitFor` calls. [https://github.com/geb/issues/issues/253[#253]]
+* New `atCheckWaiting` configuration option allowing to implictly wrap “at” checkers in `waitFor` calls. [https://github.com/geb/issues/issues/253[#253]]
 
 ==== Fixes
 

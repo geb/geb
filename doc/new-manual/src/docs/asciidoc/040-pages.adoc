@@ -376,96 +376,113 @@ Remember that the aliased content has to be defined before the aliasing content,
 [[at-checker]]
 == “At” verification
 
-Each page can define a way to check whether the underlying browser is at the page that the page class actually represents. This is done via a `static` `at` closure…
+Each page can define a way to check whether the underlying browser is at the page that the page class actually represents.
+This is done via a `static` `at` closure…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static at = { $("h1").text() == "Example" }
-}
-----
-
-This closure can either return a `false` value or throw an `AssertionError` (via the `assert` method). The `verifyAt()` method call will either return true or throw an `AssertionError` even if there are no explicit assertions in the “at” checker.
-
-----
-Browser.drive {
-    to ExamplePage
-    verifyAt()
-}
+include::{test-dir}/pages/AtSpec.groovy[tag=introduction,indent=0]
 ----
 
-The `verifyAt()` method is used by the browser `at()` method which also returns true or throws an `AssertionError` even if there are no explicit assertions in the “at” checker…
+This closure can either return a `false` value or throw an `AssertionError` (via the `assert` method).
+The `verifyAt()` method call will either:
 
+* return `true` if the “at” checker passes
+* if <<implicit-assertions, implicit assertions>> are <<implicit-assertions-mechanics, enabled>> and the “at” checker fails it will throw an `AssertionError`
+* return `false` if implicit assertions are not enabled and the the “at” checker fails
+
+Considering the example above you could use it like this…
+
+[source,groovy]
 ----
-Browser.drive {
-    to ExamplePage
-    at(ExamplePage)
-}
+include::{test-dir}/pages/AtSpec.groovy[tag=leading_to_page,indent=0]
 ----
 
-At checkers are subject to “implicit assertions”. See the section on [implicit assertions][implicit-assertions] for more information.
+[source,groovy]
+----
+include::{test-dir}/pages/AtSpec.groovy[tag=verify_at,indent=0]
+----
 
-If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: link:api/geb/Page.html#verifyAtSafely(boolean)[`Page#verifyAtSafely()`] and link:api/geb/Browser.html#isAt(Class%3C%3F%20extends%20Page%3E,%20boolean)[`Browser#isAt(Class&lt;? extends Page&gt;)`].
+The `verifyAt()` method is used by the `Browser.at()` method that takes a page class or instance.
+It behaves the same as `verifyAt()` if the “at” checker fails and returns a page instance if the checker succeeds (which is useful if you wish to write <<strong-typing, strongly typed>> code with Geb)…
 
-As mentioned previously, when a content template defines a “to” option of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use. In this situation, any `AssertionError`s thrown by at checkers are suppressed.
+[source,groovy]
+----
+include::{test-dir}/pages/AtSpec.groovy[tag=at,indent=0]
+----
+
+[TIP]
+====
+There is no need to perform “at” verification after navigating to a page using <<using-pages, `to()` method>> or clicking on content with <<content-dsl-to, `to` option>> specified as it is performed
+implicitly in these cases.
+====
+
+At checkers are subject to “implicit assertions”. See the section on <<implicit-assertions, implicit assertions>> for more information.
+
+If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: link:api/geb/Page.html#verifyAtSafely(boolean)[`Page#verifyAtSafely()`] and
+link:api/geb/Browser.html#isAt(Class%3C%3F%20extends%20Page%3E,%20boolean)[`Browser#isAt(Class&lt;? extends Page&gt;)`].
+
+As mentioned previously, when a content template defines a <<content-dsl-to, `to` option>> of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use.
+In this situation, any `AssertionError` thrown by “at” checkers are suppressed.
 
 The “at” checker is evaluated against the page instance, and can access defined content or any other variables or methods…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static at = { heading == "Example" }
-    static content = {
-        heading { $("h1").text() }
-    }
-}
+include::{test-dir}/pages/AtSpec.groovy[tag=at_checker_using_content_definition,indent=0]
 ----
 
-If a page does not have an “at” checker, the `verifyAt()` method will throw an `UndefinedAtCheckerException`. The same will happen if any of the pages in a list passed to content template “to” option doesn't define an “at” checker.
+If a page does not have an “at” checker, the `verifyAt()` and `at()` methods will throw an `UndefinedAtCheckerException`.
+The same will happen if any of the pages in the list used as `to` content template option doesn't define an “at” checker.
 
-It can sometimes prove useful to wrap at verification in `waitFor` calls by default - some drivers are known to return control after URL change before the page is fully loaded in some circumstances or before one might consider it to be loaded. This can be configured via link:configuration.html#waiting_in_at_checkers[`atCheckWaiting`] option.
+It can sometimes prove useful to wrap “at” verification in `waitFor()` calls by default - some drivers are known to return control after URL change before the page is fully loaded in some
+circumstances or before one might consider it to be loaded. This behaviour can be required using <<at-check-waiting, `atCheckWaiting` configuration entry>>.
 
 :numbered!:
 
 === Unexpected pages
 
-A list of unexpected pages can be provided via link:configuration.html#unexpected_pages[`unexpectedPages` configuration option].
+A list of unexpected pages can be provided via <<unexpected-pages-config, `unexpectedPages` configuration entry>>.
 
-____
+[IMPORTANT]
+====
+Note that this feature does not operate on HTTP response codes as these are not exposed by WebDriver thus Geb does not have access to them.
+To use this feature your application has to render custom error pages that can be modeled as page classes and detected by an “at” checker.
+====
 
-Note that this feature does not operate on HTTP response codes as these are not exposed by WebDriver thus Geb does not have access to them. To use this feature your application has to render custom error pages that can be modeled as `Page` classes and detected by an `at` checker.
+If configured, the classes from the list specified as `unexpectedPages` configuration entry will be checked for first when “at” checking is performed for any page, and an `UnexpectedPageException`
+with an appropriate message will be raised if any of them is encountered.
 
-____
+Given that your application renders a custom error page when a page is not found with a text like "Sorry but we could not find that page", you can model that page with the following class:
 
-If configured, the classes from the `unexpectedPages` list will be checked for first when ”at“ checking is performed for any page, and an `UnexpectedPageException` with an appropriate message will be raised if any of them is encountered.
-
-Given that your application renders a custom error page when a page is not found and a 404 HTTP response code is returned with a text like "Sorry but we could not find that page", you can model that page with a class:
-
+[source,groovy]
 ----
-class PageNotFoundPage extends Page {
-
-    static at = { $('#errorMessage').text() == 'Sorry but we could not find that page' }
-}
+include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=unexpected_page,indent=0]
 ----
 
 Then register that page in configuration:
 
+[source,groovy]
 ----
-unexpectedPages = [PageNotFoundPage]
-----
-
-When checking if the browser is at a page…
-
-----
-at ExpectedPage
+include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=config,indent=0]
 ----
 
-..but the `at` checker for `PageNotFoundPage` matches, an `UnexpectedPageException` will be raised with the following message: "An unexpected page PageNotFoundPage was encountered when expected to be at ExpectedPage".
+When checking if the browser is at a page while the “at” checker for `PageNotFoundPage` is fulfilled, an `UnexpectedPageException` will be raised.
 
-Unexpected pages will be checked for whenever ”at“ checking is performed, even implicitly like when using `to` content template option or passing one or many `Page` classes to `Navigator`'s `click()` method.
-
-Finally, you can still explicitly check if the browser is at an unexpected page if you need to. Following will pass without throwing an `UnexpectedPageException` if ”at“ checking for `PageNotFoundPage` succeeds:
-
+[source,groovy]
 ----
-at PageNotFoundPage
+include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=usage,indent=0]
+----
+
+Unexpected pages will be checked for whenever “at” checking is performed, even implicitly like when using `to` content template option or passing one or many page classes to `Navigator.click()`
+method.
+
+It is possible to explicitly check if the browser is at an unexpected page.
+Following will pass without throwing an `UnexpectedPageException` if “at” checking for `PageNotFoundPage` succeeds:
+
+[source,groovy]
+----
+include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=checking_for_unexpected_page,indent=0]
 ----
 
 [IMPORTANT]

@@ -119,9 +119,10 @@ The following table illustrates the resolution of different types of URLs.
 
 It is usually most desirable to define your base urls with trailing slashes and not to use leading slashes on relative URLs.
 
+[[using-pages]]
 === Using pages
 
-Page objects (<<the-page,discussed further shortly>>) can define a url that will be used when explicitly navigating to that page.
+Page objects (<<the-page, discussed further shortly>>) can define a url that will be used when explicitly navigating to that page.
 This is done with the link:api/geb/Browser.html#to(Class%3CT%3E,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(Class%3CT%3E,%20java.lang.Object)[`via()`] methods.
 
 [source,groovy]
@@ -179,7 +180,8 @@ The _page_ is providing the `$()` function, not the browser. This forwarding fac
 For more information on the `$()` function which is used to interact with page content, see the section on the <<navigator,Navigator API>>.
 ====
 
-When using the Page Object pattern, you create subclasses of link:api/geb/Page.html[`Page`] that define content via a powerful DSL that allows you to refer to content by meaningful names instead of tag names or CSS expressions.
+When using the Page Object pattern, you create subclasses of link:api/geb/Page.html[`Page`] that define content via a powerful DSL that allows you to refer to content by meaningful names instead of
+tag names or CSS expressions.
 
 [source,groovy]
 ----

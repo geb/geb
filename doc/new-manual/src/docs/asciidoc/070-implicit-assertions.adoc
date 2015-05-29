@@ -166,6 +166,7 @@ Any content definitions that declare a `wait` parameter have implicit assertions
 
 :numbered:
 
+[[implicit-assertions-mechanics]]
 == How it works
 
 The “implicit assertions” feature is implemented as a http://groovy.codehaus.org/Compile-time+Metaprogramming+-+AST+Transformations[Groovy compile time transformation], which literally turns all _expressions_ in a candidate block of code into assertions.

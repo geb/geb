@@ -220,9 +220,10 @@ baseNavigatorWaiting = true
 
 The possible values for the `baseNavigatorWaiting` option are consistent with the link:pages.html#wait[ones for `wait` option of content definitions].
 
+[[unexpected-pages-config]]
 === Unexpected pages
 
-The `unexpectedPages` option allows to specify a list of unexpected `Page` classes that will be checked for when ”at“ checks are performed. Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined:
+The `unexpectedPages` option allows to specify a list of unexpected `Page` classes that will be checked for when “at” checks are performed. Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined:
 
 ----
 unexpectedPages = [PageNotFoundPage, InternalServerErrorPage]

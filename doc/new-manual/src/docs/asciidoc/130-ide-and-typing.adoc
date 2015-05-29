@@ -20,6 +20,7 @@ Geb heavily embraces the dynamic typing offered by Groovy, to achieve concisenes
 
 That said, if authoring support is a concern for you, read on to learn for details on ways to forsake conciseness in order to improve authoring support.
 
+[[strong-typing]]
 === Strong typing
 
 In order to gain improved authoring support, you must include types in your tests and page objects. Additionally, you must explicitly access the browser and page objects instead of relying on dynamic dispatch.
