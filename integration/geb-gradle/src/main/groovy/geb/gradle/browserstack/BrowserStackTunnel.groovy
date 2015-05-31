@@ -25,14 +25,16 @@ class BrowserStackTunnel extends ExternalTunnel {
 
     final protected BrowserStackAccount account
     final protected List<URL> applicationUrls
+    final protected boolean forcelocal
 
     final String outputPrefix = 'browserstack-tunnel'
     final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
 
-    BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, List<URL> applicationUrls) {
+    BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, List<URL> applicationUrls, boolean forcelocal) {
         super(project, logger)
         this.account = account
         this.applicationUrls = applicationUrls
+        this.forcelocal = forcelocal
     }
 
     @Override
@@ -52,6 +54,9 @@ class BrowserStackTunnel extends ExternalTunnel {
         }
         if (applicationUrls) {
             commandLine << "-only" << assembleAppSpecifier(applicationUrls)
+        }
+        if (forcelocal) {
+            commandLine << "-forcelocal"
         }
         commandLine
     }
