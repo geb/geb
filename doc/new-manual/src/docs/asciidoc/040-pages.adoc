@@ -537,79 +537,67 @@ Page classes can customise how they generate URLs when used in conjunction with 
 
 Consider the following example…
 
+[source,groovy]
 ----
-import geb.*
-
-class ExamplePage extends Page {
-    static url = "example"
-}
-
-Browser.drive("http://myapp.com/") {
-    to ExamplePage
-}
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=pages_page,indent=0]
 ----
 
-This will result in a request being made to “`http://myapp.com/example`”. 
+[source,groovy]
+----
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to,indent=0]
+----
 
 The `to()` method can also take arguments…
 
+[source,groovy]
 ----
-Browser.drive("http://myapp.com") {
-    to ExamplePage, 1, 2
-}
-----
-
-This will result in a request being made to “`http://myapp.com/example/1/2`”. This is because by default, any arguments passed to the `to()` method after the page class are converted to a URL path by calling `toString()` on each argument and joining them with “`/`”. 
-
-However, this is extensible. You can specify how a set of arguments is converted to a URL path to be added to the page URL. This is done by overriding the link:api/geb/Page.html#convertToPath(java.lang.Object)[`convertToPath()`] method.
-The [`Page`][page-api] implementation of this method looks like this…
-
-----
-String convertToPath(Object[] args) {
-    args ? '/' + args*.toString().join('/') : ""
-}
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page,indent=0]
 ----
 
-You can either overwrite this catchall method to control path conversion for all invocations or provide an overloaded version for a specific type signature. Consider the following…
-
+[source,groovy]
 ----
-class Person {
-    Long id
-    String name
-}
-
-class PersonPage extends Page {
-    static url = "person"
-
-    String convertToPath(Person person) {
-        person.id.toString()
-    }
-}
-
-def newPerson = new Person(id: 5, name: "Bruce")
-
-Browser.drive {
-    go "http://myapp.com/"
-    to PersonPage, newPerson
-}
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_args,indent=0]
 ----
 
-This will result in a request to “`http://myapp.com/person/5`”.
+Any arguments passed to the `to()` method after the page class are converted to a URL path by calling `toString()` on each argument and joining them with “`/`”.
+
+However, this is extensible.
+You can specify how a set of arguments is converted to a URL path to be added to the page URL.
+This is done by overriding the `{convert-to-path-api}` method.
+The `{page-api}` implementation of this method looks like this…
+
+[source,groovy]
+----
+include::{core-source-dir}/geb/Page.groovy[tag=convert_to_path,indent=0]
+----
+
+You can either overwrite this catchall method to control path conversion for all invocations or provide an overloaded version for a specific type signature.
+Consider the following…
+
+[source,groovy]
+----
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manual_class,indent=0]
+
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page_with_convert_to_path,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=convert_to_path,indent=0]
+----
 
 :numbered!:
 
 === Named params
 
-Any type of argument can be used with the `to()` method, *except* named parameters (i.e. a `Map`). Named parameters are *always* interpreted as query parameters. Using the classes from the above example…
+Any type of argument can be used with the `to()` method, *except* named parameters (i.e. a `Map`).
+Named parameters are *always* interpreted as query parameters and they are never sent
+Using the classes from the above example…
 
+[source,groovy]
 ----
-Browser.driver {
-    go "http://myapp.com/"
-    to PersonPage, newPerson, flag: true
-}
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_named_params,indent=0]
 ----
-
-This will result in a request to “`http://myapp.com/person/5?flag=true`”. The query parameters are *not* sent to the link:api/geb/Page.html#convertToPath(java.lang.Object)[`convertToPath()`] method.
 
 :numbered:
 

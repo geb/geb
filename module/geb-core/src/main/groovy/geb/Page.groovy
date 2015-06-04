@@ -274,9 +274,11 @@ class Page implements Navigable, PageContentContainer, Initializable {
      * <p>
      * This implementation returns the string value of each argument, separated by "/"
      */
+    // tag::convert_to_path[]
     String convertToPath(Object[] args) {
         args ? '/' + args*.toString().join('/') : ""
     }
+    // end::convert_to_path[]
 
     /**
      * Returns the title of the current browser window.
