@@ -603,38 +603,25 @@ include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_named_params
 
 == Parametrized pages
 
-`Browser` methods like link:api/geb/Browser.html#to(T,%20java.lang.Object)[`to()`], link:api/geb/Browser.html#via(T,%20java.lang.Object)[`via()`], link:api/geb/Browser.html#at(T)[`at()`] and link:api/geb/Browser.html#page(T)[`page()`] accept not only page classes but page instances as well. This is for example useful when parameterizing pages to use property values in at checkers:
+`Browser` methods like `{to-api}`, `{via-api}`, `{at-api}` and `{page-method-api}` accept not only page classes but page instances as well.
+This is useful for example when parameterizing pages to use property values in “at” checkers:
 
+[source,groovy]
 ----
-class BooksPage extends Page {
-    static content = {
-        book { bookTitle -> $("a", text: bookTitle) }
-    }
-}
-
-class BookPage extends Page {
-    String forBook
-
-    static at = { forBook == bookTitle }
-
-    static content = {
-        bookTitle { $("h1").text() }
-    }
-}
-
-Browser.drive {
-    to BooksPage
-    book("The Book of Geb").click()
-
-    at(new BookPage(forBook: "The Book of Geb"))
-}
+include::{test-dir}/pages/ParameterizedPageSpec.groovy[tag=pages,indent=0]
 ----
 
-____
+[source,groovy]
+----
+include::{test-dir}/pages/ParameterizedPageSpec.groovy[tag=example,indent=0]
+----
 
-Manually instantiated pages have to be initialized before they can be used. Initialization is performed as part of the `Browser` methods mentioned above. Failing to pass the page instance to one of these methods and calling any method on an uninitialized page instance might result in a `PageInstanceNotInitializedException`.
-
-____
+[IMPORTANT]
+====
+Manually instantiated pages have to be initialized before they can be used.
+Initialization is performed as part of the `Browser` methods mentioned above.
+Failing to pass the page instance to one of these methods and calling any method on an uninitialized page instance might result in a `PageInstanceNotInitializedException`.
+====
 
 == Inheritance
 

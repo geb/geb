@@ -68,3 +68,7 @@
 :wait-timeout-exception-api: link:api/geb/waiting/WaitTimeoutException.html[WaitTimeoutException]
 :invalid-page-content-api: link:api/geb/error/InvalidPageContent.html[InvalidPageContent]
 :convert-to-path-api: link:api/geb/Page.html#convertToPath(java.lang.Object)[convertToPath()]
+:to-api: link:api/geb/Browser.html#to(T,%20java.lang.Object)[to()]
+:via-api: link:api/geb/Browser.html#via(T,%20java.lang.Object)[via()]
+:at-api: link:api/geb/Browser.html#at(T)[at()]
+:page-method-api: link:api/geb/Browser.html#page(Class<T>)[page()]
