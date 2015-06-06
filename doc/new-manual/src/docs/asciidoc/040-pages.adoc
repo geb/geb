@@ -627,24 +627,14 @@ Failing to pass the page instance to one of these methods and calling any method
 
 Pages can be arranged in an inheritance hierarchy. The content definitions are merged…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        heading { $("h1") }
-    }
-}
+include::{test-dir}/pages/PageInheritanceSpec.groovy[tag=pages,indent=0]
+----
 
-class SpecialExamplePage extends ExamplePage {
-    static content = {
-        footer { $("div.footer") }
-    }
-}
-
-Browser.drive {
-    to SpecialExamplePage
-    assert heading.text() == "Special Example"
-    assert footer.text() == "This is the footer"
-}
+[source,groovy]
+----
+include::{test-dir}/pages/PageInheritanceSpec.groovy[tag=example,indent=0]
 ----
 
 If a subclass defines a content template with the same name as a content template defined in a superclass, the subclass version replaces the version from the superclass.
