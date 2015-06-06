@@ -647,28 +647,28 @@ Page classes can optionally implement methods that are called when the page is s
 
 The `onLoad()` method is called with previous page object instance when the page becomes the new page object for a browser.
 
+[source,groovy]
 ----
-import geb.*
+include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_load_pages,indent=0]
+----
 
-class SomePage extends Page {
-    void onLoad(Page previousPage) {
-        // do some stuff with the previous page
-    }
-}
+[source,groovy]
+----
+include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_load,indent=0]
 ----
 
 === `onUnload(Page newPage)`
 
 The `onUnload()` method is called with next page object instance when the page is being replaced as the page object for the browser.
 
+[source,groovy]
 ----
-import geb.*
+include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload_pages,indent=0]
+----
 
-class SomePage extends Page {
-    void onUnload(Page newPage) {
-        // do some stuff with the new page
-    }
-}
+[source,groovy]
+----
+include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload,indent=0]
 ----
 
 == Dealing with frames
