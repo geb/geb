@@ -52,7 +52,7 @@ class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 
     def "content items are unpacked in interact block"() {
         given:
-        at InteractionPage
+        page InteractionPage
 
         when:
         interact {
@@ -71,7 +71,7 @@ class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 
     def "can use interaction blocks in page classes"() {
         given:
-        at InteractionPage
+        page InteractionPage
 
         when:
         fillInputs()
@@ -83,7 +83,7 @@ class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 
     def "can use interaction blocks in module classes"() {
         given:
-        at InteractionPage
+        page InteractionPage
 
         when:
         interactions.fillInputs()
@@ -95,7 +95,6 @@ class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 }
 
 class InteractionPage extends Page {
-    static at = { true }
     static content = {
         interactions { module InteractionsModule }
     }
