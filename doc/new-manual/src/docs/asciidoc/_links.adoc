@@ -17,6 +17,7 @@
 :chromedriver: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/chrome/ChromeDriver.html
 :webdriver-send-keys-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence%2E%2E%2E)[sendKeys()]
 :webdriver-keys-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/Keys.html[Keys]
+:no-such-frame-exception-api: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/NoSuchFrameException.html[NoSuchFrameException]
 :browser: browser.html
 :navigator: <<navigator>>
 :clicking: navigator.html#clicking

@@ -673,57 +673,49 @@ include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload,indent=0]
 
 == Dealing with frames
 
-Frames might seem a thing of the past, but if you're accessing or testing some legacy application with Geb, you might still need to deal with them. Thankfully, Geb makes working with them groovier thanks to the `withFrame()` method which is available on Browser, Page and Module.
+Frames might seem a thing of the past, but if you're accessing or testing some legacy application with Geb, you might still need to deal with them.
+Thankfully, Geb makes working with them groovier thanks to the `withFrame()` method which is available on `Browser`, `Page` and `Module` instances.
 
 === Executing code in the context of a frame
 
-There are multiple flavours of the `withFrame()` method, but for all of them the closure parameter is executed in the context of a frame specified by the first parameter, and after the execution the browser page is restored to what it was before the call:
+There are multiple flavours of the `withFrame()` method, but for all of them the last closure parameter is executed in the context of a frame specified by the first parameter, and after the execution
+the page is restored to what it was before the call:
 
-* `withFrame(String, Closure)` - String parameter contains the name or id of a frame element
-* `withFrame(int, Closure)` - int parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index “0”, the second at index “1” and the third at index “2”
-* `withFrame(Navigator, Closure)` - Navigator parameter should point to a frame element
-* `withFrame(SimplePageContent, Closure)` - SimplePageContent should contain a frame element
+* `withFrame(String, Closure)` - `String` parameter contains the name or id of a frame element
+* `withFrame(int, Closure)` - `int` parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index `0`, the second at index `1` and the third
+at index `2`
+* `withFrame(Navigator, Closure)` - `Navigator` parameter should contain a frame element
+* `withFrame(SimplePageContent, Closure)` - `SimplePageContent`, which is a type returned by content templates, should contain a frame element
 
 Given the following HTML…
 
+[source,html]
 ----
-<html>
-    <body>
-        <frame name="header" src="frame.html"></frame>
-        <frame id="footer" src="frame.html"></frame>
-        <iframe id="inline" src="frame.html"></iframe>
-        <span>main</span>
-    <body>
-</html>
+include::{test-dir}/pages/FramesSpec.groovy[tag=html,indent=0]
 ----
 
-…and the code for frame.html…
+…the code for frame.html…
 
+[source,html]
 ----
-<html>
-    <body>
-        <span>frame text</span>
-    </body>
-</html>
+include::{test-dir}/pages/FramesSpec.groovy[tag=frame,indent=0]
+----
+
+…and a page class…
+
+[source,groovy]
+----
+include::{test-dir}/pages/FramesSpec.groovy[tag=page,indent=0]
 ----
 
 …then this code will pass…
 
+[source,groovy]
 ----
-static content = {
-    footerFrame { $('#footer') }
-}
-
-withFrame('header') { assert $('span') == 'frame text' }
-withFrame('footer') { assert $('span') == 'frame text' }
-withFrame(0) { assert $('span') == 'frame text' }
-withFrame($('#footer')) { assert $('span') == 'frame text' }
-withFrame(footerFrame) { assert $('span') == 'frame text' }
-
-assert $('span') == 'main'
+include::{test-dir}/pages/FramesSpec.groovy[tag=example,indent=0]
 ----
 
-If a frame cannot be found for a given first argument of the `withFrame()` call, then http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/NoSuchFrameException.html[`NoSuchFrameException`] is thrown.
+If a frame cannot be found for a given first argument of the `withFrame()` call, then `{no-such-frame-exception-api}` is thrown.
 
 === Switching pages and frames at once
 
