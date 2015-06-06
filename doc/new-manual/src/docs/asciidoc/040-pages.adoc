@@ -720,32 +720,30 @@ If a frame cannot be found for a given first argument of the `withFrame()` call,
 === Switching pages and frames at once
 
 All of the aforementioned `withFrame()` variants also accept an optional second argument (a page class or a page instance) which allows to switch page for the execution of the closure passed as
-the last parameter. If the page used specifies an “at checker” it will be verified after switching the context to the frame.
+the last parameter. If the page used specifies an “at” checker it will be verified after switching the context to the frame.
 
-Following shows an example usage:
+Given the html and page class from the previous example the following is an example usage with a page class:
 
+[source,groovy]
 ----
-to PageWithFrames
-//browser.page set to a PageWithFrames instance
-
-withFrame('frame-name', PageDescribingFrameContents) {
-    //browser.page set to a PageDescribingFrameContents instance
-}
-
-//browser.page set back to the PageWithFrames instance
+include::{test-dir}/pages/FramesSpec.groovy[tag=frame_page,indent=0]
 ----
 
-Following shows an example usage of a page instance:
-
+[source,groovy]
 ----
-to PageWithFrames
-//browser.page set to a PageWithFrames instance
-
-withFrame('frame-name', new ParametrizedPageDescribingFrameContents(tag: "span")) {
-    //browser.page set to the given ParametrizedPageDescribingFrameContents instance
-}
-
-//browser.page set back to the PageWithFrames instance
+include::{test-dir}/pages/FramesSpec.groovy[tag=switching_class,indent=0]
 ----
 
-It is also possible to [specify a page to switch to for a page content that describes a frame][page-option].
+And this is how an example usage with a page instance looks like:
+
+[source,groovy]
+----
+include::{test-dir}/pages/FramesSpec.groovy[tag=parameterized_frame_page,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/pages/FramesSpec.groovy[tag=switching_instance,indent=0]
+----
+
+It is also possible to <<content-dsl-page, specify a page to switch to for a page content that describes a frame>>.

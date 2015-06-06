@@ -24,8 +24,7 @@ import javax.servlet.http.HttpServletResponse
 
 class FramesSpec extends GebSpecWithCallbackServer {
 
-    def "using frames"() {
-        given:
+    def setup() {
         callbackServer.get = { HttpServletRequest request, HttpServletResponse response ->
             response.setContentType(ContentType.TEXT_HTML.toString())
             response.setCharacterEncoding("utf8")
@@ -54,7 +53,9 @@ class FramesSpec extends GebSpecWithCallbackServer {
                 """
             }
         }
+    }
 
+    def "using frames"() {
         when:
         // tag::example[]
         to PageWithFrames
@@ -71,6 +72,39 @@ class FramesSpec extends GebSpecWithCallbackServer {
         assert $('span').text() == 'main'
         // end::example[]
     }
+
+    def "switching page class when using frames"() {
+        when:
+        // tag::switching_class[]
+        to PageWithFrames
+
+        withFrame('header', PageDescribingFrame) {
+            assert page instanceof PageDescribingFrame
+            assert text == "frame text"
+        }
+
+        // end::switching_class[]
+        then:
+        // tag::switching_class[]
+        assert page instanceof PageWithFrames
+        // end::switching_class[]
+    }
+
+    def "switching page instance when using frames"() {
+        when:
+        // tag::switching_instance[]
+        to PageWithFrames
+
+        withFrame('header', new ParameterizedPageDescribingFrame(expectedFrameText: "frame text")) {
+            assert page instanceof ParameterizedPageDescribingFrame
+        }
+
+        // end::switching_instance[]
+        then:
+        // tag::switching_instance[]
+        assert page instanceof PageWithFrames
+        // end::switching_instance[]
+    }
 }
 
 // tag::page[]
@@ -80,3 +114,23 @@ class PageWithFrames extends Page {
     }
 }
 // end::page[]
+
+// tag::frame_page[]
+class PageDescribingFrame extends Page {
+    static content = {
+        text { $("span").text() }
+    }
+}
+// end::frame_page[]
+
+// tag::parameterized_frame_page[]
+class ParameterizedPageDescribingFrame extends Page {
+    String expectedFrameText
+
+    static at = { text == expectedFrameText }
+
+    static content = {
+        text { $("span").text() }
+    }
+}
+// end::parameterized_frame_page[]
