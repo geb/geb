@@ -1,86 +1,59 @@
 [[modules]]
 = Modules
 
-Modules are re-usable definitions of content that can be used across multiple pages. They are useful for modelling things like UI widgets that are used across multiple pages, or even for defining more complex UI elements in the one page.
+Modules are re-usable definitions of content that can be used across multiple pages.
+They are useful for modelling things like UI widgets that are used across multiple pages, or even for defining more complex UI elements in a page.
 
-They are defined in a manner similar to pages, but extend link:api/geb/Module.html[`Module`]…
+They are defined in a manner similar to pages, but extend `{module-api}`…
 
+[source,groovy]
 ----
-class ExampleModule extends Module {
-    static content = {
-        button { $("input", type: "submit") }
-    }
-}
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=form_module,indent=0]
 ----
 
 Pages can “include” modules using the following syntax…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        theModule { module ExampleModule }
-    }
-}
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=module_page,indent=0]
 ----
 
-The `module` method sets the content to an instance of the module…
+The `module` method returns an instance of a module class which can then be used in the following way…
 
+[source,groovy]
 ----
-Browser.drive {
-    to ExamplePage
-    theModule.button.click()
-}
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_modules,indent=0]
 ----
 
 Modules can also be parameterised…
 
+[source,groovy]
 ----
-class ExampleModule extends Module {
-    def buttonName
-    static content = {
-        button { $("input", type: "submit", name: buttonName) }
-    }
-}
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=parameterized_module,indent=0]
 ----
 
 Where the parameters are passed to constructor of the module…
- class ExamplePage extends Page {
- static content = {
- theModule { name -&gt; module(new ExampleModule(buttonName: name) }
- }
- }
 
+[source,groovy]
 ----
-Browser.drive {
-    to ExamplePage
-    theModule("something").button.click()
-}
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=parameterized_module_page,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_parameterized_modules,indent=0]
 ----
 
 Modules can also include other modules…
 
+[source,groovy]
 ----
-class ExampleModule extends Module {
-    static content = {
-        innerModule { module InnerModule }
-    }
-}
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=outer_module_and_page,indent=0]
+----
 
-class InnerModule extends Module {
-    static content = {
-        button { $("input", type: "submit") }
-    }
-}
-
-class ExamplePage extends Page {
-    static content = {
-        theModule { module ExampleModule }
-    }
-}
-
-Browser.drive {
-    theModule.innerModule.button.click()
-}
+[source,groovy]
+----
+include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_nested_modules,indent=0]
 ----
 
 == Base And context

@@ -42,7 +42,7 @@
 :configuration-api: link:api/geb/Configuration.html[Configuration]
 :browser-api: link:api/geb/Browser.html[Browser]
 :page-api: link:api/geb/Page.html[Page]
-:module-api: link:api/geb/Module.html
+:module-api: link:api/geb/Module.html[Module]
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :bindingupdater-api: link:api/geb/binding/BindingUpdater.html
 :grails: http://grails.org[Grails]
