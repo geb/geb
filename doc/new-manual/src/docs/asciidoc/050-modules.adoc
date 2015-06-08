@@ -8,7 +8,7 @@ They are defined in a manner similar to pages, but extend `{module-api}`…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=form_module,indent=0]
+include::{test-dir}/modules/FormContentSpec.groovy[tag=form_module,indent=0]
 ----
 
 Pages can “include” modules using the following syntax…
@@ -58,82 +58,68 @@ include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_nested_modules,ind
 
 == Base And context
 
-Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition. There are two ways that a modules base/context can be defined.
+Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition.
+There are two ways that a modules base/context can be defined.
 
 Module can be based on a `Navigator` instance…
 
+[source,groovy]
 ----
-static content = {
-    form { $("form").module(FormModule) }
-}
+include::{test-dir}/modules/FormContentSpec.groovy[tag=form_module,indent=0]
+
+include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=module_with_base_page,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=using_module_with_dynamic_base,indent=0]
 ----
 
 It can also be done outside of a content definition…
 
+[source,groovy]
 ----
-Browser.drive {
-    to FormPage
-    $("form").module(ExampleModule)
-}
+include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=creating_module_inline,indent=0]
 ----
 
-We can define a `Navigator` context when including the module using the above syntax. This now means that calls to _all_ `Navigator` (e.g. `$()`) method calls that occur within the module are against the given context (in this case, the `form` element).
+We can define a `Navigator` context when including the module using the above syntax.
+This now means that calls to _all_ `Navigator` (e.g. `$()`) method calls that occur within the module are against the given context (in this case, the `form` element).
 
 However, module classes can also define their own base…
 
+[source,groovy]
 ----
-import geb.Module
-
-class FormModule extends Module {
-    static base = { $("form") }
-}
+include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=form_module_with_base,indent=0]
 ----
 
-This has the same effect as the code above.
-
-They can also be combined. Consider the following HTML…
-
+[source,groovy]
 ----
-<div class="a">
-    <form>
-        <input name="thing" value="a"/>
-    </form>
-</div>
-<div class="b">
-    <form>
-        <input name="thing" value="b"/>
-    </form>
-</div>
+include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=using_module_with_static_base,indent=0]
+----
+
+Basing a module on a `Navigator` and defining a base in a module can be combined. Consider the following HTML…
+
+[source,html]
+----
+include::{test-dir}/modules/CombinedModuleBaseSpec.groovy[tag=html,indent=0]
 ----
 
 And the following content definitions…
 
+[source,groovy]
 ----
-import geb.*
-
-class ExamplePage extends Page {
-    static content = {
-        formA { $("div.a").module(FormModule) }
-        formB { $("div.b").module(FormModule)  }
-    }
-}
-
-class FormModule extends Module {
-    static base = { $("form") }
-    static content = {
-        thingValue { thing().value() }
-    }
-}
+include::{test-dir}/modules/CombinedModuleBaseSpec.groovy[tag=content,indent=0]
 ----
 
-When working with a browser located at `ExamplePage` page…
+Then they can be used in the following way…
 
+[source,groovy]
 ----
-assert formA.thingValue == "a"
-assert formB.thingValue == "b"
+include::{test-dir}/modules/CombinedModuleBaseSpec.groovy[tag=example,indent=0]
 ----
 
-If the module declares a base, it is always calculated _relative_ to the `Navigator` used in the initialization statement. If the initialization statement does not use a `Navigator`, the module's base is calculated relative to the including page's base.
+If the module declares a base, it is always calculated _relative_ to the `Navigator` used in the initialization statement.
+If the initialization statement does not use a `Navigator`, the module's base is calculated relative to the document root.
 
 == `Module` is-a `Navigator`
 

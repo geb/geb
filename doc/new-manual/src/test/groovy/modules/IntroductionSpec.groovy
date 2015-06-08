@@ -16,25 +16,10 @@
 package modules
 
 import fixture.Browser
-import fixture.DriveMethodSupportingSpecWithServer
 import geb.Module
 import geb.Page
 
-class IntroductionSpec extends DriveMethodSupportingSpecWithServer {
-
-    def setup() {
-        server.html {
-            form(id: "personal-data") {
-                input(id: "button", type: "button", "click me!")
-            }
-            script(type: "text/javascript", """
-                var button = document.getElementById("button");
-                button.onclick = function () {
-                    button.className = "clicked";
-                };
-            """)
-        }
-    }
+class IntroductionSpec extends FormContentSpec {
 
     def "using modules"() {
         expect:
@@ -84,14 +69,6 @@ class IntroductionSpec extends DriveMethodSupportingSpecWithServer {
         // end::using_nested_modules[]
     }
 }
-
-// tag::form_module[]
-class FormModule extends Module {
-    static content = {
-        button { $("input", type: "button") }
-    }
-}
-// end::form_module[]
 
 // tag::module_page[]
 class ModulePage extends Page {
