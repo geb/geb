@@ -149,31 +149,37 @@ If you need to do this, check out the source code or get in touch via the mailin
 [[driver-caching-configuration]]
 === Driver caching
 
-Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. link:driver.html#implicit_lifecycle[the implicit driver lifecycle]) can be disabled by setting the `cacheDriver` config option to `false`. However, if you do this you become link:driver.html#explicit_lifecycle[responsible for quitting] every driver that is created at the appropriate time.
+Geb's ability to cache a driver and re-use it for the lifetime of the JVM (i.e. <<implicit-driver-lifecycle, the implicit driver lifecycle>>) can be disabled by setting the `cacheDriver` config option
+to `false`.
+However, if you do this you become <<explicit-driver-lifecycle, responsible for quitting>> every driver that is created at the appropriate time.
 
-The default caching behavior is to cache the driver globally across the JVM. If you are using Geb in multiple threads this may not be what you want, as neither Geb `Browser` objects nor WebDriver at the core is thread safe. To remedy this, you can instruct Geb to cache the driver instance per thread by setting the config option `cacheDriverPerThread` to true.
+The default caching behavior is to cache the driver globally across the JVM.
+If you are using Geb in multiple threads this may not be what you want, as neither Geb `Browser` objects nor WebDriver at the core is thread safe.
+To remedy this, you can instruct Geb to cache the driver instance per thread by setting the config option `cacheDriverPerThread` to `true`.
 
-Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits. You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
+Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits.
+You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
 
 [[base-url]]
 === Base URL
 
-The link:browser.html#the_base_url[base URL] to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the `geb.build.baseUrl` system property). Any value set in the config script will take precedence over the value provided by the build adapter.
+The <<base-url, base URL>> to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the
+`geb.build.baseUrl` system property).
+Any value set in the config script will take precedence over the value provided by the build adapter.
 
 === Waiting
 
-The link:javascript.html#waiting[`waitFor()`] methods available on browser, page and module objects can be affected by configuration (this is also true for link:pages.html#wait[implicitly waiting content]). It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
+The <<waiting, `waitFor()`>> methods available on browser, page and module objects can be affected by configuration (this is also true for <<content-dsl-wait, implicitly waiting content>>).
+It is possible to specify default values for the timeout and retry interval, and to define presets of these values to be referred to by name.
 
 [[default-waiting-configuration]]
 ==== Defaults
 
 Defaults can be specified via:
 
+[source,groovy]
 ----
-waiting {
-    timeout = 10
-    retryInterval = 0.5
-}
+include::{test-dir}/configuration/WaitingConfigSpec.groovy[tag=default_config,indent=0]
 ----
 
 Both values are optional and in seconds. If unspecified, the values of `5` for `timeout` and `0.1` for `retryInterval`.
@@ -183,21 +189,14 @@ Both values are optional and in seconds. If unspecified, the values of `5` for `
 
 Presets can be specified via:
 
+[source,groovy]
 ----
-waiting {
-    presets {
-        slow {
-            timeout = 20
-            retryInterval = 1
-        }
-        quick {
-            timeout = 1
-        }
-    }
-}
+include::{test-dir}/configuration/WaitingConfigSpec.groovy[tag=presets,indent=0]
 ----
 
-Here we have defined two presets, `slow` and `quick`. Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of `0.1`).
+Here we have defined two presets, `slow` and `quick`.
+Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of
+`0.1`).
 
 [[at-check-waiting]]
 === Waiting in “at” checkers

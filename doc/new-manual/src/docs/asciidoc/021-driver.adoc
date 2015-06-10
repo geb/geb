@@ -21,6 +21,7 @@ One option for specifying the driver implementation is to construct the driver i
 However, where possible prefer implicit driver management which is discussed later in this chapter.
 
 [discrete]
+[[explicit-driver-lifecycle]]
 === Explicit lifecycle
 
 When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time.
@@ -28,9 +29,10 @@ This can be done via the methods on the `WebDriver` instance (obtainable via `{b
 
 == Implicit driver management
 
-If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the ,,driver-implementation-configuration,configuration mechanism>>.
+If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the <<driver-implementation-configuration,configuration mechanism>>.
 
 [discrete]
+[[implicit-driver-lifecycle]]
 === Implicit lifecycle
 
 By default, Geb internally caches and reuses the first driver created, meaning that all subsequent browser instances created without an explicit driver will reuse the cached driver.
