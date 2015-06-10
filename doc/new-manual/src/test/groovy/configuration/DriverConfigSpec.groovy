@@ -15,8 +15,6 @@
  */
 package configuration
 
-import geb.Configuration
-import geb.ConfigurationLoader
 import geb.driver.CachingDriverFactory
 import geb.test.WebDriverServer
 import org.junit.Rule
@@ -27,23 +25,13 @@ import org.openqa.selenium.remote.RemoteWebDriver
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class DriverConfigSpec extends Specification {
+class DriverConfigSpec extends Specification implements InlineConfigurationLoader {
 
     @Rule
     TemporaryFolder temporaryFolder
 
-    Configuration config
-
     def setupSpec() {
         CachingDriverFactory.clearCacheAndQuitDriver()
-    }
-
-    void configScript(String env = null, String script) {
-        def classLoader = new GroovyClassLoader(getClass().classLoader)
-        classLoader.addClasspath(temporaryFolder.root.absolutePath)
-        def configFile = temporaryFolder.newFile()
-        configFile << script
-        config = new ConfigurationLoader(env, null, classLoader).getConf(configFile.name)
     }
 
     def "configuring driver using closure"() {
