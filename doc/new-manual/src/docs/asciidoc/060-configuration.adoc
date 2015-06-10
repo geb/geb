@@ -224,11 +224,12 @@ For documentation on this error, please visit: http://seleniumhq.org/exceptions/
 
 You can prevent this error from happening by configuring a wait timeout to use when the driver is locating the root HTML element, using:
 
+[source,groovy]
 ----
-baseNavigatorWaiting = true
+include::{test-dir}/configuration/BaseNavigatorWaitingConfigSpec.groovy[tag=config,indent=0]
 ----
 
-The possible values for the `baseNavigatorWaiting` option are consistent with the link:pages.html#wait[ones for `wait` option of content definitions].
+The possible values for the `baseNavigatorWaiting` option are consistent with the <<content-dsl-wait, ones for `wait` option of content template definitions>>.
 
 [[unexpected-pages-config]]
 === Unexpected pages
