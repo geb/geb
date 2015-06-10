@@ -201,13 +201,14 @@ Notice that the `quick` preset does not specify a `retryInterval` value; default
 [[at-check-waiting]]
 === Waiting in “at” checkers
 
-At checkers can be configured to be implictly wrapped with `waitFor()` calls. This can be set with:
+At checkers can be configured to be implicitly wrapped with `waitFor()` calls. This can be set with:
 
+[source,groovy]
 ----
-atCheckWaiting = true
+include::{test-dir}/configuration/AtCheckWaitingConfigSpec.groovy[tag=config,indent=0]
 ----
 
-The possible values for the `atCheckWaiting` option are consistent with the link:pages.html#wait[ones for `wait` option of content definitions].
+The possible values for the `atCheckWaiting` property are consistent with the <<content-dsl-wait, ones for `wait` option of content template definitions>>.
 
 This global setting can also be overridden on a <<page-level-at-check-waiting,per page class basis>>.
 
