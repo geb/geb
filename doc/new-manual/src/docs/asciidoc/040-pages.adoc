@@ -37,6 +37,7 @@ Geb's support for the Page Object pattern addresses this problem.
 
 All page objects *must* inherit from `{page-api}`.
 
+[[content-dsl]]
 == The content DSL
 
 Geb features a DSL for defining page content in a _templated_ fashion, which allows very concise yet flexible page definitions.
@@ -623,6 +624,7 @@ Initialization is performed as part of the `Browser` methods mentioned above.
 Failing to pass the page instance to one of these methods and calling any method on an uninitialized page instance might result in a `PageInstanceNotInitializedException`.
 ====
 
+[[pages-inheritance]]
 == Inheritance
 
 Pages can be arranged in an inheritance hierarchy. The content definitions are merged…
