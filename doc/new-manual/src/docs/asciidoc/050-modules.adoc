@@ -160,28 +160,13 @@ include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module,indent=0
 
 == Reusing modules across pages
 
-As previously stated, modules can be used to model page fragments that are reused across multiple pages. For example, many different types of pages in your application may show information about the user's shopping cart. You could handle this with modules…
+As previously stated, modules can be used to model page fragments that are reused across multiple pages.
+For example, many different types of pages in your application may show information about the user's shopping cart.
+You could handle this with modules…
 
+[source,groovy]
 ----
-class CartInfoModule extends Module {
-    static content = {
-        section { $("div.cart-info") }
-        itemCount { section.find("span.item-count").toInteger() }
-        totalCost { section.find("span.total-cost").toDouble() }
-    }
-}
-
-class HomePage extends Page {
-    static content = {
-        cartInfo { module CartInfoModule }
-    }
-}
-
-class OtherPage extends Page {
-    static content = {
-        cartInfo { module CartInfoModule }
-    }
-}
+include::{test-dir}/modules/ReusingModulesSpec.groovy[tag=content,indent=0]
 ----
 
 Modules work well for this.
