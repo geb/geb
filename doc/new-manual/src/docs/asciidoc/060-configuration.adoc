@@ -259,29 +259,32 @@ include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=config,indent=0]
 
 === Reports directory
 
-The reports dir configuration is used by to control where the browser should write reports (see the link:reporting.html[reporting] chapter for details).
+The reports dir configuration is used by to control where the browser should write reports (see the <<reporting>> chapter for details).
 
 In the config script, you can set the path to the directory to use for reports via the `reportsDir` key…
 
+[source,groovy]
 ----
-reportsDir = "target/geb-reports"
+include::{test-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_path,indent=0]
 ----
 
-____
-
+[NOTE]
+====
 The value is interpreted as a path, and if not absolute will be relative to the JVM's working directory.
+====
 
-____
-
-The reports dir can also be specified by the build adapter (the default implementation of which looks at the `geb.build.reportsDir` system property). Any value set in the config script will take precedence over the value provided by the build adapter.
+The reports dir can also be specified by the build adapter (the default implementation of which looks at the `geb.build.reportsDir` system property).
+Any value set in the config script will take precedence over the value provided by the build adapter.
 
 It is also possible to set the `reportsDir` config item to a file.
 
+[source,groovy]
 ----
-reportsDir = new File("target/geb-reports")
+include::{test-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_file,indent=0]
 ----
 
-By default this value is *not set*. The browser's link:api/geb/Browser.html#report(java.lang.String)[`report()`] method requires a value for this config item so if you are using the reporting features you *must* set a reports dir.
+By default this value is *not set*. The browser's link:api/geb/Browser.html#report(java.lang.String)[`report()`] method requires a value for this config item so if you are using the reporting features
+you *must* set a reports dir.
 
 === Report test failures only
 
