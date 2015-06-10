@@ -123,45 +123,39 @@ If the initialization statement does not use a `Navigator`, the module's base is
 
 == `Module` is-a `Navigator`
 
-Modules always have a base navigator associated with them (if you don't specify a base for a module at all then it will be assigned the root element of the page as the base) so it is natural to think of them as navigators. Given that `Module` implements `Navigator` and considering the following HTML…
+Modules always have a base navigator associated with them (if you don't specify a base for a module at all then it will be assigned the root element of the document as the base) so it is natural to
+think of them as navigators.
+Keeping in mind that `Module` implements `Navigator` and considering the following HTML…
 
+[source,html]
 ----
-<form method="post">
-    ...
-</form>
-----
-
-These example calls are possible…
-
-----
-class FormModule extends Module {
-    static base = { $("form") }
-}
-
-class FormPage extends Page {
-    static content = {
-       form { module FormModule }
-    }
-}
-
-to FormPage
-assert form.getAttribute("method") == "post" 
-assert form.displayed
+include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=html,indent=0]
 ----
 
-It's also possible to use `Navigator`'s methods inside of a module implementation…
+As well as these content definitions…
 
+[source,groovy]
 ----
-class FormModule extends Module {
-    static base = { $("form") }
+include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=content,indent=0]
+----
 
-    boolean getHasWhiteBackground() {
-       css("background-color") == "rgba(255, 255, 255, 1)"
-    }
-}
+The following will pass…
 
-to FormPage
-assert form.hasWhiteBackground
+[source,groovy]
+----
+include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=on_module,indent=0]
+----
+
+It's also possible to use `Navigator` methods inside of a module implementation…
+
+[source,groovy]
+----
+include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module_definition,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module,indent=0]
 ----
 
 == Reusing modules across pages
