@@ -1,3 +1,4 @@
+[[reporting]]
 = Reporting
 
 Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time. Reporters are implementations of the link:api/geb/report/Reporter.html[`Reporter`] interface. Geb ships with two implementations: link:api/geb/report/PageSourceReporter.html[`PageSourceReporter`] and link:api/geb/report/ScreenshotReporter.html[`ScreenshotAndPageSourceReporter`]. There are three bits of configuration that pertain to reporting: the link:configuration.html#reporter[reporter] implementation, the link:configuration.html#reports_dir[reports directory] and whether to link:configuration.html#report_test_failures_only[only report test failures] or not.

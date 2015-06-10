@@ -246,10 +246,15 @@ See <<unexpected-pages,this section>> for more information on unexpected pages.
 
 === Reporter
 
-The _reporter_ is the object responsible for snapshotting the state of the browser (see the link:reporting.html[reporting] chapter for details). All reporters are implemenations of the link:api/geb/report/Reporter.html[`Reporter`] interface. If no reporter is explicitly defined, a link:api/geb/report/CompositeReporter.html[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current DOM state as HTML). This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
+The _reporter_ is the object responsible for snapshotting the state of the browser (see the <<reporting>> chapter for details).
+All reporters are implementations of the link:api/geb/report/Reporter.html[`Reporter`] interface.
+If no reporter is explicitly defined, a link:api/geb/report/CompositeReporter.html[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter`
+(dumps the current DOM state as HTML).
+This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
 
+[source,groovy]
 ----
-reporter = new CustomReporter()
+include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=config,indent=0]
 ----
 
 === Reports directory
