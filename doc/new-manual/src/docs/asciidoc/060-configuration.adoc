@@ -288,28 +288,32 @@ you *must* set a reports dir.
 
 === Report test failures only
 
-By default Geb will take a report at the end of each test method, regardless of whether it ended successfully or not. The `reportOnTestFailureOnly` setting allows you to specify that a report should be taken only if a failure occurs. This might be useful as a way to speed up large test suites.
+By default Geb will take a report at the end of each test method, regardless of whether it ended successfully or not.
+The `reportOnTestFailureOnly` setting allows you to specify that a report should be taken only if a failure occurs.
+This might be useful as a way to speed up large test suites.
 
+[source,groovy]
 ----
-reportOnTestFailureOnly = true
+include::{test-dir}/configuration/ReportOnTestFailuresConfigSpec.groovy[tag=config,indent=0]
 ----
 
-____
-
+[WARNING]
+====
 Currently this flag is only supported by the TestNG adapter. Support for JUnit, Spock and other frameworks is forthcoming.
-
-____
+====
 
 === Reporting listener
 
-It is possible to specify a listener that will be notified when reports are taken. See the section on link:reporting.html#listening_to_reporting[listening to reporting] for details.
+It is possible to specify a listener that will be notified when reports are taken. See the section on <<listening-to-reporting, listening to reporting>> for details.
 
 === Auto clearing cookies
 
-Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an link:driver.html#implicit_lifecycle[implicit driver]. This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
+Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an <<implicit-driver-lifecycle, implicit driver>>.
+This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
 
+[source,groovy]
 ----
-autoClearCookies = false
+include::{test-dir}/configuration/AutoClearCookiesConfigSpec.groovy[tag=config,indent=0]
 ----
 
 == Runtime overrides
@@ -318,12 +322,7 @@ The {configuration-api} object also has setters for all of the config properties
 
 For example, you may have one Spock spec that requires the `autoClearCookies` property to be disabled. You could disable it for just this spec by doing something like…
 
+[source,groovy]
 ----
-import geb.spock.GebReportingSpec
-
-class FunctionalSpec extends GebReportingSpec {
-    def setup() {
-        browser.config.autoClearCookies = false
-    }
-}
+include::{test-dir}/configuration/FunctionalSpec.groovy[tag=runtime_override,indent=0]
 ----

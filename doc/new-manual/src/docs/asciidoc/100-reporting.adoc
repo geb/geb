@@ -62,6 +62,7 @@ It is common for test integrations to manage the report group for you, setting i
 
 ____
 
+[[listening-to-reporting]]
 == Listening to reporting
 
 It is possible to register a listener on the reporter that gets notified when a report is taken. This was added to make it possible to write something to stdout when a report is taken, which is how the https://wiki.jenkins-ci.org/display/JENKINS/JUnit+Attachments+Plugin[Jenkins JUnit Attachments Plugin] makes it possible to associate arbitrary files to test execution. Reporting listeners are of type link:api/geb/report/ReportingListener.html[`ReportingListener`] can be specified as part of the config…
