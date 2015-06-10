@@ -441,6 +441,7 @@ circumstances or before one might consider it to be loaded. This behaviour can b
 
 :numbered!:
 
+[[unexpected-pages]]
 === Unexpected pages
 
 A list of unexpected pages can be provided via <<unexpected-pages-config, `unexpectedPages` configuration entry>>.

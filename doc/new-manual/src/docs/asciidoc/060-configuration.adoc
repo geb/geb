@@ -234,13 +234,15 @@ The possible values for the `baseNavigatorWaiting` option are consistent with th
 [[unexpected-pages-config]]
 === Unexpected pages
 
-The `unexpectedPages` option allows to specify a list of unexpected `Page` classes that will be checked for when “at” checks are performed. Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined:
+The `unexpectedPages` configuration property allows to specify a list of unexpected `Page` classes that will be checked for when “at” checks are performed.
+Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined you can use the following to configure them as unexpected pages:
 
+[source,groovy]
 ----
-unexpectedPages = [PageNotFoundPage, InternalServerErrorPage]
+include::{test-dir}/configuration/UnexpectedPagesConfigSpec.groovy[tag=config,indent=0]
 ----
 
-See link:pages.html#unexpected_pages[this section] for more information.
+See <<unexpected-pages,this section>> for more information on unexpected pages.
 
 === Reporter
 
