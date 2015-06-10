@@ -34,9 +34,9 @@
 :cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
 :geb-cucumber: https://github.com/tomdcc/geb-cucumber
 :javascriptexecutor: http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}/org/openqa/selenium/JavascriptExecutor.html
-:remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver
-:remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer
-:configslurper: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html
+:remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
+:remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
+:config-slurper-api: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
 :groovy-binding: http://groovy.codehaus.org/api/groovy/lang/Binding.html
 :httpurlconnection: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
 :configuration-api: link:api/geb/Configuration.html[Configuration]
@@ -73,3 +73,5 @@
 :via-api: link:api/geb/Browser.html#via(T,%20java.lang.Object)[via()]
 :at-api: link:api/geb/Browser.html#at(T)[at()]
 :page-method-api: link:api/geb/Browser.html#page(Class<T>)[page()]
+:build-adapter-api: link:api/geb/BuildAdapter.html[BuildAdapter]
+:system-properties-build-adapter-api: link:api/geb/buildadapter/SystemPropertiesBuildAdapter.html[SystemPropertiesBuildAdapter]
