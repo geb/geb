@@ -50,7 +50,6 @@ class CachingDriverFactory implements DriverFactory {
             if (cached != null) {
                 try{
                     cached.quit()
-                
                 }catch(Throwable e){
                 }
                 cached = null
