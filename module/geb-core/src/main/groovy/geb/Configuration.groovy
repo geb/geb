@@ -473,16 +473,12 @@ class Configuration {
 
     protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
         if (isCacheDriver()) {
-
-            if(isCacheDriverPerThread()){
-                return CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown())
-            }
-
-            if(isCacheDriverPerThreadWithReset()){
-                return CachingDriverFactory.perThreadWithReset(factory, isQuitCachedDriverOnShutdown())
-            }
-
-            return CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
+            isCacheDriverPerThread() ?
+                CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : (
+                    isCacheDriverPerThreadWithReset() ?
+                    CachingDriverFactory.perThreadWithReset(factory, isQuitCachedDriverOnShutdown()) :
+                    CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
+                )
         } else {
             factory
         }
