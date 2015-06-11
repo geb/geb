@@ -48,7 +48,11 @@ class CachingDriverFactory implements DriverFactory {
             def cached = threadLocal.get()
 
             if (cached != null) {
-                try{ cached.quit() }catch(Exception e){}
+                try{
+                    cached.quit()
+                
+                }catch(Throwable e){
+                }
                 cached = null
             }
 
