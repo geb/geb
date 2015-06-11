@@ -207,7 +207,6 @@ class Configuration {
         readValue('cacheDriverPerThreadWithReset', false)
     }
 
-
     /**
      * The driver is to be cached, this setting controls whether or not the driver is cached per thread,
      * or per
