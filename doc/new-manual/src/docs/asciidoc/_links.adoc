@@ -28,7 +28,8 @@
 :content-dsl: pages.html#the_content_dsl
 :defaultdriver: browser.html#the_default_driver
 :defaultdriver-lifecycle: browser.html#lifecycle
-:spock: http://spockframework.org/[Spock]
+:spock-link: link:http://spockframework.org/
+:spock: {spock-link}[Spock]
 :junit: http://www.junit.org/[JUnit]
 :testng: http://testng.org/[TestNg]
 :cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
@@ -52,7 +53,8 @@
 :implicit-assertions: implicit-assertions.html
 :page-option: pages.html#page
 :switch-frame-and-page: pages.html#switching_pages_and_frames_at_once
-:groovy-truth: http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html[Groovy Truth]
+:groovy-truth-link: link:http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html
+:groovy-truth: {groovy-truth-link}[Groovy Truth]
 :drive-method-api: link:api/geb/Browser.html#drive(groovy.lang.Closure)[drive()]
 :page-method-taking-class-api: link:api/geb/Browser.html#page(Class<T>)[<T extends Page> T page(Class<T> pageType)]
 :page-method-taking-instance-api: link:api/geb/Browser.html#page(T)[<T extends Page> T page(T pageInstance)]
