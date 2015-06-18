@@ -67,34 +67,25 @@ Any _global_ JavaScript functions can be called as methods on the `js` object.
 
 Given the following page…
 
+[source,html]
 ----
-<html>
-    <script type="text/javascript">
-        function addThem(a,b) {
-            return a + b;
-        }
-    </script>
-<body>
-</body>
-</html>
+include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=html,indent=0]
 ----
 
 We can call the `addThem()` function with…
 
+[source,groovy]
 ----
-Browser.drive {
-    assert js.addThem(1, 2) == 3
-}
+include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=calling_methods,indent=0]
 ----
 
 This also works from pages and modules.
 
-To call _nested_ methods, we use the same syntax as properties…
+To call _nested_ methods, we use the same syntax as for properties…
 
+[source,groovy]
 ----
-Browser.drive {
-    js."document.write"("dynamic!")
-}
+include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=nested_methods,indent=0]
 ----
 
 === Executing arbitrary code
