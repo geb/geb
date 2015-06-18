@@ -167,6 +167,7 @@ The <<base-url, base URL>> to be used can be specified by setting the `baseUrl` 
 `geb.build.baseUrl` system property).
 Any value set in the config script will take precedence over the value provided by the build adapter.
 
+[[waiting-configuration]]
 === Waiting
 
 The <<waiting, `waitFor()`>> methods available on browser, page and module objects can be affected by configuration (this is also true for <<content-dsl-wait, implicitly waiting content>>).

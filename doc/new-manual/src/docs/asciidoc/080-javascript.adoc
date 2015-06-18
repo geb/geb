@@ -110,100 +110,83 @@ include::{test-dir}/javascript/ExecutingArbitraryCodeSpec.groovy[tag=multiline,i
 
 Geb provides some convenient methods for _waiting_ for a certain condition to be true. This is useful for testing pages using AJAX, timers or effects.
 
-The `waitFor` methods are provided by the link:api/geb/waiting/WaitingSupport.html[`WaitingSupport`] mixin which delegates to the link:api/geb/waiting/Wait.html[`Wait` class] (see the documentation of the link:api/geb/waiting/Wait.html#waitFor(Closure%3CT%3E)[`waitFor` method] of this class for the precise semantics of _waiting_). These methods take various parameters that determine how long to wait for the given closure to return a true object according to the http://groovy.codehaus.org/Groovy+Truth[Groovy Truth], and how long to wait in between invoking the closure again.
+The `waitFor` methods are provided by the `{waiting-support-api}` mixin which delegates to the `{wait-api}` class (see the documentation of the `{wait-for-api}` method of this class for the precise
+semantics of _waiting_).
+These methods take various parameters that determine how long to wait for the given closure to return a true object according to the {groovy-truth}, and how long to wait in between invoking the
+closure again.
 
+[source,groovy]
 ----
-waitFor {}          // use default configuration
-waitFor(10) {}      // wait for up to 10 seconds, using the default retry interval
-waitFor(10, 0.5) {} // wait for up to 10 seconds, waiting half a second in between retries
-waitFor("quick") {} // use the preset “quick” as the wait settings
+waitFor {} //<1>
+waitFor(10) {} //<2>
+waitFor(10, 0.5) {} //<3>
+waitFor("quick") {} //<4>
 ----
+<1> Use default configuration.
+<2> Wait for up to 10 seconds, using the default retry interval.
+<3> Wait for up to 10 seconds, waiting half a second in between retries. See the section on <<waiting-configuration, wait configuration>> for how to change the default values and define presets.
+<4> Use the preset “quick” as the wait settings
 
-See the section on link:configuration.html#waiting[wait configuration] for how to change the default values and define presets.
-
-____
-
-It is also possible to declare that content should be implicitly waited on, see link:pages.html#wait[the `wait` option for content definition]. 
-
-____
+[NOTE]
+====
+It is also possible to declare that content should be implicitly waited on, see <<content-dsl-wait, the `wait` option for content definition>>.
+====
 
 === Examples
 
 Here is an example showing one way of using `waitFor()` to deal with the situation where clicking a button invokes an AJAX request that creates a new `div` on its completion.
 
+[source,groovy]
 ----
-import geb.*
-
-class DynamicPage extends Page {
-    static content = {
-        theButton { $("input", value: "Make Request") }
-        theResultDiv(required: false) { $("div#result") }
-    }
-
-    def makeRequest() {
-        theButton.click()
-        waitFor { theResultDiv.present }
-    }
-}
-
-Browser.drive {
-    to DynamicPage
-    makeRequest()
-    assert theResultDiv.text() == "The Result"
-}
+include::{test-dir}/javascript/WaitingExamplesSpec.groovy[tag=page,indent=0]
 ----
 
-____
+[source,groovy]
+----
+include::{test-dir}/javascript/WaitingExamplesSpec.groovy[tag=using_page,indent=0]
+----
 
-Notice that the '`theResultDiv`' is declared `required: false`. This is almost always necessary when dealing with dynamic content as it's likely to not be present on the page when it is first accessed (see: link:pages.html#required[section on `required`])
-
-____
+Recall that the `return` keyword is optional in Groovy, so in the example above the `$(&quot;div#result&quot;).present` statement acts as the return value for the closure and is used as the basis on
+whether the closure _passed_ or not.
+This means that you must ensure that the last statement inside the closure returns a value that is `true` according to the {groovy-truth} (if you're unfamiliar with the Groovy Truth *do* read that
+page).
 
 Because the browser delegates method calls to the page object, the above could have been written as…
 
+[source,groovy]
 ----
-Browser.drive {
-    $("input", value: "Make Request")
-    waitFor { $("div#result").present }
-    assert $("div#result").text() == "The Result"
-}
+include::{test-dir}/javascript/WaitingExamplesSpec.groovy[tag=not_using_page,indent=0]
 ----
 
-Recall that the `return` keyword is optional in Groovy, so in the example above the `$(&quot;div#result&quot;).present` statement acts as the return value for the closure and is used as the basis on whether the closure _passed_ or not. This means that you must ensure that the last statement inside the closure returns a value that is `true` according to the http://groovy.codehaus.org/Groovy+Truth[Groovy Truth] (if you're unfamiliar with the Groovy Truth *do* read that page).
+[NOTE]
+====
+Not using explicit `return` statements in closure expressions passed to `waitFor()` is actually preferred.
+See the section on <<implicit-assertions, implicit assertions>> for more information.
+====
 
-____
+The closures given to the `waitFor()` method(s) do not need to be single statement.
 
-Not using explicit `return` statements in closure expressions passed to `waitFor()` is actually preferred. See the section on [implicit assertions][implicit-assertions] for more information.
-
-____
-
-The closures given to the `waitFor` method(s) do not need to be single statement.
-
+[source,groovy]
 ----
-waitFor {
-    def a = 1
-    def b = 2
-    a == b
-}
+include::{test-dir}/javascript/WaitingExamplesSpec.groovy[tag=multiline,indent=0]
 ----
 
 That will work fine.
 
 If you wish to _test_ multiple conditions as separate statement inside a `waitFor` closure, you can just put them in separate lines.
 
+[source,groovy]
 ----
-waitFor {
-    1 == 1
-    2 == 2
-}
+include::{test-dir}/javascript/WaitingExamplesSpec.groovy[tag=multiple_conditions,indent=0]
 ----
 
 === Custom message
 
 If you wish to add a custom message to `WaitTimeoutException` that is being thrown when `waitFor` call times out you can do so by providing a message parameter to the `waitFor` call:
 
+[source,groovy]
 ----
-waitFor (message: 'My custom message') { $("div#result").present }
+include::{test-dir}/javascript/CustomMessageSpec.groovy[tag=custom_message,indent=0]
 ----
 
 == Alert and confirm dialogs

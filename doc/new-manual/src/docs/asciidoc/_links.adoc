@@ -80,3 +80,6 @@
 :system-properties-build-adapter-api: link:api/geb/buildadapter/SystemPropertiesBuildAdapter.html[SystemPropertiesBuildAdapter]
 :javascript-executor-execute-script-api: {selenium-api-link}/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[JavascriptExecutor.executeScript()]
 :javascript-executor-api: {selenium-api-link}/org/openqa/selenium/JavascriptExecutor.html[JavascriptExecutor]
+:waiting-support-api: link:api/geb/waiting/WaitingSupport.html[WaitingSupport]
+:wait-api: link:api/geb/waiting/Wait.html[Wait]
+:wait-for-api: link:api/geb/waiting/Wait.html#waitFor(Closure%3CT%3E)[waitFor()]

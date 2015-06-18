@@ -84,6 +84,7 @@ include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checker_mess
 
 As you can see, this is much more informative than the `at()` method simply returning `false`.
 
+[[implicit-assertions-waiting]]
 == Waiting
 
 Another place where implicit assertions are utilised is for _waiting_.
