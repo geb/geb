@@ -5,27 +5,29 @@ This section discusses how to deal with some of the challenges in testing and/or
 == The "js" object
 
 The browser instance exposes a “link:api/geb/Browser.html#getJs()[`js`]” object that provides support for working with JavaScript over and above what WebDriver provides.
-It's important to understand how WebDriver does handle JavaScript, which is through a driver's implementation of [JavascriptExecutor]'s http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[`executeScript()`] method.
+It's important to understand how WebDriver does handle JavaScript, which is through a driver's implementation of 
+`{javascript-executor-execute-script-api}` 
+method.
 
-____
-
-Before reading further, it's *strongly* recommended to read the description of http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[`executeScript()`] in order to understand how type conversion works between the two worlds.
-
-____
+[IMPORTANT]
+====
+Before reading further, it's *strongly* recommended to read the description of `{javascript-executor-execute-script-api}` in order to understand how type conversion works between the two worlds.
+====
 
 You can execute JavaScript like you would with straight WebDriver using the driver instance via the browser…
 
+[source,groovy]
 ----
-assert browser.driver.executeScript("return arguments[0];", 1) == 1
+include::{test-dir}/javascript/JavaScriptExecutorSpec.groovy[tag=example,indent=0]
 ----
 
 This is a bit long winded, and as you would expect Geb uses the dynamism of Groovy to make life easier.
 
-____
-
-The {javascriptexecutor} interface does not define any contract in regards to the driver's responsibility when there is some issue executing JavaScript. All drivers however throw _some kind_ of exception when this happens.
-
-____
+[NOTE]
+====
+The `{javascript-executor-api}` interface does not define any contract in regards to the driver's responsibility when there is some issue executing JavaScript. 
+All drivers however throw _some kind_ of exception when this happens.
+====
 
 === Accessing variables
 
