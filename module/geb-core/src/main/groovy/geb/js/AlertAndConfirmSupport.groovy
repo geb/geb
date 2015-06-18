@@ -29,14 +29,23 @@ interface AlertAndConfirmSupport {
     void withNoAlert(Closure actions)
     // end::alert[]
 
-    def withConfirm(Map params, Closure actions)
-
-    def withConfirm(Closure actions)
-
+    // tag::confirm[]
     def withConfirm(boolean ok, Closure actions)
+    // end::confirm[]
 
+    // tag::confirm[]
+    def withConfirm(Closure actions)
+    // end::confirm[]
+
+    // tag::confirm[]
+    def withConfirm(Map params, Closure actions)
+    // end::confirm[]
+
+    // tag::confirm[]
     def withConfirm(Map params, boolean ok, Closure actions)
+    // end::confirm[]
 
+    // tag::confirm[]
     void withNoConfirm(Closure actions)
-
+    // end::confirm[]
 }

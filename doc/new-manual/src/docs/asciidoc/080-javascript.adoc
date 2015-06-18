@@ -210,6 +210,7 @@ aren't expecting.
 To do this, you need to disable Geb's handling by changing your code to not use the methods below.
 ====
 
+[[alert]]
 === `alert()`
 
 There are three methods that deal with `alert()` dialogs:
@@ -279,53 +280,63 @@ If a page change was detected the `withAlert()` method will return a literal `tr
 
 === `confirm()`
 
-There are three methods that deal with `confirm()` dialogs:
+There are five methods that deal with `confirm()` dialogs:
 
+[source,groovy]
 ----
-String withConfirm(boolean ok, Closure actions)
-String withConfirm(Closure actions) // defaults 'ok' to true
-void withNoConfirm(Closure actions)
+include::{core-source-dir}/geb/js/AlertAndConfirmSupport.groovy[tag=confirm,indent=0]
 ----
 
-The first method, `withConfirm()` (and its ‘`ok`’ defaulted relative), is used to verify actions that will produce an `confirm()` dialog. This method returns the confirmation message. The `ok` parameter controls whether the `confirm()` call should return `true` or `false` (i.e. the user has clicked the “OK” or “Cancel” buttons).
+The first method, `withConfirm()` (and its ‘`ok`’ defaulted relative), is used to verify actions that will produce a confirm dialog.
+This method returns the confirmation message.
+The `ok` parameter controls whether the the “OK” or “Cancel” button should be clicked.
 
 Given the following HTML…
 
+[source,html]
 ----
-<input type="button" name="showConfirm" onclick="confirm('Do you like Geb?');" />
+include::{test-dir}/javascript/ConfirmSpec.groovy[tag=confirm_html,indent=0]
 ----
 
 The `withConfirm()` method is used like so…
 
+[source,groovy]
 ----
-assert withConfirm(true) { $("input", name: "showConfirm").click() } == "Do you like Geb?"
+include::{test-dir}/javascript/ConfirmSpec.groovy[tag=confirm,indent=0]
 ----
 
 If a confirmation dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
 
-The `withConfirm()` method also accepts a wait option just like the `withAlert()` method. See the link:javascript.html#alert[description of `withAlert()`] to learn about the possible values and usage.
+The `withConfirm()` method also accepts a wait option just like the `withAlert()` method. See the <<alert, description of `withAlert()`>> to learn about the possible values and usage.
 
-The second method, `withNoConfirm()`, is used to verify actions that will not produce an `confirm()` dialog. If a confirmation dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
+The other method, `withNoConfirm()`, is used to verify actions that will not produce a confirm dialog.
+If a confirmation dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
 
 Given the following HTML…
 
+[source,html]
 ----
-<input type="button" name="dontShowConfirm" />
+include::{test-dir}/javascript/ConfirmSpec.groovy[tag=no_confirm_html,indent=0]
 ----
 
 The `withNoConfirm()` method is used like so…
 
+[source,groovy]
 ----
-withNoConfirm { $("input", name: "dontShowConfirm").click() }
+include::{test-dir}/javascript/ConfirmSpec.groovy[tag=no_confirm,indent=0]
 ----
 
-____
+[TIP]
+====
+It's a good idea to use `withNoConfirm()` when doing something that _might_ raise a a confirmation.
+If you don't, the browser is going to raise a real confirmation dialog and sit there waiting for someone to click it, which means your test is going to hang.
+Using `withNoConfirm()` prevents this.
+====
 
-It's a good idea to use `withNoConfirm()` when doing something that _might_ raise a a confirmation. If you don't, the browser is going to raise a real confirmation dialog and sit there waiting for someone to click it, which means your test is going to hang. Using `withNoConfirm()` prevents this.
-
-____
-
-A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withConfirm()`/`withNoConfirm()`). We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change. If a page change was detected, the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
+A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to
+`withConfirm()`/`withNoConfirm()`).
+We can detect that the browser page did change, but we can't know if `confirm()` did or did not get called before the page change.
+If a page change was detected, the `withConfirm()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoConfirm()` will succeed.
 
 === `prompt()`
 

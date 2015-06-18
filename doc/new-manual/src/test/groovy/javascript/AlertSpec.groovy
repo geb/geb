@@ -63,6 +63,6 @@ class AlertSpec extends GebSpecWithCallbackServer {
         // end::no_alert[]
 
         then:
-        true
+        noExceptionThrown()
     }
 }
