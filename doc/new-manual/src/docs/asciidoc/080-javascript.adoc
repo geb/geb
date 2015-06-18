@@ -191,72 +191,91 @@ include::{test-dir}/javascript/CustomMessageSpec.groovy[tag=custom_message,inden
 
 == Alert and confirm dialogs
 
-WebDriver currently http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Does_support_Javascript_alerts_and_prompts?[does not handle] the http://www.w3schools.com/JS/js_popup.asp[`alert()` and `confirm()` dialog windows]. However, we can fake it through some JavaScript magic as http://code.google.com/p/selenium/issues/detail?id=27#c17[discussed on the WebDriver issue for this]. Geb implements a workaround based on this solution for you. Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms. At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust. Geb adds this functionality through the link:api/geb/js/AlertAndConfirmSupport.html[`AlertAndConfirmSupport`] class that is mixed into
-[`Page`][page-api] and
-[`Module`][module-api].
+WebDriver currently does not handle the alert() and confirm() dialog windows.
+However, we can fake it through some JavaScript magic as link:http://code.google.com/p/selenium/issues/detail?id=27#c17[discussed on the WebDriver issue for this].
+Geb implements a workaround based on this solution for you.
+Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms.
+At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust.
+Geb adds this functionality through the `{alert-and-confirm-support}` class that is mixed into `{page-api}` and `{module-api}`.
 
-The Geb methods *prevent* the browser from actually displaying the dialog, which is a good thing. This prevents the browser blocking while the dialog is displayed and causing your test to hang indefinitely.
+The Geb methods *prevent* the browser from actually displaying the dialog, which is a good thing.
+This prevents the browser blocking while the dialog is displayed and causing your test to hang indefinitely.
 
-____
-
-Unexpected `alert()` and `confirm()` calls can have strange results. This is due to the nature of how Geb handles this internally. If you are seeing strange results, you may want to run your tests/scripts against a real browser and watch what happens to make sure there aren't `alert()`s or `confirm()`s being called that you aren't expecting. To do this, you need to disable Geb's handling by changing your code to not use the methods below.
-
-____
+[NOTE]
+====
+Unexpected `alert()` and `confirm()` calls can have strange results.
+This is due to the nature of how Geb handles this internally.
+If you are seeing strange results, you may want to run your tests/scripts against a real browser and watch what happens to make sure there aren't any alert or confirm windows being opened that you
+aren't expecting.
+To do this, you need to disable Geb's handling by changing your code to not use the methods below.
+====
 
 === `alert()`
 
-There are two methods that deal with `alert()` dialogs:
+There are three methods that deal with `alert()` dialogs:
 
+[source,groovy]
 ----
-String withAlert(Closure actions)
-void withNoAlert(Closure actions)
+include::{core-source-dir}/geb/js/AlertAndConfirmSupport.groovy[tag=alert,indent=0]
 ----
 
-The first method, `withAlert()`, is used to verify actions that will produce an `alert()` dialog. This method returns the alert message.
+The first method, `withAlert()`, is used to verify actions that will produce an alert dialog.
+This method returns the alert message.
 
 Given the following HTML…
 
+[source,html]
 ----
-<input type="button" name="showAlert" onclick="alert('Bang!');" />
+include::{test-dir}/javascript/AlertSpec.groovy[tag=alert_html,indent=0]
 ----
 
 The `withAlert()` method is used like so…
 
+[source,groovy]
 ----
-assert withAlert { $("input", name: "showAlert").click() } == "Bang!"
+include::{test-dir}/javascript/AlertSpec.groovy[tag=alert,indent=0]
 ----
 
 If an alert dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
 
-The `withAlert()` method also accepts a wait option. It is useful if the code in your “actions” closure is raising a dialog in an asynchronous manner and can be used like that:
+The `withAlert()` method also accepts a wait option.
+It is useful if the code in your “actions” closure is raising a dialog in an asynchronous manner and can be used like that:
 
+[source,groovy]
 ----
-assert withAlert(wait: true) { $("input", name: "showAlert").click() } == "Bang!"
+include::{test-dir}/javascript/AlertSpec.groovy[tag=async_alert,indent=0]
 ----
 
-The possible values for the `wait` option are consistent with the link:pages.html#wait[ones for `wait` option of content definitions].
+The possible values for the `wait` option are consistent with the <<content-dsl-wait, ones for `wait` option of content definitions>>.
 
-The second method, `withNoAlert()`, is used to verify actions that will not produce an `alert()` dialog. If an alert dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
+The second method, `withNoAlert()`, is used to verify actions that will not produce an `alert()` dialog.
+If an alert dialog is raised by the given “actions” closure, an `AssertionError` will be thrown.
 
 Given the following HTML…
 
+[source,html]
 ----
-<input type="button" name="dontShowAlert" />
+include::{test-dir}/javascript/AlertSpec.groovy[tag=no_alert_html,indent=0]
 ----
 
 The `withNoAlert()` method is used like so…
 
+[source,groovy]
 ----
-withNoAlert { $("input", name: "dontShowAlert").click() }
+include::{test-dir}/javascript/AlertSpec.groovy[tag=no_alert,indent=0]
 ----
 
-____
+[TIP]
+====
+It's a good idea to use `withNoAlert()` when doing something that _might_ raise an alert.
+If you don't, the browser is going to raise a real alert dialog and sit there waiting for someone to click it which means your test is going to hang.
+Using `withNoAlert()` prevents this.
+====
 
-It's a good idea to use `withNoAlert()` when doing something that _might_ raise an alert. If you don't, the browser is going to raise a real alert dialog and sit there waiting for someone to click it which means your test is going to hang. Using `withNoAlert()` prevents this.
-
-____
-
-A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to `withAlert()`/`withNoAlert()`). We can detect that the browser page did change, but we can't know if `alert()` did or did not get called before the page change. If a page change was detected the `withAlert()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoAlert()` will succeed.
+A side effect of the way that this is implemented is that we aren't able to definitively handle actions that cause the browser's actual page to change (e.g. clicking a link in the closure given to
+`withAlert()`/`withNoAlert()`).
+We can detect that the browser page did change, but we can't know if `alert()` did or did not get called before the page change.
+If a page change was detected the `withAlert()` method will return a literal `true` (whereas it would normally return the alert message), while the `withNoAlert()` will succeed.
 
 === `confirm()`
 

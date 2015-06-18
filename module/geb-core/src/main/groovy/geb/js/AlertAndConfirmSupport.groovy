@@ -17,11 +17,17 @@ package geb.js
 
 interface AlertAndConfirmSupport {
 
+    // tag::alert[]
     def withAlert(Closure actions)
+    // end::alert[]
 
+    // tag::alert[]
     def withAlert(Map params, Closure actions)
+    // end::alert[]
 
+    // tag::alert[]
     void withNoAlert(Closure actions)
+    // end::alert[]
 
     def withConfirm(Map params, Closure actions)
 
