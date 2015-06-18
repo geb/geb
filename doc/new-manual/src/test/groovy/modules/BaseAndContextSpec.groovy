@@ -24,9 +24,6 @@ class BaseAndContextSpec extends FormContentSpec {
         expect:
         // tag::using_module_with_dynamic_base[]
         Browser.drive {
-            // end::using_module_with_dynamic_base[]
-            driver.javascriptEnabled = true
-            // tag::using_module_with_dynamic_base[]
             to PageDefiningModuleWithBase
             form.button.click()
             // end::using_module_with_dynamic_base[]
@@ -40,9 +37,6 @@ class BaseAndContextSpec extends FormContentSpec {
         expect:
         // tag::creating_module_inline[]
         Browser.drive {
-            // end::creating_module_inline[]
-            driver.javascriptEnabled = true
-            // tag::creating_module_inline[]
             go "/"
             $("form").module(FormModule).button.click()
             // end::creating_module_inline[]
@@ -56,9 +50,6 @@ class BaseAndContextSpec extends FormContentSpec {
         expect:
         // tag::using_module_with_static_base[]
         Browser.drive {
-            // end::using_module_with_static_base[]
-            driver.javascriptEnabled = true
-            // tag::using_module_with_static_base[]
             to PageUsingModuleWithBase
             form.button.click()
             // end::using_module_with_static_base[]

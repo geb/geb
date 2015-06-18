@@ -25,9 +25,6 @@ class IntroductionSpec extends FormContentSpec {
         expect:
         // tag::using_modules[]
         Browser.drive {
-            // end::using_modules[]
-            driver.javascriptEnabled = true
-            // tag::using_modules[]
             to ModulePage
             form.button.click()
             // end::using_modules[]
@@ -41,9 +38,6 @@ class IntroductionSpec extends FormContentSpec {
         expect:
         // tag::using_parameterized_modules[]
         Browser.drive {
-            // end::using_parameterized_modules[]
-            driver.javascriptEnabled = true
-            // tag::using_parameterized_modules[]
             to ParameterizedModulePage
             form("personal-data").button.click()
             // end::using_parameterized_modules[]
@@ -57,9 +51,6 @@ class IntroductionSpec extends FormContentSpec {
         expect:
         // tag::using_nested_modules[]
         Browser.drive {
-            // end::using_nested_modules[]
-            driver.javascriptEnabled = true
-            // tag::using_nested_modules[]
             to OuterModulePage
             outerModule.form.button.click()
             // end::using_nested_modules[]

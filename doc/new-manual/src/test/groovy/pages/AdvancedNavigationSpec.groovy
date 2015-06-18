@@ -15,20 +15,19 @@
  */
 package pages
 
-import geb.Browser
+import fixture.Browser
 import geb.Page
-import geb.test.GebSpec
+import spock.lang.Specification
 
-class AdvancedNavigationSpec extends GebSpec {
-
-    def setup() {
-        browser.driver.javascriptEnabled = false
-    }
+class AdvancedNavigationSpec extends Specification {
 
     def "using to with page specifying an url"() {
         expect:
         // tag::to[]
         Browser.drive(baseUrl: "http://www.gebish.org/") {
+            // end::to[]
+            driver.javascriptEnabled = false
+            // tag::to[]
             to PageObjectsPage
             assert currentUrl == "http://www.gebish.org/pages"
         }
@@ -39,6 +38,9 @@ class AdvancedNavigationSpec extends GebSpec {
         expect:
         // tag::to_with_args[]
         Browser.drive(baseUrl: "http://www.gebish.org/") {
+            // end::to_with_args[]
+            driver.javascriptEnabled = false
+            // tag::to_with_args[]
             to ManualsPage, "0.9.3", "index.html"
             assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html"
         }
@@ -54,6 +56,9 @@ class AdvancedNavigationSpec extends GebSpec {
         then:
         // tag::convert_to_path[]
         Browser.drive(baseUrl: "http://www.gebish.org/") {
+            // end::convert_to_path[]
+            driver.javascriptEnabled = false
+            // tag::convert_to_path[]
             to ManualsPage, someManualVersion
             assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html"
         }
@@ -69,6 +74,9 @@ class AdvancedNavigationSpec extends GebSpec {
         then:
         // tag::to_with_named_params[]
         Browser.drive(baseUrl: "http://www.gebish.org/") {
+            // end::to_with_named_params[]
+            driver.javascriptEnabled = false
+            // tag::to_with_named_params[]
             to ManualsPage, someManualVersion, flag: true
             assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html?flag=true"
         }

@@ -61,9 +61,6 @@ class WithNewWindowSpec extends DriveMethodSupportingSpecWithServer {
         expect:
         // tag::new_window_with_wait[]
         Browser.drive {
-            // end::new_window_with_wait[]
-            driver.javascriptEnabled = true
-            // tag::new_window_with_wait[]
             go()
             withNewWindow({ js.openNewWindow() }, wait: true) {
                 assert title == 'Google'

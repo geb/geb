@@ -15,6 +15,8 @@
  */
 package fixture
 
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
+
 class Browser extends geb.Browser {
     static String serverBaseUrl
 
@@ -22,7 +24,12 @@ class Browser extends geb.Browser {
         browser.baseUrl = serverBaseUrl
     }
 
-    static Browser drive(@DelegatesTo(Browser) Closure script) {
-        drive(new Browser(), script)
+    static Browser drive(Map browserProperties = [:], @DelegatesTo(Browser) Closure script) {
+        def browser = new Browser(browserProperties)
+        def driver = browser.driver
+        if (driver instanceof HtmlUnitDriver) {
+            driver.javascriptEnabled = true
+        }
+        drive(browser, script)
     }
 }
