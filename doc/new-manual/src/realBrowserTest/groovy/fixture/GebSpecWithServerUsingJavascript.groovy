@@ -19,16 +19,26 @@ import geb.test.GebSpecWithCallbackServer
 
 class GebSpecWithServerUsingJavascript extends GebSpecWithCallbackServer {
 
+    public static final String JQUERY_RESOURCE_NAME = "jquery-2.1.4.min"
+
+    String jqueryResource() {
+        resource(JQUERY_RESOURCE_NAME)
+    }
+
     String jquery() {
-        resourceJavascript("jquery-2.1.4.min")
+        resourceJavascript(JQUERY_RESOURCE_NAME)
     }
 
     String interactjs() {
         resourceJavascript("interact-1.2.4.min")
     }
 
+    String resource(String resourceName) {
+        getClass().getResource("/${resourceName}.js").text
+    }
+
     String resourceJavascript(String resourceName) {
-        javascript(getClass().getResource("/${resourceName}.js").text)
+        javascript(resource(resourceName))
     }
 
     String javascript(String code) {

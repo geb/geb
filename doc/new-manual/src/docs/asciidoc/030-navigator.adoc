@@ -903,6 +903,7 @@ Finally, call `perform()` to actually trigger the desired mouse or keyboard beha
 include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=action_execution,indent=0]
 ----
 
+[[interact-closures]]
 === Using `interact` closures
 
 To cut down on the amount of typing required, use an `interact` closure instead of using `Actions` class directly.

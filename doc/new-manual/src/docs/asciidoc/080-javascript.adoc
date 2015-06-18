@@ -344,95 +344,86 @@ Geb does not provide any support for `prompt()` due to its infrequent and genera
 
 == jQuery integration
 
-Geb has special support for the {jquery}. Navigator objects have a special adapter that makes calling jQuery methods against the underlying DOM elements simple. This is best explained by example.
+Geb has special support for {jquery}.
+Navigator objects have a special adapter that makes calling jQuery methods against the underlying DOM elements simple.
+This is best explained by example.
 
-____
-
-The jQuery integration only works when the pages you are working with include jQuery, Geb does not install it in the page for you. The minimum supported version of jQuery is 1.4.
-
-____
+[WARNING]
+====
+The jQuery integration only works when the pages you are working with include jQuery, Geb does not install it in the page for you.
+The minimum supported version of jQuery is 1.4.
+====
 
 Consider the following page:
 
+[source,html]
 ----
-<html>
-<head>
-    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $("#a").mouseover(function() {
-               $("b").show(); 
-            });
-        });
-    </script>
-</head>
-<body>
-    <div id="a"></div>
-    <div id="b" style="display:none;"><a href="http://www.gebish.org">Geb!</a></div>
-</body>
-</html>
+include::{real-browser-test-dir}/javascript/JQuerySupportSpec.groovy[tag=html,indent=0]
 ----
 
-We want to click the Geb link, but can't because it's hidden (WebDriver does not let you interact with hidden elements). The div containing the link (div “a”) is only displayed when the mouse moves over div “a”.
+We want to click the Geb link, but can't because it's hidden (WebDriver does not let you interact with hidden elements).
+The div containing the link (div “a”) is only displayed when the mouse moves over div “a”.
 
-The jQuery library provides convenient methods for triggering browser events. We can use this to simulate the mouse being moved over the div “a”.
+The jQuery library provides convenient methods for triggering browser events.
+We can use this to simulate the mouse being moved over the div “a”.
 
 In straight jQuery JavaScript we would do…
 
+[source,javascript]
 ----
-jQuery("div#a").mouseover()
+jQuery("div#a").mouseover();
 ----
 
 Which we could invoke via Geb easy enough…
 
+[source,groovy]
 ----
-js.exec 'jQuery("div#a").mouseover();'
+include::{real-browser-test-dir}/javascript/JQuerySupportSpec.groovy[tag=using_javascript_executor,indent=0]
 ----
 
-That will work, but can be inconvenient as it duplicates content definitions in our Geb pages. Geb's jQuery integration allows you to use your defined content in Geb with jQuery. Here is how we could call the `mouseover` jQuery function on an element from Geb…
+That will work, but can be inconvenient as it duplicates content definitions in our Geb pages.
+Geb's jQuery integration allows you to use your defined content in Geb with jQuery.
+Here is how we could call the `mouseover` jQuery function on an element from Geb…
 
+[source,groovy]
 ----
-$("div#a").jquery.mouseover()
+include::{real-browser-test-dir}/javascript/JQuerySupportSpec.groovy[tag=using_adapter,indent=0]
 ----
 
 To be clear, that is Groovy (not JavaScript code). It can be used with pages…
 
+[source,groovy]
 ----
-import geb.*
+include::{real-browser-test-dir}/javascript/JQuerySupportSpec.groovy[tag=page,indent=0]
+----
 
-class ExamplePage extends Page {
-    static content = {
-        divA { $("#a") }
-        divB { $("#b") }
-        gebLink { divB.find("a") }
-    }
-}
-
-Browser.drive {
-    to ExamplePage
-    // div b is not showing
-    divA.jquery.mouseover()
-    // div b is showing now
-    gebLink.click()
-}
+[source,groovy]
+----
+include::{real-browser-test-dir}/javascript/JQuerySupportSpec.groovy[tag=on_content,indent=0]
 ----
 
 The `jquery` property of a navigator is conceptually equivalent to a jQuery object for _all_ of the navigator's matched page elements. 
 
 The methods can also take arguments…
 
+[source,groovy]
 ----
-$("#a").jquery.trigger('mouseover')
+include::{real-browser-test-dir}/javascript/JQuerySupportSpec.groovy[tag=with_parameters,indent=0]
 ----
 
-The same set of restricted types as allowed by WebDriver's http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[`executeScript()`] method are permitted here.
+The same set of restricted types as allowed by WebDriver's `{javascript-executor-execute-script-api}` method are permitted here.
 
-The return value of methods called on the `jquery` property depends on what the corresponding jQuery method returns. A jQuery object will be converted to a Navigator representing the same set of elements, other values such as objects, strings and numbers are returned as per WebDriver's http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/JavascriptExecutor.html#executeScript(java.lang.String,%20java.lang.Object...)[`executeScript()`] method.
+The return value of methods called on the `jquery` property depends on what the corresponding jQuery method returns.
+A jQuery object will be converted to a Navigator representing the same set of elements, other values such as objects, strings and numbers are returned as per WebDriver's
+`{javascript-executor-execute-script-api}` method.
 
 :numbered!:
 
 === Why?
 
-This functionality was developed to make triggering mouse related events easier. Some applications are very sensitive to mouse events, and triggering these events in an automated environment is a challenge. jQuery provides a good API for faking these events, which makes for a good solution.
+This functionality was developed to make triggering mouse related events easier.
+Some applications are very sensitive to mouse events, and triggering these events in an automated environment is a challenge.
+jQuery provides a good API for faking these events, which makes for a good solution.
+An alternative is using <<interact-closures, `the interact() method`>>.
 
 :numbered:
