@@ -35,43 +35,30 @@ Any _global_ JavaScript variables inside the browser can be read as _properties_
 
 Given the following page…
 
+[source,html]
 ----
-<html>
-    <script type="text/javascript">
-        var aVariable = 1;
-    </script>
-<body>
-</body>
-</html>
+include::{test-dir}/javascript/AccessingVariablesSpec.groovy[tag=html,indent=0]
 ----
 
 We could access the JavaScript variable “`aVariable`” with…
 
+[source,groovy]
 ----
-Browser.drive {
-    assert js.aVariable == 1
-}
+include::{test-dir}/javascript/AccessingVariablesSpec.groovy[tag=accessing,indent=0]
 ----
 
 Or if we wanted to map it to page content…
 
+[source,groovy]
 ----
-class ExamplePage extends Page {
-    static content = {
-        aVar { js.aVariable }
-    }
-}
-
-Browser.drive {
-    to ExamplePage
-    assert aVar == 1
-}
+include::{test-dir}/javascript/AccessingVariablesSpec.groovy[tag=mapping,indent=0]
 ----
 
 We can even access _nested_ variables…
 
+[source,groovy]
 ----
-assert js."document.title" == "Book of Geb"
+include::{test-dir}/javascript/AccessingVariablesSpec.groovy[tag=nested,indent=0]
 ----
 
 === Calling methods
