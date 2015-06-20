@@ -1,33 +1,36 @@
 = Direct downloading
 
-Geb features an API that can be used to make direct HTTP requests from the application that is executing the Geb scripts or tests. This facilitates fine grained requests and downloading content such as PDF, CSVs, images etc. into your scripts or tests to then do something with. 
+Geb features an API that can be used to make direct HTTP requests from the application that is executing the Geb scripts or tests.
+This facilitates fine grained requests and downloading content such as PDF, CSVs, images etc. into your scripts or tests to then do something with.
 
-The direct download API works by using [`java.net.HttpURLConnection`][httpurlconnection] to directly connect to a URL from the application executing Geb, bypassing WebDriver.
+The direct download API works by using {http-url-connection-link}[`java.net.HttpURLConnection`] to directly connect to a URL from the application executing Geb, bypassing WebDriver.
 
-The Direct Download API is provided by the link:api/geb/download/DownloadSupport.html[`DownloadSupport`] class, which is mixed in to pages and modules (which means you can just call these instance methods directly from anywhere where you would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules). Consult the link:api/geb/download/DownloadSupport.html[`DownloadSupport`] API reference for the `download*` methods that are available.
+The Direct Download API is provided by the `{download-support-api}` class, which is mixed in to pages and modules (which means you can just call these instance methods directly from anywhere where you
+would want to, e.g. drive blocks, in tests/specs, methods on page objects, methods on modules).
+Consult the `{download-support-api}` API reference for the various `download*()` methods that are available.
 
 == Downloading example
 
-For example, let's say you are using Geb to exercise a web application that generates PDF documents. The WebDriver API can only deal with HTML documents. You want to hit the PDF download link and also do some tests on the downloaded PDF. The direct download API is there to fill this need.
+For example, let's say you are using Geb to exercise a web application that generates PDF documents.
+The WebDriver API can only deal with HTML documents.
+You want to hit the PDF download link and also do some tests on the downloaded PDF.
+The direct download API is there to fill this need.
 
+[source,groovy]
 ----
-Browser.drive {
-    go "http://myapp.com/login"
-
-    // login
-    username = "me"
-    password = "secret"
-    login().click()
-
-    // now find the PDF download link
-    def downloadLink = $("a.pdf-download-link")
-
-    // now get the PDF bytes
-    def bytes = downloadBytes(downloadLink.@href)
-}
+include::{test-dir}/downloading/DownloadingSpec.groovy[tag=pages,indent=0]
 ----
 
-Simple enough, but consider what is happening behind the scenes. Our application required us to log in, which implies some kind of session state. Geb is using [`HttpURLConnection`][httpurlconnection] behind the scenes to get the content and before doing so the cookies from the real browser will be transferred allowing this connection to assume the same session. The PDF download link href may also be relative, and Geb handles this by resolving the link passed to the download function against the browser's current page URL.
+[source,groovy]
+----
+include::{test-dir}/downloading/DownloadingSpec.groovy[tag=example,indent=0]
+----
+
+Simple enough, but consider what is happening behind the scenes.
+Our application required us to log in, which implies some kind of session state.
+Geb is using {http-url-connection-link}[`HttpURLConnection`] to get the content and before doing so the cookies from the real browser are being transferred onto the connection allowing it to reuse
+the same session.
+The PDF download link href may also be relative, and Geb handles this by resolving the link passed to the download function against the browser's current page URL.
 
 == Fine grained request
 

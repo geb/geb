@@ -40,7 +40,8 @@
 :remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
 :config-slurper-api: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
 :groovy-binding: http://groovy.codehaus.org/api/groovy/lang/Binding.html
-:httpurlconnection: http://download.oracle.com/javase/6/docs/api/java/net/HttpURLConnection.html
+:java-api-link: link:https://docs.oracle.com/javase/8/docs/api
+:http-url-connection-link: {java-api-link}/java/net/HttpURLConnection.html
 :configuration-api: link:api/geb/Configuration.html[Configuration]
 :browser-api: link:api/geb/Browser.html[Browser]
 :page-api: link:api/geb/Page.html[Page]
@@ -84,3 +85,4 @@
 :wait-api: link:api/geb/waiting/Wait.html[Wait]
 :wait-for-api: link:api/geb/waiting/Wait.html#waitFor(Closure%3CT%3E)[waitFor()]
 :alert-and-confirm-support-api: link:api/geb/js/AlertAndConfirmSupport.html[AlertAndConfirmSupport]
+:download-support-api: link:api/geb/download/DownloadSupport.html[DownloadSupport]
