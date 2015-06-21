@@ -36,24 +36,22 @@ The PDF download link href may also be relative, and Geb handles this by resolvi
 
 The Direct Download API can also be used for making fine grained requests which can be useful for testing edge cases or abnormal behavior.
 
-All of the `download*()` methods take an optional closure that can configure the [java.net.HttpURLConnection][httpurlconnection] that will be used to make the request (after the `Cookie` header has been set).
+All of the `download*()` methods take an optional closure that can configure the {http-url-connection-link}[`HttpURLConnection`] that will be used to make the request (after the `Cookie` header has
+been set).
 
-For example, we could test what happens when we send gibberish in the `Accept-Encoding` header. 
+For example, we could test what happens when we send `application/json` in the `Accept` header.
 
+[source,groovy]
 ----
-Browser.drive {
-    go "http://myapp.com/somepage"
-    downloadText { HttpURLConnection connection ->
-        connection.setRequestProperty("Accept-Encoding", "gibberish")
-    }
-}
+include::{test-dir}/downloading/FineGrainedRequestSpec.groovy[tag=example,indent=0]
 ----
 
-____
-
-Before doing something like the above, it's worth considering whether doing such testing via Geb (a browser automation tool) is the right thing to do. You may find that it's more appropriate to directly use HttpURLConnection without Geb. That said, there are scenarios where such fine grained request control can be useful.
-
-____
+[TIP]
+====
+Before doing something like the above, it's worth considering whether doing such testing via Geb (a browser automation tool) is the right thing to do.
+You may find that it's more appropriate to directly use `HttpURLConnection` or a http client library without Geb.
+That said, there are scenarios where such fine grained request control can be useful.
+====
 
 == Dealing with untrusted certificates
 
