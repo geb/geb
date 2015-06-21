@@ -68,16 +68,18 @@ include::{test-dir}/downloading/UntrustedCertificatesSpec.groovy[tag=example,ind
 
 == Default configuration
 
-In the link:configuration.html[configuration], the default behaviour of the HttpURLConnection object can be specified by providing a closure as the `defaultDownloadConfig` property.
+In the <<configuration, configuration>>, the default behaviour of the `HttpURLConnection` object can be specified by providing a closure as the `defaultDownloadConfig` property.
 
+The below example configures all requests executed using direct downloading support to carry a `User-Agent` header.
+
+[source,groovy]
 ----
-defaultDownloadConfig = { HttpURLConnection connection ->
-    // configure the connection
-}
+include::{test-dir}/downloading/DownloadingConfigurationSpec.groovy[tag=config,indent=0]
 ----
 
 This config closure will be run first, so anything set here can be overridden using the fine grained request configuration shown above.
 
 == Errors
 
-Any I/O type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a link:api/geb/download/DownloadException.html[`DownloadException`] being thrown that wraps the original exception and provides access to the HttpURLConnection used to make the request.
+Any I/O type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a link:api/geb/download/DownloadException.html[`DownloadException`] being thrown that wraps the
+original exception and provides access to the `HttpURLConnection` used to make the request.
