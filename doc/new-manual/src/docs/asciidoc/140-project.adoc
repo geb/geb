@@ -18,46 +18,46 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 * http://ldaley.com[Luke Daley]
 * http://blog.proxerd.pl[Marcin Erdmann]
-* https://github.com/chris-prior[Chris Prior]
+* github-profile:chris-prior[Chris Prior]
 
 === Contributors
 
 * http://adhockery.blogspot.com/[Robert Fletcher]
 * http://pniederw.wordpress.com/[Peter Niederwieser]
-* http://github.com/zolotov[Alexander Zolotov] - TestNG Integration
+* github-profile:zolotov[Alexander Zolotov] - TestNG Integration
 * http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
 * http://www.desirableobjects.co.uk/[Antony Jones] - Various fixes and patches, doc improvements
-* https://github.com/hennr[Jan-Hendrik Peters] - Doc improvements
+* github-profile:hennr[Jan-Hendrik Peters] - Doc improvements
 * http://fbflex.wordpress.com/[Tomás Lin] - Doc improvements
-* https://github.com/measlyweasel[Jason Cahoon] - Bug fix around text matchers
+* github-profile:measlyweasel[Jason Cahoon] - Bug fix around text matchers
 * http://refaktor.blogspot.com/[Tomasz Kalkosiński] - Doc improvements
-* https://github.com/richdouglasevans[Rich Douglas Evans] - Doc improvements
-* https://github.com/idurkan[Ian Durkan] - Doc improvements
-* https://github.com/ColinHarrington[Colin Harrington] - Doc improvements
-* https://github.com/bherrmann7[Bob Herrmann] - Doc improvements
-* https://github.com/walterg2[George T Walters II] - Page option support for `withWindow()`
-* https://github.com/craigatk[Craig Atkinson] - Doc improvements
-* https://github.com/andyjduncan[Andy Duncan] - Fail fast when unexpected pages are encountered
-* https://github.com/johnrengelman[John Engelman] - Grails integration improvements
-* https://github.com/legart[Michael Legart] - Grails integration improvements
-* https://github.com/graemerocher[Graeme Rocher] - Grails integration improvements
-* https://github.com/craigatk[Craig Atkinson] - Bug fix around unexpected pages
-* https://github.com/kgeis[Ken Geis] - Doc improvements
-* https://github.com/kellyrob99[Kelly Robinson] - Additional configuration parameters for SauceLabs
-* https://github.com/tygerpatch[Todd Gerspacher] - Doc improvements, Cleaned up settings.gradle
-* https://github.com/davidmc24[David M. Carr] - BrowserStack integration
-* https://github.com/tomdcc[Tom Dunstan] - Cucumber integration and related documentation
-* https://github.com/brian428[Brian Kotek] - Doc improvements
-* https://github.com/david-w-millar[David W Millar] - Doc improvements
-* https://github.com/alincode[Ai-Lin Liou] - Doc improvements
-* https://github.com/menonvarun[Varun Menon] - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
-* https://github.com/adjohnson916[Anders D. Johnson] - Doc improvements
-* https://github.com/azusa[Hiroyuki Ohnaka] - Doc improvements
-* https://github.com/bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
-* https://github.com/vijaybolleypally[Vijay Bolleypally] - Various fixes
-* https://github.com/pierre-hilt[Pierre Hilt] - `hasNot()` filtering
-* https://github.com/PoohSunny[Yotaro Takahashi] - Doc improvements
-* https://github.com/jochenberger[Jochen Berger] - Better error reporting when trying to set a nonexistent select option
+* github-profile:richdouglasevans[Rich Douglas Evans] - Doc improvements
+* github-profile:idurkan[Ian Durkan] - Doc improvements
+* github-profile:ColinHarrington[Colin Harrington] - Doc improvements
+* github-profile:bherrmann7[Bob Herrmann] - Doc improvements
+* github-profile:walterg2[George T Walters II] - Page option support for `withWindow()`
+* github-profile:craigatk[Craig Atkinson] - Doc improvements
+* github-profile:andyjduncan[Andy Duncan] - Fail fast when unexpected pages are encountered
+* github-profile:johnrengelman[John Engelman] - Grails integration improvements
+* github-profile:legart[Michael Legart] - Grails integration improvements
+* github-profile:graemerocher[Graeme Rocher] - Grails integration improvements
+* github-profile:craigatk[Craig Atkinson] - Bug fix around unexpected pages
+* github-profile:kgeis[Ken Geis] - Doc improvements
+* github-profile:kellyrob99[Kelly Robinson] - Additional configuration parameters for SauceLabs
+* github-profile:tygerpatch[Todd Gerspacher] - Doc improvements, Cleaned up settings.gradle
+* github-profile:davidmc24[David M. Carr] - BrowserStack integration
+* github-profile:tomdcc[Tom Dunstan] - Cucumber integration and related documentation
+* github-profile:brian428[Brian Kotek] - Doc improvements
+* github-profile:david-w-millar[David W Millar] - Doc improvements
+* github-profile:alincode[Ai-Lin Liou] - Doc improvements
+* github-profile:menonvarun[Varun Menon] - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
+* github-profile:adjohnson916[Anders D. Johnson] - Doc improvements
+* github-profile:azusa[Hiroyuki Ohnaka] - Doc improvements
+* github-profile:bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
+* github-profile:vijaybolleypally[Vijay Bolleypally] - Various fixes
+* github-profile:pierre-hilt[Pierre Hilt] - `hasNot()` filtering
+* github-profile:PoohSunny[Yotaro Takahashi] - Doc improvements
+* github-profile:jochenberger[Jochen Berger] - Better error reporting when trying to set a nonexistent select option
 
 == History
 

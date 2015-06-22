@@ -61,6 +61,14 @@ asciidoctor {
 
             createInline(parent, "anchor", "#$target", attributes, options).render()
         }
+        inlinemacro(name: "github-profile") { parent, target, attributes ->
+            options = [
+                type: ":link",
+                target: "https://github.com/${target}"
+            ]
+            println attributes
+            createInline(parent, "anchor", attributes.text, attributes, options).render()
+        }
     }
 }
 
