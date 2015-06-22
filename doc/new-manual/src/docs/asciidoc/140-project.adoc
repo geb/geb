@@ -53,7 +53,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:menonvarun[Varun Menon] - Selenium By selector support and related documentation, Support navigating to page instances in addition to classes
 * github-profile:adjohnson916[Anders D. Johnson] - Doc improvements
 * github-profile:azusa[Hiroyuki Ohnaka] - Doc improvements
-* github-profile:bodiam[Erik Pragt] - Migration of the manual to AsciiDoc
+* github-profile:bodiam[Erik Pragt] - Initial migration of the manual to AsciiDoctor
 * github-profile:vijaybolleypally[Vijay Bolleypally] - Various fixes
 * github-profile:pierre-hilt[Pierre Hilt] - `hasNot()` filtering
 * github-profile:PoohSunny[Yotaro Takahashi] - Doc improvements
