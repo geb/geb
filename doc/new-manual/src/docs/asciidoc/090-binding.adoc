@@ -1,3 +1,4 @@
+[[binding]]
 = Scripts and binding
 
 Geb supports being used in scripting environments via both the `Browser.drive()` method, and by using the {binding-updater-link}[`geb.binding.BindingUpdater`] class that populates and updates a

@@ -34,7 +34,7 @@
 :junit: http://www.junit.org/[JUnit]
 :testng: http://testng.org/[TestNg]
 :cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
-:geb-cucumber: https://github.com/tomdcc/geb-cucumber
+:geb-cucumber: https://github.com/tomdcc/geb-cucumber[geb-cucumber]
 :javascriptexecutor: {selenium-api-link}/org/openqa/selenium/JavascriptExecutor.html
 :remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
 :remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
