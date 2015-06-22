@@ -2,6 +2,7 @@
 
 This section discusses how to deal with some of the challenges in testing and/or automating modern web applications.
 
+[[js-object]]
 == The "js" object
 
 The browser instance exposes a “link:api/geb/Browser.html#getJs()[`js`]” object that provides support for working with JavaScript over and above what WebDriver provides.

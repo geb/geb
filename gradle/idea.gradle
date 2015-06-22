@@ -18,7 +18,7 @@ idea {
     project {
         jdkName "1.7"
 
-        wildcards += ['good-conf.groovy']
+        wildcards += ['good-conf.groovy', 'gebScript*.groovy']
 
         ipr {
             withXml { provider ->

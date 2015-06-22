@@ -39,7 +39,7 @@
 :remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
 :remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
 :config-slurper-api: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
-:groovy-binding: http://groovy.codehaus.org/api/groovy/lang/Binding.html
+:groovy-binding-link: http://groovy.codehaus.org/api/groovy/lang/Binding.html
 :java-api-link: link:https://docs.oracle.com/javase/8/docs/api
 :http-url-connection-link: {java-api-link}/java/net/HttpURLConnection.html
 :configuration-api: link:api/geb/Configuration.html[Configuration]
@@ -47,7 +47,7 @@
 :page-api: link:api/geb/Page.html[Page]
 :module-api: link:api/geb/Module.html[Module]
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
-:bindingupdater-api: link:api/geb/binding/BindingUpdater.html
+:binding-updater-link: link:api/geb/binding/BindingUpdater.html
 :grails: http://grails.org[Grails]
 :waiting: javascript.html#waiting
 :waiting-content: pages.html#wait
@@ -57,7 +57,8 @@
 :switch-frame-and-page: pages.html#switching_pages_and_frames_at_once
 :groovy-truth-link: link:http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html
 :groovy-truth: {groovy-truth-link}[Groovy Truth]
-:drive-method-api: link:api/geb/Browser.html#drive(groovy.lang.Closure)[drive()]
+:drive-method-link: link:api/geb/Browser.html#drive(groovy.lang.Closure)
+:drive-method-api: {drive-method-link}[drive()]
 :page-method-taking-class-api: link:api/geb/Browser.html#page(Class<T>)[<T extends Page> T page(Class<T> pageType)]
 :page-method-taking-instance-api: link:api/geb/Browser.html#page(T)[<T extends Page> T page(T pageInstance)]
 :page-method-taking-classes-array-api: link:api/geb/Browser.html#page(page(Class<?%20extends%20Page>))[Page page(Class<? extends Page>[\] potentialPageTypes)]

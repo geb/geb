@@ -31,6 +31,7 @@ asciidoctor {
         doctype                : 'book',
         encoding               : 'utf-8',
         'test-dir'             : '../../test/groovy',
+        'test-resources-dir'   : '../../test/resources',
         'real-browser-test-dir': '../../realBrowserTest/groovy',
         'core-source-dir'      : '../../../../../module/geb-core/src/main/groovy',
         numbered               : true,
