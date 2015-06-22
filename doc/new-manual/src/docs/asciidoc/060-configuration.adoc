@@ -310,6 +310,7 @@ Currently this flag is only supported by the TestNG adapter. Support for JUnit, 
 
 It is possible to specify a listener that will be notified when reports are taken. See the section on <<listening-to-reporting, listening to reporting>> for details.
 
+[[auto-clearing-cookies-configuration]]
 === Auto clearing cookies
 
 Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an <<implicit-driver-lifecycle, implicit driver>>.

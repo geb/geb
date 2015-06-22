@@ -3,7 +3,7 @@
 
 Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time.
 Reporters are implementations of the `{reporter-api}` interface.
-Geb ships with two implementations: `{page-source-reporter-api}` and `{screenshot-and-page-reporter-api}`.
+Geb ships with two implementations: `{page-source-reporter-api}` and `{screenshot-reporter-api}`.
 There are three bits of configuration that pertain to reporting: the <<reporter-configuration, reporter implementation>>, the <<reports-directory-configuration, reports directory>> and whether to
 <<report-test-failures-configuration, only report test failures>> or not.
 
@@ -33,6 +33,7 @@ Assuming that we configured a `reportsDir` of “`reports/geb`”, after running
 To avoid issues with reserved characters in filenames, Geb replaces any character in the report name that is not an alphanumeric, a space or a hyphen with an underscore.
 ====
 
+[[report-group]]
 == The report group
 
 The configuration mechanism allows you to specify the base `reportsDir` which is where reports are written to by default.
