@@ -52,6 +52,16 @@ asciidoctor {
     sources {
         include 'index.adoc'
     }
+    extensions {
+        inlinemacro(name: "issue") { parent, target, attributes ->
+            options = [
+                type: ":link",
+                target: "https://github.com/geb/issues/issues/${target}"
+            ]
+
+            createInline(parent, "anchor", "#$target", attributes, options).render()
+        }
+    }
 }
 
 task openManual() {
