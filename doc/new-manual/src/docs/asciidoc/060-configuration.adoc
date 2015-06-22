@@ -245,6 +245,7 @@ include::{test-dir}/configuration/UnexpectedPagesConfigSpec.groovy[tag=config,in
 
 See <<unexpected-pages,this section>> for more information on unexpected pages.
 
+[[reporter-configuration]]
 === Reporter
 
 The _reporter_ is the object responsible for snapshotting the state of the browser (see the <<reporting>> chapter for details).
@@ -258,6 +259,7 @@ This is a sensible default, but should you wish to use a custom reporter you can
 include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=config,indent=0]
 ----
 
+[[reports-directory-configuration]]
 === Reports directory
 
 The reports dir configuration is used by to control where the browser should write reports (see the <<reporting>> chapter for details).
@@ -287,6 +289,7 @@ include::{test-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_file,ind
 By default this value is *not set*. The browser's link:api/geb/Browser.html#report(java.lang.String)[`report()`] method requires a value for this config item so if you are using the reporting features
 you *must* set a reports dir.
 
+[[report-test-failures-configuration]]
 === Report test failures only
 
 By default Geb will take a report at the end of each test method, regardless of whether it ended successfully or not.

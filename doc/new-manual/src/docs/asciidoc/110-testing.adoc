@@ -49,6 +49,7 @@ class FunctionalSpec extends GebSpec {
 
 The browser instance is created by the testing integration. The link:configuration.html[configuration mechanism] allows you to control aspects such as the driver implementation and base URL.
 
+[[testing-reporting]]
 === Reporting
 
 The Spock, JUnit and TestNG integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports at the end of test methods with the label “end”. They also set the link:reporting.html#the_report_group[report group] to the name of the test class (substituting “.” for “/”).

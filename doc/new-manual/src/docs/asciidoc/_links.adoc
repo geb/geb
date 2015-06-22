@@ -87,3 +87,11 @@
 :wait-for-api: link:api/geb/waiting/Wait.html#waitFor(Closure%3CT%3E)[waitFor()]
 :alert-and-confirm-support-api: link:api/geb/js/AlertAndConfirmSupport.html[AlertAndConfirmSupport]
 :download-support-api: link:api/geb/download/DownloadSupport.html[DownloadSupport]
+:reporter-api: link:api/geb/report/Reporter.html[Reporter]
+:page-source-reporter-api: link:api/geb/report/PageSourceReporter.html[PageSourceReporter]
+:screenshot-and-page-reporter-api: link:api/geb/report/ScreenshotReporter.html[ScreenshotAndPageSourceReporter]
+:composite-reporter-link: link:api/geb/report/CompositeReporter.html
+:composite-reporter-link: ink:api/geb/Browser.html#report(java.lang.String)
+:browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
+:reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
+:clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]
