@@ -310,7 +310,6 @@ p a > code:hover { color: rgba(0, 0, 0, 0.9); }
 #header .details br { display: none; }
 #header .details br + span:before { content: "\00a0\2013\00a0"; }
 #header .details br + span.author:before { content: "\00a0\22c5\00a0"; color: rgba(0, 0, 0, 0.85); }
-#header .details br + span#revremark:before { content: "\00a0|\00a0"; }
 #header #revnumber { text-transform: capitalize; }
 #header #revnumber:after { content: "\00a0"; }
 
