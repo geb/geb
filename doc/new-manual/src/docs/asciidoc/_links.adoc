@@ -95,3 +95,4 @@
 :browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
 :clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]
+:sauce-connect: https://saucelabs.com/docs/connect[SauceConnect]
