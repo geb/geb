@@ -48,15 +48,23 @@ asciidoctor {
         'selenium-version'     : seleniumVersion,
         'groovy-version'       : groovyVersion,
         'home-page'            : 'www.gebish.org',
-        'docinfo1'             : ''
+        docinfo1               : true,
+        linkcss                : true,
+        stylesheet             : 'css/style.css'
     ]
+
     sources {
         include 'index.adoc'
     }
+
+    resources {
+        from file('src/resources')
+    }
+
     extensions {
         inlinemacro(name: "issue") { parent, target, attributes ->
             options = [
-                type: ":link",
+                type  : ":link",
                 target: "https://github.com/geb/issues/issues/${target}"
             ]
 
@@ -64,7 +72,7 @@ asciidoctor {
         }
         inlinemacro(name: "github-profile") { parent, target, attributes ->
             options = [
-                type: ":link",
+                type  : ":link",
                 target: "https://github.com/${target}"
             ]
             createInline(parent, "anchor", attributes.text, attributes, options).render()
