@@ -111,6 +111,7 @@ This page lists the high level changes between versions of Geb.
 ==== Project related changes
 
 * User mailing list has moved to https://groups.google.com/d/forum/geb-user[Google Groups].
+* The Book of Geb has been migrated to Asciidoctor and the examples have been made executable. [issue:350[]]
 
 === 0.10.0
 
