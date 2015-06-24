@@ -18,7 +18,6 @@ package pages
 import fixture.Browser
 import fixture.DriveMethodSupportingSpecWithServer
 import geb.Page
-import geb.test.GebSpecWithCallbackServer
 
 class LifecycleHooksSpec extends DriveMethodSupportingSpecWithServer {
 

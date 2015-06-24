@@ -10,7 +10,7 @@ include "module:geb-core",
     "integration:geb-grails",
     "integration:geb-gradle",
     "doc:manual",
-    "doc:new-manual",
+    "doc:manual-snippets",
     "doc:site"
 
 rootProject.name = 'geb'

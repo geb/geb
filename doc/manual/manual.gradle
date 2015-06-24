@@ -1,11 +1,14 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
+
     dependencies {
-        classpath "org.gebish:markdown2book:1.0"
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.2'
     }
 }
+
+apply plugin: 'org.asciidoctor.convert'
 
 archivesBaseName = "geb-manual"
 
@@ -16,42 +19,69 @@ modifyPom { pom ->
     }
 }
 
-task tokeniseManual(type: Copy) {
-    from "src"
-    into "$buildDir/manual-tokenised"
-
-    ext.substitutionProperties = [
-        "geb-version"       : project.version,
-        "geb-group"         : project.group,
-        "geb-group-dir"     : project.group.replace(".", "/"),
-        "spock-version"     : "1.0",
-        "spock-core-version": "1.0-groovy-2.3",
-        "selenium-version"  : seleniumVersion,
-        "groovy-version"    : groovyVersion,
-        "created-at"        : new java.text.SimpleDateFormat("MMMM, yyyy").format(new Date()),
-        "home-page"         : "www.gebish.org",
-        "manual-url"        : "https://oss.sonatype.org/content/repositories/${isSnapshot ? 'snapshots' : 'releases'}/org/gebish/geb-manual/$version/geb-manual-${version}.zip".toString()
-    ]
-
-    inputs.properties(substitutionProperties)
-
-    def tokenisableExtensions = ["md", "html"]
-    inputs.property("tokenisableExtensions", tokenisableExtensions)
-
-    eachFile { file ->
-        if (tokenisableExtensions.any { file.name.endsWith(it) }) {
-            file.filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: substitutionProperties)
-        }
-    }
-}
-
 configurations {
-    groovydoc
+    create("groovydoc")
     archives.extendsFrom delegate.default
 }
 
 dependencies {
     groovydoc groovyDependency
+}
+
+asciidoctor {
+    attributes = [
+        toc                    : 'left',
+        doctype                : 'book',
+        encoding               : 'utf-8',
+        'test-dir'             : '../../../../manual-snippets/src/test/groovy',
+        'test-resources-dir'   : '../../../../manual-snippets/src/test/resources',
+        'real-browser-test-dir': '../../../../manual-snippets/src/realBrowserTest/groovy',
+        'core-source-dir'      : '../../../../../module/geb-core/src/main/groovy',
+        numbered               : true,
+        sectlinks              : true,
+        idprefix               : '',
+        idseparator            : '-',
+        icons                  : 'font',
+        'source-highlighter'   : 'prettify',
+        'geb-version'          : project.version,
+        'geb-group'            : project.group,
+        'geb-group-dir'        : project.group.replace('.', '/'),
+        'spock-version'        : '0.7',
+        'spock-core-version'   : '0.7-groovy-2.0',
+        'selenium-version'     : seleniumVersion,
+        'groovy-version'       : groovyVersion,
+        'home-page'            : 'www.gebish.org',
+        docinfo1               : true,
+        linkcss                : true,
+        stylesheet             : 'css/style.css',
+        imagesdir              : 'images'
+    ]
+
+    sources {
+        include 'index.adoc'
+    }
+
+    resources {
+        from file('src/resources')
+    }
+
+    extensions {
+        inlinemacro(name: "issue") { parent, target, attributes ->
+            options = [
+                type  : ":link",
+                target: "https://github.com/geb/issues/issues/${target}"
+            ]
+
+            createInline(parent, "anchor", "#$target", attributes, options).render()
+        }
+        inlinemacro(name: "github-profile") { parent, target, attributes ->
+            options = [
+                type  : ":link",
+                target: "https://github.com/${target}"
+            ]
+            createInline(parent, "anchor", attributes.text, attributes, options).render()
+        }
+    }
 }
 
 task apiDoc(type: Groovydoc) {
@@ -65,36 +95,21 @@ task apiDoc(type: Groovydoc) {
     }
 }
 
-task compileManual {
-    dependsOn tokeniseManual
-
-    ext.source = tokeniseManual.destinationDir
-    inputs.dir(source)
-
-    ext.destination = file("$buildDir/manual-compiled")
-    outputs.dir(destination)
-
-    ext.encoding = "UTF-8"
-    inputs.property("encoding", encoding)
-
-    doLast {
-        new markdown2book.Generator(source, destination, encoding).generate()
-    }
-}
-
 task packageManual(type: Sync) {
     into "$buildDir/manual"
-    from compileManual
+    from asciidoctor
 
     into("api") {
         from apiDoc
     }
-}
 
-task openManual() {
-    doLast {
-        new java.awt.Desktop().browse(file("$packageManual.destinationDir/index.html").toURI())
+    eachFile { file ->
+        if (file.path.startsWith("html5")) {
+            file.relativePath = new RelativePath(!file.directory, file.relativePath.segments[1..-1] as String[])
+        }
     }
+
+    includeEmptyDirs = false
 }
 
 task manualZip(type: Zip) {
@@ -106,3 +121,18 @@ artifacts {
 }
 
 task build(dependsOn: manualZip)
+
+task openManual() {
+    dependsOn tasks.asciidoctor
+    doLast {
+        new java.awt.Desktop().browse(fileTree(tasks.asciidoctor.outputDir).find { it.name == 'index.html' }.toURI())
+    }
+}
+
+asciidoctor {
+    inputs.files(
+        { project(":doc:manual-snippets").sourceSets.test.allSource },
+        { project(":doc:manual-snippets").sourceSets.realBrowserTest.allSource },
+        { project(":module:geb-core").sourceSets.main.allSource }
+    )
+}

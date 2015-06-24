@@ -21,7 +21,8 @@ class ManualPage extends Page {
 
     static at = { title.startsWith('The Book Of Geb') }
 
-    static content = {
-        version { $('h2').text() - 'Version: ' }
+    String getVersion() {
+        def revnumberSpan = $('#revnumber')
+        revnumberSpan ? revnumberSpan.text() - 'version ' : $('h2').text() - 'Version: '
     }
 }

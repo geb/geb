@@ -376,7 +376,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
 
         then:
         InvalidPageContent e = thrown()
-        e.message == "Content template 'withInvalidParams' defined by ${PageWithContentUsingUnrecognizedParams.name} uses unknown content parameters: foo, bar"
+        e.message == "Content template 'withInvalidParams' defined by ${PageWithContentUsingUnrecognizedParams.name} uses unknown content parameters: bar, foo"
     }
 }
 

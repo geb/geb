@@ -1,0 +1,32 @@
+configurations {
+    realBrowserTestCompile.extendsFrom testCompile
+    realBrowserTestRuntime.extendsFrom testRuntime
+}
+
+dependencies {
+    testCompile project(':internal:test-support')
+    testCompile project(':module:geb-spock')
+    testCompile 'commons-fileupload:commons-fileupload:1.3.1'
+}
+
+sourceSets {
+    realBrowserTest
+}
+
+task realBrowserTest(type: Test) {
+    testClassesDir = sourceSets.realBrowserTest.output.classesDir
+    classpath = sourceSets.realBrowserTest.runtimeClasspath
+    testSrcDirs = sourceSets.realBrowserTest.allJava.srcDirs as List
+
+    mustRunAfter test
+}
+
+check.dependsOn realBrowserTest
+
+test {
+    maxParallelForks(Math.max(2, Runtime.runtime.availableProcessors().intdiv(2)))
+}
+
+idea.module {
+    testSourceDirs += sourceSets.realBrowserTest.allSource.srcDirs
+}

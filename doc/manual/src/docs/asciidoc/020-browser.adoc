@@ -157,7 +157,7 @@ include::{test-dir}/browser/GoSpec.groovy[tag=examples,indent=0]
 ----
 <1> Go to the base URL.
 <2> Go to a URL relative to base URL.
-<3> Go to a URL with request params i.e http://localhost/signup?param1=value1&param2=value2
+<3> Go to a URL with request params i.e `+http://localhost/signup?param1=value1&param2=value2+`
 
 [[the-page]]
 == The `Page`

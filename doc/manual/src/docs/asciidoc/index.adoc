@@ -1,4 +1,4 @@
-= The Book of Geb
+= The Book Of Geb
 :author: Luke Daley, Marcin Erdmann, Erik Pragt
 :revnumber: {geb-version}
 :revremark: Very groovy browser automation… web testing, screen scraping and more

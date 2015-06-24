@@ -84,7 +84,7 @@ class PageContentTemplateParams {
         wait = paramsToProcess.remove("wait")
         toWait = paramsToProcess.remove("toWait")
 
-        def unrecognizedParams = paramsToProcess.keySet()
+        def unrecognizedParams = paramsToProcess.keySet() as TreeSet
         if (unrecognizedParams) {
             throw new InvalidPageContent("${owner.toString().capitalize()} uses unknown content parameters: ${unrecognizedParams.join(", ")}")
         }
