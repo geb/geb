@@ -47,7 +47,8 @@ asciidoctor {
         'spock-core-version'   : '0.7-groovy-2.0',
         'selenium-version'     : seleniumVersion,
         'groovy-version'       : groovyVersion,
-        'home-page'            : 'www.gebish.org'
+        'home-page'            : 'www.gebish.org',
+        'docinfo1'             : ''
     ]
     sources {
         include 'index.adoc'
