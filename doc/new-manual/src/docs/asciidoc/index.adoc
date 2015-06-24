@@ -4,7 +4,7 @@
 :revremark: Very groovy browser automation… web testing, screen scraping and more
 :toclevels: 10
 
-image::geb-logo.png[Griffon,align="center"]
+image::logo.png[Geb,align="center"]
 
 include::_links.adoc[]
 
