@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:500,700);
+
 /*! normalize.css v2.1.2 | MIT License | git.io/normalize */
 /* ========================================================================== HTML5 display definitions ========================================================================== */
 /** Correct `block` display not defined in IE 8/9. */
@@ -51,7 +53,7 @@ hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
 mark { background: #ff0; color: #000; }
 
 /** Correct font family set oddly in Safari 5 and Chrome. */
-code, kbd, pre, samp { font-family: monospace, serif; font-size: 1em; }
+code, kbd, pre, samp { font-family: "Source Code Pro", monospace, serif; font-size: 1em; }
 
 /** Improve readability of pre-formatted text in all browsers. */
 pre { white-space: pre-wrap; }
@@ -206,7 +208,7 @@ strong, b { font-weight: bold; line-height: inherit; }
 
 small { font-size: 60%; line-height: inherit; }
 
-code { font-family: "Droid Sans Mono", "DejaVu Sans Mono", monospace; font-weight: normal; color: rgba(0, 0, 0, 0.9); }
+code { font-family: "Source Code Pro", "Droid Sans Mono", "DejaVu Sans Mono", monospace; font-weight: normal; color: rgba(0, 0, 0, 0.9); }
 
 /* Lists */
 ul, ol, dl { font-size: 1em; line-height: 1.6; margin-bottom: 1.25em; list-style-position: outside; font-family: inherit; }
@@ -271,7 +273,7 @@ h1 strong, h2 strong, h3 strong, #toctitle strong, .sidebarblock > .content > .t
 
 *:not(pre) > code { font-size: 0.9375em; font-style: normal !important; letter-spacing: 0; padding: 0.1em 0.5ex; word-spacing: -0.15em; background-color: #f7f7f8; -webkit-border-radius: 4px; border-radius: 4px; line-height: 1.45; text-rendering: optimizeSpeed; }
 
-pre, pre > code { line-height: 1.45; color: rgba(0, 0, 0, 0.9); font-family: "Droid Sans Mono", "DejaVu Sans Mono", "Monospace", monospace; font-weight: normal; text-rendering: optimizeSpeed; }
+pre, pre > code { line-height: 1.45; color: rgba(0, 0, 0, 0.9); font-family: "Source Code Pro", "Droid Sans Mono", "DejaVu Sans Mono", "Monospace", monospace; font-weight: normal; text-rendering: optimizeSpeed; }
 
 .keyseq { color: rgba(51, 51, 51, 0.8); }
 
