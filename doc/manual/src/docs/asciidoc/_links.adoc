@@ -1,11 +1,7 @@
 :linkattrs:
 
-:examples: link:intro.html#examples
-:htmlunit: link:http://htmlunit.sourceforge.net/[HtmlUnit]
 :groovy: link:http://groovy-lang.org/[Groovy]
-:hue: link:http://code.google.com/p/hue/[hue]
 :jquery: link:http://jquery.com/[jQuery]
-:webclient: link:http://htmlunit.sourceforge.net/apidocs/com/gargoylesoftware/htmlunit/WebClient.html
 :webdriver: link:http://code.google.com/p/selenium/[WebDriver]
 :selenium-api-link: link:http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}
 :webdriver-api: {selenium-api-link}/org/openqa/selenium/WebDriver.html[WebDriver]
@@ -19,23 +15,12 @@
 :webdriver-send-keys-api: {selenium-api-link}/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence%2E%2E%2E)[sendKeys()]
 :webdriver-keys-api: {selenium-api-link}/org/openqa/selenium/Keys.html[Keys]
 :no-such-frame-exception-api: {selenium-api-link}/org/openqa/selenium/NoSuchFrameException.html[NoSuchFrameException]
-:browser: browser.html
-:navigator: <<navigator>>
-:clicking: navigator.html#clicking
-:page-navigation: pages.html#advanced_page_navigation
-:page-at: pages.html#at_verification
-:required: pages.html#required
-:changing-pages: browser.html#changing_the_page
-:content-dsl: pages.html#the_content_dsl
-:defaultdriver: browser.html#the_default_driver
-:defaultdriver-lifecycle: browser.html#lifecycle
 :spock-link: link:http://spockframework.org/
 :spock: {spock-link}[Spock]
 :junit: http://www.junit.org/[JUnit]
 :testng: http://testng.org/[TestNg]
 :cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
 :geb-cucumber: https://github.com/tomdcc/geb-cucumber[geb-cucumber]
-:javascriptexecutor: {selenium-api-link}/org/openqa/selenium/JavascriptExecutor.html
 :remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
 :remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
 :config-slurper-api: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
@@ -49,12 +34,6 @@
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :binding-updater-link: link:api/geb/binding/BindingUpdater.html
 :grails: http://grails.org[Grails]
-:waiting: javascript.html#waiting
-:waiting-content: pages.html#wait
-:assertion-error: http://docs.oracle.com/javase/6/docs/api/java/lang/AssertionError.html
-:implicit-assertions: implicit-assertions.html
-:page-option: pages.html#page
-:switch-frame-and-page: pages.html#switching_pages_and_frames_at_once
 :groovy-truth-link: link:http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html
 :groovy-truth: {groovy-truth-link}[Groovy Truth]
 :drive-method-link: link:api/geb/Browser.html#drive(groovy.lang.Closure)
