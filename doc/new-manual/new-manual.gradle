@@ -91,3 +91,7 @@ idea.module {
 }
 
 check.dependsOn realBrowserTest
+
+test {
+    maxParallelForks(Math.max(2, Runtime.runtime.availableProcessors().intdiv(2)))
+}
