@@ -1,17 +1,21 @@
 [[build-integrations]]
 = Build system &amp; framework integrations
 
-This kind of integration for Geb is typically focused on managing the base URL and reports dir, as build systems tend to be able to provide this configuration (via the link:configuration.html#build_adapter[build adapter] mechanism).
+This kind of integration for Geb is typically focused on managing the base URL and reports dir, as build systems tend to be able to provide this configuration (via the
+<<build-adapter-config, build adapter>> mechanism).
 
 == Grails
 
-{grails} is a popular web app framework. There is a http://grails.org/plugin/geb[grails-geb plugin] available that allows you to use Geb for your Grails functional tests. This plugin simply manages the `baseUrl` and `reportsDir` configuration items.
+{grails} is a popular web app framework.
+There is a link:http://grails.org/plugin/geb[grails-geb plugin] available that allows you to use Geb for your Grails functional tests.
+This plugin simply manages the `baseUrl` and `reportsDir` configuration items.
 
-You still need to include the appropriate Geb module for testing (i.e. `geb-junit4` or `geb-spock`) yourself. You may also need to depend on other plugins like the http://grails.org/plugin/spock[`grails-spock`] plugin to enable those kinds of tests.
+You still need to include the appropriate Geb module for testing (i.e. `geb-junit4` or `geb-spock`) yourself.
+You may also need to depend on other plugins like the http://grails.org/plugin/spock[`grails-spock`] plugin to enable those kinds of tests.
 
 For example, if you plan to use Spock with Geb you would need to add the following to the `BuildConfig.groovy`…
 
-[subs="attributes"]
+[source,groovy,subs="attributes"]
 ----
 dependencies {
     test "{geb-group}:geb-spock:{geb-version}"
@@ -26,13 +30,7 @@ Where `{geb-version}` and `{spock-version}` are the versions of Geb and Spock yo
 
 As Grails provides JUnit support out of the box, you only need to pull in the `geb-junit4` jar to use Geb with JUnit.
 
-____
-
-Grails 1.3 and later use JUnit 4. Earlier versions of Grails than this use Groovy 1.6 which Geb no longer supports.
-
-____
-
-[subs="attributes"]
+[source,groovy,subs="attributes"]
 ----
 dependencies {
     test "{geb-group}:geb-junit4:{geb-version}"
@@ -46,28 +44,32 @@ You only need the appropriate Geb test integration JAR, as it will depend on `ge
 
 You will also of course need a driver and the `selenium-support` dependency, which you can also specify in `BuildConfig.groovy`.
 
+[source,groovy,subs="attributes"]
 ----
 dependencies {
-    test "org.seleniumhq.selenium:selenium-support:«webdriver version»"
-    test "org.seleniumhq.selenium:selenium-firefox-driver:«webdriver version»"
+    test "org.seleniumhq.selenium:selenium-support:{selenium-version}"
+    test "org.seleniumhq.selenium:selenium-firefox-driver:{selenium-version}"
 }
 ----
 
 HTMLUnit depends on some XML processing libraries that cause issues with Grails. You can avoid this by excluding certain dependencies of the HTMLUnit driver…
 
 ----
-test("org.seleniumhq.selenium:selenium-htmlunit-driver:«webdriver version»") {
+test("org.seleniumhq.selenium:selenium-htmlunit-driver:{selenium-version}") {
     exclude 'xml-apis'
 }
 ----
 
-Recall that Geb looks for its configuration file as `GebConfig.groovy` on the classpath. A good location for this file is in a Grails project is the `test/functional` directory is on the classpath at test time. You *do not* need to set the `baseUrl` and `reportsDir` config entries in a Grails project as the plugin takes care of those for you. The `baseUrl` is set to the root of the Grails application, and the `reportsDir` is set to `geb` inside Grails' test reports dir (which by default is `target/test-reports`).
+Recall that Geb looks for its configuration file as `GebConfig.groovy` on the classpath.
+A good location for this file is in a Grails project is the `test/functional` directory is on the classpath at test time.
+You *do not* need to set the `baseUrl` and `reportsDir` config entries in a Grails project as the plugin takes care of those for you.
+The `baseUrl` is set to the root of the Grails application, and the `reportsDir` is set to `geb` inside Grails' test reports dir (which by default is `target/test-reports`).
 
 There is nothing special about writing Geb tests with Grails. You subclass the same classes as usual (e.g. `geb.spock.GebReportingSpec` for Spock tests).
 
 There is an example project available that uses `geb-junit4` and `geb-spock` to test some Grails scaffold pages.
 
-* https://github.com/geb/geb-example-grails[http://github.com/geb/geb-example-grails]
+* link:https://github.com/geb/geb-example-grails[geb-example-grails]
 
 == Gradle
 
@@ -75,16 +77,12 @@ Using Geb with Gradle simply involves pulling in the appropriate dependencies, a
 
 Below is a valid Gradle `build.gradle` file for working with Geb for testing.
 
-[subs="attributes"]
+[source,groovy,subs="attributes"]
 ----
 apply plugin: "groovy"
 
 repositories {
     mavenCentral()
-}
-
-configurations {
-    testCompile.transitive = true
 }
 
 dependencies {
@@ -113,7 +111,7 @@ test {
 
 There is a Gradle example project available.
 
-* https://github.com/geb/geb-example-gradle[http://github.com/geb/geb-example-gradle]
+* https://github.com/geb/geb-example-gradle[geb-example-gradle]
 
 == Maven
 
@@ -121,7 +119,7 @@ Using Geb with Maven simply involves pulling in the appropriate dependencies, an
 
 Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
 
-[subs="attributes"]
+[source,xml,subs="+attributes"]
 ----
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -136,12 +134,12 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.7.10</version>
+      <version>{groovy-version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.1</version>
+      <version>4.8.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -207,4 +205,4 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
 
 There is a Maven example project available.
 
-* https://github.com/geb/geb-example-maven[http://github.com/geb/geb-example-maven]
+* https://github.com/geb/geb-example-maven[geb-example-maven]

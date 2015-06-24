@@ -50,6 +50,7 @@ Some config options can be specified by system properties.
 In general, config options specified by system properties will _override_ values set in the config script.
 See the config options below for which options are controllable via system properties.
 
+[[build-adapter-config]]
 === Build adapter
 
 The build adapter mechanism exists to allow Geb to integrate with development/build environments that logically dictate config options.

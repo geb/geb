@@ -94,7 +94,7 @@ The following table illustrates the specific JARs and class names for various te
 
 The following projects can be used as starting references:
 
-* https://github.com/geb/geb-example-gradle
+* link:https://github.com/geb/geb-example-gradle[geb-example-gradle]
 
 [[cucumber-jvm]]
 == Cucumber (Cucumber-JVM)
@@ -166,4 +166,4 @@ geb-cucumber also does Geb binding automatically, so if it is picked up you don'
 
 The following project has examples of both writing your own steps and using geb-cucumber:
 
-* https://github.com/geb/geb-example-cucumber-jvm
+* link:https://github.com/geb/geb-example-cucumber-jvm[geb-example-cucumber-jvm]
