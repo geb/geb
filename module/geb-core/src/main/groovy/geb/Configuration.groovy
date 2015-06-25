@@ -73,16 +73,17 @@ class Configuration {
         def preset = rawConfig.waiting.presets[name]
         def timeout = readValue(preset, 'timeout', getDefaultWaitTimeout())
         def retryInterval = readValue(preset, 'retryInterval', getDefaultWaitRetryInterval())
+        def printCause = readValue(preset, 'printCause', getDefaultWaitPrintCause())
 
-        new Wait(timeout, retryInterval)
+        new Wait(timeout, retryInterval, printCause)
     }
 
     Wait getDefaultWait() {
-        new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval())
+        new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval(), getDefaultWaitPrintCause())
     }
 
     Wait getWait(Double timeout) {
-        new Wait(timeout, getDefaultWaitRetryInterval())
+        new Wait(timeout, getDefaultWaitRetryInterval(), getDefaultWaitPrintCause())
     }
 
     Wait getWaitForParam(waitingParam) {
@@ -93,17 +94,22 @@ class Configuration {
         } else if (waitingParam instanceof Number && waitingParam > 0) {
             getWait(waitingParam.doubleValue())
         } else if (waitingParam instanceof Collection) {
-            if (waitingParam.size() == 2) {
+            if (waitingParam.size() == 2 || waitingParam.size() == 3) {
                 def timeout = waitingParam[0]
                 def retryInterval = waitingParam[1]
+                def printCause = getDefaultWaitPrintCause()
 
-                if (timeout instanceof Number && retryInterval instanceof Number) {
-                    new Wait(timeout.doubleValue(), retryInterval.doubleValue())
+                if (waitingParam.size() == 3) {
+                    printCause = waitingParam[2]
+                }
+
+                if (timeout instanceof Number && retryInterval instanceof Number && printCause instanceof Boolean) {
+                    new Wait(timeout.doubleValue(), retryInterval.doubleValue(), printCause)
                 } else {
-                    throw new IllegalArgumentException("'wait' param has illegal value '$waitingParam' (collection elements must be numbers)")
+                    throw new IllegalArgumentException("'wait' param has illegal value '$waitingParam' (first two collection elements must be numbers with an optional boolean)")
                 }
             } else {
-                throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection must have 2 elements)")
+                throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection must have 2 or 3 elements)")
             }
         } else {
             null
@@ -126,6 +132,15 @@ class Configuration {
      */
     Double getDefaultWaitTimeout() {
         readValue(rawConfig.waiting, 'timeout', Wait.DEFAULT_TIMEOUT)
+    }
+
+    /**
+     * The default {@code printCause} value to use for waiting
+     * <p>
+     * Either the value at config path {@code waiting.printCause} or {@link geb.waiting.Wait#DEFAULT_PRINT_CAUSE false}.
+     */
+    boolean getDefaultWaitPrintCause() {
+        readValue(rawConfig.waiting, 'printCause', false)
     }
 
     /**

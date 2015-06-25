@@ -49,7 +49,7 @@ class WaitSpec extends Specification {
         exception.cause.message.contains("'not empty'.empty")
     }
 
-    def "waitFor block exception message contains cause"() {
+    def "waitFor block default exception message does not contain cause"() {
         given:
         def wait = new Wait(0.5)
 
@@ -58,7 +58,18 @@ class WaitSpec extends Specification {
 
         then:
         WaitTimeoutException exception = thrown()
-        exception.message.contains("'not empty'.empty")
+        !exception.message.contains("'not empty'.empty")
     }
 
+    def "waitFor block exception message contains cause when enabled"() {
+        given:
+        def wait = new Wait(0.5, Wait.DEFAULT_RETRY_INTERVAL, true)
+
+        when:
+        wait.waitFor { 'not empty'.empty }
+
+        then:
+        WaitTimeoutException exception = thrown()
+        exception.message.contains("'not empty'.empty")
+    }
 }
