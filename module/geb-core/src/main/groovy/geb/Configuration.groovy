@@ -94,7 +94,7 @@ class Configuration {
         } else if (waitingParam instanceof Number && waitingParam > 0) {
             getWait(waitingParam.doubleValue())
         } else if (waitingParam instanceof Collection) {
-            if (waitingParam.size() == 2 || waitingParam.size() == 3) {
+            if (waitingParam.size() > 1 && waitingParam.size() < 4) {
                 def timeout = waitingParam[0]
                 def retryInterval = waitingParam[1]
                 def printCause = getDefaultWaitPrintCause()
