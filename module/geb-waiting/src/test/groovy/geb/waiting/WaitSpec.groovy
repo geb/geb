@@ -49,4 +49,16 @@ class WaitSpec extends Specification {
         exception.cause.message.contains("'not empty'.empty")
     }
 
+    def "waitFor block exception message contains cause"() {
+        given:
+        def wait = new Wait(0.5)
+
+        when:
+        wait.waitFor { 'not empty'.empty }
+
+        then:
+        WaitTimeoutException exception = thrown()
+        exception.message.contains("'not empty'.empty")
+    }
+
 }

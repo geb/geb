@@ -52,7 +52,7 @@ public class WaitTimeoutException extends GebException {
             message.append(String.format("(%s)", wait.getCustomMessage()));
         }
         if (cause != null) {
-            message.append(" (failed with exception)");
+            message.append("Failed with exception:" + cause);
         }
         return message.toString();
     }
