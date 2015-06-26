@@ -46,14 +46,14 @@ allprojects { project ->
             ":module:geb-core", ":internal:test-support",
             ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
             ":module:geb-testng", ":module:geb-implicit-assertions",
-            ":module:geb-ast", ":module:geb-waiting", ":integration:geb-gradle", ":doc:site",
-            ":doc:manual-snippets"
+            ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
+            ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets"
         ]
 
         publishedModules = [
-            ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
-            ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
-            ":module:geb-testng", ":doc:manual", ":integration:geb-gradle", ":doc:new-manual"
+            ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
+            ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-testng",
+            ":doc:manual", ":integration:geb-gradle"
         ]
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }

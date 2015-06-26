@@ -1,7 +1,7 @@
 subprojects {
     dependencies {
         testCompile project(":internal:test-support")
-        if (!["geb-core", "geb-ast", "geb-implicit-assertions", "geb-waiting"].contains(project.name)) {
+        if (!["geb-core", "geb-ast", "geb-implicit-assertions", "geb-waiting", "geb-exceptions"].contains(project.name)) {
             compile project(':module:geb-core')
         }
     }

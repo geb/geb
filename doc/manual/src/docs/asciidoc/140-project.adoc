@@ -85,6 +85,7 @@ This page lists the high level changes between versions of Geb.
 #### Improvements
 
 * Using unrecognized content template parameters result in an `InvalidPageContent` exception to make catching typos in them easier. [issue:377[]]
+* Improve error reporting when no at checkers pass if using multiple candidates for page switching. [issue:346[]]
 
 ==== Fixes
 

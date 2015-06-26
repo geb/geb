@@ -993,12 +993,18 @@ class Browser {
     }
 
     private Page verifyPages(List<Page> pages) {
-        def match = pages.find { it.verifyAtSafely() }
-
+        Map pageVerificationResults = [:]
+        def match = pages.find {
+            AtVerificationResult atVerificationResult = it.atVerificationResult
+            if (!atVerificationResult) {
+                pageVerificationResults.put(it, atVerificationResult)
+            }
+            atVerificationResult
+        }
         if (match) {
             makeCurrentPage(match)
         } else {
-            throw new UnexpectedPageException(pages)
+            throw new UnexpectedPageException(pageVerificationResults)
         }
         match
     }

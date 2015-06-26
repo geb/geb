@@ -18,10 +18,8 @@ import geb.content.SimplePageContent
 import geb.error.*
 import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
-import spock.lang.Stepwise
 import spock.lang.Unroll
 
-@Stepwise
 class PageOrientedSpec extends GebSpecWithCallbackServer {
 
     def setupSpec() {
@@ -378,6 +376,24 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         InvalidPageContent e = thrown()
         e.message == "Content template 'withInvalidParams' defined by ${PageWithContentUsingUnrecognizedParams.name} uses unknown content parameters: bar, foo"
     }
+
+    def "ensure that an exception message with all page wise error details is thrown when no match is found in given list of pages"() {
+        when:
+        to PageOrientedSpecPageA
+        page(PageWithAtCheckerReturningFalse, PageOrientedSpecPageB, PageOrientedSpecPageC, PageWithAtCheckWaiting)
+
+        then:
+        UnexpectedPageException e = thrown()
+        println e.getMessage()
+        e.getMessage() =~ '''(?ms)^Unable to find page match\\. At checker verification results:$.*
+^Result for geb\\.PageWithAtCheckerReturningFalse: false$.*
+^Result for geb\\.PageOrientedSpecPageB: geb\\.error\\.RequiredPageContentNotPresent:.*
+^Result for geb\\.PageOrientedSpecPageC: Assertion failed:.*
+^false$.*
+^Result for geb\\.PageWithAtCheckWaiting: geb\\.waiting\\.WaitTimeoutException:.*
+Caused by: Assertion failed:.*
+^false$.*'''
+    }
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -499,4 +515,8 @@ class PageWithContentUsingUnrecognizedParams extends Page {
     static content = {
         withInvalidParams(foo: 1, bar: 2) { $() }
     }
+}
+
+class PageWithAtCheckWaiting extends Page {
+    static at = { waitFor(0.1) { false } }
 }

@@ -14,10 +14,11 @@
  */
 package geb.error;
 
+import geb.AtVerificationResult;
 import geb.Page;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
-import java.util.List;
+import java.util.Map;
 
 public class UnexpectedPageException extends GebException {
 
@@ -31,10 +32,6 @@ public class UnexpectedPageException extends GebException {
 
     public UnexpectedPageException(Page page, Throwable cause) {
         super(String.format("At checker page verification failed for page %s", page), cause);
-    }
-
-    public UnexpectedPageException(List<Class<? extends Page>> potentials) {
-        super(String.format("Unable to find page match (given potentials: %s)", DefaultGroovyMethods.toString(potentials)));
     }
 
     public UnexpectedPageException(Class<? extends Page> actualPage, Class<? extends Page> expectedPage) {
@@ -51,5 +48,17 @@ public class UnexpectedPageException extends GebException {
 
     public UnexpectedPageException(Class<? extends Page> actualPage, Page[] potentials) {
         super(String.format("An unexpected page %s was encountered when trying to find page match (given potentials: %s)", actualPage.getName(), DefaultGroovyMethods.toString(potentials)));
+    }
+
+    public UnexpectedPageException(Map<? extends Page, AtVerificationResult> pageVerificationResults) {
+        super(String.format("Unable to find page match. At checker verification results:%n%n%s", UnexpectedPageException.format(pageVerificationResults)));
+    }
+
+    private static String format(Map<? extends Page, AtVerificationResult> pageVerificationResults) {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<? extends Page, AtVerificationResult> atVerificationResultEntry : pageVerificationResults.entrySet()) {
+            builder.append(String.format("Result for %s: %s%n%n", atVerificationResultEntry.getKey().getClass().getName(), atVerificationResultEntry.getValue()));
+        }
+        return builder.toString();
     }
 }

@@ -20,7 +20,6 @@ import geb.download.DownloadSupport
 import geb.download.UninitializedDownloadSupport
 import geb.error.GebException
 import geb.error.PageInstanceNotInitializedException
-import geb.error.RequiredPageContentNotPresent
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.frame.DefaultFrameSupport
@@ -35,11 +34,9 @@ import geb.js.JavascriptInterface
 import geb.js.UninitializedAlertAndConfirmSupport
 import geb.navigator.Navigator
 import geb.textmatching.TextMatchingSupport
-import geb.waiting.ImplicitWaitTimeoutException
+import geb.waiting.DefaultWaitingSupport
 import geb.waiting.UninitializedWaitingSupport
 import geb.waiting.Wait
-import geb.waiting.WaitTimeoutException
-import geb.waiting.DefaultWaitingSupport
 import geb.waiting.WaitingSupport
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -194,15 +191,24 @@ class Page implements Navigable, PageContentContainer, Initializable {
      * @see #verifyAt()
      */
     boolean verifyAtSafely(boolean honourGlobalAtCheckWaiting = true) {
+        getAtVerificationResult(honourGlobalAtCheckWaiting)
+    }
+
+    /**
+     * Executes this page's "at checker" and captures the result wrapping up any AssertionError that might have been thrown.
+     *
+     * @return at verification result with any AssertionError that might have been thrown wrapped up
+     * @see AtVerificationResult
+     */
+    AtVerificationResult getAtVerificationResult(boolean honourGlobalAtCheckWaiting = true) {
+        Throwable caughtException = null
+        boolean atResult = false
         try {
-            verifyThisPageAtOnly(honourGlobalAtCheckWaiting)
+            atResult = verifyThisPageAtOnly(honourGlobalAtCheckWaiting)
         } catch (AssertionError e) {
-            false
-        } catch (RequiredPageContentNotPresent e) {
-            false
-        } catch (ImplicitWaitTimeoutException e) {
-            false
+            caughtException = e
         }
+        new AtVerificationResult(atResult, caughtException)
     }
 
     /**
@@ -218,11 +224,7 @@ class Page implements Navigable, PageContentContainer, Initializable {
             verifier.resolveStrategy = Closure.DELEGATE_FIRST
             def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
             if (atCheckWaiting) {
-                try {
-                    atCheckWaiting.waitFor(verifier)
-                } catch (WaitTimeoutException e) {
-                    throw new ImplicitWaitTimeoutException(e)
-                }
+                atCheckWaiting.waitFor(verifier)
             } else {
                 verifier()
             }
