@@ -18,48 +18,51 @@ package geb.module
 import geb.Page
 import geb.test.GebSpecWithCallbackServer
 
-class SelectSpec extends GebSpecWithCallbackServer {
+class MultipleSelectSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         html {
-            select(id: "selected") {
+            select(id: "selected", multiple: "") {
                 option("Option #1", value: "1")
                 option("Option #2", value: "2", selected: "selected")
+                option("Option #3", value: "3", selected: "selected")
             }
-            select(id: "not-selected") {
+            select(id: "not-selected", multiple: "") {
                 option("Option #1", value: "1")
                 option("Option #2", value: "2")
+                option("Option #3", value: "3")
             }
         }
-        to SelectPage
+        to MultipleSelectPage
     }
 
     def "selected text"() {
         expect:
-        selected.selectedText == "Option #2"
-        notSelected.selectedText == "Option #1"
+        selected.selectedText == ["Option #2", "Option #3"]
+        notSelected.selectedText == []
     }
 
     def "selected value"() {
         expect:
-        selected.selected == "2"
-        notSelected.selected == "1"
+        selected.selected == ["2", "3"]
+        notSelected.selected == []
     }
 
     def "selecting"() {
         when:
-        selected.selected = "1"
-        notSelected.selected = "Option #2"
+        selected.selected = ["1"]
+        notSelected.selected = ["Option #2", "Option #3"]
 
         then:
-        selected.selected == "1"
-        notSelected.selected == "2"
+        selected.selected == ["1"]
+        notSelected.selected == ["2", "3"]
     }
 }
 
-class SelectPage extends Page {
+class MultipleSelectPage extends Page {
     static content = {
-        selected { $("#selected").module(Select) }
-        notSelected { $("#not-selected").module(Select) }
+        selected { $("#selected").module(MultipleSelect) }
+        notSelected { $("#not-selected").module(MultipleSelect) }
     }
 }
+
