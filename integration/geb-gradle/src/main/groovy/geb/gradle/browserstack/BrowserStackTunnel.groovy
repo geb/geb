@@ -23,23 +23,19 @@ import org.slf4j.Logger
 class BrowserStackTunnel extends ExternalTunnel {
     private static final String HTTPS_PROTOCOL = 'https'
 
-    final protected BrowserStackAccount account
-    final protected List<URL> applicationUrls
-    final protected boolean forcelocal
+    final BrowserStackExtension extension
 
     final String outputPrefix = 'browserstack-tunnel'
     final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
 
-    BrowserStackTunnel(Project project, Logger logger, BrowserStackAccount account, List<URL> applicationUrls, boolean forcelocal) {
+    BrowserStackTunnel(Project project, Logger logger, BrowserStackExtension extension) {
         super(project, logger)
-        this.account = account
-        this.applicationUrls = applicationUrls
-        this.forcelocal = forcelocal
+        this.extension = extension
     }
 
     @Override
     void validateState() {
-        if (!account.accessKey) {
+        if (!extension.account.accessKey) {
             throw new InvalidUserDataException('No BrowserStack access key set')
         }
     }
@@ -48,14 +44,14 @@ class BrowserStackTunnel extends ExternalTunnel {
     List<String> assembleCommandLine() {
         def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
         def commandLine = [tunnelPath]
-        commandLine << account.accessKey
-        if (account.localId) {
-            commandLine << '-localIdentifier' << account.localId
+        commandLine << extension.account.accessKey
+        if (extension.account.localId) {
+            commandLine << '-localIdentifier' << extension.account.localId
         }
-        if (applicationUrls) {
-            commandLine << "-only" << assembleAppSpecifier(applicationUrls)
+        if (extension.applicationUrls) {
+            commandLine << "-only" << assembleAppSpecifier(extension.applicationUrls)
         }
-        if (forcelocal) {
+        if (extension.forceLocal) {
             commandLine << "-forcelocal"
         }
         commandLine

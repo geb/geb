@@ -23,7 +23,7 @@ class BrowserStackExtension {
     Project project
     BrowserStackAccount account
     List<URL> applicationUrls = []
-    boolean forcelocal = false
+    boolean forceLocal
 
     BrowserStackExtension(Project project) {
         this.project = project
@@ -32,7 +32,7 @@ class BrowserStackExtension {
     void addExtensions() {
         extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
         account = new BrowserStackAccount()
-        extensions.create('tunnel', BrowserStackTunnel, project, project.logger, account, applicationUrls, forcelocal)
+        extensions.create('tunnel', BrowserStackTunnel, project, project.logger, this)
     }
 
     void task(Closure configuration) {
@@ -54,9 +54,5 @@ class BrowserStackExtension {
 
     void application(URL... urls) {
         applicationUrls.addAll(urls)
-    }
-
-    void forcelocal(boolean forcelocal) {
-        this.forcelocal = forcelocal
     }
 }
