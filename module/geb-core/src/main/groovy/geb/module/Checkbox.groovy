@@ -15,10 +15,9 @@
  */
 package geb.module
 
-import geb.Module
 import geb.error.InvalidModuleBaseException
 
-class Checkbox extends Module {
+class Checkbox extends FormElement {
 
     @Override
     protected void initialized() {

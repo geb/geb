@@ -15,10 +15,9 @@
  */
 package geb.module
 
-import geb.Module
 import geb.error.InvalidModuleBaseException
 
-class Select extends Module {
+class Select extends FormElement {
 
     @Override
     protected void initialized() {
