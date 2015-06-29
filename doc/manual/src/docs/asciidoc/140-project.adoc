@@ -82,6 +82,7 @@ This page lists the high level changes between versions of Geb.
 * Support page level `atCheckWaiting` configuration. [issue:287[]]
 * `Navigator` elements can now also be filtered using `hasNot()` method. [issue:370[]]
 * Custom implementation of `equals()` and `hashCode()` methods have been added to classes implementing `Navigator`. [issue:374[]]
+* Support setting `forcelocal` flag for BrowserStack tunnel. [issue:385[]]
 
 #### Improvements
 
