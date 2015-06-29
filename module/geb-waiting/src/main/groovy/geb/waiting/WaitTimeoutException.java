@@ -48,7 +48,11 @@ public class WaitTimeoutException extends GebAssertionError {
             message.append(String.format("(%s)", wait.getCustomMessage()));
         }
         if (cause != null) {
-            message.append(" (failed with exception)");
+            if (wait.getPrintCause()) {
+                message.append(" Failed with exception: " + cause);
+            } else {
+                message.append(" (failed with exception)");
+            }
         }
         return message.toString();
     }
