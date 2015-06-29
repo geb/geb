@@ -33,7 +33,7 @@ class FormElement extends Module {
 
     protected void initialized() {
         if (!empty) {
-            if (!SUPPORTED_TAGS.contains(tag())) {
+            if (!SUPPORTED_TAGS.contains(tag().toLowerCase())) {
                 throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag()}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
             }
         }

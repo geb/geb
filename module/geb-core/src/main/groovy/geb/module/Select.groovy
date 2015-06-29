@@ -18,34 +18,30 @@ package geb.module
 import geb.Module
 import geb.error.InvalidModuleBaseException
 
-class Checkbox extends Module {
+class Select extends Module {
 
     @Override
     protected void initialized() {
         if (!empty) {
-            if (tag().toLowerCase() != "input") {
-                throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was '${tag()}' but only input is allowed as the base element.")
-            }
-            def type = getAttribute("type")
-            if (type != "checkbox") {
-                throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was an input of type '$type' but only input of type checkbox is allowed as the base element.")
+            if (tag().toLowerCase() == "select") {
+                if (getAttribute("multiple")) {
+                    throw new InvalidModuleBaseException("Specified base element for ${Select.name} module was a multiple choice select but only single choice select is allowed as the base element.")
+                }
+            } else {
+                throw new InvalidModuleBaseException("Specified base element for ${Select.name} module was '${tag()}' but only select is allowed as the base element.")
             }
         }
     }
 
-    void check() {
-        value(true)
+    String getSelectedText() {
+        find("option", value: value()).text()
     }
 
-    void uncheck() {
-        value(false)
+    String getSelected() {
+        value()
     }
 
-    boolean isChecked() {
-        this.value()
-    }
-
-    boolean isUnchecked() {
-        !checked
+    void setSelected(String valueOrText) {
+        value(valueOrText)
     }
 }
