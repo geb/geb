@@ -224,20 +224,21 @@ buildscript { //<2>
 
 browserStack {
     application 'http://localhost:8080' //<3>
-    browsers { //<4>
+    forceLocal = true //<4>
+    browsers { //<5>
        firefox_mac_19
        chrome_mac
        delegate."internet explorer_windows_9"
-       nexus4 { //<5>
+       nexus4 { //<6>
          capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
        }
     }
-    task { //<6>
+    task { //<7>
        testClassesDir = test.testClassesDir
        testSrcDirs = test.testSrcDirs
        classpath = test.classpath
     }
-    account { //<7>
+    account { //<8>
        username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
        accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
     }
@@ -248,11 +249,13 @@ browserStack {
 <3> Specify which urls the BrowserStack Tunnel should be able to access.
 Multiple applications can be specified.
 If no applications are specified, the tunnel will not be restricted to particular URLs.
-<4> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
+<4> Configure BrowserStack tunnel to route all traffic via the local machine.
+This configuration property controls the `-forcelocal` flag and the default value for it is `false`.
+<5> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
 `internet explorerVista9Test`.
-<5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
-<6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Pass credentials for BrowserStack.
+<6> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
+<7> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+<8> Pass credentials for BrowserStack.
 
 [TIP]
 ====
