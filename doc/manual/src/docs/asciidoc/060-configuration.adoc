@@ -200,6 +200,18 @@ Here we have defined two presets, `slow` and `quick`.
 Notice that the `quick` preset does not specify a `retryInterval` value; defaults will be substituted in for any missing values (i.e. giving the `quick` preset the default `retryInterval` value of
 `0.1`).
 
+==== Failure causes
+
+When waiting fails because the condition throws an exception be it an assertion failure or any other exception then that exception is set as the cause of `WaitTimeoutException` thrown by Geb.
+This usually provides fairly good diagnostics of what went wrong.
+Unfortunately some runtimes, namely Maven Surefire Plugin, don't print full exception stacktraces and exclude the cause from them.
+To make diagnostics easier in such situations it's possible to configure Geb to include string representation of the cause as part of `WaitTimeoutException` message: 
+
+[source,groovy]
+----
+include::{test-dir}/configuration/WaitingConfigSpec.groovy[tag=include_cause,indent=0]
+----
+
 [[at-check-waiting]]
 === Waiting in “at” checkers
 

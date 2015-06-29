@@ -20,6 +20,7 @@ import geb.navigator.EmptyNavigator
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
+@SuppressWarnings("TrailingWhitespace")
 class WaitingSupportSpec extends WaitingSpec {
 
     def setup() {
@@ -119,6 +120,24 @@ class WaitingSupportSpec extends WaitingSpec {
 
         where:
         waitForTime << [0, 0.5]
+    }
+
+    def "cause is appended to the exception message if configured"() {
+        given:
+        config.includeCauseInWaitTimeoutExceptionMessage = true
+
+        when:
+        waitFor(0.2) { 'not empty'.empty }
+
+        then:
+        WaitTimeoutException exception = thrown()
+        exception.message == """condition did not pass in 0.2 seconds. Failed with exception:
+Assertion failed: 
+
+'not empty'.empty
+            |
+            false
+"""
     }
 
     def "default variant"() {

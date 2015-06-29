@@ -32,8 +32,6 @@ class Wait {
      */
     static public final Double DEFAULT_RETRY_INTERVAL = 0.1
 
-    static public final boolean DEFAULT_PRINT_CAUSE = false
-
     private static final int HASHCODE_MULTIPLIER = 31
 
     /**
@@ -49,14 +47,14 @@ class Wait {
     /**
      * Whether we should append cause strings to the returned exception message or not
      */
-    final boolean printCause
+    final boolean includeCauseInExceptionMessage
 
     String customMessage
 
-    Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL, boolean printCause = DEFAULT_PRINT_CAUSE) {
+    Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL, boolean includeCauseInExceptionMessage = false) {
         this.timeout = timeout
         this.retryInterval = [timeout, retryInterval].min()
-        this.printCause = printCause
+        this.includeCauseInExceptionMessage = includeCauseInExceptionMessage
     }
 
     String toString() {
@@ -69,7 +67,7 @@ class Wait {
         } else if (!(other instanceof Wait)) {
             false
         } else {
-            this.timeout == other.timeout && this.retryInterval == other.retryInterval
+            this.timeout == other.timeout && this.retryInterval == other.retryInterval && this.includeCauseInExceptionMessage == other.includeCauseInExceptionMessage
         }
     }
 
@@ -77,6 +75,7 @@ class Wait {
         int code = 41
         code = HASHCODE_MULTIPLIER * code + timeout.hashCode()
         code = HASHCODE_MULTIPLIER * code + retryInterval.hashCode()
+        code = HASHCODE_MULTIPLIER * code + includeCauseInExceptionMessage.hashCode()
         code
     }
 

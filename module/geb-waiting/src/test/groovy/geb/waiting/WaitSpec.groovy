@@ -22,12 +22,13 @@ import spock.lang.Timeout
 /**
  * Tests the waiting algorithm, note that WaitingSupportSpec also tests Wait and covers many cases.
  */
+@SuppressWarnings("TrailingWhitespace")
 class WaitSpec extends Specification {
 
     @Timeout(5)
     def "wait algorithm handles cases where the block takes a long time"() {
         given:
-        def wait = new Wait(2, 0.5)
+        def wait = new Wait(2, 0.2)
 
         when:
         wait.waitFor { sleep 3000 }
@@ -38,7 +39,7 @@ class WaitSpec extends Specification {
 
     def "waitFor block contents are implicitly asserted"() {
         given:
-        def wait = new Wait(0.5)
+        def wait = new Wait(0.2)
 
         when:
         wait.waitFor { 'not empty'.empty }
@@ -49,27 +50,33 @@ class WaitSpec extends Specification {
         exception.cause.message.contains("'not empty'.empty")
     }
 
-    def "waitFor block default exception message does not contain cause"() {
+    def "waitFor timeout exception message does not contain cause by default"() {
         given:
-        def wait = new Wait(0.5)
+        def wait = new Wait(0.2)
 
         when:
         wait.waitFor { 'not empty'.empty }
 
         then:
         WaitTimeoutException exception = thrown()
-        !exception.message.contains("'not empty'.empty")
+        exception.message == "condition did not pass in 0.2 seconds (failed with exception)"
     }
 
-    def "waitFor block exception message contains cause when enabled"() {
+    def "waitFor timeout exception message contains cause when enabled"() {
         given:
-        def wait = new Wait(0.5, Wait.DEFAULT_RETRY_INTERVAL, true)
+        def wait = new Wait(0.2, Wait.DEFAULT_RETRY_INTERVAL, true)
 
         when:
         wait.waitFor { 'not empty'.empty }
 
         then:
         WaitTimeoutException exception = thrown()
-        exception.message.contains("'not empty'.empty")
+        exception.message == """condition did not pass in 0.2 seconds. Failed with exception:
+Assertion failed: 
+
+'not empty'.empty
+            |
+            false
+"""
     }
 }

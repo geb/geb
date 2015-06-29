@@ -59,6 +59,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:PoohSunny[Yotaro Takahashi] - Doc improvements
 * github-profile:jochenberger[Jochen Berger] - Better error reporting when trying to set a nonexistent select option
 * github-profile:matankatz[Matan Katz] - Support for setting the `forcelocal` flag for BrowserStack tunnel
+* github-profile:victorparmar[Victor Parmar] - Add configuration option for including cause string representation in message of `WaitTimeoutException`
 
 == History
 
@@ -83,6 +84,7 @@ This page lists the high level changes between versions of Geb.
 * `Navigator` elements can now also be filtered using `hasNot()` method. [issue:370[]]
 * Custom implementation of `equals()` and `hashCode()` methods have been added to classes implementing `Navigator`. [issue:374[]]
 * Support setting `forcelocal` flag for BrowserStack tunnel. [issue:385[]]
+* Add configuration option for including cause string representation in message of `WaitTimeoutException`. [issue:386[]]
 
 #### Improvements
 

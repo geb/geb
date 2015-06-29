@@ -73,17 +73,16 @@ class Configuration {
         def preset = rawConfig.waiting.presets[name]
         def timeout = readValue(preset, 'timeout', getDefaultWaitTimeout())
         def retryInterval = readValue(preset, 'retryInterval', getDefaultWaitRetryInterval())
-        def printCause = readValue(preset, 'printCause', getDefaultWaitPrintCause())
 
-        new Wait(timeout, retryInterval, printCause)
+        new Wait(timeout, retryInterval, getIncludeCauseInWaitTimeoutExceptionMessage())
     }
 
     Wait getDefaultWait() {
-        new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval(), getDefaultWaitPrintCause())
+        new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval(), getIncludeCauseInWaitTimeoutExceptionMessage())
     }
 
     Wait getWait(Double timeout) {
-        new Wait(timeout, getDefaultWaitRetryInterval(), getDefaultWaitPrintCause())
+        new Wait(timeout, getDefaultWaitRetryInterval(), getIncludeCauseInWaitTimeoutExceptionMessage())
     }
 
     Wait getWaitForParam(waitingParam) {
@@ -94,22 +93,17 @@ class Configuration {
         } else if (waitingParam instanceof Number && waitingParam > 0) {
             getWait(waitingParam.doubleValue())
         } else if (waitingParam instanceof Collection) {
-            if (waitingParam.size() > 1 && waitingParam.size() < 4) {
+            if (waitingParam.size() == 2) {
                 def timeout = waitingParam[0]
                 def retryInterval = waitingParam[1]
-                def printCause = getDefaultWaitPrintCause()
 
-                if (waitingParam.size() == 3) {
-                    printCause = waitingParam[2]
-                }
-
-                if (timeout instanceof Number && retryInterval instanceof Number && printCause instanceof Boolean) {
-                    new Wait(timeout.doubleValue(), retryInterval.doubleValue(), printCause)
+                if (timeout instanceof Number && retryInterval instanceof Number) {
+                    new Wait(timeout.doubleValue(), retryInterval.doubleValue(), getIncludeCauseInWaitTimeoutExceptionMessage())
                 } else {
-                    throw new IllegalArgumentException("'wait' param has illegal value '$waitingParam' (first two collection elements must be numbers with an optional boolean)")
+                    throw new IllegalArgumentException("'wait' param has illegal value '$waitingParam' (collection elements must be numbers)")
                 }
             } else {
-                throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection must have 2 or 3 elements)")
+                throw new IllegalArgumentException("'wait' param for content template ${this} has illegal value '$waitingParam' (collection must have 2 elements)")
             }
         } else {
             null
@@ -135,12 +129,21 @@ class Configuration {
     }
 
     /**
-     * The default {@code printCause} value to use for waiting
+     * Returns Either the value at config path {@code waiting.includeCauseInMessage} or {false} if there is none.
      * <p>
-     * Either the value at config path {@code waiting.printCause} or {@link geb.waiting.Wait#DEFAULT_PRINT_CAUSE false}.
+     * Determines if the message of {@link geb.waiting.WaitTimeoutException} should contain a string representation of its cause.
      */
-    boolean getDefaultWaitPrintCause() {
-        readValue(rawConfig.waiting, 'printCause', false)
+    boolean getIncludeCauseInWaitTimeoutExceptionMessage() {
+        readValue(rawConfig.waiting, 'includeCauseInMessage', false)
+    }
+
+    /**
+     * Updates the {@code waiting.includeCauseInMessage} config entry.
+     *
+     * @see #getIncludeCauseInWaitTimeoutExceptionMessage()
+     */
+    void setIncludeCauseInWaitTimeoutExceptionMessage(boolean include) {
+        rawConfig.waiting.includeCauseInMessage = include
     }
 
     /**

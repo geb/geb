@@ -69,4 +69,18 @@ class WaitingConfigSpec extends Specification implements InlineConfigurationLoad
         }
 
     }
+
+    def "including cause in exception message"() {
+        when:
+        configScript """
+            // tag::include_cause[]
+            waiting {
+                includeCauseInMessage = true
+            }
+            // end::include_cause[]
+        """
+
+        then:
+        config.includeCauseInWaitTimeoutExceptionMessage
+    }
 }

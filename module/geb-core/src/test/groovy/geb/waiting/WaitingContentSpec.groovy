@@ -74,14 +74,6 @@ class WaitingContentSpec extends WaitingSpec {
         content
     }
 
-    def "custom retry and printCause"() {
-        when:
-        params = [wait: [5, 1, true]]
-
-        then:
-        content
-    }
-
     def "wait preset"() {
         when:
         params = [wait: "somepreset"]
@@ -102,7 +94,7 @@ class WaitingContentSpec extends WaitingSpec {
         thrown IllegalArgumentException
 
         where:
-        value << [[], [1], [1, 2, true, 4], [1, 2, 3], ["asds", 1], [1, "asdas"]]
+        value << [[], [1], [1, 2, 3], ["asds", "asdas"]]
     }
 
     def "waiting for non content - fail"() {
