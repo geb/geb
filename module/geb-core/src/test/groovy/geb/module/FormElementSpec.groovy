@@ -54,4 +54,38 @@ class FormElementSpec extends GebSpecWithCallbackServer {
         $("#readonlyAttr2").module(FormElement).readOnly
         !$("#readonlyAttr2").module(FormElement).editable
     }
+
+    def "empty navigator based module"() {
+        given:
+        def exceptionMessage = "This operation is not supported on an empty navigator based ${FormElement.name} module"
+        def module = $("i-dont-exist").module(FormElement)
+
+        when:
+        module.enabled
+
+        then:
+        UnsupportedOperationException e = thrown()
+        e.message == exceptionMessage
+
+        when:
+        module.disabled
+
+        then:
+        e = thrown()
+        e.message == exceptionMessage
+
+        when:
+        module.editable
+
+        then:
+        e = thrown()
+        e.message == exceptionMessage
+
+        when:
+        module.readOnly
+
+        then:
+        e = thrown()
+        e.message == exceptionMessage
+    }
 }

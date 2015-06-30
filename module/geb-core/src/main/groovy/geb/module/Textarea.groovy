@@ -24,7 +24,7 @@ class Textarea extends FormElement {
         if (!empty) {
             def tag = navigator.tag()
             if (tag.toLowerCase() != "textarea") {
-                throw new InvalidModuleBaseException("Specified base element for ${Textarea.name} module was '$tag' but only textarea is allowed as the base element.")
+                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$tag' but only textarea is allowed as the base element.")
             }
         }
     }

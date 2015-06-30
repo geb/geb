@@ -57,6 +57,18 @@ class MultipleSelectSpec extends GebSpecWithCallbackServer {
         selected.selected == ["1"]
         notSelected.selected == ["2", "3"]
     }
+
+    def "selecting on an empty navigator base"() {
+        given:
+        def select = $("i-dont-exist").module(MultipleSelect)
+
+        when:
+        select.selected = ["foo", "bar"]
+
+        then:
+        noExceptionThrown()
+        select.selected == null
+    }
 }
 
 class MultipleSelectPage extends Page {

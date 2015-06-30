@@ -47,4 +47,16 @@ class TextareaSpec extends GebSpecWithCallbackServer {
         then:
         textarea.text == "foo"
     }
+
+    def "getting and setting text on an empty navigator based textarea"() {
+        given:
+        def textarea = $("i-dont-exist").module(Textarea)
+
+        when:
+        textarea.text = "foo"
+
+        then:
+        noExceptionThrown()
+        textarea.text == null
+    }
 }

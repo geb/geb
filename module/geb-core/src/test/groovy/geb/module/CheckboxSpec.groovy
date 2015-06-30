@@ -65,4 +65,36 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
         then:
         !$("#checked").value()
     }
+
+    def "can call check and uncheck an empty navigator based checkbox"() {
+        given:
+        def checkbox = $("#i-dont-exist").module(Checkbox)
+
+        when:
+        checkbox.check()
+        checkbox.uncheck()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "cannot check if an empty navigator based checkbox is checked"() {
+        given:
+        def exceptionMessage = "This operation is not supported on an empty navigator based ${Checkbox.name} module"
+        def checkbox = $("#i-dont-exist").module(Checkbox)
+
+        when:
+        checkbox.checked
+
+        then:
+        UnsupportedOperationException e = thrown()
+        e.message == exceptionMessage
+
+        when:
+        checkbox.unchecked
+
+        then:
+        e = thrown()
+        e.message == exceptionMessage
+    }
 }

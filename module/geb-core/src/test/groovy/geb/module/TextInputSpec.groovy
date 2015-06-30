@@ -47,4 +47,16 @@ class TextInputSpec extends GebSpecWithCallbackServer {
         then:
         input.text == "foo"
     }
+
+    def "getting and setting text on an empty navigator based text input"() {
+        given:
+        def input = $("i-dont-exist").module(TextInput)
+
+        when:
+        input.text = "foo"
+
+        then:
+        noExceptionThrown()
+        input.text == null
+    }
 }

@@ -45,6 +45,9 @@ class FormElement extends Module {
      * @return true when the first element of base navigator is disabled
      */
     boolean isDisabled() {
+        if (empty) {
+            throw new UnsupportedOperationException("This operation is not supported on an empty navigator based ${getClass().name} module")
+        }
         def value = navigator.getAttribute(DISABLED)
         // Different drivers return different values here
         (value == DISABLED || value == TRUE)
@@ -65,6 +68,9 @@ class FormElement extends Module {
      * @return true when the first element of base navigator is read-only
      */
     boolean isReadOnly() {
+        if (empty) {
+            throw new UnsupportedOperationException("This operation is not supported on an empty navigator based ${getClass().name} module")
+        }
         def value = navigator.getAttribute(READONLY)
         (value == READONLY || value == TRUE)
     }

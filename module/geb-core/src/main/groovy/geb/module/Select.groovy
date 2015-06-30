@@ -25,10 +25,12 @@ class Select extends FormElement {
             def tag = navigator.tag()
             if (tag.toLowerCase() == "select") {
                 if (getAttribute("multiple")) {
-                    throw new InvalidModuleBaseException("Specified base element for ${Select.name} module was a multiple choice select but only single choice select is allowed as the base element.")
+                    throw new InvalidModuleBaseException(
+                        "Specified base element for ${getClass().name} module was a multiple choice select but only single choice select is allowed as the base element."
+                    )
                 }
             } else {
-                throw new InvalidModuleBaseException("Specified base element for ${Select.name} module was '$tag' but only select is allowed as the base element.")
+                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$tag' but only select is allowed as the base element.")
             }
         }
     }

@@ -26,12 +26,12 @@ class MultipleSelect extends FormElement {
             if (tag.toLowerCase() == "select") {
                 if (!navigator.getAttribute("multiple")) {
                     throw new InvalidModuleBaseException(
-                        "Specified base element for ${MultipleSelect.name} module was a single choice select but only multiple choice select is allowed as the base element."
+                        "Specified base element for ${getClass().name} module was a single choice select but only multiple choice select is allowed as the base element."
                     )
                 }
             } else {
                 throw new InvalidModuleBaseException(
-                    "Specified base element for ${MultipleSelect.name} module was '${tag}' but only select is allowed as the base element."
+                    "Specified base element for ${getClass().name} module was '${tag}' but only select is allowed as the base element."
                 )
             }
         }

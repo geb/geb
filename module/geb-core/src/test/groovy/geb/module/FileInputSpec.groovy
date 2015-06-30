@@ -47,4 +47,16 @@ class FileInputSpec extends GebSpecWithCallbackServer {
         then:
         input.file == file
     }
+
+    def "can get and set a file on an empty navigator based file input module"() {
+        given:
+        def input = $("#i-dont-exist").module(FileInput)
+
+        when:
+        input.file = temporaryFolder.newFile()
+
+        then:
+        noExceptionThrown()
+        input.file == null
+    }
 }
