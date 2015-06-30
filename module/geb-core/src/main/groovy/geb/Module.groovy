@@ -66,7 +66,7 @@ class Module implements Navigator, PageContentContainer, Initializable {
     private JavascriptInterface js
 
     //manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
-    private Navigator navigator
+    protected Navigator navigator
 
     @SuppressWarnings("SpaceBeforeOpeningBrace")
     void init(Browser browser, NavigatorFactory navigatorFactory) {

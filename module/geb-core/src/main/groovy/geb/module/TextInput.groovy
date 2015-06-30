@@ -20,10 +20,10 @@ class TextInput extends AbstractInput {
     final String inputType = "text"
 
     String getText() {
-        value()
+        navigator.value()
     }
 
     void setText(String text) {
-        value(text)
+        navigator.value(text)
     }
 }

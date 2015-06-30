@@ -33,8 +33,9 @@ class FormElement extends Module {
 
     protected void initialized() {
         if (!empty) {
-            if (!SUPPORTED_TAGS.contains(tag().toLowerCase())) {
-                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag()}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
+            def tag = navigator.tag()
+            if (!SUPPORTED_TAGS.contains(tag.toLowerCase())) {
+                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
             }
         }
     }
@@ -44,7 +45,7 @@ class FormElement extends Module {
      * @return true when the first element of base navigator is disabled
      */
     boolean isDisabled() {
-        def value = getAttribute(DISABLED)
+        def value = navigator.getAttribute(DISABLED)
         // Different drivers return different values here
         (value == DISABLED || value == TRUE)
     }
@@ -64,7 +65,7 @@ class FormElement extends Module {
      * @return true when the first element of base navigator is read-only
      */
     boolean isReadOnly() {
-        def value = getAttribute(READONLY)
+        def value = navigator.getAttribute(READONLY)
         (value == READONLY || value == TRUE)
     }
 

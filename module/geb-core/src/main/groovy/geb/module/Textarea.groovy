@@ -22,17 +22,18 @@ class Textarea extends FormElement {
     @Override
     protected void initialized() {
         if (!empty) {
-            if (tag().toLowerCase() != "textarea") {
-                throw new InvalidModuleBaseException("Specified base element for ${Textarea.name} module was '${tag()}' but only textarea is allowed as the base element.")
+            def tag = navigator.tag()
+            if (tag.toLowerCase() != "textarea") {
+                throw new InvalidModuleBaseException("Specified base element for ${Textarea.name} module was '$tag' but only textarea is allowed as the base element.")
             }
         }
     }
 
     void setText(String text) {
-        value(text)
+        navigator.value(text)
     }
 
     String getText() {
-        value()
+        navigator.value()
     }
 }

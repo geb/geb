@@ -22,22 +22,23 @@ class MultipleSelect extends FormElement {
     @Override
     protected void initialized() {
         if (!empty) {
-            if (tag().toLowerCase() == "select") {
-                if (!getAttribute("multiple")) {
+            def tag = navigator.tag()
+            if (tag.toLowerCase() == "select") {
+                if (!navigator.getAttribute("multiple")) {
                     throw new InvalidModuleBaseException(
                         "Specified base element for ${MultipleSelect.name} module was a single choice select but only multiple choice select is allowed as the base element."
                     )
                 }
             } else {
                 throw new InvalidModuleBaseException(
-                    "Specified base element for ${MultipleSelect.name} module was '${tag()}' but only select is allowed as the base element."
+                    "Specified base element for ${MultipleSelect.name} module was '${tag}' but only select is allowed as the base element."
                 )
             }
         }
     }
 
     List<String> getSelected() {
-        value()
+        navigator.value()
     }
 
     List<String> getSelectedText() {
@@ -45,6 +46,6 @@ class MultipleSelect extends FormElement {
     }
 
     void setSelected(List<String> selectedTextOrValues) {
-        value(selectedTextOrValues)
+        navigator.value(selectedTextOrValues)
     }
 }

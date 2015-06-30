@@ -20,11 +20,11 @@ class FileInput extends AbstractInput {
     final String inputType = "file"
 
     File getFile() {
-        def path = value()
+        def path = navigator.value()
         path ? new File(path) : null
     }
 
     void setFile(File file) {
-        value(file.absolutePath)
+        navigator.value(file.absolutePath)
     }
 }

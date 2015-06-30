@@ -20,15 +20,15 @@ class Checkbox extends AbstractInput {
     final String inputType = "checkbox"
 
     void check() {
-        value(true)
+        navigator.value(true)
     }
 
     void uncheck() {
-        value(false)
+        navigator.value(false)
     }
 
     boolean isChecked() {
-        this.value()
+        navigator.value()
     }
 
     boolean isUnchecked() {
