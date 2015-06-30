@@ -55,6 +55,18 @@ class SelectSpec extends GebSpecWithCallbackServer {
         selected.selected == "1"
         notSelected.selected == "2"
     }
+
+    def "selecting on an empty navigator base"() {
+        given:
+        def select = $("i-dont-exist").module(Select)
+
+        when:
+        select.selected = "foo"
+
+        then:
+        noExceptionThrown()
+        select.selected == null
+    }
 }
 
 class SelectPage extends Page {
