@@ -55,7 +55,7 @@ class RadioButtons extends Module {
     String getCheckedLabel() {
         def id = checkedElement?.getAttribute("id")
         if (id) {
-            navigator.parents("html").find("label[for=\"${CssSelector.escape(id)}\"]").text()
+            navigator.first().parents("html").find("label[for=\"${CssSelector.escape(id)}\"]").text()
         }
     }
 
