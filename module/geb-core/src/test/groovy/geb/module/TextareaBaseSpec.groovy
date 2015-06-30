@@ -58,4 +58,19 @@ class TextareaBaseSpec extends GebSpecWithCallbackServer {
         then:
         noExceptionThrown()
     }
+
+    def "creating the module with a base navigator containing more than one element results in error"() {
+        given:
+        html {
+            textarea()
+            textarea()
+        }
+
+        when:
+        $("textarea").module(Textarea)
+
+        then:
+        InvalidModuleBaseException e = thrown()
+        e.message == "Specified base navigator for ${Textarea.name} module has 2 elements but at most one element is allowed."
+    }
 }

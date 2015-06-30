@@ -68,4 +68,19 @@ class FormElementBaseSpec extends GebSpecWithCallbackServer {
         InvalidModuleBaseException e = thrown()
         e.message == "Specified base element for ${FormElement.name} module was 'div' but only the following are allowed: button, input, option, select, textarea"
     }
+
+    def "creating the module with a base navigator containing more than one element results in error"() {
+        given:
+        html {
+            input()
+            input()
+        }
+
+        when:
+        $("input").module(FormElement)
+
+        then:
+        InvalidModuleBaseException e = thrown()
+        e.message == "Specified base navigator for ${FormElement.name} module has 2 elements but at most one element is allowed."
+    }
 }

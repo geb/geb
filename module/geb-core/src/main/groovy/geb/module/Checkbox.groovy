@@ -28,7 +28,7 @@ class Checkbox extends AbstractInput {
     }
 
     boolean isChecked() {
-        if (empty) {
+        if (navigator.empty) {
             throw new UnsupportedOperationException("This operation is not supported on an empty navigator based ${getClass().name} module")
         }
         navigator.value()

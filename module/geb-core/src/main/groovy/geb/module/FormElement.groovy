@@ -32,11 +32,19 @@ class FormElement extends Module {
     private final static String TRUE = "true"
 
     protected void initialized() {
-        if (!empty) {
+        ensureAtMostOneBaseElement()
+        if (!navigator.empty) {
             def tag = navigator.tag()
             if (!SUPPORTED_TAGS.contains(tag.toLowerCase())) {
                 throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
             }
+        }
+    }
+
+    protected void ensureAtMostOneBaseElement() {
+        def size = navigator.size()
+        if (size > 1) {
+            throw new InvalidModuleBaseException("Specified base navigator for ${getClass().name} module has $size elements but at most one element is allowed.")
         }
     }
 

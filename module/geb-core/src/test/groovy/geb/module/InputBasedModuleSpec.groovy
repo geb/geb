@@ -81,4 +81,19 @@ abstract class InputBasedModuleSpec<T> extends GebSpecWithCallbackServer {
         InvalidModuleBaseException e = thrown()
         e.message == "Specified base element for ${moduleType.name} module was an input of type '${otherInputType}' but only input of type ${inputType} is allowed as the base element."
     }
+
+    def "creating the module with a base navigator containing more than one element results in error"() {
+        given:
+        html {
+            input(type: inputType)
+            input(type: inputType)
+        }
+
+        when:
+        $("input").module(moduleType)
+
+        then:
+        InvalidModuleBaseException e = thrown()
+        e.message == "Specified base navigator for ${moduleType.name} module has 2 elements but at most one element is allowed."
+    }
 }

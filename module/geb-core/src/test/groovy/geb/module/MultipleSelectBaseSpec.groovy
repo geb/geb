@@ -72,4 +72,19 @@ class MultipleSelectBaseSpec extends GebSpecWithCallbackServer {
         then:
         noExceptionThrown()
     }
+
+    def "creating the module with a base navigator containing more than one element results in error"() {
+        given:
+        html {
+            select()
+            select()
+        }
+
+        when:
+        $("select").module(MultipleSelect)
+
+        then:
+        InvalidModuleBaseException e = thrown()
+        e.message == "Specified base navigator for ${MultipleSelect.name} module has 2 elements but at most one element is allowed."
+    }
 }

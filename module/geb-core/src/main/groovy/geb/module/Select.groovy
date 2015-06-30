@@ -21,7 +21,8 @@ class Select extends FormElement {
 
     @Override
     protected void initialized() {
-        if (!empty) {
+        ensureAtMostOneBaseElement()
+        if (!navigator.empty) {
             def tag = navigator.tag()
             if (tag.toLowerCase() == "select") {
                 if (getAttribute("multiple")) {

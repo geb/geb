@@ -23,6 +23,7 @@ abstract class AbstractInput extends FormElement {
 
     @Override
     protected void initialized() {
+        ensureAtMostOneBaseElement()
         if (!empty) {
             def tag = navigator.tag()
             if (tag.toLowerCase() != "input") {
