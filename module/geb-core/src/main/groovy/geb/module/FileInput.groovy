@@ -15,22 +15,9 @@
  */
 package geb.module
 
-import geb.error.InvalidModuleBaseException
+class FileInput extends AbstractInput {
 
-class FileInput extends FormElement {
-
-    @Override
-    protected void initialized() {
-        if (!empty) {
-            if (tag().toLowerCase() != "input") {
-                throw new InvalidModuleBaseException("Specified base element for ${FileInput.name} module was '${tag()}' but only input is allowed as the base element.")
-            }
-            def type = getAttribute("type")
-            if (type != "file") {
-                throw new InvalidModuleBaseException("Specified base element for ${FileInput.name} module was an input of type '$type' but only input of type text is allowed as the base element.")
-            }
-        }
-    }
+    final String inputType = "file"
 
     File getFile() {
         def path = value()

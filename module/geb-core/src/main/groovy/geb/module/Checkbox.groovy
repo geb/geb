@@ -15,22 +15,9 @@
  */
 package geb.module
 
-import geb.error.InvalidModuleBaseException
+class Checkbox extends AbstractInput {
 
-class Checkbox extends FormElement {
-
-    @Override
-    protected void initialized() {
-        if (!empty) {
-            if (tag().toLowerCase() != "input") {
-                throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was '${tag()}' but only input is allowed as the base element.")
-            }
-            def type = getAttribute("type")
-            if (type != "checkbox") {
-                throw new InvalidModuleBaseException("Specified base element for ${Checkbox.name} module was an input of type '$type' but only input of type checkbox is allowed as the base element.")
-            }
-        }
-    }
+    final String inputType = "checkbox"
 
     void check() {
         value(true)

@@ -15,61 +15,7 @@
  */
 package geb.module
 
-import geb.error.InvalidModuleBaseException
-import geb.test.GebSpecWithCallbackServer
-
-class FileInputBaseSpec extends GebSpecWithCallbackServer {
-
-    def "can base a file input on an empty navigator"() {
-        given:
-        html {
-        }
-
-        when:
-        $("input").module(FileInput)
-
-        then:
-        noExceptionThrown()
-    }
-
-    def "basing a file input on anything other than an input throws an exception"() {
-        given:
-        html {
-            div()
-        }
-
-        when:
-        $("div").module(FileInput)
-
-        then:
-        InvalidModuleBaseException e = thrown()
-        e.message == "Specified base element for ${FileInput.name} module was 'div' but only input is allowed as the base element."
-    }
-
-    def "creating the module for an input of type that is not file results in an exception"() {
-        given:
-        html {
-            input(type: "checkbox")
-        }
-
-        when:
-        $("input").module(FileInput)
-
-        then:
-        InvalidModuleBaseException e = thrown()
-        e.message == "Specified base element for ${FileInput.name} module was an input of type 'checkbox' but only input of type text is allowed as the base element."
-    }
-
-    def "can create the module based on a text input"() {
-        given:
-        html {
-            input(type: "file")
-        }
-
-        when:
-        $("input").module(FileInput)
-
-        then:
-        noExceptionThrown()
-    }
+class FileInputBaseSpec extends InputBasedModuleSpec<FileInput> {
+    final String inputType = "file"
+    final String otherInputType = "text"
 }

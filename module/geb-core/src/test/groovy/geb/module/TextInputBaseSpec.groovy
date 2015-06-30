@@ -15,61 +15,7 @@
  */
 package geb.module
 
-import geb.error.InvalidModuleBaseException
-import geb.test.GebSpecWithCallbackServer
-
-class TextInputBaseSpec extends GebSpecWithCallbackServer {
-
-    def "can base a text input on an empty navigator"() {
-        given:
-        html {
-        }
-
-        when:
-        $("input").module(TextInput)
-
-        then:
-        noExceptionThrown()
-    }
-
-    def "basing a text input on anything other than an input throws an exception"() {
-        given:
-        html {
-            div()
-        }
-
-        when:
-        $("div").module(TextInput)
-
-        then:
-        InvalidModuleBaseException e = thrown()
-        e.message == "Specified base element for ${TextInput.name} module was 'div' but only input is allowed as the base element."
-    }
-
-    def "creating the module for an input of type that is not text results in an exception"() {
-        given:
-        html {
-            input(type: "checkbox")
-        }
-
-        when:
-        $("input").module(TextInput)
-
-        then:
-        InvalidModuleBaseException e = thrown()
-        e.message == "Specified base element for ${TextInput.name} module was an input of type 'checkbox' but only input of type text is allowed as the base element."
-    }
-
-    def "can create the module based on a text input"() {
-        given:
-        html {
-            input()
-        }
-
-        when:
-        $("input").module(TextInput)
-
-        then:
-        noExceptionThrown()
-    }
+class TextInputBaseSpec extends InputBasedModuleSpec<TextInput> {
+    final String inputType = "text"
+    final String otherInputType = "checkbox"
 }

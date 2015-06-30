@@ -15,23 +15,9 @@
  */
 package geb.module
 
-import geb.Module
-import geb.error.InvalidModuleBaseException
+class TextInput extends AbstractInput {
 
-class TextInput extends Module {
-
-    @Override
-    protected void initialized() {
-        if (!empty) {
-            if (tag().toLowerCase() != "input") {
-                throw new InvalidModuleBaseException("Specified base element for ${TextInput.name} module was '${tag()}' but only input is allowed as the base element.")
-            }
-            def type = getAttribute("type")
-            if (type != "text") {
-                throw new InvalidModuleBaseException("Specified base element for ${TextInput.name} module was an input of type '$type' but only input of type text is allowed as the base element.")
-            }
-        }
-    }
+    final String inputType = "text"
 
     String getText() {
         value()
