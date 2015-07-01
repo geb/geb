@@ -56,7 +56,8 @@ include::{test-dir}/modules/IntroductionSpec.groovy[tag=outer_module_and_page,in
 include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_nested_modules,indent=0]
 ----
 
-== Base And context
+[[base-and-context]]
+== Base and context
 
 Modules can be localised to a specific section of the page that they are used in, or they can specify an absolute context as part of their definition.
 There are two ways that a modules base/context can be defined.
@@ -235,3 +236,167 @@ The Content DSL used for modules is _exactly_ the same as the <<content-dsl, one
 
 Modules can use inheritance in the <<pages-inheritance, same way that pages can>>.
 That is, their content definitions are merged with any content redefined in the subclass taking precedence of the superclass.
+
+== Form control modules
+
+If you are using Geb in <<strong-typing, a strongly typed manner>> you might consider using the provided {geb-module-package}[modules modelling form controls] instead of
+<<setting-form-control-values, manipulating them directly using the `Navigator` API>>.
+This will result in longer content definitions but using them will be easier because you won't have to remember what is the meaning of `value()` calls for different types of controls.
+This is for example the case when manipulating checkboxes for which checking and unchecking is achieved by passing booleans to `value()` when interacting with them via `Navigator` API.
+
+[NOTE]
+====
+All of these modules (apart from <<radio-buttons-module>>) are expecting to <<base-and-context, be based>> on single element navigators and will throw `InvalidModuleBaseException` with an
+appropriate message if that is not the case.
+They also verify that the base contains an element of the expected type providing better error reporting in case of mistakenly selecting an incorrect element as the base.
+====
+
+=== `FormElement`
+
+`{form-element-api}` is a base class for all modules modelling form controls (apart from <<radio-buttons-module>>) and provides shortcut property methods for checking if a control is disabled or read
+only.
+You will usually call these methods on the module classes for specific control types and rarely use this module directly.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/FormElementSnippetSpec.groovy[tag=html,indent=0]
+----
+
+Following is an example of using the shortcut property methods provided…
+
+[source,groovy]
+----
+include::{test-dir}/modules/FormElementSnippetSpec.groovy[tag=example,indent=0]
+----
+
+[[checkbox-module]]
+=== `Checkbox`
+
+The `{checkbox-api}` module provides utility methods for checking and unchecking checkboxes as well as property methods for retrieving their state.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/CheckboxSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/CheckboxSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `Select`
+
+The `{select-api}` module provides property methods for selecting options as well as retrieving selected option's value and text of a single choice select element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/SelectSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/SelectSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `MultipleSelect`
+
+The `{multiple-select-api}` module provides property methods for selecting options as well as retrieving selected option's value and text of a multiple choice select element.
+These methods take and return lists of strings.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/MultipleSelectSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/MultipleSelectSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `TextInput`
+
+The `{text-input-api}` module provides property methods for setting and retrieving text of an input text element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/TextInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/TextInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `Textarea`
+
+The `{textarea-api}` module provides property methods for setting and retrieving text of a textarea element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/TextareaSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/TextareaSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `FileInput`
+
+The `{file-input-api}` module provides property methods for setting and getting the file location for a file input element.
+These methods take and return `File` instances.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/FileInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/FileInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+[[radio-buttons-module]]
+=== `RadioButtons`
+
+The `{radio-buttons-api}` module provides property methods for checking radio buttons as well as retrieving selected button's value and text of the label associated with it.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=example,indent=0]
+----

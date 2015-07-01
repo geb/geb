@@ -75,3 +75,12 @@
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
 :clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]
 :sauce-connect: https://saucelabs.com/docs/connect[SauceConnect]
+:geb-module-package: link:api/geb/module/package-summary.html
+:form-element-api: link:api/geb/module/FormElement.html[FormElement]
+:checkbox-api: link:api/geb/module/Checkbox.html[Checkbox]
+:select-api: link:api/geb/module/Select.html[Select]
+:multiple-select-api: link:api/geb/module/Select.html[MultipleSelect]
+:text-input-api: link:api/geb/module/Select.html[TextInput]
+:file-input-api: link:api/geb/module/Select.html[FileInput]
+:textarea-api: link:api/geb/module/Textarea.html[Textarea]
+:radio-buttons-api: link:api/geb/module/Textarea.html[RadioButtons]
