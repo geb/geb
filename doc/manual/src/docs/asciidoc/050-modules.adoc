@@ -251,6 +251,7 @@ appropriate message if that is not the case.
 They also verify that the base contains an element of the expected type providing better error reporting in case of mistakenly selecting an incorrect element as the base.
 ====
 
+[[form-element]]
 === `FormElement`
 
 `{form-element-api}` is a base class for all modules modelling form controls (apart from <<radio-buttons-module>>) and provides shortcut property methods for checking if a control is disabled or read

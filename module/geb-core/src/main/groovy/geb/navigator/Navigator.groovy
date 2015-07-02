@@ -670,28 +670,36 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * Shorthand for <code>hasAttribute("disabled")</code>.
      * @return true when the first element is disabled
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
+     * @deprecated Use {@link geb.module.FormElement#isDisabled()} instead.
      */
+    @Deprecated
     boolean isDisabled()
 
     /**
      * Shorthand for <code>!hasAttribute("disabled")</code>.
      * @return true when the first element is enabled
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
+     * @deprecated Use {@link geb.module.FormElement#isEnabled()} instead.
      */
+    @Deprecated
     boolean isEnabled()
 
     /**
      * Shorthand for <code>hasAttribute("readonly")</code>.
      * @return true when the first element is readonly
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
+     * @deprecated Use {@link geb.module.FormElement#isReadOnly()} instead.
      */
+    @Deprecated
     boolean isReadOnly()
 
     /**
      * Shorthand for <code>!hasAttribute("readonly")</code>.
      * @return true when the first element is editable
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
+     * @deprecated Use {@link geb.module.FormElement#isEditable()} instead.
      */
+    @Deprecated
     boolean isEditable()
 
     /**
