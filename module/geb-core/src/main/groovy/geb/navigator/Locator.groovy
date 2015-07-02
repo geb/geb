@@ -21,7 +21,7 @@ import org.openqa.selenium.By
  * Allows to create {@link geb.navigator.Navigator}s by selecting {@link org.openqa.selenium.WebElement}s
  * using different criteria (CSS selectors, attribute maps, indexes, ranges and {@link org.openqa.selenium.By} selectors).
  */
-interface Locator {
+interface Locator extends BasicLocator {
 
     /**
      * Shorthand for <code>find(null, selector, null)</code>
@@ -138,14 +138,6 @@ interface Locator {
     Navigator $(By bySelector)
 
     /**
-     * Shorthand for <code>find(null, bySelector, null)</code>
-     *
-     * @param bySelector a WebDriver By selector
-     * @return new Navigator
-     */
-    Navigator find(By bySelector)
-
-    /**
      * Shorthand for <code>find(bySelector, index)</code>.
      *
      * @param bySelector a WebDriver By selector
@@ -179,26 +171,6 @@ interface Locator {
      * @return new Navigator
      */
     Navigator find(By bySelector, Range<Integer> range)
-
-    /**
-     * Creates a new Navigator instance containing the elements whose attributes match the specified values or patterns.
-     * The key 'text' can be used to match the text contained in elements. Regular expression Pattern objects may be
-     * used as values.
-     * <p>Examples:</p>
-     * <dl>
-     * <dt>find(name: "firstName")</dt>
-     * <dd>selects all elements with the name "firstName"</dd>
-     * <dt>find(name: "firstName", readonly: "readonly")</dt>
-     * <dd>selects all elements with the name "firstName" that are read-only</dd>
-     * <dt>find(text: "I can has cheezburger")</dt>
-     * <dd>selects all elements containing the exact text</dd>
-     * <dt>find(text: ~/I can has.+/)</dt>
-     * <dd>selects all elements whose text matches a regular expression</dd>
-     * </dl>
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
-     * @return a new Navigator instance containing the matched elements
-     */
-    Navigator find(Map<String, Object> attributes)
 
     /**
      * Shorthand for <code>find(predicates)</code>
@@ -244,15 +216,6 @@ interface Locator {
      * @see #find(java.util.Map, groovy.lang.Range)
      */
     Navigator $(Map<String, Object> attributes, Range<Integer> range)
-
-    /**
-     * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
-     * all input elements with the name "firstName".
-     * @param selector a CSS selector
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
-     * @return a new Navigator instance containing the matched elements
-     */
-    Navigator find(Map<String, Object> attributes, String selector)
 
     /**
      * Shorthand for <code>find(predicates, selector)</code>

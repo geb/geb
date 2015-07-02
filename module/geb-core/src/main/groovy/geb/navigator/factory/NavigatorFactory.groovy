@@ -15,6 +15,7 @@
  */
 package geb.navigator.factory
 
+import geb.navigator.Locator
 import geb.navigator.Navigator
 import org.openqa.selenium.WebElement
 
@@ -26,11 +27,18 @@ import org.openqa.selenium.WebElement
 interface NavigatorFactory {
 
     /**
-     * The base for all content lookups from this factory.
+     * The base navigator for this factory.
      *
-     * @return The base for all content lookups from this factory.
+     * @return The base navigator for this factory.
      */
     Navigator getBase()
+
+    /**
+     * The locator used for all content lookups from this factory.
+     *
+     * @return The locator used for all content lookups from this factory.
+     */
+    Locator getLocator()
 
     /**
      * Create a navigator, backed by the given web elements.

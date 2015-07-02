@@ -16,6 +16,7 @@
 package geb.content
 
 import geb.Module
+import geb.navigator.Locator
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import org.openqa.selenium.By
@@ -31,6 +32,10 @@ class NavigableSupport implements Navigable {
 
     private Navigator getBase() {
         navigatorFactory.base
+    }
+
+    private Locator getLocator() {
+        navigatorFactory.locator
     }
 
     Navigator find() {
@@ -58,135 +63,135 @@ class NavigableSupport implements Navigable {
     }
 
     Navigator find(String selector) {
-        base.find(selector)
+        locator.find(selector)
     }
 
     Navigator $(String selector) {
-        base.find(selector)
+        locator.find(selector)
     }
 
     Navigator find(String selector, int index) {
-        base.find(selector, index)
+        locator.find(selector, index)
     }
 
     Navigator find(String selector, Range<Integer> range) {
-        base.find(selector, range)
+        locator.find(selector, range)
     }
 
     Navigator $(String selector, int index) {
-        base.find(selector, index)
+        locator.find(selector, index)
     }
 
     Navigator $(String selector, Range<Integer> range) {
-        base.find(selector, range)
+        locator.find(selector, range)
     }
 
     @Override
     Navigator $(Map<String, Object> attributes, By bySelector) {
-        base.find(attributes, bySelector)
+        locator.find(attributes, bySelector)
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, By bySelector) {
-        base.find(attributes, bySelector)
+        locator.find(attributes, bySelector)
     }
 
     @Override
     Navigator $(Map<String, Object> attributes, By bySelector, int index) {
-        base.find(attributes, bySelector, index)
+        locator.find(attributes, bySelector, index)
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, By bySelector, int index) {
-        base.find(attributes, bySelector, index)
+        locator.find(attributes, bySelector, index)
     }
 
     @Override
     Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-        base.find(attributes, bySelector, range)
+        locator.find(attributes, bySelector, range)
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-        base.find(attributes, bySelector, range)
+        locator.find(attributes, bySelector, range)
     }
 
     @Override
     Navigator $(By bySelector) {
-        base.find(bySelector)
+        locator.find(bySelector)
     }
 
     @Override
     Navigator find(By bySelector) {
-        base.find(bySelector)
+        locator.find(bySelector)
     }
 
     @Override
     Navigator $(By bySelector, int index) {
-        base.find(bySelector, index)
+        locator.find(bySelector, index)
     }
 
     @Override
     Navigator find(By bySelector, int index) {
-        base.find(bySelector, index)
+        locator.find(bySelector, index)
     }
 
     @Override
     Navigator $(By bySelector, Range<Integer> range) {
-        base.find(bySelector, range)
+        locator.find(bySelector, range)
     }
 
     @Override
     Navigator find(By bySelector, Range<Integer> range) {
-        base.find(bySelector, range)
+        locator.find(bySelector, range)
     }
 
     Navigator find(Map<String, Object> attributes) {
-        base.find(attributes)
+        locator.find(attributes)
     }
 
     Navigator $(Map<String, Object> attributes) {
-        base.find(attributes)
+        locator.find(attributes)
     }
 
     Navigator find(Map<String, Object> attributes, int index) {
-        base.find(attributes, index)
+        locator.find(attributes, index)
     }
 
     Navigator find(Map<String, Object> attributes, Range<Integer> range) {
-        base.find(attributes, range)
+        locator.find(attributes, range)
     }
 
     Navigator $(Map<String, Object> attributes, int index) {
-        base.find(attributes, index)
+        locator.find(attributes, index)
     }
 
     Navigator $(Map<String, Object> attributes, Range<Integer> range) {
-        base.find(attributes, (String) null, range)
+        locator.find(attributes, (String) null, range)
     }
 
     Navigator find(Map<String, Object> attributes, String selector) {
-        base.find(attributes, selector)
+        locator.find(attributes, selector)
     }
 
     Navigator $(Map<String, Object> attributes, String selector) {
-        base.find(attributes, selector)
+        locator.find(attributes, selector)
     }
 
     Navigator find(Map<String, Object> attributes, String selector, int index) {
-        base.find(attributes, selector, index)
+        locator.find(attributes, selector, index)
     }
 
     Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
-        base.find(attributes, selector, range)
+        locator.find(attributes, selector, range)
     }
 
     Navigator $(Map<String, Object> attributes, String selector, int index) {
-        base.find(attributes, selector, index)
+        locator.find(attributes, selector, index)
     }
 
     Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
-        base.find(attributes, selector, range)
+        locator.find(attributes, selector, range)
     }
 
     Navigator $(Navigator[] navigators) {

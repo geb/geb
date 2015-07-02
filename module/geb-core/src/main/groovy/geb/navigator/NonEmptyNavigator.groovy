@@ -44,37 +44,12 @@ class NonEmptyNavigator extends AbstractNavigator {
     protected final List<WebElement> contextElements
 
     NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
-        super(browser)
+        super(browser, new SearchContextBasedBasicLocator(contextElements.asImmutable(), browser.navigatorFactory))
         this.contextElements = contextElements.toList().asImmutable()
     }
 
     protected Navigator navigatorFor(Collection<WebElement> contextElements) {
         browser.navigatorFactory.createFromWebElements(contextElements)
-    }
-
-    @Override
-    Navigator find(String selector) {
-        find(By.cssSelector(selector))
-    }
-
-    @Override
-    Navigator find(By bySelector) {
-        List<WebElement> list = []
-        for (contextElement in contextElements) {
-            list.addAll contextElement.findElements(bySelector)
-        }
-        navigatorFor list
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, String selector) {
-        def predicatesCopy = predicates.clone()
-        def optimizedSelector = optimizeSelector(selector, predicatesCopy)
-        if (optimizedSelector) {
-            find(optimizedSelector).filter(predicatesCopy)
-        } else {
-            find(predicates)
-        }
     }
 
     @Override
@@ -586,30 +561,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         } else {
             throw new MissingPropertyException(name, getClass())
         }
-    }
-
-    /**
-     * Optimizes the selector if the predicates contains `class` or `id` keys that map to strings. Note this method has
-     * a side-effect in that it _removes_ those keys from the predicates map.
-     */
-    protected String optimizeSelector(String selector, Map<String, Object> predicates) {
-        if (!selector) {
-            return selector
-        }
-
-        def buffer = new StringBuilder(selector)
-        if (predicates.containsKey("id") && predicates["id"] in String) {
-            buffer << "#" << CssSelector.escape(predicates.remove("id"))
-        }
-        if (predicates.containsKey("class") && predicates["class"] in String) {
-            predicates.remove("class").split(/\s+/).each { className ->
-                buffer << "." << CssSelector.escape(className)
-            }
-        }
-        if (buffer[0] == "*" && buffer.length() > 1) {
-            buffer.deleteCharAt(0)
-        }
-        buffer.toString()
     }
 
     protected boolean matches(WebElement element, Map<String, Object> predicates) {

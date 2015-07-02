@@ -16,10 +16,15 @@
 package geb.navigator.factory
 
 import geb.Browser
+import geb.navigator.DefaultLocator
+import geb.navigator.Locator
 import geb.navigator.Navigator
+import geb.navigator.SearchContextBasedBasicLocator
 import org.openqa.selenium.By
 
 class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
+
+    final Locator locator
 
     protected String getBaseTagName() {
         "html"
@@ -27,6 +32,7 @@ class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
     BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
         super(browser, innerNavigatorFactory)
+        locator = new DefaultLocator(new SearchContextBasedBasicLocator(browser.driver, this))
     }
 
     protected Navigator createBase() {

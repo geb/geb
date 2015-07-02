@@ -25,11 +25,13 @@ import org.openqa.selenium.WebElement
 
 abstract class AbstractNavigator implements Navigator {
 
-    private static final String MATCH_ALL_SELECTOR = "*"
     final Browser browser
 
-    AbstractNavigator(Browser browser) {
+    final Locator locator
+
+    AbstractNavigator(Browser browser, BasicLocator basicLocator) {
         this.browser = browser
+        this.locator = new DefaultLocator(basicLocator)
     }
 
     /**
@@ -57,156 +59,152 @@ abstract class AbstractNavigator implements Navigator {
         !empty
     }
 
-    @Override
-    Navigator find(Map<String, Object> predicates, int index) {
-        find(predicates, null, index..index)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, Range<Integer> range) {
-        find(predicates, (String) null, range)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, String selector, int index) {
-        find(predicates, selector, index..index)
-    }
-
-    @Override
-    Navigator find(String selector, Range<Integer> range) {
-        find(selector)[range]
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
-        find(predicates, (String) selector)[range]
-    }
-
-    Navigator find(Map<String, Object> predicates, String selector, Integer index) {
-        find(predicates, selector, index..index)
-    }
-
-    Navigator find(Map<String, Object> predicates, Integer index) {
-        find(predicates, MATCH_ALL_SELECTOR, index)
-    }
-
-    @Override
-    Navigator find(String selector, int index) {
-        find(selector)[index]
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates) {
-        find predicates, MATCH_ALL_SELECTOR
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, String selector) {
-        find(selector).filter(predicates)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector) {
-        find(bySelector).filter(predicates)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector, int index) {
-        find(predicates, bySelector, index..index)
-    }
-
-    Navigator find(Map<String, Object> predicates, By bySelector, Integer index) {
-        find(predicates, bySelector, index..index)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        find(predicates, (By) bySelector)[range]
-    }
-
-    @Override
-    Navigator find(By bySelector, int index) {
-        find(bySelector)[index]
-    }
-
-    @Override
-    Navigator find(By bySelector, Range<Integer> range) {
-        find(bySelector)[range]
-    }
-
-    @Override
     Navigator $(Map<String, Object> predicates) {
-        find(predicates)
+        locator.$(predicates)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, int index) {
-        find(predicates, index)
+        locator.$(predicates, index)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, Range<Integer> range) {
-        find(predicates, range)
+        locator.$(predicates, range)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, String selector) {
-        find(predicates, selector)
+        locator.$(predicates, selector)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, String selector, int index) {
-        find(predicates, selector, index)
+        locator.$(predicates, (String) selector, index)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
-        find(predicates, selector, range)
+        locator.$(predicates, (String) selector, range)
     }
 
     @Override
     Navigator $(String selector) {
-        find(selector)
+        locator.$(selector)
     }
 
     @Override
     Navigator $(String selector, int index) {
-        find(selector, index)
+        locator.$(selector, index)
     }
 
     @Override
     Navigator $(String selector, Range<Integer> range) {
-        find(selector, range)
+        locator.$(selector, range)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, By bySelector) {
-        find(predicates, bySelector)
+        locator.$(predicates, bySelector)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, By bySelector, int index) {
-        find(predicates, bySelector, index)
+        locator.$(predicates, (By) bySelector, index)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        find(predicates, bySelector, range)
+        locator.$(predicates, (By) bySelector, range)
     }
 
     @Override
     Navigator $(By bySelector) {
-        find(bySelector)
+        locator.$(bySelector)
     }
 
     @Override
     Navigator $(By bySelector, int index) {
-        find(bySelector, index)
+        locator.$(bySelector, index)
     }
 
     @Override
     Navigator $(By bySelector, Range<Integer> range) {
-        find(bySelector, range)
+        locator.$(bySelector, range)
+    }
+
+    Navigator find(Map<String, Object> predicates) {
+        locator.find(predicates)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, int index) {
+        locator.find(predicates, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, Range<Integer> range) {
+        locator.find(predicates, range)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, String selector) {
+        locator.find(predicates, selector)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, String selector, int index) {
+        locator.find(predicates, (String) selector, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
+        locator.find(predicates, (String) selector, range)
+    }
+
+    @Override
+    Navigator find(String selector) {
+        locator.find(selector)
+    }
+
+    @Override
+    Navigator find(String selector, int index) {
+        locator.find(selector, index)
+    }
+
+    @Override
+    Navigator find(String selector, Range<Integer> range) {
+        locator.find(selector, range)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector) {
+        locator.find(predicates, bySelector)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector, int index) {
+        locator.find(predicates, (By) bySelector, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+        locator.find(predicates, (By) bySelector, range)
+    }
+
+    @Override
+    Navigator find(By bySelector) {
+        locator.find(bySelector)
+    }
+
+    @Override
+    Navigator find(By bySelector, int index) {
+        locator.find(bySelector, index)
+    }
+
+    @Override
+    Navigator find(By bySelector, Range<Integer> range) {
+        locator.find(bySelector, range)
     }
 
     @Override

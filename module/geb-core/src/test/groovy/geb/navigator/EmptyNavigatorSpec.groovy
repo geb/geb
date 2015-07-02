@@ -30,22 +30,22 @@ class EmptyNavigatorSpec extends Specification {
 
     def find() {
         expect:
-        navigator.find("foo").is(navigator)
-        navigator.find("foo", 0).is(navigator)
-        // navigator.find("foo", 0..1).is(navigator)
-        navigator.find("foo", 0, a: "b").is(navigator)
-        navigator.find("foo", 0..1, a: "b").is(navigator)
-        navigator.find("foo", 0..<0, a: "b").is(navigator)
-        navigator.find("foo", a: "b").is(navigator)
-        navigator.find(0, a: "b").is(navigator)
-        // navigator.find(0..1, a: "b").is(navigator)
-        navigator.find(a: "b").is(navigator)
+        navigator.find("foo") instanceof EmptyNavigator
+        navigator.find("foo", 0) instanceof EmptyNavigator
+        navigator.find("foo", 0..1) instanceof EmptyNavigator
+        navigator.find("foo", 0, a: "b") instanceof EmptyNavigator
+        navigator.find("foo", 0..1, a: "b") instanceof EmptyNavigator
+        navigator.find("foo", 0..<0, a: "b") instanceof EmptyNavigator
+        navigator.find("foo", a: "b") instanceof EmptyNavigator
+        navigator.find(0, a: "b") instanceof EmptyNavigator
+        navigator.find(0..1, a: "b") instanceof EmptyNavigator
+        navigator.find(a: "b") instanceof EmptyNavigator
     }
 
     def getAt() {
-        navigator[1].is(navigator)
-        navigator[1..10].is(navigator)
-        navigator[0..<0].is(navigator)
+        navigator[1] instanceof EmptyNavigator
+        navigator[1..10] instanceof EmptyNavigator
+        navigator[0..<0] instanceof EmptyNavigator
     }
 
     @Unroll

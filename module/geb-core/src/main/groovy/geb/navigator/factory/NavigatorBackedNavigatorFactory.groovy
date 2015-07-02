@@ -15,6 +15,7 @@
  */
 package geb.navigator.factory
 
+import geb.navigator.Locator
 import geb.navigator.Navigator
 
 class NavigatorBackedNavigatorFactory extends AbstractNavigatorFactory {
@@ -26,4 +27,8 @@ class NavigatorBackedNavigatorFactory extends AbstractNavigatorFactory {
         base = navigator
     }
 
+    @Override
+    Locator getLocator() {
+        base
+    }
 }

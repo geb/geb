@@ -78,8 +78,7 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
 
         then:
         driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
-        driver.findRootElementExecuted()
-        driver.findChildElementsByCssExecuted('p')
+        driver.findElementsByCssExecuted('p')
     }
 
     void 'using form control shortcuts in a baseless module should not generate multiple root element searches'() {

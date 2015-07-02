@@ -77,8 +77,8 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
         findByTagNameExecuted('html')
     }
 
-    void findChildElementsByCssExecuted(String selector) {
-        ensureExecuted('findChildElements', using: 'css selector', value: selector)
+    void findElementsByCssExecuted(String selector) {
+        ensureExecuted('findElements', using: 'css selector', value: selector)
     }
 
     private static class Command {
