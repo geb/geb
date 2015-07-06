@@ -23,6 +23,7 @@ import geb.test.RemoteWebDriverWithExpectations
 import geb.test.TestHttpServer
 import org.openqa.selenium.remote.DesiredCapabilities
 import spock.lang.Shared
+import spock.lang.Unroll
 
 class WebDriverCommandsSpec extends GebSpecWithServer {
 
@@ -123,6 +124,33 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
         and:
         driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
         driver.findElementsByCssExecuted("""[type="text"][name="someName"]""")
+    }
+
+    @Unroll("passing #attributes to find results in a findElements command using #using")
+    void "passing a single attribute map to find should be translated to a specific By selector usage where possible"() {
+        given:
+        callbackAndWebDriverServer.responseHtml {
+            body {
+                input id: "foo", class: "bar", name: "fizz"
+            }
+        }
+
+        when:
+        go()
+        def input = $(attributes)
+
+        then:
+        input
+
+        and:
+        driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
+        driver.ensureExecuted("findElements", using: using, value: selector)
+
+        where:
+        attributes     | using        | selector
+        [id: "foo"]    | "id"         | "foo"
+        [class: "bar"] | "class name" | "bar"
+        [name: "fizz"] | "name"       | "fizz"
     }
 }
 

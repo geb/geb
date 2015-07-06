@@ -24,8 +24,11 @@ import static geb.navigator.Locator.MATCH_ALL_SELECTOR
 
 class SearchContextBasedBasicLocator implements BasicLocator {
 
-    public static final String CLASS_ATTRIBUTE_NAME = "class"
-    public static final String ID_ATTRIBUTE_NAME = "id"
+    private static final Map<String, Closure> BY_SELECTING_ATTRIBUTES = [
+        id: By.&id,
+        class: By.&className,
+        name: By.&name
+    ]
 
     private final Collection<? extends SearchContext> searchContexts
     private final NavigatorFactory navigatorFactory
@@ -37,10 +40,6 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     SearchContextBasedBasicLocator(Collection<? extends SearchContext> searchContexts, NavigatorFactory navigatorFactory) {
         this.searchContexts = searchContexts
         this.navigatorFactory = navigatorFactory
-    }
-
-    private Navigator navigatorFor(Collection<WebElement> contextElements) {
-        navigatorFactory.createFromWebElements(contextElements)
     }
 
     @Override
@@ -55,12 +54,30 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     @Override
     Navigator find(Map<String, Object> attributes, String selector) {
         def attributesCopy = attributes.clone()
-        def optimizedSelector = optimizeSelector(selector, attributesCopy)
-        if (optimizedSelector) {
-            find(By.cssSelector(optimizedSelector)).filter(attributesCopy)
-        } else {
-            find(attributes)
+        def selectedUsingBy = findUsingByIfPossible(attributesCopy, selector)
+        if (selectedUsingBy != null) {
+            return selectedUsingBy
         }
+        def optimizedSelector = optimizeSelector(selector, attributesCopy)
+        optimizedSelector ? find(By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
+    }
+
+    protected Navigator navigatorFor(Collection<WebElement> contextElements) {
+        navigatorFactory.createFromWebElements(contextElements)
+    }
+
+    protected Navigator findUsingByIfPossible(Map<String, Object> attributes, String selector) {
+        if (attributes.size() == 1 && selector == MATCH_ALL_SELECTOR) {
+            BY_SELECTING_ATTRIBUTES.findResult {
+                if (hasStringValueForKey(attributes, it.key)) {
+                    find(it.value.call(attributes[it.key]))
+                }
+            }
+        }
+    }
+
+    protected boolean hasStringValueForKey(Map<String, Object> attributes, String key) {
+        attributes.containsKey(key) && attributes[key] instanceof String
     }
 
     /**
