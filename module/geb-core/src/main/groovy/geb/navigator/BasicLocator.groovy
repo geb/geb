@@ -22,8 +22,6 @@ import org.openqa.selenium.By
  */
 interface BasicLocator {
 
-    public static final String MATCH_ALL_SELECTOR = "*"
-
     /**
      * Shorthand for <code>find(null, bySelector, null)</code>
      *
@@ -40,24 +38,4 @@ interface BasicLocator {
      * @return a new Navigator instance containing the matched elements
      */
     Navigator find(Map<String, Object> attributes, String selector)
-
-    /**
-     * Creates a new Navigator instance containing the elements whose attributes match the specified values or patterns.
-     * The key 'text' can be used to match the text contained in elements. Regular expression Pattern objects may be
-     * used as values.
-     * <p>Examples:</p>
-     * <dl>
-     * <dt>find(name: "firstName")</dt>
-     * <dd>selects all elements with the name "firstName"</dd>
-     * <dt>find(name: "firstName", readonly: "readonly")</dt>
-     * <dd>selects all elements with the name "firstName" that are read-only</dd>
-     * <dt>find(text: "I can has cheezburger")</dt>
-     * <dd>selects all elements containing the exact text</dd>
-     * <dt>find(text: ~/I can has.+/)</dt>
-     * <dd>selects all elements whose text matches a regular expression</dd>
-     * </dl>
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
-     * @return a new Navigator instance containing the matched elements
-     */
-    Navigator find(Map<String, Object> attributes)
 }

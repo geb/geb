@@ -20,6 +20,8 @@ import org.openqa.selenium.By
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.WebElement
 
+import static geb.navigator.Locator.MATCH_ALL_SELECTOR
+
 class SearchContextBasedBasicLocator implements BasicLocator {
 
     public static final String CLASS_ATTRIBUTE_NAME = "class"
@@ -59,11 +61,6 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         } else {
             find(attributes)
         }
-    }
-
-    @Override
-    Navigator find(Map<String, Object> attributes) {
-        find attributes, MATCH_ALL_SELECTOR
     }
 
     /**

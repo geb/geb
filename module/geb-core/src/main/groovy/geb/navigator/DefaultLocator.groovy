@@ -160,4 +160,9 @@ class DefaultLocator implements Locator {
     Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
         find(attributes, selector, range)
     }
+
+    @Override
+    Navigator find(Map<String, Object> attributes) {
+        find attributes, MATCH_ALL_SELECTOR
+    }
 }

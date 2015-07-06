@@ -304,10 +304,5 @@ class EmptyNavigator extends AbstractNavigator {
         Navigator find(Map<String, Object> attributes, String selector) {
             new EmptyNavigator(browser)
         }
-
-        @Override
-        Navigator find(Map<String, Object> attributes) {
-            new EmptyNavigator(browser)
-        }
     }
 }
