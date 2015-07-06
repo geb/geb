@@ -22,7 +22,6 @@ import org.openqa.selenium.WebElement
 
 class SearchContextBasedBasicLocator implements BasicLocator {
 
-    private static final String MATCH_ALL_SELECTOR = "*"
     public static final String CLASS_ATTRIBUTE_NAME = "class"
     public static final String ID_ATTRIBUTE_NAME = "id"
 

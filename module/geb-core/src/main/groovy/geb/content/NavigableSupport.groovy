@@ -167,7 +167,7 @@ class NavigableSupport implements Navigable {
     }
 
     Navigator $(Map<String, Object> attributes, Range<Integer> range) {
-        locator.find(attributes, (String) null, range)
+        locator.find(attributes, range)
     }
 
     Navigator find(Map<String, Object> attributes, String selector) {

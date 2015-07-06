@@ -22,6 +22,8 @@ import org.openqa.selenium.By
  */
 interface BasicLocator {
 
+    public static final String MATCH_ALL_SELECTOR = "*"
+
     /**
      * Shorthand for <code>find(null, bySelector, null)</code>
      *

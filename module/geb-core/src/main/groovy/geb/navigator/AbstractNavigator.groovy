@@ -80,12 +80,12 @@ abstract class AbstractNavigator implements Navigator {
 
     @Override
     Navigator $(Map<String, Object> predicates, String selector, int index) {
-        locator.$(predicates, (String) selector, index)
+        locator.$(predicates, selector, index)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
-        locator.$(predicates, (String) selector, range)
+        locator.$(predicates, selector, range)
     }
 
     @Override
@@ -110,12 +110,12 @@ abstract class AbstractNavigator implements Navigator {
 
     @Override
     Navigator $(Map<String, Object> predicates, By bySelector, int index) {
-        locator.$(predicates, (By) bySelector, index)
+        locator.$(predicates, bySelector, index)
     }
 
     @Override
     Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        locator.$(predicates, (By) bySelector, range)
+        locator.$(predicates, bySelector, range)
     }
 
     @Override
@@ -154,12 +154,12 @@ abstract class AbstractNavigator implements Navigator {
 
     @Override
     Navigator find(Map<String, Object> predicates, String selector, int index) {
-        locator.find(predicates, (String) selector, index)
+        locator.find(predicates, selector, index)
     }
 
     @Override
     Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
-        locator.find(predicates, (String) selector, range)
+        locator.find(predicates, selector, range)
     }
 
     @Override
@@ -184,12 +184,12 @@ abstract class AbstractNavigator implements Navigator {
 
     @Override
     Navigator find(Map<String, Object> predicates, By bySelector, int index) {
-        locator.find(predicates, (By) bySelector, index)
+        locator.find(predicates, bySelector, index)
     }
 
     @Override
     Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        locator.find(predicates, (By) bySelector, range)
+        locator.find(predicates, bySelector, range)
     }
 
     @Override
