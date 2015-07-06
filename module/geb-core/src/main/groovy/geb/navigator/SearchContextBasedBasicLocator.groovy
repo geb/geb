@@ -64,8 +64,8 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     }
 
     /**
-     * Optimizes the selector if the predicates contains `class` or `id` keys that map to strings. Note this method has
-     * a side-effect in that it _removes_ those keys from the predicates map.
+     * Optimizes the selector by translating attributes map into a css attribute selector if possible.
+     * Note this method has a side-effect in that it _removes_ those keys from the predicates map.
      */
     protected String optimizeSelector(String selector, Map<String, Object> attributes) {
         if (!selector) {
@@ -73,14 +73,14 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         }
 
         def buffer = new StringBuilder(selector)
-        if (attributes.containsKey(ID_ATTRIBUTE_NAME) && attributes[ID_ATTRIBUTE_NAME] in String) {
-            buffer << "#" << CssSelector.escape(attributes.remove(ID_ATTRIBUTE_NAME))
-        }
-        if (attributes.containsKey(CLASS_ATTRIBUTE_NAME) && attributes[CLASS_ATTRIBUTE_NAME] in String) {
-            attributes.remove(CLASS_ATTRIBUTE_NAME).split(/\s+/).each { className ->
-                buffer << "." << CssSelector.escape(className)
+        for (def it = attributes.entrySet().iterator(); it.hasNext();) {
+            def attribute = it.next()
+            if (attribute.key != "text" && attribute.value instanceof String) {
+                buffer << """[${attribute.key}="${CssSelector.escape(attribute.value)}"]"""
+                it.remove()
             }
         }
+
         if (buffer[0] == MATCH_ALL_SELECTOR && buffer.length() > 1) {
             buffer.deleteCharAt(0)
         }
