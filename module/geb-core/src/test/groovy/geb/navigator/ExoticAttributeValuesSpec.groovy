@@ -22,22 +22,13 @@ import geb.test.GebSpecWithCallbackServer
 class ExoticAttributeValuesSpec extends GebSpecWithCallbackServer {
 
     def setupSpec() {
-        responseHtml {
+        html {
             div(id: "a:b", "foo")
-            div(id: "a b", "bar")
         }
-
-        go()
     }
 
     def "jsf style ids"() {
         expect:
         $(id: "a:b").text() == "foo"
     }
-
-    def "ids with spaces"() {
-        expect:
-        $(id: "a b").text() == "bar"
-    }
-
 }
