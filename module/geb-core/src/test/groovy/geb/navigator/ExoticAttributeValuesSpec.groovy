@@ -30,5 +30,7 @@ class ExoticAttributeValuesSpec extends GebSpecWithCallbackServer {
     def "jsf style ids"() {
         expect:
         $(id: "a:b").text() == "foo"
+        $("div", id: "a:b").text() == "foo"
+        $("#a\\:b").text() == "foo"
     }
 }
