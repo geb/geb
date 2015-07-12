@@ -96,8 +96,7 @@ subprojects {
             codenarc 'org.codenarc:CodeNarc:0.22'
         }
 
-        sourceCompatibility = 1.5
-        targetCompatibility = 1.5
+        sourceCompatibility = 1.7
 
         tasks.withType(Test) {
             reports.junitXml.destination = reporting.file("test-results/$name")
@@ -137,6 +136,17 @@ subprojects {
 
         artifacts {
             archives javadocJar, sourcesJar
+        }
+
+        gradle.taskGraph.whenReady { taskGraph ->
+            if (taskGraph.hasTask(uploadArchives)) {
+                tasks.withType(JavaCompile) {
+                    options.compilerArgs << "-Werror" << "-Xlint:options"
+                }
+                tasks.withType(GroovyCompile) {
+                    options.compilerArgs << "-Werror" << "-Xlint:options"
+                }
+            }
         }
     }
 
