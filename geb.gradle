@@ -1,11 +1,25 @@
 apply plugin: 'base'
 apply plugin: 'idea'
+apply plugin: 'io.codearte.nexus-staging'
 apply from: "gradle/idea.gradle"
 
 buildscript {
     repositories {
         mavenCentral()
     }
+
+    dependencies {
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+    }
+}
+
+def getProperty(String name, defaultValue) {
+    hasProperty(name) ? property(name) : defaultValue
+}
+
+nexusStaging {
+    username = getProperty("sonatypeOssUsername", null)
+    password = getProperty("sonatypeOssPassword", null)
 }
 
 allprojects { project ->
@@ -207,9 +221,5 @@ subprojects {
 task release {
     dependsOn ':integration:geb-grails:publish',
         { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion "1.7"
 }
 
