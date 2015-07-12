@@ -9,7 +9,7 @@ buildscript {
 }
 
 allprojects { project ->
-    version = '0.11.0'
+    version = '1.0-SNAPSHOT'
     group = 'org.gebish'
 
     ext {
