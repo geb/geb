@@ -69,6 +69,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+No changes have been made, yet.
+
+=== 0.12.0
+
 ==== New features
 
 * Support for finding elements using Webdriver's [`By`][by-api] selectors. [issue:348[]]
