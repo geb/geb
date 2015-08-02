@@ -107,6 +107,17 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $(a: ~/\d/, id: "id1")*.@id == ["id1"]
     }
 
+    def "find by selector and class attribute"() {
+        given:
+        html {
+            div(class: "a b c")
+        }
+
+        expect:
+        $("div", class: "a")
+        $("div", class: "a c")
+    }
+
     @Issue("http://jira.codehaus.org/browse/GEB-14")
     def "find by attributes passing a class pattern should match any of the classes on an element"() {
         given:

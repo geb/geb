@@ -93,7 +93,13 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         for (def it = attributes.entrySet().iterator(); it.hasNext();) {
             def attribute = it.next()
             if (attribute.key != "text" && attribute.value instanceof String) {
-                buffer << """[${attribute.key}="${CssSelector.escape(attribute.value)}"]"""
+                if (attribute.key == "class") {
+                    attribute.value.split(/\s+/).each { className ->
+                        buffer << "." << CssSelector.escape(className)
+                    }
+                } else {
+                    buffer << """[${attribute.key}="${CssSelector.escape(attribute.value)}"]"""
+                }
                 it.remove()
             }
         }
