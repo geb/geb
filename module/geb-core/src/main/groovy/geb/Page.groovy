@@ -61,7 +61,7 @@ import org.openqa.selenium.WebElement
  * <p>
  * See the chapter in the Geb manual on pages for more information on writing subclasses.
  */
-class Page implements Navigable, PageContentContainer, Initializable {
+class Page implements Navigable, PageContentContainer, Initializable, WaitingSupport {
 
     /**
      * The "at checker" for this page.
@@ -102,7 +102,6 @@ class Page implements Navigable, PageContentContainer, Initializable {
     @Delegate
     private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
 
-    @Delegate
     private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
 
     @Delegate
@@ -495,6 +494,26 @@ class Page implements Navigable, PageContentContainer, Initializable {
     @Override
     <T extends Module> T module(T module) {
         navigableSupport.module(module)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
+        waitingSupport.waitFor(params, waitPreset, block)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], Closure<T> block) {
+        waitingSupport.waitFor(params, block)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+        waitingSupport.waitFor(params, timeout, block)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+        waitingSupport.waitFor(params, interval, block)
     }
 
     GebException uninitializedException() {

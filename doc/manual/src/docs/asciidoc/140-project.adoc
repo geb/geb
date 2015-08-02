@@ -69,7 +69,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Change implementation of `waitFor()` method delegation so that IntelliJ does not complain that page and module classes supposedly need to implement it. [issue:391[]]
 
 === 0.12.0
 
@@ -90,7 +92,7 @@ No changes have been made, yet.
 * Support setting `forcelocal` flag for BrowserStack tunnel. [issue:385[]]
 * Add configuration option for including cause string representation in message of `WaitTimeoutException`. [issue:386[]]
 
-#### Improvements
+==== Improvements
 
 * Using unrecognized content template parameters result in an `InvalidPageContent` exception to make catching typos in them easier. [issue:377[]]
 * Improve error reporting when no at checkers pass if using multiple candidates for page switching. [issue:346[]]

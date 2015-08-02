@@ -41,7 +41,7 @@ import geb.waiting.WaitingSupport
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
-class Module implements Navigator, PageContentContainer, Initializable {
+class Module implements Navigator, PageContentContainer, Initializable, WaitingSupport {
 
     static base = null
 
@@ -49,7 +49,7 @@ class Module implements Navigator, PageContentContainer, Initializable {
     private PageContentSupport pageContentSupport = new UninitializedPageContentSupport(this)
     @Delegate
     private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
-    @Delegate
+
     private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
     @Delegate
     private FrameSupport frameSupport = new UninitializedFrameSupport(this)
@@ -725,6 +725,26 @@ class Module implements Navigator, PageContentContainer, Initializable {
     @Override
     Navigator find(By bySelector, Range<Integer> range) {
         getInitializedNavigator().find(bySelector, range)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
+        waitingSupport.waitFor(params, waitPreset, block)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], Closure<T> block) {
+        waitingSupport.waitFor(params, block)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+        waitingSupport.waitFor(params, timeout, block)
+    }
+
+    @Override
+    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+        waitingSupport.waitFor(params, interval, block)
     }
 
     GebException uninitializedException() {
