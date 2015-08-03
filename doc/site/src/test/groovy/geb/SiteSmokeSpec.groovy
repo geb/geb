@@ -45,7 +45,7 @@ class SiteSmokeSpec extends GebSpec {
     }
 
     private apiLinksData() {
-        [menuItemElements.get(1).select('a').first().attr('href'), 'manual/0.7.0/api/']
+        menuItemElements.get(1).select('a')*.attr('href')
     }
 
     def setup() {
@@ -119,6 +119,9 @@ class SiteSmokeSpec extends GebSpec {
 
     @Unroll
     void 'api - #link'() {
+        given:
+        browser.driver.javascriptEnabled = true
+
         when:
         go(link)
 
