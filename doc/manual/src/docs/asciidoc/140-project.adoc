@@ -69,6 +69,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+No changes have been made, yet.
+
+=== 0.12.1
+
 ==== Fixes
 
 * Change implementation of `waitFor()` method delegation so that IntelliJ does not complain that page and module classes supposedly need to implement it. [issue:391[]]
