@@ -303,6 +303,7 @@ If there is an exception thrown during closure evaluation, it will be wrapped in
 Waiting content blocks are subject to “implicit assertions”.
 See the section on <<implicit-assertions, implicit assertions>> for more information.
 
+[[content-dsl-to-wait]]
 ==== `toWait`
 
 Default value: `false`

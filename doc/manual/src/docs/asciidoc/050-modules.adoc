@@ -172,6 +172,7 @@ include::{test-dir}/modules/ReusingModulesSpec.groovy[tag=content,indent=0]
 
 Modules work well for this.
 
+[[repeating-content]]
 == Using modules for repeating content
 
 Other than content that is repeated on different pages (like the shopping cart mentioned above), pages also can have content that is repeated on the page itself.
