@@ -127,7 +127,7 @@ No changes have been made, yet.
 * `module(Class&lt;? extends Module&gt;, Map args)` available in content DSL has been deprecated in favour of `Navigable.module(Module)` and will be removed in a future version of Geb.
 * `module(Class&lt;? extends Module&gt;, Navigator base, Map args)` available in content DSL has been deprecated in favour of `Navigator.module(Module)` and will be removed in a future version of Geb.
 * all variants of `moduleList()` method available in content DSL have been deprecated in favour of using `Navigator.module()` methods together with a `collect()` call and will be removed in a future
-version of Geb, see link:modules.html#using_modules_for_repeating_content_on_a_page[chapter on using modules for repeating content] for examples [issue:362[]]
+version of Geb, see link:#using-modules-for-repeating-content[chapter on using modules for repeating content] for examples [issue:362[]]
 * `isDisabled()`, `isEnabled()`, `isReadOnly()` and `isEditable()` methods of `Navigator` have been deprecated and will be removed in a future version of Geb. These methods are now available on the
 new <<form-element, `FormElement`>> module class.
 
@@ -143,7 +143,7 @@ new <<form-element, `FormElement`>> module class.
 * New `css()` method on `Navigator` that allows to access CSS properties of elements. [issue:141[]]
 * Added attribute based methods to relative content navigators such as next(), children() etc. [issue:299[]]
 * Added signature that accepts `localIdentifier` to `BrowserStackDriverFactory.create`. [issue:332[]]
-* Added link:pages.html#towait[`toWait`] content definition option which allows specifying that page transition happens asynchronously. [issue:134[]]
+* Added link:#code-towait-code[`toWait`] content definition option which allows specifying that page transition happens asynchronously. [issue:134[]]
 * Added support for explicitly specifying browser capabilities when using cloud browsers Gradle plugins. [issue:340[]]
 * Added an overloaded `create()` method on cloud driver factories that allow specifying browser capabilities in a map and don't require a string capabilities specification. [issue:281[]]
 
@@ -218,9 +218,9 @@ new <<form-element, `FormElement`>> module class.
 
 ==== New features
 
-* `page` and `close` options can be passed to `withWindow()` calls, see link:browser.html#passing_options_when_working_with_already_opened_windows[this manual section] for more information.
-* Unexpected pages can be specified to fail fast when performing “at” checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See link:pages.html#unexpected_pages[this manual section] for details. [issue:70[]]
-* Support for running Geb using SauceLabs provided browsers, see link:cloud-browsers.html[this manual section] for details.
+* `page` and `close` options can be passed to `withWindow()` calls, see link:#already-opened-windows[this manual section] for more information.
+* Unexpected pages can be specified to fail fast when performing “at” checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See link:#unexpected-pages[this manual section] for details. [issue:70[]]
+* Support for running Geb using SauceLabs provided browsers, see link:#cloud-browser-testing[this manual section] for details.
 * New link:api/geb/navigator/Navigator.html#isEnabled()[`isEnabled()`] and link:api/geb/navigator/Navigator.html#isEditable()[`isEditable()`] methods on `Navigator`.
 * Support for ephemeral port allocation with Grails integration
 * Compatibility with Grails 2.3
@@ -260,12 +260,12 @@ new <<form-element, `FormElement`>> module class.
 ==== New features
 
 * New `via()` method that behaves the same way as `to()` behaved previously - it sets the page on the browser and does not verify the at checker of that page[issue:249[]].
-* It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`], see link:configuration.html#navigator_factory[this manual section] for more information [issue:96[]].
+* It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`], see link:#navigator-factory[this manual section] for more information [issue:96[]].
 * New variants of `withFrame()` method that allow to switch into frame context and change the page in one go and also automatically change it back to the original page after the call, see [switching pages and frames at once][switch-frame-and-page] in the manual [issue:213[]].
-* `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see link:browser.html#passing_options_when_working_with_newly_opened_windows[this manual section] for more information [issue:167[]].
+* `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see link:#newly-opened-windows[this manual section] for more information [issue:167[]].
 * Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class [issue:240[]].
 * Improved signature of `Browser.at()` and `Browser.to()` to return the exact type of the page that was asserted to be at / was navigated to.
-* link:api/geb/report/ReportingListener.html[`ReportingListener`] objects can be registered to observe reporting (see: link:reporting.html#listening_to_reporting[reporting.html#listening_to_reporting]
+* link:api/geb/report/ReportingListener.html[`ReportingListener`] objects can be registered to observe reporting (see: link:#listening-to-reporting[this manual section]
 
 ==== Fixes
 
@@ -363,7 +363,7 @@ new <<form-element, `FormElement`>> module class.
 
 ==== Breaking changes
 
-* Using `&lt;select&gt;` elements with Geb now requires an explicit dependency on an extra WebDriver jar (see link:intro.html#installation__usage[the section on installation for more info])
+* Using `&lt;select&gt;` elements with Geb now requires an explicit dependency on an extra WebDriver jar (see link:#installation-usage[the section on installation for more info])
 * The `Navigator` `classes()` method now returns a `List` (instead of `Set`) and guarantees that it will be sorted alphabetically
 
 === 0.6
