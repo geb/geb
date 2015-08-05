@@ -37,10 +37,9 @@ abstract class Crawler {
     final String startingUrl
 
     protected final AtomicInteger counter = new AtomicInteger(0)
-    protected final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(8)
+    protected final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(Runtime.runtime.availableProcessors() * 4)
 
     protected final ConcurrentMap<String, Link> seen = new ConcurrentHashMap<>()
-    protected final Queue<Link> visited = new ConcurrentLinkedQueue<>()
 
     Crawler(String startingUrl) {
         this.startingUrl = startingUrl
@@ -85,7 +84,7 @@ abstract class Crawler {
 
     List<Link> crawl() {
         def link = new Link(startingUrl)
-        seen.put(startingUrl, new Link(startingUrl))
+        seen.put(startingUrl, link)
         executorService.execute(toVisit(link))
 
         long startAt = System.currentTimeMillis()
@@ -95,7 +94,7 @@ abstract class Crawler {
         }
 
         if (counter.get() == 0) {
-            new ArrayList<>(visited)
+            new ArrayList<>(seen.values())
         } else {
             throw new RuntimeException("timeout")
         }
@@ -126,8 +125,6 @@ abstract class Crawler {
             if (link.attemptCount < retryLimit) {
                 link.errors.clear()
                 executorService.schedule(toVisit(link), retryWaitMillis, TimeUnit.MILLISECONDS)
-            } else {
-                visited << link
             }
         }
     }
@@ -205,7 +202,7 @@ abstract class Crawler {
     }
 
     protected Link toLink(URI currentUrl, String url) {
-        URI uri = new URI(url.replaceAll("\\s", "%20"))
+        URI uri = new URI(url.replaceAll("\\s", "%20").replaceAll("<", "%3C").replaceAll(">", "%3E"))
         def href = uri.isAbsolute() ? uri.toString() : currentUrl.resolve(uri).toString()
         href = NormalizeURL.normalize(href)
         if (isHttpUrl(href)) {
