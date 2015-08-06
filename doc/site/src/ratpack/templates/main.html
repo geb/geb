@@ -6,7 +6,11 @@
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-15031038-2']);
-        _gaq.push(['_trackPageview']);
+        _gaq.push(['_trackPageview', location.pathname + location.hash]);
+
+        window.onhashchange = function() {
+            _gaq.push(['_trackPageview', location.pathname + location.hash]);
+        };
 
         (function () {
             var ga = document.createElement('script');
