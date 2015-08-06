@@ -158,7 +158,7 @@ new <<form-element, `FormElement`>> module class.
 * The value passed to `aliases` content option in documentation examples should be a String [issue:338[]]
 * Added `$()` method on Navigator with all signatures of `find()`. [issue:321[]]
 * `geb-saucelabs` plugin now uses a native version of SauceConnect. [issue:341[]]
-* Don't modify the predicate map passed to link:api/geb/navigator/Locator.html#find(Map%3CString,%20Object%3E,%20java.lang.String)["`Navigator.find(Map&lt;String, Object&gt;, String)`"]. [issue:339[]]
+* Don't modify the predicate map passed to link:api/geb/navigator/BasicLocator.html#find(Map%3CString,%20Object%3E,%20java.lang.String)["`Navigator.find(Map&lt;String, Object&gt;, String)`"]. [issue:339[]]
 * Functional tests implemented using JUnit and Geb run twice in Grails 2.3+. [issue:314[]]
 * Mention in the manual where snapshot artifacts can be downloaded from. [issue:305[]]
 * Document that `withNewWindow()` and `withWindow()` switch page back to the original one. [issue:279[]]

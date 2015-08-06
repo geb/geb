@@ -40,7 +40,7 @@
 :drive-method-api: {drive-method-link}[drive()]
 :page-method-taking-class-api: link:api/geb/Browser.html#page(Class<T>)[<T extends Page> T page(Class<T> pageType)]
 :page-method-taking-instance-api: link:api/geb/Browser.html#page(T)[<T extends Page> T page(T pageInstance)]
-:page-method-taking-classes-array-api: link:api/geb/Browser.html#page(page(Class<?%20extends%20Page>))[Page page(Class<? extends Page>[\] potentialPageTypes)]
+:page-method-taking-classes-array-api: link:api/geb/Browser.html#page(Class<?%20extends%20Page>)[Page page(Class<? extends Page>[\] potentialPageTypes)]
 :page-method-taking-instances-array-api: link:api/geb/Browser.html#page(geb.Page)[Page page(Page[\] potentialPageInstances)]
 :at-method-taking-class-api: link:api/geb/Browser.html#at(Class<T>)[<T extends Page> T at(Class<T> pageType)]
 :at-method-taking-class-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]

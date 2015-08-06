@@ -27,7 +27,6 @@ interface WaitingSupport {
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
      * @see geb.Configuration#getWaitPreset(java.lang.String)
-     * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
      */
     public <T> T waitFor(String waitPreset, Closure<T> block)
 
@@ -41,7 +40,6 @@ interface WaitingSupport {
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
      * @see geb.Configuration#getDefaultWait()
-     * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
      */
     public <T> T waitFor(Closure<T> block)
 
@@ -55,7 +53,6 @@ interface WaitingSupport {
      * @param block what is to be waited on to return a true-ish value
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
-     * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
      */
     public <T> T waitFor(Double timeout, Closure<T> block)
 
@@ -70,7 +67,6 @@ interface WaitingSupport {
      * @param block what is to be waited on to return a true-ish value
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
-     * @see geb.waiting.Wait#waitFor(groovy.lang.Closure)
      */
     public <T> T waitFor(Double timeout, Double interval, Closure<T> block)
 

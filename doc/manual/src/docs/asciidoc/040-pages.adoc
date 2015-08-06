@@ -327,6 +327,7 @@ include::{real-browser-test-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait,inden
 See the <<waiting, section on waiting>> for the semantics of the `waitFor()` method, that is used here internally.
 Like `waitFor()` a `{wait-timeout-exception-api}` will be thrown if the wait timeout expires.
 
+[[content-dsl-page]]
 ==== `page`
 
 Default value: `null`

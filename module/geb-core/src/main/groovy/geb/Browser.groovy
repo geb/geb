@@ -282,7 +282,6 @@ class Browser {
      * <b>Note that it does not verify that the page matches the current content by running its at checker</b>
      *
      * @return a page instance passed as the first argument after initializing
-     * @see #page(Class)
      */
     public <T extends Page> T page(T page) {
         makeCurrentPage(initialisePage(page))
@@ -313,7 +312,6 @@ class Browser {
      * </ul>
      *
      * @return an initialized page instance set as the current page
-     * @see #page(Class [ ])
      */
     public Page page(Page[] potentialPageInstances) {
         checkIfAtAnUnexpectedPage(potentialPageInstances)
@@ -329,7 +327,7 @@ class Browser {
      * If the given pageType does not define an at checker, UndefinedAtCheckerException is thrown.
      *
      * <p>
-     * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
+     * If <a href="../../#implicit-assertions">implicit assertions</a>
      * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
      *
      * @return a page instance of the given page type when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
@@ -347,7 +345,7 @@ class Browser {
      * If the given page object does not define an at checker, UndefinedAtCheckerException is thrown.
      *
      * <p>
-     * If <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
+     * If <a href="../../#implicit-assertions">implicit assertions</a>
      * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
      *
      * @return a page instance of the passed page after initializing when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
@@ -364,7 +362,7 @@ class Browser {
      * If the given pageType does not define an at checker, UndefinedAtCheckerException is thrown.
      *
      * If the at check throws an {@link AssertionError}
-     * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
+     * (as it will when <a href="../../#implicit-assertions">implicit assertions</a>
      * are enabled) this method will suppress the exception and return false.
      *
      * @return true if browser is at the given page otherwise false
@@ -381,7 +379,7 @@ class Browser {
      * If the given page instance does not define an at checker, UndefinedAtCheckerException is thrown.
      *
      * If the at check throws an {@link AssertionError}
-     * (as it will when <a href="http://www.gebish.org/manual/current/implicit-assertions.html">implicit assertions</a>
+     * (as it will when <a href="../../#implicit-assertions">implicit assertions</a>
      * are enabled) this method will suppress the exception and return false.
      *
      * @return true if browser is at the given page otherwise false

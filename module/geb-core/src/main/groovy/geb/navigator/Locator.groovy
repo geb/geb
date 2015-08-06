@@ -93,7 +93,6 @@ interface Locator extends BasicLocator {
      *
      * @param selector The css selector
      * @return new Navigator
-     * @see #find(java.lang.String, groovy.lang.Range)
      */
     Navigator $(String selector, Range<Integer> range)
 
@@ -103,7 +102,6 @@ interface Locator extends BasicLocator {
      * @param bySelector a WebDriver By selector
      * @param predicates a Map with keys representing attributes and values representing required values or patterns
      * @return a new Navigator instance containing the matched elements
-     * @see #find(java.util.Map, org.openqa.selenium.By)
      */
     Navigator $(Map<String, Object> attributes, By bySelector)
 
@@ -121,7 +119,6 @@ interface Locator extends BasicLocator {
      *
      * @param bySelector a WebDriver By selector
      * @return new Navigator
-     * @see #find(java.util.Map, org.openqa.selenium.By, int)
      */
     Navigator $(Map<String, Object> attributes, By bySelector, int index)
 
@@ -138,7 +135,6 @@ interface Locator extends BasicLocator {
      *
      * @param bySelector a WebDriver By selector
      * @return new Navigator instance containing the matched elements
-     * @see #find(java.util.Map, org.openqa.selenium.By, groovy.lang.Range)
      */
     Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range)
 
@@ -155,7 +151,7 @@ interface Locator extends BasicLocator {
      *
      * @param bySelector a WebDriver By selector
      * @return new Navigator
-     * @see #find(org.openqa.selenium.By)
+     * @see BasciLocator#find(org.openqa.selenium.By)
      */
     Navigator $(By bySelector)
 
@@ -182,7 +178,6 @@ interface Locator extends BasicLocator {
      *
      * @param bySelector a WebDriver By selector
      * @return new Navigator
-     * @see #find(org.openqa.selenium.By, groovy.lang.Range)
      */
     Navigator $(By bySelector, Range<Integer> range)
 
@@ -199,7 +194,6 @@ interface Locator extends BasicLocator {
      *
      * @param predicates a Map with keys representing attributes and values representing required values or patterns
      * @return a new Navigator instance containing the matched elements
-     * @see #find(java.util.Map)
      */
     Navigator $(Map<String, Object> attributes)
 
@@ -225,7 +219,6 @@ interface Locator extends BasicLocator {
      *
      * @param selector
      * @return new Navigator
-     * @see #find(java.util.Map, int)
      */
     Navigator $(Map<String, Object> attributes, int index)
 
@@ -235,7 +228,6 @@ interface Locator extends BasicLocator {
      * @param predicates attribute predicates
      * @param predicates range the range of matches to select
      * @return new Navigator
-     * @see #find(java.util.Map, groovy.lang.Range)
      */
     Navigator $(Map<String, Object> attributes, Range<Integer> range)
 
@@ -245,7 +237,6 @@ interface Locator extends BasicLocator {
      * @param selector a CSS selector
      * @param predicates a Map with keys representing attributes and values representing required values or patterns
      * @return a new Navigator instance containing the matched elements
-     * @see #find(java.util.Map, java.lang.String)
      */
     Navigator $(Map<String, Object> attributes, String selector)
 
@@ -288,7 +279,6 @@ interface Locator extends BasicLocator {
      *
      * @param selector
      * @return new Navigator
-     * @see #find(java.util.Map, java.lang.String, int)
      */
     Navigator $(Map<String, Object> attributes, String selector, int index)
 
@@ -297,7 +287,6 @@ interface Locator extends BasicLocator {
      *
      * @param selector a CSS selector
      * @return new Navigator instance containing the matched elements
-     * @see #find(java.util.Map, groovy.lang.Range)
      */
     Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range)
 }

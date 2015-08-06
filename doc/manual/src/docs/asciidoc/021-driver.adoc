@@ -25,7 +25,7 @@ However, where possible prefer implicit driver management which is discussed lat
 === Explicit lifecycle
 
 When the driver is constructed by the user, the user is responsible for quitting the driver at the appropriate time.
-This can be done via the methods on the `WebDriver` instance (obtainable via `{browser-get-driver-api}`) or by calling the <<quiting-the-browser,delegating methods on the browser object>>.
+This can be done via the methods on the `WebDriver` instance (obtainable via `{browser-get-driver-api}`) or by calling the <<quitting-the-browser,delegating methods on the browser object>>.
 
 == Implicit driver management
 
