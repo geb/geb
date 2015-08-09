@@ -744,7 +744,7 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     @Override
     def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
-        waitingSupport.waitFor(params, interval, block)
+        waitingSupport.waitFor(params, timeout, interval, block)
     }
 
     GebException uninitializedException() {
