@@ -21,72 +21,112 @@ import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
 @SuppressWarnings("TrailingWhitespace")
+@Unroll
 class WaitingSupportSpec extends WaitingSpec {
 
     def setup() {
         go()
+        page WaitingSupportSpecPage
     }
 
-    def "basic waiting"() {
+    def subjects() {
+        [
+            [{ browser }, "browser"],
+            [{ page }, "page"],
+            [{ mod }, "module"]
+        ]
+    }
+
+    def "basic waiting - when called on #subjectName"() {
         when:
         js.showIn(2)
+
         then:
         $("div").empty
-        waitFor(3) { !$("div").empty }
+        subjectFactory().waitFor(3) { !$("div").empty }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "basic waiting throwing exception"() {
+    def "basic waiting throwing exception - when called on #subjectName"() {
         when:
         js.showIn(2)
+
         then:
         $("div").empty
-        waitFor(3) { assert !$("div").empty; true }
+        subjectFactory().waitFor(3) { assert !$("div").empty; true }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "failed waiting"() {
+    def "failed waiting - when called on #subjectName"() {
         when:
         js.showIn(3)
-        waitFor(1) { !$("div").empty }
+        subjectFactory().waitFor(1) { !$("div").empty }
+
         then:
         WaitTimeoutException exception = thrown()
         exception.cause in PowerAssertionError
         exception.cause.message.contains('!$("div").empty')
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "failed waiting throwing exception"() {
+    def "failed waiting throwing exception - when called on #subjectName"() {
         when:
-        waitFor(2) { throw new IllegalArgumentException("1") }
+        subjectFactory().waitFor(2) { throw new IllegalArgumentException("1") }
+
         then:
         WaitTimeoutException e = thrown()
         e.cause instanceof IllegalArgumentException
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "larger interval than timeout"() {
+    def "larger interval than timeout - when called on #subjectName"() {
         when:
         js.showIn(4)
+
         then:
-        waitFor(1, 10) { $("div").empty }
+        subjectFactory().waitFor(1, 10) { $("div").empty }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "message argument is appended to the exception message"() {
+    def "message argument is appended to the exception message - when called on #subjectName"() {
         when:
-        waitFor(1, message: 'Some custom message') { false }
+        subjectFactory().waitFor(1, message: 'Some custom message') { false }
 
         then:
         WaitTimeoutException e = thrown()
         e.message =~ 'Some custom message'
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "larger interval than timeout throwing exception"() {
+    def "larger interval than timeout throwing exception - when called on #subjectName"() {
         when:
         js.showIn(4)
+
         then:
-        waitFor(1, 10) { assert $("div").empty; true }
+        subjectFactory().waitFor(1, 10) { assert $("div").empty; true }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "waitFor block takes longer than the timeout but succeeds"() {
+    def "waitFor block takes longer than the timeout but succeeds - when called on #subjectName"() {
         expect:
-        waitFor(0) { true }
+        subjectFactory().waitFor(0) { true }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
     @Unroll
@@ -107,27 +147,28 @@ class WaitingSupportSpec extends WaitingSpec {
     }
 
     @Unroll
-    def "UnknownWaitForEvaluationValue holds the thrown exception when waitFor times out due to it when waiting for #waitForTime secs"() {
+    def "UnknownWaitForEvaluationValue holds the thrown exception when waitFor times out due to it when waiting for #waitForTime secs - when called on #subjectName"() {
         given:
         def exception = new Exception()
 
         when:
-        waitFor(waitForTime) { sleep 100; throw exception }
+        subjectFactory().waitFor(waitForTime) { sleep 100; throw exception }
 
         then:
         WaitTimeoutException e = thrown()
         e.lastEvaluationValue.thrown == exception
 
         where:
-        waitForTime << [0, 0.5]
+        waitForTime << [0, 0.5].sum { [it] * 3 }
+        [subjectFactory, subjectName] << subjects() * 2
     }
 
-    def "cause is appended to the exception message if configured"() {
+    def "cause is appended to the exception message if configured - when called on #subjectName"() {
         given:
         config.includeCauseInWaitTimeoutExceptionMessage = true
 
         when:
-        waitFor(0.2) { 'not empty'.empty }
+        subjectFactory().waitFor(0.2) { 'not empty'.empty }
 
         then:
         WaitTimeoutException exception = thrown()
@@ -138,18 +179,48 @@ Assertion failed:
             |
             false
 """
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
-    def "default variant"() {
+    def "default variant - when called on #subjectName"() {
         when:
         js.showIn(2)
+
         then:
-        waitFor { $("div").empty }
+        subjectFactory().waitFor { $("div").empty }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
+    }
+
+    def "using timeout and interval - when called on #subjectName"() {
+        when:
+        js.showIn(1)
+
+        then:
+        subjectFactory().waitFor(2, 0.1) { $("div") }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
+    }
+
+    def "using preset - when called on #subjectName"() {
+        given:
+        browser.config.setWaitPreset("custom", 2, 0.1)
+
+        when:
+        js.showIn(1)
+
+        then:
+        subjectFactory().waitFor("custom") { $("div") }
+
+        where:
+        [subjectFactory, subjectName] << subjects()
     }
 
     def "available on page"() {
-        given:
-        page WaitingSupportSpecPage
         when:
         js.showIn(3)
         then:
@@ -158,8 +229,6 @@ Assertion failed:
     }
 
     def "available on module"() {
-        given:
-        page WaitingSupportSpecPage
         when:
         js.showIn(3)
         then:
