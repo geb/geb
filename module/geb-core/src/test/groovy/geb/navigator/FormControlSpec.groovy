@@ -151,7 +151,7 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         $().r == "r2"
     }
 
-    @Issue("http://jira.codehaus.org/browse/GEB-37")
+    @Issue("https://github.com/geb/issues/issues/37")
     def "radio - by label text"() {
         when:
         html {

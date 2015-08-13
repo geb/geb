@@ -18,7 +18,7 @@ package grails.plugin.geb
 import geb.spock.GebReportingSpec
 import spock.lang.Issue
 
-@Issue("http://jira.codehaus.org/browse/GEB-32")
+@Issue("https://github.com/geb/issues/issues/32")
 class GEB32Spec extends GebReportingSpec {
 
     def "can resolve module base"() {

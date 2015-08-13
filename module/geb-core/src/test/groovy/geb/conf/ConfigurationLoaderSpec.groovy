@@ -120,7 +120,7 @@ class ConfigurationLoaderSpec extends Specification {
         ClassInfo.allClassInfo.findAll { it.cachedClass.name.contains("script") && it.strongMetaClass != null }.size()
     }
 
-    @Issue("GEB-335")
+    @Issue("https://github.com/geb/issues/issues/335")
     def "config script backing class can be garbage collected"() {
         when:
         load goodScript

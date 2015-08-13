@@ -266,7 +266,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         link.@id == "a"
     }
 
-    @Issue("http://jira.codehaus.org/browse/GEB-2")
+    @Issue("https://github.com/geb/issues/issues/2")
     def "can call instance methods from content definition blocks"() {
         when:
         to InstanceMethodPage
@@ -274,7 +274,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         val == 3
     }
 
-    @Issue("http://jira.codehaus.org/browse/GEB-139")
+    @Issue("https://github.com/geb/issues/issues/139")
     def "convertToPath should not introduce slashes were it should not"() {
         when: 'we go to the page by specifying the parameter manually'
         via ConvertPage, theParam: "foo"

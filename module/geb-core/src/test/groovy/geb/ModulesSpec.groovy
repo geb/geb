@@ -67,7 +67,7 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         thrown(InvalidPageContent)
     }
 
-    @Issue("http://jira.codehaus.org/browse/GEB-2")
+    @Issue("https://github.com/geb/issues/issues/2")
     def "can access module instance methods from content"() {
         when:
         to ModulesSpecPage
@@ -75,7 +75,7 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         instanceMethod.val == 3
     }
 
-    @Issue("http://jira.codehaus.org/browse/GEB-38")
+    @Issue("https://github.com/geb/issues/issues/38")
     def "can coerce module to boolean"() {
         when:
         to ModulesSpecPage

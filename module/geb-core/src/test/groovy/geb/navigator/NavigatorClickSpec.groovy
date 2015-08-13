@@ -26,7 +26,7 @@ import spock.lang.Unroll
 @Unroll
 class NavigatorClickSpec extends GebSpecWithCallbackServer {
 
-    @Issue('GEB-160')
+    @Issue('https://github.com/geb/issues/issues/160')
     def 'click call returns receiver for parameters: #clickParams'() {
         given:
         html { button("") }

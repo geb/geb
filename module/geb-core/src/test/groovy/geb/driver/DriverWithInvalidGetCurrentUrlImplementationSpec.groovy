@@ -43,7 +43,7 @@ class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer
         browser.config.cacheDriver = false
     }
 
-    @Issue('http://jira.codehaus.org/browse/GEB-291')
+    @Issue('https://github.com/geb/issues/issues/291')
     void 'go() does not fail even if the driver returns null for get current url command'() {
         when:
         go()

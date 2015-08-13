@@ -160,7 +160,7 @@ class ConfigurationDriverCreationSpec extends Specification {
         d instanceof HtmlUnitDriver
     }
 
-    @Issue('http://jira.codehaus.org/browse/GEB-231')
+    @Issue('https://github.com/geb/issues/issues/231')
     def "DriverCreationException is thrown when creation closure returns something that is not a driver instance"() {
         given:
         def config = new ConfigObject()

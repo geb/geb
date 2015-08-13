@@ -118,7 +118,7 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $("div", class: "a c")
     }
 
-    @Issue("http://jira.codehaus.org/browse/GEB-14")
+    @Issue("https://github.com/geb/issues/issues/14")
     def "find by attributes passing a class pattern should match any of the classes on an element"() {
         given:
         html {

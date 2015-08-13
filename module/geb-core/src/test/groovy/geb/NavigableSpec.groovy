@@ -83,7 +83,7 @@ class NavigableSpec extends GebSpecWithCallbackServer {
         find("p", class: "c").text() == "c"
     }
 
-    @Issue("GEB-339")
+    @Issue("https://github.com/geb/issues/issues/339")
     def "predicates map passed to find is not modified"() {
         given:
         def predicates = [class: "c"]
