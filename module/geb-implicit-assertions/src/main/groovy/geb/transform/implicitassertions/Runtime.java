@@ -6,8 +6,14 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 
 public abstract class Runtime {
 
+    private static ThreadLocal<Object> recordedValue = new ThreadLocal<Object>();
+
     @SuppressWarnings("UnusedDeclaration")
     public static boolean isVoidMethod(Object target, String method, Object... args) {
+
+        if (target == null) {
+            return false;
+        }
 
         Class[] argTypes = new Class[args.length];
         int i = 0;
@@ -25,8 +31,6 @@ public abstract class Runtime {
         Class returnType = metaMethod.getReturnType();
         return returnType == void.class || returnType == Void.class;
     }
-
-    private static ThreadLocal<Object> recordedValue = new ThreadLocal<Object>();
 
     @SuppressWarnings("UnusedDeclaration")
     public static Object recordValue(Object value) {

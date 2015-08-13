@@ -18,6 +18,7 @@ package geb.transform.implicitassertions
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+import spock.lang.Issue
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -140,5 +141,14 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         then:
         PowerAssertionError error = thrown()
         error.message.contains('false')
+    }
+
+    @Issue("https://github.com/geb/issues/issues/398")
+    def "can transform statements that contain method call expressions on null values"() {
+        when:
+        getTransformedInstanceWithClosureBody('nullReturningMethod()?.contains("foo")').run()
+
+        then:
+        thrown(PowerAssertionError)
     }
 }

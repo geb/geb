@@ -12,6 +12,10 @@ class TestClass {
     void voidMethod() {
     }
 
+    String nullReturningMethod() {
+        null
+    }
+
     def run() {
         waitFor {
             $closureBody
