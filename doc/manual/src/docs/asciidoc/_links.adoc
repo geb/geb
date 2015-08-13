@@ -23,8 +23,9 @@
 :geb-cucumber: https://github.com/tomdcc/geb-cucumber[geb-cucumber]
 :remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
 :remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
-:config-slurper-api: http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
-:groovy-binding-link: http://groovy.codehaus.org/api/groovy/lang/Binding.html
+:groovy-api-link: http://docs.groovy-lang.org/docs/groovy-{groovy-version}/html
+:config-slurper-api: {groovy-api-link}/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
+:groovy-binding-link: {groovy-api-link}/api/groovy/lang/Binding.html
 :java-api-link: link:https://docs.oracle.com/javase/8/docs/api
 :http-url-connection-link: {java-api-link}/java/net/HttpURLConnection.html
 :configuration-api: link:api/geb/Configuration.html[Configuration]

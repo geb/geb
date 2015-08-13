@@ -168,7 +168,7 @@ subprojects {
         link "http://static.javadoc.io/junit/junit/$junit4Version",
             "org.junit"
 
-        link "http://groovy.codehaus.org/api/",
+        link "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/api/",
             "groovy.lang"
 
         def docName = project.name == "manual" ? "Geb" : project.name
