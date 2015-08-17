@@ -61,6 +61,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:matankatz[Matan Katz] - Support for setting the `forcelocal` flag for BrowserStack tunnel
 * github-profile:victorparmar[Victor Parmar] - Add configuration option for including cause string representation in message of `WaitTimeoutException`
 * github-profile:berardino[Berardino la Torre] - Fix incorrect delegation of waitFor() methods
+* github-profile:madmas[Markus Schlichting] - Doc fixes
 
 == History
 
