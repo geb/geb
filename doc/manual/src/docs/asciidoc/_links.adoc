@@ -82,6 +82,6 @@
 :select-api: link:api/geb/module/Select.html[Select]
 :multiple-select-api: link:api/geb/module/MultipleSelect.html[MultipleSelect]
 :text-input-api: link:api/geb/module/TextInput.html[TextInput]
-:file-input-api: link:api/geb/module/FileInput.html.html[FileInput]
+:file-input-api: link:api/geb/module/FileInput.html[FileInput]
 :textarea-api: link:api/geb/module/Textarea.html[Textarea]
 :radio-buttons-api: link:api/geb/module/RadioButtons.html[RadioButtons]
