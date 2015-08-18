@@ -15,28 +15,32 @@
  */
 
 
-import ratpack.groovy.templating.TemplatingModule
+import geb.site.Manuals
+import ratpack.groovy.template.TextTemplateModule
+import ratpack.guice.ConfigurableModule
+import ratpack.server.ServerConfig
 
 import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
 
 ratpack {
+    serverConfig {
+        props(getClass().getResource("/ratpack.properties"))
+    }
     bindings {
-        config(TemplatingModule).staticallyCompile = true
-        bind new StartupTime()
+        module(TextTemplateModule) {
+            it.staticallyCompile  = true
+        }
+        module(ManualsModule)
+        add new StartupTime()
     }
     handlers {
-        assets 'public', 'index.html'
-
-        get('manual/:version/api/') {
-            blocking {
-                context.file("public/${request.path}").toFile().listFiles().toList()*.name
-            } then { List<String> files ->
-                render groovyTemplate('fileListing.html', files: files, title: "Groovy API for Geb ${pathTokens.get('version')}")
-            }
+        files {
+            dir("public")
+            indexFiles("index.html")
         }
 
-        get(':page?') { StartupTime startupTime ->
+        get(':page?') { StartupTime startupTime, Manuals manuals ->
             lastModified(startupTime.time) {
                 def highlightPages = [
                     crossbrowser: "Cross Browser",
@@ -47,20 +51,16 @@ ratpack {
                     integration : "Build Integration"
                 ]
 
-                def page = pathTokens.page ?: 'index'
-                if (page in (highlightPages.keySet() + ['index', 'lists'])) {
-                    def model = [
-                        oldManuals    : launchConfig.getOther('old', '').tokenize(','),
-                        currentManual : launchConfig.getOther('current', ''),
-                        snapshotManual: launchConfig.getOther('snapshot', ''),
-                        pages         : [Highlights: highlightPages],
-                        page          : page
-                    ]
+                def pageToken = pathTokens.page ?: 'index'
+                def page = pageToken in (highlightPages.keySet() + ['index', 'lists']) ? pageToken : "notfound"
 
-                    render groovyTemplate(model, 'main.html')
-                } else {
-                    clientError(404)
-                }
+                def model = [
+                    manuals: manuals,
+                    pages  : [Highlights: highlightPages],
+                    page   : page
+                ]
+
+                render groovyTemplate(model, 'main.html')
             }
         }
     }
@@ -69,3 +69,15 @@ ratpack {
 class StartupTime {
     final Date time = new Date()
 }
+
+class ManualsModule extends ConfigurableModule<Manuals> {
+
+    protected void configure() {
+    }
+
+    @Override
+    protected Manuals createConfig(ServerConfig serverConfig) {
+        serverConfig.get("/manuals", Manuals)
+    }
+}
+

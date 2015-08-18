@@ -38,6 +38,9 @@
 
 <body>
 
+<% import geb.site.Manuals %>
+<% Manuals manuals = (Manuals) model.manuals %>
+
 <div id="header-wrap">
     <div id="header-content">
 
@@ -51,24 +54,24 @@
             <li>
                 <span>Manual</span>
                 <ul class="link-list">
-                    <li><a href="manual/current/">${model.currentManual} - current</a></li>
-                    <% model.oldManuals.each { %>
+                    <li><a href="manual/current/">${manuals.current} - current</a></li>
+                    <% manuals.oldList.each { %>
                     <li><a href="manual/$it/">${it}</a></li>
                     <% } %>
-                    <% if (model.snapshotManual) { %>
-                    <li><a href="manual/snapshot/">${model.snapshotManual}</a></li>
+                    <% if (manuals.snapshot) { %>
+                    <li><a href="manual/snapshot/">${manuals.snapshot}</a></li>
                     <% } %>
                 </ul>
             </li>
             <li>
                 <span>API</span>
                 <ul class="link-list" id="api-list">
-                    <li><a href="manual/current/api/">${model.currentManual} - current</a></li>
-                    <% model.oldManuals.each { %>
+                    <li><a href="manual/current/api/">${manuals.current} - current</a></li>
+                    <% manuals.oldList.each { %>
                     <li><a href="manual/$it/api/">${it}</a></li>
                     <% } %>
-                    <% if (model.snapshotManual) { %>
-                    <li><a href="manual/snapshot/api/">${model.snapshotManual}</a></li>
+                    <% if (manuals.snapshot) { %>
+                    <li><a href="manual/snapshot/api/">${manuals.snapshot}</a></li>
                     <% } %>
                 </ul>
             </li>

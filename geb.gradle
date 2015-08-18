@@ -31,8 +31,8 @@ allprojects { project ->
         isCi = project.hasProperty("ci")
 
         seleniumVersion = "2.45.0"
-        groovyVersion = "2.3.10"
-        spockVersion = "1.0-groovy-2.3"
+        groovyVersion = "2.4.3"
+        spockVersion = "1.0-groovy-2.4"
         junit4Version = "4.10"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
@@ -71,7 +71,7 @@ allprojects { project ->
         ]
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
-        apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions"
+        apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
 
         grailsPluginModule = ":integration:geb-grails"
     }
@@ -233,3 +233,6 @@ task release {
         { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
 }
 
+task stage(type: Sync) {
+    dependsOn 'doc:site:prepareDeployment'
+}

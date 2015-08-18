@@ -18,7 +18,7 @@ package geb
 import geb.crawl.Crawler
 import geb.crawl.PrettyPrintCollection
 import groovy.util.logging.Slf4j
-import ratpack.groovy.test.LocalScriptApplicationUnderTest
+import ratpack.groovy.test.GroovyRatpackMainApplicationUnderTest
 import spock.lang.Specification
 
 @Slf4j
@@ -26,7 +26,7 @@ class LinkCrawlSpec extends Specification {
 
     def "site has no bad links"() {
         given:
-        def aut = new LocalScriptApplicationUnderTest()
+        def aut = new GroovyRatpackMainApplicationUnderTest()
 
         def allowBroken = []
 

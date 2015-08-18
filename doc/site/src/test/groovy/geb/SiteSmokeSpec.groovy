@@ -21,18 +21,18 @@ import geb.pages.ManualPage
 import geb.pages.NotFoundPage
 import geb.spock.GebSpec
 import org.jsoup.Jsoup
-import ratpack.groovy.test.LocalScriptApplicationUnderTest
+import ratpack.groovy.test.GroovyRatpackMainApplicationUnderTest
 import spock.lang.Shared
 import spock.lang.Stepwise
 import spock.lang.Unroll
 
-import static ratpack.test.http.TestHttpClients.testHttpClient
+import static ratpack.test.http.TestHttpClient.testHttpClient
 
 @Stepwise
 class SiteSmokeSpec extends GebSpec {
 
     @Shared
-    def app = new LocalScriptApplicationUnderTest()
+    def app = new GroovyRatpackMainApplicationUnderTest()
 
     private getMenuItemElements() {
         def html = Jsoup.parse(testHttpClient(app).get().body.text)

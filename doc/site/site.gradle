@@ -20,7 +20,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'io.ratpack:ratpack-gradle:0.9.8'
+        classpath 'io.ratpack:ratpack-gradle:0.9.19'
     }
 }
 
@@ -60,8 +60,6 @@ dependencies {
         "$group:geb-manual:$it@zip"
     }
 
-    springloaded "org.springframework:springloaded:1.2.0.RELEASE"
-    compile ratpack.dependency("groovy")
     testCompile spockDependency,
         "org.jsoup:jsoup:1.7.3",
         project(':module:geb-spock'),
@@ -102,9 +100,8 @@ task generateConfigProperties() {
     doLast {
         def properties = new Properties()
         manualsMetadata.each { key, value ->
-            properties.setProperty("other.${key}", value)
+            properties.setProperty("manuals.${key}", value)
         }
-        properties.setProperty("other.groovy.compileStatic", "true")
         propertiesFile.withWriter { Writer writer ->
             properties.store(writer, null)
         }
@@ -119,3 +116,7 @@ task publish(type: Exec) {
     mustRunAfter ':integration:geb-grails:publish', rootProject.allprojects*.tasks*.withType(Upload)
 }
 
+task prepareDeployment(type: Sync) {
+    into rootProject.file("deploy")
+    with distributions.main.contents
+}
