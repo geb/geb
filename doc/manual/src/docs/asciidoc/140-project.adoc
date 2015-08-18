@@ -71,6 +71,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+No changes have been made, yet.
+
+=== 0.12.2
+
 ==== Fixes
 
 * Fix incorrect delegation in variant of `waitFor()` that takes timeout and interval. [issue:395[]]
