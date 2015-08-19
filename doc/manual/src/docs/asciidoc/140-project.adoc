@@ -62,6 +62,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:victorparmar[Victor Parmar] - Add configuration option for including cause string representation in message of `WaitTimeoutException`
 * github-profile:berardino[Berardino la Torre] - Fix incorrect delegation of waitFor() methods
 * github-profile:madmas[Markus Schlichting] - Doc fixes
+* github-profile:ahitrin[Andrey Hitrin] - Improvement to character replacing in report file names
 
 == History
 
@@ -70,6 +71,10 @@ This page lists the high level changes between versions of Geb.
 :numbered!:
 
 === {geb-version}
+
+==== Improvements
+
+* Non-ASCII word characters are not longer replaced in report file names. [issue:399[]]
 
 ==== Breaking changes
 
