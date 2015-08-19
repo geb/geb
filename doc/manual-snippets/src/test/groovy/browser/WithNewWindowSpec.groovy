@@ -63,6 +63,9 @@ class WithNewWindowSpec extends DriveMethodSupportingSpecWithServer {
         Browser.drive {
             go()
             withNewWindow({ js.openNewWindow() }, wait: true) {
+                // end::new_window_with_wait[]
+                waitFor { title } //loading the page in a new window is not a blocking operation?
+                // tag::new_window_with_wait[]
                 assert title == 'Google'
             }
         }
