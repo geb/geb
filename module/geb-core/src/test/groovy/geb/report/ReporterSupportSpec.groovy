@@ -29,15 +29,15 @@ class ReporterSupportSpec extends Specification {
         given:
         def reporter = new ReporterSupport() {
             void writeReport(ReportState reportState) {
-                getFile(reportState.outputDir, reportState.label, "12 | 34") << "content"
+                getFile(reportState.outputDir, reportState.label, "12 | 34 | zф") << "content"
             }
         }
 
         when:
-        reporter.writeReport(new ReportState(null, "12 | 34", reportDir))
+        reporter.writeReport(new ReportState(null, "12 | 34 | zф", reportDir))
 
         then:
-        new File(reportDir, "12 _ 34.12 _ 34").exists()
+        new File(reportDir, "12 _ 34 _ zф.12 _ 34 _ zф").exists()
     }
 
     def "listener added more than once is not called twice"() {
