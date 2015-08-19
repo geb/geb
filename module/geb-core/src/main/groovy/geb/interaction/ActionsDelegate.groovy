@@ -15,6 +15,7 @@
  */
 package geb.interaction
 
+import geb.navigator.Navigator
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.WebDriver
 
@@ -26,25 +27,11 @@ class ActionsDelegate {
         actions = new Actions(driver)
     }
 
-    void methodMissing(String methodName, def args) {
-        extractWebDriverElement(args, methodName)
-    }
-
-    private extractWebDriverElement(args, String methodName) {
-        def arguments = args.collect { def arg ->
-
-            def argument = arg
-
-            try {
-                argument = arg.firstElement()
-            } catch (MissingMethodException ex) {
-                // Empty exception block where WebDriver element has already been extracted
-            }
-
-            argument
+    void methodMissing(String methodName, args) {
+        def argsWithWebElementsExtracted = args.collect { arg ->
+            arg instanceof Navigator ? arg.firstElement() : arg
         }
-
-        actions."${methodName}"(*arguments)
+        actions."${methodName}"(*argsWithWebElementsExtracted)
     }
 
     void perform() {
