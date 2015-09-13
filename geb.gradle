@@ -139,7 +139,7 @@ subprojects {
         }
 
         gradle.taskGraph.whenReady { taskGraph ->
-            if (taskGraph.hasTask(uploadArchives)) {
+            if (taskGraph.hasTask(uploadArchives) && !isSnapshot) {
                 tasks.withType(JavaCompile) {
                     options.compilerArgs << "-Werror" << "-Xlint:options"
                 }
