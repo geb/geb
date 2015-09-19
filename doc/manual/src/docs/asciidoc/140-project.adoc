@@ -78,7 +78,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== Breaking changes
 
-* Geb is now built with Groovy 2.4.3 and Spock 1.0-groovy-2.4.
+* Geb is now built with Groovy 2.4.4 and Spock 1.0-groovy-2.4.
 
 
 === 0.12.2
