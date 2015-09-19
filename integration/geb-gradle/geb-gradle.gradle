@@ -1,5 +1,9 @@
 apply plugin: 'groovy'
 
+configurations {
+    compile.exclude group: "org.codehaus.groovy"
+}
+
 dependencies {
     compile localGroovy()
     compile gradleApi()
