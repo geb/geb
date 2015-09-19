@@ -841,7 +841,7 @@ include::{real-browser-test-dir}/navigator/BackspaceSpec.groovy[tag=backspace,in
 ====
 WebDriver has some issues with textareas and surrounding whitespace.
 Namely, some drivers implicitly trim whitespace from the beginning and end of the value.
-You can track this issue http://code.google.com/p/selenium/issues/detail?id=2131[here].
+You can track this issue link:http://code.google.com/p/selenium/issues/detail?id=2131[here].
 ====
 
 === File upload

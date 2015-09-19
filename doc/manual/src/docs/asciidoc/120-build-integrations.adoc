@@ -11,7 +11,7 @@ There is a link:http://grails.org/plugin/geb[grails-geb plugin] available that a
 This plugin simply manages the `baseUrl` and `reportsDir` configuration items.
 
 You still need to include the appropriate Geb module for testing (i.e. `geb-junit4` or `geb-spock`) yourself.
-You may also need to depend on other plugins like the http://grails.org/plugin/spock[`grails-spock`] plugin to enable those kinds of tests.
+You may also need to depend on other plugins like the link:http://grails.org/plugin/spock[`grails-spock`] plugin to enable those kinds of tests.
 
 For example, if you plan to use Spock with Geb you would need to add the following to the `BuildConfig.groovy`…
 
@@ -111,7 +111,7 @@ test {
 
 There is a Gradle example project available.
 
-* https://github.com/geb/geb-example-gradle[geb-example-gradle]
+* link:https://github.com/geb/geb-example-gradle[geb-example-gradle]
 
 == Maven
 
@@ -205,4 +205,4 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
 
 There is a Maven example project available.
 
-* https://github.com/geb/geb-example-maven[geb-example-maven]
+* link:https://github.com/geb/geb-example-maven[geb-example-maven]

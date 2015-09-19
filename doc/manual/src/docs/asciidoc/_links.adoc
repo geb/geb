@@ -17,13 +17,13 @@
 :no-such-frame-exception-api: {selenium-api-link}/org/openqa/selenium/NoSuchFrameException.html[NoSuchFrameException]
 :spock-link: link:http://spockframework.org/
 :spock: {spock-link}[Spock]
-:junit: http://www.junit.org/[JUnit]
-:testng: http://testng.org/[TestNg]
-:cucumber-jvm: https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
-:geb-cucumber: https://github.com/tomdcc/geb-cucumber[geb-cucumber]
-:remotewebdriver: http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
-:remotewebdriver-server: http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
-:groovy-api-link: http://docs.groovy-lang.org/docs/groovy-{groovy-version}/html
+:junit: link:http://www.junit.org/[JUnit]
+:testng: link:http://testng.org/[TestNg]
+:cucumber-jvm: link:https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
+:geb-cucumber: link:https://github.com/tomdcc/geb-cucumber[geb-cucumber]
+:remotewebdriver: link:http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
+:remotewebdriver-server: link:http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
+:groovy-api-link: link:http://docs.groovy-lang.org/docs/groovy-{groovy-version}/html
 :config-slurper-api: {groovy-api-link}/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
 :groovy-binding-link: {groovy-api-link}/api/groovy/lang/Binding.html
 :java-api-link: link:https://docs.oracle.com/javase/8/docs/api
@@ -34,7 +34,7 @@
 :module-api: link:api/geb/Module.html[Module]
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :binding-updater-link: link:api/geb/binding/BindingUpdater.html
-:grails: http://grails.org[Grails]
+:grails: link:http://grails.org[Grails]
 :groovy-truth-link: link:http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html
 :groovy-truth: {groovy-truth-link}[Groovy Truth]
 :drive-method-link: link:api/geb/Browser.html#drive(groovy.lang.Closure)
@@ -75,7 +75,7 @@
 :browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
 :clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]
-:sauce-connect: https://saucelabs.com/docs/connect[SauceConnect]
+:sauce-connect: link:https://saucelabs.com/docs/connect[SauceConnect]
 :geb-module-package: link:api/geb/module/package-summary.html
 :form-element-api: link:api/geb/module/FormElement.html[FormElement]
 :checkbox-api: link:api/geb/module/Checkbox.html[Checkbox]

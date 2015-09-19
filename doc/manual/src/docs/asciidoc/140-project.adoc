@@ -1,6 +1,6 @@
 = About the project
 
-The Geb home page can be found at http://www.gebish.org.
+The Geb home page can be found at link:http://www.gebish.org[http://www.gebish.org].
 
 == API reference
 
@@ -8,29 +8,29 @@ The API reference can be found link:api/index.html[here].
 
 == Support &amp; development
 
-Support for Geb is offered on the link:mailto:geb-user@googlegroups.com[geb-user@googlegroups.com] mailing list, which can be subscribed to https://groups.google.com/forum/#!forum/geb-user[here].
+Support for Geb is offered on the link:mailto:geb-user@googlegroups.com[geb-user@googlegroups.com] mailing list, which can be subscribed to link:https://groups.google.com/forum/#!forum/geb-user[here].
 
-Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googlegroups.com[geb-dev@googlegroups.com] mailing list, which can be subscribed to https://groups.google.com/d/forum/geb-dev[here].
+Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googlegroups.com[geb-dev@googlegroups.com] mailing list, which can be subscribed to link:https://groups.google.com/d/forum/geb-dev[here].
 
 == Credits
 
 === Committers
 
-* http://ldaley.com[Luke Daley]
-* http://blog.proxerd.pl[Marcin Erdmann]
+* link:http://ldaley.com[Luke Daley]
+* link:http://blog.proxerd.pl[Marcin Erdmann]
 * github-profile:chris-prior[Chris Prior]
 
 === Contributors
 
-* http://adhockery.blogspot.com/[Robert Fletcher]
-* http://pniederw.wordpress.com/[Peter Niederwieser]
+* link:http://adhockery.blogspot.com/[Robert Fletcher]
+* link:http://pniederw.wordpress.com/[Peter Niederwieser]
 * github-profile:zolotov[Alexander Zolotov] - TestNG Integration
-* http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
-* http://www.desirableobjects.co.uk/[Antony Jones] - Various fixes and patches, doc improvements
+* link:http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
+* link:http://www.desirableobjects.co.uk/[Antony Jones] - Various fixes and patches, doc improvements
 * github-profile:hennr[Jan-Hendrik Peters] - Doc improvements
-* http://fbflex.wordpress.com/[Tomás Lin] - Doc improvements
+* link:http://fbflex.wordpress.com/[Tomás Lin] - Doc improvements
 * github-profile:measlyweasel[Jason Cahoon] - Bug fix around text matchers
-* http://refaktor.blogspot.com/[Tomasz Kalkosiński] - Doc improvements
+* link:http://refaktor.blogspot.com/[Tomasz Kalkosiński] - Doc improvements
 * github-profile:richdouglasevans[Rich Douglas Evans] - Doc improvements
 * github-profile:idurkan[Ian Durkan] - Doc improvements
 * github-profile:ColinHarrington[Colin Harrington] - Doc improvements
@@ -150,7 +150,7 @@ new <<form-element, `FormElement`>> module class.
 
 ==== Project related changes
 
-* User mailing list has moved to https://groups.google.com/d/forum/geb-user[Google Groups].
+* User mailing list has moved to link:https://groups.google.com/d/forum/geb-user[Google Groups].
 * The Book of Geb has been migrated to Asciidoctor and the examples have been made executable. [issue:350[]]
 
 === 0.10.0
@@ -187,7 +187,7 @@ new <<form-element, `FormElement`>> module class.
 * Setup CI for all of the example projects. [issue:188[]]
 * Incorporate the example projects into the main build. [issue:189[]]
 * Add a test crawling the site in search for broken links. [issue:327[]]
-* Document the https://github.com/geb/geb/blob/master/RELEASING.md[release process]. [issue:325[]]
+* Document the link:https://github.com/geb/geb/blob/master/RELEASING.md[release process]. [issue:325[]]
 
 ==== Breaking changes
 
@@ -202,7 +202,7 @@ new <<form-element, `FormElement`>> module class.
 * Added `baseNavigatorWaiting` setting to prevent intermittent Firefox driver errors when creating base navigator. [issue:269[]]
 * Page content classes including `Module` now implement `Navigator` interface [issue:181[]]
 * Added some tests that guard performance by verifying which WebDriver commands are executed [issue:302[]]
-* Added http://www.browserstack.com[BrowserStack] integration [issue:307[]]
+* Added link:http://www.browserstack.com[BrowserStack] integration [issue:307[]]
 * Added a shortcut to `Browser` for getting current url [issue:294[]]
 * Verify pages at checker when passed as an option to open a new window via `withWindow()` and `withNewWindow()` [issue:278[]]
 
@@ -225,11 +225,11 @@ new <<form-element, `FormElement`>> module class.
 
 ==== Project related changes
 
-* Documentation site has been migrated to http://ratpack.io[Ratpack]. [issue:261[]]
+* Documentation site has been migrated to link:http://ratpack.io[Ratpack]. [issue:261[]]
 * Cross browser tests are now also executed using Safari driver [issue:276[]]
 * Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI [issue:295[]]
-* Migrated continuous integration build to https://snap-ci.com/geb/geb/branch/master[Snap CI]
-* Added a https://travis-ci.org/geb/geb[Travis CI build] that runs tests on submitted pull requests [issue:309[]]
+* Migrated continuous integration build to link:https://snap-ci.com/geb/geb/branch/master[Snap CI]
+* Added a link:https://travis-ci.org/geb/geb[Travis CI build] that runs tests on submitted pull requests [issue:309[]]
 
 === 0.9.2
 

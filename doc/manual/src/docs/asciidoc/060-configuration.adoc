@@ -24,7 +24,7 @@ using the class loader that loaded Geb.
 [NOTE]
 ====
 In a Grails project, the `test/functional` directory is a good place to put your config script in.
-If you are using a build tool such as http://gradle.org/[Gradle] or http://maven.apache.org/[Maven] that has the concept of test “resources”, then that directory is a suitable place.
+If you are using a build tool such as link:http://gradle.org/[Gradle] or link:http://maven.apache.org/[Maven] that has the concept of test “resources”, then that directory is a suitable place.
 You can also put your script together with your compilation source and then the compiled version of the script will be used.
 ====
 

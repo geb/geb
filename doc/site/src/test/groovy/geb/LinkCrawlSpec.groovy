@@ -59,6 +59,16 @@ class LinkCrawlSpec extends Specification {
                 def document = response.document
                 document == null ? [] : document.select("body a")*.attr("href").findAll { it }
             }
+
+            @Override
+            void addPageErrors(Link link, Response response) {
+                if (isCrawlable(link)) {
+                    response.document?.text()?.findAll(~/(link:[^\s]+)/)?.each {
+                        link.errors << new BadLinkSyntax(it)
+                    }
+                }
+                super.addPageErrors(link, response)
+            }
         }
 
         when:
@@ -78,16 +88,16 @@ class LinkCrawlSpec extends Specification {
         aut.stop()
     }
 
-    private static class BadMarkdownLinkSyntax {
+    private static class BadLinkSyntax {
         final String link
 
-        BadMarkdownLinkSyntax(String link) {
+        BadLinkSyntax(String link) {
             this.link = link
         }
 
         @Override
         String toString() {
-            "Bad markdown link: $link"
+            "Bad link: $link"
         }
     }
 }

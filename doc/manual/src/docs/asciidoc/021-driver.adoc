@@ -74,11 +74,11 @@ include::{test-dir}/driver/HtmlUnitRefreshHandlerSpec.groovy[tag=changing_handle
 ----
 <1> From here on refresh meta tag value will be respected.
 
-See http://markmail.org/thread/bu3g56oxz2uqzq43[this mailing list thread] for details.
+See link:http://markmail.org/thread/bu3g56oxz2uqzq43[this mailing list thread] for details.
 
 [discrete]
 ==== Configuring logging
 
 HTMLUnit can be very noisy, and it's not clear how to make it not so noisy.
 
-See https://github.com/geb/issues/issues/98[this issue] for some tips on how to tune its logging.
+See link:https://github.com/geb/issues/issues/98[this issue] for some tips on how to tune its logging.
