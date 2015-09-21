@@ -202,7 +202,6 @@ subprojects {
         uploadArchives { task ->
             repositories.mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                uniqueVersion = false
                 gradle.taskGraph.whenReady { taskGraph ->
                     if (taskGraph.hasTask(task)) {
                         repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
