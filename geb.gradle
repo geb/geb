@@ -235,3 +235,7 @@ task release {
 task stage(type: Sync) {
     dependsOn 'doc:site:prepareDeployment'
 }
+
+wrapper {
+    gradleVersion = "2.8-rc-1"
+}
