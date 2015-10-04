@@ -61,19 +61,19 @@ class GebReportingTestTest extends GebReportingTest {
         go()
     }
 
-    @Test
+    @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportOnDemand(Method testMethod) {
         report("ondemand")
         doTestReport(testMethod.name, "ondemand")
     }
 
-    @Test
+    @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportAfterMethodInit() {
         // initialization method that created in order to assert report creation in next method
         methodNumberOfInitTest = methodNumber
     }
 
-    @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethodInit"])
+    @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethodInit"], groups = ["GebReportingTestTest"])
     void reportingTestShouldReportAfterMethod() {
         // check previous method reporting (reportingTestShouldReportAfterMethodInit)
         report("ondemand")
@@ -81,14 +81,14 @@ class GebReportingTestTest extends GebReportingTest {
         methodNumberOfInitTest = methodNumber
     }
 
-    @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethod"])
+    @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethod"], groups = ["GebReportingTestTest"])
     void reportingTestShouldReportAfterMethodAndOnDemand() {
         // check previous method reporting (reportingTestShouldReportAfterMethod)
         doTestReport("reportingTestShouldReportAfterMethod", "ondemand", methodNumberOfInitTest, 1)
         doTestReport("reportingTestShouldReportAfterMethod", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2)
     }
 
-    @Test
+    @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportOnTestFailureOnlyIfThatStrategyIsEnabled(Method testMethod) {
         config.reportOnTestFailureOnly = true
         def testResult = new TestResult()

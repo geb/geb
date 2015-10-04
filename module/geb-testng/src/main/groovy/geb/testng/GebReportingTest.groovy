@@ -37,10 +37,10 @@ class GebReportingTest extends GebTest {
     @SuppressWarnings("GroovyUnusedDeclaration")
     @BeforeClass
     void initReportGroupDir() {
+        browser.reportGroup getClass()
         browser.cleanReportGroupDir()
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
     @BeforeMethod
     void setupReporting(Method method) {
         browser.reportGroup getClass()
