@@ -17,8 +17,6 @@
 
 import geb.site.Manuals
 import ratpack.groovy.template.TextTemplateModule
-import ratpack.guice.ConfigurableModule
-import ratpack.server.ServerConfig
 
 import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
@@ -26,13 +24,13 @@ import static ratpack.groovy.Groovy.ratpack
 ratpack {
     serverConfig {
         props(getClass().getResource("/ratpack.properties"))
+        require("/manuals", Manuals)
     }
     bindings {
         module(TextTemplateModule) {
             it.staticallyCompile  = true
         }
-        module(ManualsModule)
-        add new StartupTime()
+        add Date, new Date()
     }
     handlers {
         files {
@@ -40,8 +38,8 @@ ratpack {
             indexFiles("index.html")
         }
 
-        get(':page?') { StartupTime startupTime, Manuals manuals ->
-            lastModified(startupTime.time) {
+        get(':page?') { Date startupTime, Manuals manuals ->
+            lastModified(startupTime) {
                 def highlightPages = [
                     crossbrowser: "Cross Browser",
                     content     : "jQuery-like API",
@@ -63,21 +61,6 @@ ratpack {
                 render groovyTemplate(model, 'main.html')
             }
         }
-    }
-}
-
-class StartupTime {
-    final Date time = new Date()
-}
-
-class ManualsModule extends ConfigurableModule<Manuals> {
-
-    protected void configure() {
-    }
-
-    @Override
-    protected Manuals createConfig(ServerConfig serverConfig) {
-        serverConfig.get("/manuals", Manuals)
     }
 }
 
