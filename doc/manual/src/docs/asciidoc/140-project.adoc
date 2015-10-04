@@ -72,6 +72,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== Fixes
+
+* Fix a bug that caused reports for all but the last executed test class in TestNG integration to be wiped out. [issue:407[]]
+
 ==== Improvements
 
 * Non-ASCII word characters are not longer replaced in report file names. [issue:399[]]
