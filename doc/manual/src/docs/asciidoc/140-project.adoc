@@ -79,6 +79,11 @@ This page lists the high level changes between versions of Geb.
 ==== Improvements
 
 * Non-ASCII word characters are not longer replaced in report file names. [issue:399[]]
+* Change TestNG support to be based on traits. [issue:412[]]
+
+==== Deprecations
+
+* `geb.testng.GebTest` and `geb.testng.GebReportingTest` have been deprecated in favour of `geb.testng.GebTestTrait` and `geb.testng.GebReportingTestTrait` respectively.
 
 ==== Breaking changes
 

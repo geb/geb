@@ -48,7 +48,7 @@ class LinkCrawlSpec extends Specification {
                 def path = link.uri.path
                 if (path.startsWith("/manual") && !path.startsWith("/manual/snapshot")) {
                     false
-                } else if (path.endsWith("api/index-all.html") || path.endsWith("api/help-doc.html") || path.endsWith("package-summary.html")) {
+                } else if (path.endsWith("api/index-all.html") || path.endsWith("api/help-doc.html") || path.endsWith("package-summary.html") || path.endsWith("deprecated-list.html")) {
                     false
                 } else {
                     super.isCrawlable(link)

@@ -77,7 +77,7 @@ class GebReportingTestTest extends GebReportingTest {
     void reportingTestShouldReportAfterMethod() {
         // check previous method reporting (reportingTestShouldReportAfterMethodInit)
         report("ondemand")
-        doTestReport("reportingTestShouldReportAfterMethodInit", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 1)
+        doTestReport("reportingTestShouldReportAfterMethodInit", END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 1)
         methodNumberOfInitTest = methodNumber
     }
 
@@ -85,7 +85,7 @@ class GebReportingTestTest extends GebReportingTest {
     void reportingTestShouldReportAfterMethodAndOnDemand() {
         // check previous method reporting (reportingTestShouldReportAfterMethod)
         doTestReport("reportingTestShouldReportAfterMethod", "ondemand", methodNumberOfInitTest, 1)
-        doTestReport("reportingTestShouldReportAfterMethod", GebReportingTest.END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2)
+        doTestReport("reportingTestShouldReportAfterMethod", END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2)
     }
 
     @Test(groups = ["GebReportingTestTest"])
@@ -95,12 +95,12 @@ class GebReportingTestTest extends GebReportingTest {
 
         testResult.status = ITestResult.SUCCESS
         super.reportingAfter testResult
-        def report = tryToFindReport(testMethod.name, GebReportingTest.END_OF_METHOD_REPORT_LABEL)
+        def report = tryToFindReport(testMethod.name, END_OF_METHOD_REPORT_LABEL)
         assert report == null
 
         testResult.status = ITestResult.FAILURE
         super.reportingAfter testResult
-        doTestReport(testMethod.name, GebReportingTest.END_OF_METHOD_REPORT_LABEL)
+        doTestReport(testMethod.name, END_OF_METHOD_REPORT_LABEL)
     }
 
     def doTestReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {

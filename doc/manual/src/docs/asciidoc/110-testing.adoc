@@ -70,7 +70,7 @@ Wherever possible, favour the use of the auto-reporting base classes.
 
 The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies at the end of each test method.
 For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
-in `geb.testng.GebTest`.
+in `geb.testng.GebTestTrait`.
 
 The `geb.spock.GebSpec` class will clear the cookies in the `cleanup()` method unless the spec is `@Stepwise`, in which case they are cleared in `cleanupSpec()` (meaning that all feature methods in a
 stepwise spec share the same browser state).
@@ -82,12 +82,12 @@ This auto-clearing of cookies can be <<auto-clearing-cookies-configuration, disa
 The following table illustrates the specific JARs and class names for various test frameworks that Geb integrates with.
 
 |===
-|Framework |JAR |Base Class |Reporting Base Class
+|Framework |JAR |Base Class / Trait |Reporting Base Class / Trait
 
 |Spock |http://mvnrepository.com/artifact/{geb-group}/geb-spock[geb-spock] |link:api/geb/spock/GebSpec.html[`geb.spock.GebSpec`] |link:api/geb/spock/GebReportingSpec.html[`geb.spock.GebReportingSpec`]
 |JUnit 4 |http://mvnrepository.com/artifact/{geb-group}/geb-junit4[geb-junit4] |link:api/geb/junit4/GebTest.html[`geb.junit4.GebTest`] |link:api/geb/junit4/GebReportingTest.html[`geb.junit4.GebReportingTest`]
 |JUnit 3 |http://mvnrepository.com/artifact/{geb-group}/geb-junit3[geb-junit3] |link:api/geb/junit3/GebTest.html[`geb.junit3.GebTest`] |link:api/geb/junit3/GebReportingTest.html[`geb.junit3.GebReportingTest`]
-|TestNG |http://mvnrepository.com/artifact/{geb-group}/geb-testng[geb-testng] |link:api/geb/testng/GebTest.html[`geb.testng.GebTest`] |link:api/geb/testng/GebReportingTest.html[`geb.testng.GebReportingTest`]
+|TestNG |http://mvnrepository.com/artifact/{geb-group}/geb-testng[geb-testng] |link:api/geb/testng/GebTestTrait.html[`geb.testng.GebTestTrait`] |link:api/geb/testng/GebReportingTestTrait.html[`geb.testng.GebReportingTestTrait`]
 |===
 
 === Example projects

@@ -6,6 +6,9 @@ ruleset {
         EmptyCatchBlock {
             enabled = false
         }
+        EmptyClass {
+            doNotApplyToFileNames = 'GebTest.groovy, GebReportingTest.groovy'
+        }
     }
     ruleset('rulesets/braces.xml')
     ruleset('rulesets/convention.xml') {

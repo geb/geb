@@ -15,45 +15,9 @@
  */
 package geb.testng
 
-import geb.report.ReporterSupport
-import org.testng.ITestResult
-import org.testng.annotations.AfterMethod
-import org.testng.annotations.BeforeClass
-import org.testng.annotations.BeforeMethod
-
-import java.lang.reflect.Method
-
-class GebReportingTest extends GebTest {
-
-    public static final END_OF_METHOD_REPORT_LABEL = "end"
-    private testMethodNumber = 0
-    private reportNumberInTestMethod = 1
-    def testMethodName = ""
-
-    void report(String label = "") {
-        browser.report(ReporterSupport.toTestReportLabel(testMethodNumber, reportNumberInTestMethod++, testMethodName, label))
-    }
-
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    @BeforeClass
-    void initReportGroupDir() {
-        browser.reportGroup getClass()
-        browser.cleanReportGroupDir()
-    }
-
-    @BeforeMethod
-    void setupReporting(Method method) {
-        browser.reportGroup getClass()
-        reportNumberInTestMethod = 1
-        ++testMethodNumber
-        testMethodName = method.name
-    }
-
-    @AfterMethod
-    void reportingAfter(ITestResult testResult) {
-        if (!browser.config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status) {
-            report(END_OF_METHOD_REPORT_LABEL)
-        }
-    }
-
+/**
+ * @deprecated Use {@link geb.testng.GebReportingTestTrait} instead.
+ */
+@Deprecated
+class GebReportingTest implements GebReportingTestTrait {
 }

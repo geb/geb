@@ -15,50 +15,9 @@
  */
 package geb.testng
 
-import geb.Browser
-import geb.Configuration
-import geb.ConfigurationLoader
-import org.testng.annotations.AfterMethod
-
-class GebTest {
-
-    String gebConfEnv = null
-    String gebConfScript = null
-
-    private Browser browser
-
-    Configuration createConf() {
-        new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-    }
-
-    Browser createBrowser() {
-        new Browser(createConf())
-    }
-
-    Browser getBrowser() {
-        if (browser == null) {
-            browser = createBrowser()
-        }
-        browser
-    }
-
-    @AfterMethod
-    void resetBrowser() {
-        if (browser?.config?.autoClearCookies) {
-            browser?.clearCookiesQuietly()
-        }
-        browser = null
-    }
-
-    def methodMissing(String name, args) {
-        getBrowser()."$name"(*args)
-    }
-
-    def propertyMissing(String name) {
-        getBrowser()."$name"
-    }
-
-    def propertyMissing(String name, value) {
-        getBrowser()."$name" = value
-    }
+/**
+ * @deprecated Use {@link geb.testng.GebTestTrait} instead.
+ */
+@Deprecated
+class GebTest implements GebTestTrait {
 }
