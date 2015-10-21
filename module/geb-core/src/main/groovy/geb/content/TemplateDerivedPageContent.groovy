@@ -25,6 +25,7 @@ abstract class TemplateDerivedPageContent implements Navigator {
 
     private PageContentTemplate _template
     private Object[] _args
+    private Browser _browser
 
     @Delegate
     protected Navigator _navigator
@@ -34,7 +35,8 @@ abstract class TemplateDerivedPageContent implements Navigator {
      *
      * We don't use a constructor to prevent users from having to implement them.
      */
-    void init(PageContentTemplate template, Navigator navigator, Object[] args) {
+    void init(Browser browser, PageContentTemplate template, Navigator navigator, Object[] args) {
+        this._browser = browser
         this._template = template
         this._navigator = navigator
         this._args = args
@@ -44,15 +46,8 @@ abstract class TemplateDerivedPageContent implements Navigator {
         "${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args, value: ${_navigator.value()})"
     }
 
-    /**
-     * The page that this content is part of
-     */
-    Page getPage() {
-        _template.page
-    }
-
     Browser getBrowser() {
-        getPage().browser
+        _browser
     }
 
     WebDriver getDriver() {
