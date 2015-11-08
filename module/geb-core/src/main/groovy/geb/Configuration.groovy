@@ -129,7 +129,7 @@ class Configuration {
     }
 
     /**
-     * Returns Either the value at config path {@code waiting.includeCauseInMessage} or {false} if there is none.
+     * Returns Either the value at config path {@code waiting.includeCauseInMessage} or {@code false} if there is none.
      * <p>
      * Determines if the message of {@link geb.waiting.WaitTimeoutException} should contain a string representation of its cause.
      */

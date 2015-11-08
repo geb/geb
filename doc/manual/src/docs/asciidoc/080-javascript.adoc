@@ -197,7 +197,7 @@ However, we can fake it through some JavaScript magic as link:http://code.google
 Geb implements a workaround based on this solution for you.
 Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms.
 At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust.
-Geb adds this functionality through the `{alert-and-confirm-support}` class that is mixed into `{page-api}` and `{module-api}`.
+Geb adds this functionality through the `{alert-and-confirm-support-api}` class that is mixed into `{page-api}` and `{module-api}`.
 
 The Geb methods *prevent* the browser from actually displaying the dialog, which is a good thing.
 This prevents the browser blocking while the dialog is displayed and causing your test to hang indefinitely.
