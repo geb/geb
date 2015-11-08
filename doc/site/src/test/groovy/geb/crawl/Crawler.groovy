@@ -152,7 +152,7 @@ abstract class Crawler {
         def targetLink = link
         try {
             while (connection.responseCode > 300 && connection.responseCode < 400) {
-                def redirectTo = connection.getURL().toURI().resolve(connection.getHeaderField("location").replaceAll(/\|/, "%7C")).toString()
+                def redirectTo = connection.getURL().toURI().resolve(connection.getHeaderField("location")).toString()
                 targetLink = new Link(redirectTo)
                 connection = openUrlConnection(targetLink.uri)
             }
