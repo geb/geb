@@ -138,6 +138,8 @@ Following is an example of using the geb-saucelabs Gradle plugin.
 
 [source,groovy,subs="attributes,verbatim"]
 ----
+import geb.gradle.saucelabs.SauceAccount
+
 apply plugin: "geb-saucelabs" //<1>
 
 buildscript { //<2>
@@ -211,6 +213,8 @@ Following is an example of using the geb-browserstack Gradle plugin.
 
 [source,groovy,subs="attributes,verbatim"]
 ----
+import geb.gradle.browserstack.BrowserStackAccount
+
 apply plugin: "geb-browserstack" //<1>
 
 buildscript { //<2>
