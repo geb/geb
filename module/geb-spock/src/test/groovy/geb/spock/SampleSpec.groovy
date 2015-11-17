@@ -8,12 +8,12 @@ class SampleSpec extends BaseReportingSpec {
     }
 
     def "PassingTest"() {
-        expect: "Home Page is Displayed"
+        expect: "Home Page is Displayed" //does not take screenshot if test passes
         at SamplePage
     }
 
     def "FailingTest"() {
         expect:
-        !homePageLogo.isDisplayed()
+        !homePageLogo.isDisplayed() //takes screenshot
     }
 }
