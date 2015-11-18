@@ -18,9 +18,16 @@ import geb.report.ReporterSupport
 import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
+import spock.lang.Shared
+
+/**
+ * Created by Leo Fedorov 11/11/2015, implemented by Francis Dela Pena 11/17/2015
+ */
 
 class GebReportingSpec extends GebSpec {
 
+    @Rule
+    MethodExecutionRule failTracker = new MethodExecutionRule()
     // Ridiculous name to avoid name clashes
     @Rule
     TestName gebReportingSpecTestName
@@ -43,7 +50,9 @@ class GebReportingSpec extends GebSpec {
     }
 
     void report(String label = "") {
-        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
+        if (failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
+            browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
+        }
     }
 
 }
