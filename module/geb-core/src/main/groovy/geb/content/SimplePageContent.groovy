@@ -14,13 +14,14 @@
  */
 package geb.content
 
+import geb.Browser
 import geb.navigator.Navigator
 
 @SuppressWarnings("EqualsAndHashCode")
 class SimplePageContent extends TemplateDerivedPageContent {
 
-    void init(PageContentTemplate template, Navigator navigator, Object[] args) {
-        super.init(template, navigator, *args)
+    void init(Browser browser, PageContentTemplate template, Navigator navigator, Object[] args) {
+        super.init(browser, template, navigator, *args)
     }
 
     @Override

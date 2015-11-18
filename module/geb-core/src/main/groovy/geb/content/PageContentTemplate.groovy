@@ -16,7 +16,6 @@ package geb.content
 
 import geb.Browser
 import geb.Configuration
-import geb.Page
 import geb.error.RequiredPageValueNotPresent
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
@@ -44,10 +43,6 @@ class PageContentTemplate {
 
     String toString() {
         "content template '$name' defined by $owner"
-    }
-
-    Page getPage() {
-        owner instanceof Page ? owner : owner.getPage()
     }
 
     Configuration getConfig() {
@@ -108,7 +103,7 @@ class PageContentTemplate {
     private wrapFactoryReturn(factoryReturn, Object[] args) {
         if (Navigator.isInstance(factoryReturn)) {
             def pageContent = new SimplePageContent()
-            pageContent.init(this, factoryReturn, *args)
+            pageContent.init(browser, this, factoryReturn, *args)
             pageContent
         } else {
             factoryReturn

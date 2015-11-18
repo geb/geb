@@ -75,6 +75,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * Fix a bug that caused reports for all but the last executed test class in TestNG integration to be wiped out. [issue:407[]]
+* Fix a bug preventing using module as a base of another module. [issue:411[]]
 
 ==== Improvements
 
@@ -440,7 +441,7 @@ new <<form-element, `FormElement`>> module class.
 
 * Navigator objects now implement the Groovy truth (empty == false, non empty == true)
 * Introduced “js” short notation
-* Added “{easyb}” support (`geb-easyb`) and Grails support
+* Added “easyb” support (`geb-easyb`) and Grails support
 * Page change listening support through `geb.PageChangeListener`
 * `waitFor()` methods added, making dealing with dynamic pages easier
 * Support for `alert()` and `confirm()` dialogs

@@ -54,6 +54,7 @@ dependencies {
 
 HTMLUnit depends on some XML processing libraries that cause issues with Grails. You can avoid this by excluding certain dependencies of the HTMLUnit driver…
 
+[source,groovy,subs="attributes"]
 ----
 test("org.seleniumhq.selenium:selenium-htmlunit-driver:{selenium-version}") {
     exclude 'xml-apis'
