@@ -1,3 +1,5 @@
+package geb.spock
+
 import org.junit.rules.MethodRule
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement

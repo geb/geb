@@ -50,7 +50,7 @@ class GebReportingSpec extends GebSpec {
     }
 
     void report(String label = "") {
-        if (failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
+        if (!browser.config.reportOnTestFailureOnly || failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
             browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
         }
     }
