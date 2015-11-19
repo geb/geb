@@ -18,7 +18,6 @@ import geb.report.ReporterSupport
 import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
-import spock.lang.Shared
 
 /**
  * Created by Leo Fedorov 11/11/2015, implemented by Francis Dela Pena 11/17/2015
