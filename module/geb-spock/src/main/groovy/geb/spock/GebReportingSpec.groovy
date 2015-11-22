@@ -11,6 +11,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Tests implemented by FrancisDelaPena 11/22/15.
+ *
  */
 package geb.spock
 
@@ -37,6 +40,8 @@ class GebReportingSpec extends GebSpec {
 
     def setup() {
         reportGroup getClass()
+
+        config.reportOnTestFailureOnly = false; //In TestNG's GebReportingTestTest, they configure it to false in the "setup", while switching it to true in a later test.
     }
 
     /*
