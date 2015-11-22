@@ -39,6 +39,12 @@ class GebReportingSpec extends GebSpec {
         reportGroup getClass()
     }
 
+    /*
+     * Based on TestNG's GebReportingTestTest and Spock's GebReportingSpecSpec, Tests will appear here.  Will be
+     * finished by tomorrow morning.
+     * - Francis (11/21/15 22:43)
+     */
+
     def cleanup() {
         report "end"
         ++gebReportingSpecTestCounter
