@@ -51,11 +51,13 @@ class GebReportingSpec extends GebSpec {
     @Test //Newly-added test by FrancisDelaPena
     def failingTest() { //Test containing config.reportOnTestFailureOnly = true
         config.reportTestOnFailureOnly = true //sets result checker on
-        //still trying to figure out exactly how to do passing test.  Most likely using TestNG as a base
+        //Still figuring out how to do passing test.  Probably will use TestNG as base
         /*
          * TestNG's test for the true checker produces two different results.
          * First, with a passed test, asserting that any report sent is null.
          * Second, with a failed test that successfully sends a report.
+         *
+         * Would this work for Spock?
          */
     }
 
