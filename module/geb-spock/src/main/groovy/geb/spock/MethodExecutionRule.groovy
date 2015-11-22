@@ -9,7 +9,7 @@ import org.junit.runners.model.Statement
  */
 public class MethodExecutionRule implements MethodRule {
 
-    public static def failedTests = [] //list of failed tests
+    public static failedTests = [] //list of failed tests
 
     public Statement apply(final Statement statement, final FrameworkMethod frameworkMethod, final Object o) {
         return new Statement() {
