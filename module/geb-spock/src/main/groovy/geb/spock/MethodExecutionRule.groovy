@@ -5,7 +5,7 @@ import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 
 /**
- * Created by Leo on 11/11/2015.
+ * Created by leo-13 on 11/11/2015.
  */
 public class MethodExecutionRule implements MethodRule {
 
