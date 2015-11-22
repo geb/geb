@@ -40,26 +40,12 @@ class GebReportingSpec extends GebSpec {
 
     def setup() {
         reportGroup getClass()
-
-        config.reportOnTestFailureOnly = false; //In TestNG's GebReportingTestTest, they configure it to false in the "setup", while switching it to true in a later test.
+        config.reportOnTestFailureOnly = false //In TestNG's GebReportingTestTest, they configure it to false in the "setup", while switching it to true in a later test.
     }
 
-    /*
-     * Based on TestNG's GebReportingTestTest and Spock's GebReportingSpecSpec, Tests will appear here.  Will be
-     * finished by tomorrow morning.
-     * - Francis (11/21/15 22:43)
-     *
-     * Just woke up.  Getting started.  Interruption may occur so may not be done until early afternoon, but will be
-     * for sure.  Also, will remove these comments upon final submission today.
-     * - Francis (11/22/15 9:19)
-     */
-
-    def test1() { //Will change name, only a placeholder.  Test containing config.reportOnTestFailureOnly = true
-
-    }
-
-    def test2() { //Will change name, only a placeholder.  Test containing config.reportOnTestFailureOnly = false
-        
+    @Test //Newly-added test by FrancisDelaPena
+    def reportingTestShouldReportOnFailure() { //Test containing config.reportOnTestFailureOnly = true
+        config.reportTestOnFailureOnly = true
     }
 
     def cleanup() {
