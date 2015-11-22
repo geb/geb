@@ -23,7 +23,7 @@ dependencies {
 
 sourceSets {
 	main {
-	 	groovy.srcDirs = ["../integration/geb-gradle/src/main/groovy"]
+		groovy.srcDirs = ["../integration/geb-gradle/src/main/groovy"]
 		resources.srcDirs = ["../integration/geb-gradle/src/main/resources"]
 	}
 }
