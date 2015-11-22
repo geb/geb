@@ -52,6 +52,11 @@ class GebReportingSpec extends GebSpec {
     def failingTest() { //Test containing config.reportOnTestFailureOnly = true
         config.reportTestOnFailureOnly = true //sets result checker on
         //still trying to figure out exactly how to do passing test.  Most likely using TestNG as a base
+        /*
+         * TestNG's test for the true checker produces two different results.
+         * First, with a passed test, asserting that any report sent is null.
+         * Second, with a failed test that successfully sends a report.
+         */
     }
 
     def cleanup() {
