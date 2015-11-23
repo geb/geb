@@ -40,11 +40,11 @@ class GebReportingSpec extends GebSpec {
 
     def setup() {
         reportGroup getClass()
-        config.reportOnTestFailureOnly = false //In TestNG's GebReportingTestTest, they configure it to false in the "setup", while switching it to true in a later test.
     }
 
     @Test //Newly-added test by FrancisDelaPena
-    def passingTest() { //should test while false checker is off
+    def passingTest() { //should test while fail checker is off
+        config.reportOnTestFailureOnly = false //turns fail checker off
         assert report != null //ensures report will send if test result checker is off
     }
 
