@@ -33,7 +33,7 @@ class GebReportingSpec extends GebSpec {
     @Shared
     private int gebReportingSpecTestCounter = 1
 
-    def setupSpec() {
+    def setupSpec() { 
         reportGroup getClass()
         cleanReportGroupDir()
     }
