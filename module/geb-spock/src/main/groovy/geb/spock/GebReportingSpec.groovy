@@ -12,8 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Tests implemented by FrancisDelaPena 11/22/15.
- *
  */
 package geb.spock
 
@@ -40,25 +38,6 @@ class GebReportingSpec extends GebSpec {
 
     def setup() {
         reportGroup getClass()
-    }
-
-    @Test //Newly-added test by FrancisDelaPena
-    def passingTest() { //should test while fail checker is off
-        config.reportOnTestFailureOnly = false //turns fail checker off
-        assert report != null //ensures report will send if test result checker is off
-    }
-
-    @Test //Newly-added test by FrancisDelaPena
-    def failingTest() { //Test containing config.reportOnTestFailureOnly = true
-        config.reportTestOnFailureOnly = true //sets result checker on
-        //Still figuring out how to do passing test.  Probably will use TestNG as base
-        /*
-         * TestNG's test for the true checker produces two different results.
-         * First, with a passed test, asserting that any report sent is null.
-         * Second, with a failed test that successfully sends a report.
-         *
-         * Would this work for Spock?
-         */
     }
 
     def cleanup() {

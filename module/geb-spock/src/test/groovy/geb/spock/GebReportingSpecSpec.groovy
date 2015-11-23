@@ -11,6 +11,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Tests implemented by FrancisDelaPena 11/22/15-11/23/15
  */
 package geb.spock
 
@@ -40,6 +42,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 
     def setup() {
         baseUrl = server.baseUrl
+        config.reportOnTestFailureOnly = false //Placed here as in TestNG, working on true test right now - Francis
         go()
     }
 
