@@ -63,18 +63,21 @@ class GebReportingSpecSpec extends GebReportingSpec {
         report.text.startsWith("<?xml")
     }
 
+    def "there should be a second report"() {
+        expect:
+        reportGroupDir.listFiles().any { it.name.startsWith("002") }
+    }
+
     /*
      * Need to complete below test
      */
 
     def failingTest() {
         config.reportOnTestFailureOnly = true
-        //Use TestNG's GebReportingTestTest as reference
-    }
+        a request is made()
+        a report should have been created with the response text()
+        there should be a second report()
 
-    def "there should be a second report"() {
-        expect:
-        reportGroupDir.listFiles().any { it.name.startsWith("002") }
     }
 
     def cleanupSpec() {
