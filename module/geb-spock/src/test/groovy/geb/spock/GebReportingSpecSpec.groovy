@@ -63,6 +63,15 @@ class GebReportingSpecSpec extends GebReportingSpec {
         report.text.startsWith("<?xml")
     }
 
+    /*
+     * Need to complete below test
+     */
+
+    def failingTest() {
+        config.reportOnTestFailureOnly = true
+        //Use TestNG's GebReportingTestTest as reference
+    }
+
     def "there should be a second report"() {
         expect:
         reportGroupDir.listFiles().any { it.name.startsWith("002") }
