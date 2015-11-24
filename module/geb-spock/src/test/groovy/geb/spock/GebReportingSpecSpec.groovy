@@ -72,11 +72,21 @@ class GebReportingSpecSpec extends GebReportingSpec {
      * Need to complete below test
      */
 
-    def failingTest() {
+    def failingTest() { //based on TestNG's GebReportingTestTest
         config.reportOnTestFailureOnly = true
+        def testResult = new TestResult()
         a request is made()
+
+        testResult.status = ITestResult.SUCCESS //creates successful test
+        super.reportingAfter testResult
+        def report = a report should have been created with the response text()
+        assert report == null //asserts that a report is nullified while test is successful
+
+        testResult.status = ITestResult.FAILURE //failed test
+        super.reportingAfter testResult
         a report should have been created with the response text()
         there should be a second report()
+        //only sends report if failure
 
     }
 
