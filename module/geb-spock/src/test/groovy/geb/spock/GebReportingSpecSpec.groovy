@@ -42,7 +42,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 
     def setup() {
         baseUrl = server.baseUrl
-        config.reportOnTestFailureOnly = false //Placed here as in TestNG, working on true test right now - Francis
+        config.reportOnTestFailureOnly = false //Placed here as in TestNG's version
         go()
     }
 
