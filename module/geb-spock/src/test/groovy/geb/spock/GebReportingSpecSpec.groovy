@@ -11,8 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Tests implemented by FrancisDelaPena 11/22/15-11/23/15
  */
 package geb.spock
 
@@ -42,7 +40,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 
     def setup() {
         baseUrl = server.baseUrl
-        config.reportOnTestFailureOnly = false //Placed here as in TestNG's version
+        config.reportOnTestFailureOnly = false
         go()
     }
 
@@ -68,26 +66,30 @@ class GebReportingSpecSpec extends GebReportingSpec {
         reportGroupDir.listFiles().any { it.name.startsWith("002") }
     }
 
-    /*
-     * Need to complete below test
-     */
+    def "there are no failed tests"() {
+        expect:
+        failTracker.failedTests.isEmpty()
+    }
 
-    def failingTest() { //based on TestNG's GebReportingTestTest
+    def "reportOnTestFailureOnly is enabled - passing test"() {
+        given:
         config.reportOnTestFailureOnly = true
-        def testResult = new TestResult()
-        a request is made()
+    }
 
-        testResult.status = ITestResult.SUCCESS //creates successful test
-        super.reportingAfter testResult
-        def report = a report should have been created with the response text()
-        assert report == null //asserts that a report is nullified while test is successful
+    def "reportOnTestFailureOnly is enabled - failing test"() {
+        given:
+        config.reportOnTestFailureOnly = true
+        failTracker.failedTests.add(specificationContext.currentIteration.name)
+    }
 
-        testResult.status = ITestResult.FAILURE //failed test
-        super.reportingAfter testResult
-        a report should have been created with the response text()
-        there should be a second report()
-        //only sends report if failure
+    def "there should be no report for the passing test when reportOnTestFailureOnly is enabled"() {
+        expect:
+        !reportGroupDir.listFiles().any { it.name.contains("passing test") }
+    }
 
+    def "there should be a report for the failing test when reportOnTestFailureOnly is enabled"() {
+        expect:
+        reportGroupDir.listFiles().any { it.name.contains("failing test") }
     }
 
     def cleanupSpec() {
