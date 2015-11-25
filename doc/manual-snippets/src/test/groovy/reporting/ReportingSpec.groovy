@@ -45,11 +45,11 @@ class ReportingSpec extends DriveMethodSupportingSpecWithServer {
             assert new File(config.reportsDir, "google/home page.html").exists()
 
             // tag::reporting_groups[]
-            reportGroup "wikipedia"
-            go "http://wikipedia.org"
+            reportGroup "github"
+            go "http://github.com"
             report "home page"
             // end::reporting_groups[]
-            assert new File(config.reportsDir, "wikipedia/home page.html").exists()
+            assert new File(config.reportsDir, "github/home page.html").exists()
             // tag::reporting_groups[]
         }
         // end::reporting_groups[]
