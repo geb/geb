@@ -11,6 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 package geb.spock
 
@@ -21,6 +22,8 @@ import org.junit.rules.TestName
 
 class GebReportingSpec extends GebSpec {
 
+    @Rule
+    MethodExecutionRule failTracker = new MethodExecutionRule()
     // Ridiculous name to avoid name clashes
     @Rule
     TestName gebReportingSpecTestName
@@ -43,7 +46,9 @@ class GebReportingSpec extends GebSpec {
     }
 
     void report(String label = "") {
-        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
+        if (!browser.config.reportOnTestFailureOnly || failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
+            browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
+        }
     }
 
 }
