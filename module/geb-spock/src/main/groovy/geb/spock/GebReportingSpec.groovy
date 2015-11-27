@@ -11,14 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 package geb.spock
 
 import geb.report.ReporterSupport
-import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
+import spock.lang.Shared
 
 class GebReportingSpec extends GebSpec {
 
