@@ -15,9 +15,9 @@
 package geb.spock
 
 import geb.report.ReporterSupport
+import spock.lang.*
 import org.junit.Rule
 import org.junit.rules.TestName
-import spock.lang.Shared
 
 class GebReportingSpec extends GebSpec {
 
