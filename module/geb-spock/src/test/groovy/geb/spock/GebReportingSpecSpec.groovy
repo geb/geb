@@ -96,9 +96,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
     def "there should be a report for the failing test when reportOnTestFailureOnly is enabled"() {
         expect:
         reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is enabled - failing test-failure") }
-        reportGroupDir.listFiles().any {
-            it.name.contains("reportOnTestFailureOnly is disabled - failing test-failure")
-        }
+        reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is disabled - failing test-failure") }
     }
 
     def cleanupSpec() {
