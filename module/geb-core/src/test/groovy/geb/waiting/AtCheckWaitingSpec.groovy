@@ -146,7 +146,7 @@ class BooleanAtCheckWaitingSpecPage extends AtCheckWaitingSpecPage {
 }
 
 class NumberAtCheckWaitingSpecPage extends AtCheckWaitingSpecPage {
-    static atCheckWaiting = 0.4
+    static atCheckWaiting = 0.5
 }
 
 class ListOfNumbersAtCheckWaitingSpecPage extends AtCheckWaitingSpecPage {
