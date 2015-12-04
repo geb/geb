@@ -21,7 +21,7 @@ import org.junit.runners.model.Statement
 /**
  * Created by leo-13 on 11/11/2015.
  */
-class MethodExecutionRule implements MethodRule {
+class FailTrackerRule implements MethodRule {
 
     static failedTests = []
 

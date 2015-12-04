@@ -22,7 +22,7 @@ import org.junit.rules.TestName
 class GebReportingSpec extends GebSpec {
 
     @Rule
-    MethodExecutionRule failTracker = new MethodExecutionRule()
+    FailTrackerRule failTracker = new FailTrackerRule()
     // Ridiculous name to avoid name clashes
     @Rule
     TestName gebReportingSpecTestName
