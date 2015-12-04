@@ -68,7 +68,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 
     def "there are no failed tests"() {
         expect:
-        failTracker.failedTests.isEmpty()
+        !failTracker.failed
     }
 
     def "reportOnTestFailureOnly is enabled - passing test"() {
@@ -79,13 +79,13 @@ class GebReportingSpecSpec extends GebReportingSpec {
     def "reportOnTestFailureOnly is enabled - failing test"() {
         given:
         config.reportOnTestFailureOnly = true
-        failTracker.failedTests.add(specificationContext.currentIteration.name)
+        failTracker.failed = true
     }
 
     def "reportOnTestFailureOnly is disabled - failing test"() {
         given:
         config.reportOnTestFailureOnly = false
-        failTracker.failedTests.add(specificationContext.currentIteration.name)
+        failTracker.failed = true
     }
 
     def "there should be no report for the passing test when reportOnTestFailureOnly is enabled"() {
@@ -93,7 +93,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
         !reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is enabled - passing test-end") }
     }
 
-    def "there should be a report for the failing test when reportOnTestFailureOnly is enabled"() {
+    def "there should be reports for the failing tests with label 'failure'"() {
         expect:
         reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is enabled - failing test-failure") }
         reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is disabled - failing test-failure") }

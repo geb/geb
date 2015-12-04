@@ -40,7 +40,7 @@ class GebReportingSpec extends GebSpec {
     }
 
     def cleanup() {
-        if (failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
+        if (failTracker.failed) {
             report "failure"
         } else if (!browser.config.reportOnTestFailureOnly) {
             report "end"

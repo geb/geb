@@ -23,7 +23,7 @@ import org.junit.runners.model.Statement
  */
 class FailTrackerRule implements MethodRule {
 
-    static failedTests = []
+    boolean failed = false
 
     Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object o) {
         o.toString() // added to avoid codeNarc errors
@@ -33,7 +33,7 @@ class FailTrackerRule implements MethodRule {
                 try {
                     statement.evaluate()
                 } catch (Throwable t) {
-                    failedTests.add(frameworkMethod.getName())
+                    failed = true
                     throw t
                 }
             }
