@@ -63,6 +63,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:berardino[Berardino la Torre] - Fix incorrect delegation of waitFor() methods
 * github-profile:madmas[Markus Schlichting] - Doc fixes
 * github-profile:ahitrin[Andrey Hitrin] - Improvement to character replacing in report file names
+* github-profile:leo-13[Leo Fedorov] - Support for `reportOnTestFailureOnly` config option for Spock integration
 
 == History
 
