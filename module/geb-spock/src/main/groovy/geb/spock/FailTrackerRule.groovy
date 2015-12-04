@@ -27,6 +27,7 @@ class FailTrackerRule implements MethodRule {
 
     Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object o) {
         o.toString() // added to avoid codeNarc errors
+        frameworkMethod.toString() // added to avoid codeNarc errors
         new Statement() {
             @Override
             void evaluate() throws Throwable {
