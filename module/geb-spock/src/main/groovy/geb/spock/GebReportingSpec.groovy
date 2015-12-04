@@ -40,14 +40,16 @@ class GebReportingSpec extends GebSpec {
     }
 
     def cleanup() {
-        report "end"
+        if (failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
+            report "failure"
+        } else if (!browser.config.reportOnTestFailureOnly) {
+            report "end"
+        }
         ++gebReportingSpecTestCounter
     }
 
     void report(String label = "") {
-        if (!browser.config.reportOnTestFailureOnly || failTracker.failedTests.contains(gebReportingSpecTestName.methodName)) {
-            browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
-        }
+        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
     }
 
 }
