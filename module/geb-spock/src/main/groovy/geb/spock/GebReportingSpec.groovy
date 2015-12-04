@@ -21,6 +21,8 @@ import org.junit.rules.TestName
 
 class GebReportingSpec extends GebSpec {
 
+    @Rule
+    FailTrackerRule failTracker = new FailTrackerRule()
     // Ridiculous name to avoid name clashes
     @Rule
     TestName gebReportingSpecTestName
@@ -38,7 +40,11 @@ class GebReportingSpec extends GebSpec {
     }
 
     def cleanup() {
-        report "end"
+        if (failTracker.failed) {
+            report "failure"
+        } else if (!browser.config.reportOnTestFailureOnly) {
+            report "end"
+        }
         ++gebReportingSpecTestCounter
     }
 

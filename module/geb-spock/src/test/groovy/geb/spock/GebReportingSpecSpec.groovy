@@ -40,6 +40,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
 
     def setup() {
         baseUrl = server.baseUrl
+        config.reportOnTestFailureOnly = false
         go()
     }
 
@@ -63,6 +64,39 @@ class GebReportingSpecSpec extends GebReportingSpec {
     def "there should be a second report"() {
         expect:
         reportGroupDir.listFiles().any { it.name.startsWith("002") }
+    }
+
+    def "there are no failed tests"() {
+        expect:
+        !failTracker.failed
+    }
+
+    def "reportOnTestFailureOnly is enabled - passing test"() {
+        given:
+        config.reportOnTestFailureOnly = true
+    }
+
+    def "reportOnTestFailureOnly is enabled - failing test"() {
+        given:
+        config.reportOnTestFailureOnly = true
+        failTracker.failed = true
+    }
+
+    def "reportOnTestFailureOnly is disabled - failing test"() {
+        given:
+        config.reportOnTestFailureOnly = false
+        failTracker.failed = true
+    }
+
+    def "there should be no report for the passing test when reportOnTestFailureOnly is enabled"() {
+        expect:
+        !reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is enabled - passing test-end") }
+    }
+
+    def "there should be reports for the failing tests with label 'failure'"() {
+        expect:
+        reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is enabled - failing test-failure") }
+        reportGroupDir.listFiles().any { it.name.contains("reportOnTestFailureOnly is disabled - failing test-failure") }
     }
 
     def cleanupSpec() {
