@@ -14,6 +14,7 @@
  */
 package geb.spock
 
+import geb.junit4.rule.FailTrackerRule
 import geb.report.ReporterSupport
 import spock.lang.*
 import org.junit.Rule

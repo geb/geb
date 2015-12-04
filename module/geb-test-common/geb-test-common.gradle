@@ -1,0 +1,10 @@
+dependencies {
+    compile "junit:junit:$junit4Version"
+}
+
+modifyPom { pom ->
+    pom.project {
+        name "Geb Test Common"
+        description "Geb (pronounced \"jeb\") module containig code common to test integrations."
+    }
+}

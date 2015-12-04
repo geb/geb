@@ -1,5 +1,6 @@
 dependencies {
 	compile spockDependency
+	compile project(':module:geb-test-common')
 }
 
 modifyPom { pom ->

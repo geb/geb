@@ -12,15 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.spock
+package geb.junit4.rule
 
 import org.junit.rules.MethodRule
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 
-/**
- * Created by leo-13 on 11/11/2015.
- */
 class FailTrackerRule implements MethodRule {
 
     boolean failed = false
