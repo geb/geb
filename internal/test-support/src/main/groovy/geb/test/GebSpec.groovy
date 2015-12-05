@@ -18,6 +18,7 @@ package geb.test
 import geb.Browser
 import geb.Configuration
 import geb.ConfigurationLoader
+import geb.junit4.rule.FailTrackerRule
 import geb.report.ReporterSupport
 import org.junit.Rule
 import org.junit.rules.TestName
@@ -35,8 +36,8 @@ class GebSpec extends Specification {
     @Shared
     Browser _browser
 
-    @Shared
-    boolean takeReports = true
+    @Rule
+    FailTrackerRule failTracker
 
     // Ridiculous name to avoid name clashes
     @Rule
@@ -82,9 +83,7 @@ class GebSpec extends Specification {
     }
 
     void report(String label = "") {
-        if (takeReports) {
-            browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter++, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
-        }
+        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter++, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
     }
 
     def methodMissing(String name, args) {
@@ -104,7 +103,9 @@ class GebSpec extends Specification {
     }
 
     def cleanup() {
-        report("end")
+        if (failTracker.failed) {
+            report("failure")
+        }
         if (!isSpecStepwise()) {
             resetBrowser()
         }

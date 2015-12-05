@@ -1,8 +1,9 @@
 dependencies {
 	compile project(':module:geb-core'),
-	        spockDependency,
-	        jettyDependency,
-	        firefoxDriverDependency,
-	        htmlUnitDriverDependency,
-	        "org.seleniumhq.selenium:selenium-server:$seleniumVersion"
+		project(':module:geb-test-common'),
+		spockDependency,
+		jettyDependency,
+		firefoxDriverDependency,
+		htmlUnitDriverDependency,
+		"org.seleniumhq.selenium:selenium-server:$seleniumVersion"
 }
