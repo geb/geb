@@ -14,7 +14,7 @@
  */
 package geb.spock
 
-import geb.junit4.rule.FailTrackerRule
+import geb.junit4.rule.FailureTracker
 import geb.report.ReporterSupport
 import spock.lang.*
 import org.junit.Rule
@@ -23,7 +23,7 @@ import org.junit.rules.TestName
 class GebReportingSpec extends GebSpec {
 
     @Rule
-    FailTrackerRule failTracker
+    FailureTracker failureTracker
 
     // Ridiculous name to avoid name clashes
     @Rule
@@ -42,7 +42,7 @@ class GebReportingSpec extends GebSpec {
     }
 
     def cleanup() {
-        if (failTracker.failed) {
+        if (failureTracker.failed) {
             report "failure"
         } else if (!browser.config.reportOnTestFailureOnly) {
             report "end"

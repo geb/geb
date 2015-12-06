@@ -74,13 +74,13 @@ class GebReportingSpecSpec extends GebReportingSpec {
     def "reportOnTestFailureOnly is enabled - failing test"() {
         given:
         config.reportOnTestFailureOnly = true
-        failTracker.failed = true
+        failureTracker.failed = true
     }
 
     def "reportOnTestFailureOnly is disabled - failing test"() {
         given:
         config.reportOnTestFailureOnly = false
-        failTracker.failed = true
+        failureTracker.failed = true
     }
 
     def "there should be no report for the passing test when reportOnTestFailureOnly is enabled"() {

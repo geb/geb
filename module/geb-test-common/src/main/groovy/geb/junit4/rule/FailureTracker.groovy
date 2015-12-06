@@ -17,7 +17,7 @@ package geb.junit4.rule
 import org.junit.rules.TestWatchman
 import org.junit.runners.model.FrameworkMethod
 
-class FailTrackerRule extends TestWatchman {
+class FailureTracker extends TestWatchman {
 
     boolean failed = false
 

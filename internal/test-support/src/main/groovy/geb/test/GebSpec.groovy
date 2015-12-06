@@ -18,7 +18,7 @@ package geb.test
 import geb.Browser
 import geb.Configuration
 import geb.ConfigurationLoader
-import geb.junit4.rule.FailTrackerRule
+import geb.junit4.rule.FailureTracker
 import geb.report.ReporterSupport
 import org.junit.Rule
 import org.junit.rules.TestName
@@ -37,7 +37,7 @@ class GebSpec extends Specification {
     Browser _browser
 
     @Rule
-    FailTrackerRule failTracker
+    FailureTracker failTracker
 
     // Ridiculous name to avoid name clashes
     @Rule
