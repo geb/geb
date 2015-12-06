@@ -14,27 +14,15 @@
  */
 package geb.junit4.rule
 
-import org.junit.rules.MethodRule
+import org.junit.rules.TestWatchman
 import org.junit.runners.model.FrameworkMethod
-import org.junit.runners.model.Statement
 
-class FailTrackerRule implements MethodRule {
+class FailTrackerRule extends TestWatchman {
 
     boolean failed = false
 
-    Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object o) {
-        o.toString() // added to avoid codeNarc errors
-        frameworkMethod.toString() // added to avoid codeNarc errors
-        new Statement() {
-            @Override
-            void evaluate() throws Throwable {
-                try {
-                    statement.evaluate()
-                } catch (Throwable t) {
-                    failed = true
-                    throw t
-                }
-            }
-        }
+    @Override
+    void failed(Throwable e, FrameworkMethod method) {
+        failed = true
     }
 }
