@@ -314,11 +314,6 @@ This might be useful as a way to speed up large test suites.
 include::{test-dir}/configuration/ReportOnTestFailuresConfigSpec.groovy[tag=config,indent=0]
 ----
 
-[WARNING]
-====
-Currently this flag is only supported by the TestNG adapter. Support for JUnit, Spock and other frameworks is forthcoming.
-====
-
 === Reporting listener
 
 It is possible to specify a listener that will be notified when reports are taken. See the section on <<listening-to-reporting, listening to reporting>> for details.

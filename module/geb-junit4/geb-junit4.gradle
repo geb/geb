@@ -1,5 +1,5 @@
 dependencies {
-    compile "junit:junit:$junit4Version"
+    compile "junit:junit:$junit4Version", project(":module:geb-test-common")
 }
 
 modifyPom { pom ->

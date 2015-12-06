@@ -73,6 +73,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== New features
+
+* `reportOnTestFailureOnly` config option is now also effective in Spock and JUnit4 integrations. [issue:92[]]
+
 ==== Fixes
 
 * Fix a bug that caused reports for all but the last executed test class in TestNG integration to be wiped out. [issue:407[]]

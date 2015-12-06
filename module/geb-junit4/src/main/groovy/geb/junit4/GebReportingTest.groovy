@@ -14,6 +14,7 @@
  */
 package geb.junit4
 
+import geb.junit4.rule.FailureTracker
 import org.junit.Before
 import org.junit.After
 import org.junit.Rule
@@ -25,6 +26,9 @@ class GebReportingTest extends GebTest {
     static private testCounters = [:]
     static private testCleanFlags = [:]
     private instanceTestCounter = 1
+
+    @Rule
+    public FailureTracker failureTracker = new FailureTracker()
 
     @Rule
     public TestName gebReportingTestTestName = new TestName()
@@ -49,7 +53,11 @@ class GebReportingTest extends GebTest {
 
     @After
     void writeGebReport() {
-        report "end"
+        if (failureTracker.failed) {
+            report "failure"
+        } else if (!browser.config.reportOnTestFailureOnly) {
+            report "end"
+        }
     }
 
     private incrementTestCounterValue() {
