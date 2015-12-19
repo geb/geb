@@ -177,7 +177,7 @@ Modules work well for this.
 
 Other than content that is repeated on different pages (like the shopping cart mentioned above), pages also can have content that is repeated on the page itself.
 On a checkout page, the contents of the shopping cart could be summarized with the product name, the quantity and price for each product contained.
-Thanks to `Navigator` implementing `Iterable<Navigator>` a list of modules can be collected using Groovy's `collect()` and the `Navigator.module()` method.
+For this kind of page, a list of modules can be collected using the `moduleList()` methods of `Navigator`.
 
 Consider the following HTML for our cart contents:
 
@@ -200,14 +200,6 @@ And define a list of CartRows in our Page:
 include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=page,indent=0]
 ----
 
-[TIP]
-====
-It's possible to make the creation of a list of modules from a `Navigator` even more concise by using the spread-dot operator (i.e. `$("table tr").tail()*.module(CartRow)`).
-Be careful though, because it won't do what you'd expect it to do if you use this technique together with the `module()` method that takes a module instance.
-Instead of creating multiple module instances like when spreading a `module()` call that takes a class it will take the single instance passed to it and initialize it multiple times returning a list
-which will contain the same module instance multiple times!
-====
-
 Because the return value of `cartItems` is a list of CartRow instances, we can use any of the usual collection methods:
 
 [source,groovy]
@@ -228,6 +220,14 @@ Keep in mind that you can use parametrized module instances to create lists of m
 ----
 include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=parameterized_module,indent=0]
 ----
+
+[TIP]
+====
+You might be wondering why the `moduleList()` method flavour that allows the use parameterized module instances takes a closure instead of a module instance, which is what the `module()` method for
+creating parameterized modules does.
+If it took a single instance then it could only initialize it multiple times and return a list which would contain the same instance but many times!
+To be able to return a list of different instances it's needs a closure which acts as a factory of module instances.
+====
 
 == The content DSL
 

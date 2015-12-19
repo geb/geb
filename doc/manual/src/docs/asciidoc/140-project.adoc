@@ -26,7 +26,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * link:http://pniederw.wordpress.com/[Peter Niederwieser]
 * github-profile:zolotov[Alexander Zolotov] - TestNG Integration
 * link:http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
-* link:http://www.desirableobjects.co.uk/[Antony Jones] - Various fixes and patches, doc improvements
+* github-profile:antony[Antony Jones] - Various fixes and patches, doc improvements
 * github-profile:hennr[Jan-Hendrik Peters] - Doc improvements
 * link:http://fbflex.wordpress.com/[Tomás Lin] - Doc improvements
 * github-profile:measlyweasel[Jason Cahoon] - Bug fix around text matchers
@@ -86,6 +86,7 @@ This page lists the high level changes between versions of Geb.
 
 * Non-ASCII word characters are not longer replaced in report file names. [issue:399[]]
 * Change TestNG support to be based on traits. [issue:412[]]
+* Add `Navigator.moduleList()` methods as an alternative to the deprecated `moduleList()` methods available in the content DSL. [issue:402[]]
 
 ==== Deprecations
 

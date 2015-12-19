@@ -85,7 +85,7 @@ class CartRow extends Module {
 class CheckoutPage extends Page {
     static content = {
         cartItems {
-            $("table tr").tail().collect { it.module(CartRow) } // tailing to skip the header row
+            $("table tr").tail().moduleList(CartRow) // tailing to skip the header row
         }
     }
 }
@@ -111,10 +111,8 @@ class ParameterizedCartRow extends Module {
 class CheckoutPageWithParametrizedCart extends Page {
     static content = {
         cartItems {
-            $("table tr").tail().collect {
-                it.module(
-                    new ParameterizedCartRow(nameIndex: 0, quantityIndex: 1, priceIndex: 2)
-                )
+            $("table tr").tail().moduleList {
+                new ParameterizedCartRow(nameIndex: 0, quantityIndex: 1, priceIndex: 2)
             }
         }
     }

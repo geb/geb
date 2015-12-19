@@ -362,6 +362,16 @@ abstract class AbstractNavigator implements Navigator {
 
         module
     }
+
+    @SuppressWarnings("UnnecessaryPublicModifier")
+    public <T extends Module> List<T> moduleList(Class<T> moduleClass) {
+        iterator()*.module(moduleClass)
+    }
+
+    @SuppressWarnings(["UnnecessaryPublicModifier", "UnnecessaryCollectCall"])
+    public <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
+        iterator().collect { it.module(moduleFactory.call()) }
+    }
 /**
  * Iterator for looping over the context elements of a Navigator instance.
  */

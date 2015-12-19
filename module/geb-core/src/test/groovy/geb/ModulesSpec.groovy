@@ -103,12 +103,10 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         page[repeatingWithParam].every { it.class == ModulesSpecDivModuleWithLocator }
 
         where:
-        usingSpread << [true, false]
-
-        repeating = usingSpread ? 'repeatingUsingSpread' : 'repeating'
-        repeatingWithParam = usingSpread ? 'repeatingWithParamUsingCollect' : 'repeatingWithParam'
-
-        scenario = usingSpread ? "spread operator" : "module list"
+        scenario                 | repeating              | repeatingWithParam
+        "module list"            | "repeating"            | "repeatingWithParam"
+        "module list old syntax" | "repeatingOldSyntax"   | "repeatingWithParamOldSyntax"
+        "spread operator"        | "repeatingUsingSpread" | "repeatingWithParamUsingCollect"
     }
 
     @Unroll
@@ -118,7 +116,9 @@ class ModulesSpec extends GebSpecWithCallbackServer {
 
         then:
         repeating[index].p.text() == repeatingText
+        repeatingOldSyntax[index].p.text() == repeatingText
         repeatingWithParam[index] as Boolean == repeatingWithParamAvailable
+        repeatingWithParamOldSyntax[index] as Boolean == repeatingWithParamAvailable
 
         where:
         index | repeatingText | repeatingWithParamAvailable
@@ -150,7 +150,8 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         to ModulesSpecPage
 
         then:
-        repeating(1..2)*.p*.text() == ['a', 'd']
+        repeating[1..2]*.p*.text() == ['a', 'd']
+        repeatingOldSyntax(1..2)*.p*.text() == ['a', 'd']
         repeatingUsingSpread[1..2]*.p*.text() == ['a', 'd']
     }
 
@@ -160,8 +161,8 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         to ModulesSpecPage
 
         then:
-        repeating(index).p.text() == repeatingText
-        repeatingWithParam(index) as Boolean == repeatingWithParamAvailable
+        repeatingOldSyntax(index).p.text() == repeatingText
+        repeatingWithParamOldSyntax(index) as Boolean == repeatingWithParamAvailable
 
         where:
         index | repeatingText | repeatingWithParamAvailable
@@ -254,9 +255,13 @@ class ModulesSpecPage extends Page {
         optionalUsingNavigatorMethod(required: false) { $("div.$it").module(OptionalModule) }
 
         // A list of modules, with the base of each module being set to the nth given navigator
-        repeating { index -> moduleList ModulesSpecDivModuleNoLocator, $('div'), index }
+        repeating { $('div').moduleList ModulesSpecDivModuleNoLocator }
+        repeatingOldSyntax { index -> moduleList ModulesSpecDivModuleNoLocator, $('div'), index }
         repeatingUsingSpread { $('div')*.module(ModulesSpecDivModuleNoLocator) }
-        repeatingWithParam(required: false) { index ->
+        repeatingWithParam(required: false) {
+            $('div').moduleList { new ModulesSpecDivModuleWithLocator(className: 'd') }
+        }
+        repeatingWithParamOldSyntax(required: false) { index ->
             moduleList ModulesSpecDivModuleWithLocator, $('div'), index, className: 'd'
         }
         repeatingWithParamUsingCollect(required: false) {

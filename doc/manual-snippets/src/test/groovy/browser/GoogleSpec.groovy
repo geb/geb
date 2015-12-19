@@ -20,7 +20,7 @@ import geb.Page
 import geb.spock.GebSpec
 
 class GoogleHomePage extends Page {
-    static url = "http://www.google.com/ncr"
+    static url = "http://www.google.com"
 }
 
 class GoogleSpec extends GebSpec {
@@ -29,11 +29,11 @@ class GoogleSpec extends GebSpec {
         Page oldPage = page
 
         when:
-        go "http://www.google.com/ncr"
+        go "http://www.google.com"
 
         then:
         oldPage == page
-        currentUrl == "http://www.google.com/"
+        currentUrl.contains "google"
     }
 
     def "to method does set the page and change the current url"() {
@@ -45,7 +45,7 @@ class GoogleSpec extends GebSpec {
 
         then:
         oldPage != page
-        currentUrl == "http://www.google.com/"
+        currentUrl.contains "google"
     }
 }
 // end::class[]

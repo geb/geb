@@ -947,4 +947,20 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * @return an initialized instance of passed as the argument
      */
     public <T extends Module> T module(T module)
+
+    /**
+     * Create and initialize a list of module instances using navigators created from web elements which make up {@code this} navigator as their bases.
+     *
+     * @param moduleClass a class extending {@link geb.Module}
+     * @return a list of initialized instances of the module class passed as the argument
+     */
+    public <T extends Module> List<T> moduleList(Class<T> moduleClass)
+
+    /**
+     * Create a list of module instances using the provided factory and initialize them using navigators created from web elements which make up {@code this} navigator as their bases.
+     *
+     * @param moduleFactory a closure that should return a new module instance every time it's called
+     * @return a list of initialized module instances created using the factory closure passed in as the argument
+     */
+    public <T extends Module> List<T> moduleList(Closure<T> moduleFactory)
 }

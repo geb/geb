@@ -202,6 +202,16 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     }
 
     @Override
+    <T extends Module> List<T> moduleList(Class<T> moduleClass) {
+        getInitializedNavigator().moduleList(moduleClass)
+    }
+
+    @Override
+    <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
+        getInitializedNavigator().moduleList(moduleFactory)
+    }
+
+    @Override
     String css(String propertyName) {
         getInitializedNavigator().css(propertyName)
     }

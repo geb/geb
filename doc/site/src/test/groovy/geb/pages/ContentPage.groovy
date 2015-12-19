@@ -24,6 +24,6 @@ class ContentPage extends Page {
 
     static content = {
         firstHeaderText { $('#main h1', 0).text() }
-        menuItems { $('#header-content > ul > li')*.module(MenuItemModule) }
+        menuItems { $('#header-content > ul > li').moduleList(MenuItemModule) }
     }
 }
