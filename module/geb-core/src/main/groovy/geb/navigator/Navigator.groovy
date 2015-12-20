@@ -963,4 +963,12 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * @return a list of initialized module instances created using the factory closure passed in as the argument
      */
     public <T extends Module> List<T> moduleList(Closure<T> moduleFactory)
+
+    /**
+     * Checks if the first element of {@code this} navigator is focused by comparing it to the element returned from {@link org.openqa.selenium.WebDriver.TargetLocator#activeElement()}.
+     * If the navigator is empty {@code false} will be returned.
+     *
+     * @return {@code true} if the first element is focused
+     */
+    boolean isFocused()
 }

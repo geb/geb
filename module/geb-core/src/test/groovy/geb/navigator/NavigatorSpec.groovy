@@ -488,6 +488,24 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         $("p", a: ~/[234]/, 1..2)*.text() == ["3", "4"]
     }
 
+    def focused() {
+        when:
+        html {
+            input(class: "focused")
+            input(class: "notFocused")
+        }
+
+        and:
+        interact {
+            click($(".focused"))
+        }
+
+        then:
+        !$(".notExisting").focused
+        $(".focused").focused
+        !$(".notFocused").focused
+    }
+
 }
 
 class PageWithoutAtChecker extends Page {

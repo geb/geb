@@ -523,6 +523,11 @@ class NonEmptyNavigator extends AbstractNavigator {
         contextElements*.toString()
     }
 
+    @Override
+    boolean isFocused() {
+        firstElement().equals(browser.driver.switchTo().activeElement())
+    }
+
     def methodMissing(String name, arguments) {
         if (!arguments) {
             def navigator = navigatorFor collectElements {

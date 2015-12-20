@@ -451,8 +451,13 @@ All of the page classes passed in when using the list variant have to have an â€
 
 == Determining visibility
 
-Navigator objects have a `displayed` property that indicates whether the element is visible to the user or not.
+`Navigator` objects have a `displayed` property that indicates whether the element is visible to the user or not.
 The `displayed` property of a navigator object that doesn't match anything is always `false`.
+
+== Focus
+
+It is possible to verify if a given `Navigator` object holds the currently focused element using its `focused` property.
+`Navigator` objects that don't match any elements will return `false` as the value of `focused` property.
 
 == Size and location
 

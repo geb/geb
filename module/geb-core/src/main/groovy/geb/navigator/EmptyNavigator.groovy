@@ -262,6 +262,11 @@ class EmptyNavigator extends AbstractNavigator {
     @Override
     String toString() { "[]" }
 
+    @Override
+    boolean isFocused() {
+        false
+    }
+
     def methodMissing(String name, arguments) {
         if (arguments) {
             throw new MissingMethodException(name, getClass(), arguments)

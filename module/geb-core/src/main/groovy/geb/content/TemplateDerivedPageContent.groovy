@@ -229,4 +229,9 @@ abstract class TemplateDerivedPageContent implements Navigator {
     <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
         _navigator.moduleList(moduleFactory)
     }
+
+    @Override
+    boolean isFocused() {
+        _navigator.focused
+    }
 }
