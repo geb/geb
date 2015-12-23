@@ -496,9 +496,7 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        interact {
-            click($(".focused"))
-        }
+        $(".focused").click()
 
         then:
         !$(".notExisting").focused
