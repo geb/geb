@@ -76,6 +76,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * `reportOnTestFailureOnly` config option is now also effective in Spock and JUnit4 integrations. [issue:92[]]
+* `isFocused()` method has been added to the `Navigator` class. [issue:208[]]
 
 ==== Fixes
 
