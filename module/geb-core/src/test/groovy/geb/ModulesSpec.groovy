@@ -221,6 +221,14 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         "JavascriptInterface"    | "getJs"       | []
         "InteractionsSupport"    | "interact"    | [{}]
     }
+
+    def "modules can access the browser instance"() {
+        when:
+        to PageWithBrowserAccessingModule
+
+        then:
+        browserAccessingModule.currentUrl == browser.currentUrl
+    }
 }
 
 @SuppressWarnings("UnnecessaryCollectCall")
@@ -335,4 +343,18 @@ class ContainsAnInvalidModulePage extends Page {
     static content = {
         invalid { module Page }
     }
+}
+
+class PageWithBrowserAccessingModule extends Page {
+    static content = {
+        browserAccessingModule { module(BrowserAccessingModule) }
+    }
+}
+
+class BrowserAccessingModule extends Module {
+
+    String getCurrentUrl() {
+        browser.currentUrl
+    }
+
 }

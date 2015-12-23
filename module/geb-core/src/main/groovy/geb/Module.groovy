@@ -68,17 +68,20 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     //manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
     protected Navigator navigator
 
+    protected Browser browser
+
     @SuppressWarnings("SpaceBeforeOpeningBrace")
     void init(Browser browser, NavigatorFactory navigatorFactory) {
-        navigator = navigatorFactory.base
+        this.browser = browser
+        this.navigator = navigatorFactory.base
         Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(browser, this, navigatorFactory, 'content', this.class, Module)
-        pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, navigator)
-        downloadSupport = new DefaultDownloadSupport(browser)
-        waitingSupport = new DefaultWaitingSupport(browser.config)
-        frameSupport = new DefaultFrameSupport(browser)
-        js = browser.js
-        alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
-        interactionsSupport = new DefaultInteractionsSupport(browser)
+        this.pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, this.navigator)
+        this.downloadSupport = new DefaultDownloadSupport(browser)
+        this.waitingSupport = new DefaultWaitingSupport(browser.config)
+        this.frameSupport = new DefaultFrameSupport(browser)
+        this.js = browser.js
+        this.alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.js }, browser.config)
+        this.interactionsSupport = new DefaultInteractionsSupport(browser)
         initialized()
     }
 

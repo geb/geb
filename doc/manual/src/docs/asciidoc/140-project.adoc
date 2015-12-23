@@ -82,6 +82,7 @@ This page lists the high level changes between versions of Geb.
 
 * Fix a bug that caused reports for all but the last executed test class in TestNG integration to be wiped out. [issue:407[]]
 * Fix a bug preventing using module as a base of another module. [issue:411[]]
+* Restore `browser` property of `Module`. [issue:416[]]
 
 ==== Improvements
 
