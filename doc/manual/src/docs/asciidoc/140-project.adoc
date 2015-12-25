@@ -77,6 +77,7 @@ This page lists the high level changes between versions of Geb.
 
 * `reportOnTestFailureOnly` config option is now also effective in Spock and JUnit4 integrations. [issue:92[]]
 * `isFocused()` method has been added to the `Navigator` class. [issue:208[]]
+* `InvalidPageContent` exception is thrown when a content is defined with a name that will result in that content being not accessible. [issue:109[]] [issue:122[]]
 
 ==== Fixes
 
