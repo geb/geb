@@ -80,7 +80,7 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 @InheritConstructors
 class TestBaseNavigatorNavigatorFactory extends BrowserBackedNavigatorFactory {
 
-    protected String getBaseTagName() {
-        "div"
+    protected String getBaseXPathExpression() {
+        "/div"
     }
 }

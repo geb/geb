@@ -26,8 +26,8 @@ class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
     final Locator locator
 
-    protected String getBaseTagName() {
-        "html"
+    protected String getBaseXPathExpression() {
+        "/*"
     }
 
     BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
@@ -36,7 +36,7 @@ class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
     }
 
     protected Navigator createBase() {
-        createFromWebElements(Collections.singletonList(browser.driver.findElement(By.tagName(baseTagName))))
+        createFromWebElements(Collections.singletonList(browser.driver.findElement(By.xpath(baseXPathExpression))))
     }
 
     @Override

@@ -65,8 +65,8 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
         ensureExecuted('getTitle')
     }
 
-    void findByTagNameExecuted(String tagName) {
-        ensureExecuted('findElement', using: 'tag name', value: tagName)
+    void findByXPathExecuted(String expression) {
+        ensureExecuted('findElement', using: 'xpath', value: expression)
     }
 
     void findChildElementsByNameExecuted(String name) {
@@ -74,7 +74,7 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
     }
 
     void findRootElementExecuted() {
-        findByTagNameExecuted('html')
+        findByXPathExecuted('/*')
     }
 
     void findElementsByCssExecuted(String selector) {
