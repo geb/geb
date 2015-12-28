@@ -55,7 +55,8 @@ class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements In
 
     def "specifying custom navigator implementation"() {
         when:
-        html ""
+        html {
+        }
 
         then:
         $() instanceof MyCustomNavigator

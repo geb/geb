@@ -45,6 +45,10 @@ abstract class BaseFrameSupportSpec extends GebSpecWithCallbackServer {
         to FrameSupportSpecPage
     }
 
+    def cleanup() {
+        browser.driver.switchTo().defaultContent()
+    }
+
     protected String getFrameText(frame) {
         withFrame(frame) {
             $("span").text()

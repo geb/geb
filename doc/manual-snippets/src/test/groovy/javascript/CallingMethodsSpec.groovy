@@ -47,13 +47,14 @@ class CallingMethodsSpec extends DriveMethodSupportingSpecWithServer {
 
     def "calling nested methods"() {
         given:
-        server.html ""
+        server.html {
+        }
 
         expect:
         // tag::nested_methods[]
         Browser.drive {
             go "/"
-            js."document.write"("Hello World!")
+            js."document.write"("<html>Hello World!</html>")
             assert $().text() == "Hello World!"
         }
         // end::nested_methods[]
