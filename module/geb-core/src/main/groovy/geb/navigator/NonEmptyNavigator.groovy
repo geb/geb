@@ -24,6 +24,7 @@ import geb.textmatching.TextMatcher
 import geb.waiting.Wait
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
+import org.openqa.selenium.StaleElementReferenceException
 import org.openqa.selenium.WebElement
 
 import java.util.regex.Pattern
@@ -647,31 +648,46 @@ class NonEmptyNavigator extends AbstractNavigator {
             throw new UnableToSetElementException(*unsupportedElements)
         }
 
-        inputs.each { WebElement input ->
-            setInputValue(input, value)
+        inputs.inject(false) { boolean valueSet, WebElement input ->
+            setInputValue(input, value, valueSet) || valueSet
         }
     }
 
-    protected void setInputValue(WebElement input, value) {
-        if (input.tagName == "select") {
-            setSelectValue(input, value)
-        } else if (input.getAttribute("type") == "checkbox") {
-            if (getValue(input) == value.toString() || value == true) {
-                if (!input.isSelected()) {
+    protected boolean setInputValue(WebElement input, value, boolean suppressStaleElementException) {
+        boolean valueSet = false
+        try {
+            if (input.tagName == "select") {
+                setSelectValue(input, value)
+                valueSet = true
+            } else if (input.getAttribute("type") == "checkbox") {
+                if (getValue(input) == value.toString() || value == true) {
+                    if (!input.isSelected()) {
+                        input.click()
+                        valueSet = true
+                    }
+                } else if (input.isSelected()) {
                     input.click()
+                    valueSet = true
                 }
-            } else if (input.isSelected()) {
-                input.click()
+            } else if (input.getAttribute("type") == "radio") {
+                if (getValue(input) == value.toString() || labelFor(input) == value.toString()) {
+                    input.click()
+                    valueSet = true
+                }
+            } else if (input.getAttribute("type") == "file") {
+                input.sendKeys value as String
+                valueSet = true
+            } else {
+                input.clear()
+                input.sendKeys value as String
+                valueSet = true
             }
-        } else if (input.getAttribute("type") == "radio") {
-            if (getValue(input) == value.toString() || labelFor(input) == value.toString()) {
-                input.click()
+        } catch (StaleElementReferenceException e) {
+            if (!suppressStaleElementException) {
+                throw e
             }
-        } else if (input.getAttribute("type") == "file") {
-            input.sendKeys value as String
-        } else {
-            input.clear()
-            input.sendKeys value as String
+        } finally {
+            valueSet
         }
     }
 
