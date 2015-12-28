@@ -55,7 +55,7 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 
         when:
         go()
-        $('div')
+        $()
 
         then:
         notThrown(NoSuchElementException)
@@ -70,7 +70,7 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 
         when:
         go()
-        $('div')
+        $()
 
         then:
         notThrown(NoSuchElementException)
@@ -81,6 +81,6 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 class TestBaseNavigatorNavigatorFactory extends BrowserBackedNavigatorFactory {
 
     protected String getBaseXPathExpression() {
-        "/div"
+        "//div"
     }
 }
