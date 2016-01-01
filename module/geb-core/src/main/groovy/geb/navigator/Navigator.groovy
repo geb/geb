@@ -645,24 +645,31 @@ interface Navigator extends Iterable<Navigator>, Locator {
     Navigator siblings(Map<String, Object> attributes, String selector)
 
     /**
-     * Returns true if at least one of the context elements has the given class.
+     * Returns true if the sole context element has the given class or false for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
      * @param className class to check for
-     * @return true if at least one of the context elements has the given class
+     * @return true if the sole context element has the given class
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     boolean hasClass(String className)
 
     /**
-     * Returns true if at least one of the context elements matches the tag.
-     * @param tag tag to match
+     * Returns true if the sole context element tag name matches the string passed as the argument or false for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
+     * @param tag tag name to match
      * @return true if at least one of the context elements matches the tag
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     boolean is(String tag)
 
     /**
-     * Uses the isDisplayed() of RenderedWebElement to determine if the first element in the context is displayed.
-     * If the context is empty, or the first element is not a RenderedWebElement, false will be returned.
+     * Returns true if the sole context element is displayed or false for empty Navigators.
+     * Cannot be called on multi element Navigators.
      *
      * @return true if the first element is displayed
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     boolean isDisplayed()
 
@@ -670,6 +677,7 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * Shorthand for <code>hasAttribute("disabled")</code>.
      * @return true when the first element is disabled
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      * @deprecated Use {@link geb.module.FormElement#isDisabled()} instead.
      */
     @Deprecated
@@ -679,6 +687,7 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * Shorthand for <code>!hasAttribute("disabled")</code>.
      * @return true when the first element is enabled
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      * @deprecated Use {@link geb.module.FormElement#isEnabled()} instead.
      */
     @Deprecated
@@ -688,6 +697,7 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * Shorthand for <code>hasAttribute("readonly")</code>.
      * @return true when the first element is readonly
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      * @deprecated Use {@link geb.module.FormElement#isReadOnly()} instead.
      */
     @Deprecated
@@ -697,50 +707,69 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * Shorthand for <code>!hasAttribute("readonly")</code>.
      * @return true when the first element is editable
      * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      * @deprecated Use {@link geb.module.FormElement#isEditable()} instead.
      */
     @Deprecated
     boolean isEditable()
 
     /**
-     * Returns the tag name of the first context element.
-     * @return the tag name of the first context element
+     * Returns the tag name of the sole context element or null for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
+     * @return the tag name of the sole context element
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     String tag()
 
     /**
-     * Returns the text content of the first context element.
-     * @return the text content of the first context element
+     * Returns the text content of the sole context element or null for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
+     * @return the text content of the sole context element
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     String text()
 
     /**
-     * Returns the value of the given attribute of the first context element.
+     * Returns the value of the given attribute of the sole context element or null for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
      * @param name name of the attribute
-     * @return the value of the given attribute of the first context element
+     * @return the value of the given attribute of the sole context element
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     String getAttribute(String name)
 
     /**
-     * Returns the value of the given attribute of the first context element.
+     * Returns the value of the given attribute of the sole context element or null for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
      * @param name name of the attribute
-     * @return the value of the given attribute of the first context element
+     * @return the value of the given attribute of the sole context element
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     String attr(String name)
 
     /**
-     * Returns the class names present on all elements. The result is a unique set and is in alphabetical order.
-     * @return the class names present on all elements.
+     * Returns an alphabetically sorted list of class names present on the sole context element or an empty list for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
+     * @return an alphabetically sorted list of class names present on the sole context element
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     List<String> classes()
 
     /**
-     * Returns the value of the first context element for input elements
-     * (including textarea, select and button).
+     * Returns the value of the sole context element for input elements
+     * (including textarea, select and button) or null for empty Navigators.
+     * Cannot be called on multi element Navigators.
      * <p>
-     * In the case of a select, the value of the first selected option is returned.
+     * In the case of a select, the value of the selected option or a list of selected options is returned.
      * </p>
-     * @return value of the first context element
+     *
+     * @return value of the sole context element
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     def value()
 
@@ -754,58 +783,73 @@ interface Navigator extends Iterable<Navigator>, Locator {
     Navigator leftShift(value)
 
     /**
-     * Clicks on the first context element.
+     * Clicks on the sole context element.
+     * Cannot be called on multi element Navigators.
+     *
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click()
 
     /**
-     * Clicks on the first context element, verifies the at checker (if it is defined) of the class passed as the argument and sets it as the current page.
+     * Clicks on the sole context element, verifies the at checker (if it is defined) of the class passed as the argument and sets it as the current page.
+     * Cannot be called on multi element Navigators.
      *
      * @param pageClass page class to be used as the new current page after clicking the element
      * @return this
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click(Class<? extends Page> pageClass)
 
     /**
-     * Clicks on the first context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+     * Clicks on the sole context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+     * Cannot be called on multi element Navigators.
      *
      * @param pageInstance page instance to be used as the new current page after clicking the element
      * @return this
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click(Page pageInstance)
 
     /**
-     * Clicks on the first context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+     * Clicks on the sole context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+     * Cannot be called on multi element Navigators.
      *
      * @param pageClass page class to be used as the new current page after clicking the element
      * @param wait configuration to be used for waiting for the at checker to succeed
      * @return this
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click(Class<? extends Page> pageClass, Wait wait)
 
     /**
-     * Clicks on the first context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+     * Clicks on the sole context element, verifies the at checker (if it is defined) of the instance passed as the argument and sets it as the current page.
+     * Cannot be called on multi element Navigators.
      *
      * @param pageInstance page instance to be used as the new current page after clicking the element
      * @param wait configuration to be used for waiting for the at checker to succeed
      * @return this
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click(Page pageInstance, Wait wait)
 
     /**
-     * Clicks on the first context element, finds the first page from the list for which the at checker is defined and sets it as the current page.
+     * Clicks on the sole context element, finds the first page from the list for which the at checker is defined and sets it as the current page.
+     * Cannot be called on multi element Navigators.
      *
      * @param potentialPages a list of classes extending {@link geb.Page} or a list of instances of such classes
      * @return this
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click(List potentialPages)
 
     /**
-     * Clicks on the first context element, finds the first page from the list for which the at checker is defined and sets it as the current page.
+     * Clicks on the sole context element, finds the first page from the list for which the at checker is defined and sets it as the current page.
+     * Cannot be called on multi element Navigators.
      *
      * @param potentialPages a list of classes extending {@link geb.Page} or a list of instances of such classes
      * @param wait configuration to be used for waiting for the at checkers to succeed
      * @return this
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     Navigator click(List potentialPages, Wait wait)
 
@@ -888,30 +932,42 @@ interface Navigator extends Iterable<Navigator>, Locator {
     JQueryAdapter getJquery()
 
     /**
-     * Returns the height of the first element the navigator matches or 0 if it matches nothing.
+     * Returns the height of the sole element the navigator matches or 0 if it matches nothing.
+     * Cannot be called on multi element Navigators.
      * <p>
      * To get the height of all matched elements you can use the spread operator {@code navigator*.height}
+     *
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     int getHeight()
 
     /**
-     * Returns the width of the first element the navigator matches or 0 if it matches nothing.
+     * Returns the width of the sole element the navigator matches or 0 if it matches nothing.
+     * Cannot be called on multi element Navigators.
      * <p>
      * To get the width of all matched elements you can use the spread operator {@code navigator*.width}
+     *
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     int getWidth()
 
     /**
-     * Returns the x coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
+     * Returns the x coordinate (from the top left corner) of the sole element the navigator matches or 0 if it matches nothing.
+     * Cannot be called on multi element Navigators.
      * <p>
      * To get the x coordinate of all matched elements you can use the spread operator {@code navigator*.x}
+     *
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     int getX()
 
     /**
-     * Returns the y coordinate (from the top left corner) of the first element the navigator matches or 0 if it matches nothing.
+     * Returns the y coordinate (from the top left corner) of the sole element the navigator matches or 0 if it matches nothing.
+     * Cannot be called on multi element Navigators.
      * <p>
      * To get the y coordinate of all matched elements you can use the spread operator {@code navigator*.y}
+     *
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     int getY()
 
@@ -921,7 +977,11 @@ interface Navigator extends Iterable<Navigator>, Locator {
     Navigator unique()
 
     /**
-     * Gets the value of a given CSS property. Color values should be returned as rgba strings, so, for example if the "background-color"
+     * Gets the value of a given CSS property of the sole context element or null for empty Navigators.
+     * Cannot be called on multi element Navigators.
+     *
+     * <p>
+     * Color values should be returned as rgba strings, so, for example if the "background-color"
      * property is set as "green" in the HTML source, the returned value will be "rgba(0, 255, 0, 1)". Note that shorthand
      * CSS properties (e.g. background, font, border, border-top, margin, margin-top, padding, padding-top, list-style, outline, pause, cue)
      * are not returned, in accordance with the DOM CSS2 specification - you should directly access the longhand properties (e.g. background-color)
@@ -929,6 +989,7 @@ interface Navigator extends Iterable<Navigator>, Locator {
      *
      * @param propertyName
      * @return The current, computed value of the property or null if the is not specified.
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     String css(String propertyName)
 
@@ -965,10 +1026,11 @@ interface Navigator extends Iterable<Navigator>, Locator {
     public <T extends Module> List<T> moduleList(Closure<T> moduleFactory)
 
     /**
-     * Checks if the first element of {@code this} navigator is focused by comparing it to the element returned from {@link org.openqa.selenium.WebDriver.TargetLocator#activeElement()}.
-     * If the navigator is empty {@code false} will be returned.
+     * Checks if the sole element of {@code this} navigator is focused by comparing it to the element returned from {@link org.openqa.selenium.WebDriver.TargetLocator#activeElement()}.
+     * If the navigator is empty {@code false} will be returned. Cannot be called on multi element Navigators.
      *
      * @return {@code true} if the first element is focused
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     boolean isFocused()
 }

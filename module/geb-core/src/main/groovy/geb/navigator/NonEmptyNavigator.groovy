@@ -17,6 +17,7 @@ package geb.navigator
 
 import geb.Browser
 import geb.Page
+import geb.error.SingleElementNavigatorOnlyMethodException
 import geb.error.UnableToSetElementException
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
@@ -347,23 +348,33 @@ class NonEmptyNavigator extends AbstractNavigator {
         siblings().filter(attributes, selector)
     }
 
+    protected void ensureContainsSingleElement(String name, Class<?>... parameterTypes) {
+        if (contextElements.size() > 1) {
+            throw new SingleElementNavigatorOnlyMethodException(Navigator.getMethod(name, parameterTypes), contextElements.size())
+        }
+    }
+
     @Override
     boolean hasClass(String valueToContain) {
-        any { valueToContain in it.classes() }
+        ensureContainsSingleElement("hasClass", String)
+        valueToContain in classes()
     }
 
     @Override
     boolean is(String tag) {
-        contextElements.any { tag.equalsIgnoreCase(it.tagName) }
+        ensureContainsSingleElement("is", String)
+        tag.equalsIgnoreCase(firstElement().tagName)
     }
 
     @Override
     boolean isDisplayed() {
-        firstElement()?.displayed ?: false
+        ensureContainsSingleElement("isDisplayed")
+        firstElement().displayed
     }
 
     @Override
     boolean isDisabled() {
+        ensureContainsSingleElement("isDisabled")
         ensureTagIn(['button', 'input', 'option', 'select', 'textarea'], 'disabled')
 
         def value = getAttribute("disabled")
@@ -373,11 +384,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     boolean isEnabled() {
+        ensureContainsSingleElement("isEnabled")
         !disabled
     }
 
     @Override
     boolean isReadOnly() {
+        ensureContainsSingleElement("isReadOnly")
         ensureTagIn(['input', 'textarea'], 'readonly')
 
         def value = getAttribute("readonly")
@@ -386,21 +399,25 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     boolean isEditable() {
+        ensureContainsSingleElement("isEditable")
         !readOnly
     }
 
     @Override
     String tag() {
+        ensureContainsSingleElement("tag")
         firstElement().tagName
     }
 
     @Override
     String text() {
+        ensureContainsSingleElement("text")
         firstElement().text
     }
 
     @Override
     String getAttribute(String name) {
+        ensureContainsSingleElement("getAttribute", String)
         def attribute = firstElement().getAttribute(name)
         if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
             attribute = null
@@ -411,11 +428,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     List<String> classes() {
+        ensureContainsSingleElement("classes")
         contextElements.head().getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
     }
 
     @Override
     def value() {
+        ensureContainsSingleElement("value")
         getInputValue(contextElements.head())
     }
 
@@ -435,6 +454,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     Navigator click() {
+        ensureContainsSingleElement("click")
         contextElements.first().click()
         this
     }
@@ -515,6 +535,30 @@ class NonEmptyNavigator extends AbstractNavigator {
     }
 
     @Override
+    int getHeight() {
+        ensureContainsSingleElement("getHeight")
+        super.getHeight()
+    }
+
+    @Override
+    int getWidth() {
+        ensureContainsSingleElement("getWidth")
+        super.getWidth()
+    }
+
+    @Override
+    int getX() {
+        ensureContainsSingleElement("getX")
+        super.getX()
+    }
+
+    @Override
+    int getY() {
+        ensureContainsSingleElement("getY")
+        super.getY()
+    }
+
+    @Override
     Navigator unique() {
         new NonEmptyNavigator(browser, contextElements.unique(false))
     }
@@ -525,7 +569,14 @@ class NonEmptyNavigator extends AbstractNavigator {
     }
 
     @Override
+    String css(String propertyName) {
+        ensureContainsSingleElement("css", String)
+        super.css(propertyName)
+    }
+
+    @Override
     boolean isFocused() {
+        ensureContainsSingleElement("isFocused")
         firstElement().equals(browser.driver.switchTo().activeElement())
     }
 

@@ -71,9 +71,6 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         i2 << "-add"
         i2.value() == "value-add"
 
-        and:
-        $("textarea").value() == "foo"
-
         when:
         $().i1 = "bar"
 
@@ -102,9 +99,6 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         i2.value() == "i2"
         i2.value(false)
         i2.value().is(false)
-
-        and:
-        $("input").value() == "i1"
 
         when:
         $().i1 = false
@@ -135,7 +129,6 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         }
 
         then:
-        $().r().value() == "r1"
         $().r == "r1"
 
         when:

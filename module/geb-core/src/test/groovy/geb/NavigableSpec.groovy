@@ -203,7 +203,7 @@ class NavigableSpec extends GebSpecWithCallbackServer {
 
     def "attribute access notation"() {
         expect:
-        $("p").@class == 'a'
+        $(".a").@class == 'a'
         $("p")*.@class == ['a', 'b', 'c']
     }
 

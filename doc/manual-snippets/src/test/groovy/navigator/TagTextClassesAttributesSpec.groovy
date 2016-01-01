@@ -33,10 +33,10 @@ class TagTextClassesAttributesSpec extends GebSpecWithCallbackServer {
     def "single element"() {
         expect:
         // tag::single_element[]
-        assert $("p").text() == "a"
-        assert $("p").tag() == "p"
-        assert $("p").@title == "a"
-        assert $("p").classes() == ["a", "para"]
+        assert $(".a").text() == "a"
+        assert $(".a").tag() == "p"
+        assert $(".a").@title == "a"
+        assert $(".a").classes() == ["a", "para"]
         // end::single_element[]
     }
 

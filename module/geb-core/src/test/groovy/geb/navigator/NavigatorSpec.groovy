@@ -42,8 +42,6 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         expect:
-        $("select").getAttribute("id") == "single"
-        $("select").attr("id") == "single"
         $("#single").getAttribute("multiple") == ""
         $("#single").attr("multiple") == ""
         $("#single").@multiple == ""
@@ -176,7 +174,6 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
 
         expect:
         $("a").text() == "a"
-        $("a").add("b").text() == "a"
         $("a").add("b")*.text() == ["a", "b"]
         $("div").text() in ["cd", "c d"] // this is not consistent across drivers
         $("div")*.text() in [["cd"], ["c d"]] // this is not consistent across drivers
@@ -196,7 +193,6 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
 
         expect:
         $("a").tag() == "a"
-        $("a").add("b").tag() == "a"
         $("a").add("b")*.tag() == ["a", "b"]
         $("div").tag() == "div"
         $("div")*.tag() == ["div"]
@@ -213,8 +209,6 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         expect:
         $("#a").classes() == ["a1", "a2", "a3"]
         $("#b").classes() == ["b1"]
-        $("div").classes() == ["a1", "a2", "a3"]
-        $("#b").add("#a").classes() == ["b1"]
         $("foo").classes() == []
     }
 
@@ -229,8 +223,6 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         $("#a").hasClass("a2")
         !$("#a").hasClass("a4")
         $("#b").hasClass("b1")
-        $("#a").add("#b").hasClass("b1")
-        $("#b").add("#a").hasClass("a1")
     }
 
     def is() {

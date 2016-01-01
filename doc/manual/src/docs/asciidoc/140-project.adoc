@@ -100,6 +100,9 @@ This page lists the high level changes between versions of Geb.
 ==== Breaking changes
 
 * Geb is now built with Groovy 2.4.5 and Spock 1.0-groovy-2.4.
+* The following `Navigator` methods now throw `SingleElementNavigatorOnlyMethodException` when called on a multi element `Navigator`: `hasClass(java.lang.String)`, `is(java.lang.String)`,
+`isDisplayed()`, `isDisabled()`, `isEnabled()`, `isReadOnly()`, `isEditable()`, `tag()`, `text()`, `getAttribute(java.lang.String)`, `attr(java.lang.String)`, `classes()`, `value()`, `click()`,
+`getHeight()`, `getWidth()`, `getX()`, `getY()`, `css(java.lang.String)`, `isFocused()`. [issue:284[]]
 
 
 === 0.12.2

@@ -432,7 +432,8 @@ include::{test-dir}/navigator/TraversingSpec.groovy[tag=next_until,indent=0]
 [[clicking]]
 == Clicking
 
-Navigator objects implement the `click()` method, which will instruct the browser to click *only the first item* the navigator has matched.
+Navigator objects implement the `click()` method, which will instruct the browser to click the sole element the navigator has matched.
+If that method is called on a multi element `Navigator` then a `SingleElementNavigatorOnlyMethodException` is thrown.
 
 There are also `click(Class)` , `click(Page)` and `click(List)` methods that are analogous to the browser object's
 <<changing-pages,`page(Class&lt;? extends Page&gt;)`, `page(Page)`, and `page(Class&lt;? extends Page&gt;[])`, `page(Page[])` methods respectively>>.
@@ -457,7 +458,7 @@ The `displayed` property of a navigator object that doesn't match anything is al
 == Focus
 
 It is possible to verify if a given `Navigator` object holds the currently focused element using its `focused` property.
-`Navigator` objects that don't match any elements will return `false` as the value of `focused` property.
+`Navigator` objects that don't match any elements will return `false` as the value of `focused` property and ones that match multiple elements will throw a `SingleElementNavigatorOnlyMethodException`.
 
 == Size and location
 
@@ -466,7 +467,7 @@ All units are in pixels.
 The size is available via the `height` and `width` properties, while the location is available as the `x` and `y` properties which represent the distance from the top left of the page
 (or parent frame) to the top left point of the content.
 
-All of these properties operate on the *first* matched element only.
+All of these properties operate on the *sole* matched element only and a `SingleElementNavigatorOnlyMethodException` is thrown if they are accessed on a multi element `Navigator`.
 
 Consider the following html…
 
@@ -491,8 +492,9 @@ include::{test-dir}/navigator/SizeAndLocationSpec.groovy[tag=multiple_elements,i
 
 == Accessing tag name, attributes, text and classes
 
-The `tag()`, `text()` and `classes()` methods as well as accessing attributes via the `@` notation return the requested content on the *first* matched content.
-The `classes()` method returns a `java.util.List` of unique class names sorted alphabetically.
+The `tag()`, `text()` and `classes()` methods as well as accessing attributes via the `@` notation or `attr()` method return the requested content on the *sole* matched element.
+If these methods are called on a multi element `Navigator` then a `SingleElementNavigatorOnlyMethodException` is thrown.
+The `classes()` method returns a `java.util.List` of class names sorted alphabetically.
 
 Consider the following HTML…
 
@@ -517,7 +519,8 @@ include::{test-dir}/navigator/TagTextClassesAttributesSpec.groovy[tag=multiple_e
 
 == CSS properties
 
-Css properties of a navigator can be accessed using the `css()` method.
+Css properties of a single element navigator can be accessed using the `css()` method.
+If that method is called on a multi element `Navigator` then a `SingleElementNavigatorOnlyMethodException` is thrown.
 
 Consider the following HTML…
 
@@ -580,7 +583,8 @@ See the documentation for `{webdriver-keys-api}` enumeration for more informatio
 == Accessing input values
 
 The value of `input`, `select` and `textarea` elements can be retrieved and set with the `value` method.
-Calling `value()` with no arguments will return the String value of _the first_ element in the Navigator.
+Calling `value()` with no arguments will return the String value of _the sole_ element in the Navigator.
+If that method is called on a multi element `Navigator` then a `SingleElementNavigatorOnlyMethodException` is thrown.
 Calling `value(value)` will set the current value of _all_ elements in the Navigator.
 The argument can be of any type and will be coerced to a `String` if necessary.
 The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection
