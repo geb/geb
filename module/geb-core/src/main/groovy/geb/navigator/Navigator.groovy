@@ -723,8 +723,9 @@ interface Navigator extends Iterable<Navigator>, Locator {
     String tag()
 
     /**
-     * Returns the text content of the sole context element or null for empty Navigators.
+     * Returns the <b>visible</b> (i.e. not hidden by CSS) inner text content of the sole context element and its sub-elements or null for empty Navigators.
      * Cannot be called on multi element Navigators.
+     *
      *
      * @return the text content of the sole context element
      * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
