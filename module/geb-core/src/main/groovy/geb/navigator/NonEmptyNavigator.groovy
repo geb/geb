@@ -19,7 +19,6 @@ import geb.Browser
 import geb.Page
 import geb.error.SingleElementNavigatorOnlyMethodException
 import geb.error.UnableToSetElementException
-import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.textmatching.TextMatcher
 import geb.waiting.Wait
@@ -472,11 +471,13 @@ class NonEmptyNavigator extends AbstractNavigator {
         def assertionError = null
         def throwable = null
         try {
-            at = wait ? wait.waitFor { browser.verifyAt() } : browser.verifyAt()
+            if (pageInstance.at) {
+                at = wait ? wait.waitFor { browser.verifyAt() } : browser.verifyAt()
+            } else {
+                at = true
+            }
         } catch (AssertionError e) {
             assertionError = e
-        } catch (UndefinedAtCheckerException e) {
-            at = true
         } catch (Throwable e) {
             throwable = e
             throw e

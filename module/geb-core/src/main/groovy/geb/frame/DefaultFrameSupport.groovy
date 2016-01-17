@@ -15,13 +15,12 @@
  */
 package geb.frame
 
-import geb.error.UndefinedAtCheckerException
-import org.openqa.selenium.WebElement
-import org.openqa.selenium.NoSuchFrameException
 import geb.Browser
-import geb.navigator.Navigator
-import geb.content.SimplePageContent
 import geb.Page
+import geb.content.SimplePageContent
+import geb.navigator.Navigator
+import org.openqa.selenium.NoSuchFrameException
+import org.openqa.selenium.WebElement
 
 class DefaultFrameSupport implements FrameSupport {
 
@@ -55,9 +54,9 @@ class DefaultFrameSupport implements FrameSupport {
         def originalPage = browser.page
         browser.driver.switchTo().frame(frame)
         if (page) {
-            try {
+            if (page.at) {
                 browser.at(page)
-            } catch (UndefinedAtCheckerException e) {
+            } else {
                 browser.page(page)
             }
         }

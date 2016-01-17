@@ -17,7 +17,6 @@ package geb
 import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
-import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
@@ -562,12 +561,7 @@ class Browser {
      */
     public <T extends Page> T to(Map params, T page, Object[] args) {
         via(params, page, args)
-        try {
-            at(page)
-        } catch (UndefinedAtCheckerException e) {
-            // that's okay, we don't want to force users to define at checkers unless they explicitly use "at"
-            page
-        }
+        page.at ? at(page) : page
     }
 
     /**
@@ -996,12 +990,11 @@ class Browser {
 
     protected void verifyAtIfPresent(def targetPage) {
         if (targetPage) {
-            try {
+            if (targetPage.at) {
                 if (!at(targetPage)) {
                     throw new UnexpectedPageException(targetPage)
                 }
-            }
-            catch (UndefinedAtCheckerException e) {
+            } else {
                 page(targetPage)
             }
         }
