@@ -29,8 +29,24 @@ class BrowserSpec extends GebSpecWithCallbackServer {
     def "clear cookies"() {
         when:
         browser.clearCookies()
+
         then:
         notThrown(Throwable)
+    }
+
+    def "clear multiple cookies"() {
+        given:
+        browser.driver.javascriptEnabled = false
+        go()
+
+        when:
+        browser.clearCookies('http://gebish.org')
+
+        then:
+        notThrown(Throwable)
+
+        and:
+        browser.currentUrl.contains('gebish.org')
     }
 
     def "load default config"() {
@@ -41,6 +57,7 @@ class BrowserSpec extends GebSpecWithCallbackServer {
     def "current url is returned from browser"() {
         when:
         go()
+
         then:
         browser.currentUrl == server.baseUrl
     }

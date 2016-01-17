@@ -640,7 +640,24 @@ class Browser {
     }
 
     /**
-     * Clears all cookies that the browser currently has.
+     * Clears cookies for the current domain and a number of additional domains by navigating the browser to each of to the urls passed as the argument to this method and clearing cookies for them.
+     *
+     * @param additionalUrls urls for which the cookies should be cleared in addition to the current domain
+     */
+    void clearCookies(String... additionalUrls) {
+        clearCookies()
+        additionalUrls.each {
+            go(it)
+            clearCookies()
+        }
+    }
+
+    /**
+     * Clears all cookies for the <b>current domain</b> that the browser has.
+     * <p>
+     * If the driven browser has accumulated cookies for additional domains that are to be cleared then {@link #clearCookies(java.lang.String[])} method should be used.
+     *
+     * @see org.openqa.selenium.WebDriver.Options#deleteAllCookies()
      */
     void clearCookies() {
         driver?.manage()?.deleteAllCookies()
