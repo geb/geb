@@ -891,6 +891,17 @@ interface Navigator extends Iterable<Navigator>, Locator {
     Navigator tail()
 
     /**
+     * Returns the sole context element (not wrapped).
+     * Cannot be called on multi element Navigators.
+     *
+     * @return the sole context element (not wrapped)
+     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
+     */
+    // tag::web_element_returning_methods[]
+    WebElement singleElement()
+    // end::web_element_returning_methods[]
+
+    /**
      * Returns the first context element (not wrapped).
      * @return the first context element (not wrapped)
      */

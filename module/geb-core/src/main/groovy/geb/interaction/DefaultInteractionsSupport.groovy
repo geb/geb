@@ -17,6 +17,8 @@ package geb.interaction
 
 import geb.Browser
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 class DefaultInteractionsSupport implements InteractionsSupport {
 
     Browser browser
@@ -25,12 +27,12 @@ class DefaultInteractionsSupport implements InteractionsSupport {
         this.browser = browser
     }
 
-    void interact(Closure interactionClosure) {
-        ActionsDelegate actions = new ActionsDelegate(browser.driver)
-        interactionClosure.delegate = actions
-        interactionClosure.resolveStrategy = Closure.DELEGATE_FIRST
+    void interact(@DelegatesTo(value = InteractDelegate, strategy = DELEGATE_FIRST) Closure interactionClosure) {
+        InteractDelegate delegate = new InteractDelegate(browser.driver)
+        interactionClosure.delegate = delegate
+        interactionClosure.resolveStrategy = DELEGATE_FIRST
         interactionClosure.call()
-        actions.perform()
+        delegate.perform()
     }
 
 }

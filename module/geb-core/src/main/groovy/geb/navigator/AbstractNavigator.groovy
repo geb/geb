@@ -303,6 +303,10 @@ abstract class AbstractNavigator implements Navigator {
         getAttribute(name)
     }
 
+    WebElement singleElement() {
+        getElement(0)
+    }
+
     WebElement firstElement() {
         getElement(0)
     }

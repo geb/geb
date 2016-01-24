@@ -85,3 +85,4 @@
 :file-input-api: link:api/geb/module/FileInput.html[FileInput]
 :textarea-api: link:api/geb/module/Textarea.html[Textarea]
 :radio-buttons-api: link:api/geb/module/RadioButtons.html[RadioButtons]
+:interact-delegate-api: link:api/geb/interaction/InteractDelegate.html[InteractDelegate]

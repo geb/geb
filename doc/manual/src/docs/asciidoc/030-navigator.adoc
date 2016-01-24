@@ -874,9 +874,10 @@ include::{test-dir}/navigator/FileUploadSpec.groovy[tag=upload,indent=0]
 == Complex interactions
 
 WebDriver supports interactions that are more complex than simply clicking or typing into items, such as dragging.
-You can use this API from Geb, or use the more Geb friendly `interact {}` DSL (explained below).
+You can use this API directly when using Geb or use the more Geb friendly <<interact-closures, `interact` DSL>>.
 
-=== Using the WebDriver API directly
+[[using-actions]]
+=== Using the WebDriver `Actions` API directly
 
 A Geb navigator object is built on top of a collection of WebDriver {webelement-api} objects.
 It is possible to access the contained `WebElement` instances via the following methods on navigator objects:
@@ -886,12 +887,8 @@ It is possible to access the contained `WebElement` instances via the following 
 include::{core-source-dir}/geb/navigator/Navigator.groovy[tag=web_element_returning_methods,indent=0]
 ----
 
-By using the methods of the WebDriver {actions-api} class with `WebElement` instances, complex user gestures can be emulated.
-
-[[using-actions]]
-=== Using `Actions`
-
-Create an `Actions` instance after obtaining the WebDriver driver:
+By using the methods of the WebDriver `{actions-api}` class with `WebElement` instances, complex user gestures can be emulated.
+First you will need to create an `Actions` instance after obtaining the WebDriver driver:
 
 [source,groovy]
 ----
@@ -913,26 +910,26 @@ include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=action_ex
 ----
 
 [[interact-closures]]
-=== Using `interact` closures
+=== Using `interact()`
 
-To cut down on the amount of typing required, use an `interact` closure instead of using `Actions` class directly.
-When using an interact closure, an `Actions` instance is implicitly created, built into an `Action`, and performed.
-As an added bonus, Geb navigators can be passed directly to `Actions` methods within an interact closure.
+To avoid having to manage building and performing an `Action` via the lifecycle of an `Actions` instance as well as having to obtain `WebElement` instances from `Navigator` when emulating user
+gestures, Geb adds the `interact()` method.
+When using that method, an `Actions` instance is implicitly created, built into an `Action`, and performed.
+The delegate of the closure passed to `interact()` is an instance of `{interact-delegate-api}` which declares the same methods as `Actions` but takes `Navigator` as arguments for methods of `Actions`
+which take `WebElement`.
 
-This interact closure performs the same work as the calls in the <<using-actions>> section:
+This `interact()` call performs the same work as the calls in the <<using-actions>> section:
 
 [source,groovy]
 ----
 include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=interact,indent=0]
 ----
 
-This method creates code that is more readable than using `Actions` directly.
-
-For the full list of available interactions, see the documentation for the WebDriver {actions-api} class.
+For the full list of available methods that can be used for emulating user gestures see the documentation for the `{interact-delegate-api}` class.
 
 === Interact examples
 
-Interact closures (or `Actions`) can be used to perform behaviors that are more complicated than clicking buttons and anchors or typing in input fields.
+Calls to `interact()` can be used to perform behaviors that are more complicated than clicking buttons and anchors or typing in input fields.
 
 ==== Drag and drop
 

@@ -107,6 +107,12 @@ class NonEmptyNavigator extends AbstractNavigator {
     }
 
     @Override
+    WebElement singleElement() {
+        ensureContainsSingleElement("singleElement")
+        super.singleElement()
+    }
+
+    @Override
     Collection<WebElement> allElements() {
         contextElements as WebElement[]
     }

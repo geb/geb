@@ -26,11 +26,7 @@ import geb.frame.UninitializedFrameSupport
 import geb.interaction.DefaultInteractionsSupport
 import geb.interaction.InteractionsSupport
 import geb.interaction.UninitializedInteractionSupport
-import geb.js.AlertAndConfirmSupport
-import geb.js.DefaultAlertAndConfirmSupport
-import geb.js.JQueryAdapter
-import geb.js.JavascriptInterface
-import geb.js.UninitializedAlertAndConfirmSupport
+import geb.js.*
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
@@ -272,6 +268,11 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     @Override
     WebElement lastElement() {
         getInitializedNavigator().lastElement()
+    }
+
+    @Override
+    WebElement singleElement() {
+        getInitializedNavigator().singleElement()
     }
 
     @Override

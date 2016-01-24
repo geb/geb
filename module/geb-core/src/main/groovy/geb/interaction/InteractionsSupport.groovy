@@ -15,6 +15,8 @@
  */
 package geb.interaction
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 interface InteractionsSupport {
-    void interact(Closure interactionClosure)
+    void interact(@DelegatesTo(value = InteractDelegate, strategy = DELEGATE_FIRST) Closure interactionClosure)
 }

@@ -17,6 +17,8 @@ package geb.interaction
 
 import geb.Initializable
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 class UninitializedInteractionSupport implements InteractionsSupport {
 
     private final Initializable initializable
@@ -26,7 +28,7 @@ class UninitializedInteractionSupport implements InteractionsSupport {
     }
 
     @Override
-    void interact(Closure interactionClosure) {
+    void interact(@DelegatesTo(value = InteractDelegate, strategy = DELEGATE_FIRST) Closure interactionClosure) {
         throw initializable.uninitializedException()
     }
 }
