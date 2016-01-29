@@ -54,13 +54,13 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
                 title "a title"
             }
         }
+        go()
+        driver.clearRecordedCommands()
 
         when:
-        go()
         title
 
         then:
-        driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
         driver.getTitleExecuted()
     }
 
@@ -72,13 +72,13 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
                 p "second"
             }
         }
+        go()
+        driver.clearRecordedCommands()
 
         when:
-        go()
         $("p")
 
         then:
-        driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
         driver.findElementsByCssExecuted("p")
     }
 
@@ -89,13 +89,13 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
                 input type: "text", name: "someName"
             }
         }
+        to WebDriverCommandSpecModulePage
+        driver.clearRecordedCommands()
 
         when:
-        to WebDriverCommandSpecModulePage
         def module = plainModule
 
         then:
-        driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
         driver.findRootElementExecuted()
         driver.resetExpectations()
 
@@ -113,16 +113,16 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
                 input type: "text", name: "someName"
             }
         }
+        go()
+        driver.clearRecordedCommands()
 
         when:
-        go()
         def input = $(type: "text", name: "someName")
 
         then:
         input
 
         and:
-        driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
         driver.findElementsByCssExecuted("""[type="text"][name="someName"]""")
     }
 
@@ -134,16 +134,16 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
                 input id: "foo", class: "bar", name: "fizz"
             }
         }
+        go()
+        driver.clearRecordedCommands()
 
         when:
-        go()
         def input = $(attributes)
 
         then:
         input
 
         and:
-        driver.getUrlExecuted(callbackAndWebDriverServer.applicationUrl)
         driver.ensureExecuted("findElements", using: using, value: selector)
 
         where:
@@ -151,6 +151,27 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
         [id: "foo"]    | "id"         | "foo"
         [class: "bar"] | "class name" | "bar"
         [name: "fizz"] | "name"       | "fizz"
+    }
+
+    void "setting text input value"() {
+        given:
+        callbackAndWebDriverServer.responseHtml {
+            body {
+                input type: "text"
+            }
+        }
+        go()
+        def input = $("input")
+        driver.clearRecordedCommands()
+
+        when:
+        input.value("foo")
+
+        then:
+        driver.getElementTagNameExecuted()
+        driver.getElementAttributeExecuted("type")
+        driver.clearElementExecuted()
+        driver.sendKeysExecuted()
     }
 }
 

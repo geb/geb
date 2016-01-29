@@ -97,6 +97,7 @@ This page lists the high level changes between versions of Geb.
 * Document that `Navigator.text()` returns the text of the element only if it's visible. [issue:403]
 * Make implementation of `interact()` less dynamic. [issue:190]
 * Improve documentation for `interact()`. [issue:207]
+* Don't unnecessarily request tag name and type attribute multiple times when setting text input values. [issue:417[]]
 
 ==== Deprecations
 

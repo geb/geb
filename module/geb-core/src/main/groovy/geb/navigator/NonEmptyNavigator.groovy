@@ -700,24 +700,26 @@ class NonEmptyNavigator extends AbstractNavigator {
     }
 
     protected void setInputValues(Collection<WebElement> inputs, value) {
-        def unsupportedElements = inputs*.tagName*.toLowerCase() - ELEMENTS_WITH_MUTABLE_VALUE
+        def inputsToTagNames = inputs.collectEntries { [it, it.tagName.toLowerCase()] }
+        def unsupportedElements = inputsToTagNames.values() - ELEMENTS_WITH_MUTABLE_VALUE
 
         if (unsupportedElements) {
             throw new UnableToSetElementException(*unsupportedElements)
         }
 
-        inputs.inject(false) { boolean valueSet, WebElement input ->
-            setInputValue(input, value, valueSet) || valueSet
+        inputsToTagNames.inject(false) { boolean valueSet, WebElement input, String tagName ->
+            setInputValue(input, tagName, value, valueSet) || valueSet
         }
     }
 
-    protected boolean setInputValue(WebElement input, value, boolean suppressStaleElementException) {
+    protected boolean setInputValue(WebElement input, String tagName, value, boolean suppressStaleElementException) {
         boolean valueSet = false
         try {
-            if (input.tagName == "select") {
+            def type = input.getAttribute("type")
+            if (tagName == "select") {
                 setSelectValue(input, value)
                 valueSet = true
-            } else if (input.getAttribute("type") == "checkbox") {
+            } else if (type == "checkbox") {
                 if (getValue(input) == value.toString() || value == true) {
                     if (!input.isSelected()) {
                         input.click()
@@ -727,12 +729,12 @@ class NonEmptyNavigator extends AbstractNavigator {
                     input.click()
                     valueSet = true
                 }
-            } else if (input.getAttribute("type") == "radio") {
+            } else if (type == "radio") {
                 if (getValue(input) == value.toString() || labelFor(input) == value.toString()) {
                     input.click()
                     valueSet = true
                 }
-            } else if (input.getAttribute("type") == "file") {
+            } else if (type == "file") {
                 input.sendKeys value as String
                 valueSet = true
             } else {
