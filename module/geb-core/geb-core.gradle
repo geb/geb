@@ -53,8 +53,8 @@ browserStack {
     application(*applicationAddresses)
 
     browsers {
-        nexus4 {
-            capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
+        htcOne {
+            capabilities browserName: "android", platform: "ANDROID", device: "HTC One M8"
         }
         chrome_mac
         chrome_windows
