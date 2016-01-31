@@ -26,6 +26,7 @@ abstract class TemplateDerivedPageContent implements Navigator {
     private PageContentTemplate _template
     private Object[] _args
     private Browser _browser
+    private StringRepresentationProvider _stringRepresentationProvider
 
     @Delegate
     protected Navigator _navigator
@@ -40,10 +41,11 @@ abstract class TemplateDerivedPageContent implements Navigator {
         this._template = template
         this._navigator = navigator
         this._args = args
+        this._stringRepresentationProvider = new TemplateDerivedContentStringRepresentationProvider(template, args, navigator)
     }
 
     String toString() {
-        "${_template.name} - ${this.class.simpleName} (owner: ${_template.owner}, args: $_args, value: ${_navigator.value()})"
+        _stringRepresentationProvider.stringRepresentation
     }
 
     Browser getBrowser() {

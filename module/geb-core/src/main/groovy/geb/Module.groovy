@@ -66,6 +66,8 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     protected Browser browser
 
+    private StringRepresentationProvider stringRepresentationProvider = this
+
     @SuppressWarnings("SpaceBeforeOpeningBrace")
     void init(Browser browser, NavigatorFactory navigatorFactory) {
         this.browser = browser
@@ -79,6 +81,10 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
         this.alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.js }, browser.config)
         this.interactionsSupport = new DefaultInteractionsSupport(browser)
         initialized()
+    }
+
+    void init(PageContentTemplate template, Object[] args) {
+        stringRepresentationProvider = new TemplateDerivedContentStringRepresentationProvider(template, args, this)
     }
 
     @SuppressWarnings("EmptyMethod")
@@ -769,5 +775,14 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     GebException uninitializedException() {
         def message = "Instance of module ${getClass()} has not been initialized. Please pass it to Navigable.module() or Navigator.module() before using it."
         throw new ModuleInstanceNotInitializedException(message)
+    }
+
+    String getStringRepresentation() {
+        getClass().name
+    }
+
+    @Override
+    String toString() {
+        stringRepresentationProvider.stringRepresentation
     }
 }

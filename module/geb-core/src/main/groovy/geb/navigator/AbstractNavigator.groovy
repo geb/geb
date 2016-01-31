@@ -376,9 +376,15 @@ abstract class AbstractNavigator implements Navigator {
     public <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
         iterator().collect { it.module(moduleFactory.call()) }
     }
-/**
- * Iterator for looping over the context elements of a Navigator instance.
- */
+
+    @Override
+    String getStringRepresentation() {
+        getClass().name
+    }
+
+    /**
+     * Iterator for looping over the context elements of a Navigator instance.
+     */
     private class NavigatorIterator implements Iterator<Navigator> {
 
         private int index

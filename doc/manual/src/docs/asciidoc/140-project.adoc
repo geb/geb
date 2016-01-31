@@ -98,6 +98,7 @@ This page lists the high level changes between versions of Geb.
 * Make implementation of `interact()` less dynamic. [issue:190[]]
 * Improve documentation for `interact()`. [issue:207[]]
 * Don't unnecessarily request tag name and type attribute multiple times when setting text input values. [issue:417[]]
+* Improve usefulness of string representation of content elements. [issue:274[]]
 
 ==== Deprecations
 

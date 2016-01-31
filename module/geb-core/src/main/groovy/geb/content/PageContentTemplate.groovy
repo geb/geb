@@ -16,6 +16,7 @@ package geb.content
 
 import geb.Browser
 import geb.Configuration
+import geb.Module
 import geb.error.RequiredPageValueNotPresent
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
@@ -101,12 +102,23 @@ class PageContentTemplate {
     }
 
     private wrapFactoryReturn(factoryReturn, Object[] args) {
-        if (Navigator.isInstance(factoryReturn)) {
+        if (factoryReturn instanceof Collection) {
+            factoryReturn.collect { wrapFactoryReturnItem(it, args) }
+        } else {
+            wrapFactoryReturnItem(factoryReturn, args)
+        }
+    }
+
+    private wrapFactoryReturnItem(factoryReturnItem, Object[] args) {
+        if (factoryReturnItem instanceof Module) {
+            factoryReturnItem.init(this, args)
+        }
+        if (factoryReturnItem instanceof Navigator) {
             def pageContent = new SimplePageContent()
-            pageContent.init(browser, this, factoryReturn, *args)
+            pageContent.init(browser, this, factoryReturnItem, *args)
             pageContent
         } else {
-            factoryReturn
+            factoryReturnItem
         }
     }
 

@@ -17,6 +17,7 @@ package geb.navigator
 
 import geb.Module
 import geb.Page
+import geb.content.StringRepresentationProvider
 import geb.js.JQueryAdapter
 import geb.waiting.Wait
 import org.openqa.selenium.By
@@ -26,7 +27,7 @@ import org.openqa.selenium.WebElement
  * Navigator is a jQuery-style DOM traversal tool that wraps a set of WebDriver WebElements.
  * The code is based on the Doj library written by Kevin Wetzels: http://code.google.com/p/hue/
  */
-interface Navigator extends Iterable<Navigator>, Locator {
+interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationProvider {
 
     /**
      * Filters the set of elements represented by this Navigator to include only that have one or more descendants
@@ -1045,4 +1046,10 @@ interface Navigator extends Iterable<Navigator>, Locator {
      * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
     boolean isFocused()
+
+    /**
+     * Provides the text to be returned from {@code toString()} as well as to be used as part of the value returned from {@code toString()} if this navigator backs a template derived
+     * content element.
+     */
+    String getStringRepresentation()
 }

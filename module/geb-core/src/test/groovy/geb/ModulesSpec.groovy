@@ -98,9 +98,9 @@ class ModulesSpec extends GebSpecWithCallbackServer {
 
         then:
         page[repeating].size() == 5
-        page[repeating].every { it.class == ModulesSpecDivModuleNoLocator }
+        page[repeating].every { it.stringRepresentation == ModulesSpecDivModuleNoLocator.name }
         page[repeatingWithParam].size() == 5
-        page[repeatingWithParam].every { it.class == ModulesSpecDivModuleWithLocator }
+        page[repeatingWithParam].every { it.stringRepresentation == ModulesSpecDivModuleWithLocator.name }
 
         where:
         scenario                 | repeating              | repeatingWithParam
