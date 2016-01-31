@@ -96,6 +96,9 @@ ruleset {
         FactoryMethodName {
             enabled = false
         }
+        ClassNameSameAsSuperclass {
+            enabled = false
+        }
     }
     ruleset('rulesets/unnecessary.xml') {
         UnnecessaryGetter {

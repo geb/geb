@@ -25,7 +25,7 @@ class StrongTypingSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         html { HttpServletRequest request ->
-            switch(request.requestURI) {
+            switch (request.requestURI) {
                 case ~'/loginPage$':
                     head {
                         title "Login Page"
@@ -74,6 +74,7 @@ class StrongTypingSpec extends GebSpecWithCallbackServer {
         // end::untyped[]
     }
 
+    @SuppressWarnings('UnusedVariable')
     def "typed"() {
         when:
         // tag::typed[]
@@ -115,7 +116,7 @@ class LoginPage extends Page {
 
     SecurePage login(String username, String password) {
         $(name: "username").value username
-        $(name: "password").value username
+        $(name: "password").value password
         loginButton.click()
         browser.at SecurePage
     }

@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeMethod
 import java.lang.reflect.Method
 
 trait GebReportingTestTrait extends GebTestTrait {
+    @SuppressWarnings('PropertyName')
     final END_OF_METHOD_REPORT_LABEL = "end"
     private testMethodNumber = 0
     private reportNumberInTestMethod = 1

@@ -1012,6 +1012,7 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * @param moduleClass a class extending {@link geb.Module}
      * @return an initialized instance of the module class passed as the argument
      */
+    @SuppressWarnings('UnnecessaryPublicModifier')
     public <T extends Module> T module(Class<T> moduleClass)
 
     /**
@@ -1020,6 +1021,7 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * @param module an instance of a class extending {@link geb.Module}
      * @return an initialized instance of passed as the argument
      */
+    @SuppressWarnings('UnnecessaryPublicModifier')
     public <T extends Module> T module(T module)
 
     /**
@@ -1028,6 +1030,7 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * @param moduleClass a class extending {@link geb.Module}
      * @return a list of initialized instances of the module class passed as the argument
      */
+    @SuppressWarnings('UnnecessaryPublicModifier')
     public <T extends Module> List<T> moduleList(Class<T> moduleClass)
 
     /**
@@ -1036,6 +1039,7 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * @param moduleFactory a closure that should return a new module instance every time it's called
      * @return a list of initialized module instances created using the factory closure passed in as the argument
      */
+    @SuppressWarnings('UnnecessaryPublicModifier')
     public <T extends Module> List<T> moduleList(Closure<T> moduleFactory)
 
     /**

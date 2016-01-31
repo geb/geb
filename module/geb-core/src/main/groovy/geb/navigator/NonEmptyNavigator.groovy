@@ -584,7 +584,7 @@ class NonEmptyNavigator extends AbstractNavigator {
     @Override
     boolean isFocused() {
         ensureContainsSingleElement("isFocused")
-        firstElement().equals(browser.driver.switchTo().activeElement())
+        firstElement() == browser.driver.switchTo().activeElement()
     }
 
     def methodMissing(String name, arguments) {
@@ -902,14 +902,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     int hashCode() {
-        return contextElements.hashCode()
+        contextElements.hashCode()
     }
 
     @Override
     boolean equals(Object obj) {
         if (obj instanceof NonEmptyNavigator) {
-            return contextElements.equals(obj.contextElements)
+            contextElements == obj.contextElements
         }
-        return false
     }
 }
