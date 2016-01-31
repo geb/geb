@@ -79,7 +79,7 @@ browserStack {
 }
 
 task nonIeBrowserStackTests {
-    dependsOn 'nexus4Test', 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
+    dependsOn 'htcOneTest', 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindowsTest', 'firefoxMacTest'
 }
 
 task ieBrowserStackTests {
