@@ -17,9 +17,14 @@ package geb.window
 
 import geb.test.CrossBrowser
 import org.openqa.selenium.NoSuchWindowException
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 @CrossBrowser
+@IgnoreIf({
+    def browser = System.getProperty('geb.browserstack.browser')
+    browser?.contains('explorer') && (browser.contains('8') || browser.contains('9') || browser.contains('10'))
+})
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
     def setup() {
