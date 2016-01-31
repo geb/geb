@@ -49,7 +49,7 @@ class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer
         go()
 
         then:
-        notThrown(NullPointerException)
+        notThrown(Exception)
     }
 }
 

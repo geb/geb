@@ -497,6 +497,10 @@ class Browser {
         try {
             currentUrl = driver.currentUrl
         } catch (NullPointerException npe) {
+        } catch (WebDriverException webDriverException) {
+            if (!webDriverException.message.contains("Remote browser did not respond to getCurrentUrl")) {
+                throw webDriverException
+            }
         }
         if (currentUrl == newUrl) {
             driver.navigate().refresh()
