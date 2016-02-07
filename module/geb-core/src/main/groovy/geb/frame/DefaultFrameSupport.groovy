@@ -17,7 +17,7 @@ package geb.frame
 
 import geb.Browser
 import geb.Page
-import geb.content.SimplePageContent
+import geb.content.TemplateDerivedPageContent
 import geb.navigator.Navigator
 import org.openqa.selenium.NoSuchFrameException
 import org.openqa.selenium.WebElement
@@ -46,7 +46,7 @@ class DefaultFrameSupport implements FrameSupport {
         executeWithFrame(frameNavigator, page, block)
     }
 
-    def withFrame(SimplePageContent frame, Closure block) {
+    def withFrame(TemplateDerivedPageContent frame, Closure block) {
         executeWithFrame(frame, frame.templateParams.page, block)
     }
 

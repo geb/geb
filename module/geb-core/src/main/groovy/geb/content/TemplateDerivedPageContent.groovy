@@ -14,14 +14,16 @@
  */
 package geb.content
 
-import geb.*
+import geb.Browser
+import geb.Module
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
 @SuppressWarnings("FieldName")
-abstract class TemplateDerivedPageContent implements Navigator {
+@SuppressWarnings("EqualsAndHashCode")
+class TemplateDerivedPageContent implements Navigator {
 
     private PageContentTemplate _template
     private Object[] _args
@@ -31,12 +33,7 @@ abstract class TemplateDerivedPageContent implements Navigator {
     @Delegate
     protected Navigator _navigator
 
-    /**
-     * Called by the template when created (i.e. is not public).
-     *
-     * We don't use a constructor to prevent users from having to implement them.
-     */
-    void init(Browser browser, PageContentTemplate template, Navigator navigator, Object[] args) {
+    TemplateDerivedPageContent(Browser browser, PageContentTemplate template, Navigator navigator, Object[] args) {
         this._browser = browser
         this._template = template
         this._navigator = navigator
@@ -199,5 +196,26 @@ abstract class TemplateDerivedPageContent implements Navigator {
     @Override
     boolean isFocused() {
         _navigator.focused
+    }
+
+    @Override
+    boolean equals(Object o) {
+        if (o instanceof TemplateDerivedPageContent) {
+            _navigator == o._navigator
+        } else {
+            def values = iterator()*.value().findAll { it != null }
+            def value
+            switch (values.size()) {
+                case 0:
+                    value = null
+                    break
+                case 1:
+                    value = values.first()
+                    break
+                default:
+                    value = values
+            }
+            value == o
+        }
     }
 }

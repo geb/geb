@@ -106,9 +106,7 @@ class PageContentTemplate {
             factoryReturn.init(this, args)
         }
         if (factoryReturn instanceof Navigator) {
-            def pageContent = new SimplePageContent()
-            pageContent.init(browser, this, factoryReturn, *args)
-            pageContent
+            new TemplateDerivedPageContent(browser, this, factoryReturn, *args)
         } else {
             factoryReturn
         }

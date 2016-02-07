@@ -17,7 +17,7 @@ package geb.frame
 
 import geb.Initializable
 import geb.Page
-import geb.content.SimplePageContent
+import geb.content.TemplateDerivedPageContent
 import geb.navigator.Navigator
 
 class UninitializedFrameSupport implements FrameSupport {
@@ -48,7 +48,7 @@ class UninitializedFrameSupport implements FrameSupport {
     }
 
     @Override
-    def withFrame(SimplePageContent frame, Closure block) {
+    def withFrame(TemplateDerivedPageContent frame, Closure block) {
         throw initializable.uninitializedException()
     }
 }

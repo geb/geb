@@ -16,7 +16,7 @@
 package geb.frame
 
 import geb.Page
-import geb.content.SimplePageContent
+import geb.content.TemplateDerivedPageContent
 import geb.navigator.Navigator
 
 interface FrameSupport {
@@ -33,5 +33,5 @@ interface FrameSupport {
 
     def withFrame(Navigator frame, Closure block)
 
-    def withFrame(SimplePageContent frame, Closure block)
+    def withFrame(TemplateDerivedPageContent frame, Closure block)
 }

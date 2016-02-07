@@ -32,7 +32,7 @@ class AttributeAccessingMetaClassRegisteringTransformation implements ASTTransfo
     @Override
     void visit(ASTNode[] nodes, SourceUnit source) {
         source.AST.classes.each {
-            if (extendsFromAttributeAccessEnabledClass(it)) {
+            if (isAttributeAccessEnabledClass(it)) {
                 changeMetaClassImplementation(it)
             }
         }
@@ -50,13 +50,13 @@ class AttributeAccessingMetaClassRegisteringTransformation implements ASTTransfo
         classNode.addStaticInitializerStatements([metaClassRegisterStatement], false)
     }
 
-    boolean extendsFromAttributeAccessEnabledClass(ClassNode classNode) {
+    boolean isAttributeAccessEnabledClass(ClassNode classNode) {
         boolean isAttributeAccessEnabledClass = false
-        ClassNode superClass = classNode.superClass
+        ClassNode currentClass = classNode
 
-        while (superClass && !isAttributeAccessEnabledClass) {
-            isAttributeAccessEnabledClass = (superClass.name in ['geb.navigator.AbstractNavigator', 'geb.content.TemplateDerivedPageContent'])
-            superClass = superClass.superClass
+        while (currentClass && !isAttributeAccessEnabledClass) {
+            isAttributeAccessEnabledClass = (currentClass.name in ['geb.navigator.AbstractNavigator', 'geb.content.TemplateDerivedPageContent'])
+            currentClass = currentClass.superClass
         }
 
         isAttributeAccessEnabledClass

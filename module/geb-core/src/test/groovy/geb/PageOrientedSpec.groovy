@@ -14,7 +14,7 @@
  */
 package geb
 
-import geb.content.SimplePageContent
+import geb.content.TemplateDerivedPageContent
 import geb.error.*
 import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
@@ -137,7 +137,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         then:
         notThrown(Exception)
         !content
-        content in SimplePageContent
+        content in TemplateDerivedPageContent
     }
 
     def "error when explicitly requiring a component that is not present"() {
