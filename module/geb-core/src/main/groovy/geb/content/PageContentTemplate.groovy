@@ -102,23 +102,15 @@ class PageContentTemplate {
     }
 
     private wrapFactoryReturn(factoryReturn, Object[] args) {
-        if (factoryReturn instanceof Collection) {
-            factoryReturn.collect { wrapFactoryReturnItem(it, args) }
-        } else {
-            wrapFactoryReturnItem(factoryReturn, args)
+        if (factoryReturn instanceof Module) {
+            factoryReturn.init(this, args)
         }
-    }
-
-    private wrapFactoryReturnItem(factoryReturnItem, Object[] args) {
-        if (factoryReturnItem instanceof Module) {
-            factoryReturnItem.init(this, args)
-        }
-        if (factoryReturnItem instanceof Navigator) {
+        if (factoryReturn instanceof Navigator) {
             def pageContent = new SimplePageContent()
-            pageContent.init(browser, this, factoryReturnItem, *args)
+            pageContent.init(browser, this, factoryReturn, *args)
             pageContent
         } else {
-            factoryReturnItem
+            factoryReturn
         }
     }
 
