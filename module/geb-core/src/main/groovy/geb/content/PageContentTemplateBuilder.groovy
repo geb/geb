@@ -18,8 +18,6 @@ import geb.Browser
 import geb.error.InvalidPageContent
 import geb.navigator.factory.NavigatorFactory
 
-import static geb.content.PageContentNames.NOT_ALLOWED
-
 class PageContentTemplateBuilder {
 
     final Browser browser
@@ -42,7 +40,7 @@ class PageContentTemplateBuilder {
         def definition = null
         def params = null
 
-        if (NOT_ALLOWED.contains(name)) {
+        if (PageContentNames.isNotAllowed(container, name)) {
             throw new InvalidPageContent("${container.class.name} uses a not allowed content name: '$name'. Please use another name.")
         }
 

@@ -22,18 +22,26 @@ import java.beans.Introspector
 
 class PageContentNames {
 
-    static final Set<String> NOT_ALLOWED = findNotAllowedPageContentNames()
+    private static final Set<String> NOT_ALLOWED_PAGE_NAMES = getNotAllowedContentNames(Page)
+    private static final Set<String> NOT_ALLOWED_MODULE_NAMES = getNotAllowedContentNames(Module)
 
-    private static Set<String> findNotAllowedPageContentNames() {
-        def notAllowed = [Module, Page].collectMany {
-            getPropertyNames(it)
-        } as Set<String>
-
-        notAllowed << "content"
+    static boolean isNotAllowed(PageContentContainer owner, String name) {
+        switch (owner) {
+            case Page:
+                return NOT_ALLOWED_PAGE_NAMES.contains(name)
+            case Module:
+                return NOT_ALLOWED_MODULE_NAMES.contains(name)
+            default:
+                throw new IllegalArgumentException("Unexpected content owner type when veryfing content name legality: ${owner.class}")
+        }
     }
 
-    private static List<String> getPropertyNames(Class<?> aClass) {
-        ["get", "is"].collect { propertyNamesFromMethodNames(aClass, it) }.sum()
+    private static Set<String> getNotAllowedContentNames(Class<?> aClass) {
+        getPropertyNames(aClass) << "content"
+    }
+
+    private static Set<String> getPropertyNames(Class<?> aClass) {
+        ["get", "is"].collect { propertyNamesFromMethodNames(aClass, it) }.sum() as Set
     }
 
     private static List<String> propertyNamesFromMethodNames(Class aClass, String propertyAccessorPrefix) {

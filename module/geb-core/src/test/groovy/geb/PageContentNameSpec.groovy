@@ -26,8 +26,8 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
         }
     }
 
-    @Unroll("using '#contentName' as content name causes an exception")
-    def "using content names that will result in the content being shadowed causes an exception"() {
+    @Unroll("using '#contentName' as page content name causes an exception")
+    def "using page content names that will result in the content being shadowed causes an exception"() {
         when:
         to(new DynamicContentNamePage(contentName: contentName))
 
@@ -36,12 +36,57 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
         e.message == "${DynamicContentNamePage.name} uses a not allowed content name: '$contentName'. Please use another name."
 
         where:
-        contentName << ["x", "title", "focused", "at", "url", "base", "content", "owner"]
+        contentName << ["title", "at", "url", "content", "owner"]
+    }
+
+    @Unroll("can use '#contentName' as page content")
+    def "using page content names that are shadowed only for modules does not cause an exception"() {
+        when:
+        to(new DynamicContentNamePage(contentName: contentName))
+
+        then:
+        noExceptionThrown()
+
+        where:
+        contentName << ["x", "focused", "base"]
+    }
+
+    @Unroll("using '#contentName' as module content name causes an exception")
+    def "using module content names that will result in the content being shadowed causes an exception"() {
+        when:
+        $().module(new DynamicContentNameModule(contentName: contentName))
+
+        then:
+        InvalidPageContent e = thrown()
+        e.message == "${DynamicContentNameModule.name} uses a not allowed content name: '$contentName'. Please use another name."
+
+        where:
+        contentName << ["x", "focused", "at", "base", "content", "owner"]
+    }
+
+    @Unroll("can use '#contentName' as module content")
+    def "using module content names that are shadowed only for pages does not cause an exception"() {
+        when:
+        $().module(new DynamicContentNameModule(contentName: contentName))
+
+        then:
+        noExceptionThrown()
+
+        where:
+        contentName << ["title", "url"]
     }
 
 }
 
 class DynamicContentNamePage extends Page {
+    String contentName
+
+    static content = {
+        "$contentName" { $() }
+    }
+}
+
+class DynamicContentNameModule extends Module {
     String contentName
 
     static content = {
