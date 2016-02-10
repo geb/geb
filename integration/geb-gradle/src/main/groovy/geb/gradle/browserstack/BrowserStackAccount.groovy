@@ -21,10 +21,18 @@ class BrowserStackAccount {
     public static final String USER_ENV_VAR = "GEB_BROWSERSTACK_USERNAME"
     public static final String ACCESS_KEY_ENV_VAR = "GEB_BROWSERSTACK_AUTHKEY"
     public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
+    public static final String PROXY_HOST_ENV_VAR = "GEB_BROWSERSTACK_PROXY_HOST"
+    public static final String PROXY_PORT_ENV_VAR = "GEB_BROWSERSTACK_PROXY_PORT"
+    public static final String PROXY_USER_ENV_VAR = "GEB_BROWSERSTACK_PROXY_USER"
+    public static final String PROXY_PASS_ENV_VAR = "GEB_BROWSERSTACK_PROXY_PASS"
 
     String username
     String accessKey
     String localId
+    String proxyHost
+    String proxyPort
+    String proxyUser
+    String proxyPass
 
     void configure(Test test) {
         if (username) {
@@ -35,6 +43,18 @@ class BrowserStackAccount {
         }
         if (localId) {
             test.environment(LOCAL_ID_ENV_VAR, localId)
+        }
+        if (proxyHost) {
+            test.environment(PROXY_HOST_ENV_VAR, proxyHost)
+        }
+        if (proxyPort) {
+            test.environment(PROXY_PORT_ENV_VAR, proxyPort)
+        }
+        if (proxyUser) {
+            test.environment(PROXY_USER_ENV_VAR, proxyUser)
+        }
+        if (proxyPass) {
+            test.environment(PROXY_PASS_ENV_VAR, proxyPass)
         }
     }
 }
