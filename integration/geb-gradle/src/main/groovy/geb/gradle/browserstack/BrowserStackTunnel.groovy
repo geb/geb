@@ -57,7 +57,6 @@ class BrowserStackTunnel extends ExternalTunnel {
         if( extension.account.proxyPort){
             commandLine << "-proxyPort" << extension.account.proxyPort
         }
-
         if( extension.account.proxyUser){
             commandLine << "-proxyUser" << extension.account.proxyUser
         }
