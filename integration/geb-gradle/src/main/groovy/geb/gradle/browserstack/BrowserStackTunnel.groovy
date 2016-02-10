@@ -51,16 +51,16 @@ class BrowserStackTunnel extends ExternalTunnel {
         if (extension.applicationUrls) {
             commandLine << "-only" << assembleAppSpecifier(extension.applicationUrls)
         }
-        if( extension.account.proxyHost){
+        if (extension.account.proxyHost) {
             commandLine << "-proxyHost" << extension.account.proxyHost
         }
-        if( extension.account.proxyPort){
+        if (extension.account.proxyPort) {
             commandLine << "-proxyPort" << extension.account.proxyPort
         }
-        if( extension.account.proxyUser){
+        if (extension.account.proxyUser) {
             commandLine << "-proxyUser" << extension.account.proxyUser
         }
-        if( extension.account.proxyPass){
+        if (extension.account.proxyPass) {
             commandLine << "-proxyPass" << extension.account.proxyPass
         }
         if (extension.forceLocal) {
