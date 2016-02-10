@@ -207,7 +207,7 @@ running the generated test tasks which means that the browsers in the cloud will
 You can use `allSauceLabsTests` task that will depend on all of the generated test tasks to run all of them during a build.
 ====
 
-=== geb-browserstack
+=== geb-browserstack plugin
 
 Following is an example of using the geb-browserstack Gradle plugin.
 
@@ -260,6 +260,20 @@ This configuration property controls the `-forcelocal` flag and the default valu
 <6> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 <7> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
 <8> Pass credentials for BrowserStack.
+
+It's also possible to specify location and credentials for the proxy to be used with the BrowserStack Tunnel:
+
+[source,groovy,subs="attributes,verbatim"]
+----
+browserStack {
+    account {
+        proxyHost = '127.0.0.1'
+        proxyPort = '8080'
+        proxyUser = 'user'
+        proxyPass = 'secret'
+    }
+}
+----
 
 [TIP]
 ====
