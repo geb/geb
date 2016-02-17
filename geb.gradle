@@ -101,17 +101,6 @@ subprojects {
 
         sourceCompatibility = 1.7
 
-        tasks.withType(Test) {
-            reports.junitXml.destination = reporting.file("test-results/$name")
-            reports.html.destination = reporting.file("test-reports/$name")
-            binResultsDir = file("$buildDir/test-results-bin/$name")
-
-            ext.driver = project.properties["driver"] ?: "htmlunit"
-            systemProperty 'geb.dev.driver', driver
-
-            systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
-        }
-
         codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
         project.tasks.withType(CodeNarc) { codenarcSourceSetTask ->
@@ -151,6 +140,17 @@ subprojects {
                 }
             }
         }
+    }
+
+    tasks.withType(Test) {
+        reports.junitXml.destination = reporting.file("test-results/$name")
+        reports.html.destination = reporting.file("test-reports/$name")
+        binResultsDir = file("$buildDir/test-results-bin/$name")
+
+        ext.driver = project.properties["driver"] ?: "htmlunit"
+        systemProperty 'geb.dev.driver', driver
+
+        systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
     }
 
     tasks.withType(Groovydoc) {

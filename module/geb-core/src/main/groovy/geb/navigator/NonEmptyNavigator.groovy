@@ -701,7 +701,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     protected void setInputValues(Collection<WebElement> inputs, value) {
         def inputsToTagNames = inputs.collectEntries { [it, it.tagName.toLowerCase()] }
-        def unsupportedElements = inputsToTagNames.values() - ELEMENTS_WITH_MUTABLE_VALUE
+        def unsupportedElements = inputsToTagNames.values().toList() - ELEMENTS_WITH_MUTABLE_VALUE
 
         if (unsupportedElements) {
             throw new UnableToSetElementException(*unsupportedElements)

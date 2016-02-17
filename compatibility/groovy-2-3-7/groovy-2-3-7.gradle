@@ -1,0 +1,18 @@
+apply plugin: "groovy"
+apply plugin: "idea"
+
+dependencies {
+    compile project(':module:geb-core'), {
+        exclude module: "groovy-all"
+        exclude module: "spock-core"
+    }
+
+    compile "org.codehaus.groovy:groovy-all:2.3.7"
+
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.3"
+
+    testCompile project(':internal:test-support'), {
+        exclude module: "groovy-all"
+        exclude module: "spock-core"
+    }
+}

@@ -13,7 +13,8 @@ include "module:geb-core",
     "integration:geb-gradle",
     "doc:manual",
     "doc:manual-snippets",
-    "doc:site"
+    "doc:site",
+    "compatibility:groovy-2-3-7"
 
 rootProject.name = 'geb'
 
