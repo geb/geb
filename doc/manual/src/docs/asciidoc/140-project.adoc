@@ -77,6 +77,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * Fix a MissingMethodException thrown from `Navigator.value()` when using Groovy versions < 2.4.0. [issue:422[]]
+* Don't unnecessarily synchronize methods of `CachingDirverFactory.ThreadLocalCache`. [issue:421[]]
 
 === 0.13.0
 

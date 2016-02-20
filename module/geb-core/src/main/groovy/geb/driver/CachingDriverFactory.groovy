@@ -44,7 +44,7 @@ class CachingDriverFactory implements DriverFactory {
     static private class ThreadLocalCache<T> implements Cache<T> {
         private ThreadLocal<T> threadLocal = new ThreadLocal()
 
-        synchronized T get(Closure<? extends T> factory) {
+        T get(Closure<? extends T> factory) {
             def cached = threadLocal.get()
             if (cached == null) {
                 cached = factory()
@@ -53,7 +53,7 @@ class CachingDriverFactory implements DriverFactory {
             cached
         }
 
-        synchronized T clear() {
+        T clear() {
             def prev = threadLocal.get()
             threadLocal.set(null)
             prev
