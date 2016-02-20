@@ -41,7 +41,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:johnrengelman[John Engelman] - Grails integration improvements
 * github-profile:legart[Michael Legart] - Grails integration improvements
 * github-profile:graemerocher[Graeme Rocher] - Grails integration improvements
-* github-profile:craigatk[Craig Atkinson] - Bug fix around unexpected pages
+* github-profile:craigatk[Craig Atkinson] - Bug fix around unexpected pages, fix for [issue:422[]]
 * github-profile:kgeis[Ken Geis] - Doc improvements
 * github-profile:kellyrob99[Kelly Robinson] - Additional configuration parameters for SauceLabs
 * github-profile:tygerpatch[Todd Gerspacher] - Doc improvements, Cleaned up settings.gradle
@@ -74,7 +74,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Fix a MissingMethodException thrown from `Navigator.value()` when using Groovy versions < 2.4.0. [issue:422[]]
 
 === 0.13.0
 
