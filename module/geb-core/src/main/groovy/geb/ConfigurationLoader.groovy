@@ -278,7 +278,10 @@ class ConfigurationLoader {
      * @throws geb.error.UnableToLoadException if the config class could not be read.
      */
     protected ConfigObject loadRawConfig(Class configClass) throws UnableToLoadException {
-        loadRawConfig(createSlurper(), configClass)
+        def slurper = createSlurper()
+        synchronized (configClass) {
+            loadRawConfig(slurper, configClass)
+        }
     }
 
     protected ConfigObject loadRawConfig(ConfigSlurper slurper, URL source) {
@@ -295,7 +298,7 @@ class ConfigurationLoader {
         }
     }
 
-    protected ConfigObject loadRawConfig(ConfigSlurper slurper, source) {
+    protected ConfigObject loadRawConfig(ConfigSlurper slurper, Class source) {
         try {
             slurper.parse(source)
         } catch (Throwable e) {
