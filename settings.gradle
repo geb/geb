@@ -14,7 +14,7 @@ include "module:geb-core",
     "doc:manual",
     "doc:manual-snippets",
     "doc:site",
-    "compatibility:groovy-2-3-7"
+    "compatibility:groovy-2.3.7"
 
 rootProject.name = 'geb'
 
