@@ -1,6 +1,3 @@
-apply plugin: "groovy"
-apply plugin: "idea"
-
 configurations.all {
     resolutionStrategy.eachDependency { details ->
         switch(details.requested.group) {

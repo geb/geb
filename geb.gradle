@@ -62,7 +62,7 @@ allprojects { project ->
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":module:geb-test-common", ":integration:geb-gradle", ":doc:site",
-            ":doc:manual-snippets"
+            ":doc:manual-snippets", ":compatibility:groovy-2.3.7"
         ]
 
         publishedModules = [
@@ -113,6 +113,17 @@ subprojects {
             }
         }
 
+        tasks.withType(Test) {
+            reports.junitXml.destination = reporting.file("test-results/$name")
+            reports.html.destination = reporting.file("test-reports/$name")
+            binResultsDir = file("$buildDir/test-results-bin/$name")
+
+            ext.driver = project.properties["driver"] ?: "htmlunit"
+            systemProperty 'geb.dev.driver', driver
+
+            systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
+        }
+
     }
 
     if (path in publishedGroovyModules) {
@@ -140,17 +151,6 @@ subprojects {
                 }
             }
         }
-    }
-
-    tasks.withType(Test) {
-        reports.junitXml.destination = reporting.file("test-results/$name")
-        reports.html.destination = reporting.file("test-reports/$name")
-        binResultsDir = file("$buildDir/test-results-bin/$name")
-
-        ext.driver = project.properties["driver"] ?: "htmlunit"
-        systemProperty 'geb.dev.driver', driver
-
-        systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
     }
 
     tasks.withType(Groovydoc) {
