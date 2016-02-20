@@ -1,18 +1,19 @@
 apply plugin: "groovy"
 apply plugin: "idea"
 
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        switch(details.requested.group) {
+            case 'org.spockframework':
+                details.useVersion '1.0-groovy-2.3'
+                break
+            case 'org.codehaus.groovy':
+                details.useVersion '2.3.7'
+                break
+        }
+    }
+}
+
 dependencies {
-    compile project(':module:geb-core'), {
-        exclude module: "groovy-all"
-        exclude module: "spock-core"
-    }
-
-    compile "org.codehaus.groovy:groovy-all:2.3.7"
-
-    testCompile "org.spockframework:spock-core:1.0-groovy-2.3"
-
-    testCompile project(':internal:test-support'), {
-        exclude module: "groovy-all"
-        exclude module: "spock-core"
-    }
+    testCompile project(':internal:test-support')
 }
