@@ -74,6 +74,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+No changes have been made, yet.
+
+=== 0.13.1
+
 ==== Fixes
 
 * Fix a MissingMethodException thrown from `Navigator.value()` when using Groovy versions < 2.4.0. [issue:422[]]
