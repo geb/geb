@@ -31,7 +31,7 @@ allprojects { project ->
         isCi = project.hasProperty("ci")
 
         seleniumVersion = "2.52.0"
-        groovyVersion = "2.4.5"
+        groovyVersion = "2.4.6"
         spockVersion = "1.0-groovy-2.4"
         junit4Version = "4.10"
 
