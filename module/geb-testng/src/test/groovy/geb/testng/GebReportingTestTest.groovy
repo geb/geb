@@ -35,12 +35,12 @@ class GebReportingTestTest extends GebReportingTest {
     private methodNumberOfInitTest = 0
 
     static responseText = """
-		<html>
-		<body>
-			<div class="d1" id="d1">d1</div>
-		</body>
-		</html>
-	"""
+        <html>
+        <body>
+            <div class="d1" id="d1">d1</div>
+        </body>
+        </html>
+    """
 
     @BeforeClass
     void setUpClass() {

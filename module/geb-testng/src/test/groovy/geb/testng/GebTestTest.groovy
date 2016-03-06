@@ -30,11 +30,11 @@ class GebTestTest extends GebTest {
         server.start()
         server.get = { req, res ->
             res.outputStream << """
-			<html>
-			<body>
-				<div class="d1" id="d1">d1</div>
-			</body>
-			</html>"""
+            <html>
+            <body>
+                <div class="d1" id="d1">d1</div>
+            </body>
+            </html>"""
         }
         browser.baseUrl = server.baseUrl
     }

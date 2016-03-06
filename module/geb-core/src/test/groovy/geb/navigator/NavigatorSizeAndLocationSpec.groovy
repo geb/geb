@@ -24,30 +24,30 @@ class NavigatorSizeAndLocationSpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         callbackServer.get = { req, res ->
             res.outputStream << """
-			<html>
-			<head>
-				<style>
-					.a {
-						position: absolute;
-						top: 10;
-						left: 20;
-						width: 30;
-						height: 40;
-					}
-					.b {
-						position: absolute;
-						top: 50;
-						left: 60;
-						width: 70;
-						height: 80;
-					}
-				</style>
-			</head>
-			<body>
-				<div class="a"/>
-				<div class="b"/>
-			</body>
-			</html>"""
+            <html>
+            <head>
+                <style>
+                    .a {
+                        position: absolute;
+                        top: 10;
+                        left: 20;
+                        width: 30;
+                        height: 40;
+                    }
+                    .b {
+                        position: absolute;
+                        top: 50;
+                        left: 60;
+                        width: 70;
+                        height: 80;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="a"/>
+                <div class="b"/>
+            </body>
+            </html>"""
         }
     }
 

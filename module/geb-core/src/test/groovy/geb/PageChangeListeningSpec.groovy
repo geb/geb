@@ -34,11 +34,11 @@ class PageChangeListeningSpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         callbackServer.get = { req, res ->
             res.outputStream << """
-			<html>
-			<body>
-				<div>a</div>
-			</body>
-			</html>"""
+            <html>
+            <body>
+                <div>a</div>
+            </body>
+            </html>"""
         }
     }
 

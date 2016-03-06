@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *			http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,12 @@ class GebReportingTestTest extends GebReportingTest {
     static private counter = 0
 
     static responseText = """
-		<html>
-		<body>
-			<div class="d1" id="d1">d1</div>
-		</body>
-		</html>
-	"""
+        <html>
+        <body>
+            <div class="d1" id="d1">d1</div>
+        </body>
+        </html>
+    """
 
     @Before
     void setUp() {

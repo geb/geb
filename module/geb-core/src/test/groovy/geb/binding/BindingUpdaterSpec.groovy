@@ -23,11 +23,11 @@ class BindingUpdaterSpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         callbackServer.get = { req, res ->
             res.outputStream << """
-			<html>
-			<body>
-				<p>content</p>
-			</body>
-			</html>"""
+            <html>
+            <body>
+                <p>content</p>
+            </body>
+            </html>"""
         }
         go "/"
     }

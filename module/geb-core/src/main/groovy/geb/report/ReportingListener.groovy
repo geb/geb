@@ -25,9 +25,9 @@ package geb.report
  * <pre>
  * reportingListener = new ReportingListener() {
  *   void onReport(Reporter reporter, ReportState reportState, List<File> reportFiles) {
- * 	   reportFiles.each {
- * 	     println "Report taken: $it.absolutePath"
- * 	   }
+ *     reportFiles.each {
+ *       println "Report taken: $it.absolutePath"
+ *     }
  *   }
  * }
  * </pre>

@@ -18,6 +18,9 @@ ruleset {
         NoDef {
             enabled = false
         }
+        TrailingComma {
+            enabled = false
+        }
     }
     ruleset('rulesets/dry.xml') {
         DuplicateStringLiteral {

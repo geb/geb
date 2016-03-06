@@ -41,71 +41,71 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
 
     private getInstallGebStorageScript() {
         """
-			if (!window.geb) {
-				window.geb = {};
-			}
-		"""
+            if (!window.geb) {
+                window.geb = {};
+            }
+        """
     }
 
     private getInstallDialogStorageScript() {
         """
-			$installGebStorageScript
+            $installGebStorageScript
 
-			if (!window.geb.dialogFunctions) {
-				window.geb.dialogFunctions = new Array();
-			}
-			if (!window.geb.dialogMessages) {
-				window.geb.dialogMessages = new Array();
-			}
-		"""
+            if (!window.geb.dialogFunctions) {
+                window.geb.dialogFunctions = new Array();
+            }
+            if (!window.geb.dialogMessages) {
+                window.geb.dialogMessages = new Array();
+            }
+        """
     }
 
     private popLastDialogMessage(JavascriptInterface js) {
         js.exec """
-			if (window.geb) {
-				return window.geb.dialogMessages.pop();
-			} else {
-				return $UNKNOWN;
-			}
-		"""
+            if (window.geb) {
+                return window.geb.dialogMessages.pop();
+            } else {
+                return $UNKNOWN;
+            }
+        """
     }
 
     private popLastDialogFunctionOnto(JavascriptInterface js, String onto) {
         js.exec """
-			if (window.geb) {
-				window.$onto = window.geb.dialogFunctions.pop();
-			}
-		"""
+            if (window.geb) {
+                window.$onto = window.geb.dialogFunctions.pop();
+            }
+        """
     }
 
     private installAlert(JavascriptInterface js) {
         js.exec """
-			$installDialogStorageScript
+            $installDialogStorageScript
 
-			window.geb.dialogFunctions.push(window.alert);
-			window.geb.dialogMessages.push(null);
+            window.geb.dialogFunctions.push(window.alert);
+            window.geb.dialogMessages.push(null);
 
-			window.alert = function(msg) {
-				window.geb.dialogMessages.pop();
-				window.geb.dialogMessages.push(msg);
-				return true;
-			};
-		"""
+            window.alert = function(msg) {
+                window.geb.dialogMessages.pop();
+                window.geb.dialogMessages.push(msg);
+                return true;
+            };
+        """
     }
 
     private installConfirm(boolean ok, JavascriptInterface js) {
         js.exec """
-			$installDialogStorageScript
+            $installDialogStorageScript
 
-			window.geb.dialogFunctions.push(window.confirm);
-			window.geb.dialogMessages.push(null);
+            window.geb.dialogFunctions.push(window.confirm);
+            window.geb.dialogMessages.push(null);
 
-			window.confirm = function(msg) {
-				window.geb.dialogMessages.pop();
-				window.geb.dialogMessages.push(msg);
-				return $ok;
-			};
-		"""
+            window.confirm = function(msg) {
+                window.geb.dialogMessages.pop();
+                window.geb.dialogMessages.push(msg);
+                return $ok;
+            };
+        """
     }
 
     private captureDialog(Closure installer, String function, Closure actions, Wait wait = null) {

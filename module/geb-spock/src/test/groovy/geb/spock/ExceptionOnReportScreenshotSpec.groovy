@@ -31,8 +31,8 @@ class ExceptionOnReportScreenshotSpec extends GebReportingSpec {
         server.get = { req, HttpServletResponse res ->
             res.addHeader(CONTENT_TYPE, 'application/xml')
             res.outputStream << '''<?xml version="1.0"?>
-			<test></test>
-			'''
+            <test></test>
+            '''
         }
     }
 

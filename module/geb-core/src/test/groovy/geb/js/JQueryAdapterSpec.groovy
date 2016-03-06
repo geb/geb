@@ -23,26 +23,26 @@ class JQueryAdapterSpec extends GebSpecWithCallbackServer {
 
         callbackServer.get = { req, res ->
             res.outputStream << """
-				<html>
-				<head>
-					<script type="text/javascript">
-						${jquery.openStream().text}
-					</script>
-					<script type="text/javascript">
-						var i = false;
-						\$(function() {
-							\$("#a").click(function() {
-								i = true;
-							})
-						});
-					</script>
-				</head>
-				<body>
-					<div id="a"></div>
-					<div id="b" class="x"></div>
-				</body>
-				</html>
-			"""
+                <html>
+                <head>
+                    <script type="text/javascript">
+                        ${jquery.openStream().text}
+                    </script>
+                    <script type="text/javascript">
+                        var i = false;
+                        \$(function() {
+                            \$("#a").click(function() {
+                                i = true;
+                            })
+                        });
+                    </script>
+                </head>
+                <body>
+                    <div id="a"></div>
+                    <div id="b" class="x"></div>
+                </body>
+                </html>
+            """
         }
     }
 

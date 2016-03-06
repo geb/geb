@@ -29,7 +29,7 @@ class GebReportingSpecSpec extends GebReportingSpec {
                 <div class="d1" id="d1">d1</div>
             </body>
         </html>
-	"""
+    """
 
     def setupSpec() {
         server.start()

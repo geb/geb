@@ -31,26 +31,26 @@ class JQueryAdapter {
 
         if (elements) {
             browser.js.exec(*elements, "EOE", *args, """
-				var elements = new Array();
-				var callArgs = new Array();
-				var collectingElements = true;
+                var elements = new Array();
+                var callArgs = new Array();
+                var collectingElements = true;
 
-				for (j = 0; j < arguments.length; ++j) {
-					var arg = arguments[j];
+                for (j = 0; j < arguments.length; ++j) {
+                    var arg = arguments[j];
 
-					if (collectingElements == true && arg == "EOE") {
-						collectingElements = false;
-					} else if (collectingElements) {
-						elements.push(arg);
-					} else {
-						callArgs.push(arg);
-					}
-				}
+                    if (collectingElements == true && arg == "EOE") {
+                        collectingElements = false;
+                    } else if (collectingElements) {
+                        elements.push(arg);
+                    } else {
+                        callArgs.push(arg);
+                    }
+                }
 
-				var o = jQuery(elements);
-				var r = o.${name}.apply(o, callArgs);
-				return (r instanceof jQuery) ? r.toArray() : r;
-			""")
+                var o = jQuery(elements);
+                var r = o.${name}.apply(o, callArgs);
+                return (r instanceof jQuery) ? r.toArray() : r;
+            """)
         } else {
             null
         }

@@ -21,28 +21,28 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         callbackServer.get = { req, res ->
             res.outputStream << """
-				<html>
-				<body>
-					<script type="text/javascript" charset="utf-8">
-						var i = 0;
-						var confirmResult;
-					</script>
-					<input type="button" name="hasAlert" onclick="alert(++i);" />
-					<input type="button" name="noAlert" />
-					<input type="button" name="hasConfirm" onclick="confirmResult = confirm(++i);" />
-					<input type="button" name="noConfirm" />
+                <html>
+                <body>
+                    <script type="text/javascript" charset="utf-8">
+                        var i = 0;
+                        var confirmResult;
+                    </script>
+                    <input type="button" name="hasAlert" onclick="alert(++i);" />
+                    <input type="button" name="noAlert" />
+                    <input type="button" name="hasConfirm" onclick="confirmResult = confirm(++i);" />
+                    <input type="button" name="noConfirm" />
 
-					<input type="button" name="hasAlertReload" onclick="alert(++i); window.location.reload();" />
-					<input type="button" name="noAlertReload" onclick="window.location.reload();"/>
-					<input type="button" name="hasConfirmReload" onclick="confirmResult = confirm(++i); window.location.reload();" />
-					<input type="button" name="noConfirmReload" onclick="window.location.reload();" />
+                    <input type="button" name="hasAlertReload" onclick="alert(++i); window.location.reload();" />
+                    <input type="button" name="noAlertReload" onclick="window.location.reload();"/>
+                    <input type="button" name="hasConfirmReload" onclick="confirmResult = confirm(++i); window.location.reload();" />
+                    <input type="button" name="noConfirmReload" onclick="window.location.reload();" />
 
-					<input type="button" name="hasAsynchronousAlert" onclick="setTimeout(function() { alert('asynchronous alert') }, 1000);" />
-					<input type="button" name="hasAsynchronousConfirm" onclick="setTimeout(function() { confirm('asynchronous confirm') }, 1000);" />
+                    <input type="button" name="hasAsynchronousAlert" onclick="setTimeout(function() { alert('asynchronous alert') }, 1000);" />
+                    <input type="button" name="hasAsynchronousConfirm" onclick="setTimeout(function() { confirm('asynchronous confirm') }, 1000);" />
 
-				</body>
-				</html>
-			"""
+                </body>
+                </html>
+            """
         }
     }
 

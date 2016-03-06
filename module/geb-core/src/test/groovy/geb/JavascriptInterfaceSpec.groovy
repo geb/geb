@@ -21,21 +21,21 @@ class JavascriptInterfaceSpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         callbackServer.get = { req, res ->
             res.outputStream << """
-			<html>
-				<title>geb</title>
-				<script type="text/javascript" charset="utf-8">
-					var v1 = 1;
-					var v2 = 2;
-					function changeVars(newV1, newV2) {
-						v1 = newV1;
-						v2 = newV2;
+            <html>
+                <title>geb</title>
+                <script type="text/javascript" charset="utf-8">
+                    var v1 = 1;
+                    var v2 = 2;
+                    function changeVars(newV1, newV2) {
+                        v1 = newV1;
+                        v2 = newV2;
 
-						return "coming back";
-					}
-				</script>
-			<body>
-			</body>
-			</html>"""
+                        return "coming back";
+                    }
+                </script>
+            <body>
+            </body>
+            </html>"""
         }
     }
 

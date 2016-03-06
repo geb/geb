@@ -29,17 +29,17 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         responseHtml """
-			<html>
-				<head>
-					<script type="text/javascript" charset="utf-8">
-						setTimeout(function() {
-							document.body.innerHTML = "<div></div>";
-						}, 500);
-					</script>
-				</head>
-				<body></body>
-			</html>
-		"""
+            <html>
+                <head>
+                    <script type="text/javascript" charset="utf-8">
+                        setTimeout(function() {
+                            document.body.innerHTML = "<div></div>";
+                        }, 500);
+                    </script>
+                </head>
+                <body></body>
+            </html>
+        """
 
         config = browser.config
         config.setWaitPreset('forBaseNavigator', 1, 0.1)

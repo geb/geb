@@ -28,11 +28,11 @@ class GebSpecStepwiseSpec extends GebReportingSpec {
         server.start()
         server.get = { req, res ->
             res.outputStream << """
-			<html>
-			<body>
-				<p>stuff</p>
-			</body>
-			</html>"""
+            <html>
+            <body>
+                <p>stuff</p>
+            </body>
+            </html>"""
         }
     }
 

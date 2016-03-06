@@ -92,11 +92,11 @@ class WaitingConfigurationSpec extends Specification {
     def "specified default wait values"() {
         when:
         userConf = """
-			waiting {
-				timeout = 20
-				retryInterval = 40
-			}
-		"""
+            waiting {
+                timeout = 20
+                retryInterval = 40
+            }
+        """
 
         then:
         defaultWait == new Wait(20, 40)
@@ -107,23 +107,23 @@ class WaitingConfigurationSpec extends Specification {
     def "presets"() {
         when:
         userConf = """
-			waiting {
-				timeout = 3
-				presets {
-					quick {
-						timeout = 1
-						retryInterval = 0.1
-					}
-					slow {
-						timeout = 30
-						retryInterval = 1
-					}
-					partial {
-						retryInterval = 5
-					}
-				}
-			}
-		"""
+            waiting {
+                timeout = 3
+                presets {
+                    quick {
+                        timeout = 1
+                        retryInterval = 0.1
+                    }
+                    slow {
+                        timeout = 30
+                        retryInterval = 1
+                    }
+                    partial {
+                        retryInterval = 5
+                    }
+                }
+            }
+        """
 
         then:
         getWaitPreset("quick") == new Wait(1, 0.1)

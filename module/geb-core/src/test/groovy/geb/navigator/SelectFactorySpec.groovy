@@ -23,11 +23,11 @@ class SelectFactorySpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         callbackServer.get = { req, res ->
             res.outputStream << """
-			<html>
-			<body>
-				<select name="s"/>
-			</body>
-			</html>"""
+            <html>
+            <body>
+                <select name="s"/>
+            </body>
+            </html>"""
         }
     }
 

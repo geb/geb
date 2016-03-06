@@ -214,10 +214,10 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         when:
         withNewWindow({
             js.exec """
-				setTimeout(function() {
-					document.getElementById('main-1').click();
-				}, 200);
-			"""
+                setTimeout(function() {
+                    document.getElementById('main-1').click();
+                }, 200);
+            """
         }, wait: true) {
         }
 

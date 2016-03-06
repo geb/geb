@@ -29,13 +29,13 @@ class DriveSpec extends Specification {
         server.start()
         server.get = { req, res ->
             res.outputStream << """
-			<html>
-			<body>
-				<div class="url">${req.requestURL + (req.queryString ? "?${req.queryString}" : "")}</div>
-				<div class="path">$req.requestURI</div>
-				<div class="params">$req.parameterMap</div>
-			</body>
-			</html>"""
+            <html>
+            <body>
+                <div class="url">${req.requestURL + (req.queryString ? "?${req.queryString}" : "")}</div>
+                <div class="path">$req.requestURI</div>
+                <div class="params">$req.parameterMap</div>
+            </body>
+            </html>"""
         }
         DriveSpecPageAbsoluteUrl.url = server.baseUrl
     }
