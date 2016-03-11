@@ -11,7 +11,7 @@ There are three general mechanisms for influencing configuration; _system proper
 === The config script
 
 Geb attempts to load a `{config-slurper-api}` script named `GebConfig.groovy` from the _default package_ (in other words, in the root of a directory that is on the classpath).
-If it is not found, Geb will try to load a `{config-slurper-api}` class named `GebConfig` from the _default package_ - this is usefull if you run tests that use Geb from an IDE because you won't have
+If it is not found, Geb will try to load a `{config-slurper-api}` class named `GebConfig` from the _default package_ - this is useful if you run tests that use Geb from an IDE because you won't have
 to specify `GebConfig.groovy` as a resource, Geb will simply fall back to the compiled version of the script.
 If both script and class are not found Geb will continue using all defaults.
 
