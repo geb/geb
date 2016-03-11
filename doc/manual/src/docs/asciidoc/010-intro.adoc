@@ -11,7 +11,7 @@ It uses Groovy's dynamism to remove the noise and boiler plate code in order to 
 == The browser automation technology
 
 Geb builds on the {webdriver} browser automation library, which means that Geb can work with
-link:https://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_Which_browsers_does_WebDriver_support?[any browser that WebDriver can].
+link:http://docs.seleniumhq.org/docs/01_introducing_selenium.jsp#supported-browsers-and-platforms[any browser that WebDriver can].
 While Geb provides an extra layer of convenience and productivity, it is always possible to “drop down” to the WebDriver level to do something directly should you need to.
 
 For more information see the manual section on link:#driver[using a driver implementation].
