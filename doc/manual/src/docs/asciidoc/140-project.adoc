@@ -65,6 +65,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:ahitrin[Andrey Hitrin] - Improvement to character replacing in report file names
 * github-profile:leo-13[Leo Fedorov] - Support for `reportOnTestFailureOnly` config option for Spock integration
 * github-profile:chrisbyrneham[Chris Byrneham] - Ability to specify proxy location and credentials to use with BrowserStack tunnel
+* github-profile:anshbansal[Aseem Bansal] - Doc improvements
 
 == History
 
