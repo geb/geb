@@ -39,12 +39,14 @@
 :groovy-truth: {groovy-truth-link}[Groovy Truth]
 :drive-method-link: link:api/geb/Browser.html#drive(groovy.lang.Closure)
 :drive-method-api: {drive-method-link}[drive()]
-:page-method-taking-class-api: link:api/geb/Browser.html#page(Class<T>)[<T extends Page> T page(Class<T> pageType)]
+:page-method-taking-class-api-link: link:api/geb/Browser.html#page(Class<T>)
+:page-method-taking-class-api: {page-method-taking-class-api-link}[<T extends Page> T page(Class<T> pageType)]
 :page-method-taking-instance-api: link:api/geb/Browser.html#page(T)[<T extends Page> T page(T pageInstance)]
 :page-method-taking-classes-array-api: link:api/geb/Browser.html#page(Class<?%20extends%20Page>)[Page page(Class<? extends Page>[\] potentialPageTypes)]
 :page-method-taking-instances-array-api: link:api/geb/Browser.html#page(geb.Page)[Page page(Page[\] potentialPageInstances)]
-:at-method-taking-class-api: link:api/geb/Browser.html#at(Class<T>)[<T extends Page> T at(Class<T> pageType)]
-:at-method-taking-class-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
+:at-method-taking-class-api-link: link:api/geb/Browser.html#at(Class<T>)
+:at-method-taking-class-api: {at-method-taking-class-api-link}[<T extends Page> T at(Class<T> pageType)]
+:at-method-taking-instance-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
 :via-method-api: link:api/geb/Browser.html#via(Class<T>,%20java.lang.Object)[via()]
 :browser-get-driver-api: link:api/geb/Browser.html#getDriver()[getDriver()]
 :browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]

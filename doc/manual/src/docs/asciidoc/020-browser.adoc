@@ -249,7 +249,7 @@ If the request may initiate a redirect and take the browser to a different page 
 include::{test-dir}/browser/ViaSpec.groovy[tag=using_via,indent=0]
 ----
 
-Browser objects have `{at-method-taking-class-api}` and `{at-method-taking-class-api}` methods that test whether or not the browser is currently at the page modeled by the given page
+Browser objects have `{at-method-taking-class-api}` and `{at-method-taking-instance-api}` methods that test whether or not the browser is currently at the page modeled by the given page
 class or instance.
 
 The `at AccessDeniedPage` method call return a page instance if the “at checker” is fulfilled.
@@ -361,7 +361,7 @@ include::{test-dir}/browser/WithWindowSpec.groovy[tag=using_closure]
 [NOTE]
 ====
 If code of the closure passed as the last argument changes browser's current page instance
-(e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or link:api/geb/Browser.html#at(Class<T>)[`at(Page)`]) then it will be reverted to its original value after returning from
+(e.g. by using {page-method-taking-class-api-link}[`page(Page)`] or {at-method-taking-class-api-link}[`at(Page)`]) then it will be reverted to its original value after returning from
 `withWindow()`.
 ====
 
@@ -415,8 +415,8 @@ If the first parameter opens none or more than one window, then link:api/geb/err
 
 [NOTE]
 ====
-If code of the closure passed as the last argument changes browser's current page instance (e.g. by using link:api/geb/Browser.html#page(T)[`page(Page)`] or
-link:api/geb/Browser.html#at(Class%3CT%3E)[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
+If code of the closure passed as the last argument changes browser's current page instance (e.g. by using {page-method-taking-class-api-link}[`page(Page)`] or
+{page-method-taking-class-api-link}[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
 ====
 
 ==== `withNewWindow()` options
