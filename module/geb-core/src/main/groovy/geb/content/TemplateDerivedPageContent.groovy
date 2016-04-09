@@ -15,7 +15,6 @@
 package geb.content
 
 import geb.Browser
-import geb.Module
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
 import org.openqa.selenium.By
@@ -167,30 +166,6 @@ class TemplateDerivedPageContent implements Navigator {
     @Override
     Navigator $(By bySelector, Range<Integer> range) {
         _navigator.$(bySelector, range)
-    }
-
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> T module(Class<T> moduleClass) {
-        _navigator.module(moduleClass)
-    }
-
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> T module(T module) {
-        _navigator.module(module)
-    }
-
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> List<T> moduleList(Class<T> moduleClass) {
-        _navigator.moduleList(moduleClass)
-    }
-
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
-        _navigator.moduleList(moduleFactory)
     }
 
     @Override

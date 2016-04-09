@@ -47,18 +47,6 @@ class ModuleBaseDefinitionDelegate {
         }
     }
 
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> T module(Class<T> moduleClass) {
-        navigableSupport.module(moduleClass)
-    }
-
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> T module(T module) {
-        navigableSupport.module(module)
-    }
-
     Navigator $() {
         navigableSupport.$()
     }

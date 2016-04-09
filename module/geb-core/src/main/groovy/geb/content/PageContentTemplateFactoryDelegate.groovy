@@ -45,18 +45,6 @@ class PageContentTemplateFactoryDelegate {
         template.owner."$name"
     }
 
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> T module(Class<T> moduleClass) {
-        navigableSupport.module(moduleClass)
-    }
-
-    @Override
-    //necessary because @Delegate generates wrong method signature for this method
-    <T extends Module> T module(T module) {
-        navigableSupport.module(module)
-    }
-
     def module(Map params, Class<? extends Module> moduleClass) {
         module(params, moduleClass, null)
     }
