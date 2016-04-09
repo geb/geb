@@ -42,7 +42,7 @@ class GebReportingSpec extends GebSpec {
     }
 
     def cleanup() {
-        if (failureTracker.failed) {
+        if (failureTracker?.failed) {
             report "failure"
         } else if (!browser.config.reportOnTestFailureOnly) {
             report "end"
