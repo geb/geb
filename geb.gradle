@@ -240,5 +240,5 @@ task stage(type: Sync) {
 }
 
 wrapper {
-    gradleVersion = "2.12-rc-1"
+    gradleVersion = "2.13-rc-1"
 }
