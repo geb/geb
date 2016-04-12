@@ -34,6 +34,10 @@ trait GebTestTrait {
         new Browser(createConf())
     }
 
+    Browser getRawBrowser() {
+        browser
+    }
+
     Browser getBrowser() {
         if (browser == null) {
             browser = createBrowser()

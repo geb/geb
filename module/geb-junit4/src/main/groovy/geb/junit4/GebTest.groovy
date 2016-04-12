@@ -24,7 +24,7 @@ class GebTest {
     String gebConfEnv = null
     String gebConfScript = null
 
-    private Browser browser
+    protected Browser browser
 
     Configuration createConf() {
         new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)

@@ -43,11 +43,17 @@ class GebReportingSpec extends GebSpec {
 
     def cleanup() {
         if (failureTracker?.failed) {
-            report "failure"
+            reportIfBrowserInitialized "failure"
         } else if (!browser.config.reportOnTestFailureOnly) {
-            report "end"
+            reportIfBrowserInitialized "end"
         }
         ++gebReportingSpecTestCounter
+    }
+
+    private reportIfBrowserInitialized(String label) {
+        if (_browser) {
+            report(label)
+        }
     }
 
     void report(String label = "") {

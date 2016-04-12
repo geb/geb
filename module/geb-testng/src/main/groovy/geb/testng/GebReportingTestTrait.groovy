@@ -56,7 +56,7 @@ trait GebReportingTestTrait extends GebTestTrait {
 
     @AfterMethod
     void reportingAfter(ITestResult testResult) {
-        if (!browser.config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status) {
+        if (rawBrowser && !browser.config.reportOnTestFailureOnly || ITestResult.FAILURE == testResult.status) {
             report(END_OF_METHOD_REPORT_LABEL)
         }
     }
