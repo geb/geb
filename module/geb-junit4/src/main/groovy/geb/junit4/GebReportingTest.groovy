@@ -37,12 +37,6 @@ class GebReportingTest extends GebTest {
         browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, gebReportingTestTestName.methodName, label))
     }
 
-    private reportIfBrowserInitialized(String label) {
-        if (this.@browser) {
-            report(label)
-        }
-    }
-
     @Before
     void setupReporting() {
         reportGroup getClass()
@@ -59,10 +53,12 @@ class GebReportingTest extends GebTest {
 
     @After
     void writeGebReport() {
-        if (failureTracker.failed) {
-            reportIfBrowserInitialized "failure"
-        } else if (!browser.config.reportOnTestFailureOnly) {
-            reportIfBrowserInitialized "end"
+        if (this.@browser) {
+            if (failureTracker.failed) {
+                report "failure"
+            } else if (!browser.config.reportOnTestFailureOnly) {
+                report "end"
+            }
         }
     }
 
