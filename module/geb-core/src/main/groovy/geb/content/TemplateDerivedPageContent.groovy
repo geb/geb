@@ -17,6 +17,7 @@ package geb.content
 import geb.Browser
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
+import org.codehaus.groovy.runtime.typehandling.GroovyCastException
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
@@ -192,5 +193,13 @@ class TemplateDerivedPageContent implements Navigator {
             }
             value == o
         }
+    }
+
+    Object asType(Class clazz) {
+        if (_navigator.class in clazz) {
+            return _navigator
+        }
+
+        throw new GroovyCastException(_navigator, clazz)
     }
 }
