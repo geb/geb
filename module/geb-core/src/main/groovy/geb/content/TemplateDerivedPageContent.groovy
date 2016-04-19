@@ -193,4 +193,8 @@ class TemplateDerivedPageContent implements Navigator {
             value == o
         }
     }
+
+    Object asType(Class type) {
+        _navigator.class in type ? _navigator : super.asType(type)
+    }
 }
