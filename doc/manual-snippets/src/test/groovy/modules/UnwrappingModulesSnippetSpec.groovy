@@ -16,17 +16,26 @@
 package modules
 
 import fixture.Browser
+import fixture.DriveMethodSupportingSpecWithServer
+import geb.Module
+import geb.Page
 import org.codehaus.groovy.runtime.typehandling.GroovyCastException
 
-class UnwrappingModulesSnippetSpec extends FormContentSpec {
+class UnwrappingModulesSnippetSpec extends DriveMethodSupportingSpecWithServer {
+
+    def setup() {
+        server.html {
+            div(class: "the-content", "content text")
+        }
+    }
 
     @SuppressWarnings('UnusedVariable')
     def "assignment of a module to a variable of its declared type fails"() {
         when:
         //tag::module_variable_fail[]
         Browser.drive {
-            to ModulePage
-            FormModule foo = form   // GroovyCastException is thrown
+            to ModuleUnwrappingPage
+            UnwrappedModule foo = theModule   // <1>
         }
         //end::module_variable_fail[]
         then:
@@ -37,31 +46,47 @@ class UnwrappingModulesSnippetSpec extends FormContentSpec {
         when:
         //tag::module_argument_fail[]
         Browser.drive {
-            to ModulePage
-            submitForm(form)   // MissingMethodException is thrown
+            to ModuleUnwrappingPage
+            getContentText(theModule)   // <1>
         }
         //end::module_argument_fail[]
         then:
         thrown(MissingMethodException)
     }
 
+    @SuppressWarnings('UnusedVariable')
     def "unwrapped module may be used with its declared type"() {
         when:
         //tag::module_cast[]
         Browser.drive {
-            to ModulePage
-            FormModule foo = form as FormModule
-            submitForm(foo)
+            to ModuleUnwrappingPage
+            UnwrappedModule unwrapped = theModule as UnwrappedModule
+            getContentText(theModule as UnwrappedModule)
         }
         //end::module_cast[]
         then:
         noExceptionThrown()
     }
 
-    //tag::module_argument_fail[]
-
-        void submitForm(FormModule formModule) {
-            formModule.button.click()
-        }
-    //end::module_argument_fail[]
+    //tag::module_argument_fail_method[]
+    String getContentText(UnwrappedModule module) {
+        module.theContent.text()
+    }
+    //end::module_argument_fail_method[]
 }
+
+// tag::page[]
+class ModuleUnwrappingPage extends Page {
+    static content = {
+        theModule { module(UnwrappedModule) }
+    }
+}
+// end::page[]
+
+// tag::module[]
+class UnwrappedModule extends Module {
+    static content = {
+        theContent { $(".the-content") }
+    }
+}
+// end::module[]

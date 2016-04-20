@@ -406,13 +406,20 @@ include::{test-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=example,indent=0]
 == Unwrapping modules returned from the `content` DSL
 
 For the sake of better error reporting, current implementation wraps any module declared within `content` block into
-`geb.content.TemplateDerivedPageContent` instance. Thus why the code in following examples won't work.
+`geb.content.TemplateDerivedPageContent` instance.
 
 Given a page defined as follows:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=module_page,indent=0]
+include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=page,indent=0]
+----
+
+And a custom module:
+
+[source,groovy]
+----
+include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module,indent=0]
 ----
 
 A module assignment to a variable of its declared type will fail with `GroovyCastException`:
@@ -421,13 +428,17 @@ A module assignment to a variable of its declared type will fail with `GroovyCas
 ----
 include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_variable_fail,indent=0]
 ----
+<1> `GroovyCastException` is thrown
 
 An invocation of a method which takes a module as argument with its declared type will fail with `MissingMethodException`:
 
 [source,groovy]
 ----
+include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_argument_fail_method,indent=0]
+
 include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_argument_fail,indent=0]
 ----
+<1> `MissingMethodException` is thrown
 
 As you may like or need to use strong typing for modules there is a way to do that. Module can be cast to its declared type with the Groovy `as` operator:
 
@@ -445,7 +456,7 @@ What's the trade-off? Calling `toString()` on any content element, including mod
 
 [source]
 ----
-geb.ModulePage -> form: geb.FormModule -> button: geb.navigator.NonEmptyNavigator
+modules.ModuleUnwrappingPage -> theModule: modules.UnwrappedModule -> theContent: geb.navigator.NonEmptyNavigator
 ----
 
 Such paths can be seen in error messages and this is exactly what you are going to give away for unwrapped modules.
