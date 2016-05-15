@@ -23,7 +23,7 @@ import spock.lang.Unroll
 @CrossBrowser
 @IgnoreIf({
     def browser = System.getProperty('geb.browserstack.browser')
-    browser?.contains('explorer') && (browser.contains('8') || browser.contains('9') || browser.contains('10'))
+    browser?.contains('explorer') && (browser.contains('version=8') || browser.contains('version=9') || browser.contains('version=10'))
 })
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
