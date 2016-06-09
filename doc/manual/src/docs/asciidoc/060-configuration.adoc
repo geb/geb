@@ -205,7 +205,7 @@ Notice that the `quick` preset does not specify a `retryInterval` value; default
 When waiting fails because the condition throws an exception be it an assertion failure or any other exception then that exception is set as the cause of `WaitTimeoutException` thrown by Geb.
 This usually provides fairly good diagnostics of what went wrong.
 Unfortunately some runtimes, namely Maven Surefire Plugin, don't print full exception stacktraces and exclude the cause from them.
-To make diagnostics easier in such situations it's possible to configure Geb to include string representation of the cause as part of `WaitTimeoutException` message: 
+To make diagnostics easier in such situations it's possible to configure Geb to include string representation of the cause as part of `WaitTimeoutException` message:
 
 [source,groovy]
 ----
@@ -263,7 +263,7 @@ See <<unexpected-pages,this section>> for more information on unexpected pages.
 
 The _reporter_ is the object responsible for snapshotting the state of the browser (see the <<reporting>> chapter for details).
 All reporters are implementations of the link:api/geb/report/Reporter.html[`Reporter`] interface.
-If no reporter is explicitly defined, a link:api/geb/report/CompositeReporter.html[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter`
+If no reporter is explicitly defined, a {composite-reporter-link}[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter`
 (dumps the current DOM state as HTML).
 This is a sensible default, but should you wish to use a custom reporter you can assign it to the `reporter` config key.
 

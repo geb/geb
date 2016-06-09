@@ -7,7 +7,7 @@ Geb ships with two implementations: `{page-source-reporter-api}` and `{screensho
 There are three bits of configuration that pertain to reporting: the <<reporter-configuration, reporter implementation>>, the <<reports-directory-configuration, reports directory>> and whether to
 <<report-test-failures-configuration, only report test failures>> or not.
 
-If no reporter is explicitly defined, a {composite-reporter-link}[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and`PageSourceReporter` (dumps the current
+If no reporter is explicitly defined, a {composite-reporter-link}[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current
 DOM state as HTML).
 
 You take a report by calling the `{browser-report-method-api}` method on the browser object.
