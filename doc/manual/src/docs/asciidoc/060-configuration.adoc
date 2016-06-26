@@ -122,10 +122,10 @@ The following table gives the possible short names that can be used:
 |===
 |Short Name |Driver
 
-|`htmlunit` |http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/htmlunit/HtmlUnitDriver.html[org.openqa.selenium.htmlunit.HtmlUnitDriver]
-|`firefox` |http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/firefox/FirefoxDriver.html[org.openqa.selenium.firefox.FirefoxDriver]
-|`ie` |http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/ie/InternetExplorerDriver.html[org.openqa.selenium.ie.InternetExplorerDriver]
-|`chrome` |http://selenium.googlecode.com/svn/trunk/docs/api/java/org/openqa/selenium/chrome/ChromeDriver.html[org.openqa.selenium.chrome.ChromeDriver]
+|`htmlunit` |{htmlunitdriver}[org.openqa.selenium.htmlunit.HtmlUnitDriver]
+|`firefox` |{firefoxdriver}[org.openqa.selenium.firefox.FirefoxDriver]
+|`ie` |{iedriver}[org.openqa.selenium.ie.InternetExplorerDriver]
+|`chrome` |{chromedriver}[org.openqa.selenium.chrome.ChromeDriver]
 |===
 
 If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table.
