@@ -238,7 +238,3 @@ task release {
 task stage(type: Sync) {
     dependsOn 'doc:site:prepareDeployment'
 }
-
-wrapper {
-    gradleVersion = "2.13-rc-1"
-}
