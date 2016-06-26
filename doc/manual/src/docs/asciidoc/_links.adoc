@@ -73,7 +73,6 @@
 :page-source-reporter-api: link:api/geb/report/PageSourceReporter.html[PageSourceReporter]
 :screenshot-reporter-api: link:api/geb/report/ScreenshotReporter.html[ScreenshotReporter]
 :composite-reporter-link: link:api/geb/report/CompositeReporter.html
-:composite-reporter-link: ink:api/geb/Browser.html#report(java.lang.String)
 :browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
 :clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]

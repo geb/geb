@@ -1,4 +1,4 @@
-[![Build Status](https://snap-ci.com/geb/geb/branch/master/build_image)](https://snap-ci.com/geb/geb/branch/master) 
+[![Build Status](https://snap-ci.com/geb/geb/branch/master/build_image)](https://snap-ci.com/geb/geb/branch/master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core)
 
 Geb (pronounced “jeb”) is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language.
@@ -23,15 +23,15 @@ Geb documentation comes in two forms: the manual and the API (i.e. the Groovydoc
 
 #### The Manual
 
-The manual project can be found at `doc/manual` within the project tree. The [Markdown](http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown") source files, HTML templates, CSS and JavaScript that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [markdown2book](https://github.com/geb/markdown2book)).
+The manual project can be found at `doc/manual` within the project tree. The [AsciiDoc](http://asciidoc.org/) source files, CSS and images that make up the manual can be found at `doc/manual/src` (the manual is compiled using a tool called [AsciiDoctor](http://asciidoctor.org/)).
 
 Most documentation contributions are simply modifications to these files.
 
 To compile the manual in or to see any changes made, simply run (from the root of the geb project)…
 
-    ./gradlew :doc:manual:compileManual
+    ./gradlew :doc:manual:asciidoctor
 
-You will then find the compiled HTML in the directory `doc/manual/build/manual`
+You will then find the compiled HTML in the directory `doc/manual/build/asciidoc`
 
 #### The API reference
 
@@ -58,7 +58,7 @@ There are lots of example tests in the `geb-core` module that use the classes fr
 To run the entire test suite, run…
 
     ./gradlew test
-    
+
 ## Development Mailing List
 
 If you want to do some work on Geb and want some help, you can join the `geb-dev@googlegroups.com` mailing list via [Google Groups](https://groups.google.com/d/forum/geb-dev).
