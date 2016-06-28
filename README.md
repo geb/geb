@@ -39,11 +39,11 @@ The API reference is made up of the Groovydoc (like Javadoc) that annotates the 
 
 You can then generate the API reference HTML by running…
 
-    ./gradlew :doc:manual:compileApi
+    ./gradlew :doc:manual:apiDoc
 
-You will then find the compiled HTML in the directory `doc/manual/build/manual/api`
+You will then find the compiled HTML in the directory `doc/manual/build/apiDoc`
 
-> Note that you can build the manual chapters and reference API in one go with `./gradlew doc:manual:compile`
+> Note that you can build the manual chapters and reference API in one go with `./gradlew doc:manual:packageManual`
 
 ### Contributing features/patches
 
