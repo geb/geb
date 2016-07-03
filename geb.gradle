@@ -32,7 +32,7 @@ allprojects { project ->
 
         seleniumVersion = "2.52.0"
         groovyVersion = "2.4.6"
-        spockVersion = "1.0-groovy-2.4"
+        spockVersion = "1.1-groovy-2.4-rc-1"
         junit4Version = "4.10"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {

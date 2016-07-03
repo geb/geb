@@ -20,6 +20,7 @@ import org.junit.runner.JUnitCore
 import org.junit.runner.Result
 import org.junit.runner.notification.Failure
 import org.spockframework.compiler.SpockTransform
+import org.spockframework.runtime.ConditionNotSatisfiedError
 import spock.lang.Specification
 
 import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
@@ -49,7 +50,7 @@ class SpockIntegrationSpec extends Specification {
         then:
         result.failureCount == 1
         Failure failure = result.failures.first()
-        PowerAssertionError error = failure.exception
+        ConditionNotSatisfiedError error = failure.exception
         error.message.contains "1 == 2"
     }
 
