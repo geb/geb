@@ -110,7 +110,7 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
         pageContentSupport.propertyMissing(name, val)
     }
 
-    private Navigator getInitializedNavigator() {
+    protected Navigator getInitializedNavigator() {
         if (navigator == null) {
             throw uninitializedException()
         }

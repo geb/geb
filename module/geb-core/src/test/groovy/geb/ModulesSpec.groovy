@@ -190,6 +190,14 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         divA.@class == 'a'
     }
 
+    def 'can access an attribute of a module base for a module that is not returned from a content definition'() {
+        when:
+        to ModulesSpecPage
+
+        then:
+        module(ModulesSpecSpecificDivModule).@class == 'a'
+    }
+
     def 'base definitions have access to Geb text matchers'() {
         when:
         to ModulesSpecPage

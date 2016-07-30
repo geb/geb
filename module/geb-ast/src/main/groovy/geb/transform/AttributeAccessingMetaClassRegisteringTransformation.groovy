@@ -55,7 +55,7 @@ class AttributeAccessingMetaClassRegisteringTransformation implements ASTTransfo
         ClassNode currentClass = classNode
 
         while (currentClass && !isAttributeAccessEnabledClass) {
-            isAttributeAccessEnabledClass = (currentClass.name in ['geb.navigator.AbstractNavigator', 'geb.content.TemplateDerivedPageContent'])
+            isAttributeAccessEnabledClass = ('geb.navigator.Navigator' in currentClass.interfaces*.name)
             currentClass = currentClass.superClass
         }
 
