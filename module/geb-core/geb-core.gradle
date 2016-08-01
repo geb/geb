@@ -1,5 +1,5 @@
-import geb.gradle.saucelabs.SauceAccount
 import geb.gradle.browserstack.BrowserStackAccount
+import geb.gradle.saucelabs.SauceAccount
 
 apply plugin: "geb-saucelabs"
 apply plugin: "geb-browserstack"
@@ -13,6 +13,7 @@ dependencies {
 
     compile project(":module:geb-ast")
     compile project(":module:geb-waiting")
+    compile 'org.jodd:jodd-lagarto:3.7.1'
 
     sauceConnect "com.saucelabs:ci-sauce:1.81"
 }

@@ -15,38 +15,20 @@
  */
 package geb.navigator
 
-import org.openqa.selenium.By
+import geb.error.InvalidCssSelectorException
+import geb.error.UnsupportedFilteringCssSelectorException
+import jodd.csselly.CSSelly
+import jodd.csselly.CSSellyException
+import jodd.csselly.CssSelector as JoddCssSelector
+import jodd.csselly.selector.AttributeSelector
 import org.openqa.selenium.WebElement
-
-import static java.util.Collections.EMPTY_LIST
 
 class CssSelector {
 
-    static enum Type {
-        ELEMENT(""),
-        HTML_CLASS("."),
-        ID("#"),
-        DESCENDANT("")
-
-        final prefix
-
-        Type(String prefix) {
-            this.prefix = prefix
-        }
-    }
-
-    private static final CssSelector DESCENDANT_SELECTOR = new CssSelector(Type.DESCENDANT, " ")
     private static final String CSS_SELECTOR_SPECIAL_CHARS_PATTERN = '[ !"#$%&\'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|\\}~\\\\]'
 
-    final Type type
-    final String value
-
-    CssSelector(Type type, String value) {
-        this.type = type
-        this.value = value
+    private CssSelector() {
     }
-
-    // TODO: better name
 
     static String escape(String value) {
         value.replaceAll("($CSS_SELECTOR_SPECIAL_CHARS_PATTERN)", '\\\\$1')
@@ -54,103 +36,48 @@ class CssSelector {
 
     static boolean matches(WebElement element, String selectorString) {
         def selectors = compile(selectorString)
-        selectors.any { List<CssSelector> selectorGroup ->
-            selectorGroup.every { CssSelector selector ->
-                selector.matches(element)
+        selectors.any { JoddCssSelector selector ->
+            matchesTagName(element, selector) && matchesAttributes(element, selector)
+        }
+    }
+
+    private static List<JoddCssSelector> compile(String groupSelector) {
+        List<List<JoddCssSelector>> cssSelectors
+        try {
+            cssSelectors = CSSelly.parse(groupSelector)
+        } catch (CSSellyException e) {
+            throw new InvalidCssSelectorException(groupSelector, e)
+        }
+        validate(cssSelectors)
+        cssSelectors*.first()
+    }
+
+    private static void validate(List<List<JoddCssSelector>> cssSelectors) {
+        cssSelectors.each {
+            if (it.size() > 1) {
+                def selectorAsString = it*.toString().join("")
+                throw new UnsupportedFilteringCssSelectorException(selectorAsString, "Only single level selectors are supported.")
             }
-        }
-    }
-
-    boolean matches(WebElement element) {
-        // TODO: switch = failure of object orientation
-        switch (type) {
-            case Type.ELEMENT:
-                return element.tagName == value
-            case Type.HTML_CLASS:
-                return element.getAttribute("class") =~ /(^|\s)$value($|\s)/
-            case Type.ID:
-                return element.getAttribute("id") == value
-            default:
-                return false
-        }
-    }
-
-    List<WebElement> select(WebElement element) {
-        switch (type) {
-            case Type.ELEMENT:
-                return element.findElements(By.tagName(value))
-            case Type.HTML_CLASS:
-                return element.findElements(By.className(value))
-            case Type.ID:
-                return element.findElements(By.id(value))
-            default:
-                return EMPTY_LIST
-        }
-    }
-
-    String toString() {
-        "${type.prefix}$value"
-    }
-
-    // TODO: should be private
-
-    static List<List<CssSelector>> compile(String groupSelector) {
-        List<List<CssSelector>> result = []
-        groupSelector.split(",").each { String part ->
-            def trimmedPart = part.trim()
-            if (trimmedPart) {
-                List<CssSelector> compiled = compileSingle(trimmedPart)
-                if (compiled) {
-                    result << compiled
-                }
-            }
-        }
-        result
-    }
-
-    private static List<CssSelector> compileSingle(String selector) {
-        List<CssSelector> result = []
-        boolean first = true
-        selector.split(/\s/).each { String part ->
-            def trimmedPart = part.trim()
-            if (trimmedPart) {
-                if (first) {
-                    first = false
-                } else {
-                    result << DESCENDANT_SELECTOR
-                }
-                compileSimpleSelector(trimmedPart, result)
-            }
-        }
-        result
-    }
-
-    private static void compileSimpleSelector(String selector, List<CssSelector> list) {
-        tokenize(selector).each { String part ->
-            if (part) {
-                if (part.startsWith(Type.HTML_CLASS.prefix)) {
-                    list << new CssSelector(Type.HTML_CLASS, part.substring(1))
-                } else if (part.startsWith(Type.ID.prefix)) {
-                    list << new CssSelector(Type.ID, part.substring(1))
-                } else {
-                    list << new CssSelector(Type.ELEMENT, part)
+            def cssSelector = it.first()
+            for (int i = 0; i < cssSelector.selectorsCount(); i++) {
+                if (!AttributeSelector.isInstance(cssSelector.getSelector(i))) {
+                    throw new UnsupportedFilteringCssSelectorException(cssSelector.toString(), "Only element name, class, id and attribute selectors are supported.")
                 }
             }
         }
     }
 
-    private static List<String> tokenize(String selector) {
-        List<String> tokens = []
-        int previous = 0
-        int max = selector.length()
-        for (int index = 0; index < max; ++index) {
-            char character = selector.charAt(index)
-            if (index > 0 && (character == Type.HTML_CLASS.prefix || character == Type.ID.prefix)) {
-                tokens << selector.substring(previous, index)
-                previous = index
-            }
-        }
-        tokens << selector.substring(previous)
-        tokens
+    private static boolean matchesTagName(WebElement element, JoddCssSelector selector) {
+        selector.element == "*" || selector.element == element.tagName
     }
+
+    private static boolean matchesAttributes(WebElement element, JoddCssSelector selector) {
+        List<AttributeSelector> attributeSelectors = (0..<selector.selectorsCount()).collect { selector.getSelector(it) }
+        attributeSelectors.every { attributeSelector ->
+            def attributeValue = element.getAttribute(attributeSelector.name)
+
+            attributeValue != null && (attributeSelector.value == null || attributeSelector.match.compare(attributeValue, attributeSelector.value))
+        }
+    }
+
 }

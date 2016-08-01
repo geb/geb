@@ -73,8 +73,7 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
 
     /**
      * Filters the set of elements represented by this Navigator to include only those that match
-     * the selector. Note that unlike find only tag, id and class based selectors are supported for this method
-     * regardless of the capabilities of the underlying WebDriver instance.
+     * the selector.
      * @param selector a CSS selector
      * @return a new Navigator instance
      */

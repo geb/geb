@@ -83,6 +83,7 @@ This page lists the high level changes between versions of Geb.
 ==== Improvements
 
 * Add ability to unwrap modules returned from content dsl to their original type. [issue:434[]]
+* Add support for using attribute css selectors with navigator filtering methods like `filter()`, `not()`, `closest()`, etc. [issue:437[]]
 
 === 0.13.1
 

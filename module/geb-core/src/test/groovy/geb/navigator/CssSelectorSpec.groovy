@@ -16,11 +16,13 @@
 package geb.navigator
 
 import geb.Browser
+import geb.error.InvalidCssSelectorException
+import geb.error.UnsupportedFilteringCssSelectorException
+import jodd.csselly.CSSellyException
 import org.openqa.selenium.WebDriver
 import spock.lang.Shared
 import spock.lang.Specification
-
-import static geb.navigator.CssSelector.Type.*
+import spock.lang.Unroll
 
 class CssSelectorSpec extends Specification {
 
@@ -37,39 +39,58 @@ class CssSelectorSpec extends Specification {
         onPage = browser.navigatorFactory.base
     }
 
-    def "selector type matching rules"() {
+    @Unroll("matching elements using #selector")
+    def "matching elements using css selectors"() {
         expect:
-        selector.matches(element) == expectedMatch
+        CssSelector.matches(element, selector) == expectedMatch
 
         where:
-        selector                               | element                                 | expectedMatch
-        new CssSelector(ELEMENT, "div")        | onPage.find("#article-1").getElement(0) | true
-        new CssSelector(ELEMENT, "p")          | onPage.find("#article-1").getElement(0) | false
-        new CssSelector(ID, "article-1")       | onPage.find("#article-1").getElement(0) | true
-        new CssSelector(ID, "article-1")       | onPage.find("#article-2").getElement(0) | false
-        new CssSelector(HTML_CLASS, "article") | onPage.find("#article-1").getElement(0) | true
-        new CssSelector(HTML_CLASS, "article") | onPage.find(".content").getElement(0)   | false
+        selector               | element                                       | expectedMatch
+        '#article-1'           | onPage.find('#article-1').firstElement()      | true
+        '#article-2'           | onPage.find('#article-1').firstElement()      | false
+        '.article'             | onPage.find('#article-1').firstElement()      | true
+        '.not-article'         | onPage.find('#article-1').firstElement()      | false
+        'a, form'              | onPage.find('#sidebar > form').firstElement() | true
+        '[method=get]'         | onPage.find('#sidebar > form').firstElement() | true
+        '[data-test]'          | onPage.find('#sidebar > form').firstElement() | true
+        '[action^="#"]'        | onPage.find('#sidebar > form').firstElement() | true
+        'p, form[method=post]' | onPage.find('#sidebar > form').firstElement() | false
+        '*.article'            | onPage.find('#article-1').firstElement()      | true
+        '*.not-article'        | onPage.find('#article-1').firstElement()      | false
     }
 
-    def "compilation of CSS selectors"() {
+    @Unroll
+    def "pseudo classes and pseudo functions are not supported when matching elements"() {
         when:
-        List<List<CssSelector>> selectors = CssSelector.compile(selector)
+        CssSelector.matches(onPage.firstElement(), selector)
 
         then:
-        selectors[index]*.toString() == expectedSelectors
+        UnsupportedFilteringCssSelectorException e = thrown()
+        e.message == "$selector is not supported as a selector for filtering. Only element name, class, id and attribute selectors are supported."
 
         where:
-        selector                                                                                      | index | expectedSelectors
-        "div"                                                                                         | 0     | ["div"]
-        ".something"                                                                                  | 0     | [".something"]
-        "#id-with-hyphens"                                                                            | 0     | ["#id-with-hyphens"]
-        "blockquote.special"                                                                          | 0     | ["blockquote", ".special"]
-        "blockquote#special"                                                                          | 0     | ["blockquote", "#special"]
-        "blockquote#the_id.the_class"                                                                 | 0     | ["blockquote", "#the_id", ".the_class"]
-        "blockquote.the_class#the_id"                                                                 | 0     | ["blockquote", ".the_class", "#the_id"]
-        "blockquote#the_id.the_class p.last.wow.oh-yeah a"                                            | 0     | ["blockquote", "#the_id", ".the_class", " ", "p", ".last", ".wow", ".oh-yeah", " ", "a"]
-        "blockquote#the_id.the_class p.last.wow.oh-yeah a, div.totally p.rocks.your, div#socks a.off" | 0     | ["blockquote", "#the_id", ".the_class", " ", "p", ".last", ".wow", ".oh-yeah", " ", "a"]
-        "blockquote#the_id.the_class p.last.wow.oh-yeah a, div.totally p.rocks.your, div#socks a.off" | 1     | ["div", ".totally", " ", "p", ".rocks", ".your"]
-        "blockquote#the_id.the_class p.last.wow.oh-yeah a, div.totally p.rocks.your, div#socks a.off" | 2     | ["div", "#socks", " ", "a", ".off"]
+        selector << ["a:first-child", "a:nth-child(1)"]
+    }
+
+    def "only single level selectors are supported when matching elements"() {
+        when:
+        CssSelector.matches(onPage.firstElement(), selector)
+
+        then:
+        UnsupportedFilteringCssSelectorException e = thrown()
+        e.message == "$selector is not supported as a selector for filtering. Only single level selectors are supported."
+
+        where:
+        selector = "p a"
+    }
+
+    def "invalid selectors"() {
+        when:
+        CssSelector.matches(onPage.firstElement(), ".#a")
+
+        then:
+        InvalidCssSelectorException e = thrown()
+        e.message == ".#a is not a valid CSS selector"
+        e.cause in CSSellyException
     }
 }
