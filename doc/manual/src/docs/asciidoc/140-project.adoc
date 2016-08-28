@@ -79,6 +79,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== Fixes
 * Fix the direct field operator shortcut (`@`) for accessing element attributes to work on classes extending `Module`. [issue:438[]]
+* Fix reporting on failure only in `GebReportingSpec` to work with Spock 1.1. [issue:445[]]
 
 ==== Improvements
 
