@@ -46,23 +46,4 @@ class AlertSpec extends GebSpecWithCallbackServer {
         assert withAlert(wait: true) { $("input", name: "showAlert").click() } == "Bang!"
         // end::async_alert[]
     }
-
-    def "no alert"() {
-        given:
-        html """
-            <html>
-                // tag::no_alert_html[]
-                <input type="button" name="contShowAlert" />
-                // end::no_alert_html[]
-            </html>
-        """
-
-        when:
-        // tag::no_alert[]
-        withNoAlert { $("input", name: "dontShowAlert").click() }
-        // end::no_alert[]
-
-        then:
-        noExceptionThrown()
-    }
 }

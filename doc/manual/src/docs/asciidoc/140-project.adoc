@@ -85,6 +85,10 @@ This page lists the high level changes between versions of Geb.
 
 * Add ability to unwrap modules returned from content dsl to their original type. [issue:434[]]
 * Add support for using attribute css selectors with navigator filtering methods like `filter()`, `not()`, `closest()`, etc. [issue:437[]]
+* Change implementation of `withAlert()` and `withConfirm()` to use the native WebDriver way of handling alerts. [issue:243[]]
+
+==== Breaking changes
+* `withNoAlert()` and `withNoConfirm()` methods have been removed because they became obsolete as `{unhandled-alert-exception-api}` is now automatically thrown when an unexpected javascript dialog is shown
 
 === 0.13.1
 

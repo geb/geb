@@ -14,150 +14,46 @@
  */
 package geb.js
 
+import geb.Browser
 import geb.Configuration
-import geb.waiting.Wait
+import org.openqa.selenium.Alert
+import org.openqa.selenium.WebDriver
 
 class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
 
-    private final static UNKNOWN = -1
-    private final Closure javascriptInterfaceFactory
-    private final Configuration config
+    private final Browser browser
 
-    DefaultAlertAndConfirmSupport(Closure javascriptInterfaceFactory, Configuration config) {
-        this.javascriptInterfaceFactory = javascriptInterfaceFactory
-        this.config = config
+    DefaultAlertAndConfirmSupport(Browser browser) {
+        this.browser = browser
     }
 
-    private JavascriptInterface getJavascriptInterface() {
-        def js = javascriptInterfaceFactory()
-        if (js == null) {
-            throw new IllegalStateException("javascriptInterfaceFactory returned null")
-        } else if (!(js instanceof JavascriptInterface)) {
-            throw new IllegalStateException("javascriptInterfaceFactory did not return a JavascriptInterface")
-        }
-
-        js
+    private Configuration getConfig() {
+        browser.config
     }
 
-    private getInstallGebStorageScript() {
-        """
-            if (!window.geb) {
-                window.geb = {};
-            }
-        """
+    private WebDriver getDriver() {
+        browser.driver
     }
 
-    private getInstallDialogStorageScript() {
-        """
-            $installGebStorageScript
-
-            if (!window.geb.dialogFunctions) {
-                window.geb.dialogFunctions = new Array();
-            }
-            if (!window.geb.dialogMessages) {
-                window.geb.dialogMessages = new Array();
-            }
-        """
+    private String captureDialog(Closure actions, waitParam, Closure alertHandler) {
+        actions()
+        def wait = config.getWaitForParam(waitParam)
+        def alert = wait ? wait.waitFor { driver.switchTo().alert() } : driver.switchTo().alert()
+        def message = alert.text
+        alertHandler.call(alert)
+        message
     }
 
-    private popLastDialogMessage(JavascriptInterface js) {
-        js.exec """
-            if (window.geb) {
-                return window.geb.dialogMessages.pop();
-            } else {
-                return $UNKNOWN;
-            }
-        """
+    private captureAlert(Closure actions, waitParam) {
+        captureDialog(actions, waitParam) { Alert alert -> alert.accept() }
     }
 
-    private popLastDialogFunctionOnto(JavascriptInterface js, String onto) {
-        js.exec """
-            if (window.geb) {
-                window.$onto = window.geb.dialogFunctions.pop();
-            }
-        """
-    }
-
-    private installAlert(JavascriptInterface js) {
-        js.exec """
-            $installDialogStorageScript
-
-            window.geb.dialogFunctions.push(window.alert);
-            window.geb.dialogMessages.push(null);
-
-            window.alert = function(msg) {
-                window.geb.dialogMessages.pop();
-                window.geb.dialogMessages.push(msg);
-                return true;
-            };
-        """
-    }
-
-    private installConfirm(boolean ok, JavascriptInterface js) {
-        js.exec """
-            $installDialogStorageScript
-
-            window.geb.dialogFunctions.push(window.confirm);
-            window.geb.dialogMessages.push(null);
-
-            window.confirm = function(msg) {
-                window.geb.dialogMessages.pop();
-                window.geb.dialogMessages.push(msg);
-                return $ok;
-            };
-        """
-    }
-
-    private captureDialog(Closure installer, String function, Closure actions, Wait wait = null) {
-        def js = getJavascriptInterface()
-
-        installer(js)
-
-        def actionsError = null
-        try {
-            actions()
-        } catch (Throwable e) {
-            actionsError = e
-        }
-        def message
-        try {
-            message = wait ? wait.waitFor { popLastDialogMessage(js) } : popLastDialogMessage(js)
-        } finally {
-            // Need to do this even if actions raised exception
-            popLastDialogFunctionOnto(js, function)
-        }
-
-        if (actionsError) {
-            throw actionsError
-        } else {
-            message
-        }
-    }
-
-    private captureAlert(Closure actions, waitParam = null) {
-        captureDialog(this.&installAlert, 'alert', actions, config.getWaitForParam(waitParam))
-    }
-
-    private captureConfirm(boolean ok, Closure actions, waitParam = null) {
-        captureDialog(this.&installConfirm.curry(ok), 'confirm', actions, config.getWaitForParam(waitParam))
+    private captureConfirm(boolean ok, Closure actions, waitParam) {
+        captureDialog(actions, waitParam) { Alert alert -> ok ? alert.accept() : alert.dismiss() }
     }
 
     def withAlert(Map params = [:], Closure actions) {
-        def message = captureAlert(actions, params.wait)
-        if (message == null) {
-            throw new AssertionError("no browser alert() was raised")
-        } else if (message == UNKNOWN) {
-            true
-        } else {
-            message.toString()
-        }
-    }
-
-    void withNoAlert(Closure actions) {
-        def message = captureAlert(actions)
-        if (message != null && message != UNKNOWN) {
-            throw new AssertionError("an unexpected browser alert() was raised (message: $message)")
-        }
+        captureAlert(actions, params.wait)
     }
 
     def withConfirm(boolean ok, Closure actions) {
@@ -165,20 +61,6 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
     }
 
     def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
-        def message = captureConfirm(ok, actions, params.wait)
-        if (message == null) {
-            throw new AssertionError("no browser confirm() was raised")
-        } else if (message == UNKNOWN) {
-            true
-        } else {
-            message.toString()
-        }
-    }
-
-    void withNoConfirm(Closure actions) {
-        def message = captureConfirm(false, actions)
-        if (message != null && message != UNKNOWN) {
-            throw new AssertionError("an unexpected browser confirm() was raised (message: $message)")
-        }
+        captureConfirm(ok, actions, params.wait)
     }
 }
