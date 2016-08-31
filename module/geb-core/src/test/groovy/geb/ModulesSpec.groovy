@@ -40,16 +40,11 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         to ModulesSpecPage
         then:
         divNoBase("a").p.text() == "a"
-        divNoBaseUsingNavigatorMethod("a").p.text() == "a"
         divWithBase("a").p.text() == "a"
-        divWithBaseUsingInstance("a").p.text() == "a"
         divWithBaseAndSpecificBaseAndParam.p.text() == "d"
-        divWithBaseAndSpecificBaseAndParamUsingInstanceAndNavigatorMethod.p.text() == "d"
         divA.p.text() == "a"
         divC.innerDiv.p.text() == "d"
-        divC.innerDivUsingInstance.p.text() == "d"
         divCWithRelativeInner.innerDiv.p.text() == "d"
-        divCWithRelativeInner.innerDivUsingInstance.p.text() == "d"
     }
 
     def "call in mixed in method from TextMatchingSupport"() {
@@ -84,11 +79,6 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         optional("a")
         !optional("e")
         !optional("e").p
-
-        and:
-        optionalUsingNavigatorMethod("a")
-        !optionalUsingNavigatorMethod("e")
-        !optionalUsingNavigatorMethod("e").p
     }
 
     @Unroll
@@ -105,7 +95,6 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         where:
         scenario                 | repeating              | repeatingWithParam
         "module list"            | "repeating"            | "repeatingWithParam"
-        "module list old syntax" | "repeatingOldSyntax"   | "repeatingWithParamOldSyntax"
         "spread operator"        | "repeatingUsingSpread" | "repeatingWithParamUsingCollect"
     }
 
@@ -116,9 +105,7 @@ class ModulesSpec extends GebSpecWithCallbackServer {
 
         then:
         repeating[index].p.text() == repeatingText
-        repeatingOldSyntax[index].p.text() == repeatingText
         repeatingWithParam[index] as Boolean == repeatingWithParamAvailable
-        repeatingWithParamOldSyntax[index] as Boolean == repeatingWithParamAvailable
 
         where:
         index | repeatingText | repeatingWithParamAvailable
@@ -151,25 +138,7 @@ class ModulesSpec extends GebSpecWithCallbackServer {
 
         then:
         repeating[1..2]*.p*.text() == ['a', 'd']
-        repeatingOldSyntax(1..2)*.p*.text() == ['a', 'd']
         repeatingUsingSpread[1..2]*.p*.text() == ['a', 'd']
-    }
-
-    @Unroll
-    def 'indexed moduleList content definition works as expected'() {
-        when:
-        to ModulesSpecPage
-
-        then:
-        repeatingOldSyntax(index).p.text() == repeatingText
-        repeatingWithParamOldSyntax(index) as Boolean == repeatingWithParamAvailable
-
-        where:
-        index | repeatingText | repeatingWithParamAvailable
-        0     | 'a'           | false
-        1     | 'a'           | false
-        2     | 'd'           | true
-        3     | 'd'           | false
     }
 
     def 'passing a class that does not extend from module as a module produces a human readable error'() {
@@ -243,16 +212,13 @@ class ModulesSpec extends GebSpecWithCallbackServer {
 class ModulesSpecPage extends Page {
     static content = {
         // A module that doesn't define a locator, given one at construction
-        divNoBase { module ModulesSpecDivModuleNoLocator, $("div.$it") }
-        divNoBaseUsingNavigatorMethod { $("div.$it").module(ModulesSpecDivModuleNoLocator) }
+        divNoBase { $("div.$it").module(ModulesSpecDivModuleNoLocator) }
 
         // A module that defines a locator, given a param at construction
-        divWithBase { module ModulesSpecDivModuleWithLocator, className: it }
-        divWithBaseUsingInstance { module(new ModulesSpecDivModuleWithLocator(className: it)) }
+        divWithBase { module(new ModulesSpecDivModuleWithLocator(className: it)) }
 
         // A module that defines a location, and uses a param given at construction in the locator
-        divWithBaseAndSpecificBaseAndParam { module ModulesSpecDivModuleWithLocator, $("div.c"), className: "d" }
-        divWithBaseAndSpecificBaseAndParamUsingInstanceAndNavigatorMethod { $("div.c").module(new ModulesSpecDivModuleWithLocator(className: "d")) }
+        divWithBaseAndSpecificBaseAndParam { $("div.c").module(new ModulesSpecDivModuleWithLocator(className: "d")) }
 
         // A module that defines a location, and is contructed with no base or params
         divA { module ModulesSpecSpecificDivModule }
@@ -267,18 +233,13 @@ class ModulesSpecPage extends Page {
 
         instanceMethod { module InstanceMethodModule }
 
-        optional(required: false) { module OptionalModule, $("div.$it") }
-        optionalUsingNavigatorMethod(required: false) { $("div.$it").module(OptionalModule) }
+        optional(required: false) { $("div.$it").module(OptionalModule) }
 
         // A list of modules, with the base of each module being set to the nth given navigator
         repeating { $('div').moduleList ModulesSpecDivModuleNoLocator }
-        repeatingOldSyntax { index -> moduleList ModulesSpecDivModuleNoLocator, $('div'), index }
         repeatingUsingSpread { $('div')*.module(ModulesSpecDivModuleNoLocator) }
         repeatingWithParam(required: false) {
             $('div').moduleList { new ModulesSpecDivModuleWithLocator(className: 'd') }
-        }
-        repeatingWithParamOldSyntax(required: false) { index ->
-            moduleList ModulesSpecDivModuleWithLocator, $('div'), index, className: 'd'
         }
         repeatingWithParamUsingCollect(required: false) {
             $('div').collect { it.module(new ModulesSpecDivModuleWithLocator(className: 'd')) }
@@ -312,16 +273,14 @@ class ModulesSpecSpecificDivModule extends Module {
 class ModulesSpecDivModuleWithNestedDiv extends Module {
     static base = { $("div.c") }
     static content = {
-        innerDiv { module ModulesSpecDivModuleWithLocator, className: "d" }
-        innerDivUsingInstance { module(new ModulesSpecDivModuleWithLocator(className: "d")) }
+        innerDiv { module(new ModulesSpecDivModuleWithLocator(className: "d")) }
     }
 }
 
 class ModulesSpecDivModuleWithNestedDivRelativeToModuleBase extends Module {
     static base = { $("div.c") }
     static content = {
-        innerDiv { module ModulesSpecDivModuleWithLocator, $(), className: "d" }
-        innerDivUsingInstance { $().module(new ModulesSpecDivModuleWithLocator(className: "d")) }
+        innerDiv { $().module(new ModulesSpecDivModuleWithLocator(className: "d")) }
     }
 }
 

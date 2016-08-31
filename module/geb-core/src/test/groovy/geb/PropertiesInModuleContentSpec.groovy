@@ -62,7 +62,7 @@ class SourcePropertiesInModuleContentPage extends Page {
     static url = 'source'
 
     static content = {
-        moduleWithPropertyInContent { module(ModuleWithPropertyInContent, destinationPage: DestinationPropertiesInModuleContentPage) }
+        moduleWithPropertyInContent { module new ModuleWithPropertyInContent(destinationPage: DestinationPropertiesInModuleContentPage) }
     }
 }
 

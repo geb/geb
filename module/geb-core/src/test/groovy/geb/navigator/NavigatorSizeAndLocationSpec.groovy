@@ -111,7 +111,7 @@ class TestModule extends Module {
 class TestPage extends Page {
     static content = {
         div { $("div.$it") }
-        module { module TestModule, div(it) }
+        module { div(it).module TestModule }
     }
 }
 

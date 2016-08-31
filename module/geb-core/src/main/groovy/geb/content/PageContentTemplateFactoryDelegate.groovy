@@ -14,10 +14,7 @@
  */
 package geb.content
 
-import geb.Module
-import geb.error.InvalidPageContent
 import geb.navigator.Navigator
-import geb.navigator.factory.NavigatorFactory
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
@@ -43,59 +40,6 @@ class PageContentTemplateFactoryDelegate {
 
     def propertyMissing(String name) {
         template.owner."$name"
-    }
-
-    def module(Map params, Class<? extends Module> moduleClass) {
-        module(params, moduleClass, null)
-    }
-
-    def module(Class<? extends Module> moduleClass, container) {
-        module(null, moduleClass, container)
-    }
-
-    def module(Map params, Class<? extends Module> moduleClass, Navigator base) {
-        def moduleParams = params ?: [:]
-
-        if (!(moduleClass in Module)) {
-            throw new InvalidPageContent("${moduleClass} should extend from ${Module} to be allowed to be a part of a module definition with name '${template.name}'")
-        }
-
-        // Make sure they haven't used params that map to our internal ivars
-        if (moduleParams.any { it.key in DISALLOWED_MODULE_PARAMS }) {
-            def disallowed = DISALLOWED_MODULE_PARAMS.join(', ')
-            throw new InvalidPageContent("Params for module $moduleClass with name ${template.name} contains one or more disallowed params (${disallowed})")
-        }
-
-        def baseNavigatorFactory = base != null ? template.navigatorFactory.relativeTo(base) : template.navigatorFactory
-
-        def module = moduleClass.newInstance()
-
-        NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(module, baseNavigatorFactory, moduleParams)
-
-        module.init(template.browser, moduleBaseNavigatorFactory)
-        moduleParams.each { name, value ->
-            // TODO - catch MPE and provide better error message
-            module."$name" = value
-        }
-
-        module
-    }
-
-    /**
-     * Returns a list of module instances, where the nth instance will use the
-     * nth navigator as its base.
-     */
-    def moduleList(Map params, Class moduleClass, Navigator navigator, index = null) {
-        if (index != null) {
-            def modules = index.collect { module params, moduleClass, navigator[it] }
-            modules.size() > 1 ? modules : modules.first()
-        } else {
-            (0..<navigator.size()).collect { module params, moduleClass, navigator[it] }
-        }
-    }
-
-    def moduleList(Class moduleClass, Navigator navigator, index = null) {
-        moduleList(null, moduleClass, navigator, index)
     }
 
     Navigator $() {

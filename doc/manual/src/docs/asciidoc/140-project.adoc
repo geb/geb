@@ -91,6 +91,7 @@ This page lists the high level changes between versions of Geb.
 * `withNoAlert()` and `withNoConfirm()` methods have been removed because they became obsolete as `{unhandled-alert-exception-api}` is now automatically thrown when an unexpected javascript dialog is shown.
 * `geb.testng.GebTest` and `geb.testng.GebReportingTest` which were deprecated in 0.13.0 have been removed.
 * `isDisabled()`, `isEnabled()`, `isReadOnly()` and `isEditable()` methods of `Navigator` which were deprecated in 0.12.0 have been removed.
+* Loosely typed `module()` and `moduleList()` methods of the content DSL which were deprecated in 0.12.0 have been removed.
 
 === 0.13.1
 
