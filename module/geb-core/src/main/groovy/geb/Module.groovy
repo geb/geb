@@ -377,26 +377,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     }
 
     @Override
-    boolean isEditable() {
-        getInitializedNavigator().isEditable()
-    }
-
-    @Override
-    boolean isReadOnly() {
-        getInitializedNavigator().isReadOnly()
-    }
-
-    @Override
-    boolean isEnabled() {
-        getInitializedNavigator().isEnabled()
-    }
-
-    @Override
-    boolean isDisabled() {
-        getInitializedNavigator().isDisabled()
-    }
-
-    @Override
     boolean isDisplayed() {
         getInitializedNavigator().isDisplayed()
     }

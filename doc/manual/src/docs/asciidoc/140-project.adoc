@@ -88,8 +88,9 @@ This page lists the high level changes between versions of Geb.
 * Change implementation of `withAlert()` and `withConfirm()` to use the native WebDriver way of handling alerts. [issue:243[]]
 
 ==== Breaking changes
-* `withNoAlert()` and `withNoConfirm()` methods have been removed because they became obsolete as `{unhandled-alert-exception-api}` is now automatically thrown when an unexpected javascript dialog is shown
-* `geb.testng.GebTest` and `geb.testng.GebReportingTest` which were deprecated in 0.13.0 have been removed
+* `withNoAlert()` and `withNoConfirm()` methods have been removed because they became obsolete as `{unhandled-alert-exception-api}` is now automatically thrown when an unexpected javascript dialog is shown.
+* `geb.testng.GebTest` and `geb.testng.GebReportingTest` which were deprecated in 0.13.0 have been removed.
+* `isDisabled()`, `isEnabled()`, `isReadOnly()` and `isEditable()` methods of `Navigator` which were deprecated in 0.12.0 have been removed.
 
 === 0.13.1
 
@@ -298,7 +299,7 @@ new <<form-element, `FormElement`>> module class.
 * `page` and `close` options can be passed to `withWindow()` calls, see <<already-opened-windows, this manual section>> for more information.
 * Unexpected pages can be specified to fail fast when performing “at” checks. This feature was contributed at a Hackergarten thanks to Andy Duncan. See <<unexpected-pages, this manual section>> for details. [issue:70[]]
 * Support for running Geb using SauceLabs provided browsers, see <<cloud-browser-testing, this manual section>> for details.
-* New link:api/geb/navigator/Navigator.html#isEnabled()[`isEnabled()`] and link:api/geb/navigator/Navigator.html#isEditable()[`isEditable()`] methods on `Navigator`.
+* New `isEnabled()` and `isEditable()` methods on `Navigator`.
 * Support for ephemeral port allocation with Grails integration
 * Compatibility with Grails 2.3
 

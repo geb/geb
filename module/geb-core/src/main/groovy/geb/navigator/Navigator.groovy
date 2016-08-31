@@ -674,46 +674,6 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
     boolean isDisplayed()
 
     /**
-     * Shorthand for <code>hasAttribute("disabled")</code>.
-     * @return true when the first element is disabled
-     * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
-     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
-     * @deprecated Use {@link geb.module.FormElement#isDisabled()} instead.
-     */
-    @Deprecated
-    boolean isDisabled()
-
-    /**
-     * Shorthand for <code>!hasAttribute("disabled")</code>.
-     * @return true when the first element is enabled
-     * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than a button, input, option, select or textarea
-     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
-     * @deprecated Use {@link geb.module.FormElement#isEnabled()} instead.
-     */
-    @Deprecated
-    boolean isEnabled()
-
-    /**
-     * Shorthand for <code>hasAttribute("readonly")</code>.
-     * @return true when the first element is readonly
-     * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
-     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
-     * @deprecated Use {@link geb.module.FormElement#isReadOnly()} instead.
-     */
-    @Deprecated
-    boolean isReadOnly()
-
-    /**
-     * Shorthand for <code>!hasAttribute("readonly")</code>.
-     * @return true when the first element is editable
-     * @throws java.lang.UnsupportedOperationException if this navigator contains anything else than an input or a textarea
-     * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
-     * @deprecated Use {@link geb.module.FormElement#isEditable()} instead.
-     */
-    @Deprecated
-    boolean isEditable()
-
-    /**
      * Returns the tag name of the sole context element or null for empty Navigators.
      * Cannot be called on multi element Navigators.
      *

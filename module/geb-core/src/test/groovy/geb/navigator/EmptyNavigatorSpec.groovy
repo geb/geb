@@ -17,7 +17,6 @@ package geb.navigator
 
 import geb.Browser
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class EmptyNavigatorSpec extends Specification {
 
@@ -46,22 +45,5 @@ class EmptyNavigatorSpec extends Specification {
         navigator[1] instanceof EmptyNavigator
         navigator[1..10] instanceof EmptyNavigator
         navigator[0..<0] instanceof EmptyNavigator
-    }
-
-    @Unroll
-    def 'does not support checking of the #property property'() {
-        when:
-        navigator.getProperty(property)
-
-        then:
-        UnsupportedOperationException e = thrown()
-        e.message == "Cannot check value of '$attribute' attribute for an EmptyNavigator"
-
-        where:
-        property   | attribute
-        'readOnly' | 'readonly'
-        'editable' | 'readonly'
-        'enabled'  | 'disabled'
-        'disabled' | 'disabled'
     }
 }

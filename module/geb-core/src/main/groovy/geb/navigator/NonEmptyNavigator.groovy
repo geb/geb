@@ -378,37 +378,6 @@ class NonEmptyNavigator extends AbstractNavigator {
     }
 
     @Override
-    boolean isDisabled() {
-        ensureContainsSingleElement("isDisabled")
-        ensureTagIn(['button', 'input', 'option', 'select', 'textarea'], 'disabled')
-
-        def value = getAttribute("disabled")
-        // Different drivers return different values here
-        (value == "disabled" || value == "true")
-    }
-
-    @Override
-    boolean isEnabled() {
-        ensureContainsSingleElement("isEnabled")
-        !disabled
-    }
-
-    @Override
-    boolean isReadOnly() {
-        ensureContainsSingleElement("isReadOnly")
-        ensureTagIn(['input', 'textarea'], 'readonly')
-
-        def value = getAttribute("readonly")
-        (value == "readonly" || value == "true")
-    }
-
-    @Override
-    boolean isEditable() {
-        ensureContainsSingleElement("isEditable")
-        !readOnly
-    }
-
-    @Override
     String tag() {
         ensureContainsSingleElement("tag")
         firstElement().tagName
