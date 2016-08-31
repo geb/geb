@@ -25,7 +25,7 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import org.testng.internal.TestResult
 
-class GebReportingTestTest extends GebReportingTest {
+class GebReportingTestTest implements GebReportingTestTrait {
 
     def server = new CallbackHttpServer()
 
@@ -94,12 +94,12 @@ class GebReportingTestTest extends GebReportingTest {
         def testResult = new TestResult()
 
         testResult.status = ITestResult.SUCCESS
-        super.reportingAfter testResult
+        reportingAfter testResult
         def report = tryToFindReport(testMethod.name, END_OF_METHOD_REPORT_LABEL)
         assert report == null
 
         testResult.status = ITestResult.FAILURE
-        super.reportingAfter testResult
+        reportingAfter testResult
         doTestReport(testMethod.name, END_OF_METHOD_REPORT_LABEL)
     }
 

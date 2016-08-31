@@ -89,6 +89,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== Breaking changes
 * `withNoAlert()` and `withNoConfirm()` methods have been removed because they became obsolete as `{unhandled-alert-exception-api}` is now automatically thrown when an unexpected javascript dialog is shown
+* `geb.testng.GebTest` and `geb.testng.GebReportingTest` which were deprecated in 0.13.0 have been removed
 
 === 0.13.1
 

@@ -18,7 +18,7 @@ package geb.testng
 import org.testng.annotations.BeforeGroups
 import org.testng.annotations.Test
 
-class GebReportingTestCleanupTest extends GebReportingTest {
+class GebReportingTestCleanupTest implements GebReportingTestTrait {
 
     @BeforeGroups("GebReportingTestTest")
     void addStaleReports() {
