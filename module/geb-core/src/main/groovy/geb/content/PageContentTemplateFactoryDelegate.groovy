@@ -14,6 +14,7 @@
  */
 package geb.content
 
+import geb.Module
 import geb.navigator.Navigator
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -21,6 +22,8 @@ import org.openqa.selenium.WebElement
 class PageContentTemplateFactoryDelegate {
 
     static final DISALLOWED_MODULE_PARAMS = ['navigator', '_args']
+    private static final String MODULE_METHOD_NAME = "module"
+    private static final String MODULE_LIST_METHOD_NAME = "moduleList"
 
     private PageContentTemplate template
     private Object[] args
@@ -40,6 +43,34 @@ class PageContentTemplateFactoryDelegate {
 
     def propertyMissing(String name) {
         template.owner."$name"
+    }
+
+    def module(Map params, Class<? extends Module> moduleClass) {
+        throw new MissingMethodException(MODULE_METHOD_NAME, getClass(), [params, moduleClass] as Object[])
+    }
+
+    def module(Class<? extends Module> moduleClass, container) {
+        throw new MissingMethodException(MODULE_METHOD_NAME, getClass(), [moduleClass, container] as Object[])
+    }
+
+    def module(Map params, Class<? extends Module> moduleClass, Navigator base) {
+        throw new MissingMethodException(MODULE_METHOD_NAME, getClass(), [params, moduleClass, base] as Object[])
+    }
+
+    def moduleList(Map params, Class moduleClass, Navigator navigator) {
+        throw new MissingMethodException(MODULE_LIST_METHOD_NAME, getClass(), [params, moduleClass, navigator] as Object[])
+    }
+
+    def moduleList(Class moduleClass, Navigator navigator) {
+        throw new MissingMethodException(MODULE_LIST_METHOD_NAME, getClass(), [moduleClass, navigator] as Object[])
+    }
+
+    def moduleList(Map params, Class moduleClass, Navigator navigator, index) {
+        throw new MissingMethodException(MODULE_LIST_METHOD_NAME, getClass(), [params, moduleClass, navigator, index] as Object[])
+    }
+
+    def moduleList(Class moduleClass, Navigator navigator, index) {
+        throw new MissingMethodException(MODULE_LIST_METHOD_NAME, getClass(), [moduleClass, navigator, index] as Object[])
     }
 
     Navigator $() {
