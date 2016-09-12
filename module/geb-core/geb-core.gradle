@@ -59,8 +59,8 @@ browserStack {
         }
         chrome_mac
         chrome_windows
-        firefox_windows
-        firefox_mac
+        firefox_windows_47
+        firefox_mac_47
         delegate."internet explorer_windows_8"
         delegate."internet explorer_windows_9"
         delegate."internet explorer_windows_10"
