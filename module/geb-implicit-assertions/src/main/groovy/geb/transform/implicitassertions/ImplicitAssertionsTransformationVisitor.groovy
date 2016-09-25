@@ -80,23 +80,29 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
                     ArgumentListExpression arguments = expression.arguments as ArgumentListExpression
                     List<Expression> argumentExpressions = arguments.expressions
 
-                    if (argumentExpressions.size() >= 8) {
-                        Expression verifyMethodConditionMethodArg = argumentExpressions.get(6)
-                        String methodName = getConstantValueOfType(extractRecordedValueExpression(verifyMethodConditionMethodArg), String)
-
-                        if (methodName) {
-                            Expression verifyMethodConditionArgsArgument = argumentExpressions.get(7)
-                            if (verifyMethodConditionArgsArgument in ArrayExpression) {
-
-                                List<Expression> values = (verifyMethodConditionArgsArgument as ArrayExpression).expressions.collect { Expression argumentExpression ->
-                                    extractRecordedValueExpression(argumentExpression)
-                                }
-
-                                visitSpockValueRecordMethodCall(methodName, values)
-                            }
-                        }
+                    if (argumentExpressions.size() == 12) {
+                        visitVerifyMethodConditionCall(argumentExpressions, 7)
+                    } else  if (argumentExpressions.size() >= 8) {
+                        visitVerifyMethodConditionCall(argumentExpressions, 6)
                     }
                 }
+            }
+        }
+    }
+
+    void visitVerifyMethodConditionCall(List<Expression> argumentExpressions, int methodNameIndex) {
+        Expression verifyMethodConditionMethodArg = argumentExpressions.get(methodNameIndex)
+        String methodName = getConstantValueOfType(extractRecordedValueExpression(verifyMethodConditionMethodArg), String)
+
+        if (methodName) {
+            Expression verifyMethodConditionArgsArgument = argumentExpressions.get(methodNameIndex + 1)
+            if (verifyMethodConditionArgsArgument in ArrayExpression) {
+
+                List<Expression> values = (verifyMethodConditionArgsArgument as ArrayExpression).expressions.collect { Expression argumentExpression ->
+                    extractRecordedValueExpression(argumentExpression)
+                }
+
+                visitSpockValueRecordMethodCall(methodName, values)
             }
         }
     }

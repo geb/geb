@@ -32,7 +32,7 @@ allprojects { project ->
 
         seleniumVersion = "2.52.0"
         groovyVersion = "2.4.6"
-        spockVersion = "1.1-groovy-2.4-rc-1"
+        spockVersion = "1.0-groovy-2.4"
         junit4Version = "4.10"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
@@ -62,7 +62,7 @@ allprojects { project ->
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":module:geb-test-common", ":integration:geb-gradle", ":doc:site",
-            ":doc:manual-snippets", ":compatibility:groovy-2.3.7"
+            ":doc:manual-snippets", ":compatibility:groovy-2.3.7", ":compatibility:spock-1.1"
         ]
 
         publishedModules = [

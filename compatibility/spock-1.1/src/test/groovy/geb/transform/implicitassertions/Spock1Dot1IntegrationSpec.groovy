@@ -27,7 +27,7 @@ import spock.lang.Specification
 import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
 import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
 
-class SpockIntegrationSpec extends Specification {
+class Spock1Dot1IntegrationSpec extends Specification {
 
     @Rule
     TemporaryFolder temporaryFolder
@@ -54,7 +54,7 @@ class SpockIntegrationSpec extends Specification {
         then:
         result.failureCount == 1
         Failure failure = result.failures.first()
-        PowerAssertionError error = failure.exception
+        PowerAssertionError error = failure.exception.cause
         error.message == """
             1 == 2
               |
