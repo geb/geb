@@ -54,12 +54,6 @@ configurations {
 }
 
 dependencies {
-    def manualDependency = {
-        def versionMinor = it.split("\\.")[1].toInteger()
-        def group = versionMinor <= 7 ? "org.codehaus.geb" : "org.gebish"
-        "$group:geb-manual:$it@zip"
-    }
-
     testCompile spockDependency,
         "org.jsoup:jsoup:1.7.3",
         project(':module:geb-spock'),
@@ -68,7 +62,7 @@ dependencies {
 
     currentManual project(":doc:manual")
     oldManualVersions.each {
-        delegate."manual-$it" manualDependency(it)
+        delegate."manual-$it" "org.gebish:geb-manual:$it@zip"
     }
 }
 
