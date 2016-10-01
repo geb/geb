@@ -126,6 +126,7 @@ The following table gives the possible short names that can be used:
 |`firefox` |{firefoxdriver}[org.openqa.selenium.firefox.FirefoxDriver]
 |`ie` |{iedriver}[org.openqa.selenium.ie.InternetExplorerDriver]
 |`chrome` |{chromedriver}[org.openqa.selenium.chrome.ChromeDriver]
+|`edge` |{edgedriver}[org.openqa.selenium.edge.EdgeDriver]
 |===
 
 If no explicit driver is specified then Geb will look for the following drivers on the classpath in the order they are listed in the above table.
