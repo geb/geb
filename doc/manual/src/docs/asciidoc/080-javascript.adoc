@@ -228,14 +228,14 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/javascript/AlertSpec.groovy[tag=alert_html,indent=0]
+include::{test-dir}/javascript/AlertSpec.groovy[tag=alert_html,indent=0]
 ----
 
 The `withAlert()` method is used like so…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/javascript/AlertSpec.groovy[tag=alert,indent=0]
+include::{test-dir}/javascript/AlertSpec.groovy[tag=alert,indent=0]
 ----
 
 If an alert dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
@@ -245,7 +245,7 @@ It is useful if the code in your “actions” closure is raising a dialog in an
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/javascript/AlertSpec.groovy[tag=async_alert,indent=0]
+include::{test-dir}/javascript/AlertSpec.groovy[tag=async_alert,indent=0]
 ----
 
 The possible values for the `wait` option are consistent with the <<content-dsl-wait, ones for `wait` option of content definitions>>.
@@ -296,14 +296,14 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/javascript/ConfirmSpec.groovy[tag=confirm_html,indent=0]
+include::{test-dir}/javascript/ConfirmSpec.groovy[tag=confirm_html,indent=0]
 ----
 
 The `withConfirm()` method is used like so…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/javascript/ConfirmSpec.groovy[tag=confirm,indent=0]
+include::{test-dir}/javascript/ConfirmSpec.groovy[tag=confirm,indent=0]
 ----
 
 If a confirmation dialog is not raised by the given “actions” closure, an `AssertionError` will be thrown.
