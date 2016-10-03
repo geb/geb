@@ -30,12 +30,22 @@ class UninitializedAlertAndConfirmSupport implements AlertAndConfirmSupport {
     }
 
     @Override
+    void withNoAlert(Closure actions) {
+        throw initializable.uninitializedException()
+    }
+
+    @Override
     def withConfirm(boolean ok, Closure actions) {
         throw initializable.uninitializedException()
     }
 
     @Override
     def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
+        throw initializable.uninitializedException()
+    }
+
+    @Override
+    void withNoConfirm(Closure actions) {
         throw initializable.uninitializedException()
     }
 }

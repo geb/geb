@@ -35,4 +35,22 @@ class ConfirmSpec extends GebSpecWithCallbackServer {
         // end::confirm[]
     }
 
+    def "no confirm"() {
+        given:
+        html """
+            <html>
+                // tag::no_confirm_html[]
+                <input type="button" name="dontShowConfirm" />
+                // end::no_confirm_html[]
+            </html>
+        """
+
+        when:
+        // tag::no_confirm[]
+        withNoConfirm { $("input", name: "dontShowConfirm").click() }
+        // end::no_confirm[]
+
+        then:
+        noExceptionThrown()
+    }
 }

@@ -15,7 +15,6 @@
 :webdriver-send-keys-api: {selenium-api-link}/org/openqa/selenium/WebElement.html#sendKeys(java.lang.CharSequence%2E%2E%2E)[sendKeys()]
 :webdriver-keys-api: {selenium-api-link}/org/openqa/selenium/Keys.html[Keys]
 :no-such-frame-exception-api: {selenium-api-link}/org/openqa/selenium/NoSuchFrameException.html[NoSuchFrameException]
-:unhandled-alert-exception-api: {selenium-api-link}/org/openqa/selenium/UnhandledAlertException.html[UnhandledAlertException]
 :spock-link: link:http://spockframework.org/
 :spock: {spock-link}[Spock]
 :junit: link:http://www.junit.org/[JUnit]

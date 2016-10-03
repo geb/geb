@@ -89,10 +89,8 @@ No changes have been made, yet.
 
 * Add ability to unwrap modules returned from content dsl to their original type. [issue:434[]]
 * Add support for using attribute css selectors with navigator filtering methods like `filter()`, `not()`, `closest()`, etc. [issue:437[]]
-* Change implementation of `withAlert()` and `withConfirm()` to use the native WebDriver way of handling alerts. [issue:243[]]
 
 ==== Breaking changes
-* `withNoAlert()` and `withNoConfirm()` methods have been removed because they became obsolete as `{unhandled-alert-exception-api}` is now automatically thrown when an unexpected javascript dialog is shown.
 * `geb.testng.GebTest` and `geb.testng.GebReportingTest` which were deprecated in 0.13.0 have been removed.
 * `isDisabled()`, `isEnabled()`, `isReadOnly()` and `isEditable()` methods of `Navigator` which were deprecated in 0.12.0 have been removed.
 * Loosely typed `module()` and `moduleList()` methods of the content DSL which were deprecated in 0.12.0 have been removed.

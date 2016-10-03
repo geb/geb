@@ -44,7 +44,9 @@ The following methods are available:
 * `at()`
 * `waitFor()`
 * `withAlert()`
+* `withNoAlert()`
 * `withConfirm()`
+* `withNoConfirm()`
 * `download()`
 * `downloadStream()`
 * `downloadText()`
