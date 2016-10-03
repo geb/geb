@@ -17,13 +17,10 @@ package geb
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
 import geb.test.RequiresRealBrowser
-import geb.test.Safari
 import org.openqa.selenium.NoAlertPresentException
-import spock.lang.IgnoreIf
 
 @CrossBrowser
 @RequiresRealBrowser
-@IgnoreIf(Safari)
 class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
 
     def setupSpec() {
