@@ -33,7 +33,11 @@ class OnFailureReporter extends AbstractRunListener implements IMethodIntercepto
 
     void error(ErrorInfo error) {
         if (error.method.kind == FEATURE) {
-            spec.reportFailure()
+            try {
+                spec.reportFailure()
+            } catch (Exception e) {
+                //ignore
+            }
         }
     }
 }

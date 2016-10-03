@@ -14,10 +14,14 @@
  */
 package geb.spock
 
+import geb.report.ReportState
+import geb.report.Reporter
+import geb.report.ReportingListener
 import geb.test.CallbackHttpServer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.Result
+import org.spockframework.runtime.ConditionNotSatisfiedError
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -49,6 +53,9 @@ class GebReportingSpecSpec extends Specification {
     def setup() {
         specRunner.addClassImport(GebReportingSpec)
         specRunner.addClassImport(Unroll)
+        specRunner.addClassImport(Reporter)
+        specRunner.addClassImport(ReportingListener)
+        specRunner.addClassImport(ReportState)
     }
 
     File getReportDir() {
@@ -106,7 +113,7 @@ class GebReportingSpecSpec extends Specification {
                 expect:
                 true
             }
-         """
+        """
 
         then:
         !reportGroupDir.listFiles()
@@ -123,7 +130,7 @@ class GebReportingSpecSpec extends Specification {
                 expect:
                 false
             }
-         """
+        """
 
         then:
         reportFile("001-001-failing test-failure.html").exists()
@@ -144,10 +151,36 @@ class GebReportingSpecSpec extends Specification {
                 where:
                 parameter << [0]
             }
-         """
+        """
 
         then:
         reportFile("001-001-failing test_0_-failure.html").exists()
+    }
+
+    def "failure when writing a report does not overwrite the original test failure"() {
+        when:
+        def result = runReportingSpec """
+            def "failing test"() {
+                given:
+                config.reportOnTestFailureOnly = true
+                config.reporter = new Reporter() {
+                    void writeReport(ReportState reportState) {
+                        throw new Exception()
+                    }
+
+                    void addListener(ReportingListener listener) {
+                    }
+                }
+
+                go "/"
+
+                expect:
+                false
+            }
+        """
+
+        then:
+        result.failures.first().exception in ConditionNotSatisfiedError
     }
 
     Result runReportingSpec(String body) {
