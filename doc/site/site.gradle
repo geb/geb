@@ -28,7 +28,7 @@ apply plugin: "io.ratpack.ratpack-groovy"
 
 ext {
     // The old versions of Geb we are including manuals for
-    oldManualVersions = ["0.9.1", "0.9.2", "0.9.3", "0.10.0", "0.12.0", "0.12.1", "0.12.2", "0.13.0", "0.13.1", "1.0-rc-1"]
+    oldManualVersions = ["0.9.1", "0.9.2", "0.9.3", "0.10.0", "0.12.0", "0.12.1", "0.12.2", "0.13.0", "0.13.1", "1.0-rc-2"]
 
     currentVersion = isSnapshot ? oldManualVersions.last() : version
     manualsMetadata = [

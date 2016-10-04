@@ -23,7 +23,7 @@ nexusStaging {
 }
 
 allprojects { project ->
-    version = '1.0-rc-2'
+    version = '1.1-SNAPSHOT'
     group = 'org.gebish'
 
     ext {
