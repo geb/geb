@@ -73,8 +73,6 @@ allprojects { project ->
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
-
-        grailsPluginModule = ":integration:geb-grails"
     }
 
     if (isCi) {
@@ -231,8 +229,7 @@ subprojects {
 }
 
 task release {
-    dependsOn ':integration:geb-grails:publish',
-        { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
+    dependsOn { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
 }
 
 task stage(type: Sync) {

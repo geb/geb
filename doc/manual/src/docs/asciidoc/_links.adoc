@@ -34,7 +34,6 @@
 :module-api: link:api/geb/Module.html[Module]
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :binding-updater-link: link:api/geb/binding/BindingUpdater.html
-:grails: link:http://grails.org[Grails]
 :groovy-truth-link: link:http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html
 :groovy-truth: {groovy-truth-link}[Groovy Truth]
 :drive-method-link: link:api/geb/Browser.html#drive(groovy.lang.Closure)

@@ -197,7 +197,7 @@ Alternatively, if using an integration such as `geb-spock` or `geb-junit4` you c
 
 [TIP]
 ====
-Be sure to check the chapter on <<build-integrations, build integrations>> for information on using Geb with particular environments, like {grails}.
+Be sure to check the chapter on <<build-integrations, build integrations>> for information on using Geb with particular environments.
 ====
 
 :numbered!:

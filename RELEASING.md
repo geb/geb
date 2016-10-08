@@ -7,9 +7,6 @@
 1. [Sign up](https://issues.sonatype.org/secure/Signup!default.jspa) for a Jira account @ Sonatype. Send your Jira username to someone who is already allowed to publish Geb to Sonatype so that they add a comment [this ticket](https://issues.sonatype.org/browse/OSSRH-3108) to request access rights for you. Add your Sonatype credentials to `~/.gradle/gradle.properties`:
 	* sonatypeOssUsername=«Jira@Sontype username»
 	* sonatypeOssPassword=«Jira@Sontype password»
-1. [Register at grails.org](https://grails.org/register) and at [Grails dev mailing list](https://groups.google.com/forum/#!forum/grails-dev-discuss). Send an email to the dev list requesting rights to publish to Grails Geb plugin quoting your grails.org username in the email. Add the following entries to `~/.grails/settings.groovy`:
-	* grails.project.repos.grailsCentral.username = "«username (not the email!)»"
-	* grails.project.repos.grailsCentral.password = "«password»"
 
 # Releasing
 
@@ -30,7 +27,6 @@
 	* [geb-example-gradle](https://github.com/geb/geb-example-gradle)
 	* [geb-example-cucumber-jvm](https://github.com/geb/geb-example-cucumber-jvm)
 	* [geb-example-maven](https://github.com/geb/geb-example-maven)
-	* [geb-example-grails](https://github.com/geb/geb-example-grails)
 1. Update issues and milestones in Github tracker:
 	* Find all unresolved issues in the tracker that have the fix version set to the recently released version and bulk edit them to have the fix version set to the next version.
 	* Find the recently released milestone, change the version number if it's different from the one that was released and close it.

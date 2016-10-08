@@ -107,7 +107,7 @@ processResources.inputs.files gatherManuals, generateConfigProperties
 task publish(type: Exec) {
     commandLine 'git push git@heroku.com:gebish.git master'.tokenize(' ')
 
-    mustRunAfter ':integration:geb-grails:publish', rootProject.allprojects*.tasks*.withType(Upload)
+    mustRunAfter rootProject.allprojects*.tasks*.withType(Upload)
 }
 
 task prepareDeployment(type: Sync) {

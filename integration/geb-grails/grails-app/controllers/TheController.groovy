@@ -1,7 +1,0 @@
-class TheController {
-
-    def page = {
-
-    }
-
-}
