@@ -120,7 +120,9 @@ artifacts {
     delegate.default manualZip
 }
 
-task build(dependsOn: manualZip)
+build {
+    dependsOn manualZip
+}
 
 task openManual() {
     dependsOn tasks.asciidoctor

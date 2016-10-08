@@ -36,7 +36,6 @@ sauceLabs {
     }
     task {
         testClassesDir = test.testClassesDir
-        testSrcDirs = test.testSrcDirs
         classpath = test.classpath
         maxParallelForks 3
     }
@@ -61,15 +60,14 @@ browserStack {
         chrome_windows
         firefox_windows_47
         firefox_mac_47
-        delegate."internet explorer_windows_8"
-        delegate."internet explorer_windows_9"
-        delegate."internet explorer_windows_10"
-        delegate."internet explorer_windows_11"
+        create("internet explorer_windows_8")
+        create("internet explorer_windows_9")
+        create("internet explorer_windows_10")
+        create("internet explorer_windows_11")
 
     }
     task {
         testClassesDir = test.testClassesDir
-        testSrcDirs = test.testSrcDirs
         classpath = test.classpath
         maxParallelForks 5
     }

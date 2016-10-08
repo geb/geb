@@ -16,7 +16,6 @@ sourceSets {
 task realBrowserTest(type: Test) {
     testClassesDir = sourceSets.realBrowserTest.output.classesDir
     classpath = sourceSets.realBrowserTest.runtimeClasspath
-    testSrcDirs = sourceSets.realBrowserTest.allJava.srcDirs as List
 
     mustRunAfter test
 }
