@@ -23,7 +23,8 @@ class DriverRegistry {
         htmlunit: "org.openqa.selenium.htmlunit.HtmlUnitDriver",
         firefox: "org.openqa.selenium.firefox.FirefoxDriver",
         ie: "org.openqa.selenium.ie.InternetExplorerDriver",
-        chrome: "org.openqa.selenium.chrome.ChromeDriver"
+        chrome: "org.openqa.selenium.chrome.ChromeDriver",
+        edge: "org.openqa.selenium.edge.EdgeDriver"
     ]
 
     static String translateFromShortNameIfRequired(String name) {
