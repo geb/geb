@@ -56,7 +56,11 @@ class GebReportingSpec extends GebSpec {
     }
 
     void report(String label = "") {
-        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
+        browser.report(createReportLabel(label))
+    }
+
+    String createReportLabel(String label = "") {
+        ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label)
     }
 
 }
