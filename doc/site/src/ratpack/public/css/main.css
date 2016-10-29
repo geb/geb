@@ -170,6 +170,7 @@ blockquote {
 
 #header-content li:hover ul.link-list {
     display: block;
+    z-index: 9999;
 }
 
 #header-content ul.link-list {
