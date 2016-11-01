@@ -169,7 +169,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== New features
 
-* Support for finding elements using Webdriver's [`By`][by-api] selectors. [issue:348[]]
+* Support for finding elements using Webdriver's `{by-api}` selectors. [issue:348[]]
 * Support for navigating to page instances in addition to classes. [issue:310[]]
 * Support for using page instances as `page` option value of window switching methods. [issue:352[]]
 * Support for using page instances together with frame switching methods. [issue:354[]]
@@ -347,7 +347,7 @@ new <<form-element, `FormElement`>> module class.
 ==== New features
 
 * New `via()` method that behaves the same way as `to()` behaved previously - it sets the page on the browser and does not verify the at checker of that page[issue:249[]].
-* It is now possible to provide your own [`Navigator`][navigator-api] implementations by specifying a custom link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`], see <<navigator-factory, this manual section>> for more information [issue:96[]].
+* It is now possible to provide your own `{navigator-api}` implementations by specifying a custom link:api/geb/navigator/factory/NavigatorFactory.html[`NavigatorFactory`], see <<navigator-factory, this manual section>> for more information [issue:96[]].
 * New variants of `withFrame()` method that allow to switch into frame context and change the page in one go and also automatically change it back to the original page after the call, see [switching pages and frames at once][switch-frame-and-page] in the manual [issue:213[]].
 * `wait`, `page` and `close` options can be passed to `withNewWindow()` calls, see <<newly-opened-windows, this manual section>> for more information [issue:167[]].
 * Improved message of UnresolvablePropertyException to include a hint about forgetting to import the class [issue:240[]].
