@@ -68,7 +68,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:anshbansal[Aseem Bansal] - Doc improvements
 * github-profile:topr[Tomasz Przybysz] - Unwrapping module to its declared type
 * github-profile:thecodesmith[Brian Stewart] - Doc improvements
-* gihtub-profile:JacobAae[Jacob Aae Mikkelsen] - Support for selecting Edge as the browser using name in configuration - [issue:425[]]
+* gihtub-profile:JacobAae[Jacob Aae Mikkelsen] - Various fixes and improvements
 
 == History
 
