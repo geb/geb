@@ -68,7 +68,7 @@ Wherever possible, favour the use of the auto-reporting base classes.
 [[cookie-management-in-tests]]
 === Cookie management
 
-The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies at the end of each test method.
+The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies for the current domain at the end of each test method.
 For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
 in `geb.testng.GebTestTrait`.
 
@@ -76,6 +76,8 @@ The `geb.spock.GebSpec` class will clear the cookies in the `cleanup()` method u
 stepwise spec share the same browser state).
 
 This auto-clearing of cookies can be <<auto-clearing-cookies-configuration, disabled via configuration>>.
+
+If you need to clear cookies in multiple domains you will need to manually track the urls and call `{browser-clear-cookies-urls-api}`
 
 === JAR and class names
 

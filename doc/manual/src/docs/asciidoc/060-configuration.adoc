@@ -322,7 +322,7 @@ It is possible to specify a listener that will be notified when reports are take
 [[auto-clearing-cookies-configuration]]
 === Auto clearing cookies
 
-Certain integrations will automatically clear the driver's cookies, which is usually necessary when using an <<implicit-driver-lifecycle, implicit driver>>.
+Certain integrations will automatically clear the driver's cookies for the current domain, which is usually necessary when using an <<implicit-driver-lifecycle, implicit driver>>.
 This configuration flag, which is `true` by default, can be disabled by setting the `autoClearCookies` value in the config to `false`.
 
 [source,groovy]
