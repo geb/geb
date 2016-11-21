@@ -65,12 +65,15 @@ class SiteSmokeSpec extends GebSpec {
         firstHeaderText == 'What is it?'
     }
 
-    void 'requesting a non-existing page'() {
+    void 'requesting a non-existing page - #pagePath'() {
         when:
-        go('idontexist')
+        go(pagePath)
 
         then:
         at NotFoundPage
+
+        where:
+        pagePath << ['idontexist', 'manuals', 'manuals/']
     }
 
     @Unroll
@@ -83,13 +86,14 @@ class SiteSmokeSpec extends GebSpec {
         firstHeaderText == pageHeader
 
         where:
-        pagePath       | pageHeader
-        'crossbrowser' | 'Cross Browser Automation'
-        'content'      | 'Navigating Content'
-        'pages'        | 'Page Objects'
-        'async'        | 'Asynchronicity'
-        'testing'      | 'Testing'
-        'integration'  | 'Build System Integration'
+        pagePath        | pageHeader
+        'crossbrowser'  | 'Cross Browser Automation'
+        'crossbrowser/' | 'Cross Browser Automation'
+        'content'       | 'Navigating Content'
+        'pages'         | 'Page Objects'
+        'async'         | 'Asynchronicity'
+        'testing'       | 'Testing'
+        'integration'   | 'Build System Integration'
     }
 
     void 'manual and api links are available'() {

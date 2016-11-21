@@ -17,6 +17,7 @@
 
 import geb.site.Manuals
 import ratpack.groovy.template.TextTemplateModule
+import ratpack.handling.Context
 
 import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
@@ -38,7 +39,7 @@ ratpack {
             indexFiles("index.html")
         }
 
-        get(':page?') { Date startupTime, Manuals manuals ->
+        get(':page?') { Context context, Date startupTime, Manuals manuals ->
             lastModified(startupTime) {
                 def highlightPages = [
                     crossbrowser: "Cross Browser",
@@ -50,15 +51,22 @@ ratpack {
                 ]
 
                 def pageToken = pathTokens.page ?: 'index'
-                def page = pageToken in (highlightPages.keySet() + ['index', 'lists']) ? pageToken : "notfound"
 
-                def model = [
-                    manuals: manuals,
-                    pages  : [Highlights: highlightPages],
-                    page   : page
-                ]
+                String uri = context.request.uri ?: ''
+                if( uri != '/' && uri.endsWith('/') ) {
+                    String redirectTo = uri.substring(0,uri.length()-1)
+                    context.redirect redirectTo
+                } else {
+                    def page = pageToken in (highlightPages.keySet() + ['index', 'lists']) ? pageToken : "notfound"
 
-                render groovyTemplate(model, 'main.html')
+                    def model = [
+                            manuals: manuals,
+                            pages  : [Highlights: highlightPages],
+                            page   : page
+                    ]
+
+                    render groovyTemplate(model, 'main.html')
+                }
             }
         }
     }
