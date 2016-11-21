@@ -65,6 +65,9 @@ ratpack {
                             page   : page
                     ]
 
+                    if( page == "notfound") {
+                        context.response.status(404)
+                    }
                     render groovyTemplate(model, 'main.html')
                 }
             }
