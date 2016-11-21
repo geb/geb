@@ -222,6 +222,7 @@ subprojects {
     if (isCi) {
         tasks.withType(Test) {
             testLogging {
+                showStackTraces = true
                 exceptionFormat "full"
             }
         }
