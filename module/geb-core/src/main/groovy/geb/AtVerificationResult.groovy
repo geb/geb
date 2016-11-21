@@ -34,6 +34,14 @@ class AtVerificationResult {
         errorThrown == null && atResult
     }
 
+    AssertionError getErrorThrown() {
+        errorThrown
+    }
+
+    boolean getAtResult() {
+        atResult
+    }
+
     String toString() {
         if (errorThrown) {
             def writer = new StringWriter()
