@@ -33,9 +33,6 @@ ratpack {
         add Date, new Date()
     }
     handlers {
-        get('manual') {
-            redirect("/manual/current")
-        }
         files {
             dir("public")
             indexFiles("index.html")
