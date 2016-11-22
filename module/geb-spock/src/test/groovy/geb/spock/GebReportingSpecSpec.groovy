@@ -189,7 +189,7 @@ class GebReportingSpecSpec extends Specification {
 
                 def setup() {
                     baseUrl = "${server.baseUrl}"
-                    config.rawConfig.reportsDir = "${reportDir.absolutePath}"
+                    config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
                 }
 
                 $body

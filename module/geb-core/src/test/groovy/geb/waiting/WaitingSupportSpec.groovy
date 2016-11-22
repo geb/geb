@@ -16,13 +16,14 @@ package geb.waiting
 
 import geb.Module
 import geb.Page
+import geb.fixture.CrossPlatformSupport
 import geb.navigator.EmptyNavigator
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
 @SuppressWarnings("TrailingWhitespace")
 @Unroll
-class WaitingSupportSpec extends WaitingSpec {
+class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def setup() {
         go()
@@ -172,7 +173,7 @@ class WaitingSupportSpec extends WaitingSpec {
 
         then:
         WaitTimeoutException exception = thrown()
-        exception.message == """condition did not pass in 0.2 seconds. Failed with exception:
+        normalizeEndOfLines(exception.message) == """condition did not pass in 0.2 seconds. Failed with exception:
 Assertion failed: 
 
 'not empty'.empty

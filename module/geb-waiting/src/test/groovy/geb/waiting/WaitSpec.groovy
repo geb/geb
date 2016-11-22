@@ -15,6 +15,7 @@
  */
 package geb.waiting
 
+import geb.fixture.CrossPlatformSupport
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Specification
 import spock.lang.Timeout
@@ -23,7 +24,7 @@ import spock.lang.Timeout
  * Tests the waiting algorithm, note that WaitingSupportSpec also tests Wait and covers many cases.
  */
 @SuppressWarnings("TrailingWhitespace")
-class WaitSpec extends Specification {
+class WaitSpec extends Specification implements CrossPlatformSupport {
 
     @Timeout(5)
     def "wait algorithm handles cases where the block takes a long time"() {
@@ -71,7 +72,7 @@ class WaitSpec extends Specification {
 
         then:
         WaitTimeoutException exception = thrown()
-        exception.message == """condition did not pass in 0.2 seconds. Failed with exception:
+        normalizeEndOfLines(exception.message) == """condition did not pass in 0.2 seconds. Failed with exception:
 Assertion failed: 
 
 'not empty'.empty
