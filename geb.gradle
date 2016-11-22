@@ -120,6 +120,8 @@ subprojects {
             systemProperty 'geb.dev.driver', driver
 
             systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
+
+            systemProperty 'jna.nosys', 'true'
         }
 
     }
