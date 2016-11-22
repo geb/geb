@@ -48,7 +48,7 @@ class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements In
             }
             // end::config[]
 
-            reportsDir = "${super.createConf().reportsDir.absolutePath}"
+            reportsDir = "${super.createConf().reportsDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
         """
         config
     }
