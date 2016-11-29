@@ -42,7 +42,7 @@ ruleset {
         }
         SpaceAroundMapEntryColon {
             characterAfterColonRegex = /\s/
-            doNotApplyToFileNames = 'UrlCalculationSpec.groovy'
+            characterBeforeColonRegex = /.*/
         }
         FileEndsWithoutNewline {
             enabled = false

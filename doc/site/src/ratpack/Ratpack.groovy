@@ -15,7 +15,10 @@
  */
 
 
+import geb.site.GebishClientErrorHandler
 import geb.site.Manuals
+import geb.site.Model
+import ratpack.error.ClientErrorHandler
 import ratpack.groovy.template.TextTemplateModule
 import ratpack.handling.Context
 
@@ -31,6 +34,7 @@ ratpack {
         module(TextTemplateModule) {
             it.staticallyCompile = true
         }
+        bind(ClientErrorHandler, GebishClientErrorHandler)
         add Date, new Date()
     }
     handlers {
@@ -41,34 +45,18 @@ ratpack {
 
         get(':page?') { Context context, Date startupTime, Manuals manuals ->
             lastModified(startupTime) {
-                def highlightPages = [
-                        crossbrowser: "Cross Browser",
-                        content     : "jQuery-like API",
-                        pages       : "Page Objects",
-                        async       : "Asynchronous Pages",
-                        testing     : "Testing",
-                        integration : "Build Integration"
-                ]
-
                 def pageToken = pathTokens.page ?: 'index'
 
-                String uri = context.request.uri ?: ''
-                if (uri != '/' && uri.endsWith('/')) {
-                    String redirectTo = uri.substring(0, uri.length() - 1)
+                String path = context.request.path
+                if (path.endsWith('/')) {
+                    String redirectTo = "/${path.replaceFirst(/\/$/, "")}"
                     context.redirect redirectTo
                 } else {
-                    def page = pageToken in (highlightPages.keySet() + ['index', 'lists']) ? pageToken : "notfound"
-
-                    def model = [
-                            manuals: manuals,
-                            pages  : [Highlights: highlightPages],
-                            page   : page
-                    ]
-
-                    if (page == "notfound") {
-                        context.response.status(404)
+                    if (pageToken in (Model.HIGHLIGHT_PAGES.keySet() + ['index', 'lists'])) {
+                        render groovyTemplate(Model.get(manuals, pageToken), 'main.html')
+                    } else {
+                        context.notFound()
                     }
-                    render groovyTemplate(model, 'main.html')
                 }
             }
         }
