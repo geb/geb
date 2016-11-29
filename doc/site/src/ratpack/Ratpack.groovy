@@ -29,7 +29,7 @@ ratpack {
     }
     bindings {
         module(TextTemplateModule) {
-            it.staticallyCompile  = true
+            it.staticallyCompile = true
         }
         add Date, new Date()
     }
@@ -42,19 +42,19 @@ ratpack {
         get(':page?') { Context context, Date startupTime, Manuals manuals ->
             lastModified(startupTime) {
                 def highlightPages = [
-                    crossbrowser: "Cross Browser",
-                    content     : "jQuery-like API",
-                    pages       : "Page Objects",
-                    async       : "Asynchronous Pages",
-                    testing     : "Testing",
-                    integration : "Build Integration"
+                        crossbrowser: "Cross Browser",
+                        content     : "jQuery-like API",
+                        pages       : "Page Objects",
+                        async       : "Asynchronous Pages",
+                        testing     : "Testing",
+                        integration : "Build Integration"
                 ]
 
                 def pageToken = pathTokens.page ?: 'index'
 
                 String uri = context.request.uri ?: ''
-                if( uri != '/' && uri.endsWith('/') ) {
-                    String redirectTo = uri.substring(0,uri.length()-1)
+                if (uri != '/' && uri.endsWith('/')) {
+                    String redirectTo = uri.substring(0, uri.length() - 1)
                     context.redirect redirectTo
                 } else {
                     def page = pageToken in (highlightPages.keySet() + ['index', 'lists']) ? pageToken : "notfound"
@@ -65,7 +65,7 @@ ratpack {
                             page   : page
                     ]
 
-                    if( page == "notfound") {
+                    if (page == "notfound") {
                         context.response.status(404)
                     }
                     render groovyTemplate(model, 'main.html')
