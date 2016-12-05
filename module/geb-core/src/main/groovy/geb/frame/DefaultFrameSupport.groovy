@@ -22,6 +22,8 @@ import geb.navigator.Navigator
 import org.openqa.selenium.NoSuchFrameException
 import org.openqa.selenium.WebElement
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 class DefaultFrameSupport implements FrameSupport {
 
     Browser browser
@@ -61,7 +63,10 @@ class DefaultFrameSupport implements FrameSupport {
             }
         }
         try {
-            block.call()
+            Closure cloned = block.clone()
+            cloned.delegate = new WithFrameDelegate(browser)
+            cloned.resolveStrategy = DELEGATE_FIRST
+            cloned.call()
         } finally {
             browser.page(originalPage)
             browser.driver.switchTo().defaultContent()

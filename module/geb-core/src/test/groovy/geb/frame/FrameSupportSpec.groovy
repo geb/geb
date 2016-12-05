@@ -194,6 +194,14 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         thrown(AssertionError)
         page in FrameSupportSpecPage
     }
+
+    def "can access frame contents from within a module using default delegate of the block passed to withFrame"() {
+        when:
+        to FrameSupportSpecPage
+
+        then:
+        mod.footerText == "footer"
+    }
 }
 
 class FrameSupportSpecPage extends Page {
@@ -229,6 +237,12 @@ class FrameSupportSpecModule extends Module {
         withFrame('header', block)
         withFrame(find('#footer'), block)
         count
+    }
+
+    String getFooterText() {
+        withFrame('footer', FrameSupportSpecPageWithPassingAtChecker) {
+            span.text()
+        }
     }
 }
 
