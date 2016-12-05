@@ -174,7 +174,9 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
     }
 
     def "ensure page context changes to given frame page instance only if its at verification is true"() {
+        given:
         def parameterizedPage = new FrameSupportSpecParametrizedPage(tag: "span")
+
         when:
         withFrame(footer, parameterizedPage) {
             assert page == parameterizedPage
@@ -185,7 +187,9 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
     }
 
     def "ensure exception is thrown while changing page context for a given frame page instance when its at verification fails"() {
+        given:
         def parameterizedPage = new FrameSupportSpecParametrizedPage(tag: "test")
+
         when:
         withFrame(footer, parameterizedPage) {
         }
@@ -212,7 +216,7 @@ class FrameSupportSpecPage extends Page {
         mod { module FrameSupportSpecModule }
     }
 
-    def callAllVariantsOfWithFrame() {
+    int callAllVariantsOfWithFrame() {
         def count = 0
         def block = { count++ }
         withFrame(0, block)
@@ -221,7 +225,7 @@ class FrameSupportSpecPage extends Page {
         count
     }
 
-    def getReturnValueOfWithFrameCallForPageContent() {
+    String getReturnValueOfWithFrameCallForPageContent() {
         withFrame(footer) { $('span').text() }
     }
 }
@@ -230,7 +234,7 @@ class FrameSupportSpecFramePage extends Page {
 }
 
 class FrameSupportSpecModule extends Module {
-    def callAllVariantsOfWithFrame() {
+    int callAllVariantsOfWithFrame() {
         def count = 0
         def block = { count++ }
         withFrame(0, block)
@@ -254,7 +258,7 @@ class FrameSupportSpecParametrizedPage extends Page {
         element { $(tag) }
     }
 
-    def getElementText() {
+    String getElementText() {
         element.text()
     }
 }
