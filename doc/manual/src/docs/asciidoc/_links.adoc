@@ -47,7 +47,7 @@
 :at-method-taking-class-api-link: link:api/geb/Browser.html#at(Class<T>)
 :at-method-taking-class-api: {at-method-taking-class-api-link}[<T extends Page> T at(Class<T> pageType)]
 :at-method-taking-instance-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
-:via-method-api: link:api/geb/Browser.html#via(Class<T>,%20java.lang.Object)[via()]
+:via-method-api: link:api/geb/Browser.html#via(java.util.Map,%20Class<T>,%20java.lang.Object)[via()]
 :browser-get-driver-api: link:api/geb/Browser.html#getDriver()[getDriver()]
 :browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]
 :browser-clear-cookies-urls-api: link:api/geb/Browser.html#clearCookies(java.lang.String)[clearCookies(String... additionalUrls)]
@@ -57,8 +57,9 @@
 :wait-timeout-exception-api: link:api/geb/waiting/WaitTimeoutException.html[WaitTimeoutException]
 :invalid-page-content-api: link:api/geb/error/InvalidPageContent.html[InvalidPageContent]
 :convert-to-path-api: link:api/geb/Page.html#convertToPath(java.lang.Object)[convertToPath()]
-:to-api: link:api/geb/Browser.html#to(T,%20java.lang.Object)[to()]
-:via-api: link:api/geb/Browser.html#via(T,%20java.lang.Object)[via()]
+:get-page-fragment-api: link:api/geb/Page.html#getPageFragment()[getPageFragment()]
+:to-api: link:api/geb/Browser.html#to(java.util.Map,%20T,%20java.lang.Object)[to()]
+:via-api: link:api/geb/Browser.html#via(java.util.Map,%20T,%20java.lang.Object)[via()]
 :at-api: link:api/geb/Browser.html#at(T)[at()]
 :page-method-api: link:api/geb/Browser.html#page(Class<T>)[page()]
 :build-adapter-api: link:api/geb/BuildAdapter.html[BuildAdapter]
@@ -88,3 +89,6 @@
 :textarea-api: link:api/geb/module/Textarea.html[Textarea]
 :radio-buttons-api: link:api/geb/module/RadioButtons.html[RadioButtons]
 :interact-delegate-api: link:api/geb/interaction/InteractDelegate.html[InteractDelegate]
+:url-fragment-api: link:api/geb/url/UrlFragment.html[UrlFragment]
+:string-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(java.lang.String)
+:map-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(Map<?,%20?>)

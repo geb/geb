@@ -17,6 +17,7 @@ package pages
 
 import fixture.Browser
 import geb.Page
+import geb.url.UrlFragment
 import spock.lang.Specification
 
 class AdvancedNavigationSpec extends Specification {
@@ -82,6 +83,32 @@ class AdvancedNavigationSpec extends Specification {
         }
         // end::to_with_named_params[]
     }
+
+    def "using to with fragments"() {
+        expect:
+        // tag::to_with_fragment[]
+        Browser.drive(baseUrl: "http://www.gebish.org/") {
+            // end::to_with_fragment[]
+            driver.javascriptEnabled = false
+            // tag::to_with_fragment[]
+            to ManualsPage, UrlFragment.of("advanced-page-navigation"), "0.9.3", "index.html"
+            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html#advanced-page-navigation"
+        }
+        // end::to_with_fragment[]
+    }
+
+    def "using to with parameterized page"() {
+        expect:
+        // tag::to_with_parameterized_page[]
+        Browser.drive(baseUrl: "http://www.gebish.org/") {
+            // end::to_with_parameterized_page[]
+            driver.javascriptEnabled = false
+            // tag::to_with_parameterized_page[]
+            to new ParameterizedManualsPage(version: "0.9.3", section: "advanced-page-navigation")
+            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html#advanced-page-navigation"
+        }
+        // end::to_with_parameterized_page[]
+    }
 }
 
 // tag::pages_page[]
@@ -102,6 +129,23 @@ class ManualsPage extends Page {
 }
 // end::manuals_page_with_convert_to_path[]
 // end::manuals_page[]
+
+// tag::parameterized_manuals_page[]
+class ParameterizedManualsPage extends Page {
+    String version
+    String section
+
+    @Override
+    String convertToPath(Object[] args) {
+        "manual/$version/index.html"
+    }
+
+    @Override
+    UrlFragment getPageFragment() {
+        UrlFragment.of(section)
+    }
+}
+// end::parameterized_manuals_page[]
 
 // tag::manual_class[]
 class Manual {

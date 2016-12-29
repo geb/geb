@@ -519,6 +519,34 @@ include::{test-dir}/pages/PageUrlSpec.groovy[tag=to,indent=0]
 
 See the section on <<base-url, the base url>> for notes about URLs and slashes.
 
+=== URL fragments
+
+Pages can also define URL fragment identifiers (the part after a `#` character at the end of an url) via the `static` `fragment` property.
+
+The value assigned can be either a `String` which will be used as is or a `Map` which will be translated into an `application/x-www-form-urlencoded` `String`.
+The latter is particularly useful when dealing with single page applications that store state in the fragment identifier by form encoding it.
+
+[TIP]
+====
+There is no need to escape any of the strings used for url fragments as all the necessary escaping is performed by Geb.
+====
+
+Consider the following page which defines an url fragment in such single page application scenario:
+
+[source,groovy]
+----
+include::{test-dir}/pages/PageUrlFragmentSpec.groovy[tag=page,indent=0]
+----
+
+The fragment is then used when using the browser `to()` method.
+
+[source,groovy]
+----
+include::{test-dir}/pages/PageUrlFragmentSpec.groovy[tag=to,indent=0]
+----
+
+You can also use fragments which are dynamic - you can learn how in <<advanced-page-navigation-url-fragments,_URL fragments_ subsection of _Advanced page navigation_ chapter>>.
+
 [[page-level-at-check-waiting]]
 === Page level `atCheckWaiting` configuration
 
@@ -590,8 +618,6 @@ include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page_with_co
 include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=convert_to_path,indent=0]
 ----
 
-:numbered!:
-
 === Named params
 
 Any type of argument can be used with the `to()` method, *except* named parameters (i.e. a `Map`).
@@ -603,8 +629,29 @@ Using the classes from the above example…
 include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_named_params,indent=0]
 ----
 
-:numbered:
+[[advanced-page-navigation-url-fragments]]
+=== URL fragments
 
+An instance of `{url-fragment-api}` can be passed as an argument which follows a page class or instance when calling `to()` in order to dynamically control the fragment identifier part of the url.
+The `UrlFragment` class comes with two static factory methods: {string-url-fragment-factory-link}[one for creating a fragment from an explicit `String`] and {map-url-fragment-factory-link}[one for creating a fragment from a `Map` which is then form encoded].
+
+The following shows a usage example utilising the classes from the examples above…
+
+[source,groovy]
+----
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_fragment,indent=0]
+----
+
+If you are using <<parameterized-pages,parameterized pages>> and you wish the fragment to be determined dynamically, e.g. based on page properties then you can override the `{get-page-fragment-api}` method:
+
+[source,groovy]
+----
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=parameterized_manuals_page,indent=0]
+
+include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_parameterized_page,indent=0]
+----
+
+[[parameterized-pages]]
 == Parametrized pages
 
 `Browser` methods like `{to-api}`, `{via-api}`, `{at-api}` and `{page-method-api}` accept not only page classes but page instances as well.

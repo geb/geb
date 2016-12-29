@@ -124,7 +124,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 === Using pages
 
 Page objects (<<the-page, discussed further shortly>>) can define a url that will be used when explicitly navigating to that page.
-This is done with the link:api/geb/Browser.html#to(Class%3CT%3E,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(Class%3CT%3E,%20java.lang.Object)[`via()`] methods.
+This is done with the link:api/geb/Browser.html#to(java.util.Map,%20Class%3CT%3E,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(java.util.Map,%20Class%3CT%3E,%20java.lang.Object)[`via()`] methods.
 
 [source,groovy]
 ----
@@ -142,7 +142,7 @@ See the section on <<advanced-page-navigation,advanced page navigation>> for mor
 
 === Direct
 
-You can also make a new request to a URL without setting or changing the page using the link:api/geb/Browser.html#go()[`go()`] methods.
+You can also make a new request to a URL without setting or changing the page using the link:api/geb/Browser.html#go(java.lang.String)[`go()`] methods.
 
 [source,groovy]
 ----

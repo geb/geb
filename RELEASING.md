@@ -10,7 +10,7 @@
 
 # Releasing
 
-1. Ensure that the revision you're about to promote has been successfully built on [CI](https://snap-ci.com/geb/geb/branch/master).
+1. Ensure that the revision you're about to promote has been successfully built on [CI](https://app.snap-ci.com/geb/geb/branch/master).
 1. Update the version to the required one (usually just dropping -SNAPSHOT) in `geb.gradle` file.
 1. Commit with message "Version «number»" (don't push yet)
 1. Tag commit with name "v«number»" (still don't push yet)

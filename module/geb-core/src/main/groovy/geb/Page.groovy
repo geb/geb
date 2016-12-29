@@ -33,6 +33,7 @@ import geb.js.DefaultAlertAndConfirmSupport
 import geb.js.JavascriptInterface
 import geb.js.UninitializedAlertAndConfirmSupport
 import geb.navigator.Navigator
+import geb.url.UrlFragment
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.DefaultWaitingSupport
 import geb.waiting.UninitializedWaitingSupport
@@ -79,7 +80,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * <p>
      * This implementation returns an empty string.
      *
-     * @see #to(java.util.Map, java.lang.Object)
+     * @see #to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
     static url = ""
 
@@ -93,6 +94,18 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * This implementation does not have any value for atCheckWaiting (i.e. this property is {@code null}).
      */
     static atCheckWaiting = null
+
+    /**
+     * Defines the url fragment for this page to be used when navigating directly to this page.
+     * <p>
+     * Subclasses can specify either a {@code String} which will be used as is or a {@code Map} which will be translated into an application/x-www-form-urlencoded {@code String}.
+     * The value used will be escaped appropriately so there is no need to escape it yourself.
+     * <p>
+     * This implementation does not define a page fragment (i.e. this property is {@code null})
+     *
+     * @see #to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
+     */
+    static fragment = null
 
     private Browser browser
 
@@ -235,27 +248,39 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     /**
      * Sends the browser to this page's url.
      *
-     * @param params request parameters to be appended to the url
+     * @param params query parameters to be appended to the url
+     * @param fragment optional url fragment identifier
      * @param args "things" that can be used to generate an extra path to append to this page's url
      * @see #convertToPath(java.lang.Object)
      * @see #getPageUrl(java.lang.String)
      */
-    void to(Map params, Object[] args) {
+    void to(Map params, UrlFragment fragment = null, Object[] args) {
         def path = convertToPath(*args)
         if (path == null) {
             path = ""
         }
-        getInitializedBrowser().go(params, getPageUrl(path))
+        getInitializedBrowser().go(params, getPageUrl(path), fragment ?: getPageFragment())
         getInitializedBrowser().page(this)
     }
 
     /**
      * Returns the constant part of the url to this page.
      * <p>
-     * This implementation returns the static url property of the class.
+     * This implementation returns the static {@code url} property of the class.
      */
     String getPageUrl() {
         this.class.url
+    }
+
+    /**
+     * Returns the fragment part of the url to this page.
+     * <p>
+     * This implementation returns the static {@code fragment} property of the class wrapped in a {@code UrlFragment} instance.
+     *
+     * @see geb.url.UrlFragment
+     */
+    UrlFragment getPageFragment() {
+        this.class.fragment ? UrlFragment.of(this.class.fragment) : null
     }
 
     /**
@@ -271,7 +296,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     /**
      * Converts the arguments to a path to be appended to this page's url.
      * <p>
-     * This is called by the {@link #to(java.util.Map, java.lang.Object)} method and can be used for accessing variants of the page.
+     * This is called by the {@link #to(java.util.Map, geb.url.UrlFragment, java.lang.Object)} method and can be used for accessing variants of the page.
      * <p>
      * This implementation returns the string value of each argument, separated by "/"
      */

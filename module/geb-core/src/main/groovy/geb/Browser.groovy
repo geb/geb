@@ -20,6 +20,7 @@ import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UnexpectedPageException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
+import geb.url.UrlFragment
 import geb.report.ReportState
 import org.openqa.selenium.NoSuchWindowException
 import org.openqa.selenium.WebDriver
@@ -36,6 +37,7 @@ import org.openqa.selenium.WebDriverException
 class Browser {
 
     public static final String UTF8 = "UTF-8"
+    public static final String QUERY_STRING_SEPARATOR = "&"
 
     private Page page
     private final Configuration config
@@ -467,71 +469,60 @@ class Browser {
     }
 
     /**
-     * Sends the browser to the configured {@link #getBaseUrl() base url}.
-     */
-    void go() {
-        go([:], null)
-    }
-
-    /**
-     * Sends the browser to the configured {@link #getBaseUrl() base url}, appending {@code params} as
-     * query parameters.
-     */
-    void go(Map params) {
-        go(params, null)
-    }
-
-    /**
      * Sends the browser to the given url. If it is relative it is resolved against the {@link #getBaseUrl() base url}.
      */
     void go(String url) {
-        go([:], url)
+        go([:], url, null)
     }
 
     /**
-     * Sends the browser to the given url. If it is relative it is resolved against the {@link #getBaseUrl() base url}.
+     * Sends the browser to the given url and fragment. If the url is relative it is resolved against the {@link #getBaseUrl() base url}.
      */
-    void go(Map params, String url) {
-        def newUrl = calculateUri(url, params)
-        def currentUrl = null
+    void go(String url, UrlFragment fragment) {
+        go([:], url, fragment)
+    }
+
+    /**
+     * Sends the browser to the {@link #getBaseUrl() base url} with the given query params and fragment.
+     */
+    void go(Map params = [:], UrlFragment fragment) {
+        go(params, null, fragment)
+    }
+
+    /**
+     * Sends the browser to the given url with the given query params and fragment. If the url is relative it is resolved against the {@link #getBaseUrl() base url}.
+     */
+    void go(Map params = [:], String url = null, UrlFragment fragment = null) {
+        def newUri = calculateUri(url, params, fragment)
+        def currentUri = null
         try {
-            currentUrl = driver.currentUrl
+            def currentUrl = driver.currentUrl
+            currentUri = currentUrl ? new URI(currentUrl) : null
         } catch (NullPointerException npe) {
         } catch (WebDriverException webDriverException) {
             if (!webDriverException.message.contains("Remote browser did not respond to getCurrentUrl")) {
                 throw webDriverException
             }
         }
-        if (currentUrl == newUrl) {
+        if (currentUri == newUri) {
             driver.navigate().refresh()
         } else {
-            driver.get(newUrl)
+            driver.get(newUri.toString())
+            if (sameUrlWithDifferentFragment(currentUri, newUri)) {
+                driver.navigate().refresh()
+            }
         }
         if (!page) {
             page(Page)
         }
     }
 
-    /**
-     * Sends the browser to the given page type's url, sets the page to a new instance of the given type and verifies the at checker of that page.
-     *
-     * @return a page instance of the passed page type when the at checker succeeded
-     * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
-     */
-    public <T extends Page> T to(Class<T> pageType, Object[] args) {
-        to([:], pageType, args)
+    private boolean sameUrlWithDifferentFragment(URI current, URI next) {
+        current && next.fragment && ignoreFragment(current) == ignoreFragment(next)
     }
 
-    /**
-     * Sends the browser to the given page instance url, sets the page to the given instance and verifies the at checker of that page.
-     *
-     * @return a page instance of the passed page after initializing when the at checker succeeded
-     * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
-     */
-    public <T extends Page> T to(T page, Object[] args) {
-        to([:], page, args)
+    private URI ignoreFragment(URI uri) {
+        new URI(uri.scheme, uri.schemeSpecificPart, null)
     }
 
     /**
@@ -539,10 +530,10 @@ class Browser {
      *
      * @return a page instance of the passed page type when the at checker succeeded
      * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
-    public <T extends Page> T to(Map params, Class<T> pageType) {
-        to(params, pageType, null)
+    public <T extends Page> T to(Map params = [:], Class<T> pageType, Object[] args) {
+        to(params, pageType, null, args)
     }
 
     /**
@@ -550,10 +541,10 @@ class Browser {
      *
      * @return a page instance of the passed page type when the at checker succeeded
      * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
-    public <T extends Page> T to(Map params, Class<T> pageType, Object[] args) {
-        to(params, createPage(pageType), args)
+    public <T extends Page> T to(Map params = [:], Class<T> pageType, UrlFragment fragment, Object[] args) {
+        to(params, createPage(pageType), fragment, args)
     }
 
     /**
@@ -561,10 +552,21 @@ class Browser {
      *
      * @return a page instance of the passed page after initializing when the at checker succeeded
      * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
-    public <T extends Page> T to(Map params, T page, Object[] args) {
-        via(params, page, args)
+    public <T extends Page> T to(Map params = [:], T page, Object[] args) {
+        to(params, page, null, args)
+    }
+
+    /**
+     * Sends the browser to the given page instance url, sets the page to a new instance of the given type and verifies the at checker of that page.
+     *
+     * @return a page instance of the passed page type when the at checker succeeded
+     * @see #page(geb.Page)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
+     */
+    public <T extends Page> T to(Map params = [:], T page, UrlFragment fragment, Object[] args) {
+        via(params, page, fragment, args)
         page.at ? at(page) : page
     }
 
@@ -573,21 +575,10 @@ class Browser {
      *
      * @return a page instance of the passed page type
      * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
-    public <T extends Page> T via(Class<T> pageType, Object[] args) {
-        via([:], pageType, args)
-    }
-
-    /**
-     * Sends the browser to the given page instance url and sets the page to the given instance.
-     *
-     * @return a page instance that was passed after initializing it.
-     * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
-     */
-    public <T extends Page> T via(T page, Object[] args) {
-        via([:], page, args)
+    public <T extends Page> T via(Map params = [:], Class<T> pageType, Object[] args) {
+        via(params, pageType, null, args)
     }
 
     /**
@@ -595,33 +586,10 @@ class Browser {
      *
      * @return a page instance of the passed page type
      * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
-    public <T extends Page> T via(Map params, Class<T> pageType) {
-        via(params, pageType, null)
-    }
-
-    /**
-     * Sends the browser to the given page instance url and sets the page to the given instance.
-     *
-     * @return a page instance that was passed after initializing it.
-     * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
-     */
-    public <T extends Page> T via(Map params, T page) {
-        via(params, page, null)
-    }
-
-    /**
-     * Sends the browser to the given page type's url and sets the page to a new instance of the given type.
-     *
-     * @return a page instance of the passed page type
-     * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
-     */
-    public <T extends Page> T via(Map params, Class<T> pageType, Object[] args) {
-        def page = createPage(pageType)
-        via(params, page, args)
+    public <T extends Page> T via(Map params = [:], Class<T> pageType, UrlFragment fragment, Object[] args) {
+        via(params, createPage(pageType), fragment, args)
     }
 
     /**
@@ -629,11 +597,22 @@ class Browser {
      *
      * @return a page instance that was passed after initializing it.
      * @see #page(geb.Page)
-     * @see geb.Page#to(java.util.Map, java.lang.Object)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
      */
-    public <T extends Page> T via(Map params, T page, Object[] args) {
+    public <T extends Page> T via(Map params = [:], T page, Object[] args) {
+        via(params, page, null, args)
+    }
+
+    /**
+     * Sends the browser to the given page instance url and sets the page the given instance.
+     *
+     * @return a page instance that was passed after initializing it.
+     * @see #page(geb.Page)
+     * @see geb.Page#to(java.util.Map, geb.url.UrlFragment, java.lang.Object)
+     */
+    public <T extends Page> T via(Map params = [:], T page, UrlFragment fragment, Object[] args) {
         initialisePage(page)
-        page.to(params, args)
+        page.to(params, fragment, args)
         page
     }
 
@@ -958,9 +937,9 @@ class Browser {
                 values.collect { v ->
                     "${URLEncoder.encode(name.toString(), UTF8)}=${URLEncoder.encode(v.toString(), UTF8)}"
                 }
-            }.join("&")
+            }.join(QUERY_STRING_SEPARATOR)
         } else {
-            ""
+            null
         }
     }
 
@@ -972,7 +951,7 @@ class Browser {
         baseUrl
     }
 
-    private String calculateUri(String path, Map params) {
+    private URI calculateUri(String path, Map params, UrlFragment fragment) {
         def uri
         if (path) {
             uri = new URI(path)
@@ -983,13 +962,9 @@ class Browser {
             uri = new URI(getBaseUrlRequired())
         }
 
-        def queryString = toQueryString(params)
-        if (queryString) {
-            def joiner = uri.query ? '&' : '?'
-            new URL(uri.toString() + joiner + queryString).toString()
-        } else {
-            uri.toString()
-        }
+        def queryString = [uri.query, toQueryString(params)].findAll().join(QUERY_STRING_SEPARATOR) ?: null
+
+        new URI(uri.scheme, uri.userInfo, uri.host, uri.port, uri.path, queryString, fragment?.toString() ?: uri.fragment)
     }
 
     protected void verifyAtIfPresent(def targetPage) {
