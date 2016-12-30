@@ -80,10 +80,13 @@ This page lists the high level changes between versions of Geb.
 === {geb-version}
 
 ==== Fixes
+
 * Delegate to `browser` instead of the module from blocks passed to `withFrame()` in module classes. [issue:461[]]
 
-==== Imporevements
+==== Improvements
+
 * Support for selecting Edge as the browser using name in configuration. [issue:425[]]
+* Support for using url fragment identifiers when navigating to pages. [issue:463[]]
 
 ==== Deprecations
 
