@@ -42,7 +42,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         if (node.static && node.initialExpression in ClosureExpression) {
             switch (node.name) {
                 case 'at':
-                    transformEachStatement(node.initialExpression)
+                    transformEachStatement(node.initialExpression, true)
                     break
                 case 'content':
                     visitContentDsl(node.initialExpression)
@@ -62,7 +62,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
             if (expression.methodAsString == WAIT_FOR_METHOD_NAME && expression.arguments in ArgumentListExpression) {
                 ArgumentListExpression arguments = expression.arguments
                 if (lastArgumentIsClosureExpression(arguments)) {
-                    transformEachStatement(arguments.expressions[LAST])
+                    transformEachStatement(arguments.expressions[LAST], false)
                 }
             } else {
                 compensateForSpockIfNecessary(expression)
@@ -137,7 +137,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
             if (!arguments.empty) {
                 Expression lastArg = arguments.last()
                 if (lastArg instanceof ClosureExpression) {
-                    transformEachStatement(lastArg as ClosureExpression)
+                    transformEachStatement(lastArg as ClosureExpression, false)
                 }
             }
         }
@@ -179,7 +179,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
                     if (methodCall.arguments in ArgumentListExpression) {
                         ArgumentListExpression arguments = methodCall.arguments
                         if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments) && !requiredOptionSpecifiedAsFalse(arguments)) {
-                            transformEachStatement(arguments.expressions[LAST])
+                            transformEachStatement(arguments.expressions[LAST], false)
                         }
                     }
                 }
@@ -187,19 +187,19 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         }
     }
 
-    private void transformEachStatement(ClosureExpression closureExpression) {
+    private void transformEachStatement(ClosureExpression closureExpression, boolean appendTrueToNonAssertedStatements) {
         BlockStatement blockStatement = closureExpression.code
         ListIterator iterator = blockStatement.statements.listIterator()
         while (iterator.hasNext()) {
-            iterator.set(maybeTransform(iterator.next()))
+            iterator.set(maybeTransform(iterator.next(), appendTrueToNonAssertedStatements))
         }
     }
 
-    private Statement maybeTransform(Statement statement) {
+    private Statement maybeTransform(Statement statement, boolean appendTrueToNonAssertedStatements) {
         Statement result = statement
         Expression expression = getTransformableExpression(statement)
         if (expression) {
-            result = transform(expression, statement)
+            result = transform(expression, statement, appendTrueToNonAssertedStatements)
         }
         result
     }
@@ -225,7 +225,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         true
     }
 
-    private Statement transform(Expression expression, Statement statement) {
+    private Statement transform(Expression expression, Statement statement, boolean appendTrueToNonAssertedStatements) {
         Statement replacement
 
         Expression recordedValueExpression = createRuntimeCall("recordValue", expression)
@@ -244,7 +244,11 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         if (expression in MethodCallExpression) {
             MethodCallExpression rewrittenMethodCall = expression
 
-            Statement noAssertion = new ExpressionStatement(expression)
+            Statement noAssertion = new BlockStatement()
+            noAssertion.addStatement(new ExpressionStatement(expression))
+            if (appendTrueToNonAssertedStatements) {
+                noAssertion.addStatement(new ExpressionStatement(ConstantExpression.TRUE))
+            }
             StaticMethodCallExpression isVoidMethod = createRuntimeCall(
                 "isVoidMethod",
                 rewrittenMethodCall.objectExpression,

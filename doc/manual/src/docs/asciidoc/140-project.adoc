@@ -82,6 +82,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * Delegate to `browser` instead of the module from blocks passed to `withFrame()` in module classes. [issue:461[]]
+* Fix implicit assertions in “at checkers” to not return `null` if the last call is to a void method. [issue:462[]]
 
 ==== Improvements
 

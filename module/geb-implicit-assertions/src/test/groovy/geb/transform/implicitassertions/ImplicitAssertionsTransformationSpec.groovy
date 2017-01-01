@@ -49,10 +49,6 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         transformed
     }
 
-    private Class getTransformedClass() {
-        getTransformedClassWithClosureBody('')
-    }
-
     private getTransformedInstanceWithClosureBody(String... code) {
         getTransformedClassWithClosureBody(code).newInstance()
     }
@@ -136,11 +132,23 @@ class ImplicitAssertionsTransformationSpec extends Specification {
 
     def "transform is also applied to at closures"() {
         when:
-        transformedClass.at()
+        getTransformedInstanceWithClosureBody('false').at()
 
         then:
         PowerAssertionError error = thrown()
         error.message.contains('false')
+    }
+
+    @Issue("https://github.com/geb/issues/issues/462")
+    def "at closures return true even if the last method call is to a void method"() {
+        expect:
+        getTransformedInstanceWithClosureBody('voidMethod()').at() == true
+    }
+
+    @Issue("https://github.com/geb/issues/issues/462")
+    def "return value from waitFor block is unchanged if the last method call is to a void method"() {
+        expect:
+        getTransformedInstanceWithClosureBody('voidMethod()').run() == null
     }
 
     @Issue("https://github.com/geb/issues/issues/398")

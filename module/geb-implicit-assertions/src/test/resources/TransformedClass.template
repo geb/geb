@@ -1,5 +1,7 @@
 class TestClass {
-    static at = { false }
+    static at = {
+        $closureBody
+    }
 
     def waitFor(Closure closure) {
         closure.call()
@@ -9,7 +11,7 @@ class TestClass {
         returned
     }
 
-    void voidMethod() {
+    static void voidMethod() {
     }
 
     String nullReturningMethod() {
