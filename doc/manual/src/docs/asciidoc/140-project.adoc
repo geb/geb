@@ -70,6 +70,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:thecodesmith[Brian Stewart] - Doc improvements
 * gihtub-profile:JacobAae[Jacob Aae Mikkelsen] - Various fixes and improvements
 * github-profile:pradtke[Patrick Radtke] - Doc improvements
+* github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page
 
 == History
 
@@ -88,6 +89,7 @@ This page lists the high level changes between versions of Geb.
 
 * Support for selecting Edge as the browser using name in configuration. [issue:425[]]
 * Support for using url fragment identifiers when navigating to pages. [issue:463[]]
+* Unexpected pages are only checked after at check fails for the expected page. [issue:450[]]
 
 ==== Deprecations
 

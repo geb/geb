@@ -105,19 +105,6 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         at ExpectedPage
     }
 
-    void 'unexpected pages are checked only if the atCheck for the expected page fails'() {
-        given:
-        defineUnexpectedPages(ConflictingUnexpectedPage)
-
-        when:
-        via ExpectedPage
-        at AnotherExpectedPage
-
-        then:
-        UnexpectedPageException e = thrown()
-        e.message == 'An unexpected page geb.ConflictingUnexpectedPage was encountered when expected to be at geb.AnotherExpectedPage'
-    }
-
     void 'an exception is thrown when we end up at an unexpected page'() {
         given:
         defineUnexpectedPages()
