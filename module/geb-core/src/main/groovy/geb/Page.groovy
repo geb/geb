@@ -191,8 +191,14 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * @throws UnexpectedPageException when at an unexpected page
      */
     boolean verifyAt() {
-        getInitializedBrowser().checkIfAtAnUnexpectedPage(getClass())
-        verifyThisPageAtOnly(true)
+        def verificationResult = getAtVerificationResult(true)
+        if (!verificationResult) {
+            getInitializedBrowser().checkIfAtAnUnexpectedPage(getClass())
+            if (verificationResult.errorThrown) {
+                throw verificationResult.errorThrown
+            }
+        }
+        verificationResult
     }
 
     /**
