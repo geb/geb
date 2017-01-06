@@ -765,4 +765,16 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     String toString() {
         stringRepresentationProvider.stringRepresentation
     }
+
+    @Override
+    int hashCode() {
+        allElements().hashCode()
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        if (obj instanceof Navigator) {
+            allElements() == obj.allElements()
+        }
+    }
 }

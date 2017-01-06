@@ -21,7 +21,6 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
 @SuppressWarnings("FieldName")
-@SuppressWarnings("EqualsAndHashCode")
 class TemplateDerivedPageContent implements Navigator {
 
     private PageContentTemplate _template
@@ -175,8 +174,8 @@ class TemplateDerivedPageContent implements Navigator {
 
     @Override
     boolean equals(Object o) {
-        if (o instanceof TemplateDerivedPageContent) {
-            _navigator == o._navigator
+        if (o instanceof Navigator) {
+            allElements() == o.allElements()
         } else {
             def values = iterator()*.value().findAll { it != null }
             def value
@@ -192,6 +191,11 @@ class TemplateDerivedPageContent implements Navigator {
             }
             value == o
         }
+    }
+
+    @Override
+    int hashCode() {
+        allElements().hashCode()
     }
 
     Object asType(Class type) {

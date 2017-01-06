@@ -871,13 +871,13 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     int hashCode() {
-        contextElements.hashCode()
+        allElements().hashCode()
     }
 
     @Override
     boolean equals(Object obj) {
-        if (obj instanceof NonEmptyNavigator) {
-            contextElements == obj.contextElements
+        if (obj instanceof Navigator) {
+            allElements() == obj.allElements()
         }
     }
 }

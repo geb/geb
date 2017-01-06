@@ -269,7 +269,9 @@ class EmptyNavigator extends AbstractNavigator {
 
     @Override
     boolean equals(Object obj) {
-        obj instanceof EmptyNavigator
+        if (obj instanceof Navigator) {
+            allElements() == obj.allElements()
+        }
     }
 
     private static class EmptyNavigatorBasicLocator implements BasicLocator {

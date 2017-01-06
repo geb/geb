@@ -15,6 +15,8 @@
  */
 package geb.navigator
 
+import geb.Module
+import geb.Page
 import geb.test.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
 
@@ -63,6 +65,36 @@ class NavigatorEqualsSpec extends GebSpecWithCallbackServer {
         expect:
         $("p") != $(".foo")
         $(".foo") != $("p")
+    }
 
+    def "different navigator types"() {
+        given:
+        html {
+            p()
+            div()
+        }
+        def page = page NavigatorEqualsPage
+
+        expect:
+        $("p") == page.p
+        page.p == $("p")
+        $("p") == $("p").module(Module)
+        $("p").module(Module) == $("p")
+        $("p").module(Module) == page.p
+        page.p == $("p").module(Module)
+
+        and:
+        $("div") != page.p
+        page.p != $("div")
+        $("div") != $("p").module(Module)
+        $("p").module(Module) != $("div")
+        $("div").module(Module) != page.p
+        page.p != $("div").module(Module)
+    }
+}
+
+class NavigatorEqualsPage extends Page {
+    static content = {
+        p { $("p") }
     }
 }
