@@ -1,15 +1,18 @@
 apply plugin: 'base'
-apply plugin: 'idea'
 apply plugin: 'io.codearte.nexus-staging'
 apply from: "gradle/idea.gradle"
 
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+        classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.1"
     }
 }
 
