@@ -46,21 +46,49 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
             <html>
                 // tag::multiple_html[]
                 <form>
-                    <input type="checkbox" name="pet" value="dog" />
-                    <input type="checkbox" name="pet" value="cat" />
+                    <label for="dog-checkbox">Canis familiaris</label>
+                    <input type="checkbox" name="pet" value="dog" id="dog-checkbox"/>
+                    <label for="cat-checkbox">Felis catus</label>
+                    <input type="checkbox" name="pet" value="cat" id="cat-checkbox" />
+                    <label for="lizard-checkbox">Lacerta</label>
+                    <input type="checkbox" name="pet" value="lizard" id="lizard-checkbox" />
                 </form>
                 // end::multiple_html[]
             </html>
         """
 
         when:
-        // tag::multiple[]
+        // tag::multiple_single_choice[]
         $("form").pet = "dog"
+        // end::multiple_single_choice[]
+
+        then:
+        $("form").pet.findAll() == ["dog"]
+
+        when:
+        // tag::multiple_single_choice[]
+        $("form").pet = "Canis familiaris"
+        // end::multiple_single_choice[]
+
+        then:
+        $("form").pet.findAll() == ["dog"]
+
+        when:
+        // tag::multiple[]
+        $("form").pet = ["dog", "lizard"]
         // end::multiple[]
 
         then:
-        $("form input", value: "dog").value()
-        !$("form input", value: "cat").value()
+        $("form").pet.findAll() == ["dog", "lizard"]
+
+        when:
+        // tag::multiple[]
+        $("form").pet = ["Canis familiaris", "Lacerta"]
+        // end::multiple[]
+
+        then:
+        $("form").pet.findAll() == ["dog", "lizard"]
+
     }
 
     def "checked value"() {

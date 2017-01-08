@@ -91,6 +91,7 @@ This page lists the high level changes between versions of Geb.
 * Support for using url fragment identifiers when navigating to pages. [issue:463[]]
 * Unexpected pages are only checked after at check fails for the expected page. [issue:450[]]
 * Support equality checking between all core implementations of `Navigator`, based on comparing collections of web elements wrapped by them. [issue:459[]]
+* Support using label text to select checkboxes and using collections as value to select multiple checkboxes when dealing a number of checkboxes with the same name. [issue:460[]]
 
 ==== Deprecations
 

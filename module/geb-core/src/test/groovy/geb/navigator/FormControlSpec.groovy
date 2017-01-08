@@ -120,6 +120,67 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         $().i1 == false
     }
 
+    def "multiple checkboxes"() {
+        html {
+            input(name: "c", type: "checkbox", value: "i1", id: "i1")
+            label(for: "i1", "i1 label")
+            input(name: "c", type: "checkbox", value: "i2", id: "i2")
+            label(for: "i2", "i2 label")
+            input(name: "c", type: "checkbox", value: "i3", id: "i3")
+            label(for: "i3", "i3 label")
+        }
+
+        when:
+        $().c = true
+
+        then:
+        $().c == ["i1", "i2", "i3"]
+
+        when:
+        $().c = false
+
+        then:
+        $().c == [false, false, false]
+
+        when:
+        $().c = true
+        $().c = null
+
+        then:
+        $().c == [false, false, false]
+
+        when:
+        $().c = true
+        $().c = []
+
+        then:
+        $().c == [false, false, false]
+
+        when:
+        $().c = ["i1", "i3"]
+
+        then:
+        $().c == ["i1", false, "i3"]
+
+        when:
+        $().c = "i1"
+
+        then:
+        $().c == ["i1", false, false]
+
+        when:
+        $().c = ["i2 label", "i3 label"]
+
+        then:
+        $().c == [false, "i2", "i3"]
+
+        when:
+        $().c = "i1 label"
+
+        then:
+        $().c == ["i1", false, false]
+    }
+
     def "radio - by value"() {
         when:
         html {

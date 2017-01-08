@@ -587,8 +587,8 @@ Calling `value()` with no arguments will return the String value of _the sole_ e
 If that method is called on a multi element `Navigator` then a `SingleElementNavigatorOnlyMethodException` is thrown.
 Calling `value(value)` will set the current value of _all_ elements in the Navigator.
 The argument can be of any type and will be coerced to a `String` if necessary.
-The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or, an existing checkbox value) and when setting a multiple `select` the method expects an array or Collection
-of values.
+The exceptions are that when setting a `checkbox` value the method expects a `boolean` (or an existing checkbox value or label) and when setting a multiple `select` the method expects an array or
+`Collection` of values.
 
 == Form control shortcuts
 
@@ -730,20 +730,6 @@ You can set a single checkbox in the following manner…
 include::{test-dir}/navigator/CheckboxSpec.groovy[tag=single,indent=0]
 ----
 
-You can also check a checkbox by explicitly setting its `value`. This is useful when you have a number of checkboxes with the same name, i.e.:
-
-[source,html]
-----
-include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple_html,indent=0]
-----
-
-You can select dogs as your pet type as follows:
-
-[source,groovy]
-----
-include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple,indent=0]
-----
-
 Calling `value()` on a checked checkbox will return the value of its `value` attribute, i.e:
 
 [source,html]
@@ -778,6 +764,29 @@ include::{test-dir}/navigator/CheckboxSpec.groovy[tag=truth_html,indent=0]
 [source,groovy]
 ----
 include::{test-dir}/navigator/CheckboxSpec.groovy[tag=truth,indent=0]
+----
+
+=== Multiple checkboxes
+
+You can also check a checkbox by explicitly setting its `value` or using its label. This is useful when you have a number of checkboxes with the same name, i.e.:
+
+[source,html]
+----
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple_html,indent=0]
+----
+
+You can select dog as your pet type as follows:
+
+[source,groovy]
+----
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple_single_choice,indent=0]
+----
+
+If you wish to select multiple checkboxes instead of only one then you can use a collection as the value:
+
+[source,groovy]
+----
+include::{test-dir}/navigator/CheckboxSpec.groovy[tag=multiple,indent=0]
 ----
 
 When checking if a checkbox is checked and there are multiple checkboxes with the same name make sure that you use a navigator that holds only one of them before calling `value()` on it:

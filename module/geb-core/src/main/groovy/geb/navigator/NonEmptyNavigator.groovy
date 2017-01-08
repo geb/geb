@@ -689,15 +689,7 @@ class NonEmptyNavigator extends AbstractNavigator {
                 setSelectValue(input, value)
                 valueSet = true
             } else if (type == "checkbox") {
-                if (getValue(input) == value.toString() || value == true) {
-                    if (!input.isSelected()) {
-                        input.click()
-                        valueSet = true
-                    }
-                } else if (input.isSelected()) {
-                    input.click()
-                    valueSet = true
-                }
+                valueSet = setCheckboxValue(input, value)
             } else if (type == "radio") {
                 if (getValue(input) == value.toString() || labelFor(input) == value.toString()) {
                     input.click()
@@ -761,6 +753,35 @@ class NonEmptyNavigator extends AbstractNavigator {
                     selectedOption.click()
                     assert !selectedOption.isSelected()
                 }
+            }
+        }
+    }
+
+    protected boolean unselect(WebElement input) {
+        if (input.isSelected()) {
+            input.click()
+            true
+        }
+    }
+
+    protected boolean select(WebElement input) {
+        if (!input.isSelected()) {
+            input.click()
+            true
+        }
+    }
+
+    protected boolean setCheckboxValue(WebElement input, value) {
+        if (value == null || value == false || (value instanceof Collection && value.empty)) {
+            unselect(input)
+        } else if (value == true) {
+            select(input)
+        } else {
+            def values = value instanceof Collection ? value*.toString() : [value]
+            if (getValue(input) in values || labelFor(input) in values) {
+                select(input)
+            } else {
+                unselect(input)
             }
         }
     }
