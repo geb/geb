@@ -37,7 +37,7 @@ sauceLabs {
     task {
         testClassesDir = test.testClassesDir
         classpath = test.classpath
-        maxParallelForks 3
+        maxParallelForks 5
     }
     account {
         username = System.getenv(SauceAccount.USER_ENV_VAR)
