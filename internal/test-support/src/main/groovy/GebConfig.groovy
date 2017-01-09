@@ -20,7 +20,7 @@ if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
 
 def sauceLabsBrowser = System.getProperty("geb.saucelabs.browser")
 if (sauceLabsBrowser) {
-    setPortIndexProperty(getForkIndex(3))
+    setPortIndexProperty(getForkIndex(5))
     driver = {
         def username = System.getenv("GEB_SAUCE_LABS_USER")
         assert username
@@ -32,8 +32,7 @@ if (sauceLabsBrowser) {
 
 def browserStackBrowser = System.getProperty("geb.browserstack.browser")
 if (browserStackBrowser) {
-    def forkIndex = getForkIndex(5)
-    setPortIndexProperty(forkIndex)
+    setPortIndexProperty(getForkIndex(5))
     driver = {
         def username = System.getenv("GEB_BROWSERSTACK_USERNAME")
         assert username
