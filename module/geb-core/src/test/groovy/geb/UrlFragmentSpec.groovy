@@ -62,10 +62,10 @@ class UrlFragmentSpec extends GebSpecWithCallbackServer {
 
     def "fragment from the url is used if an explicit one is not provided"() {
         when:
-        go "#original"
+        go "#escaped%23fragment"
 
         then:
-        currentUrl == "${server.baseUrl}#original"
+        currentUrl == "${server.baseUrl}#escaped%23fragment"
     }
 
     def "can go to a specific page fragment"() {

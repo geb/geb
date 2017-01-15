@@ -59,9 +59,10 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
         UrlCalculationSpecPage | [:]         | ["a"]      | "/a"
         UrlCalculationSpecPage | [:]         | ["a", "b"] | "/a/b"
         UrlCalculationSpecPage | [a: [1, 2]] | []         | "/"
+        UrlCalculationSpecPage | [a: '?=$']  | []         | "/"
     }
 
-    @Unroll("go: baseUrl = #baseUrl, params = #params, path = #path, expectedRequestPath = #expectedRequestPath")
+    @Unroll("go: baseUrl = #base, params = #params, path = #path")
     def "t2"() {
         when:
         browser.baseUrl = base
@@ -72,10 +73,11 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
         requestUrl == expectedRequestURL
 
         where:
-        base           | params | path  | expectedRequestURL
-        server.baseUrl | [:]    | ""    | server.baseUrl
-        server.baseUrl | [a: 1] | ""    | server.baseUrl + "?a=1"
-        server.baseUrl | [:]    | "a/b" | server.baseUrl + "a/b"
+        base           | params   | path     | expectedRequestURL
+        server.baseUrl | [:]      | ""       | server.baseUrl
+        server.baseUrl | [a: 1]   | ""       | server.baseUrl + "?a=1"
+        server.baseUrl | [:]      | "a/b"    | server.baseUrl + "a/b"
+        server.baseUrl | [a: '$'] | "?b=%3D" | server.baseUrl + "?b=%3D&a=%24"
     }
 }
 

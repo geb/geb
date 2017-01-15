@@ -14,6 +14,7 @@
  */
 package geb
 
+import com.google.common.net.UrlEscapers
 import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
@@ -931,11 +932,12 @@ class Browser {
     }
 
     private String toQueryString(Map params) {
+        def escaper = UrlEscapers.urlFormParameterEscaper()
         if (params) {
             params.collectMany { name, value ->
                 def values = value instanceof Collection ? value : [value]
                 values.collect { v ->
-                    "${URLEncoder.encode(name.toString(), UTF8)}=${URLEncoder.encode(v.toString(), UTF8)}"
+                    "${escaper.escape(name.toString())}=${escaper.escape(v.toString())}"
                 }
             }.join(QUERY_STRING_SEPARATOR)
         } else {
@@ -952,19 +954,35 @@ class Browser {
     }
 
     private URI calculateUri(String path, Map params, UrlFragment fragment) {
-        def uri
-        if (path) {
-            uri = new URI(path)
-            if (!uri.absolute) {
-                uri = new URI(getBaseUrlRequired()).resolve(uri)
-            }
-        } else {
-            uri = new URI(getBaseUrlRequired())
+        def absolute = calculateAbsoluteUri(path)
+
+        def uriStringBuilder = new StringBuilder()
+        uriStringBuilder << new URI(absolute.scheme, absolute.userInfo, absolute.host, absolute.port, absolute.path, null, null)
+
+        def queryString = [absolute.rawQuery, toQueryString(params)].findAll().join(QUERY_STRING_SEPARATOR) ?: null
+        if (queryString) {
+            uriStringBuilder << "?" << queryString
         }
 
-        def queryString = [uri.query, toQueryString(params)].findAll().join(QUERY_STRING_SEPARATOR) ?: null
+        def effectiveFragment = UrlEscapers.urlFragmentEscaper().escape(fragment?.toString() ?: "") ?: absolute.rawFragment
+        if (effectiveFragment) {
+            uriStringBuilder << "#" << effectiveFragment
+        }
 
-        new URI(uri.scheme, uri.userInfo, uri.host, uri.port, uri.path, queryString, fragment?.toString() ?: uri.fragment)
+        new URI(uriStringBuilder.toString())
+    }
+
+    private URI calculateAbsoluteUri(String path) {
+        def absolute
+        if (path) {
+            absolute = new URI(path)
+            if (!absolute.absolute) {
+                absolute = new URI(getBaseUrlRequired()).resolve(absolute)
+            }
+        } else {
+            absolute = new URI(getBaseUrlRequired())
+        }
+        absolute
     }
 
     protected void verifyAtIfPresent(def targetPage) {
