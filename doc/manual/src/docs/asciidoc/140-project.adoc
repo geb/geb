@@ -80,6 +80,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+No changes have been made, yet.
+
+=== 1.1.1
+
 ==== Fixes
 
 * Do not double encode query parameters when building urls for arguments passed to `go()`, `to()` and `via()`. [issue:469[]]
