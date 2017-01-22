@@ -1,7 +1,3 @@
-apply plugin: 'base'
-apply plugin: 'io.codearte.nexus-staging'
-apply from: "gradle/idea.gradle"
-
 buildscript {
     repositories {
         mavenCentral()
@@ -13,8 +9,14 @@ buildscript {
     dependencies {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
         classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.2"
+        classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
     }
 }
+
+apply plugin: 'base'
+apply plugin: 'io.codearte.nexus-staging'
+apply plugin: 'com.energizedwork.asl2'
+apply from: "gradle/idea.gradle"
 
 def getProperty(String name, defaultValue) {
     hasProperty(name) ? property(name) : defaultValue

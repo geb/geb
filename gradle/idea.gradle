@@ -1,10 +1,7 @@
 apply plugin: "com.energizedwork.idea-base"
 
 ideaProjectComponents { components ->
-    ["codeStyle", "copyright"].each {
-        components.file "gradle/idea/${it}.xml"
-    }
-
+    components.file "gradle/idea/codeStyle.xml"
 }
 
 idea {
