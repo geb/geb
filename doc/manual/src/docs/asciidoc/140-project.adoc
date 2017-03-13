@@ -68,7 +68,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:anshbansal[Aseem Bansal] - Doc improvements
 * github-profile:topr[Tomasz Przybysz] - Unwrapping module to its declared type
 * github-profile:thecodesmith[Brian Stewart] - Doc improvements
-* gihtub-profile:JacobAae[Jacob Aae Mikkelsen] - Various fixes and improvements
+* github-profile:JacobAae[Jacob Aae Mikkelsen] - Various fixes and improvements
 * github-profile:pradtke[Patrick Radtke] - Doc improvements
 * github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page
 
