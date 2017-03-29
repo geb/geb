@@ -720,7 +720,9 @@ class NonEmptyNavigator extends AbstractNavigator {
         def select = new SelectFactory().createSelectFor(element)
 
         if (value == null || (value instanceof Collection && value.empty)) {
-            select.deselectAll()
+            if(select.multiple){
+                select.deselectAll()
+            }
             return
         }
 
