@@ -720,10 +720,14 @@ class NonEmptyNavigator extends AbstractNavigator {
         def select = new SelectFactory().createSelectFor(element)
 
         if (value == null || (value instanceof Collection && value.empty)) {
-            if(select.multiple){
-                select.deselectAll()
+            if(select.multiple) {
+                select.deselectAll()                
+                return
+            } else {
+                def availableValues = select.options*.getAttribute("value")
+                def availableTexts = select.options*.getText()
+                throw new IllegalArgumentException("Couldn't select null value, available texts: $availableTexts, available values: $availableValues")
             }
-            return
         }
 
         def multiple = select.multiple
