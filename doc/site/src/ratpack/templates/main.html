@@ -23,23 +23,17 @@
         })();
     </script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.9/semantic.min.css">
-    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.9/semantic.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.9/components/site.min.css">
-    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.9/components/site.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.9/components/icon.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/site.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/icon.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/popup.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/menu.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/transition.min.css">
 
     <link rel="stylesheet" href="css/base.css">
 
     <link type="text/css" rel="stylesheet" href="css/shCore.css" />
     <link type="text/css" rel="stylesheet" href="css/shThemeEclipse.css" />
-    <script language="javascript" src="js/shCore.js"></script>
-    <script language="javascript" src="js/shBrushGroovy.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        SyntaxHighlighter.defaults['toolbar'] = false;
-        SyntaxHighlighter.defaults['gutter'] = false;
-        SyntaxHighlighter.all();
-    </script>
     <title>Geb - Very Groovy Browser Automation</title>
 </head>
 
@@ -53,21 +47,52 @@
                 <div class="ui inverted vertical masthead center aligned segment">
 
                     <div class="ui container">
-                        <div class="ui large secondary inverted pointing menu">
+                        <div class="ui large secondary inverted menu">
                             <a class="toc item">
                                 <i class="sidebar icon"></i>
                             </a>
                             <a class="active item">Home</a>
-                            <a class="item">Manual</a>
+                            <a class="manuals item">Manual <i class="dropdown icon"></i></a>
+                            <div class="ui inverted ten wide fluid popup bottom left transition hidden">
+                                <div class="ui three column relaxed equal height divided grid">
+                                    <div class="left aligned three wide column">
+                                        <h4 class="ui header">Current</h4>
+                                        <div class="ui link list">
+                                            <a class="item" href="manual/current/">${manuals.current}</a>
+                                        </div>
+                                    </div>
+                                    <div class="left aligned ten wide column">
+                                        <h4 class="ui header">Previous</h4>
+                                        <div class="five wide column">
+                                            <div class="ui link list">
+                                                <% manuals.oldList.each { %>
+                                                    <a class="item" href="manual/$it/">${it}</a>
+                                                    <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="left aligned three wide column">
+                                        <h4 class="ui header">Snapshot</h4>
+                                        <div class="ui link list">
+                                            <% if (manuals.snapshot) { %>
+                                                <a class="item" href="manual/snapshot/">${manuals.snapshot}</a>
+                                                <% } else { %>
+                                                    -
+                                                    <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <a class="item">Mailing List</a>
-                            <a class="item">Issues</a>
-                            <a class="item">Code</a>
-                            <a class="item">Twitter</a>
+                            <a class="item"><i class="github icon"></i> Issues</a>
+                            <a class="item"><i class="github icon"></i> Code</a>
+                            <a class="item"><i class="twitter icon"></i>Twitter</a>
                         </div>
                     </div>
 
                     <div class="ui text container">
-                        <img class="logo-header" src="/images/logo.png" alt="GEB" />
+                        <img class="logo-header" src="/images/logo.png" alt="GEB" title='pronounced "Jeb"' />
                         <h2>very groovy browser automation… web testing, screen scraping and more</h2>
                         <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
                     </div>
@@ -120,95 +145,104 @@ Browser.drive {
                     </div>
                 </div>
 
-
                 <div class="ui inverted vertical stripe segment">
                     <div class="ui middle aligned stackable grid container">
                         <div class="row">
-                            <div class="fourteen wide column">
+                            <div class="sixteen wide column">
                                 <h3>Cross Browser Automation</h3>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="fourteen wide column">
+                            <div class="sixteen wide column">
                                 <p>Geb leverages the <a href="http://code.google.com/p/selenium/">WebDriver</a> library for browser automation. This means that Geb works with any browser that WebDriver works with, and the list of browsers that WebDriver
                                     works with is growing all the time.</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="fourteen wide column">
+                            <div class="sixteen wide column">
                                 <p>Currently supported browsers are:</p>
 
                                 <div class="ui six cards">
                                     <div class="card">
-                                        <i class="big thin firefox icon"></i>
+                                        <div class="ui content quadruple spaced image">
+                                            <img src="/images/firefox_128x128.png">
+                                        </div>
                                         <div class="extra content">
                                             <i class="check icon"></i> Supported
                                         </div>
                                         <a href="http://code.google.com/p/selenium/wiki/FirefoxDriver">
                                             <div class="ui bottom attached button">
-                                                <i class="add icon"></i> View Docs
+                                                <i class="external icon"></i> View Docs
                                             </div>
                                         </a>
                                     </div>
 
                                     <div class="card">
-                                        <i class="chrome icon"></i>
+                                        <div class="ui content quadruple spaced image">
+                                            <img src="/images/edge_128x128.png" class="content">
+                                        </div>
                                         <div class="extra content">
                                             <i class="check icon"></i> Supported
                                         </div>
                                         <a href="http://code.google.com/p/selenium/wiki/InternetExplorerDriver">
                                             <div class="ui bottom attached button">
-                                                <i class="add icon"></i> View Docs
+                                                <i class="external icon"></i> View Docs
                                             </div>
                                         </a>
                                     </div>
 
                                     <div class="card">
-                                        <i class="chrome icon"></i>
+                                        <div class="ui content quadruple spaced image">
+                                            <img src="/images/chrome_128x128.png" class="content">
+                                        </div>
                                         <div class="extra content">
                                             <i class="check icon"></i> Supported
                                         </div>
                                         <a href="http://code.google.com/p/selenium/wiki/ChromeDriver">
                                             <div class="ui bottom attached button">
-                                                <i class="add icon"></i> View Docs
+                                                <i class="external icon"></i> View Docs
                                             </div>
                                         </a>
                                     </div>
 
                                     <div class="card">
-                                        <div class="image">
-                                            <i class="chrome icon"></i>
+                                        <div class="ui content quadruple spaced image">
+                                            <img src="/images/safari_128x128.png" class="content">
                                         </div>
                                         <div class="extra content">
                                             <i class="check icon"></i> Supported
                                         </div>
                                         <a href="http://code.google.com/p/selenium/wiki/SafariDriver">
                                             <div class="ui bottom attached button">
-                                                <i class="add icon"></i> View Docs
+                                                <i class="external icon"></i> View Docs
                                             </div>
                                         </a>
                                     </div>
 
                                     <div class="card">
-                                        <i class="chrome icon"></i>
+                                        <div class="ui content quadruple spaced image">
+                                            <img src="/images/android_128x128.png" class="content">
+                                        </div>
                                         <div class="extra content">
-                                            <i class="check icon"></i> Experimental
+                                            <i class="warning sign icon"></i> Experimental
                                         </div>
                                         <a href="http://code.google.com/p/selenium/wiki/AndroidDriver">
                                             <div class="ui bottom attached button">
-                                                <i class="add icon"></i> View Docs
+                                                <i class="external icon"></i> View Docs
                                             </div>
                                         </a>
                                     </div>
 
                                     <div class="card">
-                                        <i class="chrome icon"></i>
+                                        <div class="ui content quadruple spaced image">
+                                            <img src="/images/safari-ios_128x128.png" class="content">
+                                        </div>
                                         <div class="extra content">
-                                            <i class="check icon"></i> Experimental
+                                            <i class="warning sign icon"></i> Experimental
                                         </div>
                                         <a href="http://code.google.com/p/selenium/wiki/IPhoneDriver">
                                             <div class="ui bottom attached button">
-                                                <i class="add icon"></i> View Docs
+                                                <i class="external icon"></i> View Docs
                                             </div>
 
                                         </a>
@@ -217,7 +251,7 @@ Browser.drive {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="fourteen wide column">
+                            <div class="sixteen wide column">
                                 <h3>Remote Browsers</h3>
 
                                 <p>WebDriver also supports <a href="http://code.google.com/p/selenium/wiki/RemoteWebDriver"><em>remote drivers</em></a>. This allows you to automate a browser running on another machine! This means you can easily run your
@@ -228,7 +262,7 @@ Browser.drive {
                                 <p>You can also use the headless, in process, Java browser emulator <a href="http://code.google.com/p/selenium/wiki/HtmlUnitDriver">HTMLUnit with WebDriver</a>.</p>
 
                                 <a href="manual/current/#driver-implementation-configuration">
-                                    <a class="ui huge button"><i class="browser icon"></i> Driver Configuration</a>
+                                    <a class="ui large button"><i class="browser icon"></i> Driver Configuration</a>
                                 </a>
 
                             </div>
@@ -239,17 +273,17 @@ Browser.drive {
                 <div class="ui vertical stripe segment">
                     <div class="ui middle aligned stackable grid container">
                         <div class="row">
-                            <div class="seven wide column">
+                            <div class="sixteen wide column">
                                 <h1>Navigating Content</h1>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="seven wide column">
+                            <div class="eight wide column">
                                 <p>Geb takes inspiration from jQuery to provide a concise and effective way to get at content. This is called the <a href="manual/current/#navigator" title="The Book Of Geb - Interacting with content">Navigator API</a>.</p>
 
                                 <p>The dollar function can be used anywhere to select content based on CSS selectors, attribute matchers and/or indexes.</p>
                             </div>
-                            <div class="seven wide column">
+                            <div class="eight wide column">
                                 <div class="ui piled orange segment">
                                     <pre class="brush: groovy">
 // CSS 3 selectors
@@ -276,17 +310,17 @@ Browser.drive {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="fourteen wide column">
+                            <div class="sixteen wide column">
                                 <h4 class="ui horizontal header divider">
                                     <a href="#">Form control shortcuts</a>
                                 </h4>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="seven wide column">
+                            <div class="eight wide column">
                                 <p>Geb has handy shortcuts for reading and writing form control values.</p>
                             </div>
-                            <div class="seven wide column">
+                            <div class="eight wide column">
                                 <div class="ui piled violet segment">
                                     <pre class="brush: groovy">
 assert \$("form").name == "Jeb"
@@ -299,52 +333,166 @@ assert \$("form").name == "Geb"
                         <div class="row">
                             <div class="fourteen wide center aligned column">
                                 <a href="manual/current/#navigator">
-                                    <a class="ui huge button"><i class="location arrow icon"></i>Content Navigation</a>
+                                    <a class="ui large button"><i class="location arrow icon"></i>Content Navigation</a>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="ui vertical stripe segment">
-                    <div class="ui text container">
-                        <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
-                        <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
-                        <a class="ui large button">Read More</a>
-                        <h4 class="ui horizontal header divider">
-                            <a href="#">Case Studies</a>
-                        </h4>
-                        <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
-                        <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
-                        <a class="ui large button">I'm Still Quite Interested</a>
+                <div class="ui inverted vertical stripe segment">
+                    <div class="ui middle aligned stackable grid container">
+                        <div class="row">
+                            <div class="eight wide column">
+                                <h1>Asynchronicity</h1>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="eight wide column">
+                                <p>Modern web pages are full of asynchronous operations like AJAX requests and animations. Geb provides built in support for this fact of life.</p>
+                                <p>Any content lookup, or operation can be wrapped in a <code>waitFor</code> clause.</p>
+                            </div>
+                            <div class="eight wide column">
+                                <div class="ui piled orange segment">
+                                    <pre class="brush: groovy">
+waitFor { 
+    \$("p.status").text() == "Async operation complete!" 
+}
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="eight wide column">
+                                <p>This will keep testing the condition for a certain amount of time (which is configurable) until it passes.</p>
+                                </p>The same technique can be used to just wait for the content, not necessarily for the content to have some characteristic.</p>
+                            </div>
+                            <div class="eight wide column">
+                                <div class="ui piled orange segment">
+                                    <pre class="brush: groovy">
+def dynamicParagraph = waitFor { \$("p.dynamically-added") }
+dynamicParagraph.text() == "Added dynamically!" 
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="sixteen wide column">
+                                <h4 class="ui horizontal header divider">
+                                    <a href="#">Asynchronous content DSL</a>
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="eight wide column">
+                                <p>You can also define that content should be implicitly waited for in the Content DSL for page objects</p>
+                                <p>With this definition, when <code>dynamicParagraph</code> is requested Geb will implictly wait for a certain amount of time for it to appear.</p>
+                            </div>
+                            <div class="eight wide column">
+                                <div class="ui piled orange segment">
+                                    <pre class="brush: groovy">import geb.Page
+                            
+class DynamicPage extends Page {
+    static content = {
+        dynamicParagraph(wait: true) { 
+            \$("p.dynamically-added") 
+        }
+    }
+}
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <a href="manual/current/#waiting">
+                                <a class="ui large button"><i class="wait icon"></i> Read about Waiting</a>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
+                <div class="ui vertical stripe fourteen wide middle aligned segment">
+                    <div class="ui text container">
+                        <h3 class="ui header">Testing</h3>
+                        <p>Geb provides integration modules for popular testing frameworks such as <a href="http://spockframework.org">Spock</a>, <a href="http://junit.org">JUnit</a>, <a href="http://testng.org">TestNG</a> and <a href="http://cukes.info/">Cucumber</a>                            (via <a href="https://github.com/cucumber/cuke4duke/wiki">Cuke4Duke</a>)</p>
+                        <p>While Geb works great with all of these frameworks, it really shines with <a href="http://spockframework.org">Spock</a>. Spock is an innovative testing framework that is a great match for using with Geb. Using Spock + Geb gives
+                            you very clear, concise and easy to understand test specifications with very little effort.</p>
+
+                        <div class="ui piled orange ten wide middle aligned segment">
+                            <pre class="brush: groovy">import geb.Page
+import geb.spock.GebSpec
+
+class LoginSpec extends GebSpec {
+    def "login to admin section"() {
+        given:
+        to LoginPage
+        
+        when:
+        loginForm.with {
+            username = "admin"
+            password = "password"
+        }
+        
+        and:
+        loginButton.click()
+        
+        then:
+        at AdminPage
+    }
+}
+                            </pre>
+                        </div>
+
+                        <a href="manual/current/#testing" class="ui large button"><i class="lab icon"></i>Testing</a>
+                    </div>
+                </div>
+
+                <div class="ui inverted vertical stripe segment">
+                    <div class="ui middle aligned stackable grid container">
+                        <div class="row">
+                            <div class="sixteen wide column">
+                                <h3>Build System Integration</h3>
+                                <p>Geb is easy to integrate into any build system, and information and examples on integrating with the following build/project systems is available:</p>
+
+                                <ul>
+                                    <li><a href="http://www.gradle.org/" title="Home - Gradle">Gradle</a></li>
+                                    <li><a href="http://maven.apache.org/">Maven</a></li>
+                                </ul>
+
+                                <a href="manual/current/#build-integrations" class="ui large button"><i class="puzzle icon"></i>Build Integrations</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="ui inverted vertical footer segment">
                     <div class="ui container">
                         <div class="ui stackable inverted divided equal height stackable grid">
                             <div class="three wide column">
-                                <h4 class="ui inverted header">About</h4>
+                                <h4 class="ui inverted header">Build Status</h4>
                                 <div class="ui inverted link list">
-                                    <a href="#" class="item">Sitemap</a>
-                                    <a href="#" class="item">Contact Us</a>
-                                    <a href="#" class="item">Religious Ceremonies</a>
-                                    <a href="#" class="item">Gazebo Plans</a>
+                                    <a href="https://app.snap-ci.com/geb/geb/branch/master" target="_blank">
+                                        <img src="https://app.snap-ci.com/geb/geb/branch/master/build_image" alt="Build status" />
+                                    </a>
                                 </div>
                             </div>
                             <div class="three wide column">
-                                <h4 class="ui inverted header">Services</h4>
+                                <h4 class="ui inverted header">Latest Version</h4>
                                 <div class="ui inverted link list">
-                                    <a href="#" class="item">Banana Pre-Order</a>
-                                    <a href="#" class="item">DNA FAQ</a>
-                                    <a href="#" class="item">How To Access</a>
-                                    <a href="#" class="item">Favorite X-Men</a>
+                                    <a href="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core">
+                                        <img alt="Maven Central" src="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg">
+                                    </a>
                                 </div>
                             </div>
                             <div class="seven wide column">
-                                <h4 class="ui inverted header">Footer Header</h4>
-                                <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                                <h4 class="ui inverted header">About Geb</h4>
+                                <p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
+                                <p>This site is powered by <a href="http://ratpack.io" title="Ratpack - A toolkit for JVM web applications">Ratpack</a>.</p>
                             </div>
                         </div>
                     </div>
@@ -436,7 +584,18 @@ assert \$("form").name == "Geb"
                 </div>
             </div>
 
-
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/site.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/popup.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/transition.min.js"></script>
+            <script language="javascript" src="js/shCore.js"></script>
+            <script language="javascript" src="js/shBrushGroovy.js"></script>
+            <script type="text/javascript" charset="utf-8">
+                SyntaxHighlighter.defaults['toolbar'] = false;
+                SyntaxHighlighter.defaults['gutter'] = false;
+                SyntaxHighlighter.all();
+            </script>
+            <script language="javascript" src="js/base.js"></script>
 </body>
 
 </html>
