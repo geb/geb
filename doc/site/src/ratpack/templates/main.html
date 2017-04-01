@@ -53,20 +53,54 @@
                             </a>
                             <a class="active item">Home</a>
                             <a class="manuals item">Manual <i class="dropdown icon"></i></a>
-                            <div class="ui inverted ten wide fluid popup bottom left transition hidden">
-                                <div class="ui three column relaxed equal height divided grid">
-                                    <div class="left aligned three wide column">
+                            <div class="ui inverted popup bottom left transition hidden">
+                                <div class="ui relaxed equal height divided grid container">
+                                    <div class="left aligned two wide grey column">
                                         <h4 class="ui header">Current</h4>
                                         <div class="ui link list">
-                                            <a class="item" href="manual/current/">${manuals.current}</a>
+                                            <a class="spaced item" href="manual/current/">${manuals.current}</a>
                                         </div>
                                     </div>
-                                    <div class="left aligned ten wide column">
+                                    <div class="left aligned five wide column">
+                                        <h4 class="ui header">Previous</h4>
+                                        <div class="ui grid">
+                                            <% manuals.oldList.each { %>
+                                                <div class="four wide column">
+                                                    <a class="vertically fitted spaced item" href="manual/$it/">${it}</a>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="left aligned three wide column">
+                                        <h4 class="ui header">Snapshot</h4>
+                                        <div class="ui link list">
+                                            <% if (manuals.snapshot) { %>
+                                                <a class="spaced item" href="manual/snapshot/">${manuals.snapshot}</a>
+                                                <% } else { %>
+                                                    -
+                                                    <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a class="apis item">API <i class="dropdown icon"></i></a>
+                            <div class="ui inverted popup bottom left transition hidden">
+                                <div class="ui relaxed equal height divided grid container">
+                                    <div class="left aligned two wide grey column">
+                                        <h4 class="ui header">Current</h4>
+                                        <div class="ui link list">
+                                            <a class="spaced item" href="api/current/">${manuals.current}</a>
+                                        </div>
+                                    </div>
+                                    <div class="left aligned five wide column">
                                         <h4 class="ui header">Previous</h4>
                                         <div class="five wide column">
-                                            <div class="ui link list">
+                                            <div class="ui grid">
                                                 <% manuals.oldList.each { %>
-                                                    <a class="item" href="manual/$it/">${it}</a>
+                                                    <div class="four wide column">
+                                                        <a class="vertically fitted spaced item" href="api/$it/">${it}</a>
+                                                    </div>
                                                     <% } %>
                                             </div>
                                         </div>
@@ -75,7 +109,7 @@
                                         <h4 class="ui header">Snapshot</h4>
                                         <div class="ui link list">
                                             <% if (manuals.snapshot) { %>
-                                                <a class="item" href="manual/snapshot/">${manuals.snapshot}</a>
+                                                <a class="spaced item" href="api/snapshot/">${manuals.snapshot}</a>
                                                 <% } else { %>
                                                     -
                                                     <% } %>
@@ -85,15 +119,15 @@
                             </div>
 
                             <a class="item">Mailing List</a>
-                            <a class="item"><i class="github icon"></i> Issues</a>
-                            <a class="item"><i class="github icon"></i> Code</a>
-                            <a class="item"><i class="twitter icon"></i>Twitter</a>
+                            <a class="item" href="http://github.com/geb/geb"><i class="github icon"></i> Code</a>
+                            <a class="item" href="https://github.com/geb/issues/issues"><i class="github icon"></i> Issues</a>
+                            <a class="item" href="http://twitter.com/GebFramework"><i class="twitter icon"></i>Twitter</a>
                         </div>
                     </div>
 
                     <div class="ui text container">
                         <img class="logo-header" src="/images/logo.png" alt="GEB" title='pronounced "Jeb"' />
-                        <h2>very groovy browser automation… web testing, screen scraping and more</h2>
+                        <h2 class="ui olive header">very groovy browser automation… web testing, screen scraping and more</h2>
                         <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
                     </div>
 
@@ -103,7 +137,7 @@
                     <div class="ui middle aligned stackable grid container">
                         <div class="row">
                             <div class="seven wide column">
-                                <h3 class="ui header">What is it?</h3>
+                                <h1 class="ui header">What is it?</h1>
                                 <p>Geb is a browser automation solution.</p>
                                 <p>It brings together the power of <a href="http://code.google.com/p/selenium/">WebDriver</a>, the elegance of <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> content selection,
                                     the robustness of <a href="http://code.google.com/p/selenium/wiki/PageObjects">Page Object</a> modelling and the expressiveness of the <a href="http://www.groovy-lang.org/">Groovy</a> language.</p>
@@ -111,13 +145,15 @@
                                     <a href="http://www.junit.org/">JUnit</a> &amp; <a href="http://testng.org/">TestNG</a>.</p>
                                 <p>The <a href="manual/current/">Book of Geb</a> contains all the information you need to get started with Geb.</p>
 
-                                <h3 class="ui header">What does it look like?</h3>
+                                <h2 class="ui header">What does it look like?</h2>
                                 <p>Here's what a simple Geb script to log into an admin section of a website might look like...</p>
 
                                 <p>This is what is known as the scripting style of Geb and it's great for quick automation.</p>
 
                                 <a href="manual/current/">
-                                    <div class="ui huge primary button">See the guide <i class="right arrow icon"></i></div>
+                                    <div class="ui huge primary button">
+                                        See the guide <i class="right arrow icon"></i>
+                                    </div>
                                 </a>
                             </div>
                             <div class="seven wide right floated column">
@@ -149,7 +185,7 @@ Browser.drive {
                     <div class="ui middle aligned stackable grid container">
                         <div class="row">
                             <div class="sixteen wide column">
-                                <h3>Cross Browser Automation</h3>
+                                <h1>Cross Browser Automation</h1>
                             </div>
                         </div>
                         <div class="row">
@@ -252,19 +288,18 @@ Browser.drive {
                         </div>
                         <div class="row">
                             <div class="sixteen wide column">
-                                <h3>Remote Browsers</h3>
+                                <h2>Remote Browsers</h2>
 
                                 <p>WebDriver also supports <a href="http://code.google.com/p/selenium/wiki/RemoteWebDriver"><em>remote drivers</em></a>. This allows you to automate a browser running on another machine! This means you can easily run your
                                     test suite against an IE browser from the comfort of your Mac or Linux machine (and vice versa).</p>
 
-                                <h3>Headless Browsers</h3>
+                                <h2>Headless Browsers</h2>
 
                                 <p>You can also use the headless, in process, Java browser emulator <a href="http://code.google.com/p/selenium/wiki/HtmlUnitDriver">HTMLUnit with WebDriver</a>.</p>
 
-                                <a href="manual/current/#driver-implementation-configuration">
-                                    <a class="ui large button"><i class="browser icon"></i> Driver Configuration</a>
+                                <a href="manual/current/#driver-implementation-configuration" class="ui large button">
+                                    <i class="browser icon"></i> Driver Configuration
                                 </a>
-
                             </div>
                         </div>
                     </div>
@@ -332,8 +367,8 @@ assert \$("form").name == "Geb"
                         </div>
                         <div class="row">
                             <div class="fourteen wide center aligned column">
-                                <a href="manual/current/#navigator">
-                                    <a class="ui large button"><i class="location arrow icon"></i>Content Navigation</a>
+                                <a class="ui large button" href="manual/current/#navigator">
+                                    <i class="location arrow icon"></i>Content Navigation
                                 </a>
                             </div>
                         </div>
@@ -409,8 +444,8 @@ class DynamicPage extends Page {
                         </div>
 
                         <div class="row">
-                            <a href="manual/current/#waiting">
-                                <a class="ui large button"><i class="wait icon"></i> Read about Waiting</a>
+                            <a href="manual/current/#waiting" class="ui large button">
+                                <i class="wait icon"></i> Read about Waiting
                             </a>
                         </div>
                     </div>
@@ -418,12 +453,13 @@ class DynamicPage extends Page {
 
                 <div class="ui vertical stripe fourteen wide middle aligned segment">
                     <div class="ui text container">
-                        <h3 class="ui header">Testing</h3>
+                        <h1 class="ui header">Testing</h1>
                         <p>Geb provides integration modules for popular testing frameworks such as <a href="http://spockframework.org">Spock</a>, <a href="http://junit.org">JUnit</a>, <a href="http://testng.org">TestNG</a> and <a href="http://cukes.info/">Cucumber</a>                            (via <a href="https://github.com/cucumber/cuke4duke/wiki">Cuke4Duke</a>)</p>
                         <p>While Geb works great with all of these frameworks, it really shines with <a href="http://spockframework.org">Spock</a>. Spock is an innovative testing framework that is a great match for using with Geb. Using Spock + Geb gives
                             you very clear, concise and easy to understand test specifications with very little effort.</p>
 
                         <div class="ui piled orange ten wide middle aligned segment">
+                            <a class="ui right red ribbon label">Spock</a>
                             <pre class="brush: groovy">import geb.Page
 import geb.spock.GebSpec
 
@@ -447,23 +483,37 @@ class LoginSpec extends GebSpec {
 }
                             </pre>
                         </div>
-
-                        <a href="manual/current/#testing" class="ui large button"><i class="lab icon"></i>Testing</a>
                     </div>
+
+                    <a href="manual/current/#testing" class="ui center aligned large button">
+                        <i class="lab icon"></i> Testing
+                    </a>
                 </div>
 
                 <div class="ui inverted vertical stripe segment">
                     <div class="ui middle aligned stackable grid container">
                         <div class="row">
                             <div class="sixteen wide column">
-                                <h3>Build System Integration</h3>
-                                <p>Geb is easy to integrate into any build system, and information and examples on integrating with the following build/project systems is available:</p>
+                                <h1 class="ui inverted header">Build System Integration</h1>
 
-                                <ul>
-                                    <li><a href="http://www.gradle.org/" title="Home - Gradle">Gradle</a></li>
-                                    <li><a href="http://maven.apache.org/">Maven</a></li>
-                                </ul>
+                                <p>Geb is easy to integrate into any build system, and information and examples on integrating with the following build/project systems is available</p>
+                            </div>
+                            <div class="eight wide right aligned column">
+                                <a href="http://www.gradle.org/">
+                                    <div class="ui medium images">
+                                        <img src="/images/gradle.png" class="offset-next">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="eight wide left aligned column">
+                                <a href="http://maven.apache.org/">
+                                    <div class="ui medium images">
+                                        <img src="/images/maven.png" class="offset-next">
+                                    </div>
+                                </a>
+                            </div>
 
+                            <div class="sixteen wide column">
                                 <a href="manual/current/#build-integrations" class="ui large button"><i class="puzzle icon"></i>Build Integrations</a>
                             </div>
                         </div>
@@ -489,98 +539,13 @@ class LoginSpec extends GebSpec {
                                     </a>
                                 </div>
                             </div>
-                            <div class="seven wide column">
+                            <div class="ten wide center aligned column">
                                 <h4 class="ui inverted header">About Geb</h4>
                                 <p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
                                 <p>This site is powered by <a href="http://ratpack.io" title="Ratpack - A toolkit for JVM web applications">Ratpack</a>.</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div id="header-wrap">
-                <div id="header-content">
-
-                    <h1 id="logo">
-                        <a href="/" title="">Geb <span class="orange" style="font-size: 50%; font-style: italic">(pronounced “jeb”)</span></a>
-                    </h1>
-
-                    <h2 id="slogan">very groovy browser automation… web testing, screen scraping and more</h2>
-
-                    <ul>
-                        <li>
-                            <span>Manual</span>
-                            <ul class="link-list">
-                                <li><a href="manual/current/">${manuals.current} - current</a></li>
-                                <% manuals.oldList.each { %>
-                                    <li><a href="manual/$it/">${it}</a></li>
-                                    <% } %>
-                                        <% if (manuals.snapshot) { %>
-                                            <li><a href="manual/snapshot/">${manuals.snapshot}</a></li>
-                                            <% } %>
-                            </ul>
-                        </li>
-                        <li>
-                            <span>API</span>
-                            <ul class="link-list" id="api-list">
-                                <li><a href="manual/current/api/">${manuals.current} - current</a></li>
-                                <% manuals.oldList.each { %>
-                                    <li><a href="manual/$it/api/">${it}</a></li>
-                                    <% } %>
-                                        <% if (manuals.snapshot) { %>
-                                            <li><a href="manual/snapshot/api/">${manuals.snapshot}</a></li>
-                                            <% } %>
-                            </ul>
-                        </li>
-                        <li><a href="lists">Mailing Lists</a></li>
-                        <li><a href="https://github.com/geb/issues/issues">Issues</a></li>
-                        <li><a href="http://github.com/geb/geb">Code</a></li>
-                        <li><a href="http://twitter.com/GebFramework">Twitter</a></li>
-                    </ul>
-
-                </div>
-            </div>
-
-            <div id="content-wrap">
-                <div id="content">
-                    <div id="main">
-                        <% render "includes/${model.page}.html" %>
-                    </div>
-                    <div id="sidebar">
-                        <%
-            def sections = (Map
-            <String
-            , Map
-            <String
-            , String>>) model.map('pages')
-            sections.each { String section, pages ->
-            %>
-                            <h1>${section}</h1>
-                            <ul class="sidemenu">
-                                <% pages.each { String label, String name -> %>
-                                    <li class="${label} ${label == model.page ? 'selected' : ''}"><a href="$label">${name}</a></li>
-                                    <% } %>
-                            </ul>
-                            <h1>Build status</h1>
-                            <a href="https://app.snap-ci.com/geb/geb/branch/master" target="_blank">
-                                <img src="https://app.snap-ci.com/geb/geb/branch/master/build_image" alt="Build status" />
-                            </a>
-                            <h1>Latest version</h1>
-                            <a href="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core">
-                                <img alt="Maven Central" src="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg">
-                            </a>
-                            <% } %>
-                    </div>
-                </div>
-            </div>
-
-
-            <div id="footer-wrap">
-                <div id="footer-content">
-                    <p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
-
-                    <p>This site is powered by <a href="http://ratpack.io" title="Ratpack - A toolkit for JVM web applications">Ratpack</a>.</p>
                 </div>
             </div>
 
