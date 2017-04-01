@@ -1,3 +1,7 @@
 .logo-header {
-  margin: 30px;
+    margin: 30px;
+}
+
+.ui[class*="quadruple spaced"].image {
+    margin: 20px;
 }
