@@ -33,3 +33,26 @@ p {
 .ui.images>img.offset-next {
     margin-top: 20px;
 }
+
+.ui.footer.segment,
+.ui.vertical.stripe.segment {
+    padding-top: 70px;
+}
+
+.ui.footer.segment,
+.ui.vertical.stripe.segment,
+.ui.masthead {
+    padding-bottom: 70px;
+}
+
+.ui.alternate.stripe {
+    background-color: #F2F3F5;
+}
+
+.ui.slogan {
+    font-size: 16px;
+}
+
+.ui.masthead .primary.button {
+    margin-top: 30px;
+}
