@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/popup.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/menu.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/transition.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/statistic.min.css">
 
     <link rel="stylesheet" href="css/base.css">
 
@@ -51,112 +52,200 @@
                         </a>
                         <a class="active item">Home</a>
                         <a class="manuals item">Manual <i class="dropdown icon"></i></a>
-                        <div class="ui inverted popup bottom left transition hidden">
-                            <div class="ui relaxed equal height divided grid container">
-                                <div class="left aligned two wide grey column">
-                                    <h4 class="ui header">Current</h4>
-                                    <div class="ui link list">
-                                        <a class="spaced item" href="manual/current/">${manuals.current}</a>
-                                    </div>
-                                </div>
-                                <div class="left aligned five wide column">
-                                    <h4 class="ui header">Previous</h4>
-                                    <div class="ui grid">
-                                        <% manuals.oldList.each { %>
-                                            <div class="four wide column">
-                                                <a class="vertically fitted spaced item" href="manual/$it/">${it}</a>
-                                            </div>
-                                            <% } %>
-                                    </div>
-                                </div>
-                                <div class="left aligned three wide column">
-                                    <h4 class="ui header">Snapshot</h4>
-                                    <div class="ui link list">
-                                        <% if (manuals.snapshot) { %>
-                                            <a class="spaced item" href="manual/snapshot/">${manuals.snapshot}</a>
-                                            <% } else { %>
-                                                -
-                                                <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <a class="apis item">API <i class="dropdown icon"></i></a>
-                        <div class="ui inverted popup bottom left transition hidden">
-                            <div class="ui relaxed equal height divided grid container">
-                                <div class="left aligned two wide grey column">
-                                    <h4 class="ui header">Current</h4>
-                                    <div class="ui link list">
-                                        <a class="spaced item" href="api/current/">${manuals.current}</a>
-                                    </div>
-                                </div>
-                                <div class="left aligned five wide column">
-                                    <h4 class="ui header">Previous</h4>
-                                    <div class="five wide column">
-                                        <div class="ui grid">
-                                            <% manuals.oldList.each { %>
-                                                <div class="four wide column">
-                                                    <a class="vertically fitted spaced item" href="api/$it/">${it}</a>
-                                                </div>
-                                                <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="left aligned three wide column">
-                                    <h4 class="ui header">Snapshot</h4>
-                                    <div class="ui link list">
-                                        <% if (manuals.snapshot) { %>
-                                            <a class="spaced item" href="api/snapshot/">${manuals.snapshot}</a>
-                                            <% } else { %>
-                                                -
-                                                <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <a class="item">Mailing List</a>
+                        <a class="mailing-lists item">Mailing Lists</a>
                         <a class="item" href="http://github.com/geb/geb"><i class="github icon"></i> Code</a>
                         <a class="item" href="https://github.com/geb/issues/issues"><i class="github icon"></i> Issues</a>
                         <a class="item" href="http://twitter.com/GebFramework"><i class="twitter icon"></i>Twitter</a>
                     </div>
+
+                    <div id="apis-popup" class="ui inverted popup bottom left transition hidden">
+                        <div class="ui relaxed equal height divided grid container">
+                            <div class="left aligned two wide grey column">
+                                <h4 class="ui header">Current</h4>
+                                <div class="ui link list">
+                                    <a class="spaced item" href="api/current/">${manuals.current}</a>
+                                </div>
+                            </div>
+                            <div class="left aligned five wide column">
+                                <h4 class="ui header">Previous</h4>
+                                <div class="five wide column">
+                                    <div class="ui grid">
+                                        <% manuals.oldList.each { %>
+                                            <div class="three wide column">
+                                                <a class="vertically fitted spaced item" href="api/$it/">${it}</a>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="left aligned three wide column">
+                                <h4 class="ui header">Snapshot</h4>
+                                <div class="ui link list">
+                                    <% if (manuals.snapshot) { %>
+                                        <a class="spaced item" href="api/snapshot/">${manuals.snapshot}</a>
+                                        <% } else { %>
+                                            -
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="manuals-popup" class="ui inverted popup bottom left transition hidden">
+                        <div class="ui relaxed equal height divided grid container">
+                            <div class="left aligned two wide grey column">
+                                <h4 class="ui header">Current</h4>
+                                <div class="ui link list">
+                                    <a class="spaced item" href="manual/current/">${manuals.current}</a>
+                                </div>
+                            </div>
+                            <div class="left aligned five wide column">
+                                <h4 class="ui header">Previous</h4>
+                                <div class="ui grid">
+                                    <% manuals.oldList.each { %>
+                                        <div class="three wide column">
+                                            <a class="vertically fitted spaced item" href="manual/$it/">${it}</a>
+                                        </div>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <div class="left aligned three wide column">
+                                <h4 class="ui header">Snapshot</h4>
+                                <div class="ui link list">
+                                    <% if (manuals.snapshot) { %>
+                                        <a class="spaced item" href="manual/snapshot/">${manuals.snapshot}</a>
+                                        <% } else { %>
+                                            -
+                                            <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="mailing-lists-popup" class="ui fluid popup bottom left transition hidden">
+                        <div class="ui four column relaxed equal height divided grid">
+                            <div class="column">
+                                <h4 class="ui header">Fabrics</h4>
+                                <div class="ui link list">
+                                    <a class="item">Cashmere</a>
+                                    <a class="item">Linen</a>
+                                    <a class="item">Cotton</a>
+                                    <a class="item">Viscose</a>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <h4 class="ui header">Size</h4>
+                                <div class="ui link list">
+                                    <a class="item">Small</a>
+                                    <a class="item">Medium</a>
+                                    <a class="item">Large</a>
+                                    <a class="item">Plus Sizes</a>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <h4 class="ui header">Colored</h4>
+                                <div class="ui link list">
+                                    <a class="item">Neutrals</a>
+                                    <a class="item">Brights</a>
+                                    <a class="item">Pastels</a>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <h4 class="ui header">Types</h4>
+                                <div class="ui link list">
+                                    <a class="item">Knitwear</a>
+                                    <a class="item">Outerwear</a>
+                                    <a class="item">Pants</a>
+                                    <a class="item">Shoes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ui text container">
+                <div class="ui center aligned grid">
                     <img class="logo-header" src="/images/logo.png" alt="GEB" title='pronounced "Jeb"' />
-                    <h2 class="ui olive header">very groovy browser automation… web testing, screen scraping and more</h2>
-                    <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
+
+                    <div class="row">
+                        <div class="ui four wide column">
+                            <p class="ui inverted slogan"><strong>Very Groovy</strong> browser automation. <strong>Web Testing</strong>, <strong>Screen Scraping</strong> <em>and more</em></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="ui eight wide column">
+                            <div class="ui four statistics inverted" data-github-stats="">
+                                <div class="static statistic">
+                                    <div class="value">
+                                        ${manuals.current}
+                                    </div>
+                                    <div class="label">
+                                        Latest Release
+                                    </div>
+                                </div>
+                                <div class="statistic">
+                                    <div class="value">
+                                        <i class="star icon"></i> <span data-stars="">-</span>
+                                    </div>
+                                    <div class="label">
+                                        Stars
+                                    </div>
+                                </div>
+                                <div class="statistic">
+                                    <div class="value">
+                                        <i class="fork icon"></i> <span data-forks="">-</span>
+                                    </div>
+                                    <div class="label">
+                                        Forks
+                                    </div>
+                                </div>
+                                <div class="statistic">
+                                    <div class="value">
+                                        <span data-watchers="">-</span>
+                                    </div>
+                                    <div class="label">
+                                        Watchers
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sixteen wide column">
+                    <a href="manual/current/">
+                        <div class="ui huge primary button">Get Started <i class="right chevron icon"></i></div>
+                    </a>
                 </div>
 
             </div>
 
             <div class="ui vertical stripe segment">
                 <div class="ui middle aligned stackable grid container">
-                    <div class="row">
-                        <div class="seven wide column">
-                            <h1 class="ui header">What is it?</h1>
-                            <p>Geb is a browser automation solution.</p>
-                            <p>It brings together the power of <a href="http://code.google.com/p/selenium/">WebDriver</a>, the elegance of <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> content selection,
-                                the robustness of <a href="http://code.google.com/p/selenium/wiki/PageObjects">Page Object</a> modelling and the expressiveness of the <a href="http://www.groovy-lang.org/">Groovy</a> language.</p>
-                            <p>It can be used for scripting, scraping and general automation — or equally as a functional/web/acceptance testing solution via integration with testing frameworks such as <a href="http://spockframework.org">Spock</a>,
-                                <a href="http://www.junit.org/">JUnit</a> &amp; <a href="http://testng.org/">TestNG</a>.</p>
-                            <p>The <a href="manual/current/">Book of Geb</a> contains all the information you need to get started with Geb.</p>
+                    <div class="nine wide column">
+                        <h1 class="ui header">What is it?</h1>
+                        <p>Geb is a browser automation solution.</p>
+                        <p>It brings together the power of <a href="http://code.google.com/p/selenium/">WebDriver</a>, the elegance of <a href="http://jquery.com/" title="jQuery: The Write Less, Do More, JavaScript Library">jQuery</a> content selection,
+                            the robustness of <a href="http://code.google.com/p/selenium/wiki/PageObjects">Page Object</a> modelling and the expressiveness of the <a href="http://www.groovy-lang.org/">Groovy</a> language.</p>
+                        <p>It can be used for scripting, scraping and general automation — or equally as a functional/web/acceptance testing solution via integration with testing frameworks such as <a href="http://spockframework.org">Spock</a>,
+                            <a href="http://www.junit.org/">JUnit</a> &amp; <a href="http://testng.org/">TestNG</a>.</p>
+                        <p>The <a href="manual/current/">Book of Geb</a> contains all the information you need to get started with Geb.</p>
 
-                            <h2 class="ui header">What does it look like?</h2>
-                            <p>Here's what a simple Geb script to log into an admin section of a website might look like...</p>
+                        <h2 class="ui header">What does it look like?</h2>
+                        <p>Here's what a simple Geb script to log into an admin section of a website might look like...</p>
 
-                            <p>This is what is known as the scripting style of Geb and it's great for quick automation.</p>
+                        <p>This is what is known as the scripting style of Geb and it's great for quick automation.</p>
 
-                            <a href="manual/current/">
-                                <div class="ui huge primary button">
-                                    See the guide <i class="right arrow icon"></i>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="seven wide right floated column">
-                            <div class="ui piled green segment">
-                                <pre class="brush: groovy">
+                        <a href="manual/current/">
+                            <div class="ui huge primary button">
+                                See the guide <i class="right chevron icon"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="seven wide column">
+                        <div class="ui piled green segment">
+                            <pre class="brush: groovy">
 import geb.Browser
 
 Browser.drive {
@@ -173,152 +262,138 @@ Browser.drive {
     assert \$("h1").text() == "Admin Section"
 }
 </pre>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="ui inverted vertical stripe segment">
+            <div class="ui alternate vertical stripe segment">
                 <div class="ui middle aligned stackable grid container">
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <h1>Cross Browser Automation</h1>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <p>Geb leverages the <a href="http://code.google.com/p/selenium/">WebDriver</a> library for browser automation. This means that Geb works with any browser that WebDriver works with, and the list of browsers that WebDriver works
-                                with is growing all the time.</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <p>Currently supported browsers are:</p>
+                    <div class="sixteen wide column">
+                        <h1 class="ui header">Cross Browser Automation</h1>
 
-                            <div class="ui six cards">
-                                <div class="card">
-                                    <div class="ui content quadruple spaced image">
-                                        <img src="/images/firefox_128x128.png">
-                                    </div>
-                                    <div class="extra content">
-                                        <i class="check icon"></i> Supported
-                                    </div>
-                                    <a href="http://code.google.com/p/selenium/wiki/FirefoxDriver">
-                                        <div class="ui bottom attached button">
-                                            <i class="external icon"></i> View Docs
-                                        </div>
-                                    </a>
+                        <p>Geb leverages the <a href="http://code.google.com/p/selenium/">WebDriver</a> library for browser automation. This means that Geb works with any browser that WebDriver works with, and the list of browsers that WebDriver works with
+                            is growing all the time.</p>
+                        <p>Geb leverages the <a href="http://code.google.com/p/selenium/">WebDriver</a> library for browser automation. This means that Geb works with any browser that WebDriver works with, and the list of browsers that WebDriver works with
+                            is growing all the time.</p>
+                        <p>Currently supported browsers are:</p>
+
+                        <div class="ui six cards">
+                            <div class="card">
+                                <div class="ui content quadruple spaced image">
+                                    <img src="/images/firefox_128x128.png">
                                 </div>
-
-                                <div class="card">
-                                    <div class="ui content quadruple spaced image">
-                                        <img src="/images/edge_128x128.png" class="content">
-                                    </div>
-                                    <div class="extra content">
-                                        <i class="check icon"></i> Supported
-                                    </div>
-                                    <a href="http://code.google.com/p/selenium/wiki/InternetExplorerDriver">
-                                        <div class="ui bottom attached button">
-                                            <i class="external icon"></i> View Docs
-                                        </div>
-                                    </a>
+                                <div class="extra content">
+                                    <i class="check icon"></i> Supported
                                 </div>
+                                <a target="_blank" href="http://code.google.com/p/selenium/wiki/FirefoxDriver">
+                                    <div class="ui bottom attached button">
+                                        <i class="external icon"></i> View Docs
+                                    </div>
+                                </a>
+                            </div>
 
-                                <div class="card">
-                                    <div class="ui content quadruple spaced image">
-                                        <img src="/images/chrome_128x128.png" class="content">
-                                    </div>
-                                    <div class="extra content">
-                                        <i class="check icon"></i> Supported
-                                    </div>
-                                    <a href="http://code.google.com/p/selenium/wiki/ChromeDriver">
-                                        <div class="ui bottom attached button">
-                                            <i class="external icon"></i> View Docs
-                                        </div>
-                                    </a>
+                            <div class="card">
+                                <div class="ui content quadruple spaced image">
+                                    <img src="/images/edge_128x128.png" class="content">
                                 </div>
-
-                                <div class="card">
-                                    <div class="ui content quadruple spaced image">
-                                        <img src="/images/safari_128x128.png" class="content">
-                                    </div>
-                                    <div class="extra content">
-                                        <i class="check icon"></i> Supported
-                                    </div>
-                                    <a href="http://code.google.com/p/selenium/wiki/SafariDriver">
-                                        <div class="ui bottom attached button">
-                                            <i class="external icon"></i> View Docs
-                                        </div>
-                                    </a>
+                                <div class="extra content">
+                                    <i class="check icon"></i> Supported
                                 </div>
+                                <a target="_blank" href="http://code.google.com/p/selenium/wiki/InternetExplorerDriver">
+                                    <div class="ui bottom attached button">
+                                        <i class="external icon"></i> View Docs
+                                    </div>
+                                </a>
+                            </div>
 
-                                <div class="card">
-                                    <div class="ui content quadruple spaced image">
-                                        <img src="/images/android_128x128.png" class="content">
-                                    </div>
-                                    <div class="extra content">
-                                        <i class="warning sign icon"></i> Experimental
-                                    </div>
-                                    <a href="http://code.google.com/p/selenium/wiki/AndroidDriver">
-                                        <div class="ui bottom attached button">
-                                            <i class="external icon"></i> View Docs
-                                        </div>
-                                    </a>
+                            <div class="card">
+                                <div class="ui content quadruple spaced image">
+                                    <img src="/images/chrome_128x128.png" class="content">
                                 </div>
-
-                                <div class="card">
-                                    <div class="ui content quadruple spaced image">
-                                        <img src="/images/safari-ios_128x128.png" class="content">
-                                    </div>
-                                    <div class="extra content">
-                                        <i class="warning sign icon"></i> Experimental
-                                    </div>
-                                    <a href="http://code.google.com/p/selenium/wiki/IPhoneDriver">
-                                        <div class="ui bottom attached button">
-                                            <i class="external icon"></i> View Docs
-                                        </div>
-
-                                    </a>
+                                <div class="extra content">
+                                    <i class="check icon"></i> Supported
                                 </div>
+                                <a target="_blank" href="http://code.google.com/p/selenium/wiki/ChromeDriver">
+                                    <div class="ui bottom attached button">
+                                        <i class="external icon"></i> View Docs
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="card">
+                                <div class="ui content quadruple spaced image">
+                                    <img src="/images/safari_128x128.png" class="content">
+                                </div>
+                                <div class="extra content">
+                                    <i class="check icon"></i> Supported
+                                </div>
+                                <a target="_blank" href="http://code.google.com/p/selenium/wiki/SafariDriver">
+                                    <div class="ui bottom attached button">
+                                        <i class="external icon"></i> View Docs
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="card">
+                                <div class="ui content quadruple spaced image">
+                                    <img src="/images/android_128x128.png" class="content">
+                                </div>
+                                <div class="extra content">
+                                    <i class="warning sign icon"></i> Experimental
+                                </div>
+                                <a target="_blank" href="http://code.google.com/p/selenium/wiki/AndroidDriver">
+                                    <div class="ui bottom attached button">
+                                        <i class="external icon"></i> View Docs
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="card">
+                                <div class="ui content quadruple spaced image">
+                                    <img src="/images/safari-ios_128x128.png" class="content">
+                                </div>
+                                <div class="extra content">
+                                    <i class="warning sign icon"></i> Experimental
+                                </div>
+                                <a target="_blank" href="http://code.google.com/p/selenium/wiki/IPhoneDriver">
+                                    <div class="ui bottom attached button">
+                                        <i class="external icon"></i> View Docs
+                                    </div>
+
+                                </a>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <h2>Remote Browsers</h2>
 
-                            <p>WebDriver also supports <a href="http://code.google.com/p/selenium/wiki/RemoteWebDriver"><em>remote drivers</em></a>. This allows you to automate a browser running on another machine! This means you can easily run your test
-                                suite against an IE browser from the comfort of your Mac or Linux machine (and vice versa).</p>
+                        <h2>Remote Browsers</h2>
 
-                            <h2>Headless Browsers</h2>
+                        <p>WebDriver also supports <a href="http://code.google.com/p/selenium/wiki/RemoteWebDriver"><em>remote drivers</em></a>. This allows you to automate a browser running on another machine! This means you can easily run your test suite
+                            against an IE browser from the comfort of your Mac or Linux machine (and vice versa).</p>
 
-                            <p>You can also use the headless, in process, Java browser emulator <a href="http://code.google.com/p/selenium/wiki/HtmlUnitDriver">HTMLUnit with WebDriver</a>.</p>
+                        <h2>Headless Browsers</h2>
 
-                            <a href="manual/current/#driver-implementation-configuration" class="ui large button">
-                                <i class="browser icon"></i> Driver Configuration
-                            </a>
-                        </div>
+                        <p>You can also use the headless, in process, Java browser emulator <a href="http://code.google.com/p/selenium/wiki/HtmlUnitDriver">HTMLUnit with WebDriver</a>.</p>
+
+                        <a href="manual/current/#driver-implementation-configuration" class="ui large button">
+                            <i class="browser icon"></i> Driver Configuration
+                        </a>
                     </div>
                 </div>
             </div>
 
             <div class="ui vertical stripe segment">
                 <div class="ui middle aligned stackable grid container">
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <h1>Navigating Content</h1>
-                        </div>
+                    <div class="sixteen wide column">
+                        <h1 class="ui header">Navigating Content</h1>
                     </div>
-                    <div class="row">
-                        <div class="eight wide column">
-                            <p>Geb takes inspiration from jQuery to provide a concise and effective way to get at content. This is called the <a href="manual/current/#navigator" title="The Book Of Geb - Interacting with content">Navigator API</a>.</p>
+                    <div class="eight wide column">
+                        <p>Geb takes inspiration from jQuery to provide a concise and effective way to get at content. This is called the <a href="manual/current/#navigator" title="The Book Of Geb - Interacting with content">Navigator API</a>.</p>
 
-                            <p>The dollar function can be used anywhere to select content based on CSS selectors, attribute matchers and/or indexes.</p>
-                        </div>
-                        <div class="eight wide column">
-                            <div class="ui piled orange segment">
-                                <pre class="brush: groovy">
+                        <p>The dollar function can be used anywhere to select content based on CSS selectors, attribute matchers and/or indexes.</p>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui piled orange segment">
+                            <pre class="brush: groovy">
 // CSS 3 selectors
 \$("div.some-class p:first[title='something']")
 
@@ -339,95 +414,80 @@ Browser.drive {
 \$("div").filter(".c").parents()
 \$("p.c").siblings()
             </pre>
-                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <h4 class="ui horizontal header divider">
-                                <a href="#">Form control shortcuts</a>
-                            </h4>
-                        </div>
+                    <div class="sixteen wide column">
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Form control shortcuts</a>
+                        </h4>
                     </div>
-                    <div class="row">
-                        <div class="eight wide column">
-                            <p>Geb has handy shortcuts for reading and writing form control values.</p>
-                        </div>
-                        <div class="eight wide column">
-                            <div class="ui piled violet segment">
-                                <pre class="brush: groovy">
+                    <div class="eight wide column">
+                        <p>Geb has handy shortcuts for reading and writing form control values.</p>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui piled violet segment">
+                            <pre class="brush: groovy">
 assert \$("form").name == "Jeb"
 \$("form").name = "Geb"
 assert \$("form").name == "Geb"
             </pre>
-                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="fourteen wide center aligned column">
-                            <a class="ui large button" href="manual/current/#navigator">
-                                <i class="location arrow icon"></i>Content Navigation
-                            </a>
-                        </div>
+                    <div class="sixteen wide center aligned column">
+                        <a class="ui large button" href="manual/current/#navigator">
+                            <i class="location arrow icon"></i>Content Navigation
+                        </a>
                     </div>
                 </div>
             </div>
+            </div>
 
-            <div class="ui inverted vertical stripe segment">
+            <div class="ui alternate vertical stripe segment">
                 <div class="ui middle aligned stackable grid container">
-                    <div class="row">
-                        <div class="eight wide column">
-                            <h1>Asynchronicity</h1>
-                        </div>
+                    <div class="sixteen wide column">
+                        <h1 class="ui header">Asynchronicity</h1>
                     </div>
 
-                    <div class="row">
-                        <div class="eight wide column">
-                            <p>Modern web pages are full of asynchronous operations like AJAX requests and animations. Geb provides built in support for this fact of life.</p>
-                            <p>Any content lookup, or operation can be wrapped in a <code>waitFor</code> clause.</p>
-                        </div>
-                        <div class="eight wide column">
-                            <div class="ui piled orange segment">
-                                <pre class="brush: groovy">
+                    <div class="eight wide column">
+                        <p>Modern web pages are full of asynchronous operations like AJAX requests and animations. Geb provides built in support for this fact of life.</p>
+                        <p>Any content lookup, or operation can be wrapped in a <code>waitFor</code> clause.</p>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui piled orange segment">
+                            <pre class="brush: groovy">
 waitFor { 
     \$("p.status").text() == "Async operation complete!" 
 }
                                     </pre>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="eight wide column">
-                            <p>This will keep testing the condition for a certain amount of time (which is configurable) until it passes.</p>
-                            </p>The same technique can be used to just wait for the content, not necessarily for the content to have some characteristic.</p>
-                        </div>
-                        <div class="eight wide column">
-                            <div class="ui piled orange segment">
-                                <pre class="brush: groovy">
+                    <div class="eight wide column">
+                        <p>This will keep testing the condition for a certain amount of time (which is configurable) until it passes.</p>
+                        </p>The same technique can be used to just wait for the content, not necessarily for the content to have some characteristic.</p>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui piled orange segment">
+                            <pre class="brush: groovy">
 def dynamicParagraph = waitFor { \$("p.dynamically-added") }
 dynamicParagraph.text() == "Added dynamically!" 
                                     </pre>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <h4 class="ui horizontal header divider">
-                                <a href="#">Asynchronous content DSL</a>
-                            </h4>
-                        </div>
+                    <div class="sixteen wide column">
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Asynchronous content DSL</a>
+                        </h4>
                     </div>
 
-                    <div class="row">
-                        <div class="eight wide column">
-                            <p>You can also define that content should be implicitly waited for in the Content DSL for page objects</p>
-                            <p>With this definition, when <code>dynamicParagraph</code> is requested Geb will implictly wait for a certain amount of time for it to appear.</p>
-                        </div>
-                        <div class="eight wide column">
-                            <div class="ui piled orange segment">
-                                <pre class="brush: groovy">import geb.Page
+                    <div class="eight wide column">
+                        <p>You can also define that content should be implicitly waited for in the Content DSL for page objects</p>
+                        <p>With this definition, when <code>dynamicParagraph</code> is requested Geb will implictly wait for a certain amount of time for it to appear.</p>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui piled orange segment">
+                            <pre class="brush: groovy">import geb.Page
                             
 class DynamicPage extends Page {
     static content = {
@@ -437,13 +497,12 @@ class DynamicPage extends Page {
     }
 }
                                     </pre>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="sixteen wide column">
                         <a href="manual/current/#waiting" class="ui large button">
-                            <i class="wait icon"></i> Read about Waiting
+                            <i class="hourglass half icon"></i> Waiting
                         </a>
                     </div>
                 </div>
@@ -483,37 +542,37 @@ class LoginSpec extends GebSpec {
                     </div>
                 </div>
 
-                <a href="manual/current/#testing" class="ui center aligned large button">
-                    <i class="lab icon"></i> Testing
-                </a>
+                <div class="ui center aligned text container">
+                    <a href="manual/current/#testing" class="ui large spaced button">
+                        <i class="lab icon"></i> Testing
+                    </a>
+                </div>
             </div>
 
-            <div class="ui inverted vertical stripe segment">
+            <div class="ui vertical alternate stripe segment">
                 <div class="ui middle aligned stackable grid container">
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <h1 class="ui inverted header">Build System Integration</h1>
+                    <div class="sixteen wide column">
+                        <h1 class="ui header">Build System Integration</h1>
 
-                            <p>Geb is easy to integrate into any build system, and information and examples on integrating with the following build/project systems is available</p>
-                        </div>
-                        <div class="eight wide right aligned column">
-                            <a href="http://www.gradle.org/">
-                                <div class="ui medium images">
-                                    <img src="/images/gradle.png" class="offset-next">
-                                </div>
-                            </a>
-                        </div>
-                        <div class="eight wide left aligned column">
-                            <a href="http://maven.apache.org/">
-                                <div class="ui medium images">
-                                    <img src="/images/maven.png" class="offset-next">
-                                </div>
-                            </a>
-                        </div>
+                        <p>Geb is easy to integrate into any build system, and information and examples on integrating with the following build/project systems is available</p>
+                    </div>
+                    <div class="eight wide right aligned column">
+                        <a href="http://www.gradle.org/">
+                            <div class="ui medium images">
+                                <img src="/images/gradle.png" class="offset-next">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="eight wide left aligned column">
+                        <a href="http://maven.apache.org/">
+                            <div class="ui medium images">
+                                <img src="/images/maven.png" class="offset-next">
+                            </div>
+                        </a>
+                    </div>
 
-                        <div class="sixteen wide column">
-                            <a href="manual/current/#build-integrations" class="ui large button"><i class="puzzle icon"></i>Build Integrations</a>
-                        </div>
+                    <div class="sixteen wide column">
+                        <a href="manual/current/#build-integrations" class="ui large button"><i class="puzzle icon"></i>Build Integrations</a>
                     </div>
                 </div>
             </div>
@@ -524,7 +583,7 @@ class LoginSpec extends GebSpec {
                         <div class="three wide column">
                             <h4 class="ui inverted header">Build Status</h4>
                             <div class="ui inverted link list">
-                                <a href="https://app.snap-ci.com/geb/geb/branch/master" target="_blank">
+                                <a target="_blank" href="https://app.snap-ci.com/geb/geb/branch/master" target="_blank">
                                     <img src="https://app.snap-ci.com/geb/geb/branch/master/build_image" alt="Build status" />
                                 </a>
                             </div>
@@ -532,12 +591,12 @@ class LoginSpec extends GebSpec {
                         <div class="three wide column">
                             <h4 class="ui inverted header">Latest Version</h4>
                             <div class="ui inverted link list">
-                                <a href="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core">
+                                <a target="_blank" href="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core">
                                     <img alt="Maven Central" src="https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg">
                                 </a>
                             </div>
                         </div>
-                        <div class="ten wide center aligned column">
+                        <div class="ten wide column">
                             <h4 class="ui inverted header">About Geb</h4>
                             <p>Geb is free, open source software licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0">Apache License, Version 2.0</a>.</p>
                             <p>This site is powered by <a href="http://ratpack.io" title="Ratpack - A toolkit for JVM web applications">Ratpack</a>.</p>
@@ -546,7 +605,7 @@ class LoginSpec extends GebSpec {
                 </div>
             </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/site.min.js"></script>
             <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/visibility.min.js"></script>
             <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/popup.min.js"></script>
