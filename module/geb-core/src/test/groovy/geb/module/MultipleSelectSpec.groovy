@@ -69,6 +69,14 @@ class MultipleSelectSpec extends GebSpecWithCallbackServer {
         noExceptionThrown()
         select.selected == null
     }
+
+    def "selecting null deselects all"() {
+        when:
+        selected.selected = null
+
+        then:
+        selected.selected == []
+    }
 }
 
 class MultipleSelectPage extends Page {

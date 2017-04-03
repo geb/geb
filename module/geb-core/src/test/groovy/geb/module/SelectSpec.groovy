@@ -67,6 +67,15 @@ class SelectSpec extends GebSpecWithCallbackServer {
         noExceptionThrown()
         select.selected == null
     }
+
+    def "selecting null throws helpful exception"() {
+        when:
+        selected.selected = null
+
+        then:
+        def ex = thrown(RuntimeException)
+        assert "Couldn't select null value, available texts: [Option #1, Option #2], available values: [1, 2]" == ex.message
+    }
 }
 
 class SelectPage extends Page {
