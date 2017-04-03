@@ -24,13 +24,6 @@
     </script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/site.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/icon.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/popup.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/menu.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/transition.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/statistic.min.css">
-
     <link rel="stylesheet" href="css/base.css">
 
     <link type="text/css" rel="stylesheet" href="css/shCore.css" />
@@ -45,126 +38,45 @@
 
             <div class="ui inverted vertical masthead center aligned segment">
 
-                <div class="ui large inverted secondary pointing menu">
+                <div class="ui large inverted secondary horizontal pointing menu">
                     <div class="ui container">
                         <a class="toc item">
                             <i class="sidebar icon"></i>
                         </a>
                         <a class="active item">Home</a>
                         <a class="manuals item">Manual <i class="dropdown icon"></i></a>
-                        <a class="apis item">API <i class="dropdown icon"></i></a>
+                        <a class="apis item">
+                            API
+                            <i class="dropdown icon"></i>
+                        </a>
                         <a class="mailing-lists item">Mailing Lists</a>
                         <a class="item" href="http://github.com/geb/geb"><i class="github icon"></i> Code</a>
                         <a class="item" href="https://github.com/geb/issues/issues"><i class="github icon"></i> Issues</a>
                         <a class="item" href="http://twitter.com/GebFramework"><i class="twitter icon"></i>Twitter</a>
                     </div>
+                </div>
 
-                    <div id="apis-popup" class="ui inverted popup bottom left transition hidden">
-                        <div class="ui relaxed equal height divided grid container">
-                            <div class="left aligned two wide grey column">
-                                <h4 class="ui header">Current</h4>
-                                <div class="ui link list">
-                                    <a class="spaced item" href="api/current/">${manuals.current}</a>
-                                </div>
-                            </div>
-                            <div class="left aligned five wide column">
-                                <h4 class="ui header">Previous</h4>
-                                <div class="five wide column">
-                                    <div class="ui grid">
-                                        <% manuals.oldList.each { %>
-                                            <div class="three wide column">
-                                                <a class="vertically fitted spaced item" href="api/$it/">${it}</a>
-                                            </div>
-                                            <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="left aligned three wide column">
-                                <h4 class="ui header">Snapshot</h4>
-                                <div class="ui link list">
-                                    <% if (manuals.snapshot) { %>
-                                        <a class="spaced item" href="api/snapshot/">${manuals.snapshot}</a>
-                                        <% } else { %>
-                                            -
-                                            <% } %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="manuals-popup" class="ui inverted popup bottom left transition hidden">
-                        <div class="ui relaxed equal height divided grid container">
-                            <div class="left aligned two wide grey column">
-                                <h4 class="ui header">Current</h4>
-                                <div class="ui link list">
-                                    <a class="spaced item" href="manual/current/">${manuals.current}</a>
-                                </div>
-                            </div>
-                            <div class="left aligned five wide column">
-                                <h4 class="ui header">Previous</h4>
-                                <div class="ui grid">
-                                    <% manuals.oldList.each { %>
-                                        <div class="three wide column">
-                                            <a class="vertically fitted spaced item" href="manual/$it/">${it}</a>
-                                        </div>
-                                        <% } %>
-                                </div>
-                            </div>
-                            <div class="left aligned three wide column">
-                                <h4 class="ui header">Snapshot</h4>
-                                <div class="ui link list">
-                                    <% if (manuals.snapshot) { %>
-                                        <a class="spaced item" href="manual/snapshot/">${manuals.snapshot}</a>
-                                        <% } else { %>
-                                            -
-                                            <% } %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="mailing-lists-popup" class="ui fluid popup bottom left transition hidden">
-                        <div class="ui four column relaxed equal height divided grid">
-                            <div class="column">
-                                <h4 class="ui header">Fabrics</h4>
-                                <div class="ui link list">
-                                    <a class="item">Cashmere</a>
-                                    <a class="item">Linen</a>
-                                    <a class="item">Cotton</a>
-                                    <a class="item">Viscose</a>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <h4 class="ui header">Size</h4>
-                                <div class="ui link list">
-                                    <a class="item">Small</a>
-                                    <a class="item">Medium</a>
-                                    <a class="item">Large</a>
-                                    <a class="item">Plus Sizes</a>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <h4 class="ui header">Colored</h4>
-                                <div class="ui link list">
-                                    <a class="item">Neutrals</a>
-                                    <a class="item">Brights</a>
-                                    <a class="item">Pastels</a>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <h4 class="ui header">Types</h4>
-                                <div class="ui link list">
-                                    <a class="item">Knitwear</a>
-                                    <a class="item">Outerwear</a>
-                                    <a class="item">Pants</a>
-                                    <a class="item">Shoes</a>
-                                </div>
-                            </div>
-                        </div>
+                <div id="apis-menu" class="ui horizontal secondary inverted hidden transition menu">
+                    <div class="ui container">
+                        <a href="api/current/" class="item">
+                            <div class="ui green horizontal label">current</div>
+                            ${manuals.current}
+                        </a>
+                        <% manuals.oldList.each { %>
+                            <a href="api/$it/" class="item">
+                                ${it}
+                            </a>
+                            <% } %>
+                                <% if (manuals.snapshot) { %>
+                                    <a href="api/snapshot/" class="item">
+                                        <div class="ui yellow horizontal label">snapshot</div>
+                                        ${manuals.snapshot}
+                                    </a>
+                                    <% } %>
                     </div>
                 </div>
 
-                <div class="ui center aligned grid">
+                <div class="ui inverted center aligned text container">
                     <img class="logo-header" src="/images/logo.png" alt="GEB" title='pronounced "Jeb"' />
 
                     <div class="row">
@@ -211,14 +123,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="sixteen wide column">
-                    <a href="manual/current/">
-                        <div class="ui huge primary button">Get Started <i class="right chevron icon"></i></div>
-                    </a>
-                </div>
+                    <div class="sixteen wide column">
+                        <a href="manual/current/">
+                            <div class="ui huge primary button">Get Started <i class="right chevron icon"></i></div>
+                        </a>
+                    </div>
 
+                </div>
             </div>
 
             <div class="ui vertical stripe segment">
@@ -606,10 +518,7 @@ class LoginSpec extends GebSpec {
             </div>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/site.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/visibility.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/popup.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/components/transition.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
             <script language="javascript" src="js/shCore.js"></script>
             <script language="javascript" src="js/shBrushGroovy.js"></script>
             <script type="text/javascript" charset="utf-8">
