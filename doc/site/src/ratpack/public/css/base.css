@@ -56,3 +56,11 @@ p {
 .ui.masthead .primary.button {
     margin-top: 30px;
 }
+
+.ui.buttons.docs-rocker > .or {
+    font-size: 1.2em;
+}
+
+.ui[class*="geb-yellow"].button {
+    color: #FFFFA3;
+}
