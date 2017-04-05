@@ -16,15 +16,18 @@
 
 buildscript {
     repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "http://oss.jfrog.org/artifactory/repo" }
         jcenter()
     }
     dependencies {
         classpath 'io.ratpack:ratpack-gradle:1.4.5'
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.1.1'
     }
 }
 
 apply plugin: "io.ratpack.ratpack-groovy"
+apply plugin: "com.moowork.node"
 
 ext {
     // The old versions of Geb we are including manuals for
@@ -63,6 +66,29 @@ dependencies {
     currentManual project(":doc:manual")
     oldManualVersions.each {
         delegate."manual-$it" "org.gebish:geb-manual:$it@zip"
+    }
+}
+
+node {
+    version = '7.8.0'
+
+    download = true
+
+    nodeModulesDir = file("src/npm")
+}
+
+npmInstall {
+    inputs.file 'src/npm/package.json'
+    outputs.dir 'src/npm/node_modules'
+}
+
+processResources {
+    from(npmInstall) {
+        includeEmptyDirs = false
+        include 'jquery/dist/jquery.min.js'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
+        }
     }
 }
 
@@ -118,5 +144,11 @@ task prepareDeployment(type: Sync) {
 if (project.gradle.startParameter.continuous) {
     run {
         flattenClassloaders = true
+    }
+}
+
+idea {
+    module {
+        excludeDirs += file('src/npm/node_modules')
     }
 }
