@@ -115,6 +115,8 @@ task prepareDeployment(type: Sync) {
     with distributions.main.contents
 }
 
-run {
-    flattenClassloaders = true
+if (project.gradle.startParameter.continuous) {
+    run {
+        flattenClassloaders = true
+    }
 }
