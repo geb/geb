@@ -114,3 +114,7 @@ task prepareDeployment(type: Sync) {
     into rootProject.file("deploy")
     with distributions.main.contents
 }
+
+run {
+    flattenClassloaders = true
+}
