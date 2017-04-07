@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp --gulpfile ./semantic/gulpfile.js build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jquery": "3.2.1"
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.2.2",
+    "jquery": "3.2.1",
+    "semantic-ui": "^2.2.10"
   }
 }
