@@ -28,6 +28,7 @@ buildscript {
 
 apply plugin: "io.ratpack.ratpack-groovy"
 apply plugin: "com.moowork.node"
+apply plugin: "com.moowork.gulp"
 
 ext {
     // The old versions of Geb we are including manuals for
@@ -82,6 +83,19 @@ npmInstall {
     outputs.dir 'src/npm/node_modules'
 }
 
+task bundleSemantic(type: GulpTask) {
+  args = ["build"]
+  outputs.dir 'src/npm/semantic'
+}
+
+gulp_default.dependsOn 'npmInstall'
+gulp_default.dependsOn 'installGulp'
+processResources.dependsOn bundleSemantic
+
+gulp {
+  workDir = file("src/npm/semantic")
+}
+
 processResources {
     from(npmInstall) {
         includeEmptyDirs = false
@@ -89,6 +103,14 @@ processResources {
         eachFile {
             it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
         }
+    }
+    from(bundleSemantic) {
+        include 'semantic.min.css'
+        into 'public/css'
+    }
+    from(bundleSemantic) {
+        include 'semantic.min.js'
+        into 'public/js'
     }
 }
 
