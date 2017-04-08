@@ -78,22 +78,19 @@ node {
     nodeModulesDir = file("src/npm")
 }
 
-npmInstall {
-    inputs.file 'src/npm/package.json'
-    outputs.dir 'src/npm/node_modules'
+gulp {
+    workDir = file("src/npm/semantic")
 }
 
 task bundleSemantic(type: GulpTask) {
-  args = ["build"]
-  outputs.dir 'src/npm/semantic'
-}
+    dependsOn npmInstall
 
-gulp_default.dependsOn 'npmInstall'
-gulp_default.dependsOn 'installGulp'
-processResources.dependsOn bundleSemantic
+    inputs.dir 'src/npm/semantic/src'
+    inputs.dir 'src/npm/semantic/tasks'
+    inputs.file 'src/npm/semantic/gulpfile.js'
+    outputs.dir 'src/npm/semantic/dist'
 
-gulp {
-  workDir = file("src/npm/semantic")
+    args = ["build"]
 }
 
 processResources {
