@@ -724,9 +724,7 @@ class NonEmptyNavigator extends AbstractNavigator {
                 select.deselectAll()
                 return
             }
-            def availableValues = select.options*.getAttribute("value")
-            def availableTexts = select.options*.getText()
-            throw new IllegalArgumentException("Couldn't select null value, available texts: $availableTexts, available values: $availableValues")
+            nonexistentSelectOptionSelected(value.toString(), select)
         }
 
         def multiple = select.multiple
@@ -744,9 +742,7 @@ class NonEmptyNavigator extends AbstractNavigator {
                 try {
                     select.selectByVisibleText(valueString)
                 } catch (NoSuchElementException e2) {
-                    def availableValues = select.options*.getAttribute("value")
-                    def availableTexts = select.options*.getText()
-                    throw new IllegalArgumentException("Couldn't select option with text or value: $valueString, available texts: $availableTexts, available values: $availableValues")
+                    nonexistentSelectOptionSelected(valueString, select)
                 }
             }
         }
@@ -760,6 +756,12 @@ class NonEmptyNavigator extends AbstractNavigator {
                 }
             }
         }
+    }
+
+    private void nonexistentSelectOptionSelected(String valueString, select) {
+        def availableValues = select.options*.getAttribute("value")
+        def availableTexts = select.options*.getText()
+        throw new IllegalArgumentException("Couldn't select option with text or value: $valueString, available texts: $availableTexts, available values: $availableValues")
     }
 
     protected boolean unselect(WebElement input) {
