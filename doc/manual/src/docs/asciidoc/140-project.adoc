@@ -71,6 +71,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:JacobAae[Jacob Aae Mikkelsen] - Various fixes and improvements
 * github-profile:pradtke[Patrick Radtke] - Doc improvements
 * github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page
+* github-profile:mahileeb[Lee Butts] - Improved error message when trying to select null on a single-select select element
 
 == History
 
@@ -80,7 +81,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Improved error message when trying to select null on a single-select select element. [issue:477[]]
 
 === 1.1.1
 
