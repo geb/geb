@@ -21,17 +21,17 @@ import geb.navigator.Navigator
 
 interface FrameSupport {
 
-    def withFrame(frame, Closure block)
+    public <T> T withFrame(frame, Closure<T> block)
 
-    def withFrame(frame, Class<? extends Page> page, Closure block)
+    public <T> T withFrame(frame, Class<? extends Page> page, Closure<T> block)
 
-    def withFrame(frame, Page page, Closure block)
+    public <T> T withFrame(frame, Page page, Closure<T> block)
 
-    def withFrame(Navigator frame, Class<? extends Page> page, Closure block)
+    public <T> T withFrame(Navigator frame, Class<? extends Page> page, Closure<T> block)
 
-    def withFrame(Navigator frame, Page page, Closure block)
+    public <T> T withFrame(Navigator frame, Page page, Closure<T> block)
 
-    def withFrame(Navigator frame, Closure block)
+    public <T> T withFrame(Navigator frame, Closure<T> block)
 
-    def withFrame(TemplateDerivedPageContent frame, Closure block)
+    public <T> T withFrame(TemplateDerivedPageContent frame, Closure<T> block)
 }

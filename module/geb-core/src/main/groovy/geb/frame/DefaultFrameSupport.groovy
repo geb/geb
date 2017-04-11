@@ -32,27 +32,27 @@ class DefaultFrameSupport implements FrameSupport {
         this.browser = browser
     }
 
-    def withFrame(frame, Class<? extends Page> page = null, Closure block) {
+    public <T> T withFrame(frame, Class<? extends Page> page = null, Closure<T> block) {
         executeWithFrame(frame, page, block)
     }
 
-    def withFrame(frame, Page page, Closure block) {
+    public <T> T withFrame(frame, Page page, Closure<T> block) {
         executeWithFrame(frame, page, block)
     }
 
-    def withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure block) {
+    public <T> T withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure<T> block) {
         executeWithFrame(frameNavigator, page, block)
     }
 
-    def withFrame(Navigator frameNavigator, Page page, Closure block) {
+    public <T> T withFrame(Navigator frameNavigator, Page page, Closure<T> block) {
         executeWithFrame(frameNavigator, page, block)
     }
 
-    def withFrame(TemplateDerivedPageContent frame, Closure block) {
+    public <T> T withFrame(TemplateDerivedPageContent frame, Closure<T> block) {
         executeWithFrame(frame, frame.templateParams.page, block)
     }
 
-    private executeWithFrame(frame, def page, Closure block) {
+    private <T> T executeWithFrame(frame, def page, Closure<T> block) {
         def originalPage = browser.page
         browser.driver.switchTo().frame(frame)
         if (page) {
@@ -73,7 +73,7 @@ class DefaultFrameSupport implements FrameSupport {
         }
     }
 
-    private executeWithFrame(Navigator frameNavigator, def page, Closure block) {
+    private <T> T executeWithFrame(Navigator frameNavigator, def page, Closure<T> block) {
         WebElement element = frameNavigator.firstElement()
         if (element == null) {
             throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")

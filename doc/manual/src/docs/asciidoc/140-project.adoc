@@ -86,6 +86,10 @@ This page lists the high level changes between versions of Geb.
 * Improved error message when trying to select null on a single-select select element. [issue:477[]]
 * Return a list of results instead of `null` from `newWindow()` methods taking a window matching specification closure. [issue:476[]]
 
+==== Improvements
+
+* Change signatures of methods from `FrameSupport` to be more strongly typed. [issue:470[]]
+
 === 1.1.1
 
 ==== Fixes
