@@ -35,13 +35,13 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         withWindow(specification) { called++ }
 
         then:
-        called == expecetedCalls
+        called == expectedCalls
 
         where:
-        expecetedCalls | specification
-        3              | { true }
-        1              | { title == windowTitle() }
-        2              | { title in [windowTitle(1), windowTitle(2)] }
+        expectedCalls | specification
+        3             | { true }
+        1             | { title == windowTitle() }
+        2             | { title in [windowTitle(1), windowTitle(2)] }
     }
 
     @Unroll
