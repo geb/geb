@@ -31,17 +31,16 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         openAllWindows()
 
         when:
-        def called = 0
-        withWindow(specification) { called++ }
+        def results = withWindow(specification) { title }
 
         then:
-        called == expectedCalls
+        results.sort() == returnValues
 
         where:
-        expectedCalls | specification
-        3             | { true }
-        1             | { title == windowTitle() }
-        2             | { title in [windowTitle(1), windowTitle(2)] }
+        returnValues                                    | specification
+        [windowTitle(), windowTitle(1), windowTitle(2)] | { true }
+        [windowTitle()]                                 | { title == windowTitle() }
+        [windowTitle(1), windowTitle(2)]                | { title in [windowTitle(1), windowTitle(2)] }
     }
 
     @Unroll

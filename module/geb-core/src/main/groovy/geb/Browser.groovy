@@ -710,9 +710,9 @@ class Browser {
      * @param specification closure executed once in context of each window, if it returns groovy truth for a given
      * window then also the block closure is executed in the context of that window
      * @param block closure to be executed in the window context
-     * @return The return value of {@code block}
+     * @return List containing values returned from {@code block} for each window for which {@code specification} returns groovy truth
      */
-    def withWindow(Closure specification, Closure block) {
+    List<?> withWindow(Closure specification, Closure block) {
         withWindow([:], specification, block)
     }
 
@@ -724,12 +724,13 @@ class Browser {
      * @param specification closure executed once in context of each window, if it returns groovy truth for a given
      * window then also the block closure is executed in the context of that window
      * @param block closure to be executed in the window context
-     * @return The return value of {@code block}
+     * @return List containing values returned from {@code block} for each window for which {@code specification} returns groovy truth
      */
-    def withWindow(Map options, Closure specification, Closure block) {
+    List<?> withWindow(Map options, Closure specification, Closure block) {
         def anyMatching = false
         def original = currentWindow
         def originalPage = getPage()
+        def blockResults = []
 
         try {
             availableWindows.each {
@@ -738,7 +739,7 @@ class Browser {
                     verifyAtIfPresent(options.page)
 
                     try {
-                        block.call()
+                        blockResults << block.call()
                     } finally {
                         if (options.close) {
                             driver.close()
@@ -754,6 +755,7 @@ class Browser {
         if (!anyMatching) {
             throw new NoSuchWindowException('Could not find a window that would match the specification')
         }
+        blockResults
     }
 
     /**
