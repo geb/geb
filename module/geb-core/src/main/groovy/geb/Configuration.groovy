@@ -215,6 +215,17 @@ class Configuration {
     }
 
     /**
+     * The driver is to be cached, this setting controls whether or not the driver is cached per thread but reseting the browser
+     * (quiting and opening a new instance),
+     * or per
+     * <p>
+     * The value is the config entry {@code cacheDriverPerThread}, which defaults to {@code true}.
+     */
+    boolean isCacheDriverPerThreadWithReset() {
+        readValue('cacheDriverPerThreadWithReset', false)
+    }
+
+    /**
      * The driver is to be cached, this setting controls whether or not the driver is cached per thread,
      * or per
      * <p>
@@ -479,7 +490,12 @@ class Configuration {
 
     protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
         if (isCacheDriver()) {
-            isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
+            isCacheDriverPerThread() ?
+                CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : (
+                    isCacheDriverPerThreadWithReset() ?
+                    CachingDriverFactory.perThreadWithReset(factory, isQuitCachedDriverOnShutdown()) :
+                    CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
+                )
         } else {
             factory
         }

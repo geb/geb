@@ -41,6 +41,32 @@ class CachingDriverFactory implements DriverFactory {
         }
     }
 
+    static private class ThreadLocalCacheWithReset<T> implements Cache<T> {
+        private ThreadLocal<T> threadLocal = new ThreadLocal()
+
+        synchronized T get(Closure<? extends T> factory) {
+            def cached = threadLocal.get()
+
+            if (cached != null) {
+                try{
+                    cached.quit()
+                }catch(Throwable e){
+                }
+                cached = null
+            }
+
+            cached = factory()
+            threadLocal.set(cached)
+            cached
+        }
+
+        synchronized T clear() {
+            def prev = threadLocal.get()
+            threadLocal.set(null)
+            prev
+        }
+    }
+
     static private class ThreadLocalCache<T> implements Cache<T> {
         private ThreadLocal<T> threadLocal = new ThreadLocal()
 
@@ -74,6 +100,10 @@ class CachingDriverFactory implements DriverFactory {
 
     static CachingDriverFactory global(DriverFactory innerFactory, boolean quitOnShutdown) {
         new CachingDriverFactory(CACHE.get { new SimpleCache<WebDriver>() }, innerFactory, quitOnShutdown)
+    }
+
+    static CachingDriverFactory perThreadWithReset(DriverFactory innerFactory, boolean quitOnShutdown) {
+        new CachingDriverFactory(CACHE.get { new ThreadLocalCacheWithReset<WebDriver>() }, innerFactory, quitOnShutdown)
     }
 
     static CachingDriverFactory perThread(DriverFactory innerFactory, boolean quitOnShutdown) {
