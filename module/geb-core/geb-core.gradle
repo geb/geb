@@ -49,7 +49,7 @@ sauceLabs {
 }
 
 browserStack {
-    def applicationAddresses = [8000, 8080, 8888, 9000, 9090].collect { "http://localhost:$it" }
+    def applicationAddresses = [8000, 8080, 9000, 9090, 9999].collect { "http://localhost:$it" }
     application(*applicationAddresses)
 
     browsers {
