@@ -109,6 +109,14 @@ processResources {
         include 'semantic.min.js'
         into 'public/js'
     }
+    from(bundleSemantic) {
+        include 'themes/default/assets/fonts/**'
+        into 'public/css'
+    }
+    from(bundleSemantic) {
+        include 'themes/default/assets/images/**'
+        into 'public/css'
+    }
 }
 
 task gatherManuals(type: Sync) {

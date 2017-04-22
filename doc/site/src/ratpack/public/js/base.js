@@ -1,19 +1,19 @@
 $('.menu .apis').click(function() {
-    $('#manuals-menu').hide();
-    $('#mailing-lists-menu').hide();
-    $('#apis-menu').transition('fade down');
+    $('#manuals-menu').transition('hide');
+    $('#mailing-lists-menu').transition('hide');
+    $('#apis-menu').transition('swing down');
 });
 
 $('.menu .manuals').click(function() {
-    $('#apis-menu').hide();
-    $('#mailing-lists-menu').hide();
-    $('#manuals-menu').transition('fade down');
+    $('#apis-menu').transition('hide');
+    $('#mailing-lists-menu').transition('hide');
+    $('#manuals-menu').transition('swing down');
 });
 
 $('.menu .mailing-lists').click(function() {
-    $('#manuals-menu').hide();
-    $('#apis-menu').hide();
-    $('#mailing-lists-menu').transition('fade down');
+    $('#manuals-menu').transition('hide');
+    $('#apis-menu').transition('hide');
+    $('#mailing-lists-menu').transition('swing down');
 });
 
 $.get('https://api.github.com/repos/geb/geb')
