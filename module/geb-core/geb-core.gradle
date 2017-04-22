@@ -15,7 +15,7 @@ dependencies {
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
 
-    sauceConnect "com.saucelabs:ci-sauce:1.81"
+    sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
 
 test {
@@ -44,7 +44,7 @@ sauceLabs {
         accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
     }
     connect {
-        timeout 15 // minutes
+        timeout 10 // minutes
     }
 }
 
