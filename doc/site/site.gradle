@@ -101,6 +101,18 @@ processResources {
             it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
         }
     }
+    from(npmInstall) {
+        includeEmptyDirs = false
+        include '@browser-logos/android/android_128x128.png'
+        include '@browser-logos/chrome/chrome_128x128.png'
+        include '@browser-logos/safari/safari_128x128.png'
+        include '@browser-logos/safari-ios/safari-ios_128x128.png'
+        include '@browser-logos/edge/edge_128x128.png'
+        include '@browser-logos/firefox/firefox_128x128.png'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'images', it.sourceName)
+        }
+    }
     from(bundleSemantic) {
         include 'semantic.min.css'
         into 'public/css'
