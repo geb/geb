@@ -55,17 +55,17 @@
 
                 <div id="apis-menu" class="ui horizontal secondary inverted hidden transition menu">
                     <div class="ui container">
-                        <a href="api/current/" class="item">
+                        <a href="manual/current/api/" class="item">
                             <div class="ui green horizontal label">current</div>
                             ${manuals.current}
                         </a>
                         <% manuals.oldList.each { %>
-                            <a href="api/$it/" class="item">
+                            <a href="manual/$it/api/" class="item">
                                 ${it}
                             </a>
                             <% } %>
                                 <% if (manuals.snapshot) { %>
-                                    <a href="api/snapshot/" class="item">
+                                    <a href="manual/snapshot/api/" class="item">
                                         <div class="ui yellow horizontal label">snapshot</div>
                                         ${manuals.snapshot}
                                     </a>
