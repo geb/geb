@@ -11,4 +11,3 @@ build.sh
 out
 *.ipr
 *.hprof
-doc/site/src/npm/semantic
