@@ -17,20 +17,10 @@ package geb.site
 
 class Model {
 
-    public final static Map<String, String> HIGHLIGHT_PAGES = [
-            crossbrowser: "Cross Browser",
-            content     : "jQuery-like API",
-            pages       : "Page Objects",
-            async       : "Asynchronous Pages",
-            testing     : "Testing",
-            integration : "Build Integration"
-    ]
-
-    static Map<String, Object> get(Manuals manuals, String page) {
+    static Map<String, Object> get(Manuals manuals, boolean notFound = false) {
         [
                 manuals: manuals,
-                pages  : [Highlights: HIGHLIGHT_PAGES],
-                page   : page
+                notFound: notFound
         ]
     }
 }

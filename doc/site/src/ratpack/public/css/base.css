@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css?family=Maven+Pro');
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    font-family: 'Maven Pro', sans-serif;
+}
+
+p {
+    font-size: 16px;
+}
+
+.logo-header {
+    margin: 30px;
+    margin-top: 50px;
+}
+
+.ui[class*="quadruple spaced"].image {
+    margin: 20px;
+}
+
+.ui.medium.images .image,
+.ui.medium.images img,
+.ui.medium.images svg,
+.ui.medium.image {
+    width: 200px;
+    height: auto;
+    font-size: 1rem;
+}
+
+.ui.images>img.offset-next {
+    margin-top: 20px;
+}
+
+.ui.footer.segment,
+.ui.vertical.stripe.segment {
+    padding-top: 70px;
+}
+
+.ui.footer.segment,
+.ui.vertical.stripe.segment,
+.ui.masthead {
+    padding-bottom: 70px;
+}
+
+.ui.alternate.stripe {
+    background-color: #F2F3F5;
+}
+
+.ui.slogan {
+    font-size: 16px;
+}
+
+.ui.masthead .primary.button {
+    margin-top: 30px;
+}
+
+.ui.buttons.docs-rocker > .or {
+    font-size: 1.2em;
+}
+
+.ui[class*="geb-yellow"].button {
+    color: #FFFFA3;
+}

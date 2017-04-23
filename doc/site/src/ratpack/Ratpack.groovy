@@ -43,21 +43,9 @@ ratpack {
             indexFiles("index.html")
         }
 
-        get(':page?') { Context context, Date startupTime, Manuals manuals ->
+        get { Context context, Date startupTime, Manuals manuals ->
             lastModified(startupTime) {
-                def pageToken = pathTokens.page ?: 'index'
-
-                String path = context.request.path
-                if (path.endsWith('/')) {
-                    String redirectTo = "/${path.replaceFirst(/\/$/, "")}"
-                    context.redirect redirectTo
-                } else {
-                    if (pageToken in (Model.HIGHLIGHT_PAGES.keySet() + ['index', 'lists'])) {
-                        render groovyTemplate(Model.get(manuals, pageToken), 'main.html')
-                    } else {
-                        context.notFound()
-                    }
-                }
+                render groovyTemplate(Model.get(manuals), 'main.html')
             }
         }
     }

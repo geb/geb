@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.pages
+package geb.modules
 
-import geb.Page
+import geb.Module
 
-class NotFoundPage extends Page {
+class MenuModule extends Module {
+    static content = {
+        manuals { expandableMenuItem(2, "manuals-menu") }
+        apis { expandableMenuItem(3, "apis-menu") }
+    }
 
-    static at = { $('h1', 0).text() == 'Page not found' }
+    private ExpandableMenuItemModule expandableMenuItem(int index, String linksContainerId) {
+        $("a", index).module(new ExpandableMenuItemModule(linksContainerId: linksContainerId))
+    }
 }
