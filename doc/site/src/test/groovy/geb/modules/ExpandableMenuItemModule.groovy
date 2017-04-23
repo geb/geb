@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.pages
+package geb.modules
 
-import geb.Page
-import geb.modules.MenuItemModule
+import geb.Module
 
-class ContentPage extends Page {
+class ExpandableMenuItemModule extends Module {
 
-    static at = { title == 'Geb - Very Groovy Browser Automation' }
+    String linksContainerId
 
     static content = {
-        firstHeaderText { $('#main h1', 0).text() }
-        menuItems { $('#header-content > ul > li').moduleList(MenuItemModule) }
+        linksContaner { closest("div.masthead").find(id: linksContainerId) }
+        links { linksContaner.find("a") }
     }
 }

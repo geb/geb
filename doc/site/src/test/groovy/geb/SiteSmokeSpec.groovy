@@ -16,11 +16,12 @@
 package geb
 
 import geb.pages.ApiPage
-import geb.pages.ContentPage
+import geb.pages.MainPage
 import geb.pages.ManualPage
 import geb.pages.NotFoundPage
 import geb.spock.GebSpec
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import ratpack.groovy.test.GroovyRatpackMainApplicationUnderTest
 import spock.lang.Shared
 import spock.lang.Stepwise
@@ -34,18 +35,17 @@ class SiteSmokeSpec extends GebSpec {
     @Shared
     def app = new GroovyRatpackMainApplicationUnderTest()
 
-    private getMenuItemElements() {
-        def html = Jsoup.parse(testHttpClient(app).get().body.text)
-        html.select('#header-content > ul > li')
+    private Document parseMainPage() {
+        Jsoup.parse(testHttpClient(app).get().body.text)
     }
 
     private manualLinksData() {
-        def links = menuItemElements.first().select('a')
-        links.collect { [it.text() - ' - current', it.attr('href')] }
+        def links = parseMainPage().select("#manuals-menu a")
+        links.collect { [(it.text() - 'current' - 'snapshot').trim(), it.attr('href')] }
     }
 
     private apiLinksData() {
-        menuItemElements.get(1).select('a')*.attr('href')
+        parseMainPage().select("#apis-menu a")*.attr('href')
     }
 
     def setup() {
@@ -61,10 +61,11 @@ class SiteSmokeSpec extends GebSpec {
         go()
 
         then:
-        at ContentPage
+        at MainPage
         firstHeaderText == 'What is it?'
     }
 
+    @Unroll
     void 'requesting a non-existing page - #pagePath'() {
         when:
         go(pagePath)
@@ -76,36 +77,16 @@ class SiteSmokeSpec extends GebSpec {
         pagePath << ['idontexist', 'manuals', 'manuals/']
     }
 
-    @Unroll
-    void 'highlight pages - #pagePath'() {
-        when:
-        go(pagePath)
-
-        then:
-        at ContentPage
-        firstHeaderText == pageHeader
-
-        where:
-        pagePath        | pageHeader
-        'crossbrowser'  | 'Cross Browser Automation'
-        'crossbrowser/' | 'Cross Browser Automation'
-        'content'       | 'Navigating Content'
-        'pages'         | 'Page Objects'
-        'async'         | 'Asynchronicity'
-        'testing'       | 'Testing'
-        'integration'   | 'Build System Integration'
-    }
-
     void 'manual and api links are available'() {
         when:
         go()
 
         then:
-        at ContentPage
-        menuItems[0].name == 'Manual'
-        menuItems[0].links
-        menuItems[1].name == 'API'
-        menuItems[1].links
+        at MainPage
+        menu.manuals.text() == 'Manual'
+        menu.manuals.links
+        menu.apis.text() == 'API'
+        menu.apis.links
     }
 
     @Unroll

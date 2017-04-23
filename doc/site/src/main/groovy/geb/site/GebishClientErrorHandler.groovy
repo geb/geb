@@ -25,7 +25,7 @@ class GebishClientErrorHandler implements ClientErrorHandler {
     void error(Context context, int statusCode) throws Exception {
         context.response.status(statusCode)
         if (statusCode == 404) {
-            def model = Model.get(context.get(Manuals), "notfound")
+            def model = Model.get(context.get(Manuals), true)
             context.render groovyTemplate(model, 'main.html')
         } else {
             context.response.send()
