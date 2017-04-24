@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/geb
+    docker:
+      - image: gebish/ci:v1
+    steps:
+      - checkout
+      - run:
+        name: Check all modules
+        command: ./gradlew --no-daemon -p module -Pci -g ${SNAP_CACHE_DIR}/.gradle check --continue
