@@ -6,10 +6,15 @@ jobs:
       - image: gebish/ci:v1
         environment:
           GRADLE_OPTS: -Xmx512m
+          JAVA_OPTS: -Dfile.encoding=utf8
     steps:
       - checkout
       - restore_cache:
           keys:
+            - ie-browserstack-{{ .Branch }}
+            - non-ie-browserstack-{{ .Branch }}
+            - saucelabs-{{ .Branch }}
+            - site-{{ .Branch }}
             - manual-{{ .Branch }}
             - integrations-{{ .Branch }}
             - modules-{{ .Branch }}
@@ -38,5 +43,37 @@ jobs:
             ./gradlew --no-daemon -Pci -g .gradle-home :doc:manual-snippets:check :doc:manual:build
       - save_cache:
           key: manual-{{ .Branch }}
+          paths:
+            - ".gradle-home"
+      - run:
+          name: Check site
+          command: |
+            ./gradlew --no-daemon -p doc/site -Pci -g .gradle-home check
+      - save_cache:
+          key: site-{{ .Branch }}
+          paths:
+            - ".gradle-home"
+      - run:
+          name: Cross browser tests at SauceLabs
+          command: |
+            ./gradlew --no-daemon -Pci -g .gradle-home allSauceLabsTests
+      - save_cache:
+          key: saucelabs-{{ .Branch }}
+          paths:
+            - ".gradle-home"
+      - run:
+          name: Non-IE tests at BrowserStack
+          command: |
+            ./gradlew --no-daemon -Pci -g .gradle-home nonIeBrowserStackTests --info
+      - save_cache:
+          key: non-ie-browserstack-{{ .Branch }}
+          paths:
+            - ".gradle-home"
+      - run:
+          name: IE tests at BrowserStack
+          command: |
+            ./gradlew --no-daemon -Pci -g .gradle-home ieBrowserStackTests --info
+      - save_cache:
+          key: ie-browserstack-{{ .Branch }}
           paths:
             - ".gradle-home"
