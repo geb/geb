@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/geb
     docker:
       - image: gebish/ci:v1
+        environment:
+          GRADLE_OPTS: -Xmx512m
     steps:
       - checkout
       - run:

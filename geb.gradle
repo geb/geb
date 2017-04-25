@@ -232,8 +232,10 @@ subprojects {
                 showStackTraces = true
                 exceptionFormat "full"
             }
+            maxHeapSize = "512m"
         }
     }
+
 }
 
 task release {
