@@ -8,6 +8,35 @@ jobs:
           GRADLE_OPTS: -Xmx512m
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - manual-{{ .Branch }}
+            - integrations-{{ .Branch }}
+            - modules-{{ .Branch }}
       - run:
-          name: Check all modules
-          command: ./gradlew --no-daemon -p module -Pci -g ${SNAP_CACHE_DIR}/.gradle check --continue
+          name: Check modules
+          command: |
+            ./gradlew --no-daemon -p module -Pci -g .gradle-home check --continue
+            ./gradlew --no-daemon -p compatibility -Pci -g .gradle-home check --continue
+      - save_cache:
+          key: modules-{{ .Branch }}
+          paths:
+            - ".gradle-home"
+      - run:
+          name: Check integrations
+          command: |
+            ./gradlew --no-daemon -p integration -Pci -g .gradle-home check --continue
+      - save_cache:
+          key: integrations-{{ .Branch }}
+          paths:
+            - ".gradle-home"
+      - run:
+          name: Check manual
+          command: |
+            Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
+            export DISPLAY=:99
+            ./gradlew --no-daemon -Pci -g .gradle-home :doc:manual-snippets:check :doc:manual:build
+      - save_cache:
+          key: manual-{{ .Branch }}
+          paths:
+            - ".gradle-home"
