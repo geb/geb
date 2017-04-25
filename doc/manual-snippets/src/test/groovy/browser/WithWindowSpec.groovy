@@ -54,7 +54,7 @@ class WithWindowSpec extends DriveMethodSupportingSpecWithServer {
             go()
             $("a").click()
             withWindow({ title == "Geb - Very Groovy Browser Automation" }) {
-                assert $("#slogan").text().startsWith("very groovy browser automation…")
+                assert $(".slogan").text().startsWith("Very Groovy browser automation.")
             }
         }
         // end::using_closure[]

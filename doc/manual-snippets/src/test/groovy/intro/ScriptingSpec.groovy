@@ -20,9 +20,10 @@ import geb.Browser
 // end::imports[]
 import geb.driver.CachingDriverFactory
 import intro.page.GebHomePage
-
+import spock.lang.Ignore
 import spock.lang.Specification
 
+@Ignore
 class ScriptingSpec extends Specification {
 
     void setupSpec() {

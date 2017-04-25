@@ -21,7 +21,9 @@ import geb.driver.CachingDriverFactory
 import geb.spock.GebSpec
 // end::imports[]
 import intro.page.GebHomePage
+import spock.lang.Ignore
 
+@Ignore
 // tag::class[]
 class GebHomepageSpec extends GebSpec {
 
