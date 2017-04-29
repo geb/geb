@@ -1,9 +1,45 @@
 ---
 image: gebish/ci:v1
+
 stages:
-  - check
+  - main check
+  - other checks
+  - cross browser
+
 modules:
-  stage: check
+  stage: main check
   script:
     - ./gradlew --no-daemon -p module -Pci -g .gradle-home check --continue
     - ./gradlew --no-daemon -p compatibility -Pci -g .gradle-home check --continue
+
+integrations:
+  stage: other checks
+  script:
+    - ./gradlew --no-daemon -p integration -Pci -g .gradle-home check --continue
+
+manual:
+  stage: other checks
+  script:
+    - Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
+    - export DISPLAY=:99
+    - ./gradlew --no-daemon -Pci -g .gradle-home :doc:manual-snippets:check :doc:manual:build
+
+site:
+  stage: other checks
+  script:
+    - ./gradlew --no-daemon -p doc/site -Pci -g .gradle-home check
+
+saucelabs:
+  stage: cross browser
+  script:
+    - ./gradlew --no-daemon -Pci -g .gradle-home allSauceLabsTests
+
+non-ie:
+  stage: cross browser
+  script:
+    - ./gradlew --no-daemon -Pci -g .gradle-home nonIeBrowserStackTests
+
+ie:
+  stage: cross browser
+  script:
+    - ./gradlew --no-daemon -Pci -g .gradle-home ieBrowserStackTests
