@@ -1,0 +1,7 @@
+image: gebish/ci:v1
+
+modules:
+  stage: check
+  script:
+    - ./gradlew --no-daemon -p module -Pci -g .gradle-home check --continue
+    - ./gradlew --no-daemon -p compatibility -Pci -g .gradle-home check --continue
