@@ -1,5 +1,7 @@
+---
 image: gebish/ci:v1
-
+stages:
+  - check
 modules:
   stage: check
   script:
