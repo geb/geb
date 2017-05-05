@@ -57,6 +57,10 @@ class CssSelectorSpec extends Specification {
         'p, form[method=post]' | onPage.find('#sidebar > form').firstElement() | false
         '*.article'            | onPage.find('#article-1').firstElement()      | true
         '*.not-article'        | onPage.find('#article-1').firstElement()      | false
+        'form'                 | onPage.find('#sidebar > form').firstElement() | true
+        'FORM'                 | onPage.find('#sidebar > form').firstElement() | true
+        'form[method=get]'     | onPage.find('#sidebar > form').firstElement() | true
+        'FORM[method=get]'     | onPage.find('#sidebar > form').firstElement() | true
     }
 
     @Unroll

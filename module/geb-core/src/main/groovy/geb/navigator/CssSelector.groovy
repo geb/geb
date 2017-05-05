@@ -68,7 +68,7 @@ class CssSelector {
     }
 
     private static boolean matchesTagName(WebElement element, JoddCssSelector selector) {
-        selector.element == "*" || selector.element == element.tagName
+        selector.element == "*" || selector.element.equalsIgnoreCase(element.tagName)
     }
 
     private static boolean matchesAttributes(WebElement element, JoddCssSelector selector) {
