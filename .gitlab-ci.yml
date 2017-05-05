@@ -1,0 +1,82 @@
+---
+image: gebish/ci:v1
+
+stages:
+  - main check
+  - secondary checks
+  - first cross browser
+  - second cross browser
+
+modules:
+  stage: main check
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -p module -Pci -g .gradle-home check --continue
+
+compatibility:
+  stage: main check
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -p compatibility -Pci -g .gradle-home check --continue
+
+integrations:
+  stage: secondary checks
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -p integration -Pci -g .gradle-home check --continue
+
+manual:
+  stage: secondary checks
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
+    - export DISPLAY=:99
+    - ./gradlew --no-daemon -Pci -g .gradle-home :doc:manual-snippets:check :doc:manual:build
+
+site:
+  stage: secondary checks
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -p doc/site -Pci -g .gradle-home check
+
+saucelabs:
+  stage: first cross browser
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -Pci -g .gradle-home allSauceLabsTests
+
+non-ie:
+  stage: first cross browser
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -Pci -g .gradle-home nonIeBrowserStackTests
+
+ie:
+  stage: second cross browser
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .gradle-home
+  script:
+    - ./gradlew --no-daemon -Pci -g .gradle-home ieBrowserStackTests
