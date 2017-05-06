@@ -72,6 +72,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:pradtke[Patrick Radtke] - Doc improvements
 * github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page
 * github-profile:mahileeb[Lee Butts] - Improved error message when trying to select null on a single-select select element
+* github-profile:rickirunge[Ricki Runge] - Ignore case of tag names passed as part of css selectors to `Navigator.filter()`
 
 == History
 
@@ -85,6 +86,7 @@ This page lists the high level changes between versions of Geb.
 
 * Improved error message when trying to select null on a single-select select element. [issue:477[]]
 * Return a list of results instead of `null` from `newWindow()` methods taking a window matching specification closure. [issue:476[]]
+* Ignore case of tag names passed as part of css selectors to `Navigator.filter()` [issue:482[]]
 
 ==== Improvements
 
