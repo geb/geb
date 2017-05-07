@@ -92,7 +92,7 @@ upload:
     - ./gradlew --no-daemon -Pci -g .gradle-home uploadArchives
 
 publish-site:
-stage: upload
+  stage: upload
   script:
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/gebish.git
     - git push -f heroku master
