@@ -1,6 +1,9 @@
 ---
 image: gebish/ci:v1
 
+variables:
+  GRADLE_USER_HOME: .gradle-home
+
 stages:
   - main check
   - secondary checks
@@ -20,7 +23,7 @@ modules:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -p module -Pci -g .gradle-home check --continue
+    - ./gradlew --no-daemon -p module -Pci check --continue
 
 compatibility:
   stage: main check
@@ -34,7 +37,7 @@ compatibility:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -p compatibility -Pci -g .gradle-home check --continue
+    - ./gradlew --no-daemon -p compatibility -Pci check --continue
 
 integrations:
   stage: secondary checks
@@ -48,7 +51,7 @@ integrations:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -p integration -Pci -g .gradle-home check --continue
+    - ./gradlew --no-daemon -p integration -Pci check --continue
 
 manual:
   stage: secondary checks
@@ -64,7 +67,7 @@ manual:
   script:
     - Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
     - export DISPLAY=:99
-    - ./gradlew --no-daemon -Pci -g .gradle-home :doc:manual-snippets:check :doc:manual:build
+    - ./gradlew --no-daemon -Pci :doc:manual-snippets:check :doc:manual:build
 
 site:
   stage: secondary checks
@@ -78,7 +81,7 @@ site:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -p doc/site -Pci -g .gradle-home check
+    - ./gradlew --no-daemon -p doc/site -Pci check
 
 saucelabs:
   stage: first cross browser
@@ -92,7 +95,7 @@ saucelabs:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -Pci -g .gradle-home allSauceLabsTests
+    - ./gradlew --no-daemon -Pci allSauceLabsTests
 
 non-ie:
   stage: first cross browser
@@ -106,7 +109,7 @@ non-ie:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -Pci -g .gradle-home nonIeBrowserStackTests
+    - ./gradlew --no-daemon -Pci nonIeBrowserStackTests
 
 ie:
   stage: second cross browser
@@ -120,7 +123,7 @@ ie:
     paths:
       - build/reports
   script:
-    - ./gradlew --no-daemon -Pci -g .gradle-home ieBrowserStackTests
+    - ./gradlew --no-daemon -Pci ieBrowserStackTests
 
 upload:
   stage: upload
@@ -129,7 +132,7 @@ upload:
     paths:
       - .gradle-home
   script:
-    - ./gradlew --no-daemon -Pci -g .gradle-home uploadArchives
+    - ./gradlew --no-daemon -Pci uploadArchives
 
 publish-site:
   stage: upload
