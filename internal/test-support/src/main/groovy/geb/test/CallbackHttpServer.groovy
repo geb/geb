@@ -36,12 +36,17 @@ class CallbackHttpServer extends TestHttpServer {
         context.addServlet(new ServletHolder(new CallbackServlet(this)), "/*")
     }
 
+    protected setupResponse(HttpServletResponse response) {
+        response.setContentType(ContentType.TEXT_HTML.toString())
+        response.setCharacterEncoding(UTF8)
+        response.addHeader("Cache-Control", "Cache-Control: private, no-cache, no-store, must-revalidate")
+    }
+
     void responseHtml(Closure htmlMarkup) {
         get = { HttpServletRequest request, HttpServletResponse response ->
             synchronized (this) { // MarkupBuilder has some static state, so protect
                 try {
-                    response.setContentType(ContentType.TEXT_HTML.toString())
-                    response.setCharacterEncoding(UTF8)
+                    setupResponse(response)
                     def writer = new OutputStreamWriter(response.outputStream, UTF8)
                     writer << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
                     new MarkupBuilder(writer).html {
@@ -63,8 +68,7 @@ class CallbackHttpServer extends TestHttpServer {
 
     void responseHtml(String html) {
         get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setContentType(ContentType.TEXT_HTML.toString())
-            response.setCharacterEncoding(UTF8)
+            setupResponse(response)
             response.writer << html
         }
     }

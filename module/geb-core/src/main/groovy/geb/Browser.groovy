@@ -505,13 +505,9 @@ class Browser {
                 throw webDriverException
             }
         }
-        if (currentUri == newUri) {
+        driver.get(newUri.toString())
+        if (sameUrlWithDifferentFragment(currentUri, newUri)) {
             driver.navigate().refresh()
-        } else {
-            driver.get(newUri.toString())
-            if (sameUrlWithDifferentFragment(currentUri, newUri)) {
-                driver.navigate().refresh()
-            }
         }
         if (!page) {
             page(Page)
