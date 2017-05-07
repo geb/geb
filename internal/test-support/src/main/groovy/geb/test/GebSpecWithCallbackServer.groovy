@@ -38,12 +38,10 @@ class GebSpecWithCallbackServer extends GebSpecWithServer {
     void html(Closure html) {
         responseHtml(html)
         go()
-        waitFor { $('html') }
     }
 
     void html(String html) {
         responseHtml(html)
         go()
-        waitFor { $('html') }
     }
 }
