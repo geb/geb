@@ -1,4 +1,4 @@
-[![Build Status](https://app.snap-ci.com/geb/geb/branch/master/build_image)](https://app.snap-ci.com/geb/geb/branch/master)
+[![Build Status](https://gitlab.com/gebish/geb/badges/master/build.svg)](https://gitlab.com/gebish/geb/pipelines)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core)
 
 Geb (pronounced “jeb”) is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language.
