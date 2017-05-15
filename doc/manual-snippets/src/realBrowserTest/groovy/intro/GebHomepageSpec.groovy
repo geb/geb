@@ -15,36 +15,26 @@
  */
 package intro
 
-import geb.driver.CachingDriverFactory
-
 // tag::imports[]
 import geb.spock.GebSpec
 // end::imports[]
 import intro.page.GebHomePage
-import spock.lang.Ignore
+import intro.page.TheBookOfGebPage
 
-@Ignore
 // tag::class[]
 class GebHomepageSpec extends GebSpec {
 
-    def setup() {
-        browser.driver.javascriptEnabled = false
-    }
-
-    def cleanup() {
-        CachingDriverFactory.clearCache()
-    }
-
     def "can access The Book of Geb via homepage"() {
-        when:
+        given:
         to GebHomePage
 
-        and:
-        highlights.jQueryLikeApi.click()
+        when:
+        manualsMenu.open()
+        manualsMenu.links[0].click()
 
         then:
-        sectionTitles == ["Navigating Content", "Form Control Shortcuts"]
-        highlights.jQueryLikeApi.selected
+        at TheBookOfGebPage
     }
+
 }
 // end::class[]

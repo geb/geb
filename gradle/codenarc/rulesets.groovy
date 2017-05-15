@@ -54,7 +54,7 @@ ruleset {
             doNotApplyToFileNames = 'InteractionsSupportSpec.groovy, WaitingSupportSpec.groovy'
         }
         MissingBlankLineAfterImports {
-            doNotApplyToFileNames = 'SelectableLinkModule.groovy'
+            doNotApplyToFileNames = 'ManualsMenuModule.groovy'
         }
     }
     ruleset('rulesets/generic.xml') {

@@ -20,10 +20,9 @@ import geb.Browser
 // end::imports[]
 import geb.driver.CachingDriverFactory
 import intro.page.GebHomePage
-import spock.lang.Ignore
+import intro.page.TheBookOfGebPage
 import spock.lang.Specification
 
-@Ignore
 class ScriptingSpec extends Specification {
 
     void setupSpec() {
@@ -42,10 +41,12 @@ class ScriptingSpec extends Specification {
 
             assert title == "Geb - Very Groovy Browser Automation" // <1>
 
-            $("#sidebar .sidemenu a", text: "jQuery-like API").click()//<2>
+            $("div.menu a.manuals").click() //<2>
+            waitFor { !$("#manuals-menu").hasClass("animating") } //<3>
 
-            assert $("#main h1")*.text() == ["Navigating Content", "Form Control Shortcuts"] //<3>
-            assert $("#sidebar .sidemenu a", text: "jQuery-like API").parent().hasClass("selected")// <4>
+            $("#manuals-menu a")[0].click() //<4>
+
+            assert title.startsWith("The Book Of Geb") // <5>
         }
         // end::inline[]
     }
@@ -56,10 +57,11 @@ class ScriptingSpec extends Specification {
         Browser.drive {
             to GebHomePage //<1>
 
-            highlights.jQueryLikeApi.click()
+            manualsMenu.open()
 
-            assert sectionTitles == ["Navigating Content", "Form Control Shortcuts"]
-            assert highlights.jQueryLikeApi.selected
+            manualsMenu.links[0].click()
+
+            at TheBookOfGebPage
         }
         // end::using_page_objects[]
     }

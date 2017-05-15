@@ -330,7 +330,6 @@ new <<form-element, `FormElement`>> module class.
 * Documentation site has been migrated to link:http://ratpack.io[Ratpack]. [issue:261[]]
 * Cross browser tests are now also executed using Safari driver [issue:276[]]
 * Artifact snapshots are uploaded and gebish.org is updated after every successful build in CI [issue:295[]]
-* Migrated continuous integration build to link:https://app.snap-ci.com/geb/geb/branch/master[Snap CI]
 * Added a link:https://travis-ci.org/geb/geb[Travis CI build] that runs tests on submitted pull requests [issue:309[]]
 
 === 0.9.2

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package intro.page
+package intro.module
 
 // tag::imports[]
-import geb.Page
+import geb.Module
 // end::imports[]
-import intro.module.HighlightsModule
 
 // tag::class[]
-class GebHomePage extends Page {
-    static url = "http://gebish.org" //<5>
+class ManualsMenuModule extends Module { //<1>
+    static content = { //<2>
+        toggle { $("div.menu a.manuals") }
+        linksContainer { $("#manuals-menu") }
+        links { linksContainer.find("a") } //<3>
+    }
 
-    static at = { title == "Geb - Very Groovy Browser Automation" } //<6>
-
-    static content = {
-        highlights { $("#sidebar .sidemenu").module(HighlightsModule) } //<7>
-        sectionTitles { $("#main h1")*.text() } //<8>
+    void open() { //<4>
+        toggle.click()
+        waitFor { !linksContainer.hasClass("animating") }
     }
 }
 // end::class[]

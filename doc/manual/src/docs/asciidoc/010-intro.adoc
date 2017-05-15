@@ -79,7 +79,7 @@ This is just the beginning of what is possible with the Navigator API. See the <
 
 == Full examples
 
-Let's have a look at a simple case of going to Geb's home page and opening the highlights page for jQuery-like API.
+Let's have a look at a simple case of going to Geb's home page and navigating to the latest version of this manual.
 
 === Inline scripting
 
@@ -87,14 +87,15 @@ Here's an example of using Geb in an inline (i.e. no page objects or predefined 
 
 [source,groovy]
 ----
-include::{test-dir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
+include::{real-browser-test-dir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
 
-include::{test-dir}/intro/ScriptingSpec.groovy[tags=inline,indent=0]
+include::{real-browser-test-dir}/intro/ScriptingSpec.groovy[tags=inline,indent=0]
 ----
 <1> Check that we are at Geb's homepage.
-<2> Click on the link for information on jQuery-like API.
-<3> Check that section titles are as expected for the page about jQuery-like API.
-<4> Ensure that the previously clicked link is shown as the selected one.
+<2> Click on the manual menu entry to open it.
+<3> Wait for the menu open animation to finish.
+<4> Click on the first link to a manual.
+<5> Check that we are at The Book of Geb.
 
 === Scripting with Page Objects
 
@@ -102,31 +103,30 @@ This time let us define our content up front using the Page Object pattern…
 
 [source,groovy]
 ----
-include::{test-dir}/intro/module/SelectableLinkModule.groovy[tags=imports,indent=0]
-include::{test-dir}/intro/page/GebHomePage.groovy[tags=imports,indent=0]
+include::{real-browser-test-dir}/intro/module/ManualsMenuModule.groovy[tags=imports,indent=0]
+include::{real-browser-test-dir}/intro/page/GebHomePage.groovy[tags=imports,indent=0]
 
-include::{test-dir}/intro/module/SelectableLinkModule.groovy[tags=class,indent=0]
+include::{real-browser-test-dir}/intro/module/ManualsMenuModule.groovy[tags=class,indent=0]
 
-include::{test-dir}/intro/module/HighlightsModule.groovy[tags=class,indent=0]
+include::{real-browser-test-dir}/intro/page/GebHomePage.groovy[tags=class,indent=0]
 
-include::{test-dir}/intro/page/GebHomePage.groovy[tags=class,indent=0]
+include::{real-browser-test-dir}/intro/page/TheBookOfGebPage.groovy[tags=class,indent=0]
 ----
-<1> Modules are reusable fragments that can be used across pages. Here we are using a module to model a link that can be shown as selected.
-<2> Modules can contain methods that allow to hide document structure details.
-<3> Content DSL.
-<4> Content definitions can use other, more general content definitions to define more specific content elements.
+<1> Modules are reusable fragments that can be used across pages. Here we are using a module to model a dropdown menu.
+<2> Content DSL.
+<3> Content definitions can use other content definitions to define relative content elements.
+<4> Modules can contain methods that allow to hide document structure details or interaction complexity.
 <5> Pages can define their location, either absolute or relative to a base.
 <6> “at checkers” allow verifying that the browser is at the expected page.
-<7> Include the previously defined module using a base.
-<8> Content definitions can not only return document elements but also other types. Here we return a list of section titles.
+<7> Include the previously defined module.
 
 Now our script again, using the above defined content…
 
 [source,groovy]
 ----
-include::{test-dir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
+include::{real-browser-test-dir}/intro/ScriptingSpec.groovy[tags=imports,indent=0]
 
-include::{test-dir}/intro/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
+include::{real-browser-test-dir}/intro/ScriptingSpec.groovy[tags=using_page_objects,indent=0]
 ----
 <1> Go to the url defined by `GebHomePage` and also verify it's “at checker”.
 
@@ -140,9 +140,9 @@ Here is our Geb homepage case again, this time using Geb's {spock} integration�
 
 [source,groovy]
 ----
-include::{test-dir}/intro/GebHomepageSpec.groovy[tags=imports,indent=0]
+include::{real-browser-test-dir}/intro/GebHomepageSpec.groovy[tags=imports,indent=0]
 
-include::{test-dir}/intro/GebHomepageSpec.groovy[tags=class,indent=0]
+include::{real-browser-test-dir}/intro/GebHomepageSpec.groovy[tags=class,indent=0]
 ----
 
 For more information on using Geb for web and functional testing, see the <<testing,testing chapter>>.

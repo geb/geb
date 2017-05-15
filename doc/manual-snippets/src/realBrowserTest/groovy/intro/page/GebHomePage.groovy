@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package intro.module
+package intro.page
 
-import geb.Module
+// tag::imports[]
+import geb.Page
+// end::imports[]
+import intro.module.ManualsMenuModule
 
 // tag::class[]
-class HighlightsModule extends Module {
-    static content = { //<3>
-        highlightsLink { text -> $("a", text: text).module(SelectableLinkModule) }
-        jQueryLikeApi { highlightsLink("jQuery-like API") } //<4>
+class GebHomePage extends Page {
+    static url = "http://gebish.org" //<5>
+
+    static at = { title == "Geb - Very Groovy Browser Automation" } //<6>
+
+    static content = {
+        manualsMenu { module(ManualsMenuModule) } //<7>
     }
 }
 // end::class[]
