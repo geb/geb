@@ -17,7 +17,6 @@ package geb.content
 import geb.Browser
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
-import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
 @SuppressWarnings("FieldName")
@@ -28,7 +27,7 @@ class TemplateDerivedPageContent implements Navigator {
     private Browser _browser
     private StringRepresentationProvider _stringRepresentationProvider
 
-    @Delegate
+    @Delegate(allNames = true)
     protected Navigator _navigator
 
     TemplateDerivedPageContent(Browser browser, PageContentTemplate template, Navigator navigator, Object[] args) {
@@ -90,86 +89,6 @@ class TemplateDerivedPageContent implements Navigator {
 
     def propertyMissing(String name, val) {
         _navigator[name] = val
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates) {
-        _navigator.$(predicates)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, int index) {
-        _navigator.$(predicates, index)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, Range<Integer> range) {
-        _navigator.$(predicates, range)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, String selector) {
-        _navigator.$(predicates, selector)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, String selector, int index) {
-        _navigator.$(predicates, selector, index)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
-        _navigator.$(predicates, selector, range)
-    }
-
-    @Override
-    Navigator $(String selector) {
-        _navigator.$(selector)
-    }
-
-    @Override
-    Navigator $(String selector, int index) {
-        _navigator.$(selector, index)
-    }
-
-    @Override
-    Navigator $(String selector, Range<Integer> range) {
-        _navigator.$(selector, range)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, By bySelector) {
-        _navigator.$(predicates, bySelector)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, By bySelector, int index) {
-        _navigator.$(predicates, bySelector, index)
-    }
-
-    @Override
-    Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        _navigator.$(predicates, bySelector, range)
-    }
-
-    @Override
-    Navigator $(By bySelector) {
-        _navigator.$(bySelector)
-    }
-
-    @Override
-    Navigator $(By bySelector, int index) {
-        _navigator.$(bySelector, index)
-    }
-
-    @Override
-    Navigator $(By bySelector, Range<Integer> range) {
-        _navigator.$(bySelector, range)
-    }
-
-    @Override
-    boolean isFocused() {
-        _navigator.focused
     }
 
     @Override

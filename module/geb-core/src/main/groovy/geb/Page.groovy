@@ -148,7 +148,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         waitingSupport = new DefaultWaitingSupport(browser.config)
         frameSupport = new DefaultFrameSupport(browser)
         interactionsSupport = new DefaultInteractionsSupport(browser)
-        alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
+        alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
         this
     }
 
