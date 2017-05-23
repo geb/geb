@@ -127,6 +127,7 @@ ie:
     - ./gradlew --no-daemon -Pci ieBrowserStackTests
 
 upload:
+  only: master
   stage: upload
   cache:
     key: "$CI_JOB_NAME"
@@ -136,12 +137,14 @@ upload:
     - ./gradlew --no-daemon -Pci uploadArchives
 
 publish-site:
+  only: master
   stage: upload
   script:
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/gebish.git
     - git push -f heroku master
 
 triggger-example-projects:
+  only: master
   stage: trigger builds
   script:
     - "curl -X POST -F token=f4906c9c437605db34f866ccaa7dfb -F ref=latest https://gitlab.com/api/v4/projects/3302923/trigger/pipeline"
