@@ -28,9 +28,9 @@ class GebReportingSpec extends GebSpec {
     // Ridiculous name to avoid name clashes
     @Rule
     TestName gebReportingSpecTestName
-    private int gebReportingPerTestCounter = 1
+    protected int gebReportingPerTestCounter = 1
     @Shared
-    private int gebReportingSpecTestCounter = 1
+    protected int gebReportingSpecTestCounter = 1
 
     def setupSpec() {
         reportGroup getClass()
