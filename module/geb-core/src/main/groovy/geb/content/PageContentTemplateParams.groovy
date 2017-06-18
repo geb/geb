@@ -62,35 +62,49 @@ class PageContentTemplateParams {
         cache = toBoolean(paramsToProcess, 'cache', false)
 
         def toParam = paramsToProcess.remove("to")
-        if (!toParam) {
-            toSingle = null
-            toList = null
-        } else if ((toParam instanceof Class && Page.isAssignableFrom(toParam)) || toParam instanceof Page) {
-            toSingle = toParam
-            toList = null
-        } else if (toParam instanceof List) {
-            toSingle = null
-            toList = toParam
-        } else {
-            throw new InvalidPageContent("'to' content parameter should be a class that extends Page or a list of classes that extend Page, but it isn't for $owner: $toParam")
+        toSingle = extractToSingle(toParam)
+        toList = extractToList(toParam)
+
+        if (toParam && toSingle == null && toList == null) {
+            throw new InvalidPageContent("'to' content parameter should be a class or instance that extends Page or a list of classes or instances that extend Page, but it isn't for $owner: $toParam")
         }
 
-        def pageParam = paramsToProcess.remove("page")
-        if (pageParam && (!(pageParam instanceof Class) || !Page.isAssignableFrom(pageParam))) {
-            throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $owner: $pageParam")
-        }
-        page = pageParam as Class<? extends Page>
+        page = extractPage(owner, paramsToProcess)
 
         wait = paramsToProcess.remove("wait")
         toWait = paramsToProcess.remove("toWait")
 
+        throwIfAnyParamsLeft(owner, paramsToProcess)
+    }
+
+    private List extractToList(Object toParam) {
+        if (toParam instanceof List) {
+            toParam
+        }
+    }
+
+    private extractToSingle(Object toParam) {
+        if ((toParam instanceof Class && Page.isAssignableFrom(toParam)) || toParam instanceof Page) {
+            toParam
+        }
+    }
+
+    private void throwIfAnyParamsLeft(PageContentTemplate owner, Map paramsToProcess) {
         def unrecognizedParams = paramsToProcess.keySet() as TreeSet
         if (unrecognizedParams) {
             throw new InvalidPageContent("${owner.toString().capitalize()} uses unknown content parameters: ${unrecognizedParams.join(", ")}")
         }
     }
 
-    private static boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {
+    private Class<? extends Page> extractPage(PageContentTemplate owner, Map<String, ?> params) {
+        def pageParam = params.remove("page")
+        if (pageParam && (!(pageParam instanceof Class) || !Page.isAssignableFrom(pageParam))) {
+            throw new InvalidPageContent("'page' content parameter should be a class that extends Page but it isn't for $owner: $pageParam")
+        }
+        pageParam as Class<? extends Page>
+    }
+
+    private boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {
         params.containsKey(key) ? params.remove(key) : defaultValue as boolean
     }
 
