@@ -167,8 +167,8 @@ abstract class Crawler {
         HttpURLConnection connection = uri.toURL().openConnection() as HttpURLConnection
         connection.instanceFollowRedirects = false
 
-        connection.connectTimeout = 60000
-        connection.readTimeout = 60000
+        connection.connectTimeout = 10000
+        connection.readTimeout = 10000
 
         if (connection instanceof HttpsURLConnection) {
             def https = connection as HttpsURLConnection
