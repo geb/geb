@@ -36,7 +36,7 @@ sauceLabs {
         }
     }
     task {
-        testClassesDir = test.testClassesDir
+        testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
     }
@@ -68,7 +68,7 @@ browserStack {
 
     }
     task {
-        testClassesDir = test.testClassesDir
+        testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
     }
