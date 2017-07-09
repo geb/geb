@@ -82,6 +82,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== New features
+
+* Allow specifying the expected number of elements a content definition should return. [issue:149[]]
+
 ==== Fixes
 
 * Improved error message when trying to select null on a single-select select element. [issue:477[]]

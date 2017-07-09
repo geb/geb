@@ -37,7 +37,7 @@ class PageContentTemplate {
         this.browser = browser
         this.owner = owner
         this.name = name
-        this.params = new PageContentTemplateParams(this, params)
+        this.params = new PageContentTemplateParams(this, name, params)
         this.factory = factory
         this.navigatorFactory = navigatorFactory
     }
@@ -58,12 +58,13 @@ class PageContentTemplate {
         def createAction = {
             def factoryReturn = invokeFactory(*args)
             def creation = wrapFactoryReturn(factoryReturn, *args)
-            if (params.required) {
-                if (creation instanceof TemplateDerivedPageContent) {
+            if (creation instanceof TemplateDerivedPageContent) {
+                if (params.required) {
                     creation.require()
-                } else if (creation == null) {
-                    throw new RequiredPageValueNotPresent(this, *args)
                 }
+                creation.ensureWithinBounds(params.min, params.max)
+            } else if (params.required && creation == null) {
+                throw new RequiredPageValueNotPresent(this, *args)
             }
             creation
         }

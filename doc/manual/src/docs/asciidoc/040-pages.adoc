@@ -172,6 +172,102 @@ include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=required_page,indent=0]
 include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=required,indent=0]
 ----
 
+[[content-dsl-min]]
+==== `min`
+
+Default value: `1`
+
+The `min` option allows to specify the minimum number of elements that the `Navigator` object returned by the definition should contain.
+If the number of elements returned is lower than the specified value then `{content-page-count-out-of-bounds-exception-api}` will be thrown.
+
+The value should be a non-negative integer.
+This option cannot be used together with the <<content-dsl-times,`times` option>>.
+
+Given the following HTML…
+
+[source,html]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=min_html,indent=0]
+----
+
+Accessing the following content definition…
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=min_option,indent=0]
+----
+
+Will result in a `ContentCountOutOfBoundsException` and the following exception message:
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=min_exception_message,indent=0]
+----
+
+[[content-dsl-max]]
+==== `max`
+
+Default value: `Integer.MAX_INT`
+
+The `max` option allows to specify the maximum number of elements that the `Navigator` object returned by the definition should contain.
+If the number of elements returned is higher than the specified value then `{content-page-count-out-of-bounds-exception-api}` will be thrown.
+
+The value should be a non-negative integer.
+This option cannot be used together with the <<content-dsl-times,`times` option>>.
+
+Given the following HTML…
+
+[source,html]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=max_html,indent=0]
+----
+
+Accessing the following content definition…
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=max_option,indent=0]
+----
+
+Will result in a `ContentCountOutOfBoundsException` and the following exception message:
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=max_exception_message,indent=0]
+----
+
+[[content-dsl-times]]
+==== `times`
+
+Default value: `null`
+
+A helper option allowing to specify both <<content-dsl-min,`min` option>> and <<content-dsl-max,`max` option>> in a single option.
+If the number of elements returned is out of bounds specified then `{content-page-count-out-of-bounds-exception-api}` will be thrown.
+
+The value should be a non-negative integer (when the minimum and maximum number of elements are desired to be equal) or an integer range.
+This option cannot be used together with `min` and `max` options.
+
+Given the following HTML…
+
+[source,html]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=times_html,indent=0]
+----
+
+Accessing the following content definition…
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=times_option,indent=0]
+----
+
+Will result in a `ContentCountOutOfBoundsException` and the following exception message:
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=times_exception_message,indent=0]
+----
+
 ==== `cache`
 
 Default value: `false`

@@ -1,10 +1,11 @@
-/* Copyright 2009 the original author or authors.
+/*
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +15,8 @@
  */
 package geb.error;
 
-import geb.content.PageContentContainer;
-
-public class InvalidPageContent extends GebException {
-
-    public InvalidPageContent(Object message) {
-        super(message);
+public class ContentCountOutOfBoundsException extends GebException {
+    public ContentCountOutOfBoundsException(Object content, String boundText, String actual) {
+        super(String.format("Page content '%s' should return a navigator with %s but has returned a navigator with %s", content, boundText, actual));
     }
-
-    public InvalidPageContent(PageContentContainer container, String contentName, Object message) {
-        super(String.format("Definition of content template '%s' of '%s' %s", contentName, container, message));
-    }
-
 }

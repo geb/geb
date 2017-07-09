@@ -324,13 +324,13 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
     }
 
     @Unroll
-    def "invalid page parameter ( #pageParameter ) for content throws an informative exception"() {
+    def "invalid page parameter (#pageParameter) for content throws an informative exception"() {
         when:
         to pageClass
 
         then:
         InvalidPageContent e = thrown()
-        e.message == "'page' content parameter should be a class that extends Page but it isn't for content template '$contentName' defined by ${pageClass.newInstance()}: $pageParameter"
+        e.message == "Definition of content template '$contentName' of '${pageClass.name}' contains 'page' content parameter that is not a class that extends Page: $pageParameter"
 
         where:
         pageClass                        | contentName  | pageParameter
@@ -374,7 +374,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
 
         then:
         InvalidPageContent e = thrown()
-        e.message == "Content template 'withInvalidParams' defined by ${PageWithContentUsingUnrecognizedParams.name} uses unknown content parameters: bar, foo"
+        e.message == "Definition of content template 'withInvalidParams' of '${PageWithContentUsingUnrecognizedParams.name}' uses unknown content parameters: bar, foo"
     }
 
     def "ensure that an exception message with all page wise error details is thrown when no match is found in given list of pages"() {
