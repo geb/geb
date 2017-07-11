@@ -172,7 +172,7 @@ class PageContentTemplateParams {
 
     private int toNonNegativeInt(Map<String, ?> params, String key, int defaultValue) {
         def value = params.containsKey(key) ? params.remove(key) : defaultValue
-        if (!(value in 0..Integer.MAX_VALUE)) {
+        if (!(value in Integer && value >= 0)) {
             throwInvalidContent("contains '$key' option that is not a non-negative integer")
         }
         value
