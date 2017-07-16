@@ -99,7 +99,9 @@ subprojects {
             compile groovyDependency
             codenarc 'org.codenarc:CodeNarc:0.26.0', {
                 exclude module: "GMetrics"
+                exclude group: "org.codehaus.groovy"
             }
+            codenarc groovyDependency
         }
 
         sourceCompatibility = 1.7
