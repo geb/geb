@@ -26,11 +26,11 @@ import spock.lang.Specification
 class ScriptingSpec extends Specification {
 
     void setupSpec() {
-        CachingDriverFactory.clearCache()
+        CachingDriverFactory.clearCacheAndQuitDriver()
     }
 
     void cleanupSpec() {
-        CachingDriverFactory.clearCache()
+        CachingDriverFactory.clearCacheAndQuitDriver()
     }
 
     def "inline"() {
