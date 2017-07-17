@@ -22,7 +22,7 @@ buildscript {
     }
     dependencies {
         classpath 'io.ratpack:ratpack-gradle:1.4.5'
-        classpath 'com.moowork.gradle:gradle-node-plugin:1.1.1'
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
     }
 }
 
