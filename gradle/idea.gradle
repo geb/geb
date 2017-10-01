@@ -12,10 +12,3 @@ idea {
     }
 }
 
-allprojects {
-    idea {
-        module {
-            excludeDirs += file('build')
-        }
-    }
-}
