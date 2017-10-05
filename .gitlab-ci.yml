@@ -1,5 +1,5 @@
 ---
-image: gebish/ci:v1
+image: gebish/ci:v5
 
 variables:
   GRADLE_USER_HOME: .gradle-home
@@ -68,6 +68,7 @@ manual:
   script:
     - Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
     - export DISPLAY=:99
+    - export FIREFOX_VERSION=53.0.3
     - ./gradlew --no-daemon -Pci :doc:manual-snippets:check :doc:manual:build
 
 site:
