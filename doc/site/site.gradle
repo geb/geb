@@ -189,5 +189,6 @@ if (project.gradle.startParameter.continuous) {
 idea {
     module {
         excludeDirs += file('src/npm/node_modules')
+        excludeDirs += file('src/ratpack/public/manual')
     }
 }

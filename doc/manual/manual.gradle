@@ -138,3 +138,9 @@ asciidoctor {
         { project(":module:geb-core").sourceSets.main.allSource }
     )
 }
+
+idea {
+    module {
+        excludeDirs += file('build')
+    }
+}
