@@ -52,7 +52,7 @@ class AlertSpec extends GebSpecWithCallbackServer {
         html """
             <html>
                 // tag::no_alert_html[]
-                <input type="button" name="contShowAlert" />
+                <input type="button" name="dontShowAlert" />
                 // end::no_alert_html[]
             </html>
         """

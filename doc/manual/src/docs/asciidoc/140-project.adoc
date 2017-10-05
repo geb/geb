@@ -102,6 +102,7 @@ This page lists the high level changes between versions of Geb.
 * Use Java 8 to compile the project. [issue:502[]]
 * Remove `FileInput#getFile()`. [issue:503[]]
 * Build against WebDriver 3.6.0. [issue:504[]]
+* Calling `click()` on empty navigators results in a `UnsupportedOperationException`. [issue:501[]]
 
 === 1.1.1
 
