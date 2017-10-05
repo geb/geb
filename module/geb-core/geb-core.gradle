@@ -85,7 +85,7 @@ task nonIeBrowserStackTests {
 }
 
 task ieBrowserStackTests {
-    dependsOn 'internet explorerWindows8Test', 'internet explorerWindows9Test', 'internet explorerWindows10Test', 'internet explorerWindows11Test'
+    dependsOn 'internetExplorerWindows8Test', 'internetExplorerWindows9Test', 'internetExplorerWindows10Test', 'internetExplorerWindows11Test'
 }
 
 modifyPom { pom ->

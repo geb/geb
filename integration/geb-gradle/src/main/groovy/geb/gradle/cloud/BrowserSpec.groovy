@@ -17,6 +17,9 @@ package geb.gradle.cloud
 
 import org.gradle.api.tasks.testing.Test
 
+import static com.google.common.base.CaseFormat.LOWER_CAMEL
+import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE
+
 class BrowserSpec {
     final String cloudProvider
     final String name
@@ -39,7 +42,7 @@ class BrowserSpec {
             if (split.size() > 2) {
                 capabilities["version"] = split[2]
             }
-            displayName = "${capabilities["browserName"]}${capabilities["platform"]?.capitalize() ?: ""}${capabilities["version"]?.capitalize() ?: ""}"
+            displayName = "${camelCase(capabilities["browserName"])}${capabilities["platform"]?.capitalize() ?: ""}${capabilities["version"]?.capitalize() ?: ""}"
             if (capabilities["platform"]) {
                 capabilities["platform"] = capabilities["platform"].toUpperCase()
             }
@@ -65,5 +68,10 @@ class BrowserSpec {
         StringWriter writer = new StringWriter()
         capabilities.store(writer, null)
         testTask.systemProperty "geb.${cloudProvider}.browser", writer.toString()
+    }
+
+    private String camelCase(String textWithSpaces) {
+        def lowerUnderscoreText = textWithSpaces.replaceAll(' ', '_').toLowerCase()
+        LOWER_UNDERSCORE.to(LOWER_CAMEL, lowerUnderscoreText)
     }
 }
