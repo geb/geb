@@ -70,7 +70,7 @@ Given the following page…
 
 [source,html]
 ----
-include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=html,indent=0]
+include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=calling_methods_html,indent=0]
 ----
 
 We can call the `addThem()` function with…
@@ -82,7 +82,13 @@ include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=calling_methods,ind
 
 This also works from pages and modules.
 
-To call _nested_ methods, we use the same syntax as for properties…
+To call _nested_ methods, given the following page…
+[source,html]
+----
+include::{test-dir}/javascript/CallingMethodsSpec.groovy[tag=nested_methods_html,indent=0]
+----
+
+We use the same syntax as for properties…
 
 [source,groovy]
 ----

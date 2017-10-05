@@ -15,26 +15,21 @@
  */
 package geb.test
 
-import com.google.common.base.Supplier
 import org.mortbay.jetty.servlet.Context
 import org.mortbay.jetty.servlet.ServletHolder
+import org.openqa.selenium.Platform
 import org.openqa.selenium.remote.server.DefaultDriverFactory
 import org.openqa.selenium.remote.server.DefaultDriverSessions
 import org.openqa.selenium.remote.server.DriverServlet
-import org.openqa.selenium.remote.server.DriverSessions
 
 class CallbackAndWebDriverServer extends CallbackHttpServer {
 
     protected addServlets(Context context) {
         context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
-        context.addServlet(new ServletHolder(
-            new DriverServlet(new Supplier<DriverSessions>() {
 
-                DriverSessions get() {
-                    new DefaultDriverSessions(new DefaultDriverFactory())
-                }
-            }
-            )), "/webdriver/*")
+        def driverFactory = new DefaultDriverFactory(Platform.getCurrent())
+        context.setAttribute(DriverServlet.SESSIONS_KEY, new DefaultDriverSessions(driverFactory, 10000))
+        context.addServlet(DriverServlet, "/webdriver/*")
     }
 
     String getApplicationUrl() {

@@ -195,7 +195,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
                     // tag::page_html[]
                     <html>
                         <body>
-                            <frame id="frame-id" src="frame.html"></frame>
+                            <iframe id="frame-id" src="frame.html"></iframe>
                         <body>
                     </html>
                     // end::page_html[]
