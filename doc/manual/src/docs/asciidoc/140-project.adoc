@@ -100,6 +100,7 @@ This page lists the high level changes between versions of Geb.
 ==== Breaking changes
 
 * Use Java 8 to compile the project. [issue:502[]]
+* Remove `FileInput#getFile()`. [issue:503[]]
 
 === 1.1.1
 

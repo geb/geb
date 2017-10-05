@@ -38,11 +38,8 @@ class FileInputSnippetSpec extends GebSpecWithCallbackServer {
         def input = $(name: "csv").module(FileInput)
 
         input.file = csvFile
-
         // end::example[]
         then:
-        // tag::example[]
-        assert input.file.absolutePath == csvFile.absolutePath
-        // end::example[]
+        assert input.file.name.endsWith(csvFile.name)
     }
 }
