@@ -97,6 +97,10 @@ This page lists the high level changes between versions of Geb.
 
 * Change signatures of methods from `FrameSupport` to be more strongly typed. [issue:470[]]
 
+==== Breaking changes
+
+* Use Java 8 to compile the project. [issue:502[]]
+
 === 1.1.1
 
 ==== Fixes

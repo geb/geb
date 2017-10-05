@@ -104,8 +104,6 @@ subprojects {
             codenarc groovyDependency
         }
 
-        sourceCompatibility = 1.7
-
         codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
         project.tasks.withType(CodeNarc) { codenarcSourceSetTask ->
