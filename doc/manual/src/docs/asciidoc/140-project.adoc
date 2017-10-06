@@ -103,6 +103,7 @@ This page lists the high level changes between versions of Geb.
 * Remove `FileInput#getFile()`. [issue:503[]]
 * Build against WebDriver 3.6.0. [issue:504[]]
 * Calling `click()` on empty navigators results in a `UnsupportedOperationException`. [issue:501[]]
+* Build using Spock 1.1. [issue:505[]]
 
 === 1.1.1
 

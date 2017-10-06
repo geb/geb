@@ -54,7 +54,7 @@ class SpockIntegrationSpec extends Specification {
         then:
         result.failureCount == 1
         Failure failure = result.failures.first()
-        PowerAssertionError error = failure.exception
+        PowerAssertionError error = failure.exception.cause
         error.message == """
             1 == 2
               |

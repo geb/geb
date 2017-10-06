@@ -42,7 +42,7 @@ allprojects { project ->
         seleniumVersion = "3.6.0"
         htmlUnitDriverVersion = "2.27"
         groovyVersion = "2.4.7"
-        spockVersion = "1.0-groovy-2.4"
+        spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
         geckodriverVersion = "0.18.0"
 
@@ -73,7 +73,7 @@ allprojects { project ->
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":module:geb-test-common", ":integration:geb-gradle", ":doc:site",
-            ":doc:manual-snippets", ":compatibility:groovy-2.3.7", ":compatibility:spock-1.1"
+            ":doc:manual-snippets", ":compatibility:groovy-2.3.7", ":compatibility:spock-1.0"
         ]
 
         publishedModules = [
