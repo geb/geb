@@ -70,8 +70,8 @@ class BrowserSpec {
         testTask.systemProperty "geb.${cloudProvider}.browser", writer.toString()
     }
 
-    private String camelCase(String textWithSpaces) {
-        def lowerUnderscoreText = textWithSpaces.replaceAll(' ', '_').toLowerCase()
+    private String camelCase(String camelCaseTextWithSpaces) {
+        def lowerUnderscoreText = LOWER_CAMEL.to(LOWER_UNDERSCORE, camelCaseTextWithSpaces).replaceAll(' ', '_').toLowerCase()
         LOWER_UNDERSCORE.to(LOWER_CAMEL, lowerUnderscoreText)
     }
 }
