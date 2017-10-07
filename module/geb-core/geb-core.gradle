@@ -38,6 +38,7 @@ sauceLabs {
         }
     }
     task {
+        maxHeapSize = "512m"
         testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
@@ -70,6 +71,7 @@ browserStack {
 
     }
     task {
+        maxHeapSize = "512m"
         testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5

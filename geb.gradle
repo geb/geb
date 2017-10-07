@@ -195,6 +195,19 @@ subprojects {
         windowTitle = "Groovy API for $docName $version"
     }
 
+    tasks.withType(Test) {
+        maxHeapSize = "1g"
+        jvmArgs '-XX:MaxMetaspaceSize=128m'
+        testLogging {
+            exceptionFormat = 'full'
+        }
+    }
+
+    tasks.withType(GroovyCompile) {
+        groovyOptions.forkOptions.memoryMaximumSize = '256m'
+    }
+
+
     if (path in publishedModules) {
         apply plugin: "base"
         apply plugin: "maven"

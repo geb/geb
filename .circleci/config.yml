@@ -1,0 +1,74 @@
+version: 2
+jobs:
+  modules:
+    docker:
+      - image: gebish/ci:v6
+    environment:
+        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+    steps:
+      - checkout
+      - run: ./gradlew --no-daemon -p module -Pci check --continue
+      - store_artifacts:
+          path: build/reports
+  compatibility:
+    docker:
+      - image: gebish/ci:v6
+    environment:
+        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+    steps:
+      - checkout
+      - run: ./gradlew --no-daemon -p compatibility -Pci check --continue
+      - store_artifacts:
+          path: build/reports
+  integrations:
+    docker:
+      - image: gebish/ci:v6
+    environment:
+        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+    steps:
+      - checkout
+      - run: ./gradlew --no-daemon -p integration -Pci check --continue
+      - store_artifacts:
+          path: build/reports
+  manual:
+    docker:
+      - image: gebish/ci:v6
+    environment:
+        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+    steps:
+      - checkout
+      - run:
+          command: |
+            Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
+            export DISPLAY=:99
+            ./gradlew --no-daemon -Pci :doc:manual-snippets:check :doc:manual:build
+      - store_artifacts:
+          path: build/reports
+  site:
+    docker:
+      - image: gebish/ci:v6
+    environment:
+        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+    steps:
+      - checkout
+      - run: ./gradlew --no-daemon -p doc/site -Pci check
+      - store_artifacts:
+          path: build/reports
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - modules
+      - compatibility
+      - integrations
+          requires:
+            - modules
+            - compatibility
+      - manual
+          requires:
+            - modules
+            - compatibility
+      - site
+          requires:
+            - modules
+            - compatibility
