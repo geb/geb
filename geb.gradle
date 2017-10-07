@@ -44,7 +44,7 @@ allprojects { project ->
         groovyVersion = "2.4.7"
         spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
-        geckodriverVersion = "0.18.0"
+        geckodriverVersion = "0.19.0"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
             exclude module: "groovy-all"
