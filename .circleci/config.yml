@@ -219,9 +219,18 @@ workflows:
           requires:
             - saucelabs
             - ie
+          filters:
+            branches:
+              only: master
       - publish-site:
           requires:
             - upload
+          filters:
+            branches:
+              only: master
       - trigger-example-projects:
           requires:
             - upload
+          filters:
+            branches:
+              only: master
