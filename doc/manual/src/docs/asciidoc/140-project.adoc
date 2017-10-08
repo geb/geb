@@ -104,6 +104,7 @@ This page lists the high level changes between versions of Geb.
 * Build using WebDriver 3.6.0. [issue:504[]]
 * Calling `click()` on empty navigators results in a `UnsupportedOperationException`. [issue:501[]]
 * Build using Spock 1.1. [issue:505[]]
+* Unchecked checkboxes return `null` as value for consistency with other input types. [issue:465[]]
 
 === 1.1.1
 

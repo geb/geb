@@ -657,10 +657,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         } else if (type in ["checkbox", "radio"]) {
             if (input.isSelected()) {
                 value = getValue(input)
-            } else {
-                if (type == "checkbox") {
-                    value = false
-                }
             }
         } else {
             value = getValue(input)

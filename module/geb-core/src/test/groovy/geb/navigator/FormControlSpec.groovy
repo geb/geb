@@ -90,7 +90,7 @@ class FormControlSpec extends GebSpecWithCallbackServer {
 
         then:
         i1*.@id == ["i1"]
-        i1.value().is(false)
+        !i1.value()
         i1.value(true)
         i1.value() == "i1"
 
@@ -98,13 +98,13 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         i2*.@id == ["i2"]
         i2.value() == "i2"
         i2.value(false)
-        i2.value().is(false)
+        !i2.value()
 
         when:
         $().i1 = false
 
         then:
-        $().i1.is(false)
+        !$().i1
 
         when:
         $().i1 = "i1"
@@ -117,7 +117,7 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         $().i1 = "not-the-value"
 
         then:
-        $().i1 == false
+        !$().i1
     }
 
     def "multiple checkboxes"() {
@@ -140,45 +140,45 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         $().c = false
 
         then:
-        $().c == [false, false, false]
+        !$().c
 
         when:
         $().c = true
         $().c = null
 
         then:
-        $().c == [false, false, false]
+        !$().c
 
         when:
         $().c = true
         $().c = []
 
         then:
-        $().c == [false, false, false]
+        !$().c
 
         when:
         $().c = ["i1", "i3"]
 
         then:
-        $().c == ["i1", false, "i3"]
+        $().c == ["i1", "i3"]
 
         when:
         $().c = "i1"
 
         then:
-        $().c == ["i1", false, false]
+        $().c == "i1"
 
         when:
         $().c = ["i2 label", "i3 label"]
 
         then:
-        $().c == [false, "i2", "i3"]
+        $().c == ["i2", "i3"]
 
         when:
         $().c = "i1 label"
 
         then:
-        $().c == ["i1", false, false]
+        $().c == "i1"
     }
 
     def "radio - by value"() {
