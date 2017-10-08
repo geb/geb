@@ -105,7 +105,11 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-saucelabs
-      - run: ./gradlew --no-daemon -Pci allSauceLabsTests
+      - run:
+          command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ]; then
+              ./gradlew --no-daemon -Pci allSauceLabsTests
+            fi
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -123,7 +127,11 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-non-ie
-      - run: ./gradlew --no-daemon -Pci nonIeBrowserStackTests
+      - run:
+          command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ]; then
+              ./gradlew --no-daemon -Pci nonIeBrowserStackTests
+            fi
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -141,7 +149,11 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-ie
-      - run: ./gradlew --no-daemon -Pci ieBrowserStackTests
+      - run:
+          command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ]; then
+              ./gradlew --no-daemon -Pci ieBrowserStackTests
+            fi
       - store_artifacts:
           path: build/reports
       - save_cache:
