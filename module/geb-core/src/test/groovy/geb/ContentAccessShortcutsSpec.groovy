@@ -53,7 +53,6 @@ class ContentAccessShortcutsSpec extends GebSpecWithCallbackServer {
         then:
         container.textInput == 'Initial text'
         container.checkedBox == '123'
-        container.uncheckedBox == false
         container.radioGroup == 'second'
         container.select == '2'
         container.multiselect == ['2', '4']
@@ -77,7 +76,7 @@ class ContentAccessShortcutsSpec extends GebSpecWithCallbackServer {
         when:
         container.checkedBox = false
         then:
-        container.checkedBox.value() == false
+        !container.checkedBox.value()
 
         when:
         container.uncheckedBox = true

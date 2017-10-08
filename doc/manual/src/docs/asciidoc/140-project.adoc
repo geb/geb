@@ -82,6 +82,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+No changes have been made, yet.
+
+=== 2.0-rc-1
+
 ==== New features
 
 * Allow specifying the expected number of elements a content definition should return. [issue:149[]]
@@ -104,6 +108,7 @@ This page lists the high level changes between versions of Geb.
 * Build using WebDriver 3.6.0. [issue:504[]]
 * Calling `click()` on empty navigators results in a `UnsupportedOperationException`. [issue:501[]]
 * Build using Spock 1.1. [issue:505[]]
+* Unchecked checkboxes return `null` as value for consistency with other input types. [issue:465[]]
 
 === 1.1.1
 

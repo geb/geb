@@ -63,7 +63,7 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
         // end::multiple_single_choice[]
 
         then:
-        $("form").pet.findAll() == ["dog"]
+        $("form").pet == "dog"
 
         when:
         // tag::multiple_single_choice[]
@@ -71,7 +71,7 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
         // end::multiple_single_choice[]
 
         then:
-        $("form").pet.findAll() == ["dog"]
+        $("form").pet == "dog"
 
         when:
         // tag::multiple[]
@@ -79,7 +79,7 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
         // end::multiple[]
 
         then:
-        $("form").pet.findAll() == ["dog", "lizard"]
+        $("form").pet == ["dog", "lizard"]
 
         when:
         // tag::multiple[]
@@ -87,7 +87,7 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
         // end::multiple[]
 
         then:
-        $("form").pet.findAll() == ["dog", "lizard"]
+        $("form").pet == ["dog", "lizard"]
 
     }
 
@@ -124,8 +124,8 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
 
         expect:
         // tag::unchecked[]
-        assert $("input", name: 'pet').value() == false
-        assert $("form").pet == false
+        assert !$("input", name: 'pet').value()
+        assert !$("form").pet
         // end::unchecked[]
     }
 
