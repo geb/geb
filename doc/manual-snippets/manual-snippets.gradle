@@ -14,7 +14,7 @@ sourceSets {
 }
 
 task realBrowserTest(type: Test) {
-    testClassesDir = sourceSets.realBrowserTest.output.classesDir
+    testClassesDirs = sourceSets.realBrowserTest.output.classesDirs
     classpath = sourceSets.realBrowserTest.runtimeClasspath
 
     mustRunAfter test

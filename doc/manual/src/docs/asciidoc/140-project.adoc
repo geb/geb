@@ -82,15 +82,28 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== New features
+
+* Allow specifying the expected number of elements a content definition should return. [issue:149[]]
+
 ==== Fixes
 
 * Improved error message when trying to select null on a single-select select element. [issue:477[]]
 * Return a list of results instead of `null` from `newWindow()` methods taking a window matching specification closure. [issue:476[]]
 * Ignore case of tag names passed as part of css selectors to `Navigator.filter()` [issue:482[]]
+* Gracefully handle incorrectly encoded URIs returned from `WebDriver.getCurrentUrl()` when navigating to urls. [issue:492[]]
 
 ==== Improvements
 
 * Change signatures of methods from `FrameSupport` to be more strongly typed. [issue:470[]]
+
+==== Breaking changes
+
+* Use Java 8 to compile the project. [issue:502[]]
+* Remove `FileInput#getFile()`. [issue:503[]]
+* Build using WebDriver 3.6.0. [issue:504[]]
+* Calling `click()` on empty navigators results in a `UnsupportedOperationException`. [issue:501[]]
+* Build using Spock 1.1. [issue:505[]]
 
 === 1.1.1
 

@@ -15,7 +15,7 @@
         },
         "clean": "dist/"
     },
-     "components": [
+    "components": [
         "reset",
         "site",
         "button",

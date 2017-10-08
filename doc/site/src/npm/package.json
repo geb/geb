@@ -13,7 +13,7 @@
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.2",
     "jquery": "3.2.1",
-    "semantic-ui": "^2.2.10",
+    "semantic-ui": "2.2.10",
     "@browser-logos/android": "^1.0.3",
     "@browser-logos/chrome": "^1.0.1",
     "@browser-logos/edge": "^1.0.1",

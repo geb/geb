@@ -48,7 +48,9 @@ class EmptyNavigator extends AbstractNavigator {
     Navigator not(Map<String, Object> predicates) { this }
 
     @Override
-    Navigator click() { this }
+    Navigator click() {
+        throw new UnsupportedOperationException("not supported on empty navigator objects")
+    }
 
     @Override
     Navigator click(Class<? extends Page> pageClass, Wait wait = null) {

@@ -15,6 +15,8 @@ dependencies {
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
 
+    testCompile "cglib:cglib:2.2"
+
     sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
 
@@ -36,7 +38,8 @@ sauceLabs {
         }
     }
     task {
-        testClassesDir = test.testClassesDir
+        maxHeapSize = "512m"
+        testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
     }
@@ -68,7 +71,8 @@ browserStack {
 
     }
     task {
-        testClassesDir = test.testClassesDir
+        maxHeapSize = "512m"
+        testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
     }
@@ -83,7 +87,7 @@ task nonIeBrowserStackTests {
 }
 
 task ieBrowserStackTests {
-    dependsOn 'internet explorerWindows8Test', 'internet explorerWindows9Test', 'internet explorerWindows10Test', 'internet explorerWindows11Test'
+    dependsOn 'internetExplorerWindows8Test', 'internetExplorerWindows9Test', 'internetExplorerWindows10Test', 'internetExplorerWindows11Test'
 }
 
 modifyPom { pom ->

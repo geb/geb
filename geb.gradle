@@ -10,12 +10,14 @@ buildscript {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
         classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.2"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
+        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.0"
     }
 }
 
 apply plugin: 'base'
 apply plugin: 'io.codearte.nexus-staging'
 apply plugin: 'com.energizedwork.asl2'
+apply plugin: 'com.energizedwork.idea-junit'
 apply from: "gradle/idea.gradle"
 
 def getProperty(String name, defaultValue) {
@@ -31,14 +33,18 @@ allprojects { project ->
     version = '1.2-SNAPSHOT'
     group = 'org.gebish'
 
+    apply plugin: "com.energizedwork.webdriver-binaries"
+
     ext {
         isSnapshot = version.endsWith("-SNAPSHOT")
         isCi = project.hasProperty("ci")
 
-        seleniumVersion = "2.52.0"
+        seleniumVersion = "3.6.0"
+        htmlUnitDriverVersion = "2.27"
         groovyVersion = "2.5.0-beta-1"
-        spockVersion = "1.0-groovy-2.4"
+        spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
+        geckodriverVersion = "0.19.0"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
             exclude module: "groovy-all"
@@ -47,7 +53,7 @@ allprojects { project ->
         seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
         seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
         firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-        htmlUnitDriverDependency = "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion"
+        htmlUnitDriverDependency = "org.seleniumhq.selenium:htmlunit-driver:$htmlUnitDriverVersion"
 
         jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
 
@@ -67,7 +73,7 @@ allprojects { project ->
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":module:geb-test-common", ":integration:geb-gradle", ":doc:site",
-            ":doc:manual-snippets", ":compatibility:groovy-2.3.7", ":compatibility:spock-1.1"
+            ":doc:manual-snippets", ":compatibility:groovy-2.3.7", ":compatibility:spock-1.0"
         ]
 
         publishedModules = [
@@ -78,6 +84,10 @@ allprojects { project ->
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
+    }
+
+    webdriverBinaries {
+        geckodriver geckodriverVersion
     }
 
     if (isCi) {
@@ -97,12 +107,12 @@ subprojects {
 
         dependencies {
             compile groovyDependency
-            codenarc 'org.codenarc:CodeNarc:0.26.0', {
+            codenarc 'org.codenarc:CodeNarc:0.27.0', {
                 exclude module: "GMetrics"
+                exclude group: "org.codehaus.groovy"
             }
+            codenarc groovyDependency
         }
-
-        sourceCompatibility = 1.7
 
         codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
@@ -184,6 +194,19 @@ subprojects {
         footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
         windowTitle = "Groovy API for $docName $version"
     }
+
+    tasks.withType(Test) {
+        maxHeapSize = "1g"
+        jvmArgs '-XX:MaxMetaspaceSize=128m'
+        testLogging {
+            exceptionFormat = 'full'
+        }
+    }
+
+    tasks.withType(GroovyCompile) {
+        groovyOptions.forkOptions.memoryMaximumSize = '256m'
+    }
+
 
     if (path in publishedModules) {
         apply plugin: "base"

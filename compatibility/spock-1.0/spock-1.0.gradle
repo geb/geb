@@ -1,7 +1,7 @@
 configurations.all {
     resolutionStrategy.eachDependency { details ->
         if (details.requested.group == 'org.spockframework') {
-            details.useVersion '1.1-groovy-2.4-rc-2'
+            details.useVersion '1.0-groovy-2.4'
         }
     }
 }

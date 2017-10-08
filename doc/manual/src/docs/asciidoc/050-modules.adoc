@@ -367,8 +367,8 @@ include::{test-dir}/modules/TextareaSnippetSpec.groovy[tag=example,indent=0]
 
 === `FileInput`
 
-The `{file-input-api}` module provides property methods for setting and getting the file location for a file input element.
-These methods take and return `File` instances.
+The `{file-input-api}` module provides a setter for the file location of a file input element.
+The method takes a `File` instance.
 
 Given the html…
 

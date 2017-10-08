@@ -16,7 +16,10 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Page
+import geb.waiting.Wait
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class EmptyNavigatorSpec extends Specification {
 
@@ -46,4 +49,26 @@ class EmptyNavigatorSpec extends Specification {
         navigator[1..10] instanceof EmptyNavigator
         navigator[0..<0] instanceof EmptyNavigator
     }
+
+    @Unroll('click() for args: #args')
+    def click() {
+        when:
+        navigator.click(*args)
+
+        then:
+        UnsupportedOperationException e = thrown()
+        e.message == "not supported on empty navigator objects"
+
+        where:
+        args << [
+                [],
+                [Page],
+                [Page, new Wait()],
+                [new Page()],
+                [new Page(), new Wait()],
+                [[Page]],
+                [[Page], new Wait()]
+        ]
+    }
+
 }

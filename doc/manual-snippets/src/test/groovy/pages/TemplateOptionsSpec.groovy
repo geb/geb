@@ -16,6 +16,7 @@
 package pages
 
 import geb.Page
+import geb.error.ContentCountOutOfBoundsException
 import geb.error.RequiredPageContentNotPresent
 import geb.test.GebSpecWithCallbackServer
 import org.apache.http.entity.ContentType
@@ -194,7 +195,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
                     // tag::page_html[]
                     <html>
                         <body>
-                            <frame id="frame-id" src="frame.html"></frame>
+                            <iframe id="frame-id" src="frame.html"></iframe>
                         <body>
                     </html>
                     // end::page_html[]
@@ -212,6 +213,85 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
             // tag::page[]
         }
         // end::page[]
+    }
+
+    def "min option"() {
+        given:
+        html """
+            // tag::min_html[]
+            <html>
+                <body>
+                    <p>first paragraph</p>
+                    <p>second paragraph</p>
+                <body>
+            </html>
+            // end::min_html[]
+        """
+        def exceptionMessage =
+        // tag::min_exception_message[]
+        "Page content 'pages.PageWithTemplateUsingMinOption -> atLeastThreeElementNavigator: geb.navigator.NonEmptyNavigator' should return a navigator with at least 3 elements but has returned a navigator with 2 elements"
+        // end::min_exception_message[]
+
+        when:
+        to(PageWithTemplateUsingMinOption).atLeastThreeElementNavigator
+
+        then:
+        ContentCountOutOfBoundsException e = thrown()
+        e.message == exceptionMessage
+    }
+
+    def "max option"() {
+        given:
+        html """
+            // tag::max_html[]
+            <html>
+                <body>
+                    <p>first paragraph</p>
+                    <p>second paragraph</p>
+                    <p>third paragraph</p>
+                    <p>fourth paragraph</p>
+                <body>
+            </html>
+            // end::max_html[]
+        """
+        def exceptionMessage =
+        // tag::max_exception_message[]
+        "Page content 'pages.PageWithTemplateUsingMaxOption -> atMostThreeElementNavigator: geb.navigator.NonEmptyNavigator' should return a navigator with at most 3 elements but has returned a navigator with 4 elements"
+        // end::max_exception_message[]
+
+        when:
+        to(PageWithTemplateUsingMaxOption).atMostThreeElementNavigator
+
+        then:
+        ContentCountOutOfBoundsException e = thrown()
+        e.message == exceptionMessage
+    }
+
+    def "times option"() {
+        given:
+        html """
+            // tag::times_html[]
+            <html>
+                <body>
+                    <p>first paragraph</p>
+                    <p>second paragraph</p>
+                    <p>third paragraph</p>
+                    <p>fourth paragraph</p>
+                <body>
+            </html>
+            // end::times_html[]
+        """
+        def exceptionMessage =
+        // tag::times_exception_message[]
+        "Page content 'pages.PageWithTemplateUsingTimesOption -> twoToThreeElementNavigator: geb.navigator.NonEmptyNavigator' should return a navigator with at most 3 elements but has returned a navigator with 4 elements"
+        // end::times_exception_message[]
+
+        when:
+        to(PageWithTemplateUsingTimesOption).twoToThreeElementNavigator
+
+        then:
+        ContentCountOutOfBoundsException e = thrown()
+        e.message == exceptionMessage
     }
 }
 
@@ -314,3 +394,27 @@ class FrameDescribingPage extends Page {
     }
 }
 // end::page_page[]
+
+class PageWithTemplateUsingMinOption extends Page {
+    static content = {
+        // tag::min_option[]
+        atLeastThreeElementNavigator(min: 3) { $('p') }
+        // end::min_option[]
+    }
+}
+
+class PageWithTemplateUsingMaxOption extends Page {
+    static content = {
+        // tag::max_option[]
+        atMostThreeElementNavigator(max: 3) { $('p') }
+        // end::max_option[]
+    }
+}
+
+class PageWithTemplateUsingTimesOption extends Page {
+    static content = {
+        // tag::times_option[]
+        twoToThreeElementNavigator(times: 2..3) { $('p') }
+        // end::times_option[]
+    }
+}

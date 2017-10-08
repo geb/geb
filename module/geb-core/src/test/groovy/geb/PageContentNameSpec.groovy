@@ -33,7 +33,7 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
 
         then:
         InvalidPageContent e = thrown()
-        e.message == "${DynamicContentNamePage.name} uses a not allowed content name: '$contentName'. Please use another name."
+        e.message == "Definition of content template '$contentName' of '${DynamicContentNamePage.name}' uses a not allowed content name: '$contentName'. Please use another name."
 
         where:
         contentName << ["title", "at", "url", "content", "owner"]
@@ -58,7 +58,7 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
 
         then:
         InvalidPageContent e = thrown()
-        e.message == "${DynamicContentNameModule.name} uses a not allowed content name: '$contentName'. Please use another name."
+        e.message == "Definition of content template '$contentName' of '${DynamicContentNameModule.name}' uses a not allowed content name: '$contentName'. Please use another name."
 
         where:
         contentName << ["x", "focused", "at", "base", "content", "owner"]

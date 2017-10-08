@@ -15,6 +15,7 @@
 package geb.content
 
 import geb.Browser
+import geb.error.ContentCountOutOfBoundsException
 import geb.error.RequiredPageContentNotPresent
 import geb.navigator.Navigator
 import org.openqa.selenium.WebDriver
@@ -59,6 +60,16 @@ class TemplateDerivedPageContent implements Navigator {
             throw new RequiredPageContentNotPresent(this)
         }
         this
+    }
+
+    void ensureWithinBounds(int min, int max) {
+        def count = size()
+        if (count > max) {
+            throw new ContentCountOutOfBoundsException(this, "at most ${formatItems(max)}", formatItems(count))
+        }
+        if (count < min) {
+            throw new ContentCountOutOfBoundsException(this, "at least ${formatItems(min)}", formatItems(count))
+        }
     }
 
     Navigator click() {
@@ -119,5 +130,9 @@ class TemplateDerivedPageContent implements Navigator {
 
     Object asType(Class type) {
         _navigator.class in type ? _navigator : super.asType(type)
+    }
+
+    private String formatItems(int count) {
+        count == 1 ? "1 element" : "$count elements"
     }
 }

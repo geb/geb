@@ -495,16 +495,7 @@ class Browser {
      */
     void go(Map params = [:], String url = null, UrlFragment fragment = null) {
         def newUri = calculateUri(url, params, fragment)
-        def currentUri = null
-        try {
-            def currentUrl = driver.currentUrl
-            currentUri = currentUrl ? new URI(currentUrl) : null
-        } catch (NullPointerException npe) {
-        } catch (WebDriverException webDriverException) {
-            if (!webDriverException.message.contains("Remote browser did not respond to getCurrentUrl")) {
-                throw webDriverException
-            }
-        }
+        def currentUri = retrieveCurrentUri()
         driver.get(newUri.toString())
         if (sameUrlWithDifferentFragment(currentUri, newUri)) {
             driver.navigate().refresh()
@@ -512,6 +503,21 @@ class Browser {
         if (!page) {
             page(Page)
         }
+    }
+
+    private URI retrieveCurrentUri() {
+        def currentUri = null
+        try {
+            def currentUrl = driver.currentUrl
+            currentUri = currentUrl ? new URI(currentUrl) : null
+        } catch (NullPointerException npe) {
+        } catch (URISyntaxException use) {
+        } catch (WebDriverException webDriverException) {
+            if (!webDriverException.message.contains("Remote browser did not respond to getCurrentUrl")) {
+                throw webDriverException
+            }
+        }
+        currentUri
     }
 
     private boolean sameUrlWithDifferentFragment(URI current, URI next) {

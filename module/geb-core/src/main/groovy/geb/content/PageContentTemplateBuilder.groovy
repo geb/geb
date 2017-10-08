@@ -41,11 +41,11 @@ class PageContentTemplateBuilder {
         def params = null
 
         if (PageContentNames.isNotAllowed(container, name)) {
-            throw new InvalidPageContent("${container.class.name} uses a not allowed content name: '$name'. Please use another name.")
+            throwInvalidContent(name, "uses a not allowed content name: '$name'. Please use another name.")
         }
 
         if (args.size() == 0) {
-            throw new InvalidPageContent("Definition of page content template '$name' of '$container' contains no definition")
+            throwInvalidContent(name, "contains no definition")
         } else if (args.size() == 1) {
             if ((args[0] instanceof Map)) {
                 params = args[0]
@@ -76,14 +76,14 @@ class PageContentTemplateBuilder {
     }
 
     private throwBadInvocationError(name, args) {
-        throw new InvalidPageContent("Definition of page component template '$name' of '$container' is invalid, params must be either a Closure, or Map and Closure (args were: ${args*.class})")
+        throwInvalidContent(name, "is invalid, params must be either a Closure, or Map and Closure (args were: ${args*.class})")
     }
 
     private PageContentTemplate create(name, params, definition) {
         def aliasedName = params?.aliases
         if (aliasedName) {
             if (!templates[aliasedName]) {
-                throw new InvalidPageContent("Definition of page component template '$name' of '$container' aliases an unknown element '${params.aliases}'")
+                throwInvalidContent(name, "aliases an unknown element '${params.aliases}'")
             }
             templates[aliasedName]
         } else {
@@ -128,5 +128,9 @@ class PageContentTemplateBuilder {
         }
 
         build(browser, container, navigatorFactory, templatesDefinitions.reverse())
+    }
+
+    private void throwInvalidContent(String name, String message) {
+        throw new InvalidPageContent(container, name, message)
     }
 }

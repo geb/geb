@@ -23,7 +23,7 @@ class CallingMethodsSpec extends DriveMethodSupportingSpecWithServer {
     def "calling methods"() {
         given:
         server.html """
-            // tag::html[]
+            // tag::calling_methods_html[]
             <html>
                 <head>
                     <script type="text/javascript">
@@ -33,7 +33,7 @@ class CallingMethodsSpec extends DriveMethodSupportingSpecWithServer {
                     </script>
                 </head>
             </html>
-            // end::html[]
+            // end::calling_methods_html[]
         """
 
         expect:
@@ -47,15 +47,29 @@ class CallingMethodsSpec extends DriveMethodSupportingSpecWithServer {
 
     def "calling nested methods"() {
         given:
-        server.html {
-        }
+        server.html """
+            // tag::nested_methods_html[]
+            <html>
+                <head>
+                    <script type="text/javascript">
+                        functionContainer = {
+                            addThem: function(a,b) {
+                                return a + b;
+                            }
+                        }
+                    </script>
+                </head>
+            </html>
+            // end::nested_methods_html[]
+        """
 
         expect:
         // tag::nested_methods[]
         Browser.drive {
-            go "/"
-            js."document.write"("<html>Hello World!</html>")
-            assert $().text() == "Hello World!"
+            Browser.drive {
+                go "/"
+                assert js."functionContainer.addThem"(1, 2) == 3
+            }
         }
         // end::nested_methods[]
     }

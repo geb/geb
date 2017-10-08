@@ -19,6 +19,7 @@ import geb.test.CallbackAndWebDriverServer
 import geb.test.GebSpecWithServer
 import geb.test.TestHttpServer
 import groovy.transform.InheritConstructors
+import org.openqa.selenium.Capabilities
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.Response
@@ -38,26 +39,51 @@ class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer
     }
 
     def setup() {
-        browser.driver = new DriverWithInvalidGetCurrentUrlImplementation(callbackAndWebDriverServer.webdriverUrl, DesiredCapabilities.htmlUnit())
         browser.baseUrl = callbackAndWebDriverServer.applicationUrl
         browser.config.cacheDriver = false
     }
 
     @Issue('https://github.com/geb/issues/issues/291')
     void 'go() does not fail even if the driver returns null for get current url command'() {
+        given:
+        currentUrlResponseValue = null
+
         when:
         go()
 
         then:
         notThrown(Exception)
     }
+
+    @Issue('https://github.com/geb/issues/issues/492')
+    void 'go() does not fail even if the driver returns an incorrectly encoded uri for get current url command'() {
+        given:
+        currentUrlResponseValue = 'http://abcd1234.abcd.abcd.com:1234/ab-cd/index.html#!/abcd#abcd-abcd-abcd-abcd'
+
+        when:
+        go()
+
+        then:
+        notThrown(Exception)
+    }
+
+    void setCurrentUrlResponseValue(String value) {
+        browser.driver = new DriverWithInvalidGetCurrentUrlImplementation(callbackAndWebDriverServer.webdriverUrl, DesiredCapabilities.htmlUnit(), value)
+    }
 }
 
 @InheritConstructors
 class DriverWithInvalidGetCurrentUrlImplementation extends RemoteWebDriver {
 
+    private final String currentUrl
+
+    DriverWithInvalidGetCurrentUrlImplementation(URL remoteAddress, Capabilities desiredCapabilities, String currentUrl) {
+        super(remoteAddress, desiredCapabilities)
+        this.currentUrl = currentUrl
+    }
+
     @Override
     protected Response execute(String command) {
-        command == GET_CURRENT_URL ? new Response() : super.execute(command)
+        command == GET_CURRENT_URL ? new Response(value: currentUrl) : super.execute(command)
     }
 }

@@ -38,14 +38,11 @@ class FileInputSpec extends GebSpecWithCallbackServer {
         given:
         def file = temporaryFolder.newFile()
 
-        expect:
-        input.file == null
-
         when:
         input.file = file
 
         then:
-        input.file == file
+        input.value().endsWith(file.name)
     }
 
     def "can get and set a file on an empty navigator based file input module"() {
@@ -57,6 +54,6 @@ class FileInputSpec extends GebSpecWithCallbackServer {
 
         then:
         noExceptionThrown()
-        input.file == null
+        input.value() == null
     }
 }
