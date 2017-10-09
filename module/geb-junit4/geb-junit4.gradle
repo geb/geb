@@ -11,3 +11,9 @@ modifyPom { pom ->
     // User provides their own junit
     pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
 }
+
+test {
+    options {
+        excludeCategories 'geb.junit4.DoNotRunFromGradle'
+    }
+}

@@ -14,12 +14,12 @@
  */
 package geb.junit4
 
-import geb.junit4.rule.FailureTracker
-import org.junit.Before
+import geb.Browser
+import geb.report.ReporterSupport
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TestName
-import geb.report.ReporterSupport
 
 class GebReportingTest extends GebTest {
 
@@ -28,13 +28,17 @@ class GebReportingTest extends GebTest {
     private instanceTestCounter = 1
 
     @Rule
-    public FailureTracker failureTracker = new FailureTracker()
+    public ReportingFailureWatcher failureWatcher = new ReportingFailureWatcher(this)
 
     @Rule
     public TestName gebReportingTestTestName = new TestName()
 
     void report(String label) {
-        browser.report(ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, gebReportingTestTestName.methodName, label))
+        browser.report(effectiveReportLabel(label))
+    }
+
+    String effectiveReportLabel(String label) {
+        ReporterSupport.toTestReportLabel(getTestCounterValue(), instanceTestCounter++, gebReportingTestTestName.methodName, label)
     }
 
     @Before
@@ -51,14 +55,17 @@ class GebReportingTest extends GebTest {
         }
     }
 
+    @Override
+    Browser getBrowser() {
+        def browser = super.getBrowser()
+        failureWatcher.browser = browser
+        browser
+    }
+
     @After
     void writeGebReport() {
-        if (this.@browser) {
-            if (failureTracker.failed) {
-                report "failure"
-            } else if (!browser.config.reportOnTestFailureOnly) {
-                report "end"
-            }
+        if (this.@browser && !browser.config.reportOnTestFailureOnly) {
+            report "end"
         }
     }
 
