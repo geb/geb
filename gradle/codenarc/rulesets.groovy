@@ -51,6 +51,12 @@ ruleset {
             length = 200
             doNotApplyToFileNames = 'TemplateOptionsSpec.groovy'
         }
+        SpaceAfterOpeningBrace {
+            ignoreEmptyBlock = true
+        }
+        SpaceBeforeClosingBrace {
+            ignoreEmptyBlock = true
+        }
         SpaceBeforeOpeningBrace {
             doNotApplyToFileNames = 'InteractionsSupportSpec.groovy, WaitingSupportSpec.groovy'
         }

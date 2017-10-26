@@ -82,7 +82,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Fix reporting on failure in JUnit support when `reportOnTestFailureOnly` is set to true [issue:491[]]
 
 === 2.0
 
