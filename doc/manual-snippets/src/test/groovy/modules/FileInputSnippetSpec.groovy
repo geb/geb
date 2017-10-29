@@ -40,6 +40,6 @@ class FileInputSnippetSpec extends GebSpecWithCallbackServer {
         input.file = csvFile
         // end::example[]
         then:
-        assert input.file.name.endsWith(csvFile.name)
+        assert input.value().endsWith(csvFile.name)
     }
 }
