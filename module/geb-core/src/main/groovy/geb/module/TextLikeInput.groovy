@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,14 @@
  */
 package geb.module
 
-class TextInput extends TextLikeInput {
+abstract class TextLikeInput extends AbstractInput {
 
-    final String inputType = "text"
+    String getText() {
+        navigator.value()
+    }
+
+    void setText(String text) {
+        navigator.value(text)
+    }
 
 }

@@ -15,8 +15,16 @@
  */
 package geb.module
 
-class TextInput extends TextLikeInput {
+class SearchInputSpec extends TextLikeInputSpec {
 
-    final String inputType = "text"
+    def setup() {
+        html {
+            input(type: "search")
+        }
+    }
+
+    SearchInput getInput() {
+        $("input").module(SearchInput)
+    }
 
 }

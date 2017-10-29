@@ -15,8 +15,7 @@
  */
 package geb.module
 
-class TextInput extends TextLikeInput {
-
-    final String inputType = "text"
-
+class SearchInputBaseSpec extends InputBasedModuleSpec<SearchInput> {
+    final String inputType = "search"
+    final String otherInputType = "checkbox"
 }
