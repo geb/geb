@@ -15,7 +15,6 @@
  */
 package geb.report
 
-import geb.test.GebSpec
 import geb.test.GebSpecWithCallbackServer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -70,17 +69,25 @@ class ReporterSupportSpec extends Specification {
 
 class ReporterSupportSpec1 extends GebSpecWithCallbackServer {
 
-    def "all frames downloaded with page source"() {
-        given:
-            html {
-                div(id: 'frame_test1'){
-                  frame(name : "frame_test3")
-                  frame(name : "frame_test4")
-                  frame(id : "frame_test5")
-                  frame(class : "frame_test6")
-                }
-            }
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
+            <!DOCTYPE html>
+            <html>
+            <frameset cols="50%,50%">
+              <frame name = "test1" src="https://www.w3schools.com/" noresize="noresize">
+              <frame src="https://www.w3schools.com/tags/tag_frame.asp" noresize="noresize">
+            </frameset>
+            </html>
+            """
+        }
+    }
 
+    def setup() {
+        go()
+    }
+
+    def "all frames downloaded with page source"() {
         when:
             report("frame_test1", true)
 
@@ -89,16 +96,6 @@ class ReporterSupportSpec1 extends GebSpecWithCallbackServer {
     }
 
     def "no frames downloaded with page source 1"() {
-        given:
-        html {
-            div(id: 'frame_test1'){
-                frame(name : "frame_test3")
-                frame(name : "frame_test4")
-                frame(id : "frame_test5")
-                frame(class : "frame_test6")
-            }
-        }
-
         when:
         report("frame_test2", false)
 
@@ -107,16 +104,6 @@ class ReporterSupportSpec1 extends GebSpecWithCallbackServer {
     }
 
     def "no frames downloaded with page source 2"() {
-        given:
-        html {
-            div(id: 'frame_test1'){
-                frame(name : "frame_test3")
-                frame(name : "frame_test4")
-                frame(id : "frame_test5")
-                frame(class : "frame_test6")
-            }
-        }
-
         when:
         browser.report("frame_test3")
 

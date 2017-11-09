@@ -70,7 +70,7 @@ class PageSourceReporter extends ReporterSupport {
         if (frames) {
             def htmls = frames.collect {
                 iterateFrames(browser, [it]) {
-                    "<html>" + $("html", 0).attr('innerHTML') + "</html>"
+                    "<html>" + browser.$("html", 0).attr('innerHTML') + "</html>"
                 }
             }
 
