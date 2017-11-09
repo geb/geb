@@ -15,6 +15,8 @@
  */
 package geb.report
 
+import geb.test.GebSpec
+import geb.test.GebSpecWithCallbackServer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -63,5 +65,62 @@ class ReporterSupportSpec extends Specification {
         then:
         1 * l1.onReport(reporter, state, files)
         1 * l2.onReport(reporter, state, files)
+    }
+}
+
+class ReporterSupportSpec1 extends GebSpecWithCallbackServer {
+
+    def "all frames downloaded with page source"() {
+        given:
+            html {
+                div(id: 'frame_test1'){
+                  frame(name : "frame_test3")
+                  frame(name : "frame_test4")
+                  frame(id : "frame_test5")
+                  frame(class : "frame_test6")
+                }
+            }
+
+        when:
+            report("frame_test1", true)
+
+        then:
+            new File("frame_test1.html", getReportGroupDir()).exists()
+    }
+
+    def "no frames downloaded with page source 1"() {
+        given:
+        html {
+            div(id: 'frame_test1'){
+                frame(name : "frame_test3")
+                frame(name : "frame_test4")
+                frame(id : "frame_test5")
+                frame(class : "frame_test6")
+            }
+        }
+
+        when:
+        report("frame_test2", false)
+
+        then:
+        new File("frame_test2.html", getReportGroupDir()).exists()
+    }
+
+    def "no frames downloaded with page source 2"() {
+        given:
+        html {
+            div(id: 'frame_test1'){
+                frame(name : "frame_test3")
+                frame(name : "frame_test4")
+                frame(id : "frame_test5")
+                frame(class : "frame_test6")
+            }
+        }
+
+        when:
+        browser.report("frame_test3")
+
+        then:
+        new File("frame_test3.html", getReportGroupDir()).exists()
     }
 }

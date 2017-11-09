@@ -931,6 +931,18 @@ class Browser {
         config.reporter.writeReport(new ReportState(this, label, getReportGroupDir()))
     }
 
+    /**
+     * Writes a snapshot of the browser's state to the current {@link #getReportGroupDir()} using
+     * the {@link geb.Configuration#getReporter() config's reporter}.
+     *
+     * @param label The name for the report file (should not include a file extension)
+     * @param downloadFrames flag for {@link geb.report.PageSourceReporter} to download
+     * html inside frames
+     */
+    void report(String label, boolean downloadFrames) {
+        config.reporter.writeReport(new ReportState(this, label, getReportGroupDir(), downloadFrames))
+    }
+
     private informPageChangeListeners(Page oldPage, Page newPage) {
         pageChangeListeners*.pageWillChange(this, oldPage, newPage)
     }
