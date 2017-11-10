@@ -48,8 +48,8 @@ We have now created the following files inside the `reportsDir`…
 
 * `google/home page.html`
 * `google/home page.png`
-* `wikipedia/home page.html`
-* `wikipedia/home page.png`
+* `gebish/home page.html`
+* `gebish/home page.png`
 
 The browser will create the directory for the report group as needed.
 By default, the report group is not set which means that reports are written to the base of the `reportsDir`.

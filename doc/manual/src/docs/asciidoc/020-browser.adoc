@@ -241,7 +241,7 @@ Thanks to that you can immediately see evaluated values of your “at checker”
 See the <<at-checker,“at checker”>> section for more details.
 ====
 
-The `to()` method that takes a single page type or instance *verifies* that the the browser ends up at the given page.
+The `to()` method that takes a single page type or instance *verifies* that the browser ends up at the given page.
 If the request may initiate a redirect and take the browser to a different page you should use `{via-method-api}` method:
 
 [source,groovy]

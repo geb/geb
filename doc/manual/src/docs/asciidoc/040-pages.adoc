@@ -488,7 +488,7 @@ The `verifyAt()` method call will either:
 
 * return `true` if the “at” checker passes
 * if <<implicit-assertions, implicit assertions>> are <<implicit-assertions-mechanics, enabled>> and the “at” checker fails it will throw an `AssertionError`
-* return `false` if implicit assertions are not enabled and the the “at” checker fails
+* return `false` if implicit assertions are not enabled and the “at” checker fails
 
 Considering the example above you could use it like this…
 

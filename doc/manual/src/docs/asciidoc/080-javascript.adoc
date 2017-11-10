@@ -296,7 +296,7 @@ include::{core-source-dir}/geb/js/AlertAndConfirmSupport.groovy[tag=confirm,inde
 
 The first method, `withConfirm()` (and its ‘`ok`’ defaulted relative), is used to verify actions that will produce a confirm dialog.
 This method returns the confirmation message.
-The `ok` parameter controls whether the the “OK” or “Cancel” button should be clicked.
+The `ok` parameter controls whether the “OK” or “Cancel” button should be clicked.
 
 Given the following HTML…
 
