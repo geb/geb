@@ -196,8 +196,8 @@ subprojects {
     }
 
     tasks.withType(Test) {
-        maxHeapSize = "1g"
-        jvmArgs '-XX:MaxMetaspaceSize=128m'
+        maxHeapSize = "768m"
+        jvmArgs '-XX:MaxMetaspaceSize=192m'
         testLogging {
             exceptionFormat = 'full'
         }
@@ -255,7 +255,6 @@ subprojects {
                 showStackTraces = true
                 exceptionFormat "full"
             }
-            maxHeapSize = "512m"
         }
     }
 
