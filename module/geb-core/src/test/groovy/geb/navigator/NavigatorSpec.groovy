@@ -16,7 +16,7 @@
 package geb.navigator
 
 import geb.Page
-import geb.test.CrossBrowser
+import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
 import org.openqa.selenium.By
 import spock.lang.Unroll

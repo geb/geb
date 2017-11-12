@@ -15,9 +15,9 @@
  */
 package geb.navigator
 
-import geb.test.CrossBrowser
+import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
-import geb.test.RequiresRealBrowser
+import geb.test.browsers.RequiresRealBrowser
 
 @CrossBrowser
 @RequiresRealBrowser

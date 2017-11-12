@@ -15,7 +15,7 @@
  */
 package geb.frame
 
-import geb.test.CrossBrowser
+import geb.test.browsers.CrossBrowser
 import org.openqa.selenium.NoSuchFrameException
 import spock.lang.Unroll
 
