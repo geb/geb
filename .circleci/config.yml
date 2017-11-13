@@ -11,7 +11,7 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-modules
-      - run: ./gradlew --no-daemon -p module -Pci check --continue
+      - run: ./gradlew --no-daemon --max-workers 2 --parallel -p module -Pci check --continue
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -29,7 +29,7 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-compatibility
-      - run: ./gradlew --no-daemon -p compatibility -Pci check --continue
+      - run: ./gradlew --no-daemon --max-workers 2 --parallel -p compatibility -Pci check --continue
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -47,7 +47,7 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-integrations
-      - run: ./gradlew --no-daemon -p integration -Pci check --continue
+      - run: ./gradlew --no-daemon --max-workers 2 --parallel -p integration -Pci check --continue
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -69,7 +69,7 @@ jobs:
           command: |
             Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
             export DISPLAY=:99
-            ./gradlew --no-daemon -Pci :doc:manual-snippets:check :doc:manual:build
+            ./gradlew --no-daemon --max-workers 2 --parallel -Pci :doc:manual-snippets:check :doc:manual:build
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -87,7 +87,7 @@ jobs:
       - restore_cache:
           keys:
             - gradle-home-site
-      - run: ./gradlew --no-daemon -p doc/site -Pci check
+      - run: ./gradlew --no-daemon --max-workers 2 --parallel -p doc/site -Pci check
       - store_artifacts:
           path: build/reports
       - save_cache:

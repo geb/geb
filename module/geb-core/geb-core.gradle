@@ -21,7 +21,8 @@ dependencies {
 }
 
 test {
-    maxParallelForks(isCi ? 1 : 2)
+    def availableProcessors = isCi ? 2 : Runtime.runtime.availableProcessors().intdiv(2)
+    maxParallelForks availableProcessors
 }
 
 task allCrossBrowserTests {
