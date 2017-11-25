@@ -59,10 +59,9 @@ configurations {
 
 dependencies {
     testCompile spockDependency,
-        "org.jsoup:jsoup:1.7.3",
+        "org.jsoup:jsoup:1.11.2",
         project(':module:geb-spock'),
-        htmlUnitDriverDependency,
-        'org.jsoup:jsoup:1.7.2'
+        htmlUnitDriverDependency
 
     currentManual project(":doc:manual")
     oldManualVersions.each {
