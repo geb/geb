@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,7 @@
  */
 package geb.module
 
-import geb.test.browsers.Chrome
-import geb.test.browsers.Firefox
-import geb.test.browsers.RequiresRealBrowser
-
-@Chrome
-@Firefox
-@RequiresRealBrowser // due to https://sourceforge.net/p/htmlunit/bugs/1923/
-class SearchInputBaseSpec extends InputBasedModuleSpec<SearchInput> {
-    final String inputType = "search"
-    final String otherInputType = "checkbox"
+class DateInputBaseSpec extends InputBasedModuleSpec<DateInput> {
+    final String inputType = 'date'
+    final String otherInputType = 'checkbox'
 }

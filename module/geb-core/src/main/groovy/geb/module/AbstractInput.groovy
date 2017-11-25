@@ -30,11 +30,16 @@ abstract class AbstractInput extends FormElement {
                 throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$tag' but only input is allowed as the base element.")
             }
             def type = navigator.getAttribute("type")?.toLowerCase()
-            if (type != inputType) {
+            if (!isTypeValid(type)) {
                 throw new InvalidModuleBaseException(
                     "Specified base element for ${getClass().name} module was an input of type '$type' but only input of type ${inputType} is allowed as the base element."
                 )
             }
         }
     }
+
+    protected boolean isTypeValid(String type) {
+        type == inputType
+    }
+
 }

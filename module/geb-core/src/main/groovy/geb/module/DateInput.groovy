@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,28 @@
  */
 package geb.module
 
-import geb.test.browsers.Chrome
-import geb.test.browsers.Firefox
-import geb.test.browsers.RequiresRealBrowser
+import java.time.LocalDate
 
-@Chrome
-@Firefox
-@RequiresRealBrowser // due to https://sourceforge.net/p/htmlunit/bugs/1923/
-class SearchInputBaseSpec extends InputBasedModuleSpec<SearchInput> {
-    final String inputType = "search"
-    final String otherInputType = "checkbox"
+class DateInput extends AbstractInput {
+
+    final String inputType = 'date'
+
+    @Override
+    protected boolean isTypeValid(String type) {
+        super.isTypeValid(type) || type == "text"
+    }
+
+    void setDate(LocalDate date) {
+        value(date.toString())
+    }
+
+    void setDate(String iso8601FormattedDate) {
+        value(iso8601FormattedDate)
+    }
+
+    LocalDate getDate() {
+        String value = value()
+        value ? LocalDate.parse(value) : null
+    }
+
 }
