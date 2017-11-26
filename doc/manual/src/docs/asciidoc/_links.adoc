@@ -75,6 +75,7 @@
 :reporter-api: link:api/geb/report/Reporter.html[Reporter]
 :page-source-reporter-api: link:api/geb/report/PageSourceReporter.html[PageSourceReporter]
 :screenshot-reporter-api: link:api/geb/report/ScreenshotReporter.html[ScreenshotReporter]
+:frames-source-reporter-api: link:api/geb/report/FramesSourceReporter.html[FramesSourceReporter]
 :composite-reporter-link: link:api/geb/report/CompositeReporter.html
 :browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]

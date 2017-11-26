@@ -40,6 +40,20 @@ class ReporterConfigSpec extends Specification implements InlineConfigurationLoa
         then:
         config.reporter instanceof CustomReporter
     }
+
+    def "configuring reporter to also write frames source"() {
+        when:
+        configScript """
+            // tag::frames_source_reporter_config[]
+            import geb.report.*
+
+            reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter(), new FramesSourceReporter())
+            // end::frames_source_reporter_config[]
+        """
+
+        then:
+        noExceptionThrown()
+    }
 }
 
 class CustomReporter implements Reporter {

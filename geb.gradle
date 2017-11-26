@@ -59,6 +59,8 @@ allprojects { project ->
 
         groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
+        jsoupDependency = "org.jsoup:jsoup:1.11.2"
+
         repositories {
             mavenCentral()
             maven {

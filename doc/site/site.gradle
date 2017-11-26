@@ -59,7 +59,7 @@ configurations {
 
 dependencies {
     testCompile spockDependency,
-        "org.jsoup:jsoup:1.11.2",
+        jsoupDependency,
         project(':module:geb-spock'),
         htmlUnitDriverDependency
 

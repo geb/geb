@@ -87,6 +87,7 @@ This page lists the high level changes between versions of Geb.
 
 * Added a form control module for search input. [issue:495[]]
 * Added a form control module for date input. [issue:496[]]
+* Added `FramesSourceReporter` which allows to report on the source content of each top level frame of the browser's current page. [issue:448[]]
 
 ==== Fixes
 

@@ -15,7 +15,7 @@ dependencies {
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
 
-    testCompile "cglib:cglib:2.2"
+    testCompile "cglib:cglib:2.2", jsoupDependency
 
     sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
