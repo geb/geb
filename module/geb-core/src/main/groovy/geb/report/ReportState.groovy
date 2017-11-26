@@ -22,11 +22,19 @@ class ReportState {
     final Browser browser
     final String label
     final File outputDir
+    final boolean downloadFrames
 
     ReportState(Browser browser, String label, File outputDir) {
         this.browser = browser
         this.label = label
         this.outputDir = outputDir
+    }
+
+    ReportState(Browser browser, String label, File outputDir, boolean downloadFrames) {
+        this.browser = browser
+        this.label = label
+        this.outputDir = outputDir
+        this.downloadFrames = downloadFrames
     }
 
 }

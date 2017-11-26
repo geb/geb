@@ -15,6 +15,7 @@
  */
 package geb.report
 
+import geb.test.GebSpecWithCallbackServer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -63,5 +64,50 @@ class ReporterSupportSpec extends Specification {
         then:
         1 * l1.onReport(reporter, state, files)
         1 * l2.onReport(reporter, state, files)
+    }
+}
+
+class ReporterSupportSpec1 extends GebSpecWithCallbackServer {
+
+    def setupSpec() {
+        callbackServer.get = { req, res ->
+            res.outputStream << """
+            <!DOCTYPE html>
+            <html>
+            <frameset cols="50%,50%">
+              <frame name = "test1" src="https://www.w3schools.com/" noresize="noresize">
+              <frame src="https://www.w3schools.com/tags/tag_frame.asp" noresize="noresize">
+            </frameset>
+            </html>
+            """
+        }
+    }
+
+    def setup() {
+        go()
+    }
+
+    def "all frames downloaded with page source"() {
+        when:
+            report("frame_test1", true)
+
+        then:
+            new File("frame_test1.html", getReportGroupDir()).exists()
+    }
+
+    def "no frames downloaded with page source 1"() {
+        when:
+        report("frame_test2", false)
+
+        then:
+        new File("frame_test2.html", getReportGroupDir()).exists()
+    }
+
+    def "no frames downloaded with page source 2"() {
+        when:
+        browser.report("frame_test3")
+
+        then:
+        new File("frame_test3.html", getReportGroupDir()).exists()
     }
 }
