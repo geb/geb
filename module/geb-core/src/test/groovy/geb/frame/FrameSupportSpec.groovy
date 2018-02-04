@@ -206,6 +206,16 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         then:
         mod.footerText == "footer"
     }
+
+    @Unroll
+    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
+    def "value returned by the closure passed as the last argument is returned from withFrame"() {
+        expect:
+        withFrame(frameFactory.call()) { 'from closure' } == 'from closure'
+
+        where:
+        frameFactory << [{ 'header' }, { 0 }, { $('#header-id') }, { page.footer }]
+    }
 }
 
 class FrameSupportSpecPage extends Page {
