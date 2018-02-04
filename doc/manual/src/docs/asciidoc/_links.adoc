@@ -92,6 +92,8 @@
 :radio-buttons-api: link:api/geb/module/RadioButtons.html[RadioButtons]
 :search-input-api: link:api/geb/module/SearchInput.html[SearchInput]
 :date-input-api: link:api/geb/module/DateInput.html[DateInput]
+:email-input-api: link:api/geb/module/EmailInput.html[EmailInput]
+:tel-input-api: link:api/geb/module/TelInput.html[TelInput]
 :interact-delegate-api: link:api/geb/interaction/InteractDelegate.html[InteractDelegate]
 :url-fragment-api: link:api/geb/url/UrlFragment.html[UrlFragment]
 :string-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(java.lang.String)
