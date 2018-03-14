@@ -34,7 +34,6 @@ import org.openqa.selenium.WebDriverException
  * Browser objects dynamically delegate all method calls and property read/writes that it doesn't implement to the current
  * page instance via {@code propertyMissing ( )} and {@code methodMissing ( )}.
  */
-@SuppressWarnings("UnnecessaryPublicModifier")
 class Browser {
 
     public static final String UTF8 = "UTF-8"
@@ -315,7 +314,7 @@ class Browser {
      *
      * @return an initialized page instance set as the current page
      */
-    public Page page(Page[] potentialPageInstances) {
+    Page page(Page[] potentialPageInstances) {
         checkIfAtAnUnexpectedPage(potentialPageInstances)
         verifyPages(potentialPageInstances.collect { initialisePage(it) })
     }

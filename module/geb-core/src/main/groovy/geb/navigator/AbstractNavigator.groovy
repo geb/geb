@@ -347,7 +347,6 @@ abstract class AbstractNavigator implements Navigator {
         firstElement()?.getCssValue(propertyName)
     }
 
-    @SuppressWarnings("UnnecessaryPublicModifier")
     public <T extends Module> T module(Class<T> moduleClass) {
         if (!Module.isAssignableFrom(moduleClass)) {
             throw new IllegalArgumentException("$moduleClass is not a subclass of ${Module}")
@@ -356,7 +355,6 @@ abstract class AbstractNavigator implements Navigator {
         module(moduleClass.newInstance())
     }
 
-    @SuppressWarnings("UnnecessaryPublicModifier")
     public <T extends Module> T module(T module) {
         def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
 
@@ -367,12 +365,11 @@ abstract class AbstractNavigator implements Navigator {
         module
     }
 
-    @SuppressWarnings("UnnecessaryPublicModifier")
     public <T extends Module> List<T> moduleList(Class<T> moduleClass) {
         iterator()*.module(moduleClass)
     }
 
-    @SuppressWarnings(["UnnecessaryPublicModifier", "UnnecessaryCollectCall"])
+    @SuppressWarnings(["UnnecessaryCollectCall"])
     public <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
         iterator().collect { it.module(moduleFactory.call()) }
     }

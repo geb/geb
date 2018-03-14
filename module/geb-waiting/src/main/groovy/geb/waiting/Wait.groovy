@@ -107,7 +107,6 @@ class Wait {
      * again after the {@code retryInterval} has expired. If the last invocation of {@code block} throws an exception
      * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
      */
-    @SuppressWarnings("UnnecessaryPublicModifier")
     public <T> T waitFor(Closure<T> block) {
         def stopAt = calculateTimeoutFromNow()
         def pass
