@@ -73,7 +73,6 @@ class FormShortcutsSpec extends GebSpecWithCallbackServer {
         // tag::element_shortcut[]
         assert $("form").geb() == $("form").find("input", name: "geb")
         // end::element_shortcut[]
-
     }
 
     def "content shortcuts"() {

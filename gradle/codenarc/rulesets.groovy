@@ -21,6 +21,18 @@ ruleset {
         TrailingComma {
             enabled = false
         }
+        MethodReturnTypeRequired {
+            enabled = false
+        }
+        VariableTypeRequired {
+            enabled = false
+        }
+        FieldTypeRequired {
+            enabled = false
+        }
+        MethodParameterTypeRequired {
+            enabled = false
+        }
     }
     ruleset('rulesets/dry.xml') {
         DuplicateStringLiteral {
@@ -62,6 +74,9 @@ ruleset {
         }
         MissingBlankLineAfterImports {
             doNotApplyToFileNames = 'ManualsMenuModule.groovy'
+        }
+        Indentation {
+            enabled = false
         }
     }
     ruleset('rulesets/generic.xml') {

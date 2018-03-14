@@ -27,15 +27,14 @@ class FineGrainedRequestSpec extends DriveMethodSupportingSpecWithServer {
     def "performing fine grained requests"() {
         given:
         server.get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setCharacterEncoding("utf8")
+            response.characterEncoding = "utf8"
             if (request.getHeader("Accept") == "application/json") {
-                response.setContentType("application/json")
+                response.contentType = "application/json"
                 response.outputStream << "{}"
             } else {
-                response.setContentType(ContentType.TEXT_HTML.toString())
+                response.contentType = ContentType.TEXT_HTML.toString()
                 response.outputStream << "<html></html>"
             }
-
         }
 
         expect:

@@ -437,7 +437,7 @@ class PageOrientedSpecPageC extends Page {
     static at = { false }
 }
 
-@SuppressWarnings("ComparisonOfTwoConstants")
+@SuppressWarnings(["ComparisonOfTwoConstants", "InvertedCondition"])
 class PageOrientedSpecPageD extends Page {
     static at = { assert 1 == 2 }
 }

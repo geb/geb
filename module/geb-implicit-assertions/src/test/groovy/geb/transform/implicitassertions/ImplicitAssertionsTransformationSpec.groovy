@@ -64,7 +64,6 @@ class ImplicitAssertionsTransformationSpec extends Specification {
 
         where:
         closureBody << ['false', 'null', 'booleanMethod(false)', '1 == 2', 'booleanMethod(false) == true']
-
     }
 
     def "transformation is applied to multiple lines of the closure"() {

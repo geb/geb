@@ -32,7 +32,7 @@ class Spock1Dot0IntegrationSpec extends Specification {
     @Rule
     TemporaryFolder temporaryFolder
 
-    def makeSpecClass(filename = "ExampleSpec") {
+    def makeSpecClass(String filename = "ExampleSpec") {
         def invoker = new TransformTestHelper() {
             protected configure(TransformTestHelper.Transforms transforms) {
                 transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)

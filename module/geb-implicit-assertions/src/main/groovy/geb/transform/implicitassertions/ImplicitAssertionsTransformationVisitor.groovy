@@ -97,7 +97,6 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         if (methodName) {
             Expression verifyMethodConditionArgsArgument = argumentExpressions.get(methodNameIndex + 1)
             if (verifyMethodConditionArgsArgument in ArrayExpression) {
-
                 List<Expression> values = (verifyMethodConditionArgsArgument as ArrayExpression).expressions.collect { Expression argumentExpression ->
                     extractRecordedValueExpression(argumentExpression)
                 }
@@ -234,8 +233,8 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         Statement retrieveRecordedValueStatement = new ExpressionStatement(createRuntimeCall("retrieveRecordedValue"))
 
         Statement withAssertion = new AssertStatement(booleanExpression)
-        withAssertion.setSourcePosition(expression)
-        withAssertion.setStatementLabel((String) expression.getNodeMetaData("statementLabel"))
+        withAssertion.sourcePosition = expression
+        withAssertion.statementLabel = (String) expression.getNodeMetaData("statementLabel")
 
         BlockStatement assertAndRetrieveRecordedValue = new BlockStatement()
         assertAndRetrieveRecordedValue.addStatement(withAssertion)
@@ -261,7 +260,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
             replacement = assertAndRetrieveRecordedValue
         }
 
-        replacement.setSourcePosition(statement)
+        replacement.sourcePosition = statement
         replacement
     }
 

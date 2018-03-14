@@ -44,8 +44,8 @@ class FileUploadSpec extends GebSpecWithCallbackServer {
             </html>
         """
         callbackServer.post = { HttpServletRequest request, HttpServletResponse response ->
-            response.setContentType(ContentType.TEXT_HTML.toString())
-            response.setCharacterEncoding(UTF8)
+            response.contentType = ContentType.TEXT_HTML.toString()
+            response.characterEncoding = UTF8
             response.writer << """
                 <html>${extractUploadedFileText(request)}</html>
             """

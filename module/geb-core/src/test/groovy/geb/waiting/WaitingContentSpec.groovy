@@ -43,7 +43,6 @@ class WaitingContentSpec extends WaitingSpec {
 
         then:
         thrown RequiredPageContentNotPresent
-
     }
 
     def "default wait"() {

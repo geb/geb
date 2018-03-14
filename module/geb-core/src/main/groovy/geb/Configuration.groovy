@@ -326,7 +326,7 @@ class Configuration {
         def reporter = readValue("reporter", null)
         if (reporter == null) {
             reporter = createDefaultReporter()
-            setReporter(reporter)
+            this.reporter = reporter
         } else if (!(reporter instanceof Reporter)) {
             throw new InvalidGebConfiguration("The specified reporter ($reporter) is not an implementation of ${Reporter.name}")
         }
@@ -443,14 +443,15 @@ class Configuration {
      */
     InnerNavigatorFactory getInnerNavigatorFactory() {
         def innerNavigatorFactory = readValue("innerNavigatorFactory", null)
-        if (innerNavigatorFactory == null) {
-            new DefaultInnerNavigatorFactory()
-        } else if (innerNavigatorFactory instanceof InnerNavigatorFactory) {
-            innerNavigatorFactory
-        } else if (innerNavigatorFactory instanceof Closure) {
-            new ClosureInnerNavigatorFactory(innerNavigatorFactory)
-        } else {
-            throw new InvalidGebConfiguration("innerNavigatorFactory is '${innerNavigatorFactory}', it should be a Closure or InnerNavigatorFactory implementation")
+        switch (innerNavigatorFactory) {
+            case null:
+                return new DefaultInnerNavigatorFactory()
+            case InnerNavigatorFactory:
+                return innerNavigatorFactory
+            case Closure:
+                return new ClosureInnerNavigatorFactory(innerNavigatorFactory)
+            default:
+                throw new InvalidGebConfiguration("innerNavigatorFactory is '${innerNavigatorFactory}', it should be a Closure or InnerNavigatorFactory implementation")
         }
     }
 
@@ -466,14 +467,15 @@ class Configuration {
     }
 
     protected DriverFactory getDriverFactory(driverValue) {
-        if (driverValue instanceof CharSequence) {
-            new NameBasedDriverFactory(classLoader, driverValue.toString())
-        } else if (driverValue instanceof Closure) {
-            new CallbackDriverFactory(driverValue)
-        } else if (driverValue == null) {
-            new DefaultDriverFactory(classLoader)
-        } else {
-            throw new DriverCreationException("Unable to determine factory for 'driver' config value '$driverValue'")
+        switch (driverValue) {
+            case CharSequence:
+                return new NameBasedDriverFactory(classLoader, driverValue.toString())
+            case Closure:
+                return new CallbackDriverFactory(driverValue)
+            case null:
+                return new DefaultDriverFactory(classLoader)
+            default:
+                throw new DriverCreationException("Unable to determine factory for 'driver' config value '$driverValue'")
         }
     }
 

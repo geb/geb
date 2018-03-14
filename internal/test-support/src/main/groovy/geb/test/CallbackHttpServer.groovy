@@ -37,8 +37,8 @@ class CallbackHttpServer extends TestHttpServer {
     }
 
     protected setupResponse(HttpServletResponse response) {
-        response.setContentType(ContentType.TEXT_HTML.toString())
-        response.setCharacterEncoding(UTF8)
+        response.contentType = ContentType.TEXT_HTML.toString()
+        response.characterEncoding = UTF8
         response.addHeader("Cache-Control", "Cache-Control: private, no-cache, no-store, must-revalidate")
     }
 

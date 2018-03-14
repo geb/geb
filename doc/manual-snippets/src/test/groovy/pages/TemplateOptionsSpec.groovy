@@ -177,8 +177,8 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
 
     def "page option"() {
         callbackServer.get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setContentType(ContentType.TEXT_HTML.toString())
-            response.setCharacterEncoding(UTF8)
+            response.contentType = ContentType.TEXT_HTML.toString()
+            response.characterEncoding = UTF8
             if (request.requestURI.endsWith("frame.html")) {
                 response.writer << """
                     // tag::frame_html[]
@@ -189,7 +189,6 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
                     </html>
                     // end::frame_html[]
                 """
-
             } else {
                 response.writer << """
                     // tag::page_html[]

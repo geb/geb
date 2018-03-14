@@ -27,9 +27,10 @@ class SelfSignedCertificateHelper {
         this.keystoreFilePassword = keystoreFilePassword
     }
 
+    @SuppressWarnings("UnnecessarySetter")
     void acceptCertificatesFor(HttpsURLConnection con) {
         con.setSSLSocketFactory(socketFactory)
-        con.setHostnameVerifier(hostnameVerifier)
+        con.hostnameVerifier = hostnameVerifier
     }
 
     private SSLSocketFactory getSocketFactory() {

@@ -28,15 +28,18 @@ abstract class BaseFrameSupportSpec extends GebSpecWithCallbackServer {
             head {
                 title pageText
             }
-            if (pageText == "frames") {
-                frameset(rows: "25%,75%") {
-                    frame(name: 'header', id: 'header-id', src: '/header')
-                    frame(id: 'footer', src: '/footer')
-                }
-            } else if (pageText == "iframe") {
-                body { iframe(id: 'inline', src: '/inline') }
-            } else {
-                body { span("$pageText") }
+            switch (pageText) {
+                case "frames":
+                    frameset(rows: "25%,75%") {
+                        frame(name: 'header', id: 'header-id', src: '/header')
+                        frame(id: 'footer', src: '/footer')
+                    }
+                    break
+                case "iframe":
+                    body { iframe(id: 'inline', src: '/inline') }
+                    break
+                default:
+                    body { span("$pageText") }
             }
         }
     }
