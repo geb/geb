@@ -41,7 +41,7 @@ allprojects { project ->
 
         seleniumVersion = "3.6.0"
         htmlUnitDriverVersion = "2.27"
-        groovyVersion = "2.4.7"
+        groovyVersion = "2.4.13"
         spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
         geckodriverVersion = "0.19.0"
