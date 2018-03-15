@@ -62,13 +62,6 @@ modifyPom {
                     role "Lead"
                 }
             }
-            developer {
-                id "chris-prior"
-                name "Chris Prior"
-                roles {
-                    role "Committer"
-                }
-            }
         }
     }
 

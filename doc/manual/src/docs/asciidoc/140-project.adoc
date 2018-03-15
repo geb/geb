@@ -18,12 +18,12 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 * link:http://ldaley.com[Luke Daley]
 * link:http://blog.proxerd.pl[Marcin Erdmann]
-* github-profile:chris-prior[Chris Prior]
 
 === Contributors
 
 * link:http://adhockery.blogspot.com/[Robert Fletcher]
 * link:http://pniederw.wordpress.com/[Peter Niederwieser]
+* github-profile:chris-prior[Chris Prior]
 * github-profile:zolotov[Alexander Zolotov] - TestNG Integration
 * link:http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
 * github-profile:antony[Antony Jones] - Various fixes and patches, doc improvements
