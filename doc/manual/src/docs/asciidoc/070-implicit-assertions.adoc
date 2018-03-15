@@ -123,6 +123,17 @@ If you're unfamiliar with Geb's “waiting content” support, please read <<con
 
 Any content definitions that declare a `wait` parameter have implicit assertions added to each expression just like `waitFor()` method calls.
 
+=== Reloading page when waiting
+
+The same implicit assertion semantics apply to usages of `refreshWaitFor()` method
+
+[NOTE]
+====
+If you're unfamiliar with Geb's “Reloading page when waiting” support, please read <<reloading-page-when-waiting, this section>>.
+====
+
+Any calls to `refreshWaitFor()` method have implicit assertions added to each expression in the bloc passed to it just like for `waitFor()` method calls.
+
 :numbered:
 
 [[implicit-assertions-mechanics]]

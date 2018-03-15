@@ -7,6 +7,10 @@ class TestClass {
         closure.call()
     }
 
+    def refreshWaitFor(Closure closure) {
+        closure.call()
+    }
+
     boolean booleanMethod(boolean returned) {
         returned
     }
@@ -18,8 +22,14 @@ class TestClass {
         null
     }
 
-    def run() {
+    def runWaitFor() {
         waitFor {
+            $closureBody
+        }
+    }
+
+    def runRefreshWaitFor() {
+        refreshWaitFor {
             $closureBody
         }
     }

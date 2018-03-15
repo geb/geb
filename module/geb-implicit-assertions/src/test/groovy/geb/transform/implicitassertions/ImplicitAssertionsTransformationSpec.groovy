@@ -56,7 +56,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     @Unroll("expression '#closureBody' is asserted and fails")
     def "various falsy expressions are asserted and fail"() {
         when:
-        getTransformedInstanceWithClosureBody(closureBody).run()
+        getTransformedInstanceWithClosureBody(closureBody).runWaitFor()
 
         then:
         PowerAssertionError error = thrown()
@@ -71,7 +71,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         getTransformedInstanceWithClosureBody(
             'true',
             'false'
-        ).run()
+        ).runWaitFor()
 
         then:
         PowerAssertionError error = thrown()
@@ -81,7 +81,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     @Unroll("expression '#closureBody' passes")
     def "various truly expressions pass"() {
         when:
-        def returnValue = getTransformedInstanceWithClosureBody(closureBody).run()
+        def returnValue = getTransformedInstanceWithClosureBody(closureBody).runWaitFor()
 
         then:
         noExceptionThrown()
@@ -100,7 +100,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     @Unroll("expression '#closureBody' is ignored")
     def "various ignored expressions pass"() {
         when:
-        getTransformedInstanceWithClosureBody(closureBody).run()
+        getTransformedInstanceWithClosureBody(closureBody).runWaitFor()
 
         then:
         noExceptionThrown()
@@ -126,12 +126,21 @@ class ImplicitAssertionsTransformationSpec extends Specification {
 
     def "waitFor closure returns true if all assertions pass"() {
         expect:
-        getTransformedInstanceWithClosureBody('true').run() == true
+        getTransformedInstanceWithClosureBody('true').runWaitFor() == true
     }
 
     def "transform is also applied to at closures"() {
         when:
         getTransformedInstanceWithClosureBody('false').at()
+
+        then:
+        PowerAssertionError error = thrown()
+        error.message.contains('false')
+    }
+
+    def "transform is also applied to refreshWaitFor calls"() {
+        when:
+        getTransformedInstanceWithClosureBody('false').runRefreshWaitFor()
 
         then:
         PowerAssertionError error = thrown()
@@ -147,13 +156,13 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     @Issue("https://github.com/geb/issues/issues/462")
     def "return value from waitFor block is unchanged if the last method call is to a void method"() {
         expect:
-        getTransformedInstanceWithClosureBody('voidMethod()').run() == null
+        getTransformedInstanceWithClosureBody('voidMethod()').runWaitFor() == null
     }
 
     @Issue("https://github.com/geb/issues/issues/398")
     def "can transform statements that contain method call expressions on null values"() {
         when:
-        getTransformedInstanceWithClosureBody('nullReturningMethod()?.contains("foo")').run()
+        getTransformedInstanceWithClosureBody('nullReturningMethod()?.contains("foo")').runWaitFor()
 
         then:
         thrown(PowerAssertionError)

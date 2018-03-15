@@ -84,7 +84,8 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== New features
+* Make it more convenient to wait on something while reloading the page. [issue:499[]]
 
 === 2.1
 

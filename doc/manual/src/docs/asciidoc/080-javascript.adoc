@@ -187,6 +187,7 @@ If you wish to _test_ multiple conditions as separate statement inside a `waitFo
 include::{test-dir}/javascript/WaitingExamplesSpec.groovy[tag=multiple_conditions,indent=0]
 ----
 
+[[wait-for-custom-message]]
 === Custom message
 
 If you wish to add a custom message to `WaitTimeoutException` that is being thrown when `waitFor` call times out you can do so by providing a message parameter to the `waitFor` call:
@@ -194,6 +195,23 @@ If you wish to add a custom message to `WaitTimeoutException` that is being thro
 [source,groovy]
 ----
 include::{test-dir}/javascript/CustomMessageSpec.groovy[tag=custom_message,indent=0]
+----
+
+[[reloading-page-when-waiting]]
+== Reloading the page when waiting
+
+Apart from the generic waiting support Geb also comes with a convenience method which reloads the page each time before the block passed to it is evaluated.
+
+The method is available on `Page` class and is called `{refresh-wait-for-api}` and it is the same as the <<waiting, `waitFor()`>> method with regards to everything else than the page reloading behaviour.
+This means that you can pass the same arguments to it as to `waitFor()`, the block passed to it is <<implicit-assertions, implicitly asserted>> and it supports <<wait-for-custom-message,custom messages>>.
+
+The following example shows waiting for a static timestamp of when the page was rendered to be at least one second after the test has started:
+
+[source,groovy]
+----
+include::{test-dir}/javascript/RefreshWaitingSpec.groovy[tag=page,indent=0]
+
+include::{test-dir}/javascript/RefreshWaitingSpec.groovy[tag=test,indent=0]
 ----
 
 == Alert and confirm dialogs

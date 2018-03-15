@@ -70,6 +70,7 @@
 :waiting-support-api: link:api/geb/waiting/WaitingSupport.html[WaitingSupport]
 :wait-api: link:api/geb/waiting/Wait.html[Wait]
 :wait-for-api: link:api/geb/waiting/Wait.html#waitFor(Closure%3CT%3E)[waitFor()]
+:refresh-wait-for-api: link:api/geb/Page.html#refreshWaitFor(java.util.Map,%20Closure%3CT%3E)[refreshWaitFor()]
 :alert-and-confirm-support-api: link:api/geb/js/AlertAndConfirmSupport.html[AlertAndConfirmSupport]
 :download-support-api: link:api/geb/download/DownloadSupport.html[DownloadSupport]
 :reporter-api: link:api/geb/report/Reporter.html[Reporter]

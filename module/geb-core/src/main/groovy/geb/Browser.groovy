@@ -314,7 +314,7 @@ class Browser {
      *
      * @return an initialized page instance set as the current page
      */
-    Page page(Page[] potentialPageInstances) {
+     Page page(Page[] potentialPageInstances) {
         checkIfAtAnUnexpectedPage(potentialPageInstances)
         verifyPages(potentialPageInstances.collect { initialisePage(it) })
     }
