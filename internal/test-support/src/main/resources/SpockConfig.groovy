@@ -10,7 +10,7 @@ import geb.test.browsers.Safari
 def cloudBrowserSpecification = System.getProperty("geb.saucelabs.browser") ?: System.getProperty("geb.browserstack.browser")
 if (cloudBrowserSpecification) {
     def includes = []
-    if (cloudBrowserSpecification.contains("android")) {
+    if (cloudBrowserSpecification.contains("realMobile")) {
         includes << Android
     } else  {
         includes << CrossBrowser

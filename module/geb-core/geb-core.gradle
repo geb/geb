@@ -61,8 +61,8 @@ browserStack {
     application(*applicationAddresses)
 
     browsers {
-        htcOne {
-            capabilities browserName: "android", platform: "ANDROID", device: "HTC One M8"
+        android {
+            capabilities device: "Samsung Galaxy S6", realMobile: "true"
         }
         chrome_mac_62
         chrome_windows_62
@@ -87,7 +87,7 @@ browserStack {
 }
 
 task nonIeBrowserStackTests {
-    dependsOn 'htcOneTest', 'chromeMac62Test', 'chromeWindows62Test', 'firefoxWindows47Test', 'firefoxMac47Test'
+    dependsOn 'androidTest', 'chromeMac62Test', 'chromeWindows62Test', 'firefoxWindows47Test', 'firefoxMac47Test'
 }
 
 task ieBrowserStackTests {
