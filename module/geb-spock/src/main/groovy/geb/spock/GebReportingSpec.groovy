@@ -60,7 +60,7 @@ class GebReportingSpec extends GebSpec {
     }
 
     String createReportLabel(String label = "") {
-        ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label)
+        ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName?.methodName ?: 'fixture', label)
     }
 
 }
