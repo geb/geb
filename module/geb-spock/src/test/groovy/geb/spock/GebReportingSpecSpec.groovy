@@ -189,8 +189,7 @@ class GebReportingSpecSpec extends Specification {
         class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
             def setupSpec() {
-                baseUrl = "${server.baseUrl}"
-                config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\\\\\", "\\\\\\\\\\\\\\\\")}"
+                ${getConfiguration()}
 
                 go "/"
                 report('Report in setupSpec')
@@ -213,12 +212,18 @@ class GebReportingSpecSpec extends Specification {
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
                 def setup() {
-                    baseUrl = "${server.baseUrl}"
-                    config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
+                    ${getConfiguration()}
                 }
 
                 $body
             }
+        """
+    }
+
+    private String getConfiguration() {
+        """
+        baseUrl = "${server.baseUrl}"
+        config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
         """
     }
 }
