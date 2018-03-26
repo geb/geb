@@ -189,7 +189,7 @@ class GebReportingSpecSpec extends Specification {
         class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
             def setupSpec() {
-                ${getConfiguration()}
+                ${configuration}
 
                 go "/"
                 report('Report in setupSpec')
@@ -212,7 +212,7 @@ class GebReportingSpecSpec extends Specification {
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
                 def setup() {
-                    ${getConfiguration()}
+                    ${configuration}
                 }
 
                 $body
