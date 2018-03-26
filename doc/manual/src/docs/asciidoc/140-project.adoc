@@ -85,7 +85,12 @@ This page lists the high level changes between versions of Geb.
 === {geb-version}
 
 ==== New features
+
 * Make it more convenient to wait on something while reloading the page. [issue:499[]]
+
+==== Improvements
+
+* Support calling `GebReportingSpec#report(String)` from fixture methods. [issue:518[]]
 
 === 2.1
 
