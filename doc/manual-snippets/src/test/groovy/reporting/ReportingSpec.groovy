@@ -24,6 +24,9 @@ class ReportingSpec extends DriveMethodSupportingSpecWithServer {
         expect:
         // tag::reporting[]
         Browser.drive {
+            // end::reporting[]
+            driver.javascriptEnabled = false
+            // tag::reporting[]
             go "http://google.com"
             report "google home page"
             // end::reporting[]
@@ -37,6 +40,9 @@ class ReportingSpec extends DriveMethodSupportingSpecWithServer {
         expect:
         // tag::reporting_groups[]
         Browser.drive {
+            // end::reporting_groups[]
+            driver.javascriptEnabled = false
+            // tag::reporting_groups[]
             reportGroup "google"
             go "http://google.com"
             report "home page"
@@ -59,6 +65,9 @@ class ReportingSpec extends DriveMethodSupportingSpecWithServer {
         expect:
         // tag::cleaning[]
         Browser.drive {
+            // end::cleaning[]
+            driver.javascriptEnabled = false
+            // tag::cleaning[]
             cleanReportGroupDir()
             go "http://google.com"
             report "home page"

@@ -24,6 +24,12 @@ class GoogleHomePage extends Page {
 }
 
 class GoogleSpec extends GebSpec {
+    // end::class[]
+    def setup() {
+        driver.javascriptEnabled = false
+    }
+    // tag::class[]
+
     def "go method does NOT set the page"() {
         given:
         Page oldPage = page
@@ -47,5 +53,6 @@ class GoogleSpec extends GebSpec {
         oldPage != page
         currentUrl.contains "google"
     }
+
 }
 // end::class[]
