@@ -394,6 +394,58 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
 Caused by: Assertion failed:.*
 ^false$.*'''
     }
+
+    @Unroll
+    def "at() method taking assertions closure verifies the at checker for page #scenario"() {
+        given:
+        via PageOrientedSpecPageA
+
+        when:
+        at(page) {}
+
+        then:
+        thrown AssertionError
+
+        where:
+        scenario   | page
+        'instance' | new PageOrientedSpecPageC()
+        'class'    | PageOrientedSpecPageC
+    }
+
+    @Unroll
+    def "assertions closure passed to at() is executed with the page instance set as the delegate when #scenario is passed as the first argument"() {
+        given:
+        via PageOrientedSpecPageA
+
+        expect:
+        at(page) { linkText } == 'b'
+
+        where:
+        scenario   | page
+        'instance' | new PageOrientedSpecPageA()
+        'class'    | PageOrientedSpecPageA
+    }
+
+    @Unroll
+    def "statements in the assertions closure passed to at() are implicitly asserted when #scenario is passed as the first argument"() {
+        given:
+        via PageOrientedSpecPageA
+
+        when:
+        at(page) {
+            linkText == 'a'
+        }
+
+        then:
+        AssertionError exception = thrown()
+        exception.message.contains("linkText == 'a'")
+
+        where:
+        scenario   | page
+        'instance' | new PageOrientedSpecPageA()
+        'class'    | PageOrientedSpecPageA
+    }
+
 }
 
 class PageOrientedSpecPageA extends Page {

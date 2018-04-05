@@ -18,6 +18,7 @@
 :no-such-frame-exception-api: {selenium-api-link}/org/openqa/selenium/NoSuchFrameException.html[NoSuchFrameException]
 :spock-link: link:http://spockframework.org/
 :spock: {spock-link}[Spock]
+:spock-with: {spock-link}/spock/javadoc/1.1/spock/lang/Specification.html#with-java.lang.Object-groovy.lang.Closure-[Specification.with(Object, Closure<?>)]
 :junit: link:http://www.junit.org/[JUnit]
 :testng: link:http://testng.org/[TestNg]
 :cucumber-jvm: link:https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
@@ -47,6 +48,7 @@
 :at-method-taking-class-api-link: link:api/geb/Browser.html#at(Class<T>)
 :at-method-taking-class-api: {at-method-taking-class-api-link}[<T extends Page> T at(Class<T> pageType)]
 :at-method-taking-instance-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
+:at-method-taking-class-and-closure-api-link: link:api/geb/Browser.html#at(Class<T>,%20Closure<R>)
 :via-method-api: link:api/geb/Browser.html#via(java.util.Map,%20Class<T>,%20java.lang.Object)[via()]
 :browser-get-driver-api: link:api/geb/Browser.html#getDriver()[getDriver()]
 :browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]

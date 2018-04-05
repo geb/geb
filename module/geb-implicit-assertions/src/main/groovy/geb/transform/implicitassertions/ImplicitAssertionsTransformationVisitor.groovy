@@ -29,7 +29,7 @@ import static geb.transform.implicitassertions.ImplicitAssertionsTransformationU
 class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
     private static final int LAST = -1
-    private static final List<String> TRANSFORMED_CALLS_METHOD_NAMES = ["waitFor", "refreshWaitFor"]
+    private static final List<String> TRANSFORMED_CALLS_METHOD_NAMES = ["waitFor", "refreshWaitFor", "at"]
 
     SourceUnit sourceUnit
 

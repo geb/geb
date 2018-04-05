@@ -11,6 +11,10 @@ class TestClass {
         closure.call()
     }
 
+    def at(Class type, Closure closure) {
+        closure.call()
+    }
+
     boolean booleanMethod(boolean returned) {
         returned
     }
@@ -30,6 +34,12 @@ class TestClass {
 
     def runRefreshWaitFor() {
         refreshWaitFor {
+            $closureBody
+        }
+    }
+
+    def runAt() {
+        at(TestClass) {
             $closureBody
         }
     }

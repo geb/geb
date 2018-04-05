@@ -147,6 +147,15 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         error.message.contains('false')
     }
 
+    def "transform is also applied to at() calls"() {
+        when:
+        getTransformedInstanceWithClosureBody('false').runAt()
+
+        then:
+        PowerAssertionError error = thrown()
+        error.message.contains('false')
+    }
+
     @Issue("https://github.com/geb/issues/issues/462")
     def "at closures return true even if the last method call is to a void method"() {
         expect:

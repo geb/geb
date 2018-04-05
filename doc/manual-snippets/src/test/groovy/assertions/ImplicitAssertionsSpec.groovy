@@ -40,6 +40,19 @@ Something else
 """
     }
 
+    String getExpectedAtCheckerWithAssertionsFailureMessage() {
+        removeAsciidoctorTags """
+// tag::at_checking_with_assertions_message[]
+Assertion failed: 
+
+headingText.empty
+|           |
+|           false
+This is a heading
+// end::at_checking_with_assertions_message[]
+"""
+    }
+
     String getExpectedWaitingFailureMessage() {
         removeAsciidoctorTags """
 // tag::waiting_message[]
@@ -60,13 +73,12 @@ Something else
         assert stringWriter.toString().contains(message)
     }
 
-    def "setup"() {
+    def "at checking implicit assertion failure message"() {
+        given:
         html {
             title "Something else"
         }
-    }
 
-    def "at checking implicit assertion failure message"() {
         when:
         // tag::at_checker[]
         to ImplicitAssertionsExamplePage
@@ -77,7 +89,33 @@ Something else
         stacktraceContains(e, expectedAtCheckerFailureMessage)
     }
 
+    def "at checking with assertions failure message"() {
+        given:
+        html {
+            title "Implicit Assertions!"
+            body {
+                h1 "This is a heading"
+            }
+        }
+
+        when:
+        // tag::at_checking_with_assertions[]
+        at(ImplicitAssertionsExamplePage) {
+            headingText.empty
+        }
+        // end::at_checking_with_assertions[]
+
+        then:
+        AssertionError e = thrown()
+        stacktraceContains(e, expectedAtCheckerWithAssertionsFailureMessage)
+    }
+
     def "waiting implicit assertion failure message"() {
+        given:
+        html {
+            title "Something else"
+        }
+
         when:
         config.rawConfig.waiting.timeout = 0.1
         //tag::waiting[]
