@@ -545,6 +545,71 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         waitingSupport.waitFor(params, timeout, interval, block)
     }
 
+    /**
+     * Uses the {@link geb.Configuration#getDefaultWait() default wait} from the {@code configuration} to
+     * wait for {@code block} to return a true value according to the Groovy Truth.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     *
+     * @param block what is to be waited on to return a true-ish value
+     * @return the true-ish return value from {@code block}
+     * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
+     * @see geb.Configuration#getDefaultWait()
+     */
+    public <T> T refreshWaitFor(Map params = [:], Closure<T> block) {
+        waitingSupport.waitFor(params, withRefresh(block))
+    }
+
+    /**
+     * Uses the {@link geb.Configuration#getWaitPreset(java.lang.String) wait preset} from the {@code configuration}
+     * with the given name to to wait for {@code block} to return a true value according to the Groovy Truth.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     *
+     * @param waitPreset the name of the wait preset in {@code configuration} to use
+     * @param block what is to be waited on to return a true-ish value
+     * @return the true-ish return value from {@code block}
+     * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
+     * @see geb.Configuration#getWaitPreset(java.lang.String)
+     */
+    public <T> T refreshWaitFor(Map params = [:], String waitPreset, Closure<T> block) {
+        waitingSupport.waitFor(params, waitPreset, withRefresh(block))
+    }
+
+    /**
+     * Invokes {@code block} every {@link geb.Configuration#getDefaultWaitRetryInterval()} seconds, until it returns
+     * a true value according to the Groovy Truth, waiting at most {@code timeout} seconds.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     *
+     * @param timeout the number of seconds to wait for block to return (roughly)
+     * @param block what is to be waited on to return a true-ish value
+     * @return the true-ish return value from {@code block}
+     * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
+     */
+    public <T> T refreshWaitFor(Map params = [:], Double timeout, Closure<T> block) {
+        waitingSupport.waitFor(params, timeout, withRefresh(block))
+    }
+
+    /**
+     * Invokes {@code block} every {@code interval} seconds, until it returns
+     * a true value according to the Groovy Truth, waiting at most {@code timeout} seconds.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     *
+     * @param interval the number of seconds to wait between invoking {@code block}
+     * @param timeout the number of seconds to wait for block to return (roughly)
+     * @param block what is to be waited on to return a true-ish value
+     * @return the true-ish return value from {@code block}
+     * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
+     */
+    public <T> T refreshWaitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+        waitingSupport.waitFor(params, timeout, interval, withRefresh(block))
+    }
+
+    private <T> Closure<T> withRefresh(Closure<T> block) {
+        { ->
+            browser.driver.navigate().refresh()
+            block.call()
+        }
+    }
+
     GebException uninitializedException() {
         def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
         new PageInstanceNotInitializedException(message)

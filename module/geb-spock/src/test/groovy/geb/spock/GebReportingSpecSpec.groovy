@@ -183,17 +183,47 @@ class GebReportingSpecSpec extends Specification {
         result.failures.first().exception in ConditionNotSatisfiedError
     }
 
+    def "report called from fixture method should create report with default name"() {
+        when:
+        specRunner.run """
+        class $REPORTING_SPEC_NAME extends GebReportingSpec {
+
+            def setupSpec() {
+                ${configuration}
+
+                go "/"
+                report('Report in setupSpec')
+            }
+
+            def "passing test"() {
+                expect:
+                true
+            }
+        }
+        """
+
+        then:
+        reportFile("001-000-fixture-Report in setupSpec.html").text.startsWith("<?xml")
+        reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
+    }
+
     Result runReportingSpec(String body) {
         specRunner.run """
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
                 def setup() {
-                    baseUrl = "${server.baseUrl}"
-                    config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
+                    ${configuration}
                 }
 
                 $body
             }
+        """
+    }
+
+    private String getConfiguration() {
+        """
+        baseUrl = "${server.baseUrl}"
+        config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
         """
     }
 }

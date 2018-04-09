@@ -3,12 +3,17 @@
 
 Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time.
 Reporters are implementations of the `{reporter-api}` interface.
-Geb ships with two implementations: `{page-source-reporter-api}` and `{screenshot-reporter-api}`.
+Geb ships with three implementations: `{page-source-reporter-api}`, `{screenshot-reporter-api}` and `{frames-source-reporter-api}`.
 There are three bits of configuration that pertain to reporting: the <<reporter-configuration, reporter implementation>>, the <<reports-directory-configuration, reports directory>> and whether to
 <<report-test-failures-configuration, only report test failures>> or not.
 
 If no reporter is explicitly defined, a {composite-reporter-link}[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current
-DOM state as HTML).
+DOM state as HTML). If you wish to <<reporter-configuration, configure the reporting>> to also write reports which contain the source content of page frames you can do so the following way:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=frames_source_reporter_config,indent=0]
+----
 
 You take a report by calling the `{browser-report-method-api}` method on the browser object.
 
@@ -48,8 +53,8 @@ We have now created the following files inside the `reportsDir`…
 
 * `google/home page.html`
 * `google/home page.png`
-* `wikipedia/home page.html`
-* `wikipedia/home page.png`
+* `gebish/home page.html`
+* `gebish/home page.png`
 
 The browser will create the directory for the report group as needed.
 By default, the report group is not set which means that reports are written to the base of the `reportsDir`.

@@ -26,8 +26,8 @@ class FramesSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         callbackServer.get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setContentType(ContentType.TEXT_HTML.toString())
-            response.setCharacterEncoding("utf8")
+            response.contentType = ContentType.TEXT_HTML.toString()
+            response.characterEncoding = "utf8"
             if (request.requestURI.endsWith("frame.html")) {
                 response.outputStream << """
                     // tag::frame[]

@@ -90,6 +90,24 @@ class StrongTypingSpec extends GebSpecWithCallbackServer {
         // end::typed[]
     }
 
+    def "at"() {
+        when:
+        // tag::at[]
+        HomePage homePage = browser.to HomePage
+        homePage.loginPageLink.click()
+
+        browser.at(LoginPage) {
+            login("user1", "password1")
+        }
+
+        // end::at[]
+
+        then:
+        // tag::at[]
+        at SecurePage
+        // end::at[]
+    }
+
     def "typed content definitions"() {
         when:
         to AsyncPage

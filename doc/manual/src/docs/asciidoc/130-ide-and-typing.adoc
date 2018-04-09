@@ -77,6 +77,21 @@ The typing options exist on a spectrum and can be used selectively where/when th
 For example, a mix of using the `content {}` DSL and methods can easily be used.
 The key enabler is to capture the result of the `to()` and `at()` methods in order to access the page object instance.
 
+[[at-check-assertions-ide]]
+==== Performing assertions as part of an at check
+
+An alternative to tracking current page instance using variables to gain improved authoring support is using {at-method-taking-class-and-closure-api-link}[`at()` methods that take a closure as the last argument].
+Each statement in that closure is <<at-check-assertions, implicitly asserted>> and its delegate is set to the page passed as the first argument.
+Thanks to using `@DelegatesTo` annotation on the closure parameter in the method signature, IDEs which support that annotation understand that calls are delegated to a given page instance and can provide code completion.
+
+The example from the previous section could be rewritten in the following way:
+
+[source,groovy]
+----
+include::{test-dir}/ide/StrongTypingSpec.groovy[tag=at,indent=0]
+----
+
+
 ==== IntelliJ IDEA support
 
 IntelliJ IDEA (since version 12) has special support for authoring Geb code.

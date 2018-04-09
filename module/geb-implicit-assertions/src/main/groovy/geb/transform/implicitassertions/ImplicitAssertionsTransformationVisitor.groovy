@@ -29,7 +29,7 @@ import static geb.transform.implicitassertions.ImplicitAssertionsTransformationU
 class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
     private static final int LAST = -1
-    private static final String WAIT_FOR_METHOD_NAME = "waitFor"
+    private static final List<String> TRANSFORMED_CALLS_METHOD_NAMES = ["waitFor", "refreshWaitFor", "at"]
 
     SourceUnit sourceUnit
 
@@ -59,7 +59,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
     void visitExpressionStatement(ExpressionStatement statement) {
         if (statement.expression in MethodCallExpression) {
             MethodCallExpression expression = statement.expression
-            if (expression.methodAsString == WAIT_FOR_METHOD_NAME && expression.arguments in ArgumentListExpression) {
+            if (expression.methodAsString in TRANSFORMED_CALLS_METHOD_NAMES && expression.arguments in ArgumentListExpression) {
                 ArgumentListExpression arguments = expression.arguments
                 if (lastArgumentIsClosureExpression(arguments)) {
                     transformEachStatement(arguments.expressions[LAST], false)
@@ -97,7 +97,6 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         if (methodName) {
             Expression verifyMethodConditionArgsArgument = argumentExpressions.get(methodNameIndex + 1)
             if (verifyMethodConditionArgsArgument in ArrayExpression) {
-
                 List<Expression> values = (verifyMethodConditionArgsArgument as ArrayExpression).expressions.collect { Expression argumentExpression ->
                     extractRecordedValueExpression(argumentExpression)
                 }
@@ -133,7 +132,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
     }
 
     void visitSpockValueRecordMethodCall(String name, List<Expression> arguments) {
-        if (name == WAIT_FOR_METHOD_NAME) {
+        if (name in TRANSFORMED_CALLS_METHOD_NAMES) {
             if (!arguments.empty) {
                 Expression lastArg = arguments.last()
                 if (lastArg instanceof ClosureExpression) {
@@ -234,8 +233,8 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         Statement retrieveRecordedValueStatement = new ExpressionStatement(createRuntimeCall("retrieveRecordedValue"))
 
         Statement withAssertion = new AssertStatement(booleanExpression)
-        withAssertion.setSourcePosition(expression)
-        withAssertion.setStatementLabel((String) expression.getNodeMetaData("statementLabel"))
+        withAssertion.sourcePosition = expression
+        withAssertion.statementLabel = (String) expression.getNodeMetaData("statementLabel")
 
         BlockStatement assertAndRetrieveRecordedValue = new BlockStatement()
         assertAndRetrieveRecordedValue.addStatement(withAssertion)
@@ -261,7 +260,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
             replacement = assertAndRetrieveRecordedValue
         }
 
-        replacement.setSourcePosition(statement)
+        replacement.sourcePosition = statement
         replacement
     }
 

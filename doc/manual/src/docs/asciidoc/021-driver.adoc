@@ -29,7 +29,7 @@ This can be done via the methods on the `WebDriver` instance (obtainable via `{b
 
 == Implicit driver management
 
-If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the the <<driver-implementation-configuration,configuration mechanism>>.
+If a driver is not given when a `Browser` object is constructed, one will be created and managed implicitly by Geb by the <<driver-implementation-configuration,configuration mechanism>>.
 
 [discrete]
 [[implicit-driver-lifecycle]]

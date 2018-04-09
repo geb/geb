@@ -15,15 +15,8 @@
  */
 package geb.module
 
-class TextInput extends AbstractInput {
+class TextInput extends TextLikeInput {
 
     final String inputType = "text"
 
-    String getText() {
-        navigator.value()
-    }
-
-    void setText(String text) {
-        navigator.value(text)
-    }
 }

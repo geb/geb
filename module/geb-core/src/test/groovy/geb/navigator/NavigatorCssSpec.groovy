@@ -15,8 +15,8 @@
  */
 package geb.navigator
 
-import geb.test.Android
-import geb.test.CrossBrowser
+import geb.test.browsers.Android
+import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
 
 @CrossBrowser

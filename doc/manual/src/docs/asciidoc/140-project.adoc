@@ -18,12 +18,12 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 * link:http://ldaley.com[Luke Daley]
 * link:http://blog.proxerd.pl[Marcin Erdmann]
-* github-profile:chris-prior[Chris Prior]
 
 === Contributors
 
 * link:http://adhockery.blogspot.com/[Robert Fletcher]
 * link:http://pniederw.wordpress.com/[Peter Niederwieser]
+* github-profile:chris-prior[Chris Prior]
 * github-profile:zolotov[Alexander Zolotov] - TestNG Integration
 * link:http://c089.wordpress.com/[Christoph Neuroth] - Various fixes and patches
 * github-profile:antony[Antony Jones] - Various fixes and patches, doc improvements
@@ -73,6 +73,8 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page
 * github-profile:mahileeb[Lee Butts] - Improved error message when trying to select null on a single-select select element
 * github-profile:rickirunge[Ricki Runge] - Ignore case of tag names passed as part of css selectors to `Navigator.filter()`
+* github-profile:jdmuriel[Jesús L. D. Muriel] - Doc fixes
+* github-profile:joschi[Jochen Schalanda] - Doc fixes
 
 == History
 
@@ -82,9 +84,33 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== New features
 
-=== 2.0-rc-1
+* Make it more convenient to wait on something while reloading the page. [issue:499[]]
+
+==== Improvements
+
+* Support calling `GebReportingSpec#report(String)` from fixture methods. [issue:518[]]
+* Add method for performing assertions as part of an at check. [issue:405[]]
+
+=== 2.1
+
+==== New features
+
+* Added a form control module for search input. [issue:495[]]
+* Added a form control module for date input. [issue:496[]]
+* Added `FramesSourceReporter` which allows to report on the source content of each top level frame of the browser's current page. [issue:448[]]
+* Added form control modules for email and tel inputs. [issue:498[]]
+
+==== Fixes
+
+* Fix reporting on failure in JUnit support when `reportOnTestFailureOnly` is set to true [issue:491[]]
+
+==== Breaking changes
+
+* Actually remove `FileInput#getFile()` which was supposed to be removed for 2.0 but wasn't. [issue:503[]]
+
+=== 2.0
 
 ==== New features
 

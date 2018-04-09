@@ -88,7 +88,6 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
 
         then:
         $("form").pet == ["dog", "lizard"]
-
     }
 
     def "checked value"() {

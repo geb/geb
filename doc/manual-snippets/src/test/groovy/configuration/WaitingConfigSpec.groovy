@@ -67,7 +67,6 @@ class WaitingConfigSpec extends Specification implements InlineConfigurationLoad
             timeout == 1
             retryInterval == 0.1
         }
-
     }
 
     def "including cause in exception message"() {

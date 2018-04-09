@@ -43,7 +43,6 @@ interface Navigable extends Locator {
      * @param moduleClass a class extending {@link geb.Module}
      * @return an initialized instance of the module class passed as the argument
      */
-    @SuppressWarnings('UnnecessaryPublicModifier')
     public <T extends Module> T module(Class<T> moduleClass)
 
     /**
@@ -52,6 +51,5 @@ interface Navigable extends Locator {
      * @param module an instance of a class extending {@link geb.Module}
      * @return the initialized instance passed as the argument
      */
-    @SuppressWarnings('UnnecessaryPublicModifier')
     public <T extends Module> T module(T module)
 }

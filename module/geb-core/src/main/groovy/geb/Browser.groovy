@@ -27,6 +27,8 @@ import org.openqa.selenium.NoSuchWindowException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
  * a {@link geb.Page} object that provides access to the content.
@@ -34,7 +36,6 @@ import org.openqa.selenium.WebDriverException
  * Browser objects dynamically delegate all method calls and property read/writes that it doesn't implement to the current
  * page instance via {@code propertyMissing ( )} and {@code methodMissing ( )}.
  */
-@SuppressWarnings("UnnecessaryPublicModifier")
 class Browser {
 
     public static final String UTF8 = "UTF-8"
@@ -315,7 +316,7 @@ class Browser {
      *
      * @return an initialized page instance set as the current page
      */
-    public Page page(Page[] potentialPageInstances) {
+     Page page(Page[] potentialPageInstances) {
         checkIfAtAnUnexpectedPage(potentialPageInstances)
         verifyPages(potentialPageInstances.collect { initialisePage(it) })
     }
@@ -340,6 +341,18 @@ class Browser {
     }
 
     /**
+     * Checks if the browser is at the current page by running the at checker using {@code at(pageType)}.
+     *
+     * If the at checker is successful, the {@code assertions} closure passed as the last argument is executed with the delegate set to an instance of the {@code pageType} class.
+     * If <a href="../../#implicit-assertions">implicit assertions</a> are enabled (which they are by default), each statement in the {@code assertions} closure is implicitly asserted.
+     *
+     * @return the value returned from {@code assertions} closure
+     */
+    public <T extends Page, R> R at(@DelegatesTo.Target Class<T> pageType, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<R> assertions) {
+        runAssertionsWithPageDelegate(at(pageType), assertions)
+    }
+
+    /**
      * Checks if the browser is at the current page by running the at checker for this page instance
      *
      * If the at checker is successful, this browser object's page instance is updated to the said instance of the page.
@@ -348,12 +361,24 @@ class Browser {
      *
      * <p>
      * If <a href="../../#implicit-assertions">implicit assertions</a>
-     * are enabled (which they are by default). This method will only ever return a page instance or throw an {@link AssertionError}
+     * are enabled (which they are by default), this method will only ever return a page instance or throw an {@link AssertionError}
      *
      * @return a page instance of the passed page after initializing when the at checker succeeded or null otherwise (never null if implicit assertions are enabled)
      */
     public <T extends Page> T at(T page) {
         doAt(page)
+    }
+
+    /**
+     * Checks if the browser is at the current page by running the at checker using {@code at(page)}.
+     *
+     * If the at checker is successful, the {@code assertions} closure passed as the last argument is executed with the delegate set to the said instance of the page.
+     * If <a href="../../#implicit-assertions">implicit assertions</a> are enabled (which they are by default), each statement in the {@code assertions} closure is implicitly asserted.
+     *
+     * @return the value returned from {@code assertions} closure
+     */
+    public <T extends Page, R> R at(@DelegatesTo.Target T page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<R> assertions) {
+        runAssertionsWithPageDelegate(at(page), assertions)
     }
 
     /**
@@ -467,6 +492,12 @@ class Browser {
         if (!Page.isAssignableFrom(pageType)) {
             throw new IllegalArgumentException("$pageType is not a subclass of ${Page}")
         }
+    }
+
+    private <R> R runAssertionsWithPageDelegate(Page page, Closure<R> assertions) {
+        Closure clone = assertions.clone()
+        clone.delegate = page
+        clone.call()
     }
 
     /**

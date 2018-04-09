@@ -84,6 +84,32 @@ include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checker_mess
 
 As you can see, this is much more informative than the `at()` method simply returning `false`.
 
+:numbered!:
+
+[[at-check-assertions]]
+=== At verification with additional assertions
+
+Apart from regular `at()` methods taking a single argument there are also `at()` methods taking an additional closure argument.
+These methods were introduced primarily for <<at-check-assertions-ide, better IDE support>> but to be useful they utilise implicit assertions.
+Because every statement of the closure passed as the last argument to `at()` is implicitly asserted they can be used in an expressive way in `then:` and `expect:` blocks of Spock specifications and provide better error messages when the implicit assertions fail.
+You might be familiar with Spock's `{spock-with}` method which has very similar characteristics and aim.
+
+So given the following code…
+[source,groovy]
+----
+include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checking_with_assertions,indent=0]
+----
+
+…you might see an error similar to…
+[source,groovy]
+----
+include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checking_with_assertions_message,indent=0]
+----
+
+…when the condition in the closure is not fulfilled.
+
+:numbered:
+
 [[implicit-assertions-waiting]]
 == Waiting
 
@@ -122,6 +148,17 @@ If you're unfamiliar with Geb's “waiting content” support, please read <<con
 ====
 
 Any content definitions that declare a `wait` parameter have implicit assertions added to each expression just like `waitFor()` method calls.
+
+=== Reloading page when waiting
+
+The same implicit assertion semantics apply to usages of `refreshWaitFor()` method
+
+[NOTE]
+====
+If you're unfamiliar with Geb's “Reloading page when waiting” support, please read <<reloading-page-when-waiting, this section>>.
+====
+
+Any calls to `refreshWaitFor()` method have implicit assertions added to each expression in the bloc passed to it just like for `waitFor()` method calls.
 
 :numbered:
 

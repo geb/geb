@@ -26,12 +26,12 @@ class JQuerySupportSpec extends GebSpecWithServerUsingJavascript {
 
     def setup() {
         callbackServer.get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setCharacterEncoding("utf8")
+            response.characterEncoding = "utf8"
             if (request.requestURI.endsWith("/js/jquery-2.1.4.min.js")) {
-                response.setContentType("text/javascript")
+                response.contentType = "text/javascript"
                 response.writer << jqueryResource()
             } else {
-                response.setContentType(ContentType.TEXT_HTML.toString())
+                response.contentType = ContentType.TEXT_HTML.toString()
                 response.writer << '''
                     //tag::html[]
                     <html>

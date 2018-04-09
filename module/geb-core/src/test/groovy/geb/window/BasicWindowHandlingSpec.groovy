@@ -15,16 +15,17 @@
  */
 package geb.window
 
-import geb.test.CrossBrowser
+import geb.test.browsers.Chrome
+import geb.test.browsers.Firefox
+import geb.test.browsers.InternetExplorer11
+import geb.test.browsers.Safari
 import org.openqa.selenium.NoSuchWindowException
-import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
-@CrossBrowser
-@IgnoreIf({
-    def browser = System.getProperty('geb.browserstack.browser')
-    browser?.contains('explorer') && (browser.contains('version=8') || browser.contains('version=9') || browser.contains('version=10'))
-})
+@Chrome
+@Firefox
+@InternetExplorer11
+@Safari
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
     def setup() {

@@ -18,23 +18,25 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    groovy "org.codehaus.groovy:groovy-all:{groovy-version}"
+ext {
+    gebVersion = "{geb-version}"
+    seleniumVersion = "{selenium-version}"
+}
 
-    def gebVersion = "{geb-version}"
-    def seleniumVersion = "{selenium-version}"
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:{groovy-version}"
 
     // If using Spock, need to depend on geb-spock
-    testCompile "{geb-group}:geb-spock:$\{geb-version\}"
+    testCompile "{geb-group}:geb-spock:$\{gebVersion\}"
     testCompile "org.spockframework:spock-core:{spock-core-version}"
 
     // If using JUnit, need to depend on geb-junit (3 or 4)
-    testCompile "{geb-group}:geb-junit4:$\{geb-version\}"
+    testCompile "{geb-group}:geb-junit4:$\{gebVersion\}"
     testCompile "junit:junit-dep:4.8.2"
 
     // Need a driver implementation
-    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$\{selenium-version\}"
-    testRuntime "org.seleniumhq.selenium:selenium-support:$\{selenium-version\}"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$\{seleniumVersion\}"
+    testRuntime "org.seleniumhq.selenium:selenium-support:$\{seleniumVersion\}"
 }
 
 test {

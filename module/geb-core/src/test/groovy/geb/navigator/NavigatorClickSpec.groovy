@@ -17,7 +17,7 @@ package geb.navigator
 
 import geb.Page
 import geb.error.UndefinedAtCheckerException
-import geb.test.CrossBrowser
+import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
 import spock.lang.Issue
 import spock.lang.Unroll

@@ -15,7 +15,6 @@
  */
 package geb.waiting
 
-@SuppressWarnings("UnnecessaryPublicModifier")
 interface WaitingSupport {
 
     /**

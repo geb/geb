@@ -488,7 +488,7 @@ The `verifyAt()` method call will either:
 
 * return `true` if the “at” checker passes
 * if <<implicit-assertions, implicit assertions>> are <<implicit-assertions-mechanics, enabled>> and the “at” checker fails it will throw an `AssertionError`
-* return `false` if implicit assertions are not enabled and the the “at” checker fails
+* return `false` if implicit assertions are not enabled and the “at” checker fails
 
 Considering the example above you could use it like this…
 
@@ -826,8 +826,9 @@ Thankfully, Geb makes working with them groovier thanks to the `withFrame()` met
 
 === Executing code in the context of a frame
 
-There are multiple flavours of the `withFrame()` method, but for all of them the last closure parameter is executed in the context of a frame specified by the first parameter, and after the execution
-the page is restored to what it was before the call:
+There are multiple flavours of the `withFrame()` method, but for all of them the last closure parameter is executed in the context of a frame specified by the first parameter.
+The value returned by the closure parameter is returned from the method and after the execution the page is restored to what it was before the call.
+The various `withFrame()` methods are as follows:
 
 * `withFrame(String, Closure)` - `String` parameter contains the name or id of a frame element
 * `withFrame(int, Closure)` - `int` parameter contains the index of the frame element, that is, if a page has three frames, the first frame would be at index `0`, the second at index `1` and the third

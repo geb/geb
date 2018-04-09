@@ -15,14 +15,14 @@ dependencies {
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
 
-    testCompile "cglib:cglib:2.2"
+    testCompile "cglib:cglib:2.2", jsoupDependency
 
     sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
 
 test {
     def availableProcessors = isCi ? 2 : Runtime.runtime.availableProcessors().intdiv(2)
-    maxParallelForks(Math.max(2, availableProcessors))
+    maxParallelForks availableProcessors
 }
 
 task allCrossBrowserTests {
@@ -31,8 +31,12 @@ task allCrossBrowserTests {
 
 sauceLabs {
     browsers {
-        chrome_linux
-        firefox_linux
+        chrome_linux {
+            capabilities version: "48.0"
+        }
+        firefox_linux {
+            capabilities version: "45.0"
+        }
         safari_mac_7 {
             capabilities platform: "OS X 10.9"
         }
@@ -57,13 +61,13 @@ browserStack {
     application(*applicationAddresses)
 
     browsers {
-        htcOne {
-            capabilities browserName: "android", platform: "ANDROID", device: "HTC One M8"
+        android {
+            capabilities device: "Samsung Galaxy S6", realMobile: "true"
         }
-        chrome_mac
-        chrome_windows
-        firefox_windows_47
-        firefox_mac_47
+        chrome_mac_62
+        chrome_windows_62
+        firefox_windows_47 //newer versions do not currently support mouse interaction commands
+        firefox_mac_47 //newer versions do not currently support mouse interaction commands
         create("internet explorer_windows_8")
         create("internet explorer_windows_9")
         create("internet explorer_windows_10")
@@ -83,7 +87,7 @@ browserStack {
 }
 
 task nonIeBrowserStackTests {
-    dependsOn 'htcOneTest', 'chromeMacTest', 'chromeWindowsTest', 'firefoxWindows47Test', 'firefoxMac47Test'
+    dependsOn 'androidTest', 'chromeMac62Test', 'chromeWindows62Test', 'firefoxWindows47Test', 'firefoxMac47Test'
 }
 
 task ieBrowserStackTests {

@@ -24,7 +24,6 @@ class JavascriptInterface {
 
     JavascriptInterface(Browser browser) {
         this.browser = browser
-
     }
 
     private execjs(String script, Object[] args) {

@@ -403,6 +403,78 @@ It can be used this way…
 include::{test-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=example,indent=0]
 ----
 
+=== `SearchInput`
+
+The `{search-input-api}` module provides property methods for setting and retrieving text of a search input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/SearchInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/SearchInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `DateInput`
+
+The `{date-input-api}` module provides property methods for setting and retrieving date of a date input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/DateInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/DateInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `EmailInput`
+
+The `{email-input-api}` module provides property methods for setting and retrieving text of an email input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/EmailInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/EmailInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `TelInput`
+
+The `{tel-input-api}` module provides property methods for setting and retrieving text of a tel input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
 == Unwrapping modules returned from the `content` DSL
 
 For the sake of better error reporting, current implementation wraps any module declared within `content` block into

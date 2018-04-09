@@ -57,7 +57,7 @@ class GebTest {
         getBrowser()."$name"
     }
 
-    def propertyMissing(String name, value) {
+    void propertyMissing(String name, value) {
         getBrowser()."$name" = value
     }
 

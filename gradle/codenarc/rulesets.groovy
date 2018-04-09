@@ -21,6 +21,18 @@ ruleset {
         TrailingComma {
             enabled = false
         }
+        MethodReturnTypeRequired {
+            enabled = false
+        }
+        VariableTypeRequired {
+            enabled = false
+        }
+        FieldTypeRequired {
+            enabled = false
+        }
+        MethodParameterTypeRequired {
+            enabled = false
+        }
     }
     ruleset('rulesets/dry.xml') {
         DuplicateStringLiteral {
@@ -51,11 +63,20 @@ ruleset {
             length = 200
             doNotApplyToFileNames = 'TemplateOptionsSpec.groovy'
         }
+        SpaceAfterOpeningBrace {
+            ignoreEmptyBlock = true
+        }
+        SpaceBeforeClosingBrace {
+            ignoreEmptyBlock = true
+        }
         SpaceBeforeOpeningBrace {
             doNotApplyToFileNames = 'InteractionsSupportSpec.groovy, WaitingSupportSpec.groovy'
         }
         MissingBlankLineAfterImports {
             doNotApplyToFileNames = 'ManualsMenuModule.groovy'
+        }
+        Indentation {
+            enabled = false
         }
     }
     ruleset('rulesets/generic.xml') {

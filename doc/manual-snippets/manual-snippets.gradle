@@ -24,7 +24,7 @@ check.dependsOn realBrowserTest
 
 test {
     def availableProcessors = isCi ? 2 : Runtime.runtime.availableProcessors().intdiv(2)
-    maxParallelForks(Math.max(2, availableProcessors))
+    maxParallelForks availableProcessors
 }
 
 idea.module {

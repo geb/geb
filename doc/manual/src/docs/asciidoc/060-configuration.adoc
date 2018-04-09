@@ -110,7 +110,7 @@ The name of the driver class to use (it will be constructed with no arguments) c
 include::{test-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver_using_class_name,indent=0]
 ----
 
-Or it can be one of the following short names: `ie`, `htmlunit`, `firefox` or `chrome`. These will be implicitly expanded to their fully qualified class names…
+Or it can be one of the following short names: `ie`, `htmlunit`, `firefox`, `chrome` or `edge`. These will be implicitly expanded to their fully qualified class names…
 
 [source,groovy]
 ----

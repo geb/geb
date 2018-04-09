@@ -28,12 +28,12 @@ class DownloadingSpec extends DriveMethodSupportingSpecWithServer {
     def "downloading a file directly"() {
         given:
         server.get = { HttpServletRequest request, HttpServletResponse response ->
-            response.setCharacterEncoding("utf8")
+            response.characterEncoding = "utf8"
             if (request.requestURI.endsWith("example.pdf")) {
-                response.setContentType("text/plain")
+                response.contentType = "text/plain"
                 response.outputStream << "downloaded pdf"
             } else {
-                response.setContentType(ContentType.TEXT_HTML.toString())
+                response.contentType = ContentType.TEXT_HTML.toString()
                 response.outputStream << """
                     <html>
                         <input name="username"/>

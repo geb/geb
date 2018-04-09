@@ -17,12 +17,14 @@ package geb.interaction
 
 import geb.Module
 import geb.Page
-import geb.test.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
-import spock.lang.IgnoreIf
+import geb.test.browsers.Chrome
+import geb.test.browsers.Firefox
+import geb.test.browsers.InternetExplorer
 
-@CrossBrowser
-@IgnoreIf({ System.getProperty("geb.saucelabs.browser")?.contains('safari') })
+@Chrome
+@Firefox
+@InternetExplorer
 class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 
     def setup() {

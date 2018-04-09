@@ -163,6 +163,7 @@ abstract class Crawler {
         }
     }
 
+    @SuppressWarnings("UnnecessarySetter")
     protected HttpURLConnection openUrlConnection(URI uri) {
         HttpURLConnection connection = uri.toURL().openConnection() as HttpURLConnection
         connection.instanceFollowRedirects = false
@@ -297,7 +298,7 @@ abstract class Crawler {
             ++attemptCount
         }
 
-        boolean equals(o) {
+        boolean equals(Object o) {
             if (this.is(o)) {
                 return true
             }

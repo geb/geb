@@ -87,7 +87,6 @@ class SpockIntegrationSpec extends Specification {
 
         then:
         result.failureCount == 0
-
     }
 }
 

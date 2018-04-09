@@ -18,6 +18,7 @@
 :no-such-frame-exception-api: {selenium-api-link}/org/openqa/selenium/NoSuchFrameException.html[NoSuchFrameException]
 :spock-link: link:http://spockframework.org/
 :spock: {spock-link}[Spock]
+:spock-with: {spock-link}/spock/javadoc/1.1/spock/lang/Specification.html#with-java.lang.Object-groovy.lang.Closure-[Specification.with(Object, Closure<?>)]
 :junit: link:http://www.junit.org/[JUnit]
 :testng: link:http://testng.org/[TestNg]
 :cucumber-jvm: link:https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
@@ -35,7 +36,7 @@
 :module-api: link:api/geb/Module.html[Module]
 :navigator-api: link:api/geb/navigator/Navigator.html[Navigator]
 :binding-updater-link: link:api/geb/binding/BindingUpdater.html
-:groovy-truth-link: link:http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html
+:groovy-truth-link: link:http://groovy-lang.org/semantics.html#Groovy-Truth
 :groovy-truth: {groovy-truth-link}[Groovy Truth]
 :drive-method-link: link:api/geb/Browser.html#drive(groovy.lang.Closure)
 :drive-method-api: {drive-method-link}[drive()]
@@ -47,6 +48,7 @@
 :at-method-taking-class-api-link: link:api/geb/Browser.html#at(Class<T>)
 :at-method-taking-class-api: {at-method-taking-class-api-link}[<T extends Page> T at(Class<T> pageType)]
 :at-method-taking-instance-api: link:api/geb/Browser.html#at(T)[<T extends Page> T at(T page)]
+:at-method-taking-class-and-closure-api-link: link:api/geb/Browser.html#at(Class<T>,%20Closure<R>)
 :via-method-api: link:api/geb/Browser.html#via(java.util.Map,%20Class<T>,%20java.lang.Object)[via()]
 :browser-get-driver-api: link:api/geb/Browser.html#getDriver()[getDriver()]
 :browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]
@@ -70,11 +72,13 @@
 :waiting-support-api: link:api/geb/waiting/WaitingSupport.html[WaitingSupport]
 :wait-api: link:api/geb/waiting/Wait.html[Wait]
 :wait-for-api: link:api/geb/waiting/Wait.html#waitFor(Closure%3CT%3E)[waitFor()]
+:refresh-wait-for-api: link:api/geb/Page.html#refreshWaitFor(java.util.Map,%20Closure%3CT%3E)[refreshWaitFor()]
 :alert-and-confirm-support-api: link:api/geb/js/AlertAndConfirmSupport.html[AlertAndConfirmSupport]
 :download-support-api: link:api/geb/download/DownloadSupport.html[DownloadSupport]
 :reporter-api: link:api/geb/report/Reporter.html[Reporter]
 :page-source-reporter-api: link:api/geb/report/PageSourceReporter.html[PageSourceReporter]
 :screenshot-reporter-api: link:api/geb/report/ScreenshotReporter.html[ScreenshotReporter]
+:frames-source-reporter-api: link:api/geb/report/FramesSourceReporter.html[FramesSourceReporter]
 :composite-reporter-link: link:api/geb/report/CompositeReporter.html
 :browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
@@ -89,6 +93,10 @@
 :file-input-api: link:api/geb/module/FileInput.html[FileInput]
 :textarea-api: link:api/geb/module/Textarea.html[Textarea]
 :radio-buttons-api: link:api/geb/module/RadioButtons.html[RadioButtons]
+:search-input-api: link:api/geb/module/SearchInput.html[SearchInput]
+:date-input-api: link:api/geb/module/DateInput.html[DateInput]
+:email-input-api: link:api/geb/module/EmailInput.html[EmailInput]
+:tel-input-api: link:api/geb/module/TelInput.html[TelInput]
 :interact-delegate-api: link:api/geb/interaction/InteractDelegate.html[InteractDelegate]
 :url-fragment-api: link:api/geb/url/UrlFragment.html[UrlFragment]
 :string-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(java.lang.String)

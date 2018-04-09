@@ -10,8 +10,9 @@
 
 # Releasing
 
-1. Ensure that the revision you're about to promote has been successfully built on [CI](https://app.snap-ci.com/geb/geb/branch/master).
+1. Ensure that the revision you're about to promote has been successfully built on [CI](https://circleci.com/gh/geb/workflows/geb/tree/master).
 1. Update the version to the required one (usually just dropping -SNAPSHOT) in `geb.gradle` file.
+1. Change `{geb-version}` expression used in `History` section in `140-project.adoc` to a fixed version (the one that you're about to release).
 1. Commit with message "Version «number»" (don't push yet)
 1. Tag commit with name "v«number»" (still don't push yet)
 1. Run `./gradlew clean release closeAndPromoteRepository`
@@ -20,7 +21,7 @@
 # Post-release actions
 1. Bump the version to a snapshot of the next planned version.
 1. Remove the oldest version from `oldManualVersions` list in `site.gradle` and append the newly released one.
-1. Change `{geb-version}` expression used in `History` section in `140-project.adoc` to a fixed version (the one that has just been released) and add a placeholder above it for future changes using `{geb-version}` expression.
+1. Add a placeholder above the newest version in `History` section in `140-project.adoc` using `{geb-version}` expression.
 1. Commit with message 'Begin version «version»'
 1. Push (make sure you push the tag as well).
 1. Bump Geb versions in example projects: 

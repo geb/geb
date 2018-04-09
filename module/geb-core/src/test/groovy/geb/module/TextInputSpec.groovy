@@ -15,9 +15,7 @@
  */
 package geb.module
 
-import geb.test.GebSpecWithCallbackServer
-
-class TextInputSpec extends GebSpecWithCallbackServer {
+class TextInputSpec extends TextLikeInputSpec {
 
     def setup() {
         html {
@@ -29,34 +27,4 @@ class TextInputSpec extends GebSpecWithCallbackServer {
         $("input").module(TextInput)
     }
 
-    def "getting and setting text"() {
-        expect:
-        input.text == ""
-
-        when:
-        input.text = "foo"
-
-        then:
-        input.text == "foo"
-    }
-
-    def "can use left shift on the module"() {
-        when:
-        input << "foo"
-
-        then:
-        input.text == "foo"
-    }
-
-    def "getting and setting text on an empty navigator based text input"() {
-        given:
-        def input = $("i-dont-exist").module(TextInput)
-
-        when:
-        input.text = "foo"
-
-        then:
-        noExceptionThrown()
-        input.text == null
-    }
 }
