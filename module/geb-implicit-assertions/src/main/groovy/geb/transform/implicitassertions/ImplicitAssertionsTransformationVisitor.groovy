@@ -30,6 +30,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
     private static final int LAST = -1
     private static final List<String> TRANSFORMED_CALLS_METHOD_NAMES = ["waitFor", "refreshWaitFor", "at"]
+    private static final String WAIT_CONDITION = "waitCondition"
 
     SourceUnit sourceUnit
 
@@ -158,14 +159,14 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         }
     }
 
-    private boolean waitOptionIsSpecified(ArgumentListExpression arguments) {
+    private Expression option(ArgumentListExpression arguments, String optionName) {
         MapExpression paramMap = arguments.expressions.find { it in MapExpression }
-        paramMap?.mapEntryExpressions.any {
+        paramMap?.mapEntryExpressions?.find {
             if (it.keyExpression in ConstantExpression) {
                 ConstantExpression key = it.keyExpression
-                key.value == 'wait'
+                key.value == optionName
             }
-        }
+        }?.valueExpression
     }
 
     private void visitContentDsl(ClosureExpression closureExpression) {
@@ -177,12 +178,26 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
                     MethodCallExpression methodCall = expressionStatement.expression
                     if (methodCall.arguments in ArgumentListExpression) {
                         ArgumentListExpression arguments = methodCall.arguments
-                        if (lastArgumentIsClosureExpression(arguments) && waitOptionIsSpecified(arguments) && !requiredOptionSpecifiedAsFalse(arguments)) {
-                            transformEachStatement(arguments.expressions[LAST], false)
+                        if (lastArgumentIsClosureExpression(arguments)) {
+                            handleWaitingContent(arguments)
+                            handleWaitConditionContent(arguments)
                         }
                     }
                 }
             }
+        }
+    }
+
+    private void handleWaitConditionContent(ArgumentListExpression arguments) {
+        def waitCondition = option(arguments, WAIT_CONDITION)
+        if (waitCondition in ClosureExpression) {
+            transformEachStatement(waitCondition, false)
+        }
+    }
+
+    private void handleWaitingContent(ArgumentListExpression arguments) {
+        if ((option(arguments, "wait") || option(arguments, WAIT_CONDITION)) && !requiredOptionSpecifiedAsFalse(arguments)) {
+            transformEachStatement(arguments.expressions[LAST], true)
         }
     }
 

@@ -98,6 +98,15 @@ class BadContentDefinitionsSpec extends GebSpec {
         'times that is a range over chars'              | [times: 'a'..'f']              | '''contains 'times' option that is not a non-negative integer or a range of non-negative integers'''
     }
 
+    def "waitCondition that is not a closure"() {
+        when:
+        page new BadContentDefinitionsSpecTemplateOptions(templateOptions: [waitCondition: 'not a closure'])
+
+        then:
+        InvalidPageContent e = thrown()
+        e.message == "Definition of content template 'foo' of '${BadContentDefinitionsSpecTemplateOptions.name}' contains 'waitCondition' option that is not a closure"
+    }
+
 }
 
 class BadContentDefinitionsSpecNoArgs extends Page {

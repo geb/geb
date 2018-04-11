@@ -399,6 +399,36 @@ If there is an exception thrown during closure evaluation, it will be wrapped in
 Waiting content blocks are subject to “implicit assertions”.
 See the section on <<implicit-assertions, implicit assertions>> for more information.
 
+[[content-dsl-wait-condition]]
+==== `waitCondition`
+
+Default value: `null`
+
+The `waitCondition` option allows to specify a closure with a condition which must be fulfilled for the value returned from a template to be considered available when waiting for content.
+
+The closure passed in as `waitCondition` option will be called in a `waitFor()` loop with the value returned from content definition passed to it as the only argument.
+If <<implicit-assertions, implicit assertions>> are enabled which is the default then each statement in the closure is implicitly asserted.
+The closure should return a {groovy-truth-link}[truthy] value if the condition is to be met.
+
+Consider the following example:
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=wait_condition_page,indent=0]
+----
+
+Accessing content named…
+
+[source,groovy]
+----
+include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=wait_condition_page_content_access,indent=0]
+----
+
+…will essentially cause Geb to wait until the content is not only in the DOM but also displayed.
+If the condition is not fulfilled before waiting timeout elapses then `WaitTimeoutException` will be thrown.
+
+The amount of waiting used when `waitCondition` option is provided can be controlled using the `wait` option but if it's not specified then it defaults to `true` which means that <<default-waiting-configuration, default waiting is applied>>.
+
 [[content-dsl-to-wait]]
 ==== `toWait`
 
