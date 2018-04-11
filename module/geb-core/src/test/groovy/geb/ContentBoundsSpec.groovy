@@ -37,7 +37,7 @@ class ContentBoundsSpec extends GebSpecWithCallbackServer {
         e.message == "Page content 'geb.ContentBoundsSpecPage -> elements: geb.navigator.NonEmptyNavigator' should return a navigator with $boundsText but has returned a navigator with $actual"
 
         where:
-        templateOptions | count | boundsText         | actual
+        templateOptions | count | boundsText            | actual
         [max: 1]        | 2     | 'at most 1 element'   | '2 elements'
         [min: 2]        | 1     | 'at least 2 elements' | '1 element'
         [times: 1]      | 2     | 'at most 1 element'   | '2 elements'
