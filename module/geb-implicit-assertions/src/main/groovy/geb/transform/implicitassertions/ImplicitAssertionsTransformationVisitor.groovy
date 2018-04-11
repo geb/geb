@@ -28,7 +28,6 @@ import static geb.transform.implicitassertions.ImplicitAssertionsTransformationU
 
 class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
-    private static final int LAST = -1
     private static final List<String> TRANSFORMED_CALLS_METHOD_NAMES = ["waitFor", "refreshWaitFor", "at"]
     private static final String WAIT_CONDITION = "waitCondition"
 
@@ -53,7 +52,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
     }
 
     private boolean lastArgumentIsClosureExpression(ArgumentListExpression arguments) {
-        arguments.expressions && arguments.expressions[LAST] in ClosureExpression
+        arguments.expressions && arguments.expressions.last() in ClosureExpression
     }
 
     @Override
@@ -63,7 +62,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
             if (expression.methodAsString in TRANSFORMED_CALLS_METHOD_NAMES && expression.arguments in ArgumentListExpression) {
                 ArgumentListExpression arguments = expression.arguments
                 if (lastArgumentIsClosureExpression(arguments)) {
-                    transformEachStatement(arguments.expressions[LAST], false)
+                    transformEachStatement(arguments.expressions.last(), false)
                 }
             } else {
                 compensateForSpockIfNecessary(expression)
@@ -197,7 +196,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
     private void handleWaitingContent(ArgumentListExpression arguments) {
         if ((option(arguments, "wait") || option(arguments, WAIT_CONDITION)) && !requiredOptionSpecifiedAsFalse(arguments)) {
-            transformEachStatement(arguments.expressions[LAST], true)
+            transformEachStatement(arguments.expressions.last(), true)
         }
     }
 
