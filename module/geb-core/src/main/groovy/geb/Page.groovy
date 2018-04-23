@@ -120,7 +120,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     @Delegate
     private FrameSupport frameSupport = new UninitializedFrameSupport(this)
 
-    @Delegate
+    @Delegate(parameterAnnotations = true)
     private InteractionsSupport interactionsSupport = new UninitializedInteractionSupport(this)
 
     @Delegate
