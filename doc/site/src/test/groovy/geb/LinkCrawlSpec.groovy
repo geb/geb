@@ -28,11 +28,11 @@ class LinkCrawlSpec extends Specification {
         given:
         def aut = new GroovyRatpackMainApplicationUnderTest()
 
-        def allowBroken = ["https://travis-ci.org", "http://markmail.org", "https://circleci.com"]
+        def allowBroken = ["http://markmail.org", "https://circleci.com"]
 
         def crawler = new Crawler(aut.address.toString()) {
             boolean shouldUseHeadRequest(Link url) {
-                !(url.uri.host in ["drone.io", "blog.proxerd.pl", "search.maven.org"]) && super.shouldUseHeadRequest(url)
+                !(url.uri.host in ["blog.proxerd.pl", "search.maven.org"]) && super.shouldUseHeadRequest(url)
             }
 
             boolean shouldValidateFragment(Link url) {
