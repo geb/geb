@@ -36,9 +36,10 @@ class BrowserStackPlugin implements Plugin<Project> {
     void apply(Project project) {
         this.project = project
 
-        project.extensions.create('browserStack', BrowserStackExtension, project).addExtensions()
+        def browserStackExtension = project.extensions.create('browserStack', BrowserStackExtension, project)
+        browserStackExtension.addExtensions()
 
-        addTunnelTasks()
+        addTunnelTasks(browserStackExtension)
         addBrowserStackTasks()
     }
 
@@ -70,17 +71,17 @@ class BrowserStackPlugin implements Plugin<Project> {
         }
     }
 
-    void addTunnelTasks() {
+    void addTunnelTasks(BrowserStackExtension browserStackExtension) {
         def downloadBrowserStackTunnel = project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel)
 
-        project.task(UNZIP_TUNNEL_TASK_NAME, type: Sync) {
+        def unzipBrowserStackTunnel = project.task(UNZIP_TUNNEL_TASK_NAME, type: Sync) {
             dependsOn downloadBrowserStackTunnel
 
             from(project.zipTree(downloadBrowserStackTunnel.outputs.files.singleFile))
             into(project.file("${project.buildDir}/browserstack/unzipped"))
         }
 
-        project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
+        def closeBrowserStackTunnel = project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
             tunnel = project.browserStack.tunnel
         }
 
@@ -97,6 +98,12 @@ class BrowserStackPlugin implements Plugin<Project> {
 
                 tunnel = project.browserStack.tunnel
                 workingDir = project.buildDir
+            }
+        }
+
+        [downloadBrowserStackTunnel, unzipBrowserStackTunnel, openBrowserStackTunnelInBackground, closeBrowserStackTunnel].each {
+            it.configure {
+                onlyIf { browserStackExtension.useTunnel }
             }
         }
     }

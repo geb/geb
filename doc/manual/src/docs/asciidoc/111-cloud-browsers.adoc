@@ -207,6 +207,25 @@ running the generated test tasks which means that the browsers in the cloud will
 You can use `allSauceLabsTests` task that will depend on all of the generated test tasks to run all of them during a build.
 ====
 
+
+:numbered!:
+
+==== Disabling SauceConnect
+
+The plugin by default manages the lifecycle of an instance of SauceConnect which allows to point the browsers provisioned at SauceLabs at urls which are accessible from localhost but not from the Internet.
+
+If you are pointing the browsers only at urls which are accessible on the Internet and wish to get rid of the overhead associated with opening the tunnel you might want to disable the use of SauceConnect.
+It can be done in the following way:
+
+[source,groovy,subs="attributes,verbatim"]
+----
+sauceLabs {
+    useTunnel = false
+}
+----
+
+:numbered:
+
 === geb-browserstack plugin
 
 Following is an example of using the geb-browserstack Gradle plugin.
@@ -279,3 +298,21 @@ browserStack {
 ====
 You can use `allBrowserStackTests` task that will depend on all of the generated test tasks to run all of them during a build.
 ====
+
+:numbered!:
+
+==== Disabling BrowserStack Tunnel
+
+The plugin by default manages the lifecycle of a tunnel which allows to point the browsers provisioned at BrowserStack at urls which are accessible from localhost but not from the Internet.
+
+If you are pointing the browsers only at urls which are accessible on the Internet and wish to get rid of the overhead associated with opening the tunnel you might want to disable the use of it.
+It can be done in the following way:
+
+[source,groovy,subs="attributes,verbatim"]
+----
+browserStack {
+    useTunnel = false
+}
+----
+
+:numbered:

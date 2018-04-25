@@ -88,6 +88,7 @@ This page lists the high level changes between versions of Geb.
 
 * Make it more convenient to wait on something while reloading the page. [issue:499[]]
 * Added `waitCondition` content template option. [issue:342[]]
+* Added ability to disable use of tunnels in Gradle plugins for BrowserStack and SauceLabs. [issue:384[]]
 
 ==== Improvements
 

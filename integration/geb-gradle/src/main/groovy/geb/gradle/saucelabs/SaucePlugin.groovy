@@ -20,6 +20,7 @@ import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.cloud.task.StopExternalTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.testing.Test
 
@@ -36,11 +37,15 @@ class SaucePlugin implements Plugin<Project> {
 
         project.configurations.create('sauceConnect')
 
-        project.task(UNPACK_CONNECT_TASK_NAME, type: UnpackSauceConnect)
+        def sauceLabsExtension = project.extensions.create('sauceLabs', SauceLabsExtension, project)
 
-        project.extensions.create('sauceLabs', SauceLabsExtension, project).addExtensions()
+        project.task(UNPACK_CONNECT_TASK_NAME, type: UnpackSauceConnect) { Task task ->
+            task.onlyIf { sauceLabsExtension.useTunnel }
+        }
 
-        addTunnelTasks()
+        sauceLabsExtension.addExtensions()
+
+        addTunnelTasks(sauceLabsExtension)
         addSauceTasks()
     }
 
@@ -72,9 +77,10 @@ class SaucePlugin implements Plugin<Project> {
         }
     }
 
-    void addTunnelTasks() {
+    void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {
         project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
             tunnel = project.sauceLabs.connect
+            onlyIf { sauceLabsExtension.useTunnel }
         }
 
         def openSauceTunnel = project.task('openSauceTunnel', type: StartExternalTunnel)
@@ -82,6 +88,7 @@ class SaucePlugin implements Plugin<Project> {
         def openSauceTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
             inBackground = true
             finalizedBy CLOSE_TUNNEL_TASK_NAME
+            onlyIf { sauceLabsExtension.useTunnel }
         }
 
         [openSauceTunnel, openSauceTunnelInBackground].each {
