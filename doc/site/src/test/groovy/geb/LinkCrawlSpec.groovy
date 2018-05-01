@@ -28,7 +28,7 @@ class LinkCrawlSpec extends Specification {
         given:
         def aut = new GroovyRatpackMainApplicationUnderTest()
 
-        def allowBroken = ["http://markmail.org", "https://circleci.com"]
+        def allowBroken = ["https://travis-ci.org", "http://markmail.org", "https://circleci.com"]
 
         def crawler = new Crawler(aut.address.toString()) {
             boolean shouldUseHeadRequest(Link url) {
