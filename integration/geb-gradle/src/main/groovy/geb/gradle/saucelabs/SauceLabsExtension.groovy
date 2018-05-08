@@ -22,6 +22,7 @@ class SauceLabsExtension {
 
     Project project
     SauceAccount account
+    boolean useTunnel = true
 
     SauceLabsExtension(Project project) {
         this.project = project

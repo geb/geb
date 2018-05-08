@@ -56,7 +56,7 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
-    @Delegate
+    @Delegate(parameterAnnotations = true)
     private InteractionsSupport interactionsSupport = new UninitializedInteractionSupport(this)
 
     private JavascriptInterface js

@@ -72,7 +72,11 @@ class PageContentTemplate {
         def wait = config.getWaitForParam(params.wait)
         if (wait) {
             try {
-                wait.waitFor(createAction)
+                if (params.waitCondition) {
+                    wait.waitFor(effectiveWaitCondition(params.waitCondition, createAction))
+                } else {
+                    wait.waitFor(createAction)
+                }
             } catch (WaitTimeoutException e) {
                 if (params.required) {
                     throw e
@@ -93,13 +97,13 @@ class PageContentTemplate {
     }
 
     private invokeFactory(Object[] args) {
-        factory.delegate = createFactoryDelegate(args)
+        factory.delegate = createFactoryDelegate()
         factory.resolveStrategy = Closure.DELEGATE_FIRST
         factory(*args)
     }
 
-    private createFactoryDelegate(Object[] args) {
-        new PageContentTemplateFactoryDelegate(this, args)
+    private createFactoryDelegate() {
+        new PageContentTemplateFactoryDelegate(this)
     }
 
     private wrapFactoryReturn(factoryReturn, Object[] args) {
@@ -110,6 +114,17 @@ class PageContentTemplate {
             new TemplateDerivedPageContent(browser, this, factoryReturn, *args)
         } else {
             factoryReturn
+        }
+    }
+
+    private Closure<?> effectiveWaitCondition(Closure<?> waitCondition, Closure<?> createAction) {
+        waitCondition.delegate = createFactoryDelegate()
+        waitCondition.resolveStrategy = Closure.DELEGATE_FIRST
+        return {
+            def element = createAction()
+            if (params.waitCondition(createAction())) {
+                element
+            }
         }
     }
 

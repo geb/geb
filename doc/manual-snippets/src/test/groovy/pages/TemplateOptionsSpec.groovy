@@ -175,6 +175,37 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         dynamicallyAdded.empty
     }
 
+    def "waitCondition content"() {
+        given:
+        def jquery = getClass().getResource("/jquery-2.1.4.min.js")
+        html """
+            <html>
+                <head>
+                    <script type="text/javascript">
+                    $jquery.text
+                    </script>
+                    <script type="text/javascript">
+                        setTimeout(function() {
+                            \$("p").show();
+                        }, 500);
+                    </script>
+                </head>
+                <body>
+                    <p class="dynamic" style="display: none;">Dynamically shown paragraph</p>
+                </body>
+            </html>
+        """
+
+        when:
+        to(PageWithTemplateUsingWaitConditionOption)
+
+        then:
+        // tag::wait_condition_page_content_access[]
+        dynamicallyShown
+        // end::wait_condition_page_content_access[]
+                .displayed
+    }
+
     def "page option"() {
         callbackServer.get = { HttpServletRequest request, HttpServletResponse response ->
             response.contentType = ContentType.TEXT_HTML.toString()
@@ -416,4 +447,12 @@ class PageWithTemplateUsingTimesOption extends Page {
         twoToThreeElementNavigator(times: 2..3) { $('p') }
         // end::times_option[]
     }
+}
+
+class PageWithTemplateUsingWaitConditionOption extends Page {
+    // tag::wait_condition_page[]
+    static content = {
+        dynamicallyShown(waitCondition: { it.displayed }) { $("p.dynamic") }
+    }
+    // end::wait_condition_page[]
 }

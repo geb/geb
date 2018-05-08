@@ -19,20 +19,17 @@ import geb.navigator.Navigator
 
 class PageContentTemplateFactoryDelegate {
 
-    static final DISALLOWED_MODULE_PARAMS = ['navigator', '_args']
     private static final String MODULE_METHOD_NAME = "module"
     private static final String MODULE_LIST_METHOD_NAME = "moduleList"
 
     private PageContentTemplate template
-    private Object[] args
 
     @Delegate(allNames = true)
     private final NavigableSupport navigableSupport
 
-    PageContentTemplateFactoryDelegate(PageContentTemplate template, Object[] args) {
+    PageContentTemplateFactoryDelegate(PageContentTemplate template) {
         this.template = template
         this.navigableSupport = new NavigableSupport(template.navigatorFactory)
-        this.args = args
     }
 
     def methodMissing(String name, args) {

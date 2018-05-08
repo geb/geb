@@ -24,6 +24,7 @@ class BrowserStackExtension {
     BrowserStackAccount account
     List<URL> applicationUrls = []
     boolean forceLocal
+    boolean useTunnel = true
 
     BrowserStackExtension(Project project) {
         this.project = project

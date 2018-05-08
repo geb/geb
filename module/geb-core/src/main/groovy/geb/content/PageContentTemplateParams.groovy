@@ -24,7 +24,6 @@ class PageContentTemplateParams {
     private static final String MIN = 'min'
     private static final String TIMES = 'times'
     private static final String REQUIRED = 'required'
-
     private final PageContentTemplate owner
 
     private final String name
@@ -74,6 +73,11 @@ class PageContentTemplateParams {
      */
     int max
 
+    /**
+     * The value of the 'waitCondition' option. Defaults to null (no wait).
+     */
+    Closure<?> waitCondition
+
     PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params) {
         this.owner = owner
         this.name = name
@@ -101,7 +105,11 @@ class PageContentTemplateParams {
 
         page = extractPage(paramsToProcess)
 
-        wait = paramsToProcess.remove("wait")
+        waitCondition = extractClosure(paramsToProcess, 'waitCondition')
+
+        def waitParam = paramsToProcess.remove("wait")
+        wait = waitParam != null ? waitParam : waitCondition != null
+
         toWait = paramsToProcess.remove("toWait")
 
         throwIfAnyParamsLeft(paramsToProcess)
@@ -164,6 +172,17 @@ class PageContentTemplateParams {
             throwInvalidContent("contains 'page' content parameter that is not a class that extends Page: $pageParam")
         }
         pageParam as Class<? extends Page>
+    }
+
+    Closure<?> extractClosure(Map paramsToProcess, String optionName) {
+        def param = paramsToProcess.remove(optionName)
+        if (param) {
+            if (param instanceof Closure) {
+                param
+            } else {
+                throwInvalidContent("contains '$optionName' option that is not a closure")
+            }
+        }
     }
 
     private boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {

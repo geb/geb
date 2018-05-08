@@ -148,6 +148,7 @@ If you're unfamiliar with Geb's “waiting content” support, please read <<con
 ====
 
 Any content definitions that declare a `wait` parameter have implicit assertions added to each expression just like `waitFor()` method calls.
+Additionally, any content definitions that declare a <<content-dsl-wait-condition, `waitCondition`>> parameter will also have implicit assertions added to each expression of the closure passed as that parameter.
 
 === Reloading page when waiting
 

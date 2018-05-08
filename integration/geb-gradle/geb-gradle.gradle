@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
 
 configurations {
     compile.exclude group: "org.codehaus.groovy"
@@ -13,11 +14,26 @@ dependencies {
     compile gradleApi()
 
     compile "com.google.guava:guava:23.0"
+
+    testCompile spockDependency
 }
 
 modifyPom { pom ->
     pom.project {
         name "Geb Gradle plugins"
         description "Gradle plugins for Geb (pronounced \"jeb\")."
+    }
+}
+
+gradlePlugin {
+    plugins {
+        sauceLabsPlugin {
+            id = 'geb-saucelabs'
+            implementationClass = 'geb.gradle.saucelabs.SaucePlugin'
+        }
+        browserStackPlugin {
+            id = 'geb-browserstack'
+            implementationClass = 'geb.gradle.browserstack.BrowserStackPlugin'
+        }
     }
 }

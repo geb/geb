@@ -10,7 +10,7 @@ buildscript {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
         classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.4"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
-        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.0"
+        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
     }
 }
 

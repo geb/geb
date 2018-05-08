@@ -16,6 +16,7 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Page
 import geb.test.GebSpecWithCallbackServer
 import groovy.transform.InheritConstructors
 import org.openqa.selenium.WebElement
@@ -52,8 +53,27 @@ class CustomNavigatorSpec extends GebSpecWithCallbackServer {
         expect:
         $('input').@type == 'text'
     }
+
+    def "can use custom navigator methods on content elements"() {
+        when:
+        to CustomNavigatorSpecPage
+
+        then:
+        input.typeAttribute == 'text'
+    }
+}
+
+class CustomNavigatorSpecPage extends Page {
+    static content = {
+        input { $('input') }
+    }
 }
 
 @InheritConstructors
 class CustomNavigatorSpecCustomNavigator extends NonEmptyNavigator {
+
+    String getTypeAttribute() {
+        attr('type')
+    }
+
 }
