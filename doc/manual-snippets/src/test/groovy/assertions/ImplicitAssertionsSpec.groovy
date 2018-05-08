@@ -48,7 +48,7 @@ Assertion failed:
 headingText.empty
 |           |
 |           false
-This is a heading
+'This is a heading'
 // end::at_checking_with_assertions_message[]
 """
     }
