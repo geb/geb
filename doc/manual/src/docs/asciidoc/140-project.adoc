@@ -90,6 +90,9 @@ This page lists the high level changes between versions of Geb.
 * Added `waitCondition` content template option. [issue:342[]]
 * Added ability to disable use of tunnels in Gradle plugins for BrowserStack and SauceLabs. [issue:384[]]
 
+==== Fixes
+* Fix translation of attribute map to css selector when finding elements for attribute value that is a GString. [issue:525[]]
+
 ==== Improvements
 
 * Support calling `GebReportingSpec#report(String)` from fixture methods. [issue:518[]]

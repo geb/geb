@@ -107,6 +107,20 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $(a: ~/\d/, id: "id1")*.@id == ["id1"]
     }
 
+    @Issue("https://github.com/geb/issues/issues/525")
+    def "find by GString href attribute"() {
+        given:
+        def accountId = "1234"
+
+        and:
+        html {
+            a(href: "/account/$accountId/profile")
+        }
+
+        expect:
+        $("a", href: "/account/$accountId/profile")
+    }
+
     def "find by selector and class attribute"() {
         given:
         html {
