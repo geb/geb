@@ -123,8 +123,8 @@ class CheckboxSpec extends GebSpecWithCallbackServer {
 
         expect:
         // tag::unchecked[]
-        assert !$("input", name: 'pet').value()
-        assert !$("form").pet
+        assert $("input", name: 'pet').value() == null
+        assert $("form").pet == null
         // end::unchecked[]
     }
 

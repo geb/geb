@@ -742,7 +742,7 @@ include::{test-dir}/navigator/CheckboxSpec.groovy[tag=checked_html,indent=0]
 include::{test-dir}/navigator/CheckboxSpec.groovy[tag=checked,indent=0]
 ----
 
-Calling `value()` on an unchecked checkbox will return `false`, i.e:
+Calling `value()` on an unchecked checkbox will return `null`, i.e:
 
 [source,html]
 ----
