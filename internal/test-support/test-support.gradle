@@ -1,6 +1,6 @@
 dependencies {
 	compile project(':module:geb-core'),
-		project(':module:geb-test-common'),
+		"junit:junit:$junit4Version",
 		spockDependency,
 		jettyDependency,
 		firefoxDriverDependency,
