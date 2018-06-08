@@ -43,8 +43,7 @@ class GebSpec extends Specification {
     private int gebReportingSpecTestCounter = 0
 
     Configuration createConf() {
-        def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-        conf
+        new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
     }
 
     Browser createBrowser() {
