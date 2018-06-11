@@ -39,4 +39,9 @@ class UninitializedPageContentSupport extends PageContentSupport {
     PageContentContainer getOwner() {
         throw initializable.uninitializedException()
     }
+
+    @Override
+    Set<String> getContentNames() {
+        throw  initializable.uninitializedException()
+    }
 }

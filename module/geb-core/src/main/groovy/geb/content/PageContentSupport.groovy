@@ -26,6 +26,8 @@ abstract class PageContentSupport {
 
     abstract PageContentContainer getOwner()
 
+    abstract Set<String> getContentNames()
+
     def methodMissing(String name, args) {
         try {
             getContent(name, *args)

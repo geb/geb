@@ -502,6 +502,20 @@ include::{test-dir}/pages/AliasingSpec.groovy[tag=usage,indent=0]
 
 Remember that the aliased content has to be defined before the aliasing content, otherwise you will get a `{invalid-page-content-api}` exception.
 
+=== Accessing content names
+
+Should you need to access names of the content defined using the DSL at runtime you can use the `contentName` property of a page instance:
+
+[source,groovy]
+----
+include::{test-dir}/pages/ContentNamesSpec.groovy[tag=page,indent=0]
+----
+
+[source,groovy]
+----
+include::{test-dir}/pages/ContentNamesSpec.groovy[tag=usage,indent=0]
+----
+
 [[at-checker]]
 == “At” verification
 
