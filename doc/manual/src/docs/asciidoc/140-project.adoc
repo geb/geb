@@ -100,6 +100,7 @@ This page lists the high level changes between versions of Geb.
 
 * Support calling `GebReportingSpec#report(String)` from fixture methods. [issue:518[]]
 * Add method for performing assertions as part of an at check. [issue:405[]]
+* Document how to configure proxy to be used by the direct download API. [issue:371[]]
 
 === 2.1
 

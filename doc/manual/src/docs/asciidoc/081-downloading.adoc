@@ -79,6 +79,11 @@ include::{test-dir}/downloading/DownloadingConfigurationSpec.groovy[tag=config,i
 
 This config closure will be run first, so anything set here can be overridden using the fine grained request configuration shown above.
 
+== Proxy configuration
+
+As previously mentioned, the direct download API uses {http-url-connection-link}[`java.net.HttpURLConnection`] for performing http requests.
+This means that it can be configured to use a proxy in the exact same way as `java.net.HttpURLConnection`, that is by link:https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html[setting `http.proxyHost` and `http.proxyPort` system properties]
+
 == Errors
 
 Any I/O type errors that occur during a download operation (e.g. HTTP 500 responses) will result in a link:api/geb/download/DownloadException.html[`DownloadException`] being thrown that wraps the
