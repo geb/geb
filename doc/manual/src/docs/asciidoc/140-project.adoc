@@ -95,6 +95,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 * Fix translation of attribute map to css selector when finding elements for attribute value that is a GString. [issue:525[]]
 * Fix documentation around calling value() on unchecked checkboxes. [issues:520[]]
+* Make additional capabilities passed to cloud driver factory's `create()` method override the capabilities that are hardcoded for a particular cloud driver provider. [issues:372[]]
 
 ==== Improvements
 

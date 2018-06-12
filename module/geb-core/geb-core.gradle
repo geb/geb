@@ -1,8 +1,18 @@
 import geb.gradle.browserstack.BrowserStackAccount
 import geb.gradle.saucelabs.SauceAccount
 
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'io.ratpack:ratpack-gradle:1.5.4'
+    }
+}
+
 apply plugin: "geb-saucelabs"
 apply plugin: "geb-browserstack"
+apply plugin: ratpack.gradle.RatpackBasePlugin
 
 repositories {
     maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
@@ -15,7 +25,7 @@ dependencies {
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
 
-    testCompile "cglib:cglib:2.2", jsoupDependency
+    testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
 
     sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
