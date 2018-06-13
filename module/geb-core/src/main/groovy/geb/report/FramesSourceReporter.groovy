@@ -43,7 +43,7 @@ class FramesSourceReporter extends ReporterSupport {
     }
 
     private File getReportFile(ReportState reportState, int frameIndex) {
-        getFile(reportState.outputDir, "${reportState.label}-frame-${frameIndex + 1}", 'html')
+        getFile(reportState.outputDir, "${reportState.label}-frame ${frameIndex + 1}", 'html')
     }
 
 }
