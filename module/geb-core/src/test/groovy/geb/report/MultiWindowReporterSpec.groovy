@@ -63,10 +63,6 @@ class MultiWindowReporterSpec extends BaseWindowHandlingSpec {
         reportFileNames == ["001-000-does not include window id in report name if there is only a single window open-test.html"].toSet()
     }
 
-    Set<String> getReportFileNames() {
-        groupDir.listFiles()*.name
-    }
-
     Set<List<String>> getLinkTextsInReports() {
         groupDir.listFiles().collect {
             def document = Jsoup.parse(it, StandardCharsets.UTF_8.toString())

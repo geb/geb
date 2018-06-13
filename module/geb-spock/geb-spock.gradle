@@ -11,9 +11,3 @@ modifyPom { pom ->
 	// User provides their own spock
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.spockframework" })
 }
-
-test {
-	if (driver == "htmlunit") {
-		exclude "**/ExceptionOnReportScreenshotSpec.class"
-	}
-}

@@ -1,4 +1,5 @@
 import geb.test.browsers.Chrome
+import geb.test.browsers.FirefoxLinux
 import geb.test.browsers.CrossBrowser
 import geb.test.browsers.Android
 import geb.test.browsers.Firefox
@@ -25,6 +26,9 @@ if (cloudBrowserSpecification) {
         }
         if (cloudBrowserSpecification.contains("firefox")) {
             includes << Firefox
+            if (cloudBrowserSpecification.contains("platform=LINUX")) {
+                includes << FirefoxLinux
+            }
         }
         if (cloudBrowserSpecification.contains("chrome")) {
             includes << Chrome

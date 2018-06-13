@@ -45,4 +45,8 @@ class ReportsFolder implements TestRule {
         new File(temporaryFolder.root, groupName)
     }
 
+    Set<String> getReportFileNames() {
+        groupDir.listFiles()*.name
+    }
+
 }
