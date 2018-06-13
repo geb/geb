@@ -18,7 +18,6 @@ package geb.report
 import geb.test.GebSpecWithCallbackServer
 import org.jsoup.Jsoup
 import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 import java.nio.charset.StandardCharsets
 
@@ -27,7 +26,8 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
     private final static GROUP_NAME = "frames"
 
     @Rule
-    TemporaryFolder temporaryFolder
+    @Delegate
+    ReportsFolder reportsFolder = new ReportsFolder(browser, GROUP_NAME)
 
     def setupSpec() {
         responseHtml { request, response ->
@@ -49,7 +49,6 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         browser.config.reporter = new FramesSourceReporter()
-        browser.config.reportsDir = temporaryFolder.root
         browser.reportGroup(GROUP_NAME)
     }
 
@@ -61,8 +60,8 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
         report('test')
 
         then:
-        reportSpanText('000-000-reports on source of frames-test-frame-1') == 'header'
-        reportSpanText('000-000-reports on source of frames-test-frame-2') == 'footer'
+        reportSpanText('000-000-reports on source of frames-test-frame 1') == 'header'
+        reportSpanText('000-000-reports on source of frames-test-frame 2') == 'footer'
     }
 
     def "reports on source of iframes"() {
@@ -73,16 +72,12 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
         report('test')
 
         then:
-        reportSpanText('001-000-reports on source of iframes-test-frame-1') == 'inline'
+        reportSpanText('001-000-reports on source of iframes-test-frame 1') == 'inline'
     }
 
     String reportSpanText(String reportName) {
         def document = Jsoup.parse(reportFile(reportName), StandardCharsets.UTF_8.toString())
         document.select('html body span').text()
-    }
-
-    File getGroupDir() {
-        new File(temporaryFolder.root, GROUP_NAME)
     }
 
     File reportFile(String reportName) {

@@ -18,7 +18,6 @@ package geb.test
 import geb.Browser
 import geb.Configuration
 import geb.ConfigurationLoader
-import geb.junit4.rule.FailureTracker
 import geb.report.ReporterSupport
 import org.junit.Rule
 import org.junit.rules.TestName
@@ -36,9 +35,6 @@ class GebSpec extends Specification {
     @Shared
     Browser _browser
 
-    @Rule
-    FailureTracker failTracker
-
     // Ridiculous name to avoid name clashes
     @Rule
     TestName gebReportingSpecTestName
@@ -47,8 +43,7 @@ class GebSpec extends Specification {
     private int gebReportingSpecTestCounter = 0
 
     Configuration createConf() {
-        def conf = new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-        conf
+        new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
     }
 
     Browser createBrowser() {
@@ -103,9 +98,6 @@ class GebSpec extends Specification {
     }
 
     def cleanup() {
-        if (failTracker.failed) {
-            report("failure")
-        }
         if (!isSpecStepwise()) {
             resetBrowser()
         }

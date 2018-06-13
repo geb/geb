@@ -89,11 +89,20 @@ This page lists the high level changes between versions of Geb.
 * Make it more convenient to wait on something while reloading the page. [issue:499[]]
 * Added `waitCondition` content template option. [issue:342[]]
 * Added ability to disable use of tunnels in Gradle plugins for BrowserStack and SauceLabs. [issue:384[]]
+* Added `pause()` method to `Browser` class as an alternative to setting breakpoints when debugging. [issue:247[]]
+* Added ability to access names of content defined using the DSL at runtime. [issue:369[]]
+
+==== Fixes
+* Fix translation of attribute map to css selector when finding elements for attribute value that is a GString. [issue:525[]]
+* Fix documentation around calling value() on unchecked checkboxes. [issues:520[]]
+* Make additional capabilities passed to cloud driver factory's `create()` method override the capabilities that are hardcoded for a particular cloud driver provider. [issues:372[]]
 
 ==== Improvements
 
 * Support calling `GebReportingSpec#report(String)` from fixture methods. [issue:518[]]
 * Add method for performing assertions as part of an at check. [issue:405[]]
+* Document how to configure proxy to be used by the direct download API. [issue:371[]]
+* Enable taking reports for all windows if multiple are open. [issue:401[]]
 
 === 2.1
 

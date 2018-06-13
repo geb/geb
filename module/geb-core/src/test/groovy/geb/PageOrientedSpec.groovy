@@ -446,6 +446,11 @@ Caused by: Assertion failed:.*
         'class'    | PageOrientedSpecPageA
     }
 
+    def "accessing content names"() {
+        expect:
+        to(PageOrientedSpecPageWithContent).contentNames == ['simple', 'parameterized'].toSet()
+    }
+
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -571,4 +576,11 @@ class PageWithContentUsingUnrecognizedParams extends Page {
 
 class PageWithAtCheckWaiting extends Page {
     static at = { waitFor(0.1) { false } }
+}
+
+class PageOrientedSpecPageWithContent extends Page {
+    static content = {
+        simple { $() }
+        parameterized { id -> $(id: id) }
+    }
 }

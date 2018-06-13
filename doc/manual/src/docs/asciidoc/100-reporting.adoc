@@ -2,18 +2,13 @@
 = Reporting
 
 Geb includes a simple reporting mechanism which can be used to snapshot the state of the browser at any point in time.
+
 Reporters are implementations of the `{reporter-api}` interface.
-Geb ships with three implementations: `{page-source-reporter-api}`, `{screenshot-reporter-api}` and `{frames-source-reporter-api}`.
+Geb ships with three implementations that actually write reports: `{page-source-reporter-api}`, `{screenshot-reporter-api}` and `{frames-source-reporter-api}` as well as two ancillary implementations: `{composite-reporter-api}` and `{multi-window-reporter-api}`.
+
 There are three bits of configuration that pertain to reporting: the <<reporter-configuration, reporter implementation>>, the <<reports-directory-configuration, reports directory>> and whether to
-<<report-test-failures-configuration, only report test failures>> or not.
-
-If no reporter is explicitly defined, a {composite-reporter-link}[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current
-DOM state as HTML). If you wish to <<reporter-configuration, configure the reporting>> to also write reports which contain the source content of page frames you can do so the following way:
-
-[source,groovy]
-----
-include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=frames_source_reporter_config,indent=0]
-----
+<<report-test-failures-configuration, only report test failures>> or not. If no reporter is explicitly defined, a {composite-reporter-link}[composite reporter] will be created from a `ScreenshotReporter` (takes a PNG screenshot) and `PageSourceReporter` (dumps the current
+DOM state as HTML).
 
 You take a report by calling the `{browser-report-method-api}` method on the browser object.
 
@@ -37,6 +32,25 @@ Assuming that we configured a `reportsDir` of “`reports/geb`”, after running
 ====
 To avoid issues with reserved characters in filenames, Geb replaces any character in the report name that is not an alphanumeric, a space or a hyphen with an underscore.
 ====
+
+== Reporting on contents of frames
+
+If you wish to <<reporter-configuration, configure the reporting>> to also write reports which contain the source content of page frames you can do so the following way:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=frames_source_reporter_config,indent=0]
+----
+
+== Reporting on multiple windows
+
+By default, reports are only taken for the window which is set to be {browser-get-current-window-api-link}[the current browser window] at the time of taking a report.
+It's also possible to take reports for each of the opened windows by <<reporter-configuration, configuring the reporting>> to use `{multi-window-reporter-api}`:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=multi_window_reporter_config,indent=0]
+----
 
 [[report-group]]
 == The report group

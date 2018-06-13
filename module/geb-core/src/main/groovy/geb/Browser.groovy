@@ -28,6 +28,7 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
 
 import static groovy.lang.Closure.DELEGATE_FIRST
+import static java.lang.Integer.MAX_VALUE
 
 /**
  * The browser is the centre of Geb. It encapsulates a {@link org.openqa.selenium.WebDriver} implementation and references
@@ -960,6 +961,24 @@ class Browser {
      */
     void report(String label) {
         config.reporter.writeReport(new ReportState(this, label, getReportGroupDir()))
+    }
+
+    /**
+     * Indefinitely waits for {@code geb.unpause} javascript variable to be set to {@code true} in the driven browser.
+     * <p>
+     * Can be used as an alternative to setting a breakpoint and running the JVM in debug mode for debugging purposes.
+     */
+    void pause() {
+        js.exec '''
+            if (!window.geb) {
+                window.geb = {};
+            }
+            window.geb.unpause = false;
+        '''
+
+        waitFor(MAX_VALUE) {
+            js.'geb.unpause'
+        }
     }
 
     private informPageChangeListeners(Page oldPage, Page newPage) {

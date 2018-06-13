@@ -48,7 +48,7 @@ platform=MAC
 
 as the ”browser specification“. For a full list of available browsers, versions and operating systems refer to your cloud provider's documentation:
 
-* link:https://saucelabs.com/docs/platforms/webdriver[SauceLabs platform list]
+* link:https://saucelabs.com/platforms[SauceLabs platform list]
 * link:http://www.browserstack.com/list-of-browsers-and-platforms?product=automate[BrowserStack Browsers and Platforms list]
 
 Please note that Geb Gradle plugins can set the `geb.saucelabs.browser`/`geb.browserstack.browser` system properties for you using the aforementioned format.
@@ -61,7 +61,7 @@ use other mechanisms if desired.
 You can optionally pass additional configuration settings by providing a Map to the `create()` method as the last parameter.
 The configuration options available are described in your cloud provider's documentation:
 
-* link:https://saucelabs.com/docs/additional-config[SauceLabs additional config]
+* link:https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options[SauceLabs additional config]
 * link:http://www.browserstack.com/automate/capabilities[BrowserStack Capabilities]
 
 Finally, there is also link:api/geb/driver/CloudDriverFactory.html#create(java.lang.String,%20java.lang.String,%20Map%3CString,%20Object%3E)[an overloaded version of `create()` method] available that

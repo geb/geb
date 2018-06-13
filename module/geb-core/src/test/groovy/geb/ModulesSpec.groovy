@@ -206,6 +206,14 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         then:
         browserAccessingModule.currentUrl == browser.currentUrl
     }
+
+    def "accessing content names of a module"() {
+        when:
+        to ModulesSpecPage
+
+        then:
+        divNoBase("a").contentNames == ['p'].toSet()
+    }
 }
 
 @SuppressWarnings("UnnecessaryCollectCall")

@@ -48,4 +48,9 @@ class DefaultPageContentSupport extends PageContentSupport {
     PageContentContainer getOwner() {
         this.owner
     }
+
+    @Override
+    Set<String> getContentNames() {
+        contentTemplates.keySet()
+    }
 }

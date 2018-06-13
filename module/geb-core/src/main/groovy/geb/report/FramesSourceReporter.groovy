@@ -18,32 +18,30 @@ package geb.report
 /**
  * Writes the source content of each top level frame of the browser's current page as a html files.
  */
-class FramesSourceReporter extends ReporterSupport {
+class FramesSourceReporter implements Reporter {
+
+    @Delegate
+    Reporter backing = new PageSourceReporter()
 
     @Override
     void writeReport(ReportState reportState) {
         def browser = reportState.browser
         def frames = browser.find('frame') + browser.find('iframe')
-        def reportFiles = (0..<frames.size()).collect { index ->
+        (0..<frames.size()).each { index ->
             reportFrameSource(reportState, index)
         }
-        notifyListeners(reportState, reportFiles)
     }
 
     private File reportFrameSource(ReportState reportState, int index) {
         def driver = reportState.browser.driver
         try {
             driver.switchTo().frame(index)
-            def file = getReportFile(reportState, index)
-            file.write(driver.pageSource)
-            file
+            def frameLabel = "${reportState.label}-frame ${index + 1}"
+            def frameState = new ReportState(reportState.browser, frameLabel, reportState.outputDir)
+            backing.writeReport(frameState)
         } finally {
             driver.switchTo().defaultContent()
         }
-    }
-
-    private File getReportFile(ReportState reportState, int frameIndex) {
-        getFile(reportState.outputDir, "${reportState.label}-frame-${frameIndex + 1}", 'html')
     }
 
 }

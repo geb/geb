@@ -54,6 +54,20 @@ class ReporterConfigSpec extends Specification implements InlineConfigurationLoa
         then:
         noExceptionThrown()
     }
+
+    def "configuring reporter to write reports for each open window"() {
+        when:
+        configScript """
+            // tag::multi_window_reporter_config[]
+            import geb.report.*
+
+            reporter = new MultiWindowReporter(new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter()))
+            // end::multi_window_reporter_config[]
+        """
+
+        then:
+        noExceptionThrown()
+    }
 }
 
 class CustomReporter implements Reporter {

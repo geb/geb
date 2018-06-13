@@ -6,8 +6,7 @@ subprojects {
             "geb-ast",
             "geb-implicit-assertions",
             "geb-waiting",
-            "geb-exceptions",
-            "geb-test-common"
+            "geb-exceptions"
         ].contains(project.name)) {
             compile project(':module:geb-core')
         }
