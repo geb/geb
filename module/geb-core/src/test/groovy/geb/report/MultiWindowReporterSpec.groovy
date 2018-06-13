@@ -1,0 +1,77 @@
+/*
+ * Copyright 2018 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package geb.report
+
+import geb.window.BaseWindowHandlingSpec
+import org.jsoup.Jsoup
+import org.junit.Rule
+
+import java.nio.charset.StandardCharsets
+
+class MultiWindowReporterSpec extends BaseWindowHandlingSpec {
+
+    private final static GROUP_NAME = "windows"
+
+    @Rule
+    @Delegate
+    ReportsFolder temporaryFolder = new ReportsFolder(browser, GROUP_NAME)
+
+    def setup() {
+        browser.config.reporter = new MultiWindowReporter(new PageSourceReporter())
+        browser.reportGroup(GROUP_NAME)
+    }
+
+    def "writes report for each open window"() {
+        given:
+        openAllWindows()
+
+        when:
+        report("test")
+
+        then:
+        reportFileNames == availableWindows.collect { "000-000-writes report for each open window-test-window ${it}.html" }.toSet()
+
+        and:
+        linkTextsInReports == [
+                ["main-1", "main-2"],
+                ["main-1-1", "main-1-2"],
+                ["main-2-1", "main-2-2"]
+        ].toSet()
+    }
+
+    def "does not include window id in report name if there is only a single window open"() {
+        given:
+        go MAIN_PAGE_URL
+
+        when:
+        report("test")
+
+        then:
+        reportFileNames == ["001-000-does not include window id in report name if there is only a single window open-test.html"].toSet()
+    }
+
+    Set<String> getReportFileNames() {
+        groupDir.listFiles()*.name
+    }
+
+    Set<List<String>> getLinkTextsInReports() {
+        groupDir.listFiles().collect {
+            def document = Jsoup.parse(it, StandardCharsets.UTF_8.toString())
+            document.select('html body a')*.text()
+        }
+    }
+
+}
