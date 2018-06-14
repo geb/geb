@@ -522,6 +522,13 @@ class Configuration {
     }
 
     /**
+     * Updates the {@code templateOptions.waitCondition} config entry.
+     */
+    void setTemplateWaitConditionOption(Closure<?> waitCondition) {
+        rawConfig.templateOptions.waitCondition = waitCondition
+    }
+
+    /**
      * Returns default values used for some of the content DSL template options.
      * @return
      */
@@ -531,6 +538,7 @@ class Configuration {
             .cache(raw.cache as boolean)
             .wait(readValue(raw, 'wait', null))
             .toWait(readValue(raw, 'toWait', null))
+            .waitCondition(extractWaitCondition(raw))
             .build()
     }
 
@@ -543,6 +551,17 @@ class Configuration {
             config[name]
         } else {
             defaultValue
+        }
+    }
+
+    private Closure<?> extractWaitCondition(ConfigObject config) {
+        def waitCondition = config.waitCondition
+        if (waitCondition) {
+            if (waitCondition instanceof Closure) {
+                waitCondition
+            } else {
+                throw new InvalidGebConfiguration("Configuration for waitCondition template option should be a closure but found \"$waitCondition\"")
+            }
         }
     }
 }

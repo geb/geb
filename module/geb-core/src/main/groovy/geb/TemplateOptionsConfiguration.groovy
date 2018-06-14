@@ -22,11 +22,13 @@ class TemplateOptionsConfiguration {
     final boolean cache
     final wait
     final toWait
+    final Closure<?> waitCondition
 
     @Builder
-    TemplateOptionsConfiguration(boolean cache, wait, toWait) {
+    TemplateOptionsConfiguration(boolean cache, wait, toWait, Closure<?> waitCondition) {
         this.cache = cache
         this.wait = wait
         this.toWait = toWait
+        this.waitCondition = waitCondition
     }
 }

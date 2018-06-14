@@ -57,10 +57,10 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         browser.config.templateWaitOption = true
 
         when:
-        to DynamicPageWithWaiting
+        to PageWithDynamicContent
 
         then:
-        dynamicallyAdded
+        dynamicContent
     }
 
     def "can configure all content to wait after transition to a page configured using to option"() {
@@ -91,6 +91,34 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         at AsyncPage
     }
 
+    def "can configure all content to have a wait condition"() {
+        given:
+        html {
+            head {
+                script(type: "text/javascript") {
+                    mkp.yieldUnescaped(getClass().getResource("/jquery-1.4.2.min.js").text)
+                }
+                script(type: "text/javascript", """
+                    setTimeout(function() {
+                        \$("p").show();
+                    }, 100);
+                """)
+            }
+            body {
+                p(class: "dynamic", style: "display: none;", "Dynamically shown paragraph")
+            }
+        }
+
+        and:
+        browser.config.templateWaitConditionOption = { it.displayed }
+
+        when:
+        to PageWithDynamicContent
+
+        then:
+        dynamicContent.displayed
+    }
+
 }
 
 class ValueHoldingPage extends Page {
@@ -100,9 +128,9 @@ class ValueHoldingPage extends Page {
     }
 }
 
-class DynamicPageWithWaiting extends Page {
+class PageWithDynamicContent extends Page {
     static content = {
-        dynamicallyAdded { $("p.dynamic") }
+        dynamicContent { $("p.dynamic") }
     }
 }
 

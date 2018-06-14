@@ -110,7 +110,7 @@ class PageContentTemplateParams {
 
         page = extractPage(paramsToProcess)
 
-        waitCondition = extractClosure(paramsToProcess, 'waitCondition')
+        waitCondition = extractClosure(paramsToProcess, 'waitCondition') ?: config.waitCondition
 
         def waitParam = toObject(paramsToProcess, "wait", config.wait)
         wait = waitParam != null ? waitParam : waitCondition != null
