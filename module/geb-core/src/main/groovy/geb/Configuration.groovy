@@ -510,8 +510,15 @@ class Configuration {
     /**
      * Updates the {@code templateOptions.wait} config entry.
      */
-    void setTemplateWaitOption(def wait) {
+    void setTemplateWaitOption(wait) {
         rawConfig.templateOptions.wait = wait
+    }
+
+    /**
+     * Updates the {@code templateOptions.toWait} config entry.
+     */
+    void setTemplateToWaitOption(toWait) {
+        rawConfig.templateOptions.toWait = toWait
     }
 
     /**
@@ -523,6 +530,7 @@ class Configuration {
         TemplateOptionsConfiguration.builder()
             .cache(raw.cache as boolean)
             .wait(readValue(raw, 'wait', null))
+            .toWait(readValue(raw, 'toWait', null))
             .build()
     }
 

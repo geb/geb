@@ -63,6 +63,34 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         dynamicallyAdded
     }
 
+    def "can configure all content to wait after transition to a page configured using to option"() {
+        given:
+        html {
+            body {
+                button(id: "load-content")
+                script(type: "text/javascript", """
+                    document.getElementById("load-content").addEventListener("click", function() {
+                        setTimeout(function() {
+                            var p = document.createElement("p");
+                            p.setAttribute("id", "async-content");
+                            document.body.appendChild(p);
+                        }, 75);
+                    });
+                """)
+            }
+        }
+
+        and:
+        browser.config.templateToWaitOption = true
+
+        when:
+        to PageWithToOption
+        asyncPageLoadButton.click()
+
+        then:
+        at AsyncPage
+    }
+
 }
 
 class ValueHoldingPage extends Page {
@@ -76,4 +104,14 @@ class DynamicPageWithWaiting extends Page {
     static content = {
         dynamicallyAdded { $("p.dynamic") }
     }
+}
+
+class PageWithToOption extends Page {
+    static content = {
+        asyncPageLoadButton(to: AsyncPage) { $("button#load-content") } //<1>
+    }
+}
+
+class AsyncPage extends Page {
+    static at = { $("#async-content") }
 }

@@ -31,6 +31,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
             templateOptions {
                 cache = true
                 wait = true
+                toWait = true
             }
             // end::config[]
         """
@@ -39,6 +40,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
         with(config.templateOptions) {
             cache
             wait == true
+            toWait == true
         }
     }
 

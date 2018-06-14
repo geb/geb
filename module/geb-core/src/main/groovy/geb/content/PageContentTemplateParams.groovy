@@ -115,7 +115,7 @@ class PageContentTemplateParams {
         def waitParam = toObject(paramsToProcess, "wait", config.wait)
         wait = waitParam != null ? waitParam : waitCondition != null
 
-        toWait = paramsToProcess.remove("toWait")
+        toWait = toObject(paramsToProcess, "toWait", config.toWait)
 
         throwIfAnyParamsLeft(paramsToProcess)
     }
