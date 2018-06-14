@@ -16,8 +16,8 @@
 package geb.navigator
 
 import geb.Page
-import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
+import geb.test.browsers.CrossBrowser
 import org.openqa.selenium.By
 import spock.lang.Unroll
 
@@ -175,8 +175,8 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         expect:
         $("a").text() == "a"
         $("a").add("b")*.text() == ["a", "b"]
-        $("div").text() in ["cd", "c d"] // this is not consistent across drivers
-        $("div")*.text() in [["cd"], ["c d"]] // this is not consistent across drivers
+        $("div").text() in ["cd", "c d", "c d "] // this is not consistent across drivers
+        $("div")*.text() in [["cd"], ["c d"], ["c d "]] // this is not consistent across drivers
         $("foo")*.text() == []
     }
 

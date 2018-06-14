@@ -78,10 +78,9 @@ browserStack {
         chrome_windows_62
         firefox_windows_47 //newer versions do not currently support mouse interaction commands
         firefox_mac_47 //newer versions do not currently support mouse interaction commands
-        create("internet explorer_windows_8")
-        create("internet explorer_windows_9")
         create("internet explorer_windows_10")
         create("internet explorer_windows_11")
+        create("edge_windows_17")
 
     }
     task {
@@ -101,7 +100,7 @@ task nonIeBrowserStackTests {
 }
 
 task ieBrowserStackTests {
-    dependsOn 'internetExplorerWindows8Test', 'internetExplorerWindows9Test', 'internetExplorerWindows10Test', 'internetExplorerWindows11Test'
+    dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows17Test'
 }
 
 modifyPom { pom ->

@@ -1,4 +1,5 @@
 import geb.test.browsers.Chrome
+import geb.test.browsers.Edge
 import geb.test.browsers.FirefoxLinux
 import geb.test.browsers.CrossBrowser
 import geb.test.browsers.Android
@@ -23,6 +24,10 @@ if (cloudBrowserSpecification) {
             if (cloudBrowserSpecification.contains("version=11")) {
                 includes << InternetExplorer11
             }
+        }
+        if (cloudBrowserSpecification.contains("edge")) {
+            includes << InternetExplorer
+            includes << Edge
         }
         if (cloudBrowserSpecification.contains("firefox")) {
             includes << Firefox
