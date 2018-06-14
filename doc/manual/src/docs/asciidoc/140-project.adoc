@@ -103,6 +103,7 @@ This page lists the high level changes between versions of Geb.
 * Add method for performing assertions as part of an at check. [issue:405[]]
 * Document how to configure proxy to be used by the direct download API. [issue:371[]]
 * Enable taking reports for all windows if multiple are open. [issue:401[]]
+* Describe what constitutes a good at checker in the manual. [issue:512[]]
 
 === 2.1
 

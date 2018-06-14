@@ -534,6 +534,18 @@ The `verifyAt()` method call will either:
 * if <<implicit-assertions, implicit assertions>> are <<implicit-assertions-mechanics, enabled>> and the “at” checker fails it will throw an `AssertionError`
 * return `false` if implicit assertions are not enabled and the “at” checker fails
 
+[TIP]
+====
+“At checkers” should be kept simple - they should only verify that the expected page is rendered and not deal with any page specific logic.
+
+They should only allow to check that the browser is, for example, at the order summary page and not at the product details or, even worse, the not found page.
+They should not, on the other hand, verify anything related to the logic associated with the page checked, like for example the structure of it or some predicate that should always be fulfiled.
+Such checks are better suited for a test than an “at checker”.
+That's because “at checkers” are evaluated multiple times, quite often implicitly, like when using `to()` method, effectively meaning that the same thing is verified over and over again.
+
+A good rule of thumb is to keep “at checkers” of your pages fairly similar - they should all access pretty much the same information, like page title or text of the heading and only differ in the values they expect.
+====
+
 Considering the example above you could use it like this…
 
 [source,groovy]
