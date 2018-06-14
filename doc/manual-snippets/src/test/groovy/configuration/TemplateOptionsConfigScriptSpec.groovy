@@ -30,12 +30,16 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
             // tag::config[]
             templateOptions {
                 cache = true
+                wait = true
             }
             // end::config[]
         """
 
         then:
-        config.templateCacheOption
+        with(config.templateOptions) {
+            cache
+            wait == true
+        }
     }
 
 }

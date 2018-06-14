@@ -38,11 +38,42 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         notExplicitlyCachedValue == 1
     }
 
+    def "can configure all content to be waited on by default"() {
+        given:
+        html {
+            head {
+                script(type: "text/javascript", """
+                    setTimeout(function() {
+                        var p = document.createElement("p");
+                        p.innerHTML = "Dynamic paragraph";
+                        p.className = "dynamic";
+                        document.body.appendChild(p);
+                    }, 75);
+                """)
+            }
+        }
+
+        and:
+        browser.config.templateWaitOption = true
+
+        when:
+        to DynamicPageWithWaiting
+
+        then:
+        dynamicallyAdded
+    }
+
 }
 
 class ValueHoldingPage extends Page {
     def value = 1
     static content = {
         notExplicitlyCachedValue { value }
+    }
+}
+
+class DynamicPageWithWaiting extends Page {
+    static content = {
+        dynamicallyAdded { $("p.dynamic") }
     }
 }

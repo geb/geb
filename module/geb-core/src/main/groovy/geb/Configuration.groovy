@@ -501,18 +501,29 @@ class Configuration {
     }
 
     /**
-     * Returns default value used for the {@code cache} template option.
-     * @return
-     */
-    boolean getTemplateCacheOption() {
-        rawConfig.templateOptions.cache
-    }
-
-    /**
      * Updates the {@code templateOptions.cache} config entry.
      */
     void setTemplateCacheOption(boolean cache) {
         rawConfig.templateOptions.cache = cache
+    }
+
+    /**
+     * Updates the {@code templateOptions.wait} config entry.
+     */
+    void setTemplateWaitOption(def wait) {
+        rawConfig.templateOptions.wait = wait
+    }
+
+    /**
+     * Returns default values used for some of the content DSL template options.
+     * @return
+     */
+    TemplateOptionsConfiguration getTemplateOptions() {
+        def raw = rawConfig.templateOptions
+        TemplateOptionsConfiguration.builder()
+            .cache(raw.cache as boolean)
+            .wait(readValue(raw, 'wait', null))
+            .build()
     }
 
     protected readValue(String name, defaultValue) {

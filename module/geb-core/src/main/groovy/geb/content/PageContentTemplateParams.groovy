@@ -15,8 +15,8 @@
  */
 package geb.content
 
-import geb.Configuration
 import geb.Page
+import geb.TemplateOptionsConfiguration
 import geb.error.InvalidPageContent
 
 class PageContentTemplateParams {
@@ -30,7 +30,7 @@ class PageContentTemplateParams {
 
     private final String name
 
-    private final Configuration config
+    private final TemplateOptionsConfiguration config
 
     /**
      * The value of the 'required' option, as a boolean according to the Groovy Truth. Defaults to true.
@@ -82,7 +82,7 @@ class PageContentTemplateParams {
      */
     Closure<?> waitCondition
 
-    PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params, Configuration config) {
+    PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params, TemplateOptionsConfiguration config) {
         this.owner = owner
         this.name = name
         this.config = config
@@ -93,7 +93,7 @@ class PageContentTemplateParams {
     private void extractParams(Map<String, ?> params) {
         def paramsToProcess = params == null ? Collections.emptyMap() : new HashMap<String, Object>(params)
 
-        cache = toBoolean(paramsToProcess, 'cache', config.templateCacheOption)
+        cache = toBoolean(paramsToProcess, 'cache', config.cache)
 
         def toParam = paramsToProcess.remove("to")
         toSingle = extractToSingle(toParam)
@@ -112,7 +112,7 @@ class PageContentTemplateParams {
 
         waitCondition = extractClosure(paramsToProcess, 'waitCondition')
 
-        def waitParam = paramsToProcess.remove("wait")
+        def waitParam = toObject(paramsToProcess, "wait", config.wait)
         wait = waitParam != null ? waitParam : waitCondition != null
 
         toWait = paramsToProcess.remove("toWait")
@@ -191,7 +191,11 @@ class PageContentTemplateParams {
     }
 
     private boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {
-        params.containsKey(key) ? params.remove(key) : defaultValue as boolean
+        toObject(params, key, defaultValue) as boolean
+    }
+
+    private toObject(Map<String, ?> params, String key, Object defaultValue) {
+        params.containsKey(key) ? params.remove(key) : defaultValue
     }
 
     private int toNonNegativeInt(Map<String, ?> params, String key, int defaultValue) {
