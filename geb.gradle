@@ -39,7 +39,7 @@ allprojects { project ->
         isSnapshot = version.endsWith("-SNAPSHOT")
         isCi = project.hasProperty("ci")
 
-        seleniumVersion = "3.6.0"
+        seleniumVersion = "3.12.0"
         htmlUnitDriverVersion = "2.27"
         groovyVersion = "2.4.15"
         spockVersion = "1.1-groovy-2.4"
