@@ -169,6 +169,10 @@ The <<base-url, base URL>> to be used can be specified by setting the `baseUrl` 
 `geb.build.baseUrl` system property).
 Any value set in the config script will take precedence over the value provided by the build adapter.
 
+=== Template options default values
+
+Default values for some of the <<template-options, content DSL template options>> can be configured:
+
 [[waiting-configuration]]
 === Waiting
 

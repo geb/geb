@@ -15,6 +15,7 @@
  */
 package geb.content
 
+import geb.Configuration
 import geb.Page
 import geb.error.InvalidPageContent
 
@@ -24,9 +25,12 @@ class PageContentTemplateParams {
     private static final String MIN = 'min'
     private static final String TIMES = 'times'
     private static final String REQUIRED = 'required'
+
     private final PageContentTemplate owner
 
     private final String name
+
+    private final Configuration config
 
     /**
      * The value of the 'required' option, as a boolean according to the Groovy Truth. Defaults to true.
@@ -78,9 +82,10 @@ class PageContentTemplateParams {
      */
     Closure<?> waitCondition
 
-    PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params) {
+    PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params, Configuration config) {
         this.owner = owner
         this.name = name
+        this.config = config
 
         extractParams(params)
     }
@@ -88,7 +93,7 @@ class PageContentTemplateParams {
     private void extractParams(Map<String, ?> params) {
         def paramsToProcess = params == null ? Collections.emptyMap() : new HashMap<String, Object>(params)
 
-        cache = toBoolean(paramsToProcess, 'cache', false)
+        cache = toBoolean(paramsToProcess, 'cache', config.templateCacheOption)
 
         def toParam = paramsToProcess.remove("to")
         toSingle = extractToSingle(toParam)

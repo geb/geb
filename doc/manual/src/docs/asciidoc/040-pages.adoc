@@ -133,6 +133,7 @@ Or…
 include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_method,indent=0]
 ----
 
+[[template-options]]
 === Template options
 
 Template definitions can take different options. The syntax is…

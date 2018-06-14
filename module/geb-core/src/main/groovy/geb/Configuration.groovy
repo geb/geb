@@ -500,6 +500,21 @@ class Configuration {
         rawConfig.defaultDownloadConfig = config
     }
 
+    /**
+     * Returns default value used for the {@code cache} template option.
+     * @return
+     */
+    boolean getTemplateCacheOption() {
+        rawConfig.templateOptions.cache
+    }
+
+    /**
+     * Updates the {@code templateOptions.cache} config entry.
+     */
+    void setTemplateCacheOption(boolean cache) {
+        rawConfig.templateOptions.cache = cache
+    }
+
     protected readValue(String name, defaultValue) {
         readValue(rawConfig, name, defaultValue)
     }
