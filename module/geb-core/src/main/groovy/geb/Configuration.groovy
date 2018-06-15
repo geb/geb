@@ -536,18 +536,38 @@ class Configuration {
     }
 
     /**
+     * Updates the {@code templateOptions.min} config entry.
+     */
+    void setTemplateMinOption(int min) {
+        rawConfig.templateOptions.min = min
+    }
+
+    /**
      * Returns default values used for some of the content DSL template options.
      * @return
      */
     TemplateOptionsConfiguration getTemplateOptions() {
         def raw = rawConfig.templateOptions
-        TemplateOptionsConfiguration.builder()
+        def configuration = TemplateOptionsConfiguration.builder()
             .cache(raw.cache as boolean)
             .wait(readValue(raw, 'wait', null))
             .toWait(readValue(raw, 'toWait', null))
             .waitCondition(extractWaitCondition(raw))
             .required(readOptionalBooleanValue(raw, 'required'))
+            .min(readOptionalNonNegativeIntegerValue(raw, 'min', 'min template option'))
             .build()
+        validate(configuration)
+        configuration
+    }
+
+    void validate(TemplateOptionsConfiguration configuration) {
+        def required = configuration.required
+        def min = configuration.min
+        if (required.present && min.present) {
+            if ((required.get() && min.get() == 0) || (!required.get() && min.get() != 0)) {
+                throw new InvalidGebConfiguration("Configuration for bounds and 'required' template options is conflicting")
+            }
+        }
     }
 
     protected readValue(String name, defaultValue) {
@@ -565,6 +585,19 @@ class Configuration {
     protected Optional<Boolean> readOptionalBooleanValue(ConfigObject config, String name) {
         if (config.containsKey(name)) {
             Optional.of(config[name] as boolean)
+        } else {
+            Optional.empty()
+        }
+    }
+
+    protected Optional<Integer> readOptionalNonNegativeIntegerValue(ConfigObject config, String name, String errorName) {
+        if (config.containsKey(name)) {
+            def value = config[name]
+            if (value instanceof Integer && value >= 0) {
+                Optional.of(value)
+            } else {
+                throw new InvalidGebConfiguration("Configuration for $errorName should be a non-negative integer but found \"$value\"")
+            }
         } else {
             Optional.empty()
         }

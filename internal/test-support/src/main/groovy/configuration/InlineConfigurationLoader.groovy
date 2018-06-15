@@ -17,8 +17,12 @@ package configuration
 
 import geb.Configuration
 import geb.ConfigurationLoader
+import org.junit.rules.TemporaryFolder
 
-trait InlineConfigurationLoader implements TemporaryFolderProvider {
+trait InlineConfigurationLoader {
+
+    abstract TemporaryFolder getTemporaryFolder()
+
     Configuration config
 
     void configScript(String script) {

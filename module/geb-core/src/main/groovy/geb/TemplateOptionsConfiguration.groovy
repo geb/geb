@@ -24,13 +24,15 @@ class TemplateOptionsConfiguration {
     final toWait
     final Closure<?> waitCondition
     final Optional<Boolean> required
+    final Optional<Integer> min
 
     @Builder
-    TemplateOptionsConfiguration(boolean cache, wait, toWait, Closure<?> waitCondition, Optional<Boolean> required) {
+    TemplateOptionsConfiguration(boolean cache, wait, toWait, Closure<?> waitCondition, Optional<Boolean> required, Optional<Integer> min) {
         this.cache = cache
         this.wait = wait
         this.toWait = toWait
         this.waitCondition = waitCondition
         this.required = required
+        this.min = min
     }
 }

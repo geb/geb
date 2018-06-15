@@ -16,6 +16,7 @@
 package geb.conf
 
 import geb.Page
+import geb.error.ContentCountOutOfBoundsException
 import geb.error.RequiredPageContentNotPresent
 import geb.test.GebSpecWithCallbackServer
 
@@ -221,6 +222,84 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         thrown(RequiredPageContentNotPresent)
     }
 
+    def "can configure all content to contain a minimum number of elements"() {
+        given:
+        html {
+            p("text")
+        }
+
+        and:
+        browser.config.templateMinOption = 2
+
+        when:
+        to PageWithParagraphs
+        paragraphs
+
+        then:
+        thrown(ContentCountOutOfBoundsException)
+    }
+
+    def "can configure all content not to be required using default min option"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateMinOption = 0
+
+        when:
+        to PageWithNotFoundContent
+
+        then:
+        notFoundContent.empty
+    }
+
+    def "explicit min option overrides default min option"() {
+        given:
+        html {
+            p("text")
+        }
+
+        and:
+        browser.config.templateMinOption = 2
+
+        when:
+        to(new PageWithParagraphs(options: [min: 1]))
+
+        then:
+        paragraphs.size() == 1
+    }
+
+    def "explicit times option overrides default min option"() {
+        given:
+        html {
+            p("text")
+        }
+
+        and:
+        browser.config.templateMinOption = 2
+
+        when:
+        to(new PageWithParagraphs(options: [times: 1]))
+
+        then:
+        paragraphs.size() == 1
+    }
+
+    def "explicit required option overrides default min option"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateMinOption = 0
+
+        when:
+        to(new PageWithNotFoundContent(options: [required: true]))
+        notFoundContent
+
+        then:
+        thrown(RequiredPageContentNotPresent)
+    }
+
 }
 
 class ValueHoldingPage extends Page {
@@ -251,5 +330,13 @@ class PageWithNotFoundContent extends Page {
 
     static content = {
         notFoundContent(options) { $('#not-existing-element') }
+    }
+}
+
+class PageWithParagraphs extends Page {
+    def options = [:]
+
+    static content = {
+        paragraphs(options) { $('p') }
     }
 }

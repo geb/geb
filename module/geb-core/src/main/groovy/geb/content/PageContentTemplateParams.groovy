@@ -140,7 +140,8 @@ class PageContentTemplateParams {
         }
         def times = paramsToProcess.remove(TIMES)
         def notRequired = paramsToProcess[REQUIRED] == false || (!paramsToProcess.containsKey(REQUIRED) && config.required.present && !config.required.get())
-        def defaultMin = notRequired ? 0 : 1
+        def explicitlyRequired = paramsToProcess[REQUIRED]
+        def defaultMin = notRequired ? 0 : (explicitlyRequired ? 1 : config.min.orElse(1))
         def timesMin = times != null ? minTimes(times) : defaultMin
         def timesMax = times != null ? maxTimes(times) : Integer.MAX_VALUE
         max = toNonNegativeInt(paramsToProcess, MAX, timesMax)

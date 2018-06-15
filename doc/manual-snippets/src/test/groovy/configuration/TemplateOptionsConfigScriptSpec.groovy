@@ -15,7 +15,6 @@
  */
 package configuration
 
-import geb.error.InvalidGebConfiguration
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -35,6 +34,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
                 toWait = true
                 waitCondition = { it.displayed }
                 required = false
+                min = 0
             }
             // end::config[]
         """
@@ -46,23 +46,8 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
             toWait == true
             waitCondition != null
             !required.get()
+            min.get() == 0
         }
-    }
-
-    def "invalid waitCondition default template option configuration value"() {
-        given:
-        configScript """
-            templateOptions {
-                waitCondition = "foo"
-            }
-        """
-
-        when:
-        config.templateOptions
-
-        then:
-        InvalidGebConfiguration e = thrown()
-        e.message == "Configuration for waitCondition template option should be a closure but found \"foo\""
     }
 
 }
