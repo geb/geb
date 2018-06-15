@@ -16,6 +16,7 @@
 package geb.conf
 
 import geb.Page
+import geb.error.RequiredPageContentNotPresent
 import geb.test.GebSpecWithCallbackServer
 
 class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
@@ -119,6 +120,107 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         dynamicContent.displayed
     }
 
+    def "can configure all content not to be required"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = false
+
+        when:
+        to PageWithNotFoundContent
+
+        then:
+        notFoundContent.empty
+    }
+
+    def "explicit required option overrides default required option"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = false
+
+        when:
+        to(new PageWithNotFoundContent(options: [required: true]))
+        notFoundContent
+
+        then:
+        thrown(RequiredPageContentNotPresent)
+    }
+
+    def "explicit min option overrides default required option set to true"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = true
+
+        when:
+        to(new PageWithNotFoundContent(options: [min: 0]))
+
+        then:
+        notFoundContent.empty
+    }
+
+    def "explicit min option overrides default required option set to false"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = false
+
+        when:
+        to(new PageWithNotFoundContent(options: [min: 1]))
+        notFoundContent
+
+        then:
+        thrown(RequiredPageContentNotPresent)
+    }
+
+    def "explicit max option overrides default required option"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = true
+
+        when:
+        to(new PageWithNotFoundContent(options: [max: 0]))
+
+        then:
+        notFoundContent.empty
+    }
+
+    def "explicit times option overrides default required option set to true"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = true
+
+        when:
+        to(new PageWithNotFoundContent(options: [times: 0]))
+
+        then:
+        notFoundContent.empty
+    }
+
+    def "explicit times option overrides default required option set to false"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateRequiredOption = false
+
+        when:
+        to(new PageWithNotFoundContent(options: [times: 1]))
+        notFoundContent
+
+        then:
+        thrown(RequiredPageContentNotPresent)
+    }
+
 }
 
 class ValueHoldingPage extends Page {
@@ -142,4 +244,12 @@ class PageWithToOption extends Page {
 
 class AsyncPage extends Page {
     static at = { $("#async-content") }
+}
+
+class PageWithNotFoundContent extends Page {
+    def options = [:]
+
+    static content = {
+        notFoundContent(options) { $('#not-existing-element') }
+    }
 }

@@ -529,6 +529,13 @@ class Configuration {
     }
 
     /**
+     * Updates the {@code templateOptions.required} config entry.
+     */
+    void setTemplateRequiredOption(boolean required) {
+        rawConfig.templateOptions.required = required
+    }
+
+    /**
      * Returns default values used for some of the content DSL template options.
      * @return
      */
@@ -539,6 +546,7 @@ class Configuration {
             .wait(readValue(raw, 'wait', null))
             .toWait(readValue(raw, 'toWait', null))
             .waitCondition(extractWaitCondition(raw))
+            .required(readOptionalBooleanValue(raw, 'required'))
             .build()
     }
 
@@ -551,6 +559,14 @@ class Configuration {
             config[name]
         } else {
             defaultValue
+        }
+    }
+
+    protected Optional<Boolean> readOptionalBooleanValue(ConfigObject config, String name) {
+        if (config.containsKey(name)) {
+            Optional.of(config[name] as boolean)
+        } else {
+            Optional.empty()
         }
     }
 

@@ -34,6 +34,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
                 wait = true
                 toWait = true
                 waitCondition = { it.displayed }
+                required = false
             }
             // end::config[]
         """
@@ -44,6 +45,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
             wait == true
             toWait == true
             waitCondition != null
+            !required.get()
         }
     }
 

@@ -139,7 +139,8 @@ class PageContentTemplateParams {
             throwInvalidContent('''contains 'max' option that is lower than the 'min' option''')
         }
         def times = paramsToProcess.remove(TIMES)
-        def defaultMin = paramsToProcess[REQUIRED] == false ? 0 : 1
+        def notRequired = paramsToProcess[REQUIRED] == false || (!paramsToProcess.containsKey(REQUIRED) && config.required.present && !config.required.get())
+        def defaultMin = notRequired ? 0 : 1
         def timesMin = times != null ? minTimes(times) : defaultMin
         def timesMax = times != null ? maxTimes(times) : Integer.MAX_VALUE
         max = toNonNegativeInt(paramsToProcess, MAX, timesMax)
