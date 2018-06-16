@@ -543,6 +543,13 @@ class Configuration {
     }
 
     /**
+     * Updates the {@code templateOptions.max} config entry.
+     */
+    void setTemplateMaxOption(int max) {
+        rawConfig.templateOptions.max = max
+    }
+
+    /**
      * Returns default values used for some of the content DSL template options.
      * @return
      */
@@ -555,6 +562,7 @@ class Configuration {
             .waitCondition(extractWaitCondition(raw))
             .required(readOptionalBooleanValue(raw, 'required'))
             .min(readOptionalNonNegativeIntegerValue(raw, 'min', 'min template option'))
+            .max(readOptionalNonNegativeIntegerValue(raw, 'max', 'max template option'))
             .build()
         validate(configuration)
         configuration
@@ -563,10 +571,19 @@ class Configuration {
     void validate(TemplateOptionsConfiguration configuration) {
         def required = configuration.required
         def min = configuration.min
-        if (required.present && min.present) {
-            if ((required.get() && min.get() == 0) || (!required.get() && min.get() != 0)) {
-                throw new InvalidGebConfiguration("Configuration for bounds and 'required' template options is conflicting")
+        def max = configuration.max
+        if (required.present) {
+            if (min.present) {
+                if ((required.get() && min.get() == 0) || (!required.get() && min.get() != 0)) {
+                    boundsAndRequiredConflicting()
+                }
             }
+            if (max.present && required.get() && max.get() == 0) {
+                boundsAndRequiredConflicting()
+            }
+        }
+        if (max.present && min.present && max.get() < min.get()) {
+            throw new InvalidGebConfiguration("Configuration contains 'max' template option that is lower than the 'min' template option")
         }
     }
 
@@ -612,5 +629,9 @@ class Configuration {
                 throw new InvalidGebConfiguration("Configuration for waitCondition template option should be a closure but found \"$waitCondition\"")
             }
         }
+    }
+
+    private void boundsAndRequiredConflicting() {
+        throw new InvalidGebConfiguration("Configuration for bounds and 'required' template options is conflicting")
     }
 }

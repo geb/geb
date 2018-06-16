@@ -35,6 +35,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
                 waitCondition = { it.displayed }
                 required = false
                 min = 0
+                max = 1
             }
             // end::config[]
         """
@@ -47,6 +48,7 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
             waitCondition != null
             !required.get()
             min.get() == 0
+            max.get() == 1
         }
     }
 

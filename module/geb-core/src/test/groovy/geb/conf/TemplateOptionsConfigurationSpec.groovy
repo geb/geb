@@ -300,6 +300,72 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
         thrown(RequiredPageContentNotPresent)
     }
 
+    def "can configure all content to contain a maximum number of elements"() {
+        given:
+        html {
+            p("text")
+            p("text")
+        }
+
+        and:
+        browser.config.templateMaxOption = 1
+
+        when:
+        to PageWithParagraphs
+        paragraphs
+
+        then:
+        thrown(ContentCountOutOfBoundsException)
+    }
+
+    def "can configure all content not to be required using default max option"() {
+        given:
+        html {}
+
+        and:
+        browser.config.templateMaxOption = 0
+
+        when:
+        to PageWithNotFoundContent
+
+        then:
+        notFoundContent.empty
+    }
+
+    def "explicit max option overrides default max option"() {
+        given:
+        html {
+            p("text")
+            p("text")
+        }
+
+        and:
+        browser.config.templateMaxOption = 1
+
+        when:
+        to(new PageWithParagraphs(options: [max: 2]))
+
+        then:
+        paragraphs.size() == 2
+    }
+
+    def "explicit times option overrides default max option"() {
+        given:
+        html {
+            p("text")
+            p("text")
+        }
+
+        and:
+        browser.config.templateMaxOption = 1
+
+        when:
+        to(new PageWithParagraphs(options: [times: 2]))
+
+        then:
+        paragraphs.size() == 2
+    }
+
 }
 
 class ValueHoldingPage extends Page {

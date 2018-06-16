@@ -171,7 +171,12 @@ Any value set in the config script will take precedence over the value provided 
 
 === Template options default values
 
-Default values for some of the <<template-options, content DSL template options>> can be configured:
+Default values for some of the <<template-options, content DSL template options>> are configurable:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/TemplateOptionsConfigScriptSpec.groovy[tag=config,indent=0]
+----
 
 [[waiting-configuration]]
 === Waiting

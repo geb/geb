@@ -43,12 +43,12 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
         e.message == "Configuration for waitCondition template option should be a closure but found \"foo\""
     }
 
-    @Unroll
-    def "invalid min default template option configuration value"() {
+    @Unroll("invalid #option default template option configuration value")
+    def "invalid default template option configuration value"() {
         given:
         configScript """
             templateOptions {
-                min = $value
+                $option = $value
             }
         """
 
@@ -57,12 +57,14 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
 
         then:
         InvalidGebConfiguration e = thrown()
-        e.message == "Configuration for min template option should be a non-negative integer but found \"$errorValue\""
+        e.message == "Configuration for $option template option should be a non-negative integer but found \"$errorValue\""
 
         where:
-        value   | errorValue
-        "'foo'" | "foo"
-        -1      | -1
+        option | value   | errorValue
+        "min"  | "'foo'" | "foo"
+        "min"  | -1      | -1
+        "max"  | "'foo'" | "foo"
+        "max"  | -1      | -1
     }
 
     @Unroll
@@ -86,6 +88,42 @@ class TemplateOptionsConfigScriptSpec extends Specification implements InlineCon
         min | required
         0   | true
         1   | false
+    }
+
+    @Unroll
+    def "conflicting max and required template option configuration"() {
+        given:
+        configScript """
+            templateOptions {
+                max = 0
+                required = true
+            }
+        """
+
+        when:
+        config.templateOptions
+
+        then:
+        InvalidGebConfiguration e = thrown()
+        e.message == "Configuration for bounds and 'required' template options is conflicting"
+    }
+
+    @Unroll
+    def "inverted min and max template option configuration"() {
+        given:
+        configScript """
+            templateOptions {
+                min = 1
+                max = 0
+            }
+        """
+
+        when:
+        config.templateOptions
+
+        then:
+        InvalidGebConfiguration e = thrown()
+        e.message == "Configuration contains 'max' template option that is lower than the 'min' template option"
     }
 
 }

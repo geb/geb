@@ -91,6 +91,7 @@ This page lists the high level changes between versions of Geb.
 * Added ability to disable use of tunnels in Gradle plugins for BrowserStack and SauceLabs. [issue:384[]]
 * Added `pause()` method to `Browser` class as an alternative to setting breakpoints when debugging. [issue:247[]]
 * Added ability to access names of content defined using the DSL at runtime. [issue:369[]]
+* Added ability to configure default values of content DSL template options. [issue:369[]]
 
 ==== Fixes
 * Fix translation of attribute map to css selector when finding elements for attribute value that is a GString. [issue:525[]]
