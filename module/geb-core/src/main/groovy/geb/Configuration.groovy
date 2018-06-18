@@ -15,20 +15,12 @@
 package geb
 
 import geb.buildadapter.SystemPropertiesBuildAdapter
-import geb.report.CompositeReporter
-import geb.report.PageSourceReporter
-import geb.report.Reporter
-import geb.report.ReportingListener
-import geb.report.ScreenshotReporter
+import geb.driver.*
+import geb.error.InvalidGebConfiguration
+import geb.navigator.factory.*
+import geb.report.*
 import geb.waiting.Wait
 import org.openqa.selenium.WebDriver
-import geb.driver.*
-import geb.navigator.factory.InnerNavigatorFactory
-import geb.navigator.factory.NavigatorFactory
-import geb.navigator.factory.BrowserBackedNavigatorFactory
-import geb.error.InvalidGebConfiguration
-import geb.navigator.factory.DefaultInnerNavigatorFactory
-import geb.navigator.factory.ClosureInnerNavigatorFactory
 
 /**
  * Represents a particular configuration of Geb.
@@ -185,7 +177,7 @@ class Configuration {
         def isCollectionContainingOnlyPageClasses = unexpectedPages instanceof Collection && unexpectedPages.every { it instanceof Class && Page.isAssignableFrom(it) }
         if (!isCollectionContainingOnlyPageClasses) {
             def message = "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$unexpectedPages\". " +
-                "Did you forget to include some imports in your config file?"
+                    "Did you forget to include some imports in your config file?"
             throw new InvalidGebConfiguration(message)
         }
         unexpectedPages
@@ -273,8 +265,8 @@ class Configuration {
         def value = properties.getProperty("geb.driver") ?: readValue("driver", null)
         if (value instanceof WebDriver) {
             throw new IllegalStateException(
-                "The 'driver' config value is an instance of WebDriver. " +
-                    "You need to wrap the driver instance in a closure."
+                    "The 'driver' config value is an instance of WebDriver. " +
+                            "You need to wrap the driver instance in a closure."
             )
         }
         value
@@ -556,16 +548,29 @@ class Configuration {
     TemplateOptionsConfiguration getTemplateOptions() {
         def raw = rawConfig.templateOptions
         def configuration = TemplateOptionsConfiguration.builder()
-            .cache(raw.cache as boolean)
-            .wait(readValue(raw, 'wait', null))
-            .toWait(readValue(raw, 'toWait', null))
-            .waitCondition(extractWaitCondition(raw))
-            .required(readOptionalBooleanValue(raw, 'required'))
-            .min(readOptionalNonNegativeIntegerValue(raw, 'min', 'min template option'))
-            .max(readOptionalNonNegativeIntegerValue(raw, 'max', 'max template option'))
-            .build()
+                .cache(raw.cache as boolean)
+                .wait(readValue(raw, 'wait', null))
+                .toWait(readValue(raw, 'toWait', null))
+                .waitCondition(extractWaitCondition(raw))
+                .required(readOptionalBooleanValue(raw, 'required'))
+                .min(readOptionalNonNegativeIntegerValue(raw, 'min', 'min template option'))
+                .max(readOptionalNonNegativeIntegerValue(raw, 'max', 'max template option'))
+                .build()
         validate(configuration)
         configuration
+    }
+
+    /**
+     * Updates the {@code withWindow.close} config entry.
+     */
+    void setWithWindowCloseOption(boolean close) {
+        rawConfig.withWindow.close = close
+    }
+
+    WithWindowConfiguration getWithWindowConfig() {
+        WithWindowConfiguration.builder()
+                .close(rawConfig.withWindow.close as boolean)
+                .build()
     }
 
     void validate(TemplateOptionsConfiguration configuration) {

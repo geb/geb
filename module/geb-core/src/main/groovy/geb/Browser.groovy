@@ -41,6 +41,7 @@ class Browser {
 
     public static final String UTF8 = "UTF-8"
     public static final String QUERY_STRING_SEPARATOR = "&"
+    public static final String CLOSE_OPTION = "close"
 
     private Page page
     private final Configuration config
@@ -770,14 +771,9 @@ class Browser {
             availableWindows.each {
                 switchToWindow(it)
                 if (specification.call()) {
-                    verifyAtIfPresent(options.page)
-
                     try {
-                        blockResults << block.call()
+                        blockResults << doWithWindow(options, block)
                     } finally {
-                        if (options.close) {
-                            driver.close()
-                        }
                         anyMatching = true
                     }
                 }
@@ -806,15 +802,22 @@ class Browser {
 
         switchToWindow(window)
         try {
+            doWithWindow(options, block)
+        } finally {
+            switchToWindow(original)
+            page originalPage
+        }
+    }
+
+    protected doWithWindow(Map options, Closure block) {
+        try {
             verifyAtIfPresent(options.page)
 
             block.call()
         } finally {
-            if (options.close) {
+            if (options.close || (!options.containsKey(CLOSE_OPTION) && config.withWindowConfig.close)) {
                 driver.close()
             }
-            switchToWindow(original)
-            page originalPage
         }
     }
 
@@ -842,7 +845,7 @@ class Browser {
 
             block.call()
         } finally {
-            if (!options.containsKey('close') || options.close) {
+            if (!options.containsKey(CLOSE_OPTION) || options.close) {
                 driver.close()
             }
             switchToWindow(originalWindow)

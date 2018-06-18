@@ -268,6 +268,15 @@ include::{test-dir}/configuration/UnexpectedPagesConfigSpec.groovy[tag=config,in
 
 See <<unexpected-pages,this section>> for more information on unexpected pages.
 
+=== Default values for `withWindow()` options
+
+Default values for some of the <<with-window-options, options for `withWindow()` calls>> are configurable:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/WithWindowConfigScriptSpec.groovy[tag=config,indent=0]
+----
+
 [[reporter-configuration]]
 === Reporter
 

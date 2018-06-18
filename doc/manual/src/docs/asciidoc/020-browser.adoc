@@ -365,6 +365,7 @@ If code of the closure passed as the last argument changes browser's current pag
 `withWindow()`.
 ====
 
+[[with-window-options]]
 ==== `withWindow()` options
 
 There are some additional options that can be passed to a link:api/geb/Browser.html#withWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withWindow()`] call which make working

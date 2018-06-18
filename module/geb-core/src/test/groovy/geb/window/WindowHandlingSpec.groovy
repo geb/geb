@@ -82,6 +82,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
     @Unroll
     def "withWindow by default does not close the matching windows"() {
+        given:
         openAllWindows()
 
         when:
@@ -95,6 +96,50 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         specification << [
             { true },
             windowName(1)
+        ]
+    }
+
+    @Unroll
+    def "withWindow can be configured to close the matching windows"() {
+        given:
+        openAllWindows()
+
+        and:
+        browser.config.withWindowCloseOption = true
+
+        when:
+        withWindow(specification) {
+        }
+
+        then:
+        availableWindows.size() == 2
+
+        where:
+        specification << [
+                { title == windowTitle(1) },
+                windowName(1)
+        ]
+    }
+
+    @Unroll
+    def "close option passed to withWindow overrides the one specified in configuration"() {
+        given:
+        openAllWindows()
+
+        and:
+        browser.config.withWindowCloseOption = true
+
+        when:
+        withWindow(specification, close: false) {
+        }
+
+        then:
+        availableWindows.size() == 3
+
+        where:
+        specification << [
+                { title == windowTitle(1) },
+                windowName(1)
         ]
     }
 
