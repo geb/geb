@@ -149,7 +149,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         openAllWindows()
 
         when:
-        withWindow(specification, close: true) { throw Exception() }
+        withWindow(specification, close: true) { throw new Exception() }
 
         then:
         thrown(Exception)
