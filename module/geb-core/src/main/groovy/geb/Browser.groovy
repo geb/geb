@@ -838,14 +838,15 @@ class Browser {
         def originalWindow = currentWindow
         def originalPage = getPage()
 
-        def newWindow = executeNewWindowOpening(windowOpeningBlock, options.wait)
+        def wait = options.containsKey("wait") ? options.wait : config.withNewWindowConfig.wait
+        def newWindow = executeNewWindowOpening(windowOpeningBlock, wait)
         try {
             switchToWindow(newWindow)
             verifyAtIfPresent(options.page)
 
             block.call()
         } finally {
-            if (!options.containsKey(CLOSE_OPTION) || options.close) {
+            if ((!options.containsKey(CLOSE_OPTION) && config.withNewWindowConfig.close.orElse(true)) || options.close) {
                 driver.close()
             }
             switchToWindow(originalWindow)

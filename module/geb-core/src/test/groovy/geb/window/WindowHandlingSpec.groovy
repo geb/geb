@@ -207,6 +207,35 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @SuppressWarnings('SpaceBeforeOpeningBrace')
+    def "can configure withNewWindow not to close the newly opened window by default"() {
+        given:
+        go MAIN_PAGE_URL
+
+        and:
+        browser.config.withNewWindowCloseOption = false
+
+        when:
+        withNewWindow({ openWindow(1) }) {}
+
+        then:
+        availableWindows.size() == 2
+    }
+
+    def "close option passed to withNewWindow overrides the one specified in configuration"() {
+        given:
+        go MAIN_PAGE_URL
+
+        and:
+        browser.config.withNewWindowCloseOption = false
+
+        when:
+        withNewWindow({ openWindow(1) }, close: true) {}
+
+        then:
+        availableWindows.size() == 1
+    }
+
+    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow block closure is called in the context of the page passed as the 'page' option"() {
         given:
         to WindowHandlingSpecMainPage
@@ -261,6 +290,48 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
                 setTimeout(function() {
                     document.getElementById('main-1').click();
                 }, 200);
+            """
+        }, wait: true) {
+        }
+
+        then:
+        notThrown(NoNewWindowException)
+    }
+
+    def "withNewWindow can be configured to wait for the new window to be opened by default"() {
+        given:
+        browser.config.withNewWindowWaitOption = true
+
+        and:
+        to WindowHandlingSpecMainPage
+
+        when:
+        withNewWindow({
+            js.exec """
+                setTimeout(function() {
+                    document.getElementById('main-1').click();
+                }, 75);
+            """
+        }) {
+        }
+
+        then:
+        notThrown(NoNewWindowException)
+    }
+
+    def "'wait' option passed to withNewWindow overrides the default value from configuration"() {
+        given:
+        browser.config.withNewWindowWaitOption = false
+
+        and:
+        to WindowHandlingSpecMainPage
+
+        when:
+        withNewWindow({
+            js.exec """
+                setTimeout(function() {
+                    document.getElementById('main-1').click();
+                }, 75);
             """
         }, wait: true) {
         }

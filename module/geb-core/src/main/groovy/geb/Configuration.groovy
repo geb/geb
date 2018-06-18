@@ -573,6 +573,28 @@ class Configuration {
                 .build()
     }
 
+    /**
+     * Updates the {@code withNewWindow.close} config entry.
+     */
+    void setWithNewWindowCloseOption(boolean close) {
+        rawConfig.withNewWindow.close = close
+    }
+
+    /**
+     * Updates the {@code withWindow.wait} config entry.
+     */
+    void setWithNewWindowWaitOption(wait) {
+        rawConfig.withNewWindow.wait = wait
+    }
+
+    WithNewWindowConfiguration getWithNewWindowConfig() {
+        def raw = rawConfig.withNewWindow
+        WithNewWindowConfiguration.builder()
+                .close(readOptionalBooleanValue(raw, 'close'))
+                .wait(raw.wait)
+                .build()
+    }
+
     void validate(TemplateOptionsConfiguration configuration) {
         def required = configuration.required
         def min = configuration.min

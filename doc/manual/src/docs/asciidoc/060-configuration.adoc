@@ -277,6 +277,15 @@ Default values for some of the <<with-window-options, options for `withWindow()`
 include::{test-dir}/configuration/WithWindowConfigScriptSpec.groovy[tag=config,indent=0]
 ----
 
+=== Default values for `withNewWindow()` options
+
+Default values for some of the <<with-new-window-options, options for `withNewWindow()` calls>> are configurable:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/WithNewWindowConfigScriptSpec.groovy[tag=config,indent=0]
+----
+
 [[reporter-configuration]]
 === Reporter
 

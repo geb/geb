@@ -420,6 +420,7 @@ If code of the closure passed as the last argument changes browser's current pag
 {page-method-taking-class-api-link}[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
 ====
 
+[[with-new-window-options]]
 ==== `withNewWindow()` options
 
 There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withNewWindow()`] call which make working
