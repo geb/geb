@@ -614,4 +614,14 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
         new PageInstanceNotInitializedException(message)
     }
+
+    @Override
+    PageContentContainer getRootContainer() {
+        this
+    }
+
+    @Override
+    List<String> getContentPath() {
+        []
+    }
 }

@@ -68,6 +68,8 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     private StringRepresentationProvider stringRepresentationProvider = this
 
+    private PageContentTemplate template
+
     @SuppressWarnings("SpaceBeforeOpeningBrace")
     void init(Browser browser, NavigatorFactory navigatorFactory) {
         this.browser = browser
@@ -84,6 +86,7 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     }
 
     void init(PageContentTemplate template, Object[] args) {
+        this.template = template
         stringRepresentationProvider = new TemplateDerivedContentStringRepresentationProvider(template, args, this)
     }
 
@@ -776,5 +779,19 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
         if (obj instanceof Navigator) {
             allElements() == obj.allElements()
         }
+    }
+
+    @Override
+    PageContentContainer getRootContainer() {
+        hasOwner ? template.owner.rootContainer : this
+    }
+
+    @Override
+    List<String> getContentPath() {
+        hasOwner ? template.owner.contentPath + template.name : []
+    }
+
+    protected boolean getHasOwner() {
+        template?.owner
     }
 }
