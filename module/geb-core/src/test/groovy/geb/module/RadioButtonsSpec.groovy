@@ -28,6 +28,10 @@ class RadioButtonsSpec extends GebSpecWithCallbackServer {
             label(for: "unchecked-first", "first label")
             input(id: "unchecked-first", name: "unchecked", type: "radio", value: "first")
             input(name: "unchecked", type: "radio", value: "second")
+            label {
+                mkp.yield("wrapping label")
+                input(name: "nested-in-label", type: "radio", value: "second", checked: "")
+            }
         }
         to RadioButtonsPage
     }
@@ -67,11 +71,17 @@ class RadioButtonsSpec extends GebSpecWithCallbackServer {
         radio.checked == null
         radio.checkedLabel == null
     }
+
+    def "text of a label wrapping a checked radio is returned even if it has no 'for' attribute"() {
+        expect:
+        nestedInLabel.checkedLabel == "wrapping label"
+    }
 }
 
 class RadioButtonsPage extends Page {
     static content = {
         checked { $(name: "checked").module(RadioButtons) }
         unchecked { $(name: "unchecked").module(RadioButtons) }
+        nestedInLabel { $(name: "nested-in-label").module(RadioButtons) }
     }
 }

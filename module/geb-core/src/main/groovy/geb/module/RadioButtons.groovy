@@ -17,10 +17,11 @@ package geb.module
 
 import geb.Module
 import geb.error.InvalidModuleBaseException
-import geb.navigator.CssSelector
 import org.openqa.selenium.WebElement
 
 class RadioButtons extends Module {
+
+    private static final String LABEL_TAG = "label"
 
     @Override
     protected void initialized() {
@@ -53,9 +54,14 @@ class RadioButtons extends Module {
     }
 
     String getCheckedLabel() {
-        def id = checkedElement?.getAttribute("id")
-        if (id) {
-            navigator.first().parents("html").find("label[for=\"${CssSelector.escape(id)}\"]").text()
+        def checked = checkedElement
+        if (checked) {
+            def label = null
+            def id = checked.getAttribute("id")
+            if (id) {
+                label = browser.find(LABEL_TAG, "for": id)
+            }
+            (label ?: browser.$(checkedElement).parent(LABEL_TAG)).text()
         }
     }
 
