@@ -13,9 +13,13 @@ sourceSets {
     realBrowserTest
 }
 
+compileRealBrowserTestGroovy {
+    classpath += sourceSets.test.output.classesDirs
+}
+
 task realBrowserTest(type: Test) {
     testClassesDirs = sourceSets.realBrowserTest.output.classesDirs
-    classpath = sourceSets.realBrowserTest.runtimeClasspath
+    classpath = sourceSets.realBrowserTest.runtimeClasspath + sourceSets.test.output.classesDirs
 
     mustRunAfter test
 }

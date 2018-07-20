@@ -53,6 +53,7 @@
 :browser-get-driver-api: link:api/geb/Browser.html#getDriver()[getDriver()]
 :browser-clear-cookies-api: link:api/geb/Browser.html#clearCookies()[clearCookies()]
 :browser-clear-cookies-urls-api: link:api/geb/Browser.html#clearCookies(java.lang.String)[clearCookies(String... additionalUrls)]
+:browser-clear-web-storage-api: link:api/geb/Browser.html#clearWebStorage()[clearWebStorage()]
 :clear-browser-cache-api: link:api/geb/driver/CachingDriverFactory.html#clearCache()[CachingDriverFactory.clearCache()]
 :clear-browser-cache-and-quit-api: link:api/geb/driver/CachingDriverFactory.html#clearCacheAndQuitDriver()[CachingDriverFactory.clearCacheAndQuitDriver()]
 :required-page-content-not-present-api: link:api/geb/error/RequiredPageContentNotPresent.html[RequiredPageContentNotPresent]

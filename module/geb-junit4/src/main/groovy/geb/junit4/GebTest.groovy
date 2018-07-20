@@ -43,8 +43,12 @@ class GebTest {
 
     @After
     void resetBrowser() {
-        if (browser?.config?.autoClearCookies) {
+        def config = browser?.config
+        if (config?.autoClearCookies) {
             browser.clearCookiesQuietly()
+        }
+        if (config?.autoClearWebStorage) {
+            browser.clearWebStorage()
         }
         browser = null
     }

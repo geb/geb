@@ -1,5 +1,4 @@
 import geb.gradle.browserstack.BrowserStackAccount
-import geb.gradle.saucelabs.SauceAccount
 
 buildscript {
     repositories {
@@ -10,7 +9,6 @@ buildscript {
     }
 }
 
-apply plugin: "geb-saucelabs"
 apply plugin: "geb-browserstack"
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
@@ -26,8 +24,6 @@ dependencies {
     compile 'org.jodd:jodd-lagarto:3.7.1'
 
     testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
-
-    sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
 
 test {
@@ -50,19 +46,6 @@ sauceLabs {
         safari_mac_7 {
             capabilities platform: "OS X 10.9"
         }
-    }
-    task {
-        maxHeapSize = "512m"
-        testClassesDirs = test.testClassesDirs
-        classpath = test.classpath
-        maxParallelForks 5
-    }
-    account {
-        username = System.getenv(SauceAccount.USER_ENV_VAR)
-        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
-    }
-    connect {
-        timeout 10 // minutes
     }
 }
 

@@ -94,6 +94,7 @@ This page lists the high level changes between versions of Geb.
 * Added ability to configure default values of content DSL template options. [issue:369[]]
 * Added ability to configure default values of options passed to `withWindow()` and `withNewWindow()`. [issue:406[]]
 * Added origin information to `TemplateDerivedPageContent` and `PageContentContainer`. [issue:446[]]
+* Added improved web storage support including management in test integrations. [issue:472[]]
 
 ==== Fixes
 * Fix translation of attribute map to css selector when finding elements for attribute value that is a GString. [issue:525[]]

@@ -1,3 +1,5 @@
+import geb.gradle.saucelabs.SauceAccount
+
 buildscript {
     repositories {
         mavenCentral()
@@ -61,6 +63,8 @@ allprojects { project ->
 
         jsoupDependency = "org.jsoup:jsoup:1.11.2"
 
+        sauceConnectDependency = "com.saucelabs:ci-sauce:1.128"
+
         repositories {
             mavenCentral()
             maven {
@@ -82,6 +86,8 @@ allprojects { project ->
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
+
+        sauceLabsModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
@@ -165,6 +171,30 @@ subprojects {
                 tasks.withType(GroovyCompile) {
                     options.compilerArgs << "-Werror" << "-Xlint:options"
                 }
+            }
+        }
+    }
+
+    if (path in sauceLabsModules) {
+        apply plugin: "geb-saucelabs"
+
+        dependencies {
+            sauceConnect sauceConnectDependency
+        }
+
+        sauceLabs {
+            task {
+                maxHeapSize = "512m"
+                testClassesDirs = test.testClassesDirs
+                classpath = test.classpath
+                maxParallelForks 5
+            }
+            account {
+                username = System.getenv(SauceAccount.USER_ENV_VAR)
+                accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
+            }
+            connect {
+                timeout 10 // minutes
             }
         }
     }

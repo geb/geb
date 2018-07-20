@@ -375,7 +375,7 @@ class Configuration {
     }
 
     /**
-     * Whether or not to automatically clear the browser's cookies automatically.
+     * Whether or not to automatically clear the browser's cookies.
      * <p>
      * Different integrations inspect this property at different times.
      * <p>
@@ -390,6 +390,24 @@ class Configuration {
      */
     void setAutoClearCookies(boolean flag) {
         rawConfig.autoClearCookies = flag
+    }
+
+    /**
+     * Whether or not to automatically clear the browser's web storage, that is both local and session storage.
+     * <p>
+     * Different integrations inspect this property at different times.
+     * <p>
+     * @return the config value for {@code autoClearWebStorage}, defaulting to {@code false} if not set.
+     */
+    boolean isAutoClearWebStorage() {
+        readValue('autoClearWebStorage', false)
+    }
+
+    /**
+     * Sets the auto clear web storage flag explicitly, overwriting any value from the config script.
+     */
+    void setAutoClearWebStorage(boolean flag) {
+        rawConfig.autoClearWebStorage = flag
     }
 
     /**

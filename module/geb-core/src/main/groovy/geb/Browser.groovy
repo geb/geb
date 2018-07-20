@@ -19,13 +19,18 @@ import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UnexpectedPageException
+import geb.error.WebStorageNotSupportedException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
 import geb.url.UrlFragment
 import geb.report.ReportState
+import geb.webstorage.LocalStorage
+import geb.webstorage.SessionStorage
+import geb.webstorage.WebStorage
 import org.openqa.selenium.NoSuchWindowException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
+import org.openqa.selenium.html5.WebStorage as SeleniumWebStorage
 
 import static groovy.lang.Closure.DELEGATE_FIRST
 import static java.lang.Integer.MAX_VALUE
@@ -688,6 +693,14 @@ class Browser {
     }
 
     /**
+     * Clears web storage, that is both local and session storage for the <b>current domain</b>.
+     */
+    void clearWebStorage() {
+        localStorage.clear()
+        sessionStorage.clear()
+    }
+
+    /**
      * Quits the driver.
      *
      * @see org.openqa.selenium.WebDriver#quit()
@@ -982,6 +995,34 @@ class Browser {
 
         waitFor(MAX_VALUE) {
             js.'geb.unpause'
+        }
+    }
+
+    /**
+     * Returns an object that allows access to and manipulation of local storage.
+     *
+     * @see geb.webstorage.WebStorage
+     */
+    WebStorage getLocalStorage() {
+        new LocalStorage(seleniumWebStorage)
+    }
+
+    /**
+     * Returns an object that allows access to and manipulation of session storage.
+     *
+     * @see geb.webstorage.WebStorage
+     */
+    WebStorage getSessionStorage() {
+        new SessionStorage(seleniumWebStorage)
+    }
+
+    private SeleniumWebStorage getSeleniumWebStorage() {
+        if (driver instanceof SeleniumWebStorage) {
+            driver
+        } else if (augmentedDriver instanceof SeleniumWebStorage) {
+            augmentedDriver
+        } else {
+            throw new WebStorageNotSupportedException()
         }
     }
 

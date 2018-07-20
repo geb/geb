@@ -79,6 +79,16 @@ This auto-clearing of cookies can be <<auto-clearing-cookies-configuration, disa
 
 If you need to clear cookies in multiple domains you will need to manually track the urls and call `{browser-clear-cookies-urls-api}`.
 
+[[web-storage-management-in-tests]]
+=== Web storage management
+
+The Spock, JUnit and TestNG integrations can be <<auto-clearing-web-storage-configuration, configured>> to automatically clear the browser's web storage, that is both local and session storage, for the current domain at the end of each test method.
+For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
+in `geb.testng.GebTestTrait`.
+
+The `geb.spock.GebSpec` class will clear the web storage in the `cleanup()` method unless the spec is `@Stepwise`, in which case it is cleared in `cleanupSpec()` (meaning that all feature methods in a
+stepwise spec share the same browser state).
+
 === JAR and class names
 
 The following table illustrates the specific JARs and class names for various test frameworks that Geb integrates with.

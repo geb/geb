@@ -357,6 +357,17 @@ This configuration flag, which is `true` by default, can be disabled by setting 
 include::{test-dir}/configuration/AutoClearCookiesConfigSpec.groovy[tag=config,indent=0]
 ----
 
+[[auto-clearing-web-storage-configuration]]
+=== Auto clearing web storage
+
+Certain integrations will automatically clear the driver's web storage, that is both local and session storage, which is usually necessary when using an <<implicit-driver-lifecycle, implicit driver>>.
+This configuration flag, which is `false` by default, can be enabled by setting the `autoClearWebStorage` value in the config to `true`.
+
+[source,groovy]
+----
+include::{test-dir}/configuration/AutoClearWebStorageConfigSpec.groovy[tag=config,indent=0]
+----
+
 == Runtime overrides
 
 The {configuration-api} object also has setters for all of the config properties it exposes, allowing you to override config properties at runtime in particular circumstances if you need to.
