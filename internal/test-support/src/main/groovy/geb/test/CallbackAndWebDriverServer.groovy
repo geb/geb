@@ -15,13 +15,13 @@
  */
 package geb.test
 
-import org.mortbay.jetty.servlet.Context
-import org.mortbay.jetty.servlet.ServletHolder
+import org.eclipse.jetty.servlet.ServletContextHandler
+import org.eclipse.jetty.servlet.ServletHolder
 import org.openqa.selenium.remote.server.WebDriverServlet
 
 class CallbackAndWebDriverServer extends CallbackHttpServer {
 
-    protected addServlets(Context context) {
+    protected addServlets(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
 
         context.setAttribute(WebDriverServlet.SESSION_TIMEOUT_PARAMETER, 10000)

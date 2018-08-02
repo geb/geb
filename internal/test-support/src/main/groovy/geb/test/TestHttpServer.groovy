@@ -15,10 +15,10 @@
  */
 package geb.test
 
-import org.mortbay.jetty.Connector
-import org.mortbay.jetty.Server
-import org.mortbay.jetty.bio.SocketConnector
-import org.mortbay.jetty.servlet.Context
+import org.eclipse.jetty.server.Connector
+import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.ServerConnector
+import org.eclipse.jetty.servlet.ServletContextHandler
 
 abstract class TestHttpServer {
     protected server
@@ -27,8 +27,8 @@ abstract class TestHttpServer {
     void start(int port = 0) {
         if (!started) {
             server = new Server()
-            server.addConnector(createConnector(port))
-            def context = new Context(server, "/")
+            server.addConnector(createConnector(server, port))
+            def context = new ServletContextHandler(server, "/")
             addServlets(context)
             server.start()
             started = true
@@ -58,10 +58,10 @@ abstract class TestHttpServer {
         new URL(getBaseUrl())
     }
 
-    abstract protected addServlets(Context context)
+    abstract protected addServlets(ServletContextHandler context)
 
-    protected Connector createConnector(int port) {
-        def connector = new SocketConnector()
+    protected Connector createConnector(Server server, int port) {
+        def connector = new ServerConnector(server)
         connector.port = port
         connector
     }

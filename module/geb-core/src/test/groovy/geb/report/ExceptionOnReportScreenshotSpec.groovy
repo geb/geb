@@ -22,7 +22,7 @@ import org.junit.Rule
 
 import javax.servlet.http.HttpServletResponse
 
-import static org.mortbay.jetty.HttpHeaders.CONTENT_TYPE
+import static org.eclipse.jetty.http.HttpHeader.CONTENT_TYPE
 
 @RequiresRealBrowser
 @FirefoxLinux
@@ -36,7 +36,7 @@ class ExceptionOnReportScreenshotSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         callbackServer.get = { req, HttpServletResponse res ->
-            res.addHeader(CONTENT_TYPE, 'application/xml')
+            res.addHeader(CONTENT_TYPE.asString(), 'application/xml')
             res.outputStream << '''<?xml version="1.0"?>
             <test></test>
             '''

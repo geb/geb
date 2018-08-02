@@ -17,8 +17,8 @@ package geb.test
 
 import groovy.xml.MarkupBuilder
 import org.apache.http.entity.ContentType
-import org.mortbay.jetty.servlet.Context
-import org.mortbay.jetty.servlet.ServletHolder
+import org.eclipse.jetty.servlet.ServletContextHandler
+import org.eclipse.jetty.servlet.ServletHolder
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -32,7 +32,7 @@ class CallbackHttpServer extends TestHttpServer {
     Closure put
     Closure delete
 
-    protected addServlets(Context context) {
+    protected addServlets(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new CallbackServlet(this)), "/*")
     }
 
