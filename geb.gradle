@@ -202,7 +202,7 @@ subprojects {
     tasks.withType(Groovydoc) {
         exclude "**/internal/**"
 
-        link "http://download.oracle.com/javase/6/docs/api/",
+        link "http://docs.oracle.com/javase/8/docs/api/",
             "java.net",
             "java.util",
             "java.lang",
