@@ -109,6 +109,7 @@ This page lists the high level changes between versions of Geb.
 * Document how to configure proxy to be used by the direct download API. [issue:371[]]
 * Enable taking reports for all windows if multiple are open. [issue:401[]]
 * Describe what constitutes a good at checker in the manual. [issue:512[]]
+* Document how to restart the browser mid-test. [issue:473[]]
 
 === 2.1
 

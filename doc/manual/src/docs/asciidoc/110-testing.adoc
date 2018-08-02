@@ -89,6 +89,18 @@ in `geb.testng.GebTestTrait`.
 The `geb.spock.GebSpec` class will clear the web storage in the `cleanup()` method unless the spec is `@Stepwise`, in which case it is cleared in `cleanupSpec()` (meaning that all feature methods in a
 stepwise spec share the same browser state).
 
+=== Restarting the browser mid-test
+
+Should you ever wish to restart the browser mid-test you have to be aware that there are two layers of caching of the driver instance within Geb's testing support.
+Firstly the lazy initialised `Browser` instance stored as a field in base classes providing support for various test frameworks holds a reference to a `WebDriver` instance - you will therefore need to call `resetBrowser()` method from the base class to clear that field.
+Secondly, Geb caches `WebDriver` instances by default as described in the section about <<implicit-driver-lifecycle, implicit driver lifecycle>>. To clear the cache and quit the browser you will need to call `{clear-browser-cache-and-quit-api}`.
+
+Therefore, you can use the following code within a test to restart the browser:
+[source,groovy]
+----
+include::{test-dir}/testing/BrowserRestartSpec.groovy[tag=restart,indent=0]
+----
+
 === JAR and class names
 
 The following table illustrates the specific JARs and class names for various test frameworks that Geb integrates with.
