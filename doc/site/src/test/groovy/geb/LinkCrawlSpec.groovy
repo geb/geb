@@ -21,6 +21,9 @@ import groovy.util.logging.Slf4j
 import ratpack.groovy.test.GroovyRatpackMainApplicationUnderTest
 import spock.lang.Specification
 
+import static geb.crawl.Crawler.Link
+import static geb.crawl.Crawler.Response
+
 @Slf4j
 class LinkCrawlSpec extends Specification {
 

@@ -223,7 +223,7 @@ abstract class Crawler {
         url ==~ ~/^https?:\/.+/
     }
 
-    class Response {
+    static class Response {
         final int statusCode
         final URI uri
         final MediaType contentType
