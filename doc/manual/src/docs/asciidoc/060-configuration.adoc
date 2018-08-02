@@ -162,7 +162,7 @@ To remedy this, you can instruct Geb to cache the driver instance per thread by 
 Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits.
 You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
 
-[[base-url]]
+[[configuration-base-url]]
 === Base URL
 
 The <<base-url, base URL>> to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the

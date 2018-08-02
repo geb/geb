@@ -99,7 +99,7 @@ For more on when/why you need to manually quit the browser, see the section on t
 === The base URL
 
 Browser instances maintain a link:api/geb/Browser.html#getBaseUrl()[`baseUrl`] property that is used to resolve all relative URLs.
-This value can come from <<base-url,configuration>> or can be link:api/geb/Browser.html#setBaseUrl(java.lang.String)[explicitly set] on the browser.
+This value can come from <<configuration-base-url,configuration>> or can be link:api/geb/Browser.html#setBaseUrl(java.lang.String)[explicitly set] on the browser.
 
 Care must be taken with slashes when specifying both the base URL and the relative URL as trailing and leading slashes have significant meaning.
 The following table illustrates the resolution of different types of URLs.
