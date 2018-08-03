@@ -98,9 +98,9 @@ This page lists the high level changes between versions of Geb.
 
 ==== Fixes
 * Fix translation of attribute map to css selector when finding elements for attribute value that is a GString. [issue:525[]]
-* Fix documentation around calling value() on unchecked checkboxes. [issues:520[]]
-* Make additional capabilities passed to cloud driver factory's `create()` method override the capabilities that are hardcoded for a particular cloud driver provider. [issues:372[]]
-* Fixed `getCheckedLabel()` on `RadioButtons` module to return label text instead of `null` when a checked radio button is wrapped by a label without a `for` attribute. [issues:530[]]
+* Fix documentation around calling value() on unchecked checkboxes. [issue:520[]]
+* Make additional capabilities passed to cloud driver factory's `create()` method override the capabilities that are hardcoded for a particular cloud driver provider. [issue:372[]]
+* Fixed `getCheckedLabel()` on `RadioButtons` module to return label text instead of `null` when a checked radio button is wrapped by a label without a `for` attribute. [issue:530[]]
 * Fix links to manual sections that had non-unique ids. [issue:535[]]
 
 ==== Improvements
