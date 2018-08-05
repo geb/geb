@@ -20,8 +20,10 @@ modifyPom { pom ->
 }
 
 configurations {
-    create("groovydoc")
-    archives.extendsFrom delegate.default
+    groovydoc
+    manual
+    
+    delegate.default.extendsFrom manual
 }
 
 dependencies {
@@ -117,7 +119,7 @@ task manualZip(type: Zip) {
 }
 
 artifacts {
-    delegate.default manualZip
+    manual manualZip
 }
 
 build {

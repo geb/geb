@@ -32,7 +32,7 @@ nexusStaging {
 }
 
 allprojects { project ->
-    version = '2.2-SNAPSHOT'
+    version = '2.2'
     group = 'org.gebish'
 
     apply plugin: "com.energizedwork.webdriver-binaries"
