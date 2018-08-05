@@ -250,16 +250,6 @@ subprojects {
 
         apply from: "$rootDir/gradle/pom.gradle"
 
-        if (path == ":doc:manual") {
-            task("install", type: Upload, dependsOn: configurations.archives.allArtifacts.buildDependencies) {
-                configuration = configurations.archives
-                description = "Does a maven install of the archives artifacts into the local .m2 cache."
-                repositories {
-                    mavenInstaller name: "mavenInstaller"
-                }
-            }
-        }
-
         uploadArchives { task ->
             repositories.mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
