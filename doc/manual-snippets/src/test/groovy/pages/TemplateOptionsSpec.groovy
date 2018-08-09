@@ -122,7 +122,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
                             p.innerHTML = "$text";
                             p.className = "$className"
                             document.body.appendChild(p);
-                        }, 500);
+                        }, 200);
                     </script>
                 </head>
                 <body></body>
@@ -166,7 +166,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
     def "not required waiting content"() {
         given:
         html { }
-        browser.config.defaultWaitTimeout = 0.5
+        browser.config.defaultWaitTimeout = 0.2
 
         when:
         to DynamicPageWithNotRequiredWait

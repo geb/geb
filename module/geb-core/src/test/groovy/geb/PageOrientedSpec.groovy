@@ -32,7 +32,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
                     <script type="text/javascript" charset="utf-8">
                     setTimeout(function() {
                         document.body.innerHTML += '<div id="dynamic">dynamic</div>';
-                    }, 500);
+                    }, 100);
                     </script>
                 </head>
                 <body>
@@ -477,7 +477,7 @@ class PageOrientedSpecPageA extends Page {
         notPresentValueRequired { $("div#asdfasdf").text() }
         notPresentRequired { $("div#nonexistant") }
         notPresentNotRequired(required: false) { $("div#nonexistant") }
-        notPresentNotRequiredWithWait(required: false, wait: 1) { $("div#nonexistant") }
+        notPresentNotRequiredWithWait(required: false, wait: 0.1) { $("div#nonexistant") }
     }
 }
 

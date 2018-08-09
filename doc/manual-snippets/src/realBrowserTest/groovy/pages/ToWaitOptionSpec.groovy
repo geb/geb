@@ -32,7 +32,7 @@ class ToWaitOptionSpec extends GebSpecWithServerUsingJavascript {
                                 var p = document.createElement("p");
                                 p.setAttribute("id", "async-content");
                                 document.body.appendChild(p);
-                            }, 500);
+                            }, 300);
                         });
                     '''}
                 </body>

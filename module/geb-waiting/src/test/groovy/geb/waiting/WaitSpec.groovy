@@ -29,10 +29,10 @@ class WaitSpec extends Specification implements CrossPlatformSupport {
     @Timeout(5)
     def "wait algorithm handles cases where the block takes a long time"() {
         given:
-        def wait = new Wait(2, 0.2)
+        def wait = new Wait(0.4, 0.1)
 
         when:
-        wait.waitFor { sleep 3000 }
+        wait.waitFor { sleep 1000 }
 
         then:
         thrown WaitTimeoutException
@@ -40,7 +40,7 @@ class WaitSpec extends Specification implements CrossPlatformSupport {
 
     def "waitFor block contents are implicitly asserted"() {
         given:
-        def wait = new Wait(0.2)
+        def wait = new Wait(0.1)
 
         when:
         wait.waitFor { 'not empty'.empty }
@@ -53,26 +53,26 @@ class WaitSpec extends Specification implements CrossPlatformSupport {
 
     def "waitFor timeout exception message does not contain cause by default"() {
         given:
-        def wait = new Wait(0.2)
+        def wait = new Wait(0.15)
 
         when:
         wait.waitFor { 'not empty'.empty }
 
         then:
         WaitTimeoutException exception = thrown()
-        exception.message == "condition did not pass in 0.2 seconds (failed with exception)"
+        exception.message == "condition did not pass in 0.15 seconds (failed with exception)"
     }
 
     def "waitFor timeout exception message contains cause when enabled"() {
         given:
-        def wait = new Wait(0.2, Wait.DEFAULT_RETRY_INTERVAL, true)
+        def wait = new Wait(0.15, Wait.DEFAULT_RETRY_INTERVAL, true)
 
         when:
         wait.waitFor { 'not empty'.empty }
 
         then:
         WaitTimeoutException exception = thrown()
-        normalizeEndOfLines(exception.message) == """condition did not pass in 0.2 seconds. Failed with exception:
+        normalizeEndOfLines(exception.message) == """condition did not pass in 0.15 seconds. Failed with exception:
 Assertion failed: 
 
 'not empty'.empty

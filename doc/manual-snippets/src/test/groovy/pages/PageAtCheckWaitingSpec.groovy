@@ -26,7 +26,7 @@ class PageAtCheckWaitingSpec extends GebSpecWithCallbackServer {
             script(type: "text/javascript", """
                 setTimeout(function() {
                     document.title = "Example Page"
-                }, 500)
+                }, 100)
             """)
         }
 

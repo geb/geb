@@ -20,6 +20,8 @@ import geb.test.GebSpecWithCallbackServer
 
 import java.time.OffsetDateTime
 
+import static java.time.temporal.ChronoUnit.MILLIS
+
 class RefreshWaitingSpec extends GebSpecWithCallbackServer {
 
     def setup() {
@@ -38,13 +40,13 @@ class RefreshWaitingSpec extends GebSpecWithCallbackServer {
         when:
             // tag::test[]
             refreshWaitFor {
-                timestamp > startTimestamp.plusSeconds(1)
+                timestamp > startTimestamp.plus(300, MILLIS)
             }
 
             // end::test[]
         then:
             // tag::test[]
-            assert timestamp > startTimestamp.plusSeconds(1)
+            assert timestamp > startTimestamp.plus(300, MILLIS)
             // end::test[]
     }
 
