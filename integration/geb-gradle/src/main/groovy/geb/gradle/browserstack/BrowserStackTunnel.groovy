@@ -33,6 +33,14 @@ class BrowserStackTunnel extends ExternalTunnel {
         this.extension = extension
     }
 
+    static String assembleAppSpecifier(List<URL> applicationUrls) {
+        applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}" }.join(',')
+    }
+
+    static int determinePort(URL url) {
+        url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
+    }
+
     @Override
     void validateState() {
         if (!extension.account.accessKey) {
@@ -67,13 +75,5 @@ class BrowserStackTunnel extends ExternalTunnel {
             commandLine << "-forcelocal"
         }
         commandLine
-    }
-
-    static String assembleAppSpecifier(List<URL> applicationUrls) {
-        applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}" }.join(',')
-    }
-
-    static int determinePort(URL url) {
-        url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
     }
 }

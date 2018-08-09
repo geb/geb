@@ -560,12 +560,12 @@ class PageWithAtCheckerReturningFalse extends Page {
 }
 
 class PageOrientedSpecParametrizedPage extends Page {
-    String id
-
     static at = { elementWithId }
     static content = {
         elementWithId { $(id: id) }
     }
+
+    String id
 }
 
 class PageWithContentUsingUnrecognizedParams extends Page {

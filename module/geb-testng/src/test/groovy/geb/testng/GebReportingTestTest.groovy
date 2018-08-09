@@ -27,13 +27,6 @@ import org.testng.internal.TestResult
 
 class GebReportingTestTest implements GebReportingTestTrait {
 
-    def server = new CallbackHttpServer()
-
-    private methodNumber = 0
-    private reportNumberInTest = 1
-
-    private methodNumberOfInitTest = 0
-
     static responseText = """
         <html>
         <body>
@@ -41,6 +34,13 @@ class GebReportingTestTest implements GebReportingTestTrait {
         </body>
         </html>
     """
+
+    def server = new CallbackHttpServer()
+
+    private methodNumber = 0
+    private reportNumberInTest = 1
+
+    private methodNumberOfInitTest = 0
 
     @BeforeClass
     void setUpClass() {

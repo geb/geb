@@ -32,6 +32,45 @@ class PageContentTemplateBuilder {
         this.navigatorFactory = navigatorFactory
     }
 
+    static Map<String, PageContentTemplate> build(Browser browser, PageContentContainer container, NavigatorFactory navigatorFactory, List<Closure> templatesDefinitions) {
+        PageContentTemplateBuilder builder = new PageContentTemplateBuilder(browser, container, navigatorFactory)
+        for (templatesDefinition in templatesDefinitions) {
+            templatesDefinition.delegate = builder
+            templatesDefinition()
+        }
+        builder.templates
+    }
+
+    static Map<String, PageContentTemplate> build(Browser browser, PageContentContainer container, NavigatorFactory navigatorFactory, String property, Class startAt, Class stopAt = Object) {
+        if (!stopAt.isAssignableFrom(startAt)) {
+            throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
+        }
+
+        def templatesDefinitions = []
+        def clazz = startAt
+
+        while (clazz != stopAt) {
+            def templatesDefinition
+            //noinspection GroovyUnusedCatchParameter
+            try {
+                templatesDefinition = clazz[property]
+            } catch (MissingPropertyException e) {
+                // swallow
+            }
+
+            if (templatesDefinition) {
+                if (!(templatesDefinition instanceof Closure)) {
+                    throw new IllegalArgumentException("'$property' static property of class $clazz should be a Closure")
+                }
+                templatesDefinitions << templatesDefinition.clone()
+            }
+
+            clazz = clazz.superclass
+        }
+
+        build(browser, container, navigatorFactory, templatesDefinitions.reverse())
+    }
+
     def propertyMissing(String name) {
         container[name]
     }
@@ -75,6 +114,10 @@ class PageContentTemplateBuilder {
         template
     }
 
+    private void throwInvalidContent(String name, String message) {
+        throw new InvalidPageContent(container, name, message)
+    }
+
     private throwBadInvocationError(name, args) {
         throwInvalidContent(name, "is invalid, params must be either a Closure, or Map and Closure (args were: ${args*.class})")
     }
@@ -91,46 +134,4 @@ class PageContentTemplateBuilder {
         }
     }
 
-    static Map<String, PageContentTemplate> build(Browser browser, PageContentContainer container, NavigatorFactory navigatorFactory, List<Closure> templatesDefinitions) {
-        PageContentTemplateBuilder builder = new PageContentTemplateBuilder(browser, container, navigatorFactory)
-        for (templatesDefinition in templatesDefinitions) {
-            templatesDefinition.delegate = builder
-            templatesDefinition()
-        }
-        builder.templates
-    }
-
-    static Map<String, PageContentTemplate> build(Browser browser, PageContentContainer container, NavigatorFactory navigatorFactory, String property, Class startAt, Class stopAt = Object) {
-        if (!stopAt.isAssignableFrom(startAt)) {
-            throw new IllegalArgumentException("$startAt is not a subclass of $stopAt")
-        }
-
-        def templatesDefinitions = []
-        def clazz = startAt
-
-        while (clazz != stopAt) {
-            def templatesDefinition
-            //noinspection GroovyUnusedCatchParameter
-            try {
-                templatesDefinition = clazz[property]
-            } catch (MissingPropertyException e) {
-                // swallow
-            }
-
-            if (templatesDefinition) {
-                if (!(templatesDefinition instanceof Closure)) {
-                    throw new IllegalArgumentException("'$property' static property of class $clazz should be a Closure")
-                }
-                templatesDefinitions << templatesDefinition.clone()
-            }
-
-            clazz = clazz.superclass
-        }
-
-        build(browser, container, navigatorFactory, templatesDefinitions.reverse())
-    }
-
-    private void throwInvalidContent(String name, String message) {
-        throw new InvalidPageContent(container, name, message)
-    }
 }

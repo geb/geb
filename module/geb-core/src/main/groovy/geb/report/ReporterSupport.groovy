@@ -21,6 +21,17 @@ abstract class ReporterSupport implements Reporter {
 
     private final List<ReportingListener> listeners = []
 
+    static String toTestReportLabel(int testCounter, int reportCounter, String methodName, String label) {
+        def numberFormat = "%03d"
+        "${String.format(numberFormat, testCounter)}-${String.format(numberFormat, reportCounter)}-$methodName-$label"
+    }
+
+    void addListener(ReportingListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners << listener
+        }
+    }
+
     /**
      * Gets a file reference for the object with the given name and extension within the dir.
      */
@@ -35,20 +46,9 @@ abstract class ReporterSupport implements Reporter {
         name.replaceAll("(?U)[^\\w\\s-]", "_")
     }
 
-    void addListener(ReportingListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners << listener
-        }
-    }
-
     protected void notifyListeners(ReportState reportState, List<File> reportFiles) {
         for (listener in listeners) {
             listener.onReport(this, reportState, reportFiles)
         }
-    }
-
-    static String toTestReportLabel(int testCounter, int reportCounter, String methodName, String label) {
-        def numberFormat = "%03d"
-        "${String.format(numberFormat, testCounter)}-${String.format(numberFormat, reportCounter)}-$methodName-$label"
     }
 }

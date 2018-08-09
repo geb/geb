@@ -159,13 +159,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         browser
     }
 
-    private Browser getInitializedBrowser() {
-        if (browser == null) {
-            throw uninitializedException()
-        }
-        browser
-    }
-
     /**
      * The driver of the browser that the page is connected to.
      */
@@ -225,28 +218,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
             caughtException = e
         }
         new AtVerificationResult(atResult, caughtException)
-    }
-
-    /**
-     * Executes this page's "at checker".
-     *
-     * @return whether the at checker succeeded or not.
-     * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
-     */
-    private boolean verifyThisPageAtOnly(boolean honourGlobalAtCheckWaiting) {
-        Closure verifier = getClass().at?.clone()
-        if (verifier) {
-            verifier.delegate = this
-            verifier.resolveStrategy = Closure.DELEGATE_FIRST
-            def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
-            if (atCheckWaiting) {
-                atCheckWaiting.waitFor(verifier)
-            } else {
-                verifier()
-            }
-        } else {
-            throw new UndefinedAtCheckerException(this.class.name)
-        }
     }
 
     /**
@@ -348,19 +319,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      */
     @SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
     void onUnload(Page nextPage) {
-    }
-
-    private Wait getGlobalAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
-        honourGlobalAtCheckWaiting ? getInitializedBrowser().config.atCheckWaiting : null
-    }
-
-    private Wait getEffectiveAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
-        getClass().atCheckWaiting != null ? pageLevelAtCheckWaiting : getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
-    }
-
-    protected Wait getPageLevelAtCheckWaiting() {
-        def atCheckWaitingValue = getClass().atCheckWaiting
-        getInitializedBrowser().config.getWaitForParam(atCheckWaitingValue)
     }
 
     Navigator find() {
@@ -603,13 +561,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         waitingSupport.waitFor(params, timeout, interval, withRefresh(block))
     }
 
-    private <T> Closure<T> withRefresh(Closure<T> block) {
-        { ->
-            browser.driver.navigate().refresh()
-            block.call()
-        }
-    }
-
     GebException uninitializedException() {
         def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
         new PageInstanceNotInitializedException(message)
@@ -624,4 +575,54 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     List<String> getContentPath() {
         []
     }
+
+    private Browser getInitializedBrowser() {
+        if (browser == null) {
+            throw uninitializedException()
+        }
+        browser
+    }
+
+    /**
+     * Executes this page's "at checker".
+     *
+     * @return whether the at checker succeeded or not.
+     * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
+     */
+    private boolean verifyThisPageAtOnly(boolean honourGlobalAtCheckWaiting) {
+        Closure verifier = getClass().at?.clone()
+        if (verifier) {
+            verifier.delegate = this
+            verifier.resolveStrategy = Closure.DELEGATE_FIRST
+            def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
+            if (atCheckWaiting) {
+                atCheckWaiting.waitFor(verifier)
+            } else {
+                verifier()
+            }
+        } else {
+            throw new UndefinedAtCheckerException(this.class.name)
+        }
+    }
+
+    private Wait getGlobalAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
+        honourGlobalAtCheckWaiting ? getInitializedBrowser().config.atCheckWaiting : null
+    }
+
+    private Wait getEffectiveAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
+        getClass().atCheckWaiting != null ? pageLevelAtCheckWaiting : getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
+    }
+
+    protected Wait getPageLevelAtCheckWaiting() {
+        def atCheckWaitingValue = getClass().atCheckWaiting
+        getInitializedBrowser().config.getWaitForParam(atCheckWaitingValue)
+    }
+
+    private <T> Closure<T> withRefresh(Closure<T> block) {
+        { ->
+            browser.driver.navigate().refresh()
+            block.call()
+        }
+    }
+
 }

@@ -34,27 +34,6 @@ abstract class AbstractNavigator implements Navigator {
         this.locator = new DefaultLocator(basicLocator)
     }
 
-    /**
-     * Gets the element at the given index.
-     * @param index index of the element to retrieve - pass a negative value to start from the back
-     * @return the element at the given index, or null if no such element exists
-     */
-    protected abstract WebElement getElement(int index)
-
-    /**
-     * Gets the elements in the given range.
-     * @param range range of the elements to retrieve
-     * @return the elements in the given range, or an empty list if no such elements exist
-     */
-    protected abstract List<WebElement> getElements(Range range)
-
-    /**
-     * Gets the elements at the given indexes.
-     * @param indexes indexes of the elements to retrieve
-     * @return the elements at the given indexes, or an empty list if no such elements exist
-     */
-    protected abstract List<WebElement> getElements(Collection indexes)
-
     boolean asBoolean() {
         !empty
     }
@@ -378,6 +357,27 @@ abstract class AbstractNavigator implements Navigator {
     String getStringRepresentation() {
         getClass().name
     }
+
+    /**
+     * Gets the element at the given index.
+     * @param index index of the element to retrieve - pass a negative value to start from the back
+     * @return the element at the given index, or null if no such element exists
+     */
+    protected abstract WebElement getElement(int index)
+
+    /**
+     * Gets the elements in the given range.
+     * @param range range of the elements to retrieve
+     * @return the elements in the given range, or an empty list if no such elements exist
+     */
+    protected abstract List<WebElement> getElements(Range range)
+
+    /**
+     * Gets the elements at the given indexes.
+     * @param indexes indexes of the elements to retrieve
+     * @return the elements at the given indexes, or an empty list if no such elements exist
+     */
+    protected abstract List<WebElement> getElements(Collection indexes)
 
     /**
      * Iterator for looping over the context elements of a Navigator instance.

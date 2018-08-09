@@ -31,18 +31,6 @@ class ConfigurationLoaderSpec extends Specification {
     @Rule
     TemporaryFolder tmp = new TemporaryFolder()
 
-    protected getLoader() {
-        new ConfigurationLoader(env)
-    }
-
-    protected load(URL location) {
-        config = loader.getConf(location, new GroovyClassLoader(getClass().classLoader))
-    }
-
-    protected getGoodScript() {
-        getClass().getResource("good-conf.groovy")
-    }
-
     def "load file from classpath with no env"() {
         when:
         load goodScript
@@ -116,10 +104,6 @@ class ConfigurationLoaderSpec extends Specification {
         loader.getConf().rawConfig.testValue == 'test value'
     }
 
-    private int getNumberOfScriptsWithMetaClass() {
-        ClassInfo.allClassInfo.findAll { it.cachedClass.name.contains("script") && it.strongMetaClass != null }.size()
-    }
-
     @Issue("https://github.com/geb/issues/issues/335")
     def "config script backing class can be garbage collected"() {
         when:
@@ -127,6 +111,22 @@ class ConfigurationLoaderSpec extends Specification {
 
         then:
         numberOfScriptsWithMetaClass == old(numberOfScriptsWithMetaClass)
+    }
+
+    protected getLoader() {
+        new ConfigurationLoader(env)
+    }
+
+    protected load(URL location) {
+        config = loader.getConf(location, new GroovyClassLoader(getClass().classLoader))
+    }
+
+    protected getGoodScript() {
+        getClass().getResource("good-conf.groovy")
+    }
+
+    private int getNumberOfScriptsWithMetaClass() {
+        ClassInfo.allClassInfo.findAll { it.cachedClass.name.contains("script") && it.strongMetaClass != null }.size()
     }
 }
 

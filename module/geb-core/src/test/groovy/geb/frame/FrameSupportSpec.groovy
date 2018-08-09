@@ -49,10 +49,6 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         called
     }
 
-    private boolean isInFramesContext() {
-        title == 'frames'
-    }
-
     @Unroll
     @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "ensure original context is kept after a withFrame call"() {
@@ -216,6 +212,11 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         where:
         frameFactory << [{ 'header' }, { 0 }, { $('#header-id') }, { page.footer }]
     }
+
+    private boolean isInFramesContext() {
+        title == 'frames'
+    }
+
 }
 
 class FrameSupportSpecPage extends Page {
@@ -261,12 +262,12 @@ class FrameSupportSpecModule extends Module {
 }
 
 class FrameSupportSpecParametrizedPage extends Page {
-    String tag
-
     static at = { element }
     static content = {
         element { $(tag) }
     }
+
+    String tag
 
     String getElementText() {
         element.text()

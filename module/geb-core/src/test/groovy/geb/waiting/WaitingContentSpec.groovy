@@ -26,17 +26,6 @@ class WaitingContentSpec extends WaitingSpec {
     def factory = { $("div") }
     def showDelay = 0.1
 
-    protected getContent() {
-        DynamicallySpecifiedContentPage.content = {
-            delegate.div(params, factory)
-        }
-
-        go()
-        page DynamicallySpecifiedContentPage
-        js.showIn(showDelay)
-        div
-    }
-
     def "no wait"() {
         when:
         content
@@ -139,6 +128,17 @@ class WaitingContentSpec extends WaitingSpec {
 
         then:
         waitContent.text() == "a"
+    }
+
+    protected getContent() {
+        DynamicallySpecifiedContentPage.content = {
+            delegate.div(params, factory)
+        }
+
+        go()
+        page DynamicallySpecifiedContentPage
+        js.showIn(showDelay)
+        div
     }
 
 }

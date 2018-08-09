@@ -181,7 +181,7 @@ class PageContentTemplateParams {
         pageParam as Class<? extends Page>
     }
 
-    Closure<?> extractClosure(Map paramsToProcess, String optionName) {
+    private Closure<?> extractClosure(Map paramsToProcess, String optionName) {
         def param = paramsToProcess.remove(optionName)
         if (param) {
             if (param instanceof Closure) {

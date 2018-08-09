@@ -32,19 +32,6 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
         }
     }
 
-    protected toRequestParameterMapString(map) {
-        def requestMap = [:]
-        map.each { k, v ->
-            if (!requestMap.containsKey(k)) {
-                requestMap[k] = []
-            }
-            (v instanceof Collection ? v : [v]).each {
-                requestMap[k] << it
-            }
-        }
-        requestMap.toString()
-    }
-
     @Unroll("to page: page = #page, args = #args, params = #params, path = #path")
     def "t1"() {
         when:
@@ -79,6 +66,20 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
         server.baseUrl | [:]      | "a/b"    | server.baseUrl + "a/b"
         server.baseUrl | [a: '$'] | "?b=%3D" | server.baseUrl + "?b=%3D&a=%24"
     }
+
+    protected toRequestParameterMapString(map) {
+        def requestMap = [:]
+        map.each { k, v ->
+            if (!requestMap.containsKey(k)) {
+                requestMap[k] = []
+            }
+            (v instanceof Collection ? v : [v]).each {
+                requestMap[k] << it
+            }
+        }
+        requestMap.toString()
+    }
+
 }
 
 class UrlCalculationSpecPage extends Page {

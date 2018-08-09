@@ -19,10 +19,10 @@ import spock.lang.Shared
 
 abstract class GebSpecWithServer extends GebSpec {
 
+    private static final List<Integer> CROSS_BROWSER_PORTS = [8000, 8080, 9000, 9090, 9999]
+
     @Shared
     TestHttpServer server
-
-    private static final List<Integer> CROSS_BROWSER_PORTS = [8000, 8080, 9000, 9090, 9999]
 
     def setupSpec() {
         server = serverInstance

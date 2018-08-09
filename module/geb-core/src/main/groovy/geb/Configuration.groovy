@@ -45,12 +45,6 @@ class Configuration {
         this.rawConfig = rawConfig ?: new ConfigObject()
     }
 
-    private static toConfigObject(Map rawConfig) {
-        def configObject = new ConfigObject()
-        configObject.putAll(rawConfig)
-        configObject
-    }
-
     /**
      * Updates a {@code waiting.preset} config entry for a given preset name.
      */
@@ -334,10 +328,6 @@ class Configuration {
         typedReporter
     }
 
-    protected Reporter createDefaultReporter() {
-        new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
-    }
-
     /**
      * Updates the {@code reporter} config entry.
      *
@@ -368,10 +358,6 @@ class Configuration {
 
     void setDriver(WebDriver driver) {
         this.driver = driver
-    }
-
-    protected WebDriver createDriver() {
-        wrapDriverFactoryInCachingIfNeeded(getDriverFactory(getDriverConf())).driver
     }
 
     /**
@@ -474,27 +460,6 @@ class Configuration {
      */
     void setInnerNavigatorFactory(InnerNavigatorFactory innerNavigatorFactory) {
         this.rawConfig.innerNavigatorFactory = innerNavigatorFactory
-    }
-
-    protected DriverFactory getDriverFactory(driverValue) {
-        switch (driverValue) {
-            case CharSequence:
-                return new NameBasedDriverFactory(classLoader, driverValue.toString())
-            case Closure:
-                return new CallbackDriverFactory(driverValue)
-            case null:
-                return new DefaultDriverFactory(classLoader)
-            default:
-                throw new DriverCreationException("Unable to determine factory for 'driver' config value '$driverValue'")
-        }
-    }
-
-    protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
-        if (isCacheDriver()) {
-            isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
-        } else {
-            factory
-        }
     }
 
     /**
@@ -665,6 +630,16 @@ class Configuration {
         }
     }
 
+    protected Reporter createDefaultReporter() {
+        new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
+    }
+
+    private static toConfigObject(Map rawConfig) {
+        def configObject = new ConfigObject()
+        configObject.putAll(rawConfig)
+        configObject
+    }
+
     private Closure<?> extractWaitCondition(ConfigObject config) {
         def waitCondition = config.waitCondition
         if (waitCondition) {
@@ -678,5 +653,30 @@ class Configuration {
 
     private void boundsAndRequiredConflicting() {
         throw new InvalidGebConfiguration("Configuration for bounds and 'required' template options is conflicting")
+    }
+
+    protected WebDriver createDriver() {
+        wrapDriverFactoryInCachingIfNeeded(getDriverFactory(getDriverConf())).driver
+    }
+
+    protected DriverFactory getDriverFactory(driverValue) {
+        switch (driverValue) {
+            case CharSequence:
+                return new NameBasedDriverFactory(classLoader, driverValue.toString())
+            case Closure:
+                return new CallbackDriverFactory(driverValue)
+            case null:
+                return new DefaultDriverFactory(classLoader)
+            default:
+                throw new DriverCreationException("Unable to determine factory for 'driver' config value '$driverValue'")
+        }
+    }
+
+    protected DriverFactory wrapDriverFactoryInCachingIfNeeded(DriverFactory factory) {
+        if (isCacheDriver()) {
+            isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
+        } else {
+            factory
+        }
     }
 }

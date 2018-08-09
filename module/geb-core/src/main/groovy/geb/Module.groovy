@@ -90,10 +90,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
         stringRepresentationProvider = new TemplateDerivedContentStringRepresentationProvider(template, args, this)
     }
 
-    @SuppressWarnings("EmptyMethod")
-    protected void initialized() {
-    }
-
     JavascriptInterface getJs() {
         if (js == null) {
             throw uninitializedException()
@@ -111,13 +107,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     def propertyMissing(String name, val) {
         pageContentSupport.propertyMissing(name, val)
-    }
-
-    protected Navigator getInitializedNavigator() {
-        if (navigator == null) {
-            throw uninitializedException()
-        }
-        navigator
     }
 
     boolean asBoolean() {
@@ -794,4 +783,16 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     protected boolean getHasOwner() {
         template?.owner
     }
+
+    @SuppressWarnings("EmptyMethod")
+    protected void initialized() {
+    }
+
+    protected Navigator getInitializedNavigator() {
+        if (navigator == null) {
+            throw uninitializedException()
+        }
+        navigator
+    }
+
 }

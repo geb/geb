@@ -19,10 +19,10 @@ import geb.Module
 
 class ExpandableMenuItemModule extends Module {
 
-    String linksContainerId
-
     static content = {
         linksContaner { closest("div.masthead").find(id: linksContainerId) }
         links { linksContaner.find("a") }
     }
+
+    String linksContainerId
 }

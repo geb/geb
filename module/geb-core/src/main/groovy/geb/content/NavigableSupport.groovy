@@ -30,14 +30,6 @@ class NavigableSupport implements Navigable {
         this.navigatorFactory = navigatorFactory
     }
 
-    private Navigator getBase() {
-        navigatorFactory.base
-    }
-
-    private Locator getLocator() {
-        navigatorFactory.locator
-    }
-
     Navigator find() {
         base
     }
@@ -211,4 +203,13 @@ class NavigableSupport implements Navigable {
     <T extends Module> T module(T module) {
         base.module(module)
     }
+
+    private Navigator getBase() {
+        navigatorFactory.base
+    }
+
+    private Locator getLocator() {
+        navigatorFactory.locator
+    }
+
 }

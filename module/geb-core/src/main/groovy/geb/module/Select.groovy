@@ -19,23 +19,6 @@ import geb.error.InvalidModuleBaseException
 
 class Select extends FormElement {
 
-    @Override
-    protected void initialized() {
-        ensureAtMostOneBaseElement()
-        if (!navigator.empty) {
-            def tag = navigator.tag()
-            if (tag.toLowerCase() == "select") {
-                if (getAttribute("multiple")) {
-                    throw new InvalidModuleBaseException(
-                        "Specified base element for ${getClass().name} module was a multiple choice select but only single choice select is allowed as the base element."
-                    )
-                }
-            } else {
-                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$tag' but only select is allowed as the base element.")
-            }
-        }
-    }
-
     String getSelectedText() {
         find("option", value: value()).text()
     }
@@ -46,5 +29,22 @@ class Select extends FormElement {
 
     void setSelected(String valueOrText) {
         navigator.value(valueOrText)
+    }
+
+    @Override
+    protected void initialized() {
+        ensureAtMostOneBaseElement()
+        if (!navigator.empty) {
+            def tag = navigator.tag()
+            if (tag.toLowerCase() == "select") {
+                if (getAttribute("multiple")) {
+                    throw new InvalidModuleBaseException(
+                            "Specified base element for ${getClass().name} module was a multiple choice select but only single choice select is allowed as the base element."
+                    )
+                }
+            } else {
+                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$tag' but only select is allowed as the base element.")
+            }
+        }
     }
 }

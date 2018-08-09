@@ -26,15 +26,16 @@ import javax.net.ssl.HttpsURLConnection
 
 class HttpsDownloadingSpec extends GebSpecWithServer {
 
-    @Shared
-    CallbackHttpsServer httpsServer = new CallbackHttpsServer()
-
     private static final Closure<Void> CONFIGURE_CONNECTION_FOR_SELF_SIGNED_CERT = { HttpURLConnection connection ->
         if (connection instanceof HttpsURLConnection) {
             def helper = new SelfSignedCertificateHelper(getClass().getResource('/keystore.jks'), 'password')
             helper.acceptCertificatesFor(connection as HttpsURLConnection)
         }
     }
+
+    @Shared
+    CallbackHttpsServer httpsServer = new CallbackHttpsServer()
+
     Configuration config
     ConfigObject rawConfig
 

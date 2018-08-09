@@ -23,6 +23,26 @@ class RadioButtons extends Module {
 
     private static final String LABEL_TAG = "label"
 
+    String getChecked() {
+        checkedElement?.getAttribute("value")
+    }
+
+    String getCheckedLabel() {
+        def checked = checkedElement
+        if (checked) {
+            def label = null
+            def id = checked.getAttribute("id")
+            if (id) {
+                label = browser.find(LABEL_TAG, "for": id)
+            }
+            (label ?: browser.$(checkedElement).parent(LABEL_TAG)).text()
+        }
+    }
+
+    void setChecked(String valueOrLabelText) {
+        navigator.value(valueOrLabelText)
+    }
+
     @Override
     protected void initialized() {
         if (!navigator.empty) {
@@ -47,25 +67,5 @@ class RadioButtons extends Module {
 
     private WebElement getCheckedElement() {
         navigator.allElements().find { it.selected }
-    }
-
-    String getChecked() {
-        checkedElement?.getAttribute("value")
-    }
-
-    String getCheckedLabel() {
-        def checked = checkedElement
-        if (checked) {
-            def label = null
-            def id = checked.getAttribute("id")
-            if (id) {
-                label = browser.find(LABEL_TAG, "for": id)
-            }
-            (label ?: browser.$(checkedElement).parent(LABEL_TAG)).text()
-        }
-    }
-
-    void setChecked(String valueOrLabelText) {
-        navigator.value(valueOrLabelText)
     }
 }

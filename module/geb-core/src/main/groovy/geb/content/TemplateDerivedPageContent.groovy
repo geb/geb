@@ -213,16 +213,16 @@ class TemplateDerivedPageContent implements Navigator {
         _navigator.class in type ? _navigator : super.asType(type)
     }
 
-    private String formatItems(int count) {
-        count == 1 ? "1 element" : "$count elements"
-    }
-
     PageContentContainer getRootContainer() {
         _template.owner.rootContainer
     }
 
     List<String> getContentPath() {
         _template.owner.contentPath + _template.name
+    }
+
+    private String formatItems(int count) {
+        count == 1 ? "1 element" : "$count elements"
     }
 
 }

@@ -134,7 +134,7 @@ class BadContentDefinitionsSpecUnknownElementAliased extends Page {
 }
 
 class BadContentDefinitionsSpecTemplateOptions extends Page {
-    Map<String, ?> templateOptions
-
     static content = { foo(templateOptions) { } }
+
+    Map<String, ?> templateOptions
 }

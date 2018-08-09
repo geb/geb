@@ -50,12 +50,6 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
         go()
     }
 
-    // HTMLUnit does something strange when converting types
-    // and changes integer '1' to string '1.0' when coercing
-    private rationalise(value) {
-        value[0].toInteger()
-    }
-
     def "handle alert"() {
         expect:
         rationalise(withAlert { hasAlert().click() }) == 1
@@ -122,10 +116,6 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
     def "withAlert supports waiting"() {
         expect:
         withAlert(wait: true) { hasAsynchronousAlert().click() } == 'asynchronous alert'
-    }
-
-    private getConfirmResult() {
-        js.confirmResult
     }
 
     def "handle confirm"() {
@@ -208,6 +198,17 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
         then:
         notThrown(Exception)
     }
+
+    // HTMLUnit does something strange when converting types
+    // and changes integer '1' to string '1.0' when coercing
+    private rationalise(value) {
+        value[0].toInteger()
+    }
+
+    private getConfirmResult() {
+        js.confirmResult
+    }
+
 }
 
 class AlertAndConfirmHandlingSpecPage extends Page {

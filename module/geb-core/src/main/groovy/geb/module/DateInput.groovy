@@ -21,11 +21,6 @@ class DateInput extends AbstractInput {
 
     final String inputType = 'date'
 
-    @Override
-    protected boolean isTypeValid(String type) {
-        super.isTypeValid(type) || type == "text"
-    }
-
     void setDate(LocalDate date) {
         value(date.toString())
     }
@@ -37,6 +32,11 @@ class DateInput extends AbstractInput {
     LocalDate getDate() {
         String value = value()
         value ? LocalDate.parse(value) : null
+    }
+
+    @Override
+    protected boolean isTypeValid(String type) {
+        super.isTypeValid(type) || type == "text"
     }
 
 }

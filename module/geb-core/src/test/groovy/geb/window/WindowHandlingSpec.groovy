@@ -575,7 +575,7 @@ class WindowHandlingSpecNewWindowWithTruthyAtCheckPage extends Page {
 }
 
 class WindowHandlingSpecParametrizedPage extends Page {
-    int index
-
     static at = { title == "Window main-${index}" }
+
+    int index
 }

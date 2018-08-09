@@ -23,24 +23,6 @@ import geb.test.browsers.RequiresRealBrowser
 @RequiresRealBrowser
 class ReloadOnValueChangeSpec extends GebSpecWithCallbackServer {
 
-    private void htmlWithReloadingChangeHandler(Closure<?> additionalMarkup) {
-        additionalMarkup.resolveStrategy = Closure.DELEGATE_FIRST
-        html {
-            additionalMarkup.delegate = delegate
-            additionalMarkup.call()
-
-            script(type: "text/javascript") {
-                mkp.yieldUnescaped(getClass().getResource("/jquery-1.4.2.min.js").text)
-            }
-
-            script(type: "text/javascript", '''
-                $(name: "reloading").change(function () {
-                    window.location.reload(true);
-                });
-            ''')
-        }
-    }
-
     def "can set values on radio buttons that load a page from change event handlers"() {
         given:
         htmlWithReloadingChangeHandler {
@@ -83,6 +65,24 @@ class ReloadOnValueChangeSpec extends GebSpecWithCallbackServer {
 
         then:
         noExceptionThrown()
+    }
+
+    private void htmlWithReloadingChangeHandler(Closure<?> additionalMarkup) {
+        additionalMarkup.resolveStrategy = Closure.DELEGATE_FIRST
+        html {
+            additionalMarkup.delegate = delegate
+            additionalMarkup.call()
+
+            script(type: "text/javascript") {
+                mkp.yieldUnescaped(getClass().getResource("/jquery-1.4.2.min.js").text)
+            }
+
+            script(type: "text/javascript", '''
+                $(name: "reloading").change(function () {
+                    window.location.reload(true);
+                });
+            ''')
+        }
     }
 
 }

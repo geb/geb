@@ -70,10 +70,10 @@ class ContentBoundsSpec extends GebSpecWithCallbackServer {
 }
 
 class ContentBoundsSpecPage extends Page {
-    Map<String, ?> templateOptions
-    int count
-
     static content = {
         elements(templateOptions) { count ? (['p'] * count).collect { $(it) }.sum() : $('#non-existing-element') }
     }
+
+    Map<String, ?> templateOptions
+    int count
 }

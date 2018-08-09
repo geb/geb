@@ -125,12 +125,12 @@ class PageDescribingFrame extends Page {
 
 // tag::parameterized_frame_page[]
 class ParameterizedPageDescribingFrame extends Page {
-    String expectedFrameText
-
     static at = { text == expectedFrameText }
 
     static content = {
         text { $("span").text() }
     }
+
+    String expectedFrameText
 }
 // end::parameterized_frame_page[]

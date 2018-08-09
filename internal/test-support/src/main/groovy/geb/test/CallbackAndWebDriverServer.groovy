@@ -21,18 +21,18 @@ import org.openqa.selenium.remote.server.WebDriverServlet
 
 class CallbackAndWebDriverServer extends CallbackHttpServer {
 
-    protected addServlets(ServletContextHandler context) {
-        context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
-
-        context.setAttribute(WebDriverServlet.SESSION_TIMEOUT_PARAMETER, 10000)
-        context.addServlet(WebDriverServlet, "/webdriver/*")
-    }
-
     String getApplicationUrl() {
         "$protocol://localhost:$port/application/"
     }
 
     URL getWebdriverUrl() {
         new URL("$protocol://localhost:$port/webdriver")
+    }
+
+    protected addServlets(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
+
+        context.setAttribute(WebDriverServlet.SESSION_TIMEOUT_PARAMETER, 10000)
+        context.addServlet(WebDriverServlet, "/webdriver/*")
     }
 }

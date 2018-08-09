@@ -96,17 +96,6 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
         // end::indexes_and_ranges[]
     }
 
-    private void attributesAndTextMatchingHtml() {
-        responseHtml """
-            <html>
-                // tag::attributes_html[]
-                <p attr1="a" attr2="b">p1</p>
-                <p attr1="a" attr2="c">p2</p>
-                // end::attributes_html[]
-            </html>
-        """
-    }
-
     def "attributes and text matching"() {
         given:
         attributesAndTextMatchingHtml()
@@ -148,5 +137,16 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
         // tag::pattern_methods_using_pattern[]
         assert $("p", text: contains(~/\d/)).size() == 2
         // end::pattern_methods_using_pattern[]
+    }
+
+    private void attributesAndTextMatchingHtml() {
+        responseHtml """
+            <html>
+                // tag::attributes_html[]
+                <p attr1="a" attr2="b">p1</p>
+                <p attr1="a" attr2="c">p2</p>
+                // end::attributes_html[]
+            </html>
+        """
     }
 }

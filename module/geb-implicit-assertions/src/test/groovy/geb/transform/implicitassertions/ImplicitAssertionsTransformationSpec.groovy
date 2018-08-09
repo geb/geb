@@ -26,33 +26,6 @@ import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
 
 class ImplicitAssertionsTransformationSpec extends Specification {
 
-    private String makeCodeTemplate(String... closureBody) {
-        def resource = getClass().classLoader.getResource('TransformedClass.template')
-        def template = new SimpleTemplateEngine().createTemplate(resource)
-        template.make([closureBody: closureBody.join('\n')]).toString()
-    }
-
-    private Class getTransformedClassWithClosureBody(String... code) {
-        File tempFile = File.createTempFile('TransformedClass', '.groovy')
-        tempFile << makeCodeTemplate(code)
-
-        def invoker = new TransformTestHelper() {
-            protected configure(TransformTestHelper.Transforms transforms) {
-                transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
-            }
-        }
-
-        invoker.parse(tempFile)
-
-        Class transformed = invoker.parse(tempFile)
-        tempFile.delete()
-        transformed
-    }
-
-    private getTransformedInstanceWithClosureBody(String... code) {
-        getTransformedClassWithClosureBody(code).newInstance()
-    }
-
     @Unroll("expression '#closureBody' is asserted and fails")
     def "various falsy expressions are asserted and fail"() {
         when:
@@ -69,8 +42,8 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     def "transformation is applied to multiple lines of the closure"() {
         when:
         getTransformedInstanceWithClosureBody(
-            'true',
-            'false'
+                'true',
+                'false'
         ).runWaitFor()
 
         then:
@@ -176,4 +149,32 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         then:
         thrown(PowerAssertionError)
     }
+
+    private String makeCodeTemplate(String... closureBody) {
+        def resource = getClass().classLoader.getResource('TransformedClass.template')
+        def template = new SimpleTemplateEngine().createTemplate(resource)
+        template.make([closureBody: closureBody.join('\n')]).toString()
+    }
+
+    private Class getTransformedClassWithClosureBody(String... code) {
+        File tempFile = File.createTempFile('TransformedClass', '.groovy')
+        tempFile << makeCodeTemplate(code)
+
+        def invoker = new TransformTestHelper() {
+            protected configure(TransformTestHelper.Transforms transforms) {
+                transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
+            }
+        }
+
+        invoker.parse(tempFile)
+
+        Class transformed = invoker.parse(tempFile)
+        tempFile.delete()
+        transformed
+    }
+
+    private getTransformedInstanceWithClosureBody(String... code) {
+        getTransformedClassWithClosureBody(code).newInstance()
+    }
+
 }

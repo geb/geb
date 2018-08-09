@@ -369,10 +369,10 @@ class TemplateOptionsConfigurationSpec extends GebSpecWithCallbackServer {
 }
 
 class ValueHoldingPage extends Page {
-    def value = 1
     static content = {
         notExplicitlyCachedValue { value }
     }
+    def value = 1
 }
 
 class PageWithDynamicContent extends Page {
@@ -392,17 +392,17 @@ class AsyncPage extends Page {
 }
 
 class PageWithNotFoundContent extends Page {
-    def options = [:]
-
     static content = {
         notFoundContent(options) { $('#not-existing-element') }
     }
+
+    def options = [:]
 }
 
 class PageWithParagraphs extends Page {
-    def options = [:]
-
     static content = {
         paragraphs(options) { $('p') }
     }
+
+    def options = [:]
 }

@@ -264,11 +264,11 @@ class ModulesSpecDivModuleNoLocator extends Module {
 }
 
 class ModulesSpecDivModuleWithLocator extends Module {
-    def className
     static base = { $("div.$className") }
     static content = {
         p { $("p") }
     }
+    def className
 }
 
 class ModulesSpecSpecificDivModule extends Module {

@@ -75,14 +75,6 @@ class ConfigurationLoader {
     }
 
     /**
-     * Result of this method is used as the default configuration when there is no configuration script or class.
-     * This implementation returns a configuration as if the loaded configuration script/class was empty.
-     */
-    protected Configuration getDefaultConf() {
-        createConf(new ConfigObject(), new GroovyClassLoader(getClass().classLoader))
-    }
-
-    /**
      * Creates a config using the default path for the config script and the default config class name. It loads the
      * configuration from class only if the configuration script was not found.
      * <p>
@@ -115,33 +107,6 @@ class ConfigurationLoader {
             getConf()
         } else {
             doGetConf(configFileResourcePath) ?: getDefaultConf()
-        }
-    }
-
-    /**
-     * <p>Creates a config backed by the classpath config script resource at the given path. This method is used by {@link #getConf(String)}.</p>
-     *
-     * <p>The resource is first searched for using the special class loader (thread context loader by default), and then the class loader of this class if it wasn't found.
-     * If no classpath resource can be found at the given path null is returned.</p>
-     *
-     * <p>The class loader that is used is then propagated to the created configuration object. This means that if it is the special loader it <strong>must</strong> have
-     * the same copy of the Geb classes as this class loader and any other classes Geb depends on.</p>
-     *
-     * @param configFileResourcePath the classpath relative path to the config script to use (if {@code null}, {@link #getDefaultConfigScriptResourcePath() default} will be used).
-     * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
-     * @see #getConf(URL, GroovyClassLoader)
-     * @see #getConf(String)
-     */
-    protected Configuration doGetConf(String configFileResourcePath) throws UnableToLoadException {
-        def resourcePath = configFileResourcePath ?: getDefaultConfigScriptResourcePath()
-
-        def specialLoaderResource = specialClassLoader.getResource(resourcePath)
-        if (specialLoaderResource) {
-            getConf(specialLoaderResource, specialClassLoader)
-        } else {
-            def thisClassLoader = new GroovyClassLoader(getClass().classLoader)
-            def thisLoaderResource = thisClassLoader.getResource(resourcePath)
-            thisLoaderResource ? getConf(thisLoaderResource, thisClassLoader) : null
         }
     }
 
@@ -181,6 +146,31 @@ class ConfigurationLoader {
     }
 
     /**
+     * Creates a config backed by a given class.
+     *
+     * @param configClass Class that contains configuration
+     * @param classLoader The class loader to load the config script with (must be the same or a child of the class loader of this class)
+     * @throws geb.error.UnableToLoadException when config class cannot be read
+     */
+    Configuration getConf(Class configClass, GroovyClassLoader classLoader) throws UnableToLoadException {
+        createConf(loadRawConfig(configClass), classLoader)
+    }
+
+    /**
+     * This implementation returns {@code "GebConfig.groovy"}
+     */
+    String getDefaultConfigScriptResourcePath() {
+        "GebConfig.groovy"
+    }
+
+    /**
+     * This implementation returns {@code "GebConfig"}
+     */
+    String getDefaultConfigClassName() {
+        'GebConfig'
+    }
+
+    /**
      * <p>Creates a config backed by the config class with a given name. This method is used by {@link #getConfFromClass(String)}.</p>
      *
      * <p>The class is first searched for using the special class loader (thread context loader by default), and then the class loader of this class if it wasn't found.
@@ -217,14 +207,38 @@ class ConfigurationLoader {
     }
 
     /**
-     * Creates a config backed by a given class.
-     *
-     * @param configClass Class that contains configuration
-     * @param classLoader The class loader to load the config script with (must be the same or a child of the class loader of this class)
-     * @throws geb.error.UnableToLoadException when config class cannot be read
+     * Result of this method is used as the default configuration when there is no configuration script or class.
+     * This implementation returns a configuration as if the loaded configuration script/class was empty.
      */
-    Configuration getConf(Class configClass, GroovyClassLoader classLoader) throws UnableToLoadException {
-        createConf(loadRawConfig(configClass), classLoader)
+    protected Configuration getDefaultConf() {
+        createConf(new ConfigObject(), new GroovyClassLoader(getClass().classLoader))
+    }
+
+    /**
+     * <p>Creates a config backed by the classpath config script resource at the given path. This method is used by {@link #getConf(String)}.</p>
+     *
+     * <p>The resource is first searched for using the special class loader (thread context loader by default), and then the class loader of this class if it wasn't found.
+     * If no classpath resource can be found at the given path null is returned.</p>
+     *
+     * <p>The class loader that is used is then propagated to the created configuration object. This means that if it is the special loader it <strong>must</strong> have
+     * the same copy of the Geb classes as this class loader and any other classes Geb depends on.</p>
+     *
+     * @param configFileResourcePath the classpath relative path to the config script to use (if {@code null}, {@link #getDefaultConfigScriptResourcePath() default} will be used).
+     * @throws geb.error.UnableToLoadException if the config script exists but could not be read or parsed.
+     * @see #getConf(URL, GroovyClassLoader)
+     * @see #getConf(String)
+     */
+    protected Configuration doGetConf(String configFileResourcePath) throws UnableToLoadException {
+        def resourcePath = configFileResourcePath ?: getDefaultConfigScriptResourcePath()
+
+        def specialLoaderResource = specialClassLoader.getResource(resourcePath)
+        if (specialLoaderResource) {
+            getConf(specialLoaderResource, specialClassLoader)
+        } else {
+            def thisClassLoader = new GroovyClassLoader(getClass().classLoader)
+            def thisLoaderResource = thisClassLoader.getResource(resourcePath)
+            thisLoaderResource ? getConf(thisLoaderResource, thisClassLoader) : null
+        }
     }
 
     /**
@@ -247,20 +261,6 @@ class ConfigurationLoader {
      */
     protected Properties getDefaultProperties() {
         System.properties
-    }
-
-    /**
-     * This implementation returns {@code "GebConfig.groovy"}
-     */
-    String getDefaultConfigScriptResourcePath() {
-        "GebConfig.groovy"
-    }
-
-    /**
-     * This implementation returns {@code "GebConfig"}
-     */
-    String getDefaultConfigClassName() {
-        'GebConfig'
     }
 
     /**

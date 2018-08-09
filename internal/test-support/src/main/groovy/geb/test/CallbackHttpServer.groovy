@@ -32,16 +32,6 @@ class CallbackHttpServer extends TestHttpServer {
     Closure put
     Closure delete
 
-    protected addServlets(ServletContextHandler context) {
-        context.addServlet(new ServletHolder(new CallbackServlet(this)), "/*")
-    }
-
-    protected setupResponse(HttpServletResponse response) {
-        response.contentType = ContentType.TEXT_HTML.toString()
-        response.characterEncoding = UTF8
-        response.addHeader("Cache-Control", "Cache-Control: private, no-cache, no-store, must-revalidate")
-    }
-
     void responseHtml(Closure htmlMarkup) {
         get = { HttpServletRequest request, HttpServletResponse response ->
             synchronized (this) { // MarkupBuilder has some static state, so protect
@@ -79,5 +69,15 @@ class CallbackHttpServer extends TestHttpServer {
 
     void html(String html) {
         responseHtml(html)
+    }
+
+    protected addServlets(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new CallbackServlet(this)), "/*")
+    }
+
+    protected setupResponse(HttpServletResponse response) {
+        response.contentType = ContentType.TEXT_HTML.toString()
+        response.characterEncoding = UTF8
+        response.addHeader("Cache-Control", "Cache-Control: private, no-cache, no-store, must-revalidate")
     }
 }

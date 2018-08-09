@@ -71,12 +71,12 @@ class ModulePage extends Page {
 
 // tag::parameterized_module[]
 class ParameterizedModule extends Module {
-    String formId
     static content = {
         button {
             $("form", id: formId).find("input", type: "button")
         }
     }
+    String formId
 }
 // end::parameterized_module[]
 

@@ -49,12 +49,6 @@ class ScreenshotReporter extends ReporterSupport {
         }
     }
 
-    protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
-        def file = getFile(outputDir, label, 'png')
-        file.withOutputStream { it << bytes }
-        file
-    }
-
     protected static TakesScreenshot determineScreenshotDriver(Browser browser) {
         if (browser.driver instanceof TakesScreenshot) {
             browser.driver as TakesScreenshot
@@ -63,6 +57,12 @@ class ScreenshotReporter extends ReporterSupport {
         } else {
             null
         }
+    }
+
+    protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
+        def file = getFile(outputDir, label, 'png')
+        file.withOutputStream { it << bytes }
+        file
     }
 
 }

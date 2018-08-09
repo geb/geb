@@ -24,6 +24,10 @@ class CallbackHttpsServer extends CallbackHttpServer {
 
     private static final String PASSWORD = 'password'
 
+    String getProtocol() {
+        'https'
+    }
+
     protected Connector createConnector(Server server, int port) {
         def sslContextFactory = new SslContextFactory(
                 keyStorePassword: PASSWORD,
@@ -40,9 +44,5 @@ class CallbackHttpsServer extends CallbackHttpServer {
         )
         connector.port = port
         connector
-    }
-
-    String getProtocol() {
-        'https'
     }
 }

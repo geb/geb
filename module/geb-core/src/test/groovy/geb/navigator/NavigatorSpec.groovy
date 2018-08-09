@@ -391,6 +391,6 @@ class PageWithAtChecker extends Page {
 }
 
 class PageInstanceWithParametrizedAtChecker extends Page {
-    boolean condition
     static at = { condition }
+    boolean condition
 }

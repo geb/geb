@@ -90,15 +90,15 @@ class PauseSpec extends GebSpecWithCallbackServer {
             this.javascriptExecutor = javascriptExecutor
         }
 
+        static <T extends WebDriver & JavascriptExecutor> ThreadSafeScriptExecutionDriver of(T driver) {
+            new ThreadSafeScriptExecutionDriver(driver, driver)
+        }
+
         @Override
         Object executeScript(String script, Object... args) {
             synchronized (executeScriptMutex) {
                 javascriptExecutor.executeScript(script, args)
             }
-        }
-
-        static <T extends WebDriver & JavascriptExecutor> ThreadSafeScriptExecutionDriver of(T driver) {
-            new ThreadSafeScriptExecutionDriver(driver, driver)
         }
     }
 

@@ -18,8 +18,6 @@ import geb.test.CallbackHttpServer
 
 class GebReportingTestTest extends GebReportingTest {
 
-    def server = new CallbackHttpServer()
-
     static counter = 0
 
     static responseText = """
@@ -29,6 +27,8 @@ class GebReportingTestTest extends GebReportingTest {
         </body>
         </html>
     """
+
+    def server = new CallbackHttpServer()
 
     void setUp() {
         server.start()

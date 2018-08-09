@@ -113,6 +113,10 @@ abstract class Crawler {
         }
     }
 
+    boolean isHttpUrl(String url) {
+        url ==~ ~/^https?:\/.+/
+    }
+
     protected visit(Link link) {
         link.attempt()
 
@@ -217,10 +221,6 @@ abstract class Crawler {
         }
 
         null
-    }
-
-    boolean isHttpUrl(String url) {
-        url ==~ ~/^https?:\/.+/
     }
 
     static class Response {

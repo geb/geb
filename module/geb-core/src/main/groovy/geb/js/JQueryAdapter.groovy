@@ -25,6 +25,17 @@ class JQueryAdapter {
         this.navigator = navigator
     }
 
+    def methodMissing(String name, args) {
+        def result = callJQueryMethod(name, args)
+        if (result instanceof WebElement) {
+            navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
+        } else if (result instanceof List) {
+            navigator.browser.navigatorFactory.createFromWebElements(result)
+        } else {
+            result
+        }
+    }
+
     private callJQueryMethod(String name, args) {
         def browser = navigator.browser
         def elements = navigator.allElements()
@@ -53,17 +64,6 @@ class JQueryAdapter {
             """)
         } else {
             null
-        }
-    }
-
-    def methodMissing(String name, args) {
-        def result = callJQueryMethod(name, args)
-        if (result instanceof WebElement) {
-            navigator.browser.navigatorFactory.createFromWebElements(Collections.singletonList(result))
-        } else if (result instanceof List) {
-            navigator.browser.navigatorFactory.createFromWebElements(result)
-        } else {
-            result
         }
     }
 
