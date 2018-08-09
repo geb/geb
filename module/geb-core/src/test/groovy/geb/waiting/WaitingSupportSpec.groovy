@@ -21,7 +21,6 @@ import geb.navigator.EmptyNavigator
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
-@SuppressWarnings("TrailingWhitespace")
 @Unroll
 class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
@@ -137,7 +136,6 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
     }
 
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "lastEvaluationValue is set on WaitTimeoutException when waiting for #waitForTime secs and expected result is #lastEvaluationValueClass.simpleName"() {
         when:
         waitFor(waitForTime, evaluatedClosure)
@@ -170,6 +168,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
         [subjectFactory, subjectName] << subjects() * 2
     }
 
+    @SuppressWarnings("TrailingWhitespace")
     def "cause is appended to the exception message if configured - when called on #subjectName"() {
         given:
         config.includeCauseInWaitTimeoutExceptionMessage = true

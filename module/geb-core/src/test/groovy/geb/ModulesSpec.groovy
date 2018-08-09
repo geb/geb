@@ -176,7 +176,6 @@ class ModulesSpec extends GebSpecWithCallbackServer {
     }
 
     @Unroll
-    @SuppressWarnings(["SpaceAfterClosingBrace", "SpaceAfterOpeningBrace", "SpaceBeforeClosingBrace", "SpaceBeforeOpeningBrace"])
     def "exception should be thrown when support class #className methods are used on an uninitialized module instance"() {
         def moduleInstance = new ModulesSpecDivModuleNoLocator()
 

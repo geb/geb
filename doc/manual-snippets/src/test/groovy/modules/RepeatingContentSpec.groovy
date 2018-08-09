@@ -80,7 +80,6 @@ class CartRow extends Module {
 }
 // end::module[]
 
-@SuppressWarnings("UnnecessaryCollectCall")
 // tag::page[]
 class CheckoutPage extends Page {
     static content = {
@@ -105,9 +104,6 @@ class ParameterizedCartRow extends Module {
     def priceIndex
 }
 
-// end::parameterized_module[]
-@SuppressWarnings("UnnecessaryCollectCall")
-// tag::parameterized_module[]
 class CheckoutPageWithParametrizedCart extends Page {
     static content = {
         cartItems {

@@ -202,7 +202,6 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
     }
 
     @Unroll
-    @SuppressWarnings(["SpaceAfterClosingBrace", "SpaceAfterOpeningBrace", "SpaceBeforeClosingBrace", "SpaceBeforeOpeningBrace"])
     def "exception should be thrown when support class #className methods are used on an uninitialized page instance"() {
         def pageInstance = new PageOrientedSpecPageA()
 

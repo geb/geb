@@ -30,7 +30,6 @@ class ModuleBaseDefinitionDelegate {
     private final NavigableSupport navigableSupport
 
     @Delegate
-    @SuppressWarnings("UnusedPrivateField")
     private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
     ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, Map params) {

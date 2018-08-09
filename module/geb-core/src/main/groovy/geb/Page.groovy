@@ -124,7 +124,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     private InteractionsSupport interactionsSupport = new UninitializedInteractionSupport(this)
 
     @Delegate
-    @SuppressWarnings("UnusedPrivateField")
     private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
     @Delegate
@@ -138,7 +137,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * <p>
      * <b>This method is called internally, and should not be called by users of Geb.</b>
      */
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     Page init(Browser browser) {
         this.browser = browser
         def contentTemplates = PageContentTemplateBuilder.build(browser, this, browser.navigatorFactory, 'content', this.class, Page)

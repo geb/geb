@@ -51,7 +51,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     private FrameSupport frameSupport = new UninitializedFrameSupport(this)
 
     @Delegate
-    @SuppressWarnings("UnusedPrivateField")
     private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
@@ -70,7 +69,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     private PageContentTemplate template
 
-    @SuppressWarnings("SpaceBeforeOpeningBrace")
     void init(Browser browser, NavigatorFactory navigatorFactory) {
         this.browser = browser
         this.navigator = navigatorFactory.base
