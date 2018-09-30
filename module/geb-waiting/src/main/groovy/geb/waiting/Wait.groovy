@@ -15,6 +15,7 @@
  */
 package geb.waiting
 
+import java.time.Clock
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -107,7 +108,7 @@ class Wait {
             thrown = e
         }
 
-        def timedOut = LocalDateTime.now().isAfter(stopAt)
+        def timedOut = now().isAfter(stopAt)
         while (!pass && !timedOut) {
             sleepForRetryInterval()
             try {
@@ -117,7 +118,7 @@ class Wait {
                 pass = new UnknownWaitForEvaluationResult(e)
                 thrown = e
             } finally {
-                timedOut = LocalDateTime.now().isAfter(stopAt)
+                timedOut = now().isAfter(stopAt)
             }
         }
 
@@ -135,8 +136,12 @@ class Wait {
         Thread.sleep(toMiliseconds(retryInterval) as long)
     }
 
+    private LocalDateTime now() {
+        LocalDateTime.now(Clock.systemUTC())
+    }
+
     private LocalDateTime calculateTimeoutFromNow() {
-        calculateTimeoutFrom(LocalDateTime.now())
+        calculateTimeoutFrom(now())
     }
 
     private LocalDateTime calculateTimeoutFrom(LocalDateTime start) {
