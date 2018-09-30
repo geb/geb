@@ -15,12 +15,14 @@
  */
 package geb.waiting
 
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+
 /**
  * Represents a particular configuration of waiting, but does not encompass what is to be waited on.
  * <p>
  * Generally not used by user code, but used internally by {@link geb.Configuration} and {@link geb.waiting.WaitingSupport}.
  */
-@SuppressWarnings("NoJavaUtilDate")
 class Wait {
 
     /**
@@ -80,17 +82,6 @@ class Wait {
         code
     }
 
-    Date calculateTimeoutFromNow() {
-        calculateTimeoutFrom(new Date())
-    }
-
-    Date calculateTimeoutFrom(Date start) {
-        def calendar = Calendar.instance
-        calendar.time = start
-        calendar.add(Calendar.MILLISECOND, Math.ceil(toMiliseconds(timeout)) as int)
-        calendar.time
-    }
-
     /**
      * Invokes the given {@code block} every {@code retryInterval} seconds until it returns
      * a true value according to the Groovy Truth. If {@code block} does not return a truish value
@@ -116,7 +107,7 @@ class Wait {
             thrown = e
         }
 
-        def timedOut = new Date() > stopAt
+        def timedOut = LocalDateTime.now().isAfter(stopAt)
         while (!pass && !timedOut) {
             sleepForRetryInterval()
             try {
@@ -126,7 +117,7 @@ class Wait {
                 pass = new UnknownWaitForEvaluationResult(e)
                 thrown = e
             } finally {
-                timedOut = new Date() > stopAt
+                timedOut = LocalDateTime.now().isAfter(stopAt)
             }
         }
 
@@ -142,6 +133,14 @@ class Wait {
      */
     void sleepForRetryInterval() {
         Thread.sleep(toMiliseconds(retryInterval) as long)
+    }
+
+    private LocalDateTime calculateTimeoutFromNow() {
+        calculateTimeoutFrom(LocalDateTime.now())
+    }
+
+    private LocalDateTime calculateTimeoutFrom(LocalDateTime start) {
+        start.plus(Math.ceil(toMiliseconds(timeout)) as long, ChronoUnit.MILLIS)
     }
 
     private double toMiliseconds(Double seconds) {
