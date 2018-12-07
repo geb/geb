@@ -15,7 +15,6 @@
  */
 package modules
 
-
 import geb.module.UrlInput
 import geb.test.GebSpecWithCallbackServer
 
