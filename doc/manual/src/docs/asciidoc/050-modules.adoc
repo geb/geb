@@ -475,6 +475,24 @@ It can be used this way…
 include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
+=== `NumberInput`
+
+The `{number-input-api}` module provides property methods for setting and retrieving the current number value of a number input element. It also provides methods to retrieve the values of its `min` and `max` attributes.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/NumberInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/NumberInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
 == Unwrapping modules returned from the `content` DSL
 
 For the sake of better error reporting, current implementation wraps any module declared within `content` block into
