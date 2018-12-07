@@ -101,6 +101,7 @@
 :email-input-api: link:api/geb/module/EmailInput.html[EmailInput]
 :tel-input-api: link:api/geb/module/TelInput.html[TelInput]
 :number-input-api: link:api/geb/module/NumberInput.html[NumberInput]
+:url-input-api: link:api/geb/module/UrlInput.html[UrlInput]
 :interact-delegate-api: link:api/geb/interaction/InteractDelegate.html[InteractDelegate]
 :url-fragment-api: link:api/geb/url/UrlFragment.html[UrlFragment]
 :string-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(java.lang.String)
