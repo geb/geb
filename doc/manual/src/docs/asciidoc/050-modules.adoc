@@ -511,6 +511,24 @@ It can be used this way…
 include::{test-dir}/modules/UrlInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
+=== `PasswordInput`
+
+The `{password-input-api}` module provides property methods for setting and retrieving text of a password input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/PasswordInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/PasswordInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
 == Unwrapping modules returned from the `content` DSL
 
 For the sake of better error reporting, current implementation wraps any module declared within `content` block into
