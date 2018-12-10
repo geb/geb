@@ -15,13 +15,14 @@
  */
 package geb.module
 
+import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
-class NumberInputSpec extends TextLikeInputSpec {
+class NumberInputSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         html {
-            input(type: "number", min: 0, max: 10)
+            input(type: "number", min: "-2.5", max: "2.5", step: "0.5")
         }
     }
 
@@ -40,19 +41,19 @@ class NumberInputSpec extends TextLikeInputSpec {
         and:
         input.value() == "${number}"
 
-        and:
-        input.text == "${number}"
-
         where:
-        number << [0, 3, 8, 10]
+        number << [-2.5, 0, 1, 2.5]
     }
 
-    def 'get min and max'() {
+    def 'get min, max and step'() {
         expect:
-        input.min == 0
+        input.min == -2.5
 
         and:
-        input.max == 10
+        input.max == 2.5
+
+        and:
+        input.step == 0.5
     }
 
 }

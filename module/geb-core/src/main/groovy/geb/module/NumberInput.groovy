@@ -15,27 +15,46 @@
  */
 package geb.module
 
-class NumberInput extends TextLikeInput {
+import javax.annotation.Nonnull
+
+class NumberInput extends AbstractInput {
 
     final String inputType = "number"
 
-    void setNumber(int number) {
+    void setNumber(Number number) {
         value(number)
     }
 
-    Integer getNumber() {
+    Number getNumber() {
         String value = value()
-        value ? Integer.valueOf(value) : null
+        value ? parseNumber(value) : null
     }
 
-    Integer getMin() {
+    Number getMin() {
         String minString = attr("min")
-        minString ? Integer.valueOf(minString) : null
+        minString ? parseNumber(minString) : null
     }
 
-    Integer getMax() {
+    Number getMax() {
         String maxString = attr("max")
-        maxString ? Integer.valueOf(maxString) : null
+        maxString ? parseNumber(maxString) : null
+    }
+
+    Number getStep() {
+        String stepString = attr("step")
+        stepString ? parseNumber(stepString) : 1
+    }
+
+    private static Number parseNumber(@Nonnull String string) {
+        if (!string?.number) {
+            throw new NumberFormatException("Value \"${string}\" of ${this} is not a number.")
+        }
+        if (string?.bigDecimal) {
+            return string.toBigDecimal()
+        }
+        if (string?.bigInteger) {
+            return string.toBigInteger()
+        }
     }
 
 }
