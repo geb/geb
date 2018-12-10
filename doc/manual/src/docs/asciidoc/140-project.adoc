@@ -74,7 +74,8 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:mahileeb[Lee Butts] - Improved error message when trying to select null on a single-select select element
 * github-profile:rickirunge[Ricki Runge] - Ignore case of tag names passed as part of css selectors to `Navigator.filter()`
 * github-profile:jdmuriel[Jesús L. D. Muriel] - Doc fixes
-* github-profile:joschi[Jochen Schalanda] - Doc fixes
+* github-profile:joschi[Jochen Schalanda] - Doc
+* github-profile:mkutz[Michael Kutz] - Addition of `{number-input-api}`, `{url-input-api}` and `{password-input-api}`
 
 == History
 
