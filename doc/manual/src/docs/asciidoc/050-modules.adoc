@@ -477,7 +477,7 @@ include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=example,indent=0]
 
 === `NumberInput`
 
-The `{number-input-api}` module provides property methods for setting and retrieving the current number value of a number input element. It also provides methods to retrieve the values of its `min` and `max` attributes.
+The `{number-input-api}` module provides property methods for setting and retrieving the current number value of a number input element. It also provides methods to retrieve the values of its `min`, `max` and `step` attributes.
 
 Given the html…
 

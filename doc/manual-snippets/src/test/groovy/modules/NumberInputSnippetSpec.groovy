@@ -26,7 +26,7 @@ class NumberInputSnippetSpec extends GebSpecWithCallbackServer {
             // tag::html[]
             <html>
                 <body>
-                    <input type="number" name="amount" min="0" max="10"/>
+                    <input type="number" name="amount" min="-2.5" max="2.5" step="0.5"/>
                 </body>
             </html>
             // end::html[]
@@ -35,13 +35,15 @@ class NumberInputSnippetSpec extends GebSpecWithCallbackServer {
         when:
         // tag::example[]
         def input = $(name: "amount").module(NumberInput)
-        input.number = 3
+        input.number = 1.5
 
         // end::example[]
         then:
         // tag::example[]
-        assert input.number == 3
-        assert input.text == "3"
+        assert input.number == 1.5
+        assert input.min == -2.5
+        assert input.max == 2.5
+        assert input.step == 0.5
         // end::example[]
     }
 
