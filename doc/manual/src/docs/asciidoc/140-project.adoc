@@ -84,7 +84,7 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+* Added form control modules for url, password and number inputs. [issue:548[]]
 
 === 2.2
 
