@@ -24,8 +24,7 @@ class NumberInput extends AbstractInput {
     }
 
     Number getNumber() {
-        String value = value()
-        value ? parseNumber(value) : null
+        parseNumber(value() as String)
     }
 
     Number getMin() {
@@ -41,7 +40,7 @@ class NumberInput extends AbstractInput {
     }
 
     private Number parseNumber(String string) {
-        if (string == null) {
+        if (string == null || string.empty) {
             return null
         }
         if (string.bigDecimal) {
