@@ -41,7 +41,7 @@ class NumberInput extends AbstractInput {
     }
 
     private Number parseNumber(String string) {
-        if (null == string) {
+        if (string == null) {
             return null
         }
         if (string.bigDecimal) {
