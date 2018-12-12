@@ -30,8 +30,16 @@ class NumberInputSpec extends GebSpecWithCallbackServer {
         $("input").module(NumberInput)
     }
 
+    def 'unset'() {
+        expect:
+        verifyAll {
+            input.value() == ""
+            input.number == null
+        }
+    }
+
     @Unroll
-    def 'set integer #number'() {
+    def 'set #number'() {
         when:
         input.number = number
 
