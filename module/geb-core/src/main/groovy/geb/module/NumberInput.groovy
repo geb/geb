@@ -15,8 +15,6 @@
  */
 package geb.module
 
-import javax.annotation.Nonnull
-
 class NumberInput extends AbstractInput {
 
     final String inputType = "number"
@@ -31,30 +29,28 @@ class NumberInput extends AbstractInput {
     }
 
     Number getMin() {
-        String minString = attr("min")
-        minString ? parseNumber(minString) : null
+        parseNumber(attr("min"))
     }
 
     Number getMax() {
-        String maxString = attr("max")
-        maxString ? parseNumber(maxString) : null
+        parseNumber(attr("max"))
     }
 
     Number getStep() {
-        String stepString = attr("step")
-        stepString ? parseNumber(stepString) : 1
+        parseNumber(attr("step"))
     }
 
-    private static Number parseNumber(@Nonnull String string) {
-        if (!string?.number) {
-            throw new NumberFormatException("Value \"${string}\" of ${this} is not a number.")
+    private Number parseNumber(String string) {
+        if (null == string) {
+            return null
         }
-        if (string?.bigDecimal) {
+        if (string.bigDecimal) {
             return string.toBigDecimal()
         }
-        if (string?.bigInteger) {
-            return string.toBigInteger()
+        if (string.integer) {
+            return string.toInteger()
         }
+        throw new NumberFormatException("Value \"${string}\" of ${this} is not a number.")
     }
 
 }
