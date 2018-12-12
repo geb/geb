@@ -63,7 +63,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "failed waiting - when called on #subjectName"() {
         when:
-        js.showIn(0.1)
+        js.showIn(0.3)
         subjectFactory().waitFor(0.05) { !$("div").empty }
 
         then:
