@@ -706,7 +706,7 @@ class NonEmptyNavigator extends AbstractNavigator {
             } else if (type == "file") {
                 input.sendKeys value as String
                 valueSet = true
-            } else if (type == "date") {
+            } else if (type in ["color", "date"]) {
                 browser.js.exec(input, value as String, 'arguments[0].setAttribute("value", arguments[1]);')
                 valueSet = true
             } else {
