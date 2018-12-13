@@ -103,6 +103,7 @@
 :number-input-api: link:api/geb/module/NumberInput.html[NumberInput]
 :url-input-api: link:api/geb/module/UrlInput.html[UrlInput]
 :password-input-api: link:api/geb/module/PasswordInput.html[PasswordInput]
+:color-input-api: link:api/geb/module/ColorInput.html[ColorInput]
 :interact-delegate-api: link:api/geb/interaction/InteractDelegate.html[InteractDelegate]
 :url-fragment-api: link:api/geb/url/UrlFragment.html[UrlFragment]
 :string-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(java.lang.String)
