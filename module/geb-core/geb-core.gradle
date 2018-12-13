@@ -43,8 +43,8 @@ sauceLabs {
         firefox_linux {
             capabilities version: "45.0"
         }
-        safari_mac_7 {
-            capabilities platform: "OS X 10.9"
+        safari_mac_8 {
+            capabilities platform: "OS X 10.10"
         }
     }
 }

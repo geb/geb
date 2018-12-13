@@ -44,7 +44,7 @@ class ColorInputSnippetSpec extends GebSpecWithCallbackServer {
         then:
         // tag::example_color[]
         assert input.color == new Color(0, 255, 0, 1)
-        assert input.value == "00ff00"
+        assert input.value() == "00ff00"
 
         // end::example_color[]
         when:
@@ -54,7 +54,7 @@ class ColorInputSnippetSpec extends GebSpecWithCallbackServer {
         // end::example_string[]
         then:
         // tag::example_string[]
-        assert input.value == "ff0000"
+        assert input.value() == "ff0000"
         assert input.color == new Color(255, 0, 0, 1)
         // end::example_string[]
     }
