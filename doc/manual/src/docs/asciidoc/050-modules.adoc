@@ -439,6 +439,24 @@ It can be used this way…
 include::{real-browser-test-dir}/modules/DateInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
+=== `DateTimeLocalInput`
+
+The `{datetime-local-input-api}` module provides property methods for setting and retrieving date and time of a datetime-local input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
 === `EmailInput`
 
 The `{email-input-api}` module provides property methods for setting and retrieving text of an email input element.
