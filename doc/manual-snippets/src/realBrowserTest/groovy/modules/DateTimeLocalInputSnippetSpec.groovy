@@ -18,7 +18,6 @@ package modules
 import geb.module.DateTimeLocalInput
 import geb.test.GebSpecWithCallbackServer
 
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 class DateTimeLocalInputSnippetSpec extends GebSpecWithCallbackServer {
@@ -38,23 +37,23 @@ class DateTimeLocalInputSnippetSpec extends GebSpecWithCallbackServer {
         when:
         // tag::example[]
         def input = $(name: "next-meeting").module(DateTimeLocalInput)
-        input.date = "2018-12-09T20:16"
+        input.dateTime = "2018-12-09T20:16"
 
         // end::example[]
         then:
         // tag::example[]
-        assert input.datetime == LocalDateTime.of(2018, 12, 9, 20, 16)
+        assert input.dateTime == LocalDateTime.of(2018, 12, 9, 20, 16)
 
         // end::example[]
 
         when:
         // tag::example[]
-        input.datetime = LocalDateTime.of(2018, 12, 31, 0, 0)
+        input.dateTime = LocalDateTime.of(2018, 12, 31, 0, 0)
 
         // end::example[]
         then:
         // tag::example[]
-        assert input.datetime == LocalDate.parse("2017-12-31T00:00")
+        assert input.dateTime == LocalDateTime.parse("2018-12-31T00:00")
         // end::example[]
     }
 
