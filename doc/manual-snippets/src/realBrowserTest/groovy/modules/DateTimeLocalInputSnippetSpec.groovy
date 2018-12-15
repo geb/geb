@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 
 class DateTimeLocalInputSnippetSpec extends GebSpecWithCallbackServer {
 
-    def "using date input module"() {
+    def "using datetime-local input module"() {
         given:
         html """
             // tag::html[]
