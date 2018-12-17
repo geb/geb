@@ -78,7 +78,6 @@ class TimeInputSpec extends GebSpecWithCallbackServer {
         time = LocalTime.of(15, 00, 00)
     }
 
-
     def 'get min, max and step'() {
         expect:
         input.min == LocalTime.of(9, 0)
