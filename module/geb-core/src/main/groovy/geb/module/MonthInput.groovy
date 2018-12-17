@@ -30,8 +30,7 @@ class MonthInput extends AbstractInput {
     }
 
     YearMonth getMonth() {
-        String value = value()
-        value ? YearMonth.parse(value) : null
+        parseMonth(value() as String)
     }
 
     YearMonth getMin() {
