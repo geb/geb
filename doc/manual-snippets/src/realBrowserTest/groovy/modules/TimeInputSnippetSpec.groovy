@@ -45,17 +45,15 @@ class TimeInputSnippetSpec extends GebSpecWithCallbackServer {
         then:
         // tag::example_time[]
         assert input.time == LocalTime.of(14, 5)
-        assert input.value() == "14:05:00"
 
         // end::example_time[]
         when:
         // tag::example_string[]
-        input.time = "15:15:00"
+        input.time = "15:15"
 
         // end::example_string[]
         then:
         // tag::example_string[]
-        assert input.value() == "15:15:00"
         assert input.time == LocalTime.of(15, 15)
         // end::example_string[]
     }
