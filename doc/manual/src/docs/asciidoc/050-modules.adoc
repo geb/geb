@@ -544,14 +544,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/RangeInputSnippetSpec.groovy[tag=html,indent=0]
+include::{real-browser-test-dir}/modules/RangeInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RangeInputSnippetSpec.groovy[tag=example,indent=0]
+include::{real-browser-test-dir}/modules/RangeInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `UrlInput`
