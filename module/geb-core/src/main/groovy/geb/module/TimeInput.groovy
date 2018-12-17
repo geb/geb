@@ -30,8 +30,26 @@ class TimeInput extends AbstractInput {
     }
 
     LocalTime getTime() {
-        String value = value()
-        value ? LocalTime.parse(value) : null
+        parseTime(value() as String)
+    }
+
+    LocalTime getMin() {
+        parseTime(attr("min"))
+    }
+
+    LocalTime getMax() {
+        parseTime(attr("max"))
+    }
+
+    Integer getStep() {
+        attr("step")?.toInteger()
+    }
+
+    private LocalTime parseTime(String string) {
+        if (string == null || string.empty) {
+            return null
+        }
+        LocalTime.parse(string)
     }
 
     @Override

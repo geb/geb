@@ -29,7 +29,7 @@ class TimeInputSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         html {
-            input(type: 'time')
+            input(type: 'time', min: '09:00:00', max: '17:00:00', step: '30')
         }
     }
 
@@ -50,7 +50,7 @@ class TimeInputSpec extends GebSpecWithCallbackServer {
         input.time == time
 
         where:
-        time = LocalTime.now()
+        time = LocalTime.of(12, 00, 00)
     }
 
     def 'setting using ISO 8601 string'() {
@@ -61,7 +61,7 @@ class TimeInputSpec extends GebSpecWithCallbackServer {
         input.time == time
 
         where:
-        time = LocalTime.now()
+        time = LocalTime.of(12, 45, 30)
     }
 
     def 'updating'() {
@@ -69,13 +69,13 @@ class TimeInputSpec extends GebSpecWithCallbackServer {
         input.time = time
 
         and:
-        input.time = time.plusHours(1)
+        input.time = time.plusSeconds(30)
 
         then:
-        input.time == time.plusHours(1)
+        input.time == time.plusSeconds(30)
 
         where:
-        time = LocalTime.now()
+        time = LocalTime.of(15, 00, 00)
     }
 
 }

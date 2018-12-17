@@ -28,7 +28,7 @@ class TimeInputSnippetSpec extends GebSpecWithCallbackServer {
             // tag::html[]
             <html>
                 <body>
-                    <input type="time" name="start"/>
+                    <input type="time" name="start" min="09:00:00" max="17:00:00" step="300" />
                 </body>
             </html>
             // end::html[]
@@ -39,24 +39,24 @@ class TimeInputSnippetSpec extends GebSpecWithCallbackServer {
         // end::example_time[]
         when:
         // tag::example_time[]
-        input.time = LocalTime.of(22, 1)
+        input.time = LocalTime.of(14, 5)
 
         // end::example_time[]
         then:
         // tag::example_time[]
-        assert input.time == LocalTime.of(22, 1)
-        assert input.value() == "22:01"
+        assert input.time == LocalTime.of(14, 5)
+        assert input.value() == "14:05:00"
 
         // end::example_time[]
         when:
         // tag::example_string[]
-        input.time = "11:11"
+        input.time = "15:15:00"
 
         // end::example_string[]
         then:
         // tag::example_string[]
-        assert input.value() == "11:11"
-        assert input.time == LocalTime.of(11, 11)
+        assert input.value() == "15:15:00"
+        assert input.time == LocalTime.of(15, 15)
         // end::example_string[]
     }
 
