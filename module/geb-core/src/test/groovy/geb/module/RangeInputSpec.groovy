@@ -15,25 +15,32 @@
  */
 package geb.module
 
+import geb.test.GebSpecWithCallbackServer
+import geb.test.browsers.Chrome
+import geb.test.browsers.Firefox
+import geb.test.browsers.RequiresRealBrowser
 import spock.lang.Unroll
 
-class NumberInputSpec extends NumberLikeInputSpec {
+@Chrome
+@Firefox
+@RequiresRealBrowser // maybe due to https://sourceforge.net/p/htmlunit/bugs/1923/
+class RangeInputSpec extends NumberLikeInputSpec {
 
     def setup() {
         html {
-            input(type: "number", min: "-2.5", max: "2.5", step: "0.5")
+            input(type: "range", min: "0", max: "10", step: "0.1")
         }
     }
 
-    NumberInput getInput() {
-        $("input").module(NumberInput)
+    RangeInput getInput() {
+        $("input").module(RangeInput)
     }
 
-    def 'unset'() {
+    def 'unset the value is half'() {
         expect:
         verifyAll {
-            input.value() == ""
-            input.number == null
+            input.value() == "5"
+            input.number == 5
         }
     }
 
@@ -49,18 +56,18 @@ class NumberInputSpec extends NumberLikeInputSpec {
         input.value() == "${number}"
 
         where:
-        number << [-2.5, 0, 1, 2.5]
+        number << [0, 5.1, 10]
     }
 
     def 'get min, max and step'() {
         expect:
-        input.min == -2.5
+        input.min == 0
 
         and:
-        input.max == 2.5
+        input.max == 10
 
         and:
-        input.step == 0.5
+        input.step == 0.1
     }
 
 }
