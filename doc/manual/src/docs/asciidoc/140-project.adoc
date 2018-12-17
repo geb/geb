@@ -75,7 +75,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:rickirunge[Ricki Runge] - Ignore case of tag names passed as part of css selectors to `Navigator.filter()`
 * github-profile:jdmuriel[Jesús L. D. Muriel] - Doc fixes
 * github-profile:joschi[Jochen Schalanda] - Doc
-* github-profile:mkutz[Michael Kutz] - Addition of `{number-input-api}`, `{url-input-api}`, `{password-input-api}`, `{color-input-api}` and `{datetime-local-input-api}`
+* github-profile:mkutz[Michael Kutz] - Addition of `{number-input-api}`, `{url-input-api}`, `{password-input-api}`, `{color-input-api}`, `{datetime-local-input-api}` and `{time-input-api}`
 
 == History
 
@@ -88,6 +88,7 @@ This page lists the high level changes between versions of Geb.
 * Added form control modules for url, password and number inputs. [issue:548[]]
 * Added form control module for color inputs. [issue:549[]]
 * Added form control module for datetime-local inputs. [issue:550[]]
+* Added form control module for time inputs. [issue:554[]]
 
 === 2.2
 
