@@ -15,7 +15,6 @@
  */
 package geb.module
 
-import geb.test.GebSpecWithCallbackServer
 import geb.test.browsers.Chrome
 import geb.test.browsers.Firefox
 import geb.test.browsers.RequiresRealBrowser
