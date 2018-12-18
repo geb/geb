@@ -34,7 +34,7 @@ class MonthInputSnippetSpec extends GebSpecWithCallbackServer {
             // end::html[]
         """
         // tag::example_month[]
-        def input = $(name: "start").module(MonthInput)
+        def input = $(name: "employment-start").module(MonthInput)
 
         // end::example_month[]
         when:
