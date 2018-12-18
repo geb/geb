@@ -54,7 +54,7 @@ class MonthInputSnippetSpec extends GebSpecWithCallbackServer {
         // end::example_string[]
         then:
         // tag::example_string[]
-        assert input.time == YearMonth.of(2019, 1)
+        assert input.month == YearMonth.of(2019, 1)
         // end::example_string[]
     }
 
