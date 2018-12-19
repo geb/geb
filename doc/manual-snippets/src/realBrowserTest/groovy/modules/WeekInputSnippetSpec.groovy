@@ -33,7 +33,7 @@ class WeekInputSnippetSpec extends GebSpecWithCallbackServer {
             // end::html[]
         """
         // tag::example_week[]
-        def input = $(name: "start").module(WeekInput)
+        def input = $(name: "delivery-week").module(WeekInput)
 
         // end::example_week[]
         when:
