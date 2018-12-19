@@ -53,7 +53,7 @@ class WeekInputSnippetSpec extends GebSpecWithCallbackServer {
         // end::example_string[]
         then:
         // tag::example_string[]
-        assert input.time == YearWeek.of(2018, 52)
+        assert input.week == YearWeek.of(2018, 52)
         // end::example_string[]
     }
 
