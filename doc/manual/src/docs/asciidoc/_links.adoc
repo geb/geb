@@ -104,6 +104,7 @@
 :email-input-api: link:api/geb/module/EmailInput.html[EmailInput]
 :tel-input-api: link:api/geb/module/TelInput.html[TelInput]
 :number-input-api: link:api/geb/module/NumberInput.html[NumberInput]
+:range-input-api: link:api/geb/module/RangeInput.html[RangeInput]
 :url-input-api: link:api/geb/module/UrlInput.html[UrlInput]
 :password-input-api: link:api/geb/module/PasswordInput.html[PasswordInput]
 :color-input-api: link:api/geb/module/ColorInput.html[ColorInput]
