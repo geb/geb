@@ -100,6 +100,7 @@
 :date-input-api: link:api/geb/module/DateInput.html[DateInput]
 :datetime-local-input-api: link:api/geb/module/DateTimeLocalInput.html[DateTimeLocalInput]
 :time-input-api: link:api/geb/module/TimeInput.html[TimeInput]
+:week-input-api: link:api/geb/module/WeekInput.html[WeekInput]
 :email-input-api: link:api/geb/module/EmailInput.html[EmailInput]
 :tel-input-api: link:api/geb/module/TelInput.html[TelInput]
 :number-input-api: link:api/geb/module/NumberInput.html[NumberInput]

@@ -89,6 +89,7 @@ This page lists the high level changes between versions of Geb.
 * Added form control module for color inputs. [issue:549[]]
 * Added form control module for datetime-local inputs. [issue:550[]]
 * Added form control module for time inputs. [issue:554[]]
+* Added form control module for week inputs. [issue:553[]]
 
 === 2.2
 
