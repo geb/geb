@@ -15,8 +15,7 @@
  */
 package geb.module
 
-class NumberInput extends NumberLikeInput {
-
-    final String inputType = "number"
-
+class RangeInputBaseSpec extends InputBasedModuleSpec<RangeInput> {
+    final String inputType = "range"
+    final String otherInputType = "checkbox"
 }
