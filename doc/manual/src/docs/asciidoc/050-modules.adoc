@@ -482,6 +482,31 @@ include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=example
 include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_string,indent=0]
 ----
 
+=== `MonthInput`
+
+The `{month-input-api}` module provides property methods for setting and retrieving the month of a month input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used either with a `java.time.YearMonth` object…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_month,indent=0]
+----
+
+…or with a string…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_string,indent=0]
+----
+
 === `EmailInput`
 
 The `{email-input-api}` module provides property methods for setting and retrieving text of an email input element.
