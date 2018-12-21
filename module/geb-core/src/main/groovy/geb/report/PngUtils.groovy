@@ -12,23 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package geb.report;
-
-import java.io.DataInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+package geb.report
 
 class PngUtils {
 
-    static public boolean isPng(byte[] bytes) {
+    static boolean isPng(byte[] bytes) {
         try {
-            return new DataInputStream(new ByteArrayInputStream(bytes)).readLong() == 0x89504e470d0a1a0aL;
+            new DataInputStream(new ByteArrayInputStream(bytes)).readLong() == 0x89504e470d0a1a0aL
         } catch (IOException e) {
             // not going to happen
-            return false;
+            false
         }
-
     }
 
 }
