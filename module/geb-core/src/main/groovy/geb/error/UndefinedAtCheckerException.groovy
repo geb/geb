@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-public class ModuleInstanceNotInitializedException extends GebException {
+class UndefinedAtCheckerException extends GebException {
 
-    public ModuleInstanceNotInitializedException(String message) {
-        super(message);
+    UndefinedAtCheckerException(String className) {
+        super("No at checker has been defined for page class $className.")
     }
 }

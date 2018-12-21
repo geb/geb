@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-public class UnsupportedFilteringCssSelectorException extends GebException {
-
-    public UnsupportedFilteringCssSelectorException(String selector, String message) {
-        super(String.format("%s is not supported as a selector for filtering. %s", selector, message));
+class InvalidCssSelectorException extends GebException {
+    InvalidCssSelectorException(String selector, Throwable cause) {
+        super("$selector is not a valid CSS selector", cause)
     }
-
 }

@@ -1,10 +1,11 @@
-/* Copyright 2009 the original author or authors.
+/*
+ * Copyright 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.driver;
+package geb.error
 
-import geb.error.GebException;
-
-public class DriverCreationException extends GebException {
-
-    public DriverCreationException(Object message) {
-        super(message);
+class UnableToSetElementException extends GebException {
+    UnableToSetElementException(String element) {
+        super("Unable to set the value of element $element as it is not a valid form element")
     }
 
-    public DriverCreationException(Object message, Throwable cause) {
-        super(message, cause);
+    UnableToSetElementException(String... elements) {
+        super("Unable to set the value of elements ${elements.join(', ')} as they are not valid form elements")
     }
-
 }

@@ -1,4 +1,5 @@
-/* Copyright 2009 the original author or authors.
+/*
+ * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.download
 
-public class GebAssertionError extends AssertionError {
+import geb.error.GebException
 
-    public GebAssertionError(Object detailMessage) {
-        super(detailMessage.toString());
+class DownloadException extends GebException {
+
+    final HttpURLConnection connection
+
+    DownloadException(HttpURLConnection connection, CharSequence message) {
+        this(connection, message, null)
     }
 
-    public GebAssertionError(Object detailMessage, Throwable cause) {
-        super(detailMessage.toString(), cause);
+    DownloadException(HttpURLConnection connection, CharSequence message, Throwable cause) {
+        super(message, cause)
+        this.connection = connection
     }
-
 }

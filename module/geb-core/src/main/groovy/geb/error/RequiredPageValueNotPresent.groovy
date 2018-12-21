@@ -10,22 +10,18 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
-* limitations under the License.
+ * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-public class GebException extends Exception {
+import geb.content.PageContentTemplate
 
-    public GebException(Object message) {
-        this(message, null);
+class RequiredPageValueNotPresent extends GebAssertionError {
+
+    final PageContentTemplate template
+
+    RequiredPageValueNotPresent(PageContentTemplate template, Object[] args) {
+        super("Template '$template' returned null for args: '$args'")
+        this.template = template
     }
-
-    public GebException(Object message, Throwable cause) {
-        super(message == null ? null : message.toString(), cause);
-    }
-
-    public GebException(Throwable cause) {
-        this(null, cause);
-    }
-
 }

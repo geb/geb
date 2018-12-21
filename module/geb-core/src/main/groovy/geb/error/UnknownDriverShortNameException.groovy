@@ -12,18 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-import geb.content.PageContentContainer;
+class UnknownDriverShortNameException extends GebException {
 
-public class InvalidPageContent extends GebException {
-
-    public InvalidPageContent(Object message) {
-        super(message);
-    }
-
-    public InvalidPageContent(PageContentContainer container, String contentName, Object message) {
-        super(String.format("Definition of content template '%s' of '%s' %s", contentName, container, message));
+    UnknownDriverShortNameException(String unknown, String[] knowns) {
+        super("The value '$unknown' is not a valid driver short name (valid: ${knowns.join((', '))})")
     }
 
 }

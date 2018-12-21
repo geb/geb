@@ -1,5 +1,4 @@
-/*
- * Copyright 2011 the original author or authors.
+/* Copyright 2009 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-public class NoBaseUrlDefinedException extends GebException {
+import geb.Browser
+import geb.PageChangeListener
 
-    public NoBaseUrlDefinedException() {
-        super("There is no base URL configured and it was requested. Please see the Geb manual for different ways of managing the base URL (quick solution: you can set the 'geb.build.baseUrl' JVM system property)");
+class PageChangeListenerAlreadyRegisteredException extends GebException {
+
+    PageChangeListenerAlreadyRegisteredException(Browser browser, PageChangeListener listener) {
+        super("Attempt to register duplicate page change listener '$listener' for browser '$browser'")
     }
 
 }

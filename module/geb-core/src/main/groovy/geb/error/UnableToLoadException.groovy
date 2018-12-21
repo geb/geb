@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-public class PageInstanceNotInitializedException extends GebException {
+class UnableToLoadException extends GebException {
+    UnableToLoadException(URL configLocation, String environment, Throwable cause) {
+        super("Unable to load configuration @ '$configLocation' (with environment: $environment)", cause)
+    }
 
-    public PageInstanceNotInitializedException(String message) {
-        super(message);
+    UnableToLoadException(Class configClass, String environment, Throwable cause) {
+        super("Unable to load configuration from class '$configClass' (with environment: $environment)")
     }
 }

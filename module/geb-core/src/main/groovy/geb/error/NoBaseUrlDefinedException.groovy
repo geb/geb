@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.download;
+package geb.error
 
-import geb.error.GebException;
+class NoBaseUrlDefinedException extends GebException {
 
-import java.net.HttpURLConnection;
-
-public class DownloadException extends GebException {
-
-    final private HttpURLConnection connection;
-
-    public DownloadException(HttpURLConnection connection, CharSequence message) {
-        this(connection, message, null);
+    NoBaseUrlDefinedException() {
+        super("There is no base URL configured and it was requested. Please see the Geb manual for different ways of managing the base URL " +
+                "(quick solution: you can set the 'geb.build.baseUrl' JVM system property)")
     }
 
-    public DownloadException(HttpURLConnection connection, CharSequence message, Throwable cause) {
-        super(message, cause);
-        this.connection = connection;
-    }
-
-    public HttpURLConnection getConnection() {
-        return connection;
-    }
 }

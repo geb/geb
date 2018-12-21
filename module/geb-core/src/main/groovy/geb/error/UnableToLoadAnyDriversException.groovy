@@ -12,14 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.error;
+package geb.error
 
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+class UnableToLoadAnyDriversException extends GebException {
 
-public class UnableToLoadAnyDriversException extends GebException {
-
-    public UnableToLoadAnyDriversException(String[] attemptedDriverClassNames) {
-        super(String.format("Unable to load any drivers from: [%s]", DefaultGroovyMethods.join(attemptedDriverClassNames, ", ")));
+    UnableToLoadAnyDriversException(String[] attemptedDriverClassNames) {
+        super("Unable to load any drivers from: [${attemptedDriverClassNames.join(', ')}]")
     }
 
 }
