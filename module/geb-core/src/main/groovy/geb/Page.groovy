@@ -129,7 +129,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
-    //manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
+    @Delegate
     private Navigable navigableSupport = new UninitializedNavigableSupport(this)
 
     /**
@@ -319,20 +319,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     void onUnload(Page nextPage) {
     }
 
-    Navigator find() {
-        navigableSupport.find()
-    }
-
     Navigator $() {
         navigableSupport.$()
-    }
-
-    Navigator find(int index) {
-        navigableSupport.find(index)
-    }
-
-    Navigator find(Range<Integer> range) {
-        navigableSupport.find(range)
     }
 
     Navigator $(int index) {
@@ -343,20 +331,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.$(range)
     }
 
-    Navigator find(String selector) {
-        navigableSupport.find(selector)
-    }
-
     Navigator $(String selector) {
         navigableSupport.$(selector)
-    }
-
-    Navigator find(String selector, int index) {
-        navigableSupport.find(selector, index)
-    }
-
-    Navigator find(String selector, Range<Integer> range) {
-        navigableSupport.find(selector, range)
     }
 
     Navigator $(String selector, int index) {
@@ -367,20 +343,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.$(selector, range)
     }
 
-    Navigator find(Map<String, Object> attributes) {
-        navigableSupport.find(attributes)
-    }
-
     Navigator $(Map<String, Object> attributes) {
         navigableSupport.$(attributes)
-    }
-
-    Navigator find(Map<String, Object> attributes, int index) {
-        navigableSupport.find(attributes, index)
-    }
-
-    Navigator find(Map<String, Object> attributes, Range<Integer> range) {
-        navigableSupport.find(attributes, range)
     }
 
     Navigator $(Map<String, Object> attributes, int index) {
@@ -391,20 +355,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.$(attributes, range)
     }
 
-    Navigator find(Map<String, Object> attributes, String selector) {
-        navigableSupport.find(attributes, selector)
-    }
-
     Navigator $(Map<String, Object> attributes, String selector) {
         navigableSupport.$(attributes, selector)
-    }
-
-    Navigator find(Map<String, Object> attributes, String selector, int index) {
-        navigableSupport.$(attributes, selector, index)
-    }
-
-    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
-        navigableSupport.find(attributes, selector, range)
     }
 
     Navigator $(Map<String, Object> attributes, String selector, int index) {
@@ -419,15 +371,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.find(attributes, bySelector)
     }
 
-    Navigator find(Map<String, Object> attributes, By bySelector) {
-        navigableSupport.find(attributes, bySelector)
-    }
-
     Navigator $(Map<String, Object> attributes, By bySelector, int index) {
-        navigableSupport.find(attributes, bySelector, index)
-    }
-
-    Navigator find(Map<String, Object> attributes, By bySelector, int index) {
         navigableSupport.find(attributes, bySelector, index)
     }
 
@@ -435,15 +379,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.find(attributes, bySelector, range)
     }
 
-    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-        navigableSupport.find(attributes, bySelector, range)
-    }
-
     Navigator $(By bySelector) {
-        navigableSupport.find(bySelector)
-    }
-
-    Navigator find(By bySelector) {
         navigableSupport.find(bySelector)
     }
 
@@ -451,15 +387,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.find(bySelector, index)
     }
 
-    Navigator find(By bySelector, int index) {
-        navigableSupport.find(bySelector, index)
-    }
-
     Navigator $(By bySelector, Range<Integer> range) {
-        navigableSupport.find(bySelector, range)
-    }
-
-    Navigator find(By bySelector, Range<Integer> range) {
         navigableSupport.find(bySelector, range)
     }
 
@@ -469,16 +397,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
 
     Navigator $(WebElement[] elements) {
         navigableSupport.$(elements)
-    }
-
-    @Override
-    <T extends Module> T module(Class<T> moduleClass) {
-        navigableSupport.module(moduleClass)
-    }
-
-    @Override
-    <T extends Module> T module(T module) {
-        navigableSupport.module(module)
     }
 
     @Override
