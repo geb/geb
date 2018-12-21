@@ -15,15 +15,8 @@
 package geb.driver
 
 import geb.error.GebException
+import groovy.transform.InheritConstructors
 
+@InheritConstructors
 class DriverCreationException extends GebException {
-
-    DriverCreationException(Object message) {
-        super(message)
-    }
-
-    DriverCreationException(Object message, Throwable cause) {
-        super(message, cause)
-    }
-
 }

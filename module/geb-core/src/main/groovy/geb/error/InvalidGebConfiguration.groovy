@@ -15,13 +15,8 @@
  */
 package geb.error
 
+import groovy.transform.InheritConstructors
+
+@InheritConstructors
 class InvalidGebConfiguration extends GebException {
-
-    InvalidGebConfiguration(Object message) {
-        super(message)
-    }
-
-    InvalidGebConfiguration(Object message, Throwable cause) {
-        super(message, cause)
-    }
 }
