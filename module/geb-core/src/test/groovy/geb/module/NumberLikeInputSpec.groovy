@@ -29,14 +29,6 @@ abstract class NumberLikeInputSpec extends GebSpecWithCallbackServer {
         input.number == 2
     }
 
-    def "can use left shift on the module"() {
-        when:
-        input << "2.1"
-
-        then:
-        input.number == 2.1
-    }
-
     def "getting and setting text on an empty navigator based number input"() {
         given:
         def input = $("i-dont-exist").module(NumberInput)

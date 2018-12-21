@@ -63,4 +63,12 @@ class NumberInputSpec extends NumberLikeInputSpec {
         input.step == 0.5
     }
 
+    def "can use left shift on the module"() {
+        when:
+        input << "2.1"
+
+        then:
+        input.number == 2.1
+    }
+
 }
