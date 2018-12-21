@@ -115,6 +115,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     @Delegate
     private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
 
+    @Delegate
     private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
 
     @Delegate
@@ -397,26 +398,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
 
     Navigator $(WebElement[] elements) {
         navigableSupport.$(elements)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
-        waitingSupport.waitFor(params, waitPreset, block)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], Closure<T> block) {
-        waitingSupport.waitFor(params, block)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
-        waitingSupport.waitFor(params, timeout, block)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
-        waitingSupport.waitFor(params, timeout, interval, block)
     }
 
     /**
