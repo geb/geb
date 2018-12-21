@@ -38,6 +38,7 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
                 <body>
                     <a href="/$other" id="$path">$other</a>
                     <div id="uri">$req.requestURI</div>
+                    <input type="text" name="input"></input>
                 </body>
             </html>"""
         }
@@ -450,6 +451,11 @@ Caused by: Assertion failed:.*
         to(PageOrientedSpecPageWithContent).contentNames == ['simple', 'parameterized'].toSet()
     }
 
+    def "accessing focused element in content definition"() {
+        expect:
+        to(PageOrientedSpecPageA).focusedContent.focused
+    }
+
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -477,6 +483,7 @@ class PageOrientedSpecPageA extends Page {
         notPresentRequired { $("div#nonexistant") }
         notPresentNotRequired(required: false) { $("div#nonexistant") }
         notPresentNotRequiredWithWait(required: false, wait: 0.1) { $("div#nonexistant") }
+        focusedContent { focused() }
     }
 }
 

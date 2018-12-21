@@ -31,6 +31,7 @@ class ModulesSpec extends GebSpecWithCallbackServer {
                     div('class': 'd') { p('d') }
                 }
                 div { p('some text') }
+                input(type: "text", name: "input")
             }
         }
     }
@@ -175,6 +176,15 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         baseUsingMatcher
     }
 
+    def 'base definitions have access to focused elements'() {
+        when:
+        to ModulesSpecPage
+        input.click()
+
+        then:
+        baseUsingFocused.focused
+    }
+
     @Unroll
     def "exception should be thrown when support class #className methods are used on an uninitialized module instance"() {
         def moduleInstance = new ModulesSpecDivModuleNoLocator()
@@ -236,7 +246,11 @@ class ModulesSpecPage extends Page {
         // A module whose inner module is defined by the owner module's base
         divCWithRelativeInner { module ModulesSpecDivModuleWithNestedDivRelativeToModuleBase }
 
+        input { $("input") }
+
         badBase { module ModulesSpecBadBase }
+
+        baseUsingFocused { module ModulesSpecBaseUsingFocused }
 
         instanceMethod { module InstanceMethodModule }
 
@@ -297,6 +311,10 @@ class ModulesSpecBaseUsingTextMatcher extends Module {
 
 class ModulesSpecBadBase extends Module {
     static base = { 1 }
+}
+
+class ModulesSpecBaseUsingFocused extends Module {
+    static base = { focused() }
 }
 
 class InstanceMethodModule extends Module {

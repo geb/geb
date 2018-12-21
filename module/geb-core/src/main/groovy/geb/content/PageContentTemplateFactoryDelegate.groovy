@@ -31,7 +31,7 @@ class PageContentTemplateFactoryDelegate {
 
     PageContentTemplateFactoryDelegate(PageContentTemplate template) {
         this.template = template
-        this.navigableSupport = new NavigableSupport(template.navigatorFactory)
+        this.navigableSupport = new NavigableSupport(template.navigatorFactory, template.browser.driver.switchTo())
     }
 
     def methodMissing(String name, args) {

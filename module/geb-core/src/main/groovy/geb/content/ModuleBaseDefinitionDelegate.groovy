@@ -19,6 +19,7 @@ import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
 import org.openqa.selenium.By
+import org.openqa.selenium.WebDriver.TargetLocator
 import org.openqa.selenium.WebElement
 
 class ModuleBaseDefinitionDelegate {
@@ -32,9 +33,9 @@ class ModuleBaseDefinitionDelegate {
     @Delegate
     private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
-    ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, Map params) {
+    ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, TargetLocator targetLocator, Map params) {
         this.params = params
-        navigableSupport = new NavigableSupport(navigatorFactory)
+        this.navigableSupport = new NavigableSupport(navigatorFactory, targetLocator)
         this.module = module
     }
 

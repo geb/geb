@@ -220,6 +220,11 @@ class UninitializedNavigableSupport implements Navigable {
     }
 
     @Override
+    Navigator focused() {
+        throw initializable.uninitializedException()
+    }
+
+    @Override
     <T extends Module> T module(Class<T> moduleClass) {
         throw initializable.uninitializedException()
     }

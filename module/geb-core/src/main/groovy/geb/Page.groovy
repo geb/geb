@@ -142,7 +142,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         this.browser = browser
         def contentTemplates = PageContentTemplateBuilder.build(browser, this, browser.navigatorFactory, 'content', this.class, Page)
         pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, browser.navigatorFactory)
-        navigableSupport = new NavigableSupport(browser.navigatorFactory)
+        navigableSupport = new NavigableSupport(browser.navigatorFactory, browser.driver.switchTo())
         downloadSupport = new DefaultDownloadSupport(browser)
         waitingSupport = new DefaultWaitingSupport(browser.config)
         frameSupport = new DefaultFrameSupport(browser)

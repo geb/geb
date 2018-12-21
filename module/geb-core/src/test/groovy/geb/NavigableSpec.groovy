@@ -207,6 +207,17 @@ class NavigableSpec extends GebSpecWithCallbackServer {
         $("p")*.@class == ['a', 'b', 'c']
     }
 
+    def "obtaining a navigator for the focused element"() {
+        given:
+        def input = $("input")
+
+        when:
+        input.click()
+
+        then:
+        focused() == input
+    }
+
 }
 
 class NavigableSupportSpecPage extends Page {
