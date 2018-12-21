@@ -15,8 +15,6 @@
  */
 package geb.module
 
-import spock.lang.Unroll
-
 class NumberInputSpec extends NumberLikeInputSpec {
 
     def setup() {
@@ -35,32 +33,6 @@ class NumberInputSpec extends NumberLikeInputSpec {
             input.value() == ""
             input.number == null
         }
-    }
-
-    @Unroll
-    def 'set #number'() {
-        when:
-        input.number = number
-
-        then:
-        input.number == number
-
-        and:
-        input.value() == "${number}"
-
-        where:
-        number << [-2.5, 0, 1, 2.5]
-    }
-
-    def 'get min, max and step'() {
-        expect:
-        input.min == -2.5
-
-        and:
-        input.max == 2.5
-
-        and:
-        input.step == 0.5
     }
 
     def "can use left shift on the module"() {

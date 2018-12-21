@@ -18,7 +18,6 @@ package geb.module
 import geb.test.browsers.Chrome
 import geb.test.browsers.Firefox
 import geb.test.browsers.RequiresRealBrowser
-import spock.lang.Unroll
 
 @Chrome
 @Firefox
@@ -27,7 +26,7 @@ class RangeInputSpec extends NumberLikeInputSpec {
 
     def setup() {
         html {
-            input(type: "range", min: "0", max: "10", step: "0.1")
+            input(type: "range", min: "-2.5", max: "2.5", step: "0.5")
         }
     }
 
@@ -38,35 +37,9 @@ class RangeInputSpec extends NumberLikeInputSpec {
     def 'unset the value is half'() {
         expect:
         verifyAll {
-            input.value() == "5"
-            input.number == 5
+            input.value() == "0"
+            input.number == 0
         }
-    }
-
-    @Unroll
-    def 'set #number'() {
-        when:
-        input.number = number
-
-        then:
-        input.number == number
-
-        and:
-        input.value() == "${number}"
-
-        where:
-        number << [0, 5.1, 10]
-    }
-
-    def 'get min, max and step'() {
-        expect:
-        input.min == 0
-
-        and:
-        input.max == 10
-
-        and:
-        input.step == 0.1
     }
 
 }

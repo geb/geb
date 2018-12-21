@@ -16,17 +16,36 @@
 package geb.module
 
 import geb.test.GebSpecWithCallbackServer
+import spock.lang.Unroll
 
 abstract class NumberLikeInputSpec extends GebSpecWithCallbackServer {
 
     abstract NumberLikeInput getInput()
 
-    def "getting and setting number"() {
+    @Unroll
+    def 'set #number'() {
         when:
-        input.number = 2
+        input.number = number
 
         then:
-        input.number == 2
+        input.number == number
+
+        and:
+        input.value() == "${number}"
+
+        where:
+        number << [-2.5, 0, 1, 2.5]
+    }
+
+    def 'get min, max and step'() {
+        expect:
+        input.min == -2.5
+
+        and:
+        input.max == 2.5
+
+        and:
+        input.step == 0.5
     }
 
     def "getting and setting text on an empty navigator based number input"() {
