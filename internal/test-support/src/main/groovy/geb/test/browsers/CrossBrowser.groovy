@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.test.browsers;
+package geb.test.browsers
 
-import java.lang.annotation.*;
+import java.lang.annotation.*
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target([ElementType.TYPE, ElementType.METHOD])
 @Inherited
-public @interface CrossBrowser {
+@interface CrossBrowser {
 }
