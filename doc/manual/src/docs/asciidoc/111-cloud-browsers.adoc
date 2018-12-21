@@ -151,20 +151,16 @@ buildscript { //<2>
     }
 }
 
-repositories { //<3>
-    maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
-}
-
-dependencies { //<4>
-    sauceConnect "com.saucelabs:ci-sauce:1.81"
+dependencies { //<3>
+    sauceConnect "com.saucelabs:ci-sauce:1.141"
 }
 
 sauceLabs {
-    browsers { //<5>
+    browsers { //<4>
        firefox_linux_19
        chrome_mac
        delegate."internet explorer_vista_9"
-       nexus4 { //<6>
+       nexus4 { //<5>
          capabilities(
             browserName: "android",
             platform: "Linux",
@@ -173,34 +169,33 @@ sauceLabs {
          )
        }
     }
-    task { //<7>
+    task { //<6>
        testClassesDir = test.testClassesDir
        testSrcDirs = test.testSrcDirs
        classpath = test.classpath
     }
-    account { //<8>
+    account { //<7>
        username = System.getenv(SauceAccount.USER_ENV_VAR)
        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
     }
-    connect { //<9>
-       port = 4444 //<10>
-       additionalOptions = ['--proxy', 'proxy.example.com:8080'] //<11>
+    connect { //<8>
+       port = 4444 //<9>
+       additionalOptions = ['--proxy', 'proxy.example.com:8080'] //<10>
     }
 }
 ----
 <1> Apply the plugin to the build.
 <2> Specify how to resolve the plugin.
-<3> Declare a repository for resolving SauceConnect.
-<4> Declare version of SauceConnect to be used as part of the `sauceConnect` configuration. This will be used by tasks that open a {sauce-connect} tunnel before
+<3> Declare version of SauceConnect to be used as part of the `sauceConnect` configuration. This will be used by tasks that open a {sauce-connect} tunnel before
 running the generated test tasks which means that the browsers in the cloud will have localhost pointing at the machine running the build.
-<5> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
+<4> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
 `internet explorerVista9Test`.
-<6> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
-<7> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<8> Pass credentials for {sauce-connect}.
-<9> Additionally configure {sauce-connect} if desired.
-<10> Override the port used by SauceConnect, defaults to 4445.
-<11> Pass additional link:https://docs.saucelabs.com/reference/sauce-connect/#command-line-options[command line options] to SauceConnect.
+<5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
+<6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+<7> Pass credentials for {sauce-connect}.
+<8> Additionally configure {sauce-connect} if desired.
+<9> Override the port used by SauceConnect, defaults to 4445.
+<10> Pass additional link:https://docs.saucelabs.com/reference/sauce-connect/#command-line-options[command line options] to SauceConnect.
 
 [TIP]
 ====

@@ -12,10 +12,6 @@ buildscript {
 apply plugin: "geb-browserstack"
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
-repositories {
-    maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
-}
-
 dependencies {
     compile seleniumDependency, seleniumSupportDependency
 

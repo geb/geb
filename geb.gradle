@@ -62,7 +62,7 @@ allprojects { project ->
 
         jsoupDependency = "org.jsoup:jsoup:1.11.2"
 
-        sauceConnectDependency = "com.saucelabs:ci-sauce:1.128"
+        sauceConnectDependency = "com.saucelabs:ci-sauce:1.141"
 
         repositories {
             mavenCentral()

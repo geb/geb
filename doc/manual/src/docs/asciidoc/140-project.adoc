@@ -85,6 +85,8 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== New features
+
 * Added form control modules for url, password and number inputs. [issue:548[]]
 * Added form control module for color inputs. [issue:549[]]
 * Added form control module for datetime-local inputs. [issue:550[]]
@@ -92,6 +94,10 @@ This page lists the high level changes between versions of Geb.
 * Added form control module for month inputs. [issue:552[]]
 * Added form control module for range inputs. [issue:551[]]
 * Added form control module for week inputs. [issue:553[]]
+
+==== Fixes
+
+* Compatibility with latest Sauce Connect. [issue:559[]]
 
 === 2.2
 
