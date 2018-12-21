@@ -115,7 +115,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "larger interval than timeout throwing exception - when called on #subjectName"() {
         given:
-        js.showIn(0.2)
+        js.showIn(0.3)
 
         when:
         subjectFactory().waitFor(0.1, 1) { assert !$("div").empty; true }
