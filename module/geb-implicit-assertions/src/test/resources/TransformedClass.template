@@ -11,6 +11,13 @@ class TestClass {
         closure.call()
     }
 
+    def verifyAt() {
+        Closure verifier = getClass().at.clone()
+        verifier.delegate = this
+        verifier.resolveStrategy = Closure.DELEGATE_FIRST
+        verifier.call()
+    }
+
     def at(Class type, Closure closure) {
         closure.call()
     }
@@ -19,7 +26,10 @@ class TestClass {
         returned
     }
 
-    static void voidMethod() {
+    void voidMethod() {
+    }
+
+    static void staticVoidMethod() {
     }
 
     String nullReturningMethod() {
