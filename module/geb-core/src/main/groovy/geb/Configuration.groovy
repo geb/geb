@@ -570,6 +570,22 @@ class Configuration {
         rawConfig.withNewWindow.wait = wait
     }
 
+    /**
+     * Sets the {@code requirePageAtCheckers} flag explicitly, overwriting any value from the config script.
+     */
+    void setRequirePageAtCheckers(boolean requirePageAtCheckers) {
+        rawConfig.requirePageAtCheckers = requirePageAtCheckers
+    }
+
+    /**
+     * Whether or not to throw an exception when implicit "at checks" are being performed and the checked page does not define an "at check".
+     *
+     * @return the config value for {@code requirePageAtCheckers}, defaulting to {@code false} if not set.
+     */
+    boolean getRequirePageAtCheckers() {
+        rawConfig.requirePageAtCheckers
+    }
+
     WithNewWindowConfiguration getWithNewWindowConfig() {
         def raw = rawConfig.withNewWindow
         WithNewWindowConfiguration.builder()

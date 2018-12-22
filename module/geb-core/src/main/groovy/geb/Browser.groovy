@@ -355,7 +355,7 @@ class Browser {
      *
      * @return an initialized page instance set as the current page
      */
-     Page page(Page[] potentialPageInstances) {
+    Page page(Page[] potentialPageInstances) {
         checkIfAtAnUnexpectedPage(potentialPageInstances)
         verifyPages(potentialPageInstances.collect { initialisePage(it) })
     }
@@ -557,7 +557,7 @@ class Browser {
      */
     public <T extends Page> T to(Map params = [:], T page, UrlFragment fragment, Object[] args) {
         via(params, page, fragment, args)
-        page.at ? at(page) : page
+        page.shouldVerifyAtImplicitly ? at(page) : page
     }
 
     /**
@@ -788,7 +788,9 @@ class Browser {
         def newWindow = executeNewWindowOpening(windowOpeningBlock, wait)
         try {
             switchToWindow(newWindow)
-            verifyAtIfPresent(options.page)
+            if (options.page) {
+                verifyAtIfPresent(options.page)
+            }
 
             block.call()
         } finally {
@@ -938,7 +940,9 @@ class Browser {
 
     protected doWithWindow(Map options, Closure block) {
         try {
-            verifyAtIfPresent(options.page)
+            if (options.page) {
+                verifyAtIfPresent(options.page)
+            }
 
             block.call()
         } finally {
@@ -1042,15 +1046,17 @@ class Browser {
         absolute
     }
 
-    protected void verifyAtIfPresent(def targetPage) {
-        if (targetPage) {
-            if (targetPage.at) {
-                if (!at(targetPage)) {
-                    throw new UnexpectedPageException(targetPage)
-                }
-            } else {
-                page(targetPage)
+    protected void verifyAtIfPresent(Class<? extends Page> targetPage) {
+        verifyAtIfPresent(createPage(targetPage))
+    }
+
+    protected void verifyAtIfPresent(Page targetPage) {
+        if (targetPage.shouldVerifyAtImplicitly) {
+            if (!at(targetPage)) {
+                throw new UnexpectedPageException(targetPage)
             }
+        } else {
+            page(targetPage)
         }
     }
 

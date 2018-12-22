@@ -95,6 +95,7 @@ This page lists the high level changes between versions of Geb.
 * Added form control module for range inputs. [issue:551[]]
 * Added form control module for week inputs. [issue:553[]]
 * Added `focused()` method on `Navigable` which obtains a `Navigator` wrapping the active (focused) `WebElement`. [issue:553[]]
+* Ability to require at checkers to be defined even for pages that are implicitly at checked. [issue:541[]]
 
 ==== Fixes
 

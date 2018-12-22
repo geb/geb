@@ -236,6 +236,18 @@ The possible values for the `atCheckWaiting` property are consistent with the <<
 
 This global setting can also be overridden on a <<page-level-at-check-waiting,per page class basis>>.
 
+[[require-page-at-checkers]]
+=== Requiring “at” checkers for implicit “at” checks
+
+When explicitly “at” checking a page, that is passing it to `Browser`'s `at()` method, which does not define an “at” checker an `UndefinedAtCheckerException` is thrown.
+That is not the case by default when implicit “at checks” are being performed, like when using Browser`'s `to()` method.
+This behaviour can be changed to also throw `UndefinedAtCheckerException` when implicit “at checks” are being performed and the page does not define an “at” checker by setting `requirePageAtCheckers` config property to a "truthy" value:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/RequirePageAtCheckersConfigSpec.groovy[tag=config,indent=0]
+----
+
 === Waiting for base navigator
 
 Sometimes Firefox driver times out when trying to find the root HTML element of the page. This manifests itself in an error similar to:
