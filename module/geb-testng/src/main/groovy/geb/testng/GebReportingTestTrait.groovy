@@ -39,7 +39,6 @@ trait GebReportingTestTrait extends GebTestTrait {
         reportNumberInTestMethod += 1
     }
 
-    @SuppressWarnings("GroovyUnusedDeclaration")
     @BeforeClass
     void initReportGroupDir() {
         browser.reportGroup getClass()

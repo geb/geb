@@ -37,7 +37,7 @@ class PageContentTemplate {
         this.browser = browser
         this.owner = owner
         this.name = name
-        this.params = new PageContentTemplateParams(this, name, params)
+        this.params = new PageContentTemplateParams(this, name, params, browser.config.templateOptions)
         this.factory = factory
         this.navigatorFactory = navigatorFactory
     }

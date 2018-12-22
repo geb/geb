@@ -49,7 +49,7 @@ class AtCheckWaitingSpec extends WaitingSpec {
         via AtCheckWaitingSpecPage
 
         when:
-        js.showIn(0.3)
+        js.showIn(0.1)
 
         then:
         at AtCheckWaitingSpecPage
@@ -64,7 +64,7 @@ class AtCheckWaitingSpec extends WaitingSpec {
         via AtCheckWaitingSpecPage
 
         when:
-        js.showIn(0.3)
+        js.showIn(0.1)
 
         then:
         at AtCheckWaitingSpecPage
@@ -99,7 +99,7 @@ class AtCheckWaitingSpec extends WaitingSpec {
         via AtCheckWaitingDefinedInPage
 
         when:
-        js.showIn(0.5)
+        js.showIn(0.1)
 
         then:
         isAt(AtCheckWaitingDefinedInPage)
@@ -111,7 +111,7 @@ class AtCheckWaitingSpec extends WaitingSpec {
         via AtCheckWaitingDefinedInPage
 
         when:
-        js.showIn(0.5)
+        js.showIn(0.15)
 
         then:
         isAt(AtCheckWaitingDefinedInPage)
@@ -123,7 +123,7 @@ class AtCheckWaitingSpec extends WaitingSpec {
         via pageClass
 
         when:
-        js.showIn(0.2)
+        js.showIn(0.1)
 
         then:
         browser.page.verifyAtSafely()

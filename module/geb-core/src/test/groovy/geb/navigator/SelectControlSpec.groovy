@@ -15,8 +15,8 @@
  */
 package geb.navigator
 
-import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
+import geb.test.browsers.CrossBrowser
 
 @CrossBrowser
 class SelectControlSpec extends GebSpecWithCallbackServer {
@@ -172,28 +172,6 @@ class SelectControlSpec extends GebSpecWithCallbackServer {
         e.message == "Couldn't select option with text or value: o3, available texts: [o1, o2], available values: [o1, o2]"
     }
 
-    def "multiselect deselecting"() {
-        given:
-        html {
-            select(name: "s1", multiple: "multiple") {
-                option(value: "o1", "o1", selected: "selected")
-                option(value: "o2", "o2")
-            }
-            select(name: "s2", multiple: "multiple") {
-                option(value: "o1", "o1")
-                option(value: "o2", "o2", selected: "selected")
-            }
-        }
-
-        when:
-        $().s1 = null
-        $().s2 = []
-
-        then:
-        $().s1 == []
-        $().s2 == []
-    }
-
     def "multiSelect - set by value"() {
         given:
         html {
@@ -260,12 +238,6 @@ class SelectControlSpec extends GebSpecWithCallbackServer {
 
         then:
         $().s1().value() == ["o1"]
-
-        when:
-        $().s1 = ["t1", "t2"]
-
-        then:
-        $().s1().value() == ["o1", "o2"]
 
         when:
         $().s1 = ["t1", "o1"]

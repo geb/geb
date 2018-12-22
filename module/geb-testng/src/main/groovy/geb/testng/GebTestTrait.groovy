@@ -47,8 +47,12 @@ trait GebTestTrait {
 
     @AfterMethod
     void resetBrowser() {
-        if (browser?.config?.autoClearCookies) {
-            browser?.clearCookiesQuietly()
+        def config = browser?.config
+        if (config?.autoClearCookies) {
+            browser.clearCookiesQuietly()
+        }
+        if (config?.autoClearWebStorage) {
+            browser.clearWebStorage()
         }
         browser = null
     }

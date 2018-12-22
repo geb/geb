@@ -34,7 +34,7 @@ class SauceConnect extends ExternalTunnel {
 
     File getSauceConnectExecutable() {
         def operations = new SauceConnectOperations(connectConfiguration)
-        def directory = new File(sauceConnectDir, operations.operatingSystem.directory)
+        def directory = new File(sauceConnectDir, operations.directory)
         new File(directory, operations.operatingSystem.executable)
     }
 

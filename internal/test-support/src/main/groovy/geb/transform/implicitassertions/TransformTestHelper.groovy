@@ -41,7 +41,6 @@ class TransformTestHelper {
     protected configure(Transforms transforms) {
     }
 
-    @SuppressWarnings('SpaceAfterClosingBrace')
     private class TestHarnessClassLoader extends GroovyClassLoader {
         protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource codeSource) {
             CompilationUnit cu = super.createCompilationUnit(config, codeSource)

@@ -24,8 +24,6 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4)
 class GebReportingTestTest extends GebReportingTest {
 
-    def server = new CallbackHttpServer()
-
     static private counter = 0
 
     static responseText = """
@@ -35,6 +33,8 @@ class GebReportingTestTest extends GebReportingTest {
         </body>
         </html>
     """
+
+    def server = new CallbackHttpServer()
 
     @Before
     void setUp() {

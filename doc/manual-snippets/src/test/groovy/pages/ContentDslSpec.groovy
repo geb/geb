@@ -144,11 +144,11 @@ class PageWithContentReuse extends Page {
 
 // tag::page_with_content_using_a_field[]
 class PageWithContentUsingAField extends Page {
-    def divId = "a"
-
     static content = {
         theDiv { $('div', id: divId) }
     }
+
+    def divId = "a"
 }
 // end::page_with_content_using_a_field[]
 

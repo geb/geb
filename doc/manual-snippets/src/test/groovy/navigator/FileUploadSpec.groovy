@@ -32,6 +32,22 @@ class FileUploadSpec extends GebSpecWithCallbackServer {
     @Rule
     TemporaryFolder dir = new TemporaryFolder()
 
+    def "uploadig a file"() {
+        given:
+        def uploadedFile = dir.newFile() << "from file"
+        setupServer()
+
+        when:
+        go()
+        // tag::upload[]
+        $("form").csvFile = uploadedFile.absolutePath
+        // end::upload[]
+        $('form input[type="submit"]').click()
+
+        then:
+        $().text() == "from file"
+    }
+
     private void setupServer() {
         responseHtml """
             <html>
@@ -56,22 +72,6 @@ class FileUploadSpec extends GebSpecWithCallbackServer {
         def fileItemFactory = new DiskFileItemFactory()
         def files = new ServletFileUpload(fileItemFactory).parseRequest(request)
         files.first().inputStream.text
-    }
-
-    def "uploadig a file"() {
-        given:
-        def uploadedFile = dir.newFile() << "from file"
-        setupServer()
-
-        when:
-        go()
-        // tag::upload[]
-        $("form").csvFile = uploadedFile.absolutePath
-        // end::upload[]
-        $('form input[type="submit"]').click()
-
-        then:
-        $().text() == "from file"
     }
 
 }

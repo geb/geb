@@ -49,10 +49,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         this.contextElements = contextElements.toList().asImmutable()
     }
 
-    protected Navigator navigatorFor(Collection<WebElement> contextElements) {
-        browser.navigatorFactory.createFromWebElements(contextElements)
-    }
-
     @Override
     Navigator filter(String selector) {
         navigatorFor contextElements.findAll { element ->
@@ -353,12 +349,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         siblings().filter(attributes, selector)
     }
 
-    protected void ensureContainsSingleElement(String name, Class<?>... parameterTypes) {
-        if (contextElements.size() > 1) {
-            throw new SingleElementNavigatorOnlyMethodException(Navigator.getMethod(name, parameterTypes), contextElements.size())
-        }
-    }
-
     @Override
     boolean hasClass(String valueToContain) {
         ensureContainsSingleElement("hasClass", String)
@@ -596,6 +586,28 @@ class NonEmptyNavigator extends AbstractNavigator {
         }
     }
 
+    @Override
+    int hashCode() {
+        allElements().hashCode()
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        if (obj instanceof Navigator) {
+            allElements() == obj.allElements()
+        }
+    }
+
+    protected void ensureContainsSingleElement(String name, Class<?>... parameterTypes) {
+        if (contextElements.size() > 1) {
+            throw new SingleElementNavigatorOnlyMethodException(Navigator.getMethod(name, parameterTypes), contextElements.size())
+        }
+    }
+
+    protected Navigator navigatorFor(Collection<WebElement> contextElements) {
+        browser.navigatorFactory.createFromWebElements(contextElements)
+    }
+
     protected boolean matches(WebElement element, Map<String, Object> predicates) {
         def result = predicates.every { name, requiredValue ->
             def actualValue
@@ -694,7 +706,7 @@ class NonEmptyNavigator extends AbstractNavigator {
             } else if (type == "file") {
                 input.sendKeys value as String
                 valueSet = true
-            } else if (type == "date") {
+            } else if (type in ["color", "date", "datetime-local", "time", "range", "month", "week"]) {
                 browser.js.exec(input, value as String, 'arguments[0].setAttribute("value", arguments[1]);')
                 valueSet = true
             } else {
@@ -893,18 +905,6 @@ class NonEmptyNavigator extends AbstractNavigator {
 
             def message = "Value of '$attribute' attribute cannot be checked for element: $tagName as this operation is only supported for the following elements: $joinedValidTags."
             throw new UnsupportedOperationException(message)
-        }
-    }
-
-    @Override
-    int hashCode() {
-        allElements().hashCode()
-    }
-
-    @Override
-    boolean equals(Object obj) {
-        if (obj instanceof Navigator) {
-            allElements() == obj.allElements()
         }
     }
 }

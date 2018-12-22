@@ -23,10 +23,6 @@ abstract class CloudDriverFactory {
 
     abstract String assembleProviderUrl(String username, String password)
 
-    @SuppressWarnings("UnusedMethodParameter")
-    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
-    }
-
     WebDriver create(String username, String key, Map<String, Object> capabilities) {
         create("", username, key, capabilities)
     }
@@ -53,5 +49,9 @@ abstract class CloudDriverFactory {
         }
 
         remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, desiredCapabilities)
+    }
+
+    @SuppressWarnings("UnusedMethodParameter")
+    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
     }
 }

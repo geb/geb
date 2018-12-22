@@ -1,3 +1,5 @@
+import geb.gradle.saucelabs.SauceAccount
+
 buildscript {
     repositories {
         mavenCentral()
@@ -30,7 +32,7 @@ nexusStaging {
 }
 
 allprojects { project ->
-    version = '2.2-SNAPSHOT'
+    version = '2.3-SNAPSHOT'
     group = 'org.gebish'
 
     apply plugin: "com.energizedwork.webdriver-binaries"
@@ -39,12 +41,13 @@ allprojects { project ->
         isSnapshot = version.endsWith("-SNAPSHOT")
         isCi = project.hasProperty("ci")
 
-        seleniumVersion = "3.6.0"
+        seleniumVersion = "3.12.0"
         htmlUnitDriverVersion = "2.27"
         groovyVersion = "2.5.4"
         spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
         geckodriverVersion = "0.19.0"
+        jettyVersion = "9.4.8.v20171121"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
             exclude module: "groovy-all"
@@ -55,11 +58,11 @@ allprojects { project ->
         firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
         htmlUnitDriverDependency = "org.seleniumhq.selenium:htmlunit-driver:$htmlUnitDriverVersion"
 
-        jettyDependency = "org.mortbay.jetty:jetty:6.1.21"
-
         groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
         jsoupDependency = "org.jsoup:jsoup:1.11.2"
+
+        sauceConnectDependency = "com.saucelabs:ci-sauce:1.141"
 
         repositories {
             mavenCentral()
@@ -82,6 +85,8 @@ allprojects { project ->
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
+
+        sauceLabsModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
@@ -108,7 +113,7 @@ subprojects {
 
         dependencies {
             compile groovyDependency
-            codenarc 'org.codenarc:CodeNarc:1.1', {
+            codenarc 'org.codenarc:CodeNarc:1.2', {
                 exclude module: "GMetrics"
                 exclude group: "org.codehaus.groovy"
             }
@@ -169,10 +174,34 @@ subprojects {
         }
     }
 
+    if (path in sauceLabsModules) {
+        apply plugin: "geb-saucelabs"
+
+        dependencies {
+            sauceConnect sauceConnectDependency
+        }
+
+        sauceLabs {
+            task {
+                maxHeapSize = "512m"
+                testClassesDirs = test.testClassesDirs
+                classpath = test.classpath
+                maxParallelForks 5
+            }
+            account {
+                username = System.getenv(SauceAccount.USER_ENV_VAR)
+                accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
+            }
+            connect {
+                timeout 10 // minutes
+            }
+        }
+    }
+
     tasks.withType(Groovydoc) {
         exclude "**/internal/**"
 
-        link "http://download.oracle.com/javase/6/docs/api/",
+        link "http://docs.oracle.com/javase/8/docs/api/",
             "java.net",
             "java.util",
             "java.lang",
@@ -220,16 +249,6 @@ subprojects {
         }
 
         apply from: "$rootDir/gradle/pom.gradle"
-
-        if (path == ":doc:manual") {
-            task("install", type: Upload, dependsOn: configurations.archives.allArtifacts.buildDependencies) {
-                configuration = configurations.archives
-                description = "Does a maven install of the archives artifacts into the local .m2 cache."
-                repositories {
-                    mavenInstaller name: "mavenInstaller"
-                }
-            }
-        }
 
         uploadArchives { task ->
             repositories.mavenDeployer {

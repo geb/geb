@@ -17,6 +17,7 @@ package geb.content
 import geb.Module
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
+import org.openqa.selenium.WebDriver.TargetLocator
 
 class ModuleBaseDefinitionDelegate {
 
@@ -28,12 +29,11 @@ class ModuleBaseDefinitionDelegate {
     private final NavigableSupport navigableSupport
 
     @Delegate
-    @SuppressWarnings("UnusedPrivateField")
     private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
-    ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, Map params) {
+    ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, TargetLocator targetLocator, Map params) {
         this.params = params
-        navigableSupport = new NavigableSupport(navigatorFactory)
+        this.navigableSupport = new NavigableSupport(navigatorFactory, targetLocator)
         this.module = module
     }
 

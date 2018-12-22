@@ -2,7 +2,8 @@ dependencies {
 	compile project(':module:geb-core'),
 		"junit:junit:$junit4Version",
 		spockDependency,
-		jettyDependency,
+		"org.eclipse.jetty:jetty-server:$jettyVersion",
+		"org.eclipse.jetty:jetty-servlet:$jettyVersion",
 		firefoxDriverDependency,
 		htmlUnitDriverDependency,
 		"org.seleniumhq.selenium:selenium-server:$seleniumVersion"

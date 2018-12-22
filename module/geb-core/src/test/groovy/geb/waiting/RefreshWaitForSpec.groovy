@@ -57,14 +57,14 @@ class RefreshWaitForSpec extends GebSpecWithCallbackServer {
 
     def 'using timeout and interval'() {
         expect:
-        refreshWaitFor(1, 0.1) {
+        refreshWaitFor(1, 0.01) {
             loadCount > 5
         }
     }
 
     def 'using preset'() {
         given:
-        browser.config.setWaitPreset("custom", 1, 0.1)
+        browser.config.setWaitPreset("custom", 1, 0.01)
 
         expect:
         refreshWaitFor("custom") {

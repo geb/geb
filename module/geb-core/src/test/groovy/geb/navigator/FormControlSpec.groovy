@@ -15,8 +15,8 @@
  */
 package geb.navigator
 
-import geb.test.browsers.CrossBrowser
 import geb.test.GebSpecWithCallbackServer
+import geb.test.browsers.CrossBrowser
 import spock.lang.Issue
 
 @CrossBrowser
@@ -107,13 +107,12 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         !$().i1
 
         when:
-        $().i1 = "i1"
+        $().i2 = "i2"
 
         then:
-        $().i1 == "i1"
+        $().i2 == "i2"
 
         when:
-        $().i1 = false
         $().i1 = "not-the-value"
 
         then:

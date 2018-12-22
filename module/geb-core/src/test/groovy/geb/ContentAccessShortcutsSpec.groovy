@@ -44,7 +44,6 @@ class ContentAccessShortcutsSpec extends GebSpecWithCallbackServer {
     }
 
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "content values can be read using equals"() {
         when:
         to ContentAccessShortcutsPage
@@ -62,7 +61,6 @@ class ContentAccessShortcutsSpec extends GebSpecWithCallbackServer {
     }
 
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "content values can be set using assignment"() {
         given:
         to ContentAccessShortcutsPage

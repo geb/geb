@@ -115,6 +115,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     @Delegate
     private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
 
+    @Delegate
     private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
 
     @Delegate
@@ -124,13 +125,12 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     private InteractionsSupport interactionsSupport = new UninitializedInteractionSupport(this)
 
     @Delegate
-    @SuppressWarnings("UnusedPrivateField")
     private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
-    //manually delegating here because @Delegate doesn't work with cross compilation http://jira.codehaus.org/browse/GROOVY-6865
+    @Delegate
     private Navigable navigableSupport = new UninitializedNavigableSupport(this)
 
     /**
@@ -138,12 +138,11 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * <p>
      * <b>This method is called internally, and should not be called by users of Geb.</b>
      */
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     Page init(Browser browser) {
         this.browser = browser
         def contentTemplates = PageContentTemplateBuilder.build(browser, this, browser.navigatorFactory, 'content', this.class, Page)
         pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, browser.navigatorFactory)
-        navigableSupport = new NavigableSupport(browser.navigatorFactory)
+        navigableSupport = new NavigableSupport(browser.navigatorFactory, browser.driver.switchTo())
         downloadSupport = new DefaultDownloadSupport(browser)
         waitingSupport = new DefaultWaitingSupport(browser.config)
         frameSupport = new DefaultFrameSupport(browser)
@@ -156,13 +155,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * The browser that the page is connected to.
      */
     Browser getBrowser() {
-        browser
-    }
-
-    private Browser getInitializedBrowser() {
-        if (browser == null) {
-            throw uninitializedException()
-        }
         browser
     }
 
@@ -225,28 +217,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
             caughtException = e
         }
         new AtVerificationResult(atResult, caughtException)
-    }
-
-    /**
-     * Executes this page's "at checker".
-     *
-     * @return whether the at checker succeeded or not.
-     * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
-     */
-    private boolean verifyThisPageAtOnly(boolean honourGlobalAtCheckWaiting) {
-        Closure verifier = getClass().at?.clone()
-        if (verifier) {
-            verifier.delegate = this
-            verifier.resolveStrategy = Closure.DELEGATE_FIRST
-            def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
-            if (atCheckWaiting) {
-                atCheckWaiting.waitFor(verifier)
-            } else {
-                verifier()
-            }
-        } else {
-            throw new UndefinedAtCheckerException(this.class.name)
-        }
     }
 
     /**
@@ -350,33 +320,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     void onUnload(Page nextPage) {
     }
 
-    private Wait getGlobalAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
-        honourGlobalAtCheckWaiting ? getInitializedBrowser().config.atCheckWaiting : null
-    }
-
-    private Wait getEffectiveAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
-        getClass().atCheckWaiting != null ? pageLevelAtCheckWaiting : getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
-    }
-
-    protected Wait getPageLevelAtCheckWaiting() {
-        def atCheckWaitingValue = getClass().atCheckWaiting
-        getInitializedBrowser().config.getWaitForParam(atCheckWaitingValue)
-    }
-
-    Navigator find() {
-        navigableSupport.find()
-    }
-
     Navigator $() {
         navigableSupport.$()
-    }
-
-    Navigator find(int index) {
-        navigableSupport.find(index)
-    }
-
-    Navigator find(Range<Integer> range) {
-        navigableSupport.find(range)
     }
 
     Navigator $(int index) {
@@ -387,20 +332,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.$(range)
     }
 
-    Navigator find(String selector) {
-        navigableSupport.find(selector)
-    }
-
     Navigator $(String selector) {
         navigableSupport.$(selector)
-    }
-
-    Navigator find(String selector, int index) {
-        navigableSupport.find(selector, index)
-    }
-
-    Navigator find(String selector, Range<Integer> range) {
-        navigableSupport.find(selector, range)
     }
 
     Navigator $(String selector, int index) {
@@ -411,20 +344,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.$(selector, range)
     }
 
-    Navigator find(Map<String, Object> attributes) {
-        navigableSupport.find(attributes)
-    }
-
     Navigator $(Map<String, Object> attributes) {
         navigableSupport.$(attributes)
-    }
-
-    Navigator find(Map<String, Object> attributes, int index) {
-        navigableSupport.find(attributes, index)
-    }
-
-    Navigator find(Map<String, Object> attributes, Range<Integer> range) {
-        navigableSupport.find(attributes, range)
     }
 
     Navigator $(Map<String, Object> attributes, int index) {
@@ -435,20 +356,8 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.$(attributes, range)
     }
 
-    Navigator find(Map<String, Object> attributes, String selector) {
-        navigableSupport.find(attributes, selector)
-    }
-
     Navigator $(Map<String, Object> attributes, String selector) {
         navigableSupport.$(attributes, selector)
-    }
-
-    Navigator find(Map<String, Object> attributes, String selector, int index) {
-        navigableSupport.$(attributes, selector, index)
-    }
-
-    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
-        navigableSupport.find(attributes, selector, range)
     }
 
     Navigator $(Map<String, Object> attributes, String selector, int index) {
@@ -463,15 +372,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.find(attributes, bySelector)
     }
 
-    Navigator find(Map<String, Object> attributes, By bySelector) {
-        navigableSupport.find(attributes, bySelector)
-    }
-
     Navigator $(Map<String, Object> attributes, By bySelector, int index) {
-        navigableSupport.find(attributes, bySelector, index)
-    }
-
-    Navigator find(Map<String, Object> attributes, By bySelector, int index) {
         navigableSupport.find(attributes, bySelector, index)
     }
 
@@ -479,15 +380,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.find(attributes, bySelector, range)
     }
 
-    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-        navigableSupport.find(attributes, bySelector, range)
-    }
-
     Navigator $(By bySelector) {
-        navigableSupport.find(bySelector)
-    }
-
-    Navigator find(By bySelector) {
         navigableSupport.find(bySelector)
     }
 
@@ -495,15 +388,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         navigableSupport.find(bySelector, index)
     }
 
-    Navigator find(By bySelector, int index) {
-        navigableSupport.find(bySelector, index)
-    }
-
     Navigator $(By bySelector, Range<Integer> range) {
-        navigableSupport.find(bySelector, range)
-    }
-
-    Navigator find(By bySelector, Range<Integer> range) {
         navigableSupport.find(bySelector, range)
     }
 
@@ -513,36 +398,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
 
     Navigator $(WebElement[] elements) {
         navigableSupport.$(elements)
-    }
-
-    @Override
-    <T extends Module> T module(Class<T> moduleClass) {
-        navigableSupport.module(moduleClass)
-    }
-
-    @Override
-    <T extends Module> T module(T module) {
-        navigableSupport.module(module)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
-        waitingSupport.waitFor(params, waitPreset, block)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], Closure<T> block) {
-        waitingSupport.waitFor(params, block)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
-        waitingSupport.waitFor(params, timeout, block)
-    }
-
-    @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
-        waitingSupport.waitFor(params, timeout, interval, block)
     }
 
     /**
@@ -603,6 +458,63 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         waitingSupport.waitFor(params, timeout, interval, withRefresh(block))
     }
 
+    GebException uninitializedException() {
+        def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
+        new PageInstanceNotInitializedException(message)
+    }
+
+    @Override
+    PageContentContainer getRootContainer() {
+        this
+    }
+
+    @Override
+    List<String> getContentPath() {
+        []
+    }
+
+    private Browser getInitializedBrowser() {
+        if (browser == null) {
+            throw uninitializedException()
+        }
+        browser
+    }
+
+    /**
+     * Executes this page's "at checker".
+     *
+     * @return whether the at checker succeeded or not.
+     * @throws AssertionError if this page's "at checker" doesn't pass (with implicit assertions enabled)
+     */
+    private boolean verifyThisPageAtOnly(boolean honourGlobalAtCheckWaiting) {
+        Closure verifier = getClass().at?.clone()
+        if (verifier) {
+            verifier.delegate = this
+            verifier.resolveStrategy = Closure.DELEGATE_FIRST
+            def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
+            if (atCheckWaiting) {
+                atCheckWaiting.waitFor(verifier)
+            } else {
+                verifier()
+            }
+        } else {
+            throw new UndefinedAtCheckerException(this.class.name)
+        }
+    }
+
+    private Wait getGlobalAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
+        honourGlobalAtCheckWaiting ? getInitializedBrowser().config.atCheckWaiting : null
+    }
+
+    private Wait getEffectiveAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
+        getClass().atCheckWaiting != null ? pageLevelAtCheckWaiting : getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
+    }
+
+    protected Wait getPageLevelAtCheckWaiting() {
+        def atCheckWaitingValue = getClass().atCheckWaiting
+        getInitializedBrowser().config.getWaitForParam(atCheckWaitingValue)
+    }
+
     private <T> Closure<T> withRefresh(Closure<T> block) {
         { ->
             browser.driver.navigate().refresh()
@@ -610,8 +522,4 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         }
     }
 
-    GebException uninitializedException() {
-        def message = "Instance of page ${getClass()} has not been initialized. Please pass it to Browser.to(), Browser.via(), Browser.page() or Browser.at() before using it."
-        new PageInstanceNotInitializedException(message)
-    }
 }

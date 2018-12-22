@@ -94,8 +94,7 @@ class PageChangeListeningSpec extends GebSpecWithCallbackServer {
         when:
         to PageChangeListeningSpecPage1
         then:
-        // TODO - This sometimes fails for me, I have no idea why. The waitFor() pause worksaround.
-        waitFor { pgl1Called }
+        pgl1Called
         pgl2Called
     }
 

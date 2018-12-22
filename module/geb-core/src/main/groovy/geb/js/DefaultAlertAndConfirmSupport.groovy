@@ -28,6 +28,46 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
         this.config = config
     }
 
+    def withAlert(Map params = [:], Closure actions) {
+        def message = captureAlert(actions, params.wait)
+        if (message == null) {
+            throw new AssertionError("no browser alert() was raised")
+        } else if (message == UNKNOWN) {
+            true
+        } else {
+            message.toString()
+        }
+    }
+
+    void withNoAlert(Closure actions) {
+        def message = captureAlert(actions)
+        if (message != null && message != UNKNOWN) {
+            throw new AssertionError("an unexpected browser alert() was raised (message: $message)")
+        }
+    }
+
+    def withConfirm(boolean ok, Closure actions) {
+        withConfirm([:], ok, actions)
+    }
+
+    def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
+        def message = captureConfirm(ok, actions, params.wait)
+        if (message == null) {
+            throw new AssertionError("no browser confirm() was raised")
+        } else if (message == UNKNOWN) {
+            true
+        } else {
+            message.toString()
+        }
+    }
+
+    void withNoConfirm(Closure actions) {
+        def message = captureConfirm(false, actions)
+        if (message != null && message != UNKNOWN) {
+            throw new AssertionError("an unexpected browser confirm() was raised (message: $message)")
+        }
+    }
+
     private JavascriptInterface getJavascriptInterface() {
         def js = javascriptInterfaceFactory()
         if (js == null) {
@@ -140,45 +180,5 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
 
     private captureConfirm(boolean ok, Closure actions, waitParam = null) {
         captureDialog(this.&installConfirm.curry(ok), 'confirm', actions, config.getWaitForParam(waitParam))
-    }
-
-    def withAlert(Map params = [:], Closure actions) {
-        def message = captureAlert(actions, params.wait)
-        if (message == null) {
-            throw new AssertionError("no browser alert() was raised")
-        } else if (message == UNKNOWN) {
-            true
-        } else {
-            message.toString()
-        }
-    }
-
-    void withNoAlert(Closure actions) {
-        def message = captureAlert(actions)
-        if (message != null && message != UNKNOWN) {
-            throw new AssertionError("an unexpected browser alert() was raised (message: $message)")
-        }
-    }
-
-    def withConfirm(boolean ok, Closure actions) {
-        withConfirm([:], ok, actions)
-    }
-
-    def withConfirm(Map params = [:], boolean ok = true, Closure actions) {
-        def message = captureConfirm(ok, actions, params.wait)
-        if (message == null) {
-            throw new AssertionError("no browser confirm() was raised")
-        } else if (message == UNKNOWN) {
-            true
-        } else {
-            message.toString()
-        }
-    }
-
-    void withNoConfirm(Closure actions) {
-        def message = captureConfirm(false, actions)
-        if (message != null && message != UNKNOWN) {
-            throw new AssertionError("an unexpected browser confirm() was raised (message: $message)")
-        }
     }
 }

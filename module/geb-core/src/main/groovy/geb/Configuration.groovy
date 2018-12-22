@@ -15,20 +15,12 @@
 package geb
 
 import geb.buildadapter.SystemPropertiesBuildAdapter
-import geb.report.CompositeReporter
-import geb.report.PageSourceReporter
-import geb.report.Reporter
-import geb.report.ReportingListener
-import geb.report.ScreenshotReporter
+import geb.driver.*
+import geb.error.InvalidGebConfiguration
+import geb.navigator.factory.*
+import geb.report.*
 import geb.waiting.Wait
 import org.openqa.selenium.WebDriver
-import geb.driver.*
-import geb.navigator.factory.InnerNavigatorFactory
-import geb.navigator.factory.NavigatorFactory
-import geb.navigator.factory.BrowserBackedNavigatorFactory
-import geb.error.InvalidGebConfiguration
-import geb.navigator.factory.DefaultInnerNavigatorFactory
-import geb.navigator.factory.ClosureInnerNavigatorFactory
 
 /**
  * Represents a particular configuration of Geb.
@@ -51,12 +43,6 @@ class Configuration {
         this.properties = properties == null ? System.properties : properties
         this.buildAdapter = buildAdapter ?: new SystemPropertiesBuildAdapter()
         this.rawConfig = rawConfig ?: new ConfigObject()
-    }
-
-    private static toConfigObject(Map rawConfig) {
-        def configObject = new ConfigObject()
-        configObject.putAll(rawConfig)
-        configObject
     }
 
     /**
@@ -185,7 +171,7 @@ class Configuration {
         def isCollectionContainingOnlyPageClasses = unexpectedPages instanceof Collection && unexpectedPages.every { it instanceof Class && Page.isAssignableFrom(it) }
         if (!isCollectionContainingOnlyPageClasses) {
             def message = "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$unexpectedPages\". " +
-                "Did you forget to include some imports in your config file?"
+                    "Did you forget to include some imports in your config file?"
             throw new InvalidGebConfiguration(message)
         }
         unexpectedPages
@@ -273,8 +259,8 @@ class Configuration {
         def value = properties.getProperty("geb.driver") ?: readValue("driver", null)
         if (value instanceof WebDriver) {
             throw new IllegalStateException(
-                "The 'driver' config value is an instance of WebDriver. " +
-                    "You need to wrap the driver instance in a closure."
+                    "The 'driver' config value is an instance of WebDriver. " +
+                            "You need to wrap the driver instance in a closure."
             )
         }
         value
@@ -342,10 +328,6 @@ class Configuration {
         typedReporter
     }
 
-    protected Reporter createDefaultReporter() {
-        new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
-    }
-
     /**
      * Updates the {@code reporter} config entry.
      *
@@ -378,12 +360,8 @@ class Configuration {
         this.driver = driver
     }
 
-    protected WebDriver createDriver() {
-        wrapDriverFactoryInCachingIfNeeded(getDriverFactory(getDriverConf())).driver
-    }
-
     /**
-     * Whether or not to automatically clear the browser's cookies automatically.
+     * Whether or not to automatically clear the browser's cookies.
      * <p>
      * Different integrations inspect this property at different times.
      * <p>
@@ -398,6 +376,24 @@ class Configuration {
      */
     void setAutoClearCookies(boolean flag) {
         rawConfig.autoClearCookies = flag
+    }
+
+    /**
+     * Whether or not to automatically clear the browser's web storage, that is both local and session storage.
+     * <p>
+     * Different integrations inspect this property at different times.
+     * <p>
+     * @return the config value for {@code autoClearWebStorage}, defaulting to {@code false} if not set.
+     */
+    boolean isAutoClearWebStorage() {
+        readValue('autoClearWebStorage', false)
+    }
+
+    /**
+     * Sets the auto clear web storage flag explicitly, overwriting any value from the config script.
+     */
+    void setAutoClearWebStorage(boolean flag) {
+        rawConfig.autoClearWebStorage = flag
     }
 
     /**
@@ -466,6 +462,203 @@ class Configuration {
         this.rawConfig.innerNavigatorFactory = innerNavigatorFactory
     }
 
+    /**
+     * Returns the default configuration closure to be applied before the user-
+     * supplied config closure when using the download support.
+     */
+    @SuppressWarnings("ClosureAsLastMethodParameter")
+    Closure getDownloadConfig() {
+        readValue("defaultDownloadConfig", { HttpURLConnection con -> })
+    }
+
+    void setDownloadConfig(Closure config) {
+        rawConfig.defaultDownloadConfig = config
+    }
+
+    /**
+     * Updates the {@code templateOptions.cache} config entry.
+     */
+    void setTemplateCacheOption(boolean cache) {
+        rawConfig.templateOptions.cache = cache
+    }
+
+    /**
+     * Updates the {@code templateOptions.wait} config entry.
+     */
+    void setTemplateWaitOption(wait) {
+        rawConfig.templateOptions.wait = wait
+    }
+
+    /**
+     * Updates the {@code templateOptions.toWait} config entry.
+     */
+    void setTemplateToWaitOption(toWait) {
+        rawConfig.templateOptions.toWait = toWait
+    }
+
+    /**
+     * Updates the {@code templateOptions.waitCondition} config entry.
+     */
+    void setTemplateWaitConditionOption(Closure<?> waitCondition) {
+        rawConfig.templateOptions.waitCondition = waitCondition
+    }
+
+    /**
+     * Updates the {@code templateOptions.required} config entry.
+     */
+    void setTemplateRequiredOption(boolean required) {
+        rawConfig.templateOptions.required = required
+    }
+
+    /**
+     * Updates the {@code templateOptions.min} config entry.
+     */
+    void setTemplateMinOption(int min) {
+        rawConfig.templateOptions.min = min
+    }
+
+    /**
+     * Updates the {@code templateOptions.max} config entry.
+     */
+    void setTemplateMaxOption(int max) {
+        rawConfig.templateOptions.max = max
+    }
+
+    /**
+     * Returns default values used for some of the content DSL template options.
+     * @return
+     */
+    TemplateOptionsConfiguration getTemplateOptions() {
+        def raw = rawConfig.templateOptions
+        def configuration = TemplateOptionsConfiguration.builder()
+                .cache(raw.cache as boolean)
+                .wait(readValue(raw, 'wait', null))
+                .toWait(readValue(raw, 'toWait', null))
+                .waitCondition(extractWaitCondition(raw))
+                .required(readOptionalBooleanValue(raw, 'required'))
+                .min(readOptionalNonNegativeIntegerValue(raw, 'min', 'min template option'))
+                .max(readOptionalNonNegativeIntegerValue(raw, 'max', 'max template option'))
+                .build()
+        validate(configuration)
+        configuration
+    }
+
+    /**
+     * Updates the {@code withWindow.close} config entry.
+     */
+    void setWithWindowCloseOption(boolean close) {
+        rawConfig.withWindow.close = close
+    }
+
+    WithWindowConfiguration getWithWindowConfig() {
+        WithWindowConfiguration.builder()
+                .close(rawConfig.withWindow.close as boolean)
+                .build()
+    }
+
+    /**
+     * Updates the {@code withNewWindow.close} config entry.
+     */
+    void setWithNewWindowCloseOption(boolean close) {
+        rawConfig.withNewWindow.close = close
+    }
+
+    /**
+     * Updates the {@code withWindow.wait} config entry.
+     */
+    void setWithNewWindowWaitOption(wait) {
+        rawConfig.withNewWindow.wait = wait
+    }
+
+    WithNewWindowConfiguration getWithNewWindowConfig() {
+        def raw = rawConfig.withNewWindow
+        WithNewWindowConfiguration.builder()
+                .close(readOptionalBooleanValue(raw, 'close'))
+                .wait(raw.wait)
+                .build()
+    }
+
+    void validate(TemplateOptionsConfiguration configuration) {
+        def required = configuration.required
+        def min = configuration.min
+        def max = configuration.max
+        if (required.present) {
+            if (min.present) {
+                if ((required.get() && min.get() == 0) || (!required.get() && min.get() != 0)) {
+                    boundsAndRequiredConflicting()
+                }
+            }
+            if (max.present && required.get() && max.get() == 0) {
+                boundsAndRequiredConflicting()
+            }
+        }
+        if (max.present && min.present && max.get() < min.get()) {
+            throw new InvalidGebConfiguration("Configuration contains 'max' template option that is lower than the 'min' template option")
+        }
+    }
+
+    protected readValue(String name, defaultValue) {
+        readValue(rawConfig, name, defaultValue)
+    }
+
+    protected readValue(ConfigObject config, String name, defaultValue) {
+        if (config.containsKey(name)) {
+            config[name]
+        } else {
+            defaultValue
+        }
+    }
+
+    protected Optional<Boolean> readOptionalBooleanValue(ConfigObject config, String name) {
+        if (config.containsKey(name)) {
+            Optional.of(config[name] as boolean)
+        } else {
+            Optional.empty()
+        }
+    }
+
+    protected Optional<Integer> readOptionalNonNegativeIntegerValue(ConfigObject config, String name, String errorName) {
+        if (config.containsKey(name)) {
+            def value = config[name]
+            if (value instanceof Integer && value >= 0) {
+                Optional.of(value)
+            } else {
+                throw new InvalidGebConfiguration("Configuration for $errorName should be a non-negative integer but found \"$value\"")
+            }
+        } else {
+            Optional.empty()
+        }
+    }
+
+    protected Reporter createDefaultReporter() {
+        new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter())
+    }
+
+    private static toConfigObject(Map rawConfig) {
+        def configObject = new ConfigObject()
+        configObject.putAll(rawConfig)
+        configObject
+    }
+
+    private Closure<?> extractWaitCondition(ConfigObject config) {
+        def waitCondition = config.waitCondition
+        if (waitCondition) {
+            if (waitCondition instanceof Closure) {
+                waitCondition
+            } else {
+                throw new InvalidGebConfiguration("Configuration for waitCondition template option should be a closure but found \"$waitCondition\"")
+            }
+        }
+    }
+
+    private void boundsAndRequiredConflicting() {
+        throw new InvalidGebConfiguration("Configuration for bounds and 'required' template options is conflicting")
+    }
+
+    protected WebDriver createDriver() {
+        wrapDriverFactoryInCachingIfNeeded(getDriverFactory(getDriverConf())).driver
+    }
+
     protected DriverFactory getDriverFactory(driverValue) {
         switch (driverValue) {
             case CharSequence:
@@ -484,31 +677,6 @@ class Configuration {
             isCacheDriverPerThread() ? CachingDriverFactory.perThread(factory, isQuitCachedDriverOnShutdown()) : CachingDriverFactory.global(factory, isQuitCachedDriverOnShutdown())
         } else {
             factory
-        }
-    }
-
-    /**
-     * Returns the default configuration closure to be applied before the user-
-     * supplied config closure when using the download support.
-     */
-    @SuppressWarnings("ClosureAsLastMethodParameter")
-    Closure getDownloadConfig() {
-        readValue("defaultDownloadConfig", { HttpURLConnection con -> })
-    }
-
-    void setDownloadConfig(Closure config) {
-        rawConfig.defaultDownloadConfig = config
-    }
-
-    protected readValue(String name, defaultValue) {
-        readValue(rawConfig, name, defaultValue)
-    }
-
-    protected readValue(ConfigObject config, String name, defaultValue) {
-        if (config.containsKey(name)) {
-            config[name]
-        } else {
-            defaultValue
         }
     }
 }

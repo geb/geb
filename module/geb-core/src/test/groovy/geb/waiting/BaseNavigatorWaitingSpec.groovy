@@ -34,7 +34,7 @@ class BaseNavigatorWaitingSpec extends GebSpecWithCallbackServer {
                     <script type="text/javascript" charset="utf-8">
                         setTimeout(function() {
                             document.body.innerHTML = "<div></div>";
-                        }, 500);
+                        }, 100);
                     </script>
                 </head>
                 <body></body>

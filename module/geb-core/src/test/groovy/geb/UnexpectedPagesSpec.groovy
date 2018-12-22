@@ -45,10 +45,6 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         to ExpectedPage
     }
 
-    private void defineUnexpectedPages(Class<? extends Page>[] unexpectedPages = ([UnexpectedPage, AnotherUnexpectedPage] as Class<? extends Page>[])) {
-        browser.config.unexpectedPages = unexpectedPages.toList()
-    }
-
     @Unroll
     void 'verify that page response is configured as expected'() {
         when:
@@ -221,6 +217,11 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         "foo"          | 'foo'
         UnexpectedPage | "class geb.UnexpectedPage"
     }
+
+    private void defineUnexpectedPages(Class<? extends Page>[] unexpectedPages = ([UnexpectedPage, AnotherUnexpectedPage] as Class<? extends Page>[])) {
+        browser.config.unexpectedPages = unexpectedPages.toList()
+    }
+
 }
 
 class UnexpectedPage extends Page {
@@ -267,7 +268,7 @@ class ConflictingUnexpectedPage extends Page {
 }
 
 class ParametrizedPage extends Page {
-    boolean condition
-
     static at = { condition }
+
+    boolean condition
 }

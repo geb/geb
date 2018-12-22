@@ -48,14 +48,6 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
         }
     }
 
-    @Override
-    protected Response execute(String command, Map<String, ?> parameters) {
-        if (!IGNORED_COMMANDS.contains(command)) {
-            executedCommands << new Command(command: command, parameters: parameters)
-        }
-        super.execute(command, parameters)
-    }
-
     void getTitleExecuted() {
         ensureExecuted('getTitle')
     }
@@ -90,6 +82,14 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
 
     void sendKeysExecuted() {
         ensureExecuted('sendKeysToElement')
+    }
+
+    @Override
+    protected Response execute(String command, Map<String, ?> parameters) {
+        if (!IGNORED_COMMANDS.contains(command)) {
+            executedCommands << new Command(command: command, parameters: parameters)
+        }
+        super.execute(command, parameters)
     }
 
     private static class Command {

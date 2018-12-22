@@ -21,7 +21,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'io.ratpack:ratpack-gradle:1.4.5'
+        classpath 'io.ratpack:ratpack-gradle:1.6.0'
         classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
     }
 }
@@ -32,7 +32,7 @@ apply plugin: "com.moowork.gulp"
 
 ext {
     // The old versions of Geb we are including manuals for
-    oldManualVersions = ["0.10.0", "0.12.0", "0.12.1", "0.12.2", "0.13.0", "0.13.1", "1.0", "1.1", "1.1.1", "2.0", "2.1"]
+    oldManualVersions = ["0.10.0", "0.12.0", "0.12.1", "0.12.2", "0.13.0", "0.13.1", "1.0", "1.1", "1.1.1", "2.0", "2.1", "2.2"]
 
     currentVersion = isSnapshot ? oldManualVersions.last() : version
     manualsMetadata = [
@@ -188,6 +188,5 @@ if (project.gradle.startParameter.continuous) {
 idea {
     module {
         excludeDirs += file('src/npm/node_modules')
-        excludeDirs += file('src/ratpack/public/manual')
     }
 }

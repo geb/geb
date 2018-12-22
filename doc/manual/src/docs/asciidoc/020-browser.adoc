@@ -99,7 +99,7 @@ For more on when/why you need to manually quit the browser, see the section on t
 === The base URL
 
 Browser instances maintain a link:api/geb/Browser.html#getBaseUrl()[`baseUrl`] property that is used to resolve all relative URLs.
-This value can come from <<base-url,configuration>> or can be link:api/geb/Browser.html#setBaseUrl(java.lang.String)[explicitly set] on the browser.
+This value can come from <<configuration-base-url,configuration>> or can be link:api/geb/Browser.html#setBaseUrl(java.lang.String)[explicitly set] on the browser.
 
 Care must be taken with slashes when specifying both the base URL and the relative URL as trailing and leading slashes have significant meaning.
 The following table illustrates the resolution of different types of URLs.
@@ -365,6 +365,7 @@ If code of the closure passed as the last argument changes browser's current pag
 `withWindow()`.
 ====
 
+[[with-window-options]]
 ==== `withWindow()` options
 
 There are some additional options that can be passed to a link:api/geb/Browser.html#withWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withWindow()`] call which make working
@@ -419,6 +420,7 @@ If code of the closure passed as the last argument changes browser's current pag
 {page-method-taking-class-api-link}[`at(Page)`]) then it will be reverted to its original value after returning from `withNewWindow()`.
 ====
 
+[[with-new-window-options]]
 ==== `withNewWindow()` options
 
 There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20groovy.lang.Closure)[`withNewWindow()`] call which make working
@@ -487,6 +489,23 @@ This would usually be done by executing `geb.unpause = true;` in developer conso
 
 Be aware that if the browser is reloaded or navigated to a new url between calling `pause()` and resuming the execution you will need to recreate the top level `geb` object before setting `geb.unpause` to `true`.
 This can be simply done by executing `geb = {};` in the console.
+====
+
+== Local and session storage
+
+Local storage can be accessed using link:api/geb/Browser.html#getLocalStorage()[`localStorage`] property and session storage using link:api/geb/Browser.html#getSessionStorage()[`sessionStorage`] property of a `Browser` instance.
+Both of them can be used to read and write values to the underlying storage as if they were a map. Following is an example of setting and reading a value form local storage:
+
+[source,groovy,indent=0]
+----
+include::{real-browser-test-dir}/browser/WebStorageSpec.groovy[tag=write_and_read]
+----
+
+Both `localStorage` and `sessionStorage` properties are of `geb.webstorage.WebStorage` type - please refer to link:api/geb/webstorage/WebStorage.html[its javadoc] for information about other operations that are supported apart from reading and writing values.
+
+[WARNING]
+====
+Not all driver implementations support accessing web storage. When trying to access web storage when using a driver that doesn't support it `geb.error.WebStorageNotSupportedException` will be thrown.
 ====
 
 [[quitting-the-browser]]

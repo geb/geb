@@ -51,7 +51,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     private FrameSupport frameSupport = new UninitializedFrameSupport(this)
 
     @Delegate
-    @SuppressWarnings("UnusedPrivateField")
     private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
@@ -68,7 +67,8 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     private StringRepresentationProvider stringRepresentationProvider = this
 
-    @SuppressWarnings("SpaceBeforeOpeningBrace")
+    private PageContentTemplate template
+
     void init(Browser browser, NavigatorFactory navigatorFactory) {
         this.browser = browser
         this.navigator = navigatorFactory.base
@@ -84,11 +84,8 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     }
 
     void init(PageContentTemplate template, Object[] args) {
+        this.template = template
         stringRepresentationProvider = new TemplateDerivedContentStringRepresentationProvider(template, args, this)
-    }
-
-    @SuppressWarnings("EmptyMethod")
-    protected void initialized() {
     }
 
     JavascriptInterface getJs() {
@@ -108,13 +105,6 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     def propertyMissing(String name, val) {
         pageContentSupport.propertyMissing(name, val)
-    }
-
-    protected Navigator getInitializedNavigator() {
-        if (navigator == null) {
-            throw uninitializedException()
-        }
-        navigator
     }
 
     boolean asBoolean() {
@@ -777,4 +767,30 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
             allElements() == obj.allElements()
         }
     }
+
+    @Override
+    PageContentContainer getRootContainer() {
+        hasOwner ? template.owner.rootContainer : this
+    }
+
+    @Override
+    List<String> getContentPath() {
+        hasOwner ? template.owner.contentPath + template.name : []
+    }
+
+    protected boolean getHasOwner() {
+        template?.owner
+    }
+
+    @SuppressWarnings("EmptyMethod")
+    protected void initialized() {
+    }
+
+    protected Navigator getInitializedNavigator() {
+        if (navigator == null) {
+            throw uninitializedException()
+        }
+        navigator
+    }
+
 }

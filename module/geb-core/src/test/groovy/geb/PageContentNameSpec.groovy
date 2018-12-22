@@ -36,7 +36,7 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
         e.message == "Definition of content template '$contentName' of '${DynamicContentNamePage.name}' uses a not allowed content name: '$contentName'. Please use another name."
 
         where:
-        contentName << ["title", "at", "url", "content", "owner"]
+        contentName << ["title", "at", "url", "content", "owner", "rootContainer", "contentPath"]
     }
 
     @Unroll("can use '#contentName' as page content")
@@ -61,7 +61,7 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
         e.message == "Definition of content template '$contentName' of '${DynamicContentNameModule.name}' uses a not allowed content name: '$contentName'. Please use another name."
 
         where:
-        contentName << ["x", "focused", "at", "base", "content", "owner"]
+        contentName << ["x", "focused", "at", "base", "content", "owner", "rootContainer", "contentPath"]
     }
 
     @Unroll("can use '#contentName' as module content")
@@ -79,17 +79,17 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
 }
 
 class DynamicContentNamePage extends Page {
-    String contentName
-
     static content = {
         "$contentName" { $() }
     }
+
+    String contentName
 }
 
 class DynamicContentNameModule extends Module {
-    String contentName
-
     static content = {
         "$contentName" { $() }
     }
+
+    String contentName
 }

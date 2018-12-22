@@ -54,11 +54,6 @@ class PageLoadUnloadListeningSpec extends GebSpecWithCallbackServer {
         "click with page list"     | { button.click([PageLoadUnloadListeningSpecPage3, it]) }
     }
 
-    private fire(Closure closure, Class<? extends Page> pageClass) {
-        closure.delegate = this
-        closure.call(pageClass)
-    }
-
     def "there is only one page instance created when passing a page class to to() method"() {
         given:
         html {
@@ -74,16 +69,21 @@ class PageLoadUnloadListeningSpec extends GebSpecWithCallbackServer {
         then:
         to PageLoadUnloadListeningSpecContextPage2
     }
+
+    private fire(Closure closure, Class<? extends Page> pageClass) {
+        closure.delegate = this
+        closure.call(pageClass)
+    }
 }
 
 class PageLoadUnloadListeningSpecPage1 extends Page {
-    def arg
-    def method
-
     static content = {
         link(to: PageLoadUnloadListeningSpecPage2) { $("button") }
         button { $("button") }
     }
+
+    def arg
+    def method
 
     void onLoad(Page previousPage) {
         method = 'onLoad'

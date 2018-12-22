@@ -20,13 +20,16 @@ import java.lang.reflect.Method
 class SingleElementNavigatorOnlyMethodException extends GebException {
 
     SingleElementNavigatorOnlyMethodException(Method singleElementMethod, int navigatorSize) {
-        super(
-            "Method ${methodDescription(singleElementMethod)} can only be called on single element navigators but it was called on a navigator with size $navigatorSize. " +
+        super(buildMessage(singleElementMethod, navigatorSize))
+    }
+
+    private static String buildMessage(Method singleElementMethod, int navigatorSize) {
+        "Method ${methodDescription(singleElementMethod)} can only be called on single element navigators but it was called on a navigator with size $navigatorSize. " +
                 "Please use the spread operator to call this method on all elements of this navigator or change the selector used to create this navigator to only match a single element."
-        )
     }
 
     private static String methodDescription(Method method) {
-        "${method.name}(${method.parameterTypes*.name.join(", ")})"
+        def parameterTypeNames = method.parameterTypes*.name
+        "$method.name(${parameterTypeNames.join(', ')})"
     }
 }

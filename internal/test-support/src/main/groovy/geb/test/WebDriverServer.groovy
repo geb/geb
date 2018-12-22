@@ -15,19 +15,15 @@
  */
 package geb.test
 
-import org.mortbay.jetty.servlet.Context
-import org.mortbay.jetty.servlet.ServletHolder
-import org.openqa.selenium.Platform
-import org.openqa.selenium.remote.server.DefaultDriverFactory
-import org.openqa.selenium.remote.server.DefaultDriverSessions
-import org.openqa.selenium.remote.server.DriverServlet
+import org.eclipse.jetty.servlet.ServletContextHandler
+import org.eclipse.jetty.servlet.ServletHolder
+import org.openqa.selenium.remote.server.WebDriverServlet
 
 class WebDriverServer extends TestHttpServer {
 
-    protected addServlets(Context context) {
-        def driverFactory = new DefaultDriverFactory(Platform.getCurrent())
-        context.setAttribute(DriverServlet.SESSIONS_KEY, new DefaultDriverSessions(driverFactory, 10000))
-        context.addServlet(new ServletHolder(new DriverServlet()), "/*")
+    protected addServlets(ServletContextHandler context) {
+        context.setAttribute(WebDriverServlet.SESSION_TIMEOUT_PARAMETER, 10000)
+        context.addServlet(new ServletHolder(new WebDriverServlet()), "/*")
     }
 
 }

@@ -19,13 +19,18 @@ import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
 import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UnexpectedPageException
+import geb.error.WebStorageNotSupportedException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
 import geb.url.UrlFragment
 import geb.report.ReportState
+import geb.webstorage.LocalStorage
+import geb.webstorage.SessionStorage
+import geb.webstorage.WebStorage
 import org.openqa.selenium.NoSuchWindowException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
+import org.openqa.selenium.html5.WebStorage as SeleniumWebStorage
 
 import static groovy.lang.Closure.DELEGATE_FIRST
 import static java.lang.Integer.MAX_VALUE
@@ -41,6 +46,7 @@ class Browser {
 
     public static final String UTF8 = "UTF-8"
     public static final String QUERY_STRING_SEPARATOR = "&"
+    public static final String CLOSE_OPTION = "close"
 
     private Page page
     private final Configuration config
@@ -80,6 +86,47 @@ class Browser {
     Browser(Map props, Configuration config) {
         this(config)
         this.metaClass.setProperties(this, props)
+    }
+
+    /**
+     * Creates a new browser object via the default constructor and executes the closure
+     * with the browser instance as the closure's delegate.
+     *
+     * @return the created browser
+     */
+    static Browser drive(Closure script) {
+        drive(new Browser(), script)
+    }
+
+    /**
+     * Creates a new browser with the configuration and executes the closure
+     * with the browser instance as the closure's delegate.
+     *
+     * @return the created browser
+     */
+    static Browser drive(Configuration conf, Closure script) {
+        drive(new Browser(conf), script)
+    }
+
+    /**
+     * Creates a new browser with the properties and executes the closure
+     * with the browser instance as the closure's delegate.
+     *
+     * @return the created browser
+     */
+    static Browser drive(Map browserProperties, Closure script) {
+        drive(new Browser(browserProperties), script)
+    }
+
+    /**
+     * Executes the closure with browser as its delegate.
+     *
+     * @return browser
+     */
+    static Browser drive(Browser browser, Closure script) {
+        script.delegate = browser
+        script()
+        browser
     }
 
     /**
@@ -124,15 +171,6 @@ class Browser {
         }
 
         navigatorFactory
-    }
-
-    /**
-     * Called to create the navigator factory, the first time it is requested.
-     *
-     * @return The navigator factory
-     */
-    protected NavigatorFactory createNavigatorFactory() {
-        config.createNavigatorFactory(this)
     }
 
     /**
@@ -441,66 +479,6 @@ class Browser {
         doCheckIfAtAnUnexpectedPage(expectedPages)
     }
 
-    private doCheckIfAtAnUnexpectedPage(def expectedPages) {
-        def unexpectedPages = config.unexpectedPages - expectedPages.toList()
-        unexpectedPages.each {
-            if (isAt(it, false)) {
-                throw new UnexpectedPageException(it, *expectedPages)
-            }
-        }
-    }
-
-    /**
-     * Sets this browser's page to be the given page, which has already been initialised with this browser instance.
-     * <p>
-     * Any page change listeners are informed and {@link geb.Page#onUnload(geb.Page)} is called
-     * on the previous page and {@link geb.Page#onLoad(geb.Page)} is called on the incoming page.
-     * <p>
-     */
-    private Page makeCurrentPage(Page page) {
-        if (page != getPage()) {
-            informPageChangeListeners(getPage(), page)
-            getPage().onUnload(page)
-            def previousPage = getPage()
-            this.page = page
-            getPage().onLoad(previousPage)
-        }
-        getPage()
-    }
-
-    private <T extends Page> T initialisePage(T page) {
-        if (!this.is(page.browser)) {
-            page.init(this)
-        }
-        page
-    }
-
-    /**
-     * Runs a page's at checker, expecting the page to be initialised with this browser instance.
-     */
-    private <T extends Page> T doAt(T page) {
-        initialisePage(page)
-        def atResult = page.verifyAt()
-        if (atResult) {
-            makeCurrentPage(page)
-            page
-        } else {
-            null
-        }
-    }
-
-    private void validatePage(Class<?> pageType) {
-        if (!Page.isAssignableFrom(pageType)) {
-            throw new IllegalArgumentException("$pageType is not a subclass of ${Page}")
-        }
-    }
-
-    private <R> R runAssertionsWithPageDelegate(Page page, Closure<R> assertions) {
-        Closure clone = assertions.clone()
-        clone.delegate = page
-        clone.call()
-    }
-
     /**
      * Sends the browser to the given url. If it is relative it is resolved against the {@link #getBaseUrl() base url}.
      */
@@ -535,29 +513,6 @@ class Browser {
         if (!page) {
             page(Page)
         }
-    }
-
-    private URI retrieveCurrentUri() {
-        def currentUri = null
-        try {
-            def currentUrl = driver.currentUrl
-            currentUri = currentUrl ? new URI(currentUrl) : null
-        } catch (NullPointerException npe) {
-        } catch (URISyntaxException use) {
-        } catch (WebDriverException webDriverException) {
-            if (!webDriverException.message.contains("Remote browser did not respond to getCurrentUrl")) {
-                throw webDriverException
-            }
-        }
-        currentUri
-    }
-
-    private boolean sameUrlWithDifferentFragment(URI current, URI next) {
-        current && next.fragment && ignoreFragment(current) == ignoreFragment(next)
-    }
-
-    private URI ignoreFragment(URI uri) {
-        new URI(uri.scheme, uri.schemeSpecificPart, null)
     }
 
     /**
@@ -687,6 +642,14 @@ class Browser {
     }
 
     /**
+     * Clears web storage, that is both local and session storage for the <b>current domain</b>.
+     */
+    void clearWebStorage() {
+        localStorage.clear()
+        sessionStorage.clear()
+    }
+
+    /**
      * Quits the driver.
      *
      * @see org.openqa.selenium.WebDriver#quit()
@@ -720,10 +683,6 @@ class Browser {
      */
     Set<String> getAvailableWindows() {
         driver.windowHandles
-    }
-
-    protected switchToWindow(String window) {
-        driver.switchTo().window(window)
     }
 
     /**
@@ -770,14 +729,9 @@ class Browser {
             availableWindows.each {
                 switchToWindow(it)
                 if (specification.call()) {
-                    verifyAtIfPresent(options.page)
-
                     try {
-                        blockResults << block.call()
+                        blockResults << doWithWindow(options, block)
                     } finally {
-                        if (options.close) {
-                            driver.close()
-                        }
                         anyMatching = true
                     }
                 }
@@ -806,13 +760,8 @@ class Browser {
 
         switchToWindow(window)
         try {
-            verifyAtIfPresent(options.page)
-
-            block.call()
+            doWithWindow(options, block)
         } finally {
-            if (options.close) {
-                driver.close()
-            }
             switchToWindow(original)
             page originalPage
         }
@@ -835,36 +784,20 @@ class Browser {
         def originalWindow = currentWindow
         def originalPage = getPage()
 
-        def newWindow = executeNewWindowOpening(windowOpeningBlock, options.wait)
+        def wait = options.containsKey("wait") ? options.wait : config.withNewWindowConfig.wait
+        def newWindow = executeNewWindowOpening(windowOpeningBlock, wait)
         try {
             switchToWindow(newWindow)
             verifyAtIfPresent(options.page)
 
             block.call()
         } finally {
-            if (!options.containsKey('close') || options.close) {
+            if ((!options.containsKey(CLOSE_OPTION) && config.withNewWindowConfig.close.orElse(true)) || options.close) {
                 driver.close()
             }
             switchToWindow(originalWindow)
             page originalPage
         }
-    }
-
-    private String executeNewWindowOpening(Closure windowOpeningBlock, wait) {
-        def originalWindows = availableWindows
-        windowOpeningBlock.call()
-
-        if (wait) {
-            config.getWaitForParam(wait).waitFor { (availableWindows - originalWindows).size() == 1 }
-        }
-
-        def newWindows = (availableWindows - originalWindows) as List
-
-        if (newWindows.size() != 1) {
-            def message = newWindows ? 'There has been more than one window opened' : 'No new window has been opened'
-            throw new NoNewWindowException(message)
-        }
-        newWindows.first()
     }
 
     /**
@@ -981,6 +914,76 @@ class Browser {
         }
     }
 
+    /**
+     * Returns an object that allows access to and manipulation of local storage.
+     *
+     * @see geb.webstorage.WebStorage
+     */
+    WebStorage getLocalStorage() {
+        new LocalStorage(seleniumWebStorage)
+    }
+
+    /**
+     * Returns an object that allows access to and manipulation of session storage.
+     *
+     * @see geb.webstorage.WebStorage
+     */
+    WebStorage getSessionStorage() {
+        new SessionStorage(seleniumWebStorage)
+    }
+
+    protected switchToWindow(String window) {
+        driver.switchTo().window(window)
+    }
+
+    protected doWithWindow(Map options, Closure block) {
+        try {
+            verifyAtIfPresent(options.page)
+
+            block.call()
+        } finally {
+            if (options.close || (!options.containsKey(CLOSE_OPTION) && config.withWindowConfig.close)) {
+                driver.close()
+            }
+        }
+    }
+
+    /**
+     * Called to create the navigator factory, the first time it is requested.
+     *
+     * @return The navigator factory
+     */
+    protected NavigatorFactory createNavigatorFactory() {
+        config.createNavigatorFactory(this)
+    }
+
+    private String executeNewWindowOpening(Closure windowOpeningBlock, wait) {
+        def originalWindows = availableWindows
+        windowOpeningBlock.call()
+
+        if (wait) {
+            config.getWaitForParam(wait).waitFor { (availableWindows - originalWindows).size() == 1 }
+        }
+
+        def newWindows = (availableWindows - originalWindows) as List
+
+        if (newWindows.size() != 1) {
+            def message = newWindows ? 'There has been more than one window opened' : 'No new window has been opened'
+            throw new NoNewWindowException(message)
+        }
+        newWindows.first()
+    }
+
+    private SeleniumWebStorage getSeleniumWebStorage() {
+        if (driver instanceof SeleniumWebStorage) {
+            driver
+        } else if (augmentedDriver instanceof SeleniumWebStorage) {
+            augmentedDriver
+        } else {
+            throw new WebStorageNotSupportedException()
+        }
+    }
+
     private informPageChangeListeners(Page oldPage, Page newPage) {
         pageChangeListeners*.pageWillChange(this, oldPage, newPage)
     }
@@ -1068,45 +1071,87 @@ class Browser {
         match
     }
 
-    /**
-     * Creates a new browser object via the default constructor and executes the closure
-     * with the browser instance as the closure's delegate.
-     *
-     * @return the created browser
-     */
-    static Browser drive(Closure script) {
-        drive(new Browser(), script)
+    private doCheckIfAtAnUnexpectedPage(def expectedPages) {
+        def unexpectedPages = config.unexpectedPages - expectedPages.toList()
+        unexpectedPages.each {
+            if (isAt(it, false)) {
+                throw new UnexpectedPageException(it, *expectedPages)
+            }
+        }
     }
 
     /**
-     * Creates a new browser with the configuration and executes the closure
-     * with the browser instance as the closure's delegate.
-     *
-     * @return the created browser
+     * Sets this browser's page to be the given page, which has already been initialised with this browser instance.
+     * <p>
+     * Any page change listeners are informed and {@link geb.Page#onUnload(geb.Page)} is called
+     * on the previous page and {@link geb.Page#onLoad(geb.Page)} is called on the incoming page.
+     * <p>
      */
-    static Browser drive(Configuration conf, Closure script) {
-        drive(new Browser(conf), script)
+    private Page makeCurrentPage(Page page) {
+        if (page != getPage()) {
+            informPageChangeListeners(getPage(), page)
+            getPage().onUnload(page)
+            def previousPage = getPage()
+            this.page = page
+            getPage().onLoad(previousPage)
+        }
+        getPage()
+    }
+
+    private <T extends Page> T initialisePage(T page) {
+        if (!this.is(page.browser)) {
+            page.init(this)
+        }
+        page
     }
 
     /**
-     * Creates a new browser with the properties and executes the closure
-     * with the browser instance as the closure's delegate.
-     *
-     * @return the created browser
+     * Runs a page's at checker, expecting the page to be initialised with this browser instance.
      */
-    static Browser drive(Map browserProperties, Closure script) {
-        drive(new Browser(browserProperties), script)
+    private <T extends Page> T doAt(T page) {
+        initialisePage(page)
+        def atResult = page.verifyAt()
+        if (atResult) {
+            makeCurrentPage(page)
+            page
+        } else {
+            null
+        }
     }
 
-    /**
-     * Executes the closure with browser as its delegate.
-     *
-     * @return browser
-     */
-    static Browser drive(Browser browser, Closure script) {
-        script.delegate = browser
-        script()
-        browser
+    private void validatePage(Class<?> pageType) {
+        if (!Page.isAssignableFrom(pageType)) {
+            throw new IllegalArgumentException("$pageType is not a subclass of ${Page}")
+        }
+    }
+
+    private <R> R runAssertionsWithPageDelegate(Page page, Closure<R> assertions) {
+        Closure clone = assertions.clone()
+        clone.delegate = page
+        clone.call()
+    }
+
+    private URI retrieveCurrentUri() {
+        def currentUri = null
+        try {
+            def currentUrl = driver.currentUrl
+            currentUri = currentUrl ? new URI(currentUrl) : null
+        } catch (NullPointerException npe) {
+        } catch (URISyntaxException use) {
+        } catch (WebDriverException webDriverException) {
+            if (!webDriverException.message.contains("Remote browser did not respond to getCurrentUrl")) {
+                throw webDriverException
+            }
+        }
+        currentUri
+    }
+
+    private boolean sameUrlWithDifferentFragment(URI current, URI next) {
+        current && next.fragment && ignoreFragment(current) == ignoreFragment(next)
+    }
+
+    private URI ignoreFragment(URI uri) {
+        new URI(uri.scheme, uri.schemeSpecificPart, null)
     }
 
 }

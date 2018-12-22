@@ -16,6 +16,7 @@
 package geb.window
 
 import geb.test.browsers.Chrome
+import geb.test.browsers.Edge
 import geb.test.browsers.Firefox
 import geb.test.browsers.InternetExplorer11
 import geb.test.browsers.Safari
@@ -25,6 +26,7 @@ import spock.lang.Unroll
 @Chrome
 @Firefox
 @InternetExplorer11
+@Edge
 @Safari
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
 
@@ -45,7 +47,6 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @Unroll
-    @SuppressWarnings('SpaceAfterClosingBrace')
     def "ensure original context is preserved after a call to withWindow"() {
         given:
         openWindow(1)
@@ -69,7 +70,6 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @Unroll
-    @SuppressWarnings('SpaceAfterClosingBrace')
     def "ensure exception is thrown for a non existing window passed to withWindow"() {
         when:
         withWindow(specification) {
@@ -83,7 +83,6 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @Unroll
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withWindow closes matching windows if 'close' option is passed"() {
         given:
         openWindow(1)
@@ -99,7 +98,6 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
         specification << [{ title == windowTitle(1) }, windowName(1)]
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "ensure original context is preserved after a call to withNewWindow"() {
         when:
         withNewWindow({ openWindow(1) }) {
@@ -117,7 +115,6 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @Unroll
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "ensure withNewWindow block closure called in the context of the newly opened window"() {
         expect:
         withNewWindow({ openWindow(windowNum) }) { title } == expectedTitle
@@ -128,7 +125,6 @@ class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
         windowTitle(2) | 2
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow closes the new window by default"() {
         when:
         withNewWindow({ openWindow(1) }) {

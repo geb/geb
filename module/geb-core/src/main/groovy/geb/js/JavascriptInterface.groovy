@@ -26,16 +26,6 @@ class JavascriptInterface {
         this.browser = browser
     }
 
-    private execjs(String script, Object[] args) {
-        def driver = browser.driver
-
-        if (!(driver instanceof JavascriptExecutor)) {
-            throw new GebException("driver '$driver' can not execute javascript")
-        }
-
-        driver.executeScript(script, *args)
-    }
-
     def propertyMissing(String name) {
         execjs("return $name;")
     }
@@ -64,6 +54,16 @@ class JavascriptInterface {
         }
 
         execjs(script.toString(), *jsArgs)
+    }
+
+    private execjs(String script, Object[] args) {
+        def driver = browser.driver
+
+        if (!(driver instanceof JavascriptExecutor)) {
+            throw new GebException("driver '$driver' can not execute javascript")
+        }
+
+        driver.executeScript(script, *args)
     }
 
 }

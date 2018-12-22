@@ -19,6 +19,14 @@ import geb.error.InvalidModuleBaseException
 
 class Textarea extends FormElement {
 
+    void setText(String text) {
+        navigator.value(text)
+    }
+
+    String getText() {
+        navigator.value()
+    }
+
     @Override
     protected void initialized() {
         ensureAtMostOneBaseElement()
@@ -28,13 +36,5 @@ class Textarea extends FormElement {
                 throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '$tag' but only textarea is allowed as the base element.")
             }
         }
-    }
-
-    void setText(String text) {
-        navigator.value(text)
-    }
-
-    String getText() {
-        navigator.value()
     }
 }

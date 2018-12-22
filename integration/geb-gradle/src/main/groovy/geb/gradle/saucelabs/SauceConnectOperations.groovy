@@ -36,6 +36,15 @@ class SauceConnectOperations {
         loadClass("com.saucelabs.ci.sauceconnect.SauceConnectFourManager")
     }
 
+    String getDirectory() {
+        def os = getOperatingSystem()
+        if (os.metaClass.respondsTo(os, "getDirectory", Boolean)) {
+            os.getDirectory(false)
+        } else {
+            os.directory
+        }
+    }
+
     private Class loadOperatingSystemClass() {
         loadClass('com.saucelabs.ci.sauceconnect.SauceConnectFourManager$OperatingSystem')
     }

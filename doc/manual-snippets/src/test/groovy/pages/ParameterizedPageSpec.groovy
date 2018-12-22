@@ -53,12 +53,12 @@ class BooksPage extends Page {
 }
 
 class BookPage extends Page {
-    String forBook
-
     static at = { forBook == bookTitle }
 
     static content = {
         bookTitle { $("h1").text() }
     }
+
+    String forBook
 }
 // end::pages[]

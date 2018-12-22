@@ -162,12 +162,21 @@ To remedy this, you can instruct Geb to cache the driver instance per thread by 
 Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits.
 You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
 
-[[base-url]]
+[[configuration-base-url]]
 === Base URL
 
 The <<base-url, base URL>> to be used can be specified by setting the `baseUrl` config property (with a `String`) value or via the build adapter (the default implementation of which looks at the
 `geb.build.baseUrl` system property).
 Any value set in the config script will take precedence over the value provided by the build adapter.
+
+=== Template options default values
+
+Default values for some of the <<template-options, content DSL template options>> are configurable:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/TemplateOptionsConfigScriptSpec.groovy[tag=config,indent=0]
+----
 
 [[waiting-configuration]]
 === Waiting
@@ -259,6 +268,24 @@ include::{test-dir}/configuration/UnexpectedPagesConfigSpec.groovy[tag=config,in
 
 See <<unexpected-pages,this section>> for more information on unexpected pages.
 
+=== Default values for `withWindow()` options
+
+Default values for some of the <<with-window-options, options for `withWindow()` calls>> are configurable:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/WithWindowConfigScriptSpec.groovy[tag=config,indent=0]
+----
+
+=== Default values for `withNewWindow()` options
+
+Default values for some of the <<with-new-window-options, options for `withNewWindow()` calls>> are configurable:
+
+[source,groovy]
+----
+include::{test-dir}/configuration/WithNewWindowConfigScriptSpec.groovy[tag=config,indent=0]
+----
+
 [[reporter-configuration]]
 === Reporter
 
@@ -328,6 +355,17 @@ This configuration flag, which is `true` by default, can be disabled by setting 
 [source,groovy]
 ----
 include::{test-dir}/configuration/AutoClearCookiesConfigSpec.groovy[tag=config,indent=0]
+----
+
+[[auto-clearing-web-storage-configuration]]
+=== Auto clearing web storage
+
+Certain integrations will automatically clear the driver's web storage, that is both local and session storage, which is usually necessary when using an <<implicit-driver-lifecycle, implicit driver>>.
+This configuration flag, which is `false` by default, can be enabled by setting the `autoClearWebStorage` value in the config to `true`.
+
+[source,groovy]
+----
+include::{test-dir}/configuration/AutoClearWebStorageConfigSpec.groovy[tag=config,indent=0]
 ----
 
 == Runtime overrides

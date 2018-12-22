@@ -37,6 +37,8 @@ interface Navigable extends Locator {
 
     Navigator $(WebElement[] elements)
 
+    Navigator focused()
+
     /**
      * Create and initialize an instance of the given module class.
      *

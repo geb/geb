@@ -2,6 +2,14 @@ dependencies {
 	compile spockDependency
 }
 
+sauceLabs {
+	browsers {
+		chrome_linux {
+			capabilities version: "48.0"
+		}
+	}
+}
+
 modifyPom { pom ->
 	pom.project {
 		name "Geb for Spock"
@@ -10,10 +18,4 @@ modifyPom { pom ->
 	
 	// User provides their own spock
 	pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.spockframework" })
-}
-
-test {
-	if (driver == "htmlunit") {
-		exclude "**/ExceptionOnReportScreenshotSpec.class"
-	}
 }

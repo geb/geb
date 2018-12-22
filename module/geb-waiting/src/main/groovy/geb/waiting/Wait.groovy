@@ -20,6 +20,7 @@ package geb.waiting
  * <p>
  * Generally not used by user code, but used internally by {@link geb.Configuration} and {@link geb.waiting.WaitingSupport}.
  */
+@SuppressWarnings("NoJavaUtilDate")
 class Wait {
 
     /**
@@ -90,10 +91,6 @@ class Wait {
         calendar.time
     }
 
-    private double toMiliseconds(Double seconds) {
-        seconds * 1000
-    }
-
     /**
      * Invokes the given {@code block} every {@code retryInterval} seconds until it returns
      * a true value according to the Groovy Truth. If {@code block} does not return a truish value
@@ -145,5 +142,9 @@ class Wait {
      */
     void sleepForRetryInterval() {
         Thread.sleep(toMiliseconds(retryInterval) as long)
+    }
+
+    private double toMiliseconds(Double seconds) {
+        seconds * 1000
     }
 }

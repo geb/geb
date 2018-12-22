@@ -24,18 +24,7 @@ class WaitingContentSpec extends WaitingSpec {
 
     def params = [:]
     def factory = { $("div") }
-    def showDelay = 1
-
-    protected getContent() {
-        DynamicallySpecifiedContentPage.content = {
-            delegate.div(params, factory)
-        }
-
-        go()
-        page DynamicallySpecifiedContentPage
-        js.showIn(showDelay)
-        div
-    }
+    def showDelay = 0.1
 
     def "no wait"() {
         when:
@@ -55,8 +44,7 @@ class WaitingContentSpec extends WaitingSpec {
 
     def "wait timeout"() {
         when:
-        showDelay = 4
-        params = [wait: 0.5]
+        params = [wait: 0.05]
 
         and:
         content
@@ -67,7 +55,7 @@ class WaitingContentSpec extends WaitingSpec {
 
     def "custom retry interval"() {
         when:
-        params = [wait: [5, 1]]
+        params = [wait: [5, 0.01]]
 
         then:
         content
@@ -99,7 +87,7 @@ class WaitingContentSpec extends WaitingSpec {
     def "waiting for non content - fail"() {
         given:
         factory = { false }
-        params = [wait: 1]
+        params = [wait: 0.1]
 
         when:
         content
@@ -112,7 +100,7 @@ class WaitingContentSpec extends WaitingSpec {
         when:
         def counter = 0
         factory = { counter++ > 3 }
-        params = [wait: [3, 0.1]]
+        params = [wait: [1, 0.05]]
 
         then:
         content
@@ -142,6 +130,17 @@ class WaitingContentSpec extends WaitingSpec {
         waitContent.text() == "a"
     }
 
+    protected getContent() {
+        DynamicallySpecifiedContentPage.content = {
+            delegate.div(params, factory)
+        }
+
+        go()
+        page DynamicallySpecifiedContentPage
+        js.showIn(showDelay)
+        div
+    }
+
 }
 
 class DynamicallySpecifiedContentPage extends Page {
@@ -150,7 +149,7 @@ class DynamicallySpecifiedContentPage extends Page {
 
 class StaticallySpecifiedContentPage extends Page {
     static content = {
-        waitContent(wait: 1) { $("div") }
-        waitContentExplicitlyRequired(wait: 1, required: true) { $("div") }
+        waitContent(wait: 0.1) { $("div") }
+        waitContentExplicitlyRequired(wait: 0.1, required: true) { $("div") }
     }
 }

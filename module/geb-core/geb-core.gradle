@@ -1,22 +1,16 @@
 import geb.gradle.browserstack.BrowserStackAccount
-import geb.gradle.saucelabs.SauceAccount
 
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'io.ratpack:ratpack-gradle:1.5.4'
+        classpath 'io.ratpack:ratpack-gradle:1.6.0'
     }
 }
 
-apply plugin: "geb-saucelabs"
 apply plugin: "geb-browserstack"
 apply plugin: ratpack.gradle.RatpackBasePlugin
-
-repositories {
-    maven { url "http://repository-saucelabs.forge.cloudbees.com/release" }
-}
 
 dependencies {
     compile seleniumDependency, seleniumSupportDependency
@@ -24,10 +18,9 @@ dependencies {
     compile project(":module:geb-ast")
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
+    compile'org.threeten:threeten-extra:1.4'
 
     testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
-
-    sauceConnect "com.saucelabs:ci-sauce:1.128"
 }
 
 test {
@@ -47,22 +40,9 @@ sauceLabs {
         firefox_linux {
             capabilities version: "45.0"
         }
-        safari_mac_7 {
-            capabilities platform: "OS X 10.9"
+        safari_mac_8 {
+            capabilities platform: "OS X 10.10"
         }
-    }
-    task {
-        maxHeapSize = "512m"
-        testClassesDirs = test.testClassesDirs
-        classpath = test.classpath
-        maxParallelForks 5
-    }
-    account {
-        username = System.getenv(SauceAccount.USER_ENV_VAR)
-        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
-    }
-    connect {
-        timeout 10 // minutes
     }
 }
 
@@ -78,10 +58,9 @@ browserStack {
         chrome_windows_62
         firefox_windows_47 //newer versions do not currently support mouse interaction commands
         firefox_mac_47 //newer versions do not currently support mouse interaction commands
-        create("internet explorer_windows_8")
-        create("internet explorer_windows_9")
         create("internet explorer_windows_10")
         create("internet explorer_windows_11")
+        create("edge_windows_17")
 
     }
     task {
@@ -101,7 +80,7 @@ task nonIeBrowserStackTests {
 }
 
 task ieBrowserStackTests {
-    dependsOn 'internetExplorerWindows8Test', 'internetExplorerWindows9Test', 'internetExplorerWindows10Test', 'internetExplorerWindows11Test'
+    dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows17Test'
 }
 
 modifyPom { pom ->

@@ -2,6 +2,17 @@ dependencies {
     compile "junit:junit:$junit4Version"
 }
 
+sauceLabs {
+    browsers {
+        chrome_linux {
+            capabilities version: "48.0"
+        }
+    }
+    task {
+        exclude "**/*Test.class"
+    }
+}
+
 modifyPom { pom ->
     pom.project {
         name "Geb for JUnit 4"

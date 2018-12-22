@@ -15,10 +15,8 @@
 package geb.report
 
 import geb.Browser
-
-import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.OutputType
-
+import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriverException
 
 /**
@@ -33,12 +31,11 @@ class ScreenshotReporter extends ReporterSupport {
         if (screenshotDriver) {
             def decoded
             try {
-                def rawBase64 = screenshotDriver.getScreenshotAs(OutputType.BASE64)
-                decoded = Base64.decode(rawBase64 as String)
+                decoded = screenshotDriver.getScreenshotAs(OutputType.BYTES)
 
                 // WebDriver has a bug where sometimes the screenshot has been encoded twice
                 if (!PngUtils.isPng(decoded)) {
-                    decoded = Base64.decode(decoded)
+                    decoded = Base64.mimeDecoder.decode(decoded)
                 }
             } catch (WebDriverException e) {
                 decoded = new ExceptionToPngConverter(e).convert('An exception has been thrown while getting the screenshot:')
@@ -49,12 +46,6 @@ class ScreenshotReporter extends ReporterSupport {
         }
     }
 
-    protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
-        def file = getFile(outputDir, label, 'png')
-        file.withOutputStream { it << bytes }
-        file
-    }
-
     protected static TakesScreenshot determineScreenshotDriver(Browser browser) {
         if (browser.driver instanceof TakesScreenshot) {
             browser.driver as TakesScreenshot
@@ -63,6 +54,12 @@ class ScreenshotReporter extends ReporterSupport {
         } else {
             null
         }
+    }
+
+    protected File saveScreenshotPngBytes(File outputDir, String label, byte[] bytes) {
+        def file = getFile(outputDir, label, 'png')
+        file.withOutputStream { it << bytes }
+        file
     }
 
 }

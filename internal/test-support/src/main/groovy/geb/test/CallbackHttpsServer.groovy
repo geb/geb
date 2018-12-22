@@ -15,24 +15,34 @@
  */
 package geb.test
 
-import org.mortbay.jetty.Connector
-import org.mortbay.jetty.security.SslSocketConnector
+import org.eclipse.jetty.server.*
+import org.eclipse.jetty.util.ssl.SslContextFactory
+
+import static org.eclipse.jetty.http.HttpVersion.HTTP_1_1
 
 class CallbackHttpsServer extends CallbackHttpServer {
 
     private static final String PASSWORD = 'password'
 
-    protected Connector createConnector(int port) {
-        def connector = new SslSocketConnector()
-        connector.port = port
-        connector.password = PASSWORD
-        connector.keyPassword = PASSWORD
-        connector.trustPassword = PASSWORD
-        connector.keystore = getClass().getResource('/keystore.jks').toString()
-        connector
-    }
-
     String getProtocol() {
         'https'
+    }
+
+    protected Connector createConnector(Server server, int port) {
+        def sslContextFactory = new SslContextFactory(
+                keyStorePassword: PASSWORD,
+                trustStorePassword: PASSWORD,
+                keyManagerPassword: PASSWORD,
+                keyStorePath: getClass().getResource('/keystore.jks').toString()
+        )
+        def httpsConfig = new HttpConfiguration(securePort: port)
+        httpsConfig.addCustomizer(new SecureRequestCustomizer())
+        def connector = new ServerConnector(
+                server,
+                new SslConnectionFactory(sslContextFactory, HTTP_1_1.asString()),
+                new HttpConnectionFactory(httpsConfig)
+        )
+        connector.port = port
+        connector
     }
 }

@@ -21,7 +21,6 @@ import geb.navigator.EmptyNavigator
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
-@SuppressWarnings("TrailingWhitespace")
 @Unroll
 class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
@@ -40,11 +39,11 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "basic waiting - when called on #subjectName"() {
         when:
-        js.showIn(2)
+        js.showIn(0.1)
 
         then:
         $("div").empty
-        subjectFactory().waitFor(3) { !$("div").empty }
+        subjectFactory().waitFor(0.2) { !$("div").empty }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -52,11 +51,11 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "basic waiting throwing exception - when called on #subjectName"() {
         when:
-        js.showIn(2)
+        js.showIn(0.1)
 
         then:
         $("div").empty
-        subjectFactory().waitFor(3) { assert !$("div").empty; true }
+        subjectFactory().waitFor(0.2) { assert !$("div").empty; true }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -64,8 +63,8 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "failed waiting - when called on #subjectName"() {
         when:
-        js.showIn(3)
-        subjectFactory().waitFor(1) { !$("div").empty }
+        js.showIn(0.3)
+        subjectFactory().waitFor(0.05) { !$("div").empty }
 
         then:
         WaitTimeoutException exception = thrown()
@@ -78,7 +77,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "failed waiting throwing exception - when called on #subjectName"() {
         when:
-        subjectFactory().waitFor(2) { throw new IllegalArgumentException("1") }
+        subjectFactory().waitFor(0.1) { throw new IllegalArgumentException("1") }
 
         then:
         WaitTimeoutException e = thrown()
@@ -89,11 +88,14 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
     }
 
     def "larger interval than timeout - when called on #subjectName"() {
+        given:
+        js.showIn(0.3)
+
         when:
-        js.showIn(4)
+        subjectFactory().waitFor(0.1, 1) { !$("div").empty }
 
         then:
-        subjectFactory().waitFor(1, 10) { $("div").empty }
+        thrown(WaitTimeoutException)
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -101,7 +103,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "message argument is appended to the exception message - when called on #subjectName"() {
         when:
-        subjectFactory().waitFor(1, message: 'Some custom message') { false }
+        subjectFactory().waitFor(0.1, message: 'Some custom message') { false }
 
         then:
         WaitTimeoutException e = thrown()
@@ -112,11 +114,14 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
     }
 
     def "larger interval than timeout throwing exception - when called on #subjectName"() {
+        given:
+        js.showIn(0.3)
+
         when:
-        js.showIn(4)
+        subjectFactory().waitFor(0.1, 1) { assert !$("div").empty; true }
 
         then:
-        subjectFactory().waitFor(1, 10) { assert $("div").empty; true }
+        thrown(WaitTimeoutException)
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -131,7 +136,6 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
     }
 
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "lastEvaluationValue is set on WaitTimeoutException when waiting for #waitForTime secs and expected result is #lastEvaluationValueClass.simpleName"() {
         when:
         waitFor(waitForTime, evaluatedClosure)
@@ -144,7 +148,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
         where:
         evaluatedClosure << [{ false }, { $('#not-existing-element') }, { throw new Exception() }] * 2
         lastEvaluationValueClass << [Boolean, EmptyNavigator, UnknownWaitForEvaluationResult] * 2
-        waitForTime << [0, 0.5].sum { [it] * 3 }
+        waitForTime << [0, 0.1].sum { [it] * 3 }
     }
 
     @Unroll
@@ -160,20 +164,21 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
         e.lastEvaluationValue.thrown == exception
 
         where:
-        waitForTime << [0, 0.5].sum { [it] * 3 }
+        waitForTime << [0, 0.1].sum { [it] * 3 }
         [subjectFactory, subjectName] << subjects() * 2
     }
 
+    @SuppressWarnings("TrailingWhitespace")
     def "cause is appended to the exception message if configured - when called on #subjectName"() {
         given:
         config.includeCauseInWaitTimeoutExceptionMessage = true
 
         when:
-        subjectFactory().waitFor(0.2) { 'not empty'.empty }
+        subjectFactory().waitFor(0.01) { 'not empty'.empty }
 
         then:
         WaitTimeoutException exception = thrown()
-        normalizeEndOfLines(exception.message) == """condition did not pass in 0.2 seconds. Failed with exception:
+        normalizeEndOfLines(exception.message) == """condition did not pass in 0.01 seconds. Failed with exception:
 Assertion failed: 
 
 'not empty'.empty
@@ -187,10 +192,10 @@ Assertion failed:
 
     def "default variant - when called on #subjectName"() {
         when:
-        js.showIn(2)
+        js.showIn(0.1)
 
         then:
-        subjectFactory().waitFor { $("div").empty }
+        subjectFactory().waitFor { !$("div").empty }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -198,10 +203,10 @@ Assertion failed:
 
     def "using timeout and interval - when called on #subjectName"() {
         when:
-        js.showIn(1)
+        js.showIn(0.15)
 
         then:
-        subjectFactory().waitFor(2, 0.1) { $("div") }
+        subjectFactory().waitFor(0.2, 0.1) { $("div") }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -209,10 +214,10 @@ Assertion failed:
 
     def "using preset - when called on #subjectName"() {
         given:
-        browser.config.setWaitPreset("custom", 2, 0.1)
+        browser.config.setWaitPreset("custom", 0.2, 0.1)
 
         when:
-        js.showIn(1)
+        js.showIn(0.15)
 
         then:
         subjectFactory().waitFor("custom") { $("div") }
@@ -223,7 +228,8 @@ Assertion failed:
 
     def "available on page"() {
         when:
-        js.showIn(3)
+        js.showIn(0.1)
+
         then:
         $("div").empty
         waitForDiv()
@@ -231,7 +237,8 @@ Assertion failed:
 
     def "available on module"() {
         when:
-        js.showIn(3)
+        js.showIn(0.1)
+
         then:
         $("div").empty
         mod.waitForDiv()

@@ -38,7 +38,7 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         }
     }
 
-    @SuppressWarnings(["ConstantAssertExpression", "BracesForTryCatchFinally"])
+    @SuppressWarnings("ConstantAssertExpression")
     def "using unexpected page"() {
         expect:
         // tag::usage[]

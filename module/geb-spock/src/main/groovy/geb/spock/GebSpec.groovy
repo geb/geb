@@ -46,8 +46,12 @@ class GebSpec extends Specification {
     }
 
     void resetBrowser() {
-        if (_browser?.config?.autoClearCookies) {
+        def config = _browser?.config
+        if (config?.autoClearCookies) {
             _browser.clearCookiesQuietly()
+        }
+        if (config?.autoClearWebStorage) {
+            _browser.clearWebStorage()
         }
         _browser = null
     }
@@ -64,10 +68,6 @@ class GebSpec extends Specification {
         getBrowser()."$name" = value
     }
 
-    private isSpecStepwise() {
-        this.class.getAnnotation(Stepwise) != null
-    }
-
     def cleanup() {
         if (!isSpecStepwise()) {
             resetBrowser()
@@ -78,5 +78,9 @@ class GebSpec extends Specification {
         if (isSpecStepwise()) {
             resetBrowser()
         }
+    }
+
+    private isSpecStepwise() {
+        this.class.getAnnotation(Stepwise) != null
     }
 }

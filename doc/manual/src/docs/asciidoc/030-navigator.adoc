@@ -457,8 +457,24 @@ The `displayed` property of a navigator object that doesn't match anything is al
 
 == Focus
 
-It is possible to verify if a given `Navigator` object holds the currently focused element using its `focused` property.
+Geb comes with an easy way for finding the currently focused element in the form of `focused()` method which returns a `Navigator`.
+
+It is also possible to verify if a given `Navigator` object holds the currently focused element using its `focused` property.
 `Navigator` objects that don't match any elements will return `false` as the value of `focused` property and ones that match multiple elements will throw a `SingleElementNavigatorOnlyMethodException`.
+
+Given the following html…
+
+[source,html]
+----
+include::{test-dir}/navigator/FocusSpec.groovy[tag=html,indent=0]
+----
+
+`focused()` method and Navigator's `focused` property can be used in the following way…
+
+[source,groovy]
+----
+include::{test-dir}/navigator/FocusSpec.groovy[tag=focus,indent=0]
+----
 
 == Size and location
 

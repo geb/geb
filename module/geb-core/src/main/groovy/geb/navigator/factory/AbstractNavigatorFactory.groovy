@@ -29,10 +29,6 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
         this.innerNavigatorFactory = innerNavigatorFactory
     }
 
-    protected Browser getBrowser() {
-        browser
-    }
-
     Navigator createFromWebElements(Iterable<WebElement> elements) {
         List<WebElement> filtered = []
         elements.each {
@@ -55,6 +51,10 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
 
     NavigatorFactory relativeTo(Navigator newBase) {
         new NavigatorBackedNavigatorFactory(newBase, innerNavigatorFactory)
+    }
+
+    protected Browser getBrowser() {
+        browser
     }
 
 }

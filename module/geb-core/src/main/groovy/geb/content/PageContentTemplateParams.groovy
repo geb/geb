@@ -16,6 +16,7 @@
 package geb.content
 
 import geb.Page
+import geb.TemplateOptionsConfiguration
 import geb.error.InvalidPageContent
 
 class PageContentTemplateParams {
@@ -24,9 +25,12 @@ class PageContentTemplateParams {
     private static final String MIN = 'min'
     private static final String TIMES = 'times'
     private static final String REQUIRED = 'required'
+
     private final PageContentTemplate owner
 
     private final String name
+
+    private final TemplateOptionsConfiguration config
 
     /**
      * The value of the 'required' option, as a boolean according to the Groovy Truth. Defaults to true.
@@ -78,9 +82,10 @@ class PageContentTemplateParams {
      */
     Closure<?> waitCondition
 
-    PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params) {
+    PageContentTemplateParams(PageContentTemplate owner, String name, Map<String, ?> params, TemplateOptionsConfiguration config) {
         this.owner = owner
         this.name = name
+        this.config = config
 
         extractParams(params)
     }
@@ -88,7 +93,7 @@ class PageContentTemplateParams {
     private void extractParams(Map<String, ?> params) {
         def paramsToProcess = params == null ? Collections.emptyMap() : new HashMap<String, Object>(params)
 
-        cache = toBoolean(paramsToProcess, 'cache', false)
+        cache = toBoolean(paramsToProcess, 'cache', config.cache)
 
         def toParam = paramsToProcess.remove("to")
         toSingle = extractToSingle(toParam)
@@ -105,12 +110,12 @@ class PageContentTemplateParams {
 
         page = extractPage(paramsToProcess)
 
-        waitCondition = extractClosure(paramsToProcess, 'waitCondition')
+        waitCondition = extractClosure(paramsToProcess, 'waitCondition') ?: config.waitCondition
 
-        def waitParam = paramsToProcess.remove("wait")
+        def waitParam = toObject(paramsToProcess, "wait", config.wait)
         wait = waitParam != null ? waitParam : waitCondition != null
 
-        toWait = paramsToProcess.remove("toWait")
+        toWait = toObject(paramsToProcess, "toWait", config.toWait)
 
         throwIfAnyParamsLeft(paramsToProcess)
     }
@@ -134,9 +139,11 @@ class PageContentTemplateParams {
             throwInvalidContent('''contains 'max' option that is lower than the 'min' option''')
         }
         def times = paramsToProcess.remove(TIMES)
-        def defaultMin = paramsToProcess[REQUIRED] == false ? 0 : 1
+        def notRequired = paramsToProcess[REQUIRED] == false || (!paramsToProcess.containsKey(REQUIRED) && config.required.present && !config.required.get())
+        def explicitlyRequired = paramsToProcess[REQUIRED]
+        def defaultMin = notRequired ? 0 : (explicitlyRequired ? 1 : config.min.orElse(1))
         def timesMin = times != null ? minTimes(times) : defaultMin
-        def timesMax = times != null ? maxTimes(times) : Integer.MAX_VALUE
+        def timesMax = times != null ? maxTimes(times) : config.max.orElse(Integer.MAX_VALUE)
         max = toNonNegativeInt(paramsToProcess, MAX, timesMax)
         min = toNonNegativeInt(paramsToProcess, MIN, Math.min(max, timesMin))
     }
@@ -174,7 +181,7 @@ class PageContentTemplateParams {
         pageParam as Class<? extends Page>
     }
 
-    Closure<?> extractClosure(Map paramsToProcess, String optionName) {
+    private Closure<?> extractClosure(Map paramsToProcess, String optionName) {
         def param = paramsToProcess.remove(optionName)
         if (param) {
             if (param instanceof Closure) {
@@ -186,7 +193,11 @@ class PageContentTemplateParams {
     }
 
     private boolean toBoolean(Map<String, ?> params, String key, boolean defaultValue) {
-        params.containsKey(key) ? params.remove(key) : defaultValue as boolean
+        toObject(params, key, defaultValue) as boolean
+    }
+
+    private toObject(Map<String, ?> params, String key, Object defaultValue) {
+        params.containsKey(key) ? params.remove(key) : defaultValue
     }
 
     private int toNonNegativeInt(Map<String, ?> params, String key, int defaultValue) {

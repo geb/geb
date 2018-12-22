@@ -112,24 +112,6 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         assert page instanceof LoginFailedPage
     }
 
-    private void dynamicHtml(String text = "I'm here now", String className = "dynamic") {
-        html """
-            <html>
-                <head>
-                    <script type="text/javascript">
-                        setTimeout(function() {
-                            var p = document.createElement("p");
-                            p.innerHTML = "$text";
-                            p.className = "$className"
-                            document.body.appendChild(p);
-                        }, 500);
-                    </script>
-                </head>
-                <body></body>
-            </html>
-        """
-    }
-
     def "waiting content"() {
         given:
         dynamicHtml()
@@ -166,7 +148,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
     def "not required waiting content"() {
         given:
         html { }
-        browser.config.defaultWaitTimeout = 0.5
+        browser.config.defaultWaitTimeout = 0.2
 
         when:
         to DynamicPageWithNotRequiredWait
@@ -323,6 +305,24 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         ContentCountOutOfBoundsException e = thrown()
         e.message == exceptionMessage
     }
+
+    private void dynamicHtml(String text = "I'm here now", String className = "dynamic") {
+        html """
+            <html>
+                <head>
+                    <script type="text/javascript">
+                        setTimeout(function() {
+                            var p = document.createElement("p");
+                            p.innerHTML = "$text";
+                            p.className = "$className"
+                            document.body.appendChild(p);
+                        }, 200);
+                    </script>
+                </head>
+                <body></body>
+            </html>
+        """
+    }
 }
 
 class TemplateOptionsIntroductionPage extends Page {
@@ -344,11 +344,11 @@ class PageWithTemplatesUsingRequiredOption extends Page {
 
 // tag::cache_page[]
 class PageWithTemplateUsingCacheOption extends Page {
-    def value = 1
     static content = {
         notCachedValue { value }
         cachedValue(cache: true) { value }
     }
+    def value = 1
 }
 // end::cache_page[]
 

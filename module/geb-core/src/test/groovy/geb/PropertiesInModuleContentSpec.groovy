@@ -51,11 +51,11 @@ class PropertiesInModuleContentSpec extends GebSpecWithCallbackServer {
 }
 
 class ModuleWithPropertyInContent extends Module {
-    Class<? extends Page> destinationPage
-
     static content = {
         link(to: destinationPage) { $('a') }
     }
+
+    Class<? extends Page> destinationPage
 }
 
 class SourcePropertiesInModuleContentPage extends Page {

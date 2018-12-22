@@ -37,6 +37,19 @@ class FindingAndFilteringSpec extends GebSpecWithCallbackServer {
         go()
     }
 
+    def "selectors work as expected"() {
+        expect:
+        bParagraphUsingFind() == $("p.b")
+        bParagraphUsingDollar() == $("p.b")
+        bDivUsingFilter() == $("div.b")
+        bDivUsingNot() == $("div.b")
+        aDivUsingHas() == $("div.a")
+        bDivUsingHas() == $("div.b")
+        bDivUsingHasNot() == $("div.b")
+        aDivUsingHasNot() == $("div.a")
+        divsUsingHasNot() == $("div")
+    }
+
     private Navigator bParagraphUsingFind() {
         // tag::find[]
         $("div").find(".b")
@@ -89,18 +102,5 @@ class FindingAndFilteringSpec extends GebSpecWithCallbackServer {
         // tag::has_not[]
         $("div").hasNot("input", type: "submit")
         // end::has_not[]
-    }
-
-    def "selectors work as expected"() {
-        expect:
-        bParagraphUsingFind() == $("p.b")
-        bParagraphUsingDollar() == $("p.b")
-        bDivUsingFilter() == $("div.b")
-        bDivUsingNot() == $("div.b")
-        aDivUsingHas() == $("div.a")
-        bDivUsingHas() == $("div.b")
-        bDivUsingHasNot() == $("div.b")
-        aDivUsingHasNot() == $("div.a")
-        divsUsingHasNot() == $("div")
     }
 }

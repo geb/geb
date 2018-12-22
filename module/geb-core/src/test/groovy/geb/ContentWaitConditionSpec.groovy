@@ -32,7 +32,7 @@ class ContentWaitConditionSpec extends GebSpecWithCallbackServer {
                     <script type="text/javascript" charset="utf-8">
                     setTimeout(function() {
                         \$("div").show();
-                    }, 500);
+                    }, 200);
                     </script>
                 </head>
                 <body>
@@ -64,6 +64,6 @@ class ContentWaitConditionSpec extends GebSpecWithCallbackServer {
 class ContentWaitConditionSpecPage extends Page {
     static content = {
         div(waitCondition: { it.displayed }) { $('div') }
-        failingDiv(wait: 0.1, waitCondition: { it.displayed }) { $('div') }
+        failingDiv(wait: 0.05, waitCondition: { it.displayed }) { $('div') }
     }
 }

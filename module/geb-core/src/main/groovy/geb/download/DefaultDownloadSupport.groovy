@@ -33,10 +33,10 @@ class DefaultDownloadSupport implements DownloadSupport {
         NOTE - if public methods are added here, make sure they are also added to the binding updater.
     */
 
-    final private Browser browser
-
     // HTTP 1.1 states that this charset is the default if none was specified
     static final private DEFAULT_CHARSET = "ISO-8859-1"
+
+    final private Browser browser
 
     DefaultDownloadSupport(Browser browser) {
         this.browser = browser

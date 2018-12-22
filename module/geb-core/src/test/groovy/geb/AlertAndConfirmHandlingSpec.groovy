@@ -37,8 +37,8 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
                     <input type="button" name="hasConfirmReload" onclick="confirmResult = confirm(++i); window.location.reload();" />
                     <input type="button" name="noConfirmReload" onclick="window.location.reload();" />
 
-                    <input type="button" name="hasAsynchronousAlert" onclick="setTimeout(function() { alert('asynchronous alert') }, 1000);" />
-                    <input type="button" name="hasAsynchronousConfirm" onclick="setTimeout(function() { confirm('asynchronous confirm') }, 1000);" />
+                    <input type="button" name="hasAsynchronousAlert" onclick="setTimeout(function() { alert('asynchronous alert') }, 100);" />
+                    <input type="button" name="hasAsynchronousConfirm" onclick="setTimeout(function() { confirm('asynchronous confirm') }, 100);" />
 
                 </body>
                 </html>
@@ -48,12 +48,6 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         go()
-    }
-
-    // HTMLUnit does something strange when converting types
-    // and changes integer '1' to string '1.0' when coercing
-    private rationalise(value) {
-        value[0].toInteger()
     }
 
     def "handle alert"() {
@@ -122,10 +116,6 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
     def "withAlert supports waiting"() {
         expect:
         withAlert(wait: true) { hasAsynchronousAlert().click() } == 'asynchronous alert'
-    }
-
-    private getConfirmResult() {
-        js.confirmResult
     }
 
     def "handle confirm"() {
@@ -208,6 +198,17 @@ class AlertAndConfirmHandlingSpec extends GebSpecWithCallbackServer {
         then:
         notThrown(Exception)
     }
+
+    // HTMLUnit does something strange when converting types
+    // and changes integer '1' to string '1.0' when coercing
+    private rationalise(value) {
+        value[0].toInteger()
+    }
+
+    private getConfirmResult() {
+        js.confirmResult
+    }
+
 }
 
 class AlertAndConfirmHandlingSpecPage extends Page {

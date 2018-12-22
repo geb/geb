@@ -80,7 +80,6 @@ class CartRow extends Module {
 }
 // end::module[]
 
-@SuppressWarnings("UnnecessaryCollectCall")
 // tag::page[]
 class CheckoutPage extends Page {
     static content = {
@@ -93,21 +92,18 @@ class CheckoutPage extends Page {
 
 // tag::parameterized_module[]
 class ParameterizedCartRow extends Module {
-    def nameIndex
-    def quantityIndex
-    def priceIndex
-
     static content = {
         cell { $("td", it) }
         productName { cell(nameIndex).text() }
         quantity { cell(quantityIndex).text().toInteger() }
         price { cell(priceIndex).text().toBigDecimal() }
     }
+
+    def nameIndex
+    def quantityIndex
+    def priceIndex
 }
 
-// end::parameterized_module[]
-@SuppressWarnings("UnnecessaryCollectCall")
-// tag::parameterized_module[]
 class CheckoutPageWithParametrizedCart extends Page {
     static content = {
         cartItems {

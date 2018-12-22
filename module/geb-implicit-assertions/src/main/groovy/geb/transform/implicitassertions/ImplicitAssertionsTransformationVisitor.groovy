@@ -51,10 +51,6 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         }
     }
 
-    private boolean lastArgumentIsClosureExpression(ArgumentListExpression arguments) {
-        arguments.expressions && arguments.expressions.last() in ClosureExpression
-    }
-
     @Override
     void visitExpressionStatement(ExpressionStatement statement) {
         if (statement.expression in MethodCallExpression) {
@@ -142,9 +138,24 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         }
     }
 
+    boolean isTransformable(ExpressionStatement statement) {
+        if (statement.expression in BinaryExpression) {
+            BinaryExpression binaryExpression = statement.expression
+            if (ofType(binaryExpression.operation.type, ASSIGNMENT_OPERATOR)) {
+                reportError(statement, "Expected a condition, but found an assignment. Did you intend to write '==' ?", sourceUnit)
+                false
+            }
+        }
+        true
+    }
+
     @Override
     protected SourceUnit getSourceUnit() {
         sourceUnit
+    }
+
+    private boolean lastArgumentIsClosureExpression(ArgumentListExpression arguments) {
+        arguments.expressions && arguments.expressions.last() in ClosureExpression
     }
 
     private boolean requiredOptionSpecifiedAsFalse(ArgumentListExpression arguments) {
@@ -225,17 +236,6 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
                 return expressionStatement.expression
             }
         }
-    }
-
-    boolean isTransformable(ExpressionStatement statement) {
-        if (statement.expression in BinaryExpression) {
-            BinaryExpression binaryExpression = statement.expression
-            if (ofType(binaryExpression.operation.type, ASSIGNMENT_OPERATOR)) {
-                reportError(statement, "Expected a condition, but found an assignment. Did you intend to write '==' ?", sourceUnit)
-                false
-            }
-        }
-        true
     }
 
     private Statement transform(Expression expression, Statement statement, boolean appendTrueToNonAssertedStatements) {

@@ -439,6 +439,99 @@ It can be used this way…
 include::{real-browser-test-dir}/modules/DateInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
+=== `DateTimeLocalInput`
+
+The `{datetime-local-input-api}` module provides property methods for setting and retrieving date and time of a datetime-local input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `TimeInput`
+
+The `{time-input-api}` module provides property methods for setting and retrieving time of a time input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used either with a `java.time.LocalTime` object…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_time,indent=0]
+----
+
+…or with a string…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_string,indent=0]
+----
+
+=== `MonthInput`
+
+The `{month-input-api}` module provides property methods for setting and retrieving the month of a month input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used either with a `java.time.YearMonth` object…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_month,indent=0]
+----
+
+…or with a string…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_string,indent=0]
+----
+
+=== `WeekInput`
+
+The `{week-input-api}` module provides property methods for setting and retrieving the week of a week input element.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/WeekInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used either with a `org.threeten.extra.YearWeek` object…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/WeekInputSnippetSpec.groovy[tag=example_week,indent=0]
+----
+
+…or with a string…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/WeekInputSnippetSpec.groovy[tag=example_string,indent=0]
+----
+
 === `EmailInput`
 
 The `{email-input-api}` module provides property methods for setting and retrieving text of an email input element.
@@ -473,6 +566,103 @@ It can be used this way…
 [source,groovy]
 ----
 include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `NumberInput`
+
+The `{number-input-api}` module provides property methods for setting and retrieving the current number value of a number input element. It also provides methods to retrieve the values of its `min`, `max` and `step` attributes.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/NumberInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/NumberInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `RangeInput`
+
+The `{range-input-api}` module provides property methods for setting and retrieving the current number value of a number input element. It also provides methods to retrieve the values of its `min`, `max` and `step` attributes.
+
+Given the html…
+
+[source,html]
+----
+include::{real-browser-test-dir}/modules/RangeInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/modules/RangeInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `UrlInput`
+
+The `{url-input-api}` module provides property methods for setting and retrieving text of a url input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/UrlInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/UrlInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `PasswordInput`
+
+The `{password-input-api}` module provides property methods for setting and retrieving text of a password input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/PasswordInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used this way…
+
+[source,groovy]
+----
+include::{test-dir}/modules/PasswordInputSnippetSpec.groovy[tag=example,indent=0]
+----
+
+=== `ColorInput`
+
+The `{color-input-api}` module provides property methods for setting and retrieving the color of a color input element.
+
+Given the html…
+
+[source,html]
+----
+include::{test-dir}/modules/ColorInputSnippetSpec.groovy[tag=html,indent=0]
+----
+
+It can be used either with a `org.openqa.selenium.support.Color` object…
+
+[source,groovy]
+----
+include::{test-dir}/modules/ColorInputSnippetSpec.groovy[tag=example_color,indent=0]
+----
+
+…or with a hex string…
+
+[source,groovy]
+----
+include::{test-dir}/modules/ColorInputSnippetSpec.groovy[tag=example_string,indent=0]
 ----
 
 == Unwrapping modules returned from the `content` DSL

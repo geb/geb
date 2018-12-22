@@ -35,19 +35,6 @@ class SiteSmokeSpec extends GebSpec {
     @Shared
     def app = new GroovyRatpackMainApplicationUnderTest()
 
-    private Document parseMainPage() {
-        Jsoup.parse(testHttpClient(app).get().body.text)
-    }
-
-    private manualLinksData() {
-        def links = parseMainPage().select("#manuals-menu a")
-        links.collect { [(it.text() - 'current' - 'snapshot').trim(), it.attr('href')] }
-    }
-
-    private apiLinksData() {
-        parseMainPage().select("#apis-menu a")*.attr('href')
-    }
-
     def setup() {
         browser.baseUrl = app.address.toString()
     }
@@ -115,5 +102,18 @@ class SiteSmokeSpec extends GebSpec {
 
         where:
         link << apiLinksData()
+    }
+
+    private Document parseMainPage() {
+        Jsoup.parse(testHttpClient(app).get().body.text)
+    }
+
+    private manualLinksData() {
+        def links = parseMainPage().select("#manuals-menu a")
+        links.collect { [(it.text() - 'current' - 'snapshot').trim(), it.attr('href')] }
+    }
+
+    private apiLinksData() {
+        parseMainPage().select("#apis-menu a")*.attr('href')
     }
 }

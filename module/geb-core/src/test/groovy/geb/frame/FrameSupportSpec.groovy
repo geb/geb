@@ -49,12 +49,7 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         called
     }
 
-    private boolean isInFramesContext() {
-        title == 'frames'
-    }
-
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "ensure original context is kept after a withFrame call"() {
         when:
         withFrame(frameFactory.call()) {
@@ -78,7 +73,6 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
     }
 
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "page is restored to what it was before a withFrame call"() {
         when:
         withFrame(frameFactory.call()) {
@@ -208,7 +202,6 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
     }
 
     @Unroll
-    @SuppressWarnings(['SpaceAfterClosingBrace', 'SpaceBeforeOpeningBrace'])
     def "value returned by the closure passed as the last argument is returned from withFrame"() {
         expect:
         withFrame(frameFactory.call()) { 'from closure' } == 'from closure'
@@ -216,6 +209,11 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         where:
         frameFactory << [{ 'header' }, { 0 }, { $('#header-id') }, { page.footer }]
     }
+
+    private boolean isInFramesContext() {
+        title == 'frames'
+    }
+
 }
 
 class FrameSupportSpecPage extends Page {
@@ -261,12 +259,12 @@ class FrameSupportSpecModule extends Module {
 }
 
 class FrameSupportSpecParametrizedPage extends Page {
-    String tag
-
     static at = { element }
     static content = {
         element { $(tag) }
     }
+
+    String tag
 
     String getElementText() {
         element.text()

@@ -21,57 +21,23 @@ import geb.PageChangeListener
 
 class BindingUpdater {
 
+    static public final FORWARDED_BROWSER_METHODS = [
+            "go", "to", "via", "at",
+            "waitFor",
+            "withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
+            "download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
+            "report", "reportGroup", "cleanReportGroupDir"
+    ].asImmutable()
+
     final Browser browser
     final Binding binding
 
     protected final PageChangeListener pageChangeListener
 
-    static public final FORWARDED_BROWSER_METHODS = [
-        "go", "to", "via", "at",
-        "waitFor",
-        "withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
-        "download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
-        "report", "reportGroup", "cleanReportGroupDir"
-    ].asImmutable()
-
     protected BindingUpdater(Binding binding, Browser browser) {
         this.binding = binding
         this.browser = browser
         this.pageChangeListener = createPageChangeListener(binding, browser)
-    }
-
-    private class BindingUpdatingPageChangeListener implements PageChangeListener {
-        @Override
-        void pageWillChange(Browser browser, Page oldPage, Page newPage) {
-            binding.setVariable("page", newPage)
-            binding.setVariable("\$", new InvocationForwarding("\$", newPage))
-        }
-
-        void clearBinding() {
-            binding.variables.remove("page")
-            binding.variables.remove("\$")
-        }
-    }
-
-    @SuppressWarnings("UnusedMethodParameter")
-    protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
-        new BindingUpdatingPageChangeListener()
-    }
-
-    private static class InvocationForwarding extends Closure {
-        private final String methodName
-        private final Object target
-
-        InvocationForwarding(String theMethodName, Object theTarget) {
-            super(theTarget)
-
-            methodName = theMethodName
-            target = theTarget
-        }
-
-        protected doCall(Object[] args) {
-            target."$methodName"(*args)
-        }
     }
 
     /**
@@ -105,6 +71,40 @@ class BindingUpdater {
         }
 
         this
+    }
+
+    @SuppressWarnings("UnusedMethodParameter")
+    protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
+        new BindingUpdatingPageChangeListener()
+    }
+
+    private class BindingUpdatingPageChangeListener implements PageChangeListener {
+        @Override
+        void pageWillChange(Browser browser, Page oldPage, Page newPage) {
+            binding.setVariable("page", newPage)
+            binding.setVariable("\$", new InvocationForwarding("\$", newPage))
+        }
+
+        void clearBinding() {
+            binding.variables.remove("page")
+            binding.variables.remove("\$")
+        }
+    }
+
+    private static class InvocationForwarding extends Closure {
+        private final String methodName
+        private final Object target
+
+        InvocationForwarding(String theMethodName, Object theTarget) {
+            super(theTarget)
+
+            methodName = theMethodName
+            target = theTarget
+        }
+
+        protected doCall(Object[] args) {
+            target."$methodName"(*args)
+        }
     }
 
 }

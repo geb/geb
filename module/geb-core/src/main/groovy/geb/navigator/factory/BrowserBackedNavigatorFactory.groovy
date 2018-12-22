@@ -26,22 +26,22 @@ class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
     final Locator locator
 
-    protected String getBaseXPathExpression() {
-        "/*"
-    }
-
     BrowserBackedNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
         super(browser, innerNavigatorFactory)
         locator = new DefaultLocator(new SearchContextBasedBasicLocator(browser.driver, this))
-    }
-
-    protected Navigator createBase() {
-        createFromWebElements(Collections.singletonList(browser.driver.findElement(By.xpath(baseXPathExpression))))
     }
 
     @Override
     Navigator getBase() {
         def baseNavigatorWaiting = browser.config.baseNavigatorWaiting
         baseNavigatorWaiting ? baseNavigatorWaiting.waitFor { createBase() } : createBase()
+    }
+
+    protected String getBaseXPathExpression() {
+        "/*"
+    }
+
+    protected Navigator createBase() {
+        createFromWebElements(Collections.singletonList(browser.driver.findElement(By.xpath(baseXPathExpression))))
     }
 }

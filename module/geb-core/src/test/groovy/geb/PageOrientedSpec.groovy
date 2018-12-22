@@ -32,12 +32,13 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
                     <script type="text/javascript" charset="utf-8">
                     setTimeout(function() {
                         document.body.innerHTML += '<div id="dynamic">dynamic</div>';
-                    }, 500);
+                    }, 100);
                     </script>
                 </head>
                 <body>
                     <a href="/$other" id="$path">$other</a>
                     <div id="uri">$req.requestURI</div>
+                    <input type="text" name="input"></input>
                 </body>
             </html>"""
         }
@@ -202,7 +203,6 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
     }
 
     @Unroll
-    @SuppressWarnings(["SpaceAfterClosingBrace", "SpaceAfterOpeningBrace", "SpaceBeforeClosingBrace", "SpaceBeforeOpeningBrace"])
     def "exception should be thrown when support class #className methods are used on an uninitialized page instance"() {
         def pageInstance = new PageOrientedSpecPageA()
 
@@ -451,6 +451,11 @@ Caused by: Assertion failed:.*
         to(PageOrientedSpecPageWithContent).contentNames == ['simple', 'parameterized'].toSet()
     }
 
+    def "accessing focused element in content definition"() {
+        expect:
+        to(PageOrientedSpecPageA).focusedContent.focused
+    }
+
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -477,7 +482,8 @@ class PageOrientedSpecPageA extends Page {
         notPresentValueRequired { $("div#asdfasdf").text() }
         notPresentRequired { $("div#nonexistant") }
         notPresentNotRequired(required: false) { $("div#nonexistant") }
-        notPresentNotRequiredWithWait(required: false, wait: 1) { $("div#nonexistant") }
+        notPresentNotRequiredWithWait(required: false, wait: 0.1) { $("div#nonexistant") }
+        focusedContent { focused() }
     }
 }
 
@@ -560,12 +566,12 @@ class PageWithAtCheckerReturningFalse extends Page {
 }
 
 class PageOrientedSpecParametrizedPage extends Page {
-    String id
-
     static at = { elementWithId }
     static content = {
         elementWithId { $(id: id) }
     }
+
+    String id
 }
 
 class PageWithContentUsingUnrecognizedParams extends Page {

@@ -31,23 +31,6 @@ class FormElement extends Module {
     private final static String READONLY = "readonly"
     private final static String TRUE = "true"
 
-    protected void initialized() {
-        ensureAtMostOneBaseElement()
-        if (!navigator.empty) {
-            def tag = navigator.tag()
-            if (!SUPPORTED_TAGS.contains(tag.toLowerCase())) {
-                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
-            }
-        }
-    }
-
-    protected void ensureAtMostOneBaseElement() {
-        def size = navigator.size()
-        if (size > 1) {
-            throw new InvalidModuleBaseException("Specified base navigator for ${getClass().name} module has $size elements but at most one element is allowed.")
-        }
-    }
-
     /**
      * Allows to check if the first element of base navigator for this module is disabled based on the value of it's {@code disabled} attribute.
      * @return true when the first element of base navigator is disabled
@@ -92,4 +75,22 @@ class FormElement extends Module {
     boolean isEditable() {
         !readOnly
     }
+
+    protected void initialized() {
+        ensureAtMostOneBaseElement()
+        if (!navigator.empty) {
+            def tag = navigator.tag()
+            if (!SUPPORTED_TAGS.contains(tag.toLowerCase())) {
+                throw new InvalidModuleBaseException("Specified base element for ${getClass().name} module was '${tag}' but only the following are allowed: ${SUPPORTED_TAGS.join(', ')}")
+            }
+        }
+    }
+
+    protected void ensureAtMostOneBaseElement() {
+        def size = navigator.size()
+        if (size > 1) {
+            throw new InvalidModuleBaseException("Specified base navigator for ${getClass().name} module has $size elements but at most one element is allowed.")
+        }
+    }
+
 }

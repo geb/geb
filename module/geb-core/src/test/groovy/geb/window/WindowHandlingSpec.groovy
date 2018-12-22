@@ -82,6 +82,7 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
 
     @Unroll
     def "withWindow by default does not close the matching windows"() {
+        given:
         openAllWindows()
 
         when:
@@ -99,12 +100,56 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @Unroll
+    def "withWindow can be configured to close the matching windows"() {
+        given:
+        openAllWindows()
+
+        and:
+        browser.config.withWindowCloseOption = true
+
+        when:
+        withWindow(specification) {
+        }
+
+        then:
+        availableWindows.size() == 2
+
+        where:
+        specification << [
+                { title == windowTitle(1) },
+                windowName(1)
+        ]
+    }
+
+    @Unroll
+    def "close option passed to withWindow overrides the one specified in configuration"() {
+        given:
+        openAllWindows()
+
+        and:
+        browser.config.withWindowCloseOption = true
+
+        when:
+        withWindow(specification, close: false) {
+        }
+
+        then:
+        availableWindows.size() == 3
+
+        where:
+        specification << [
+                { title == windowTitle(1) },
+                windowName(1)
+        ]
+    }
+
+    @Unroll
     def "withWindow closes matching windows if 'close' option is passed and block closure throws an exception"() {
         given:
         openAllWindows()
 
         when:
-        withWindow(specification, close: true) { throw Exception() }
+        withWindow(specification, close: true) { throw new Exception() }
 
         then:
         thrown(Exception)
@@ -134,7 +179,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         'There has been more than one window opened' | { openAllWindows() }
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow closes the new window even if closure throws an exception"() {
         given:
         go MAIN_PAGE_URL
@@ -147,7 +191,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         availableWindows.size() == 1
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow does not close the new window if close option is set to false"() {
         given:
         go MAIN_PAGE_URL
@@ -161,7 +204,34 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         inContextOfMainWindow
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
+    def "can configure withNewWindow not to close the newly opened window by default"() {
+        given:
+        go MAIN_PAGE_URL
+
+        and:
+        browser.config.withNewWindowCloseOption = false
+
+        when:
+        withNewWindow({ openWindow(1) }) {}
+
+        then:
+        availableWindows.size() == 2
+    }
+
+    def "close option passed to withNewWindow overrides the one specified in configuration"() {
+        given:
+        go MAIN_PAGE_URL
+
+        and:
+        browser.config.withNewWindowCloseOption = false
+
+        when:
+        withNewWindow({ openWindow(1) }, close: true) {}
+
+        then:
+        availableWindows.size() == 1
+    }
+
     def "withNewWindow block closure is called in the context of the page passed as the 'page' option"() {
         given:
         to WindowHandlingSpecMainPage
@@ -175,7 +245,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         page.getClass() == WindowHandlingSpecMainPage
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow block closure is called in the context of the page instance passed as the 'page' option"() {
         given:
         def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
@@ -190,7 +259,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         page.getClass() == WindowHandlingSpecMainPage
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "page context is reverted after a withNewWindow call where block closure throws an exception and 'page' option is present"() {
         given:
         to WindowHandlingSpecMainPage
@@ -205,7 +273,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         page.getClass() == WindowHandlingSpecMainPage
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "'wait' option can be used in withNewWindow call if the new window opens asynchronously"() {
         given:
         to WindowHandlingSpecMainPage
@@ -216,6 +283,48 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
                 setTimeout(function() {
                     document.getElementById('main-1').click();
                 }, 200);
+            """
+        }, wait: true) {
+        }
+
+        then:
+        notThrown(NoNewWindowException)
+    }
+
+    def "withNewWindow can be configured to wait for the new window to be opened by default"() {
+        given:
+        browser.config.withNewWindowWaitOption = true
+
+        and:
+        to WindowHandlingSpecMainPage
+
+        when:
+        withNewWindow({
+            js.exec """
+                setTimeout(function() {
+                    document.getElementById('main-1').click();
+                }, 75);
+            """
+        }) {
+        }
+
+        then:
+        notThrown(NoNewWindowException)
+    }
+
+    def "'wait' option passed to withNewWindow overrides the default value from configuration"() {
+        given:
+        browser.config.withNewWindowWaitOption = false
+
+        and:
+        to WindowHandlingSpecMainPage
+
+        when:
+        withNewWindow({
+            js.exec """
+                setTimeout(function() {
+                    document.getElementById('main-1').click();
+                }, 75);
             """
         }, wait: true) {
         }
@@ -247,7 +356,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         true
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow methods can be nested"() {
         given:
         openAllWindows()
@@ -368,7 +476,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         ]
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow successfully verifies at checker"() {
         given:
         to WindowHandlingSpecMainPage
@@ -381,7 +488,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         notThrown(Exception)
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow does not fail if there is no at checker"() {
         to WindowHandlingSpecMainPage
 
@@ -395,7 +501,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         notThrown(UndefinedAtCheckerException)
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow verifies at checker"() {
         given:
         to WindowHandlingSpecMainPage
@@ -409,7 +514,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
     }
 
     @Unroll
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow verifies truthy at checker when implicit assertions are disabled"() {
         given:
         to WindowHandlingSpecMainPage
@@ -426,7 +530,6 @@ class WindowHandlingSpec extends BaseWindowHandlingSpec {
         page << [WindowHandlingSpecNewWindowWithTruthyAtCheckPage, new WindowHandlingSpecNewWindowWithTruthyAtCheckPage()]
     }
 
-    @SuppressWarnings('SpaceBeforeOpeningBrace')
     def "withNewWindow verifies at checker for a parametrized page instance"() {
         given:
         def parametrizedPage = new WindowHandlingSpecParametrizedPage(index: 1)
@@ -459,7 +562,7 @@ class WindowHandlingSpecNewWindowWithTruthyAtCheckPage extends Page {
 }
 
 class WindowHandlingSpecParametrizedPage extends Page {
-    int index
-
     static at = { title == "Window main-${index}" }
+
+    int index
 }

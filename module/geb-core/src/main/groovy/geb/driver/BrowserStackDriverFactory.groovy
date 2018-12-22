@@ -25,13 +25,13 @@ class BrowserStackDriverFactory extends CloudDriverFactory {
         "http://$username:$password@hub.browserstack.com/wd/hub"
     }
 
-    @Override
-    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
-        desiredCapabilities.setCapability("browserstack.local", "true")
-    }
-
     WebDriver create(String specification, String username, String password, String localId, Map<String, Object> capabilities = [:]) {
         def mergedCapabilities = ImmutableMap.builder().putAll(capabilities).put("browserstack.localIdentifier", localId).build()
         create(specification, username, password, mergedCapabilities)
+    }
+
+    @Override
+    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+        desiredCapabilities.setCapability("browserstack.local", "true")
     }
 }

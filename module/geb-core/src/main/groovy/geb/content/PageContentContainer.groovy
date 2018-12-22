@@ -19,4 +19,9 @@ package geb.content
  * Marker interface for anything that has content, i.e. pages and modules.
  */
 interface PageContentContainer {
+
+    PageContentContainer getRootContainer()
+
+    List<String> getContentPath()
+
 }

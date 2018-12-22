@@ -20,22 +20,17 @@ import geb.navigator.Locator
 import geb.navigator.Navigator
 import geb.navigator.factory.NavigatorFactory
 import org.openqa.selenium.By
+import org.openqa.selenium.WebDriver.TargetLocator
 import org.openqa.selenium.WebElement
 
 class NavigableSupport implements Navigable {
 
     private final NavigatorFactory navigatorFactory
+    private final TargetLocator targetLocator
 
-    NavigableSupport(NavigatorFactory navigatorFactory) {
+    NavigableSupport(NavigatorFactory navigatorFactory, TargetLocator targetLocator) {
         this.navigatorFactory = navigatorFactory
-    }
-
-    private Navigator getBase() {
-        navigatorFactory.base
-    }
-
-    private Locator getLocator() {
-        navigatorFactory.locator
+        this.targetLocator = targetLocator
     }
 
     Navigator find() {
@@ -203,6 +198,11 @@ class NavigableSupport implements Navigable {
     }
 
     @Override
+    Navigator focused() {
+        $(targetLocator.activeElement())
+    }
+
+    @Override
     <T extends Module> T module(Class<T> moduleClass) {
         base.module(moduleClass)
     }
@@ -211,4 +211,13 @@ class NavigableSupport implements Navigable {
     <T extends Module> T module(T module) {
         base.module(module)
     }
+
+    private Navigator getBase() {
+        navigatorFactory.base
+    }
+
+    private Locator getLocator() {
+        navigatorFactory.locator
+    }
+
 }
