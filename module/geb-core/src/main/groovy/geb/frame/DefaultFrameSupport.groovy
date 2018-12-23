@@ -57,11 +57,7 @@ class DefaultFrameSupport implements FrameSupport {
         def originalPage = browser.page
         browser.driver.switchTo().frame(frame)
         if (page) {
-            if (page.shouldVerifyAtImplicitly) {
-                browser.at(page)
-            } else {
-                browser.page(page)
-            }
+            browser.verifyAtImplicitly(page)
         }
         try {
             Closure cloned = block.clone()

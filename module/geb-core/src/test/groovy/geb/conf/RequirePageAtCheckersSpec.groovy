@@ -18,6 +18,7 @@ package geb.conf
 import geb.PageWithoutAtChecker
 import geb.error.UndefinedAtCheckerException
 import geb.test.GebSpecWithCallbackServer
+import spock.lang.Unroll
 
 class RequirePageAtCheckersSpec extends GebSpecWithCallbackServer {
 
@@ -25,62 +26,87 @@ class RequirePageAtCheckersSpec extends GebSpecWithCallbackServer {
         browser.config.requirePageAtCheckers = true
     }
 
-    void "exception is thrown when page at checkers are required but page navigated to does not define one"() {
+    def pages() {
+        [
+                [PageWithoutAtChecker, "class"],
+                [new PageWithoutAtChecker(), "instance"]
+        ]
+    }
+
+    @Unroll
+    void "exception is thrown when page at checkers are required but page #scenario navigated to does not define one"() {
         when:
-        to PageWithoutAtChecker
+        to page
 
         then:
         thrown(UndefinedAtCheckerException)
+
+        where:
+        [page, scenario] << pages()
     }
 
-    void "exception is thrown when at checkers are required but page passed to withWindow does not define one"() {
+    @Unroll
+    void "exception is thrown when at checkers are required but page #scenario passed to withWindow does not define one"() {
         when:
-        withWindow({ true }, page: PageWithoutAtChecker) {}
+        withWindow({ true }, page: page) {}
 
         then:
         thrown(UndefinedAtCheckerException)
+
+        where:
+        [page, scenario] << pages()
     }
 
-    void "exception is thrown when at checkers are required but page passed to withNewWindow does not define one"() {
+    @Unroll
+    void "exception is thrown when at checkers are required but page #scenario passed to withNewWindow does not define one"() {
         given:
         html {
             a(href: "/", target: "_blank")
         }
 
         when:
-        withNewWindow({ $("a").click() }, page: PageWithoutAtChecker) {}
+        withNewWindow({ $("a").click() }, page: page) {}
 
         then:
         thrown(UndefinedAtCheckerException)
+
+        where:
+        [page, scenario] << pages()
     }
 
-    void "exception is thrown when at checkers are required but page passed to withFrame does not define one"() {
+    @Unroll
+    void "exception is thrown when at checkers are required but page #scenario passed to withFrame does not define one"() {
         given:
         html {
             iframe(name: frameName, src: "/")
         }
 
         when:
-        withFrame(frameName, PageWithoutAtChecker) {}
+        withFrame(frameName, page) {}
 
         then:
         thrown(UndefinedAtCheckerException)
 
         where:
         frameName = "test-frame"
+        [page, scenario] << pages()
     }
 
-    void "exception is thrown when at checkers are required but page passed to click does not define one"() {
+    @Unroll
+    void "exception is thrown when at checkers are required but page #scenario passed to click does not define one"() {
         given:
         html {
             button()
         }
 
         when:
-        $("button").click(PageWithoutAtChecker)
+        $("button").click(page)
 
         then:
         thrown(UndefinedAtCheckerException)
+
+        where:
+        [page, scenario] << pages()
     }
 
 }

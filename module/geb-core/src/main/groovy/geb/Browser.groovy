@@ -789,7 +789,7 @@ class Browser {
         try {
             switchToWindow(newWindow)
             if (options.page) {
-                verifyAtIfPresent(options.page)
+                verifyAtImplicitly(options.page)
             }
 
             block.call()
@@ -934,6 +934,21 @@ class Browser {
         new SessionStorage(seleniumWebStorage)
     }
 
+    void verifyAtImplicitly(Class<? extends Page> targetPage) {
+        verifyAtImplicitly(createPage(targetPage))
+    }
+
+    void verifyAtImplicitly(Page targetPage) {
+        initialisePage(targetPage)
+        if (targetPage.shouldVerifyAtImplicitly) {
+            if (!at(targetPage)) {
+                throw new UnexpectedPageException(targetPage)
+            }
+        } else {
+            page(targetPage)
+        }
+    }
+
     protected switchToWindow(String window) {
         driver.switchTo().window(window)
     }
@@ -941,7 +956,7 @@ class Browser {
     protected doWithWindow(Map options, Closure block) {
         try {
             if (options.page) {
-                verifyAtIfPresent(options.page)
+                verifyAtImplicitly(options.page)
             }
 
             block.call()
@@ -1044,20 +1059,6 @@ class Browser {
             absolute = new URI(getBaseUrlRequired())
         }
         absolute
-    }
-
-    protected void verifyAtIfPresent(Class<? extends Page> targetPage) {
-        verifyAtIfPresent(createPage(targetPage))
-    }
-
-    protected void verifyAtIfPresent(Page targetPage) {
-        if (targetPage.shouldVerifyAtImplicitly) {
-            if (!at(targetPage)) {
-                throw new UnexpectedPageException(targetPage)
-            }
-        } else {
-            page(targetPage)
-        }
     }
 
     private Page verifyPages(List<Page> pages) {
