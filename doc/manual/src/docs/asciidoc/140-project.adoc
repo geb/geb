@@ -105,6 +105,7 @@ This page lists the high level changes between versions of Geb.
 
 * Add an at() method to geb.Page which always throws MissingMethodException. [issue:543[]]
 * Improve signatures of methods in FrameSupport that take page objects to provide autocompletion inside of the closure passed as the last argument. [issue:540[]]
+* Resolve properties and methods in the closure passed to withNewWindow() and withWindow() against the browser. [issue:545[]]
 
 === 2.2
 

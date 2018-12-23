@@ -792,7 +792,10 @@ class Browser {
                 verifyAtImplicitly(options.page)
             }
 
-            block.call()
+            Closure cloned = block.clone()
+            cloned.delegate = browser
+            cloned.resolveStrategy = DELEGATE_FIRST
+            cloned.call()
         } finally {
             if ((!options.containsKey(CLOSE_OPTION) && config.withNewWindowConfig.close.orElse(true)) || options.close) {
                 driver.close()
@@ -959,7 +962,10 @@ class Browser {
                 verifyAtImplicitly(options.page)
             }
 
-            block.call()
+            Closure cloned = block.clone()
+            cloned.delegate = browser
+            cloned.resolveStrategy = DELEGATE_FIRST
+            cloned.call()
         } finally {
             if (options.close || (!options.containsKey(CLOSE_OPTION) && config.withWindowConfig.close)) {
                 driver.close()
