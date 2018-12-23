@@ -260,7 +260,7 @@ It's always a good idea to either use the `to()` method which implicitly verifie
 Otherwise, subsequent steps may fail in harder to diagnose ways due to the content not matching what is expected and content look-ups returning strange results.
 
 If you pass a page class or instance  that doesn't define an “at checker” to `at()` you will get an `UndefinedAtCheckerException` - “at checkers” are mandatory when doing explicit “at checks”.
-This is not the case when implicit “at checks” are being performed, like when using `to()`.
+By default this is not the case when implicit “at checks” are being performed, like when using `to()`, but <<require-page-at-checkers, it's configurable>>.
 This behaviour is intended to make you aware that you probably want to define an “at checker” when explicitly verifying if you're at a given page but not forcing you to do so when using implicit
 “at checking”.
 

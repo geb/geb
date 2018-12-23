@@ -355,7 +355,7 @@ class Browser {
      *
      * @return an initialized page instance set as the current page
      */
-     Page page(Page[] potentialPageInstances) {
+    Page page(Page[] potentialPageInstances) {
         checkIfAtAnUnexpectedPage(potentialPageInstances)
         verifyPages(potentialPageInstances.collect { initialisePage(it) })
     }
@@ -557,7 +557,7 @@ class Browser {
      */
     public <T extends Page> T to(Map params = [:], T page, UrlFragment fragment, Object[] args) {
         via(params, page, fragment, args)
-        page.at ? at(page) : page
+        page.shouldVerifyAtImplicitly ? at(page) : page
     }
 
     /**
@@ -788,7 +788,9 @@ class Browser {
         def newWindow = executeNewWindowOpening(windowOpeningBlock, wait)
         try {
             switchToWindow(newWindow)
-            verifyAtIfPresent(options.page)
+            if (options.page) {
+                verifyAtImplicitly(options.page)
+            }
 
             block.call()
         } finally {
@@ -821,7 +823,7 @@ class Browser {
      */
     public <T extends Page> T createPage(Class<T> pageType) {
         validatePage(pageType)
-        pageType.newInstance().init(this)
+        initialisePage(pageType.newInstance())
     }
 
     /**
@@ -932,13 +934,30 @@ class Browser {
         new SessionStorage(seleniumWebStorage)
     }
 
+    void verifyAtImplicitly(Class<? extends Page> targetPage) {
+        verifyAtImplicitly(createPage(targetPage))
+    }
+
+    void verifyAtImplicitly(Page targetPage) {
+        initialisePage(targetPage)
+        if (targetPage.shouldVerifyAtImplicitly) {
+            if (!at(targetPage)) {
+                throw new UnexpectedPageException(targetPage)
+            }
+        } else {
+            page(targetPage)
+        }
+    }
+
     protected switchToWindow(String window) {
         driver.switchTo().window(window)
     }
 
     protected doWithWindow(Map options, Closure block) {
         try {
-            verifyAtIfPresent(options.page)
+            if (options.page) {
+                verifyAtImplicitly(options.page)
+            }
 
             block.call()
         } finally {
@@ -1040,18 +1059,6 @@ class Browser {
             absolute = new URI(getBaseUrlRequired())
         }
         absolute
-    }
-
-    protected void verifyAtIfPresent(def targetPage) {
-        if (targetPage) {
-            if (targetPage.at) {
-                if (!at(targetPage)) {
-                    throw new UnexpectedPageException(targetPage)
-                }
-            } else {
-                page(targetPage)
-            }
-        }
     }
 
     private Page verifyPages(List<Page> pages) {

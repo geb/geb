@@ -436,7 +436,7 @@ class NonEmptyNavigator extends AbstractNavigator {
         def assertionError = null
         def throwable = null
         try {
-            if (pageInstance.at) {
+            if (pageInstance.shouldVerifyAtImplicitly) {
                 at = wait ? wait.waitFor { browser.verifyAt() } : browser.verifyAt()
             } else {
                 at = true

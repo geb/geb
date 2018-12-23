@@ -33,7 +33,7 @@ class DefaultFrameSupport implements FrameSupport {
     }
 
     public <T> T withFrame(frame, Class<? extends Page> page = null, Closure<T> block) {
-        executeWithFrame(frame, page, block)
+        executeWithFrame(frame, createPage(page), block)
     }
 
     public <T> T withFrame(frame, Page page, Closure<T> block) {
@@ -41,7 +41,7 @@ class DefaultFrameSupport implements FrameSupport {
     }
 
     public <T> T withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure<T> block) {
-        executeWithFrame(frameNavigator, page, block)
+        executeWithFrame(frameNavigator, createPage(page), block)
     }
 
     public <T> T withFrame(Navigator frameNavigator, Page page, Closure<T> block) {
@@ -49,18 +49,15 @@ class DefaultFrameSupport implements FrameSupport {
     }
 
     public <T> T withFrame(TemplateDerivedPageContent frame, Closure<T> block) {
-        executeWithFrame(frame, frame.templateParams.page, block)
+        def page = frame.templateParams.page
+        page ? withFrame(frame, page, block) : withFrame(frame as Navigator, block)
     }
 
-    private <T> T executeWithFrame(frame, def page, Closure<T> block) {
+    private <T> T executeWithFrame(frame, Page page, Closure<T> block) {
         def originalPage = browser.page
         browser.driver.switchTo().frame(frame)
         if (page) {
-            if (page.at) {
-                browser.at(page)
-            } else {
-                browser.page(page)
-            }
+            browser.verifyAtImplicitly(page)
         }
         try {
             Closure cloned = block.clone()
@@ -79,5 +76,9 @@ class DefaultFrameSupport implements FrameSupport {
             throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")
         }
         executeWithFrame(element, page, block)
+    }
+
+    private Page createPage(Class<? extends Page> page) {
+        page ? browser.createPage(page) : null
     }
 }

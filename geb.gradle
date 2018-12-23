@@ -41,8 +41,8 @@ allprojects { project ->
         isSnapshot = version.endsWith("-SNAPSHOT")
         isCi = project.hasProperty("ci")
 
-        seleniumVersion = "3.12.0"
-        htmlUnitDriverVersion = "2.27"
+        seleniumVersion = "3.14.0"
+        htmlUnitDriverVersion = "2.32.1"
         groovyVersion = "2.5.4"
         spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
@@ -182,11 +182,13 @@ subprojects {
         }
 
         sauceLabs {
+            def tunnelId = UUID.randomUUID().toString()
             task {
                 maxHeapSize = "512m"
                 testClassesDirs = test.testClassesDirs
                 classpath = test.classpath
                 maxParallelForks 5
+                systemProperty "geb.saucelabs.tunnelId", tunnelId
             }
             account {
                 username = System.getenv(SauceAccount.USER_ENV_VAR)
@@ -194,6 +196,7 @@ subprojects {
             }
             connect {
                 timeout 10 // minutes
+                additionalOptions = ['--tunnel-identifier', tunnelId]
             }
         }
     }
