@@ -177,21 +177,18 @@ subprojects {
     if (path in sauceLabsModules) {
         apply plugin: "geb-saucelabs"
 
-        ext {
-            sauceLabsTunnelId = UUID.randomUUID().toString()
-        }
-
         dependencies {
             sauceConnect sauceConnectDependency
         }
 
         sauceLabs {
+            def tunnelId = UUID.randomUUID().toString()
             task {
                 maxHeapSize = "512m"
                 testClassesDirs = test.testClassesDirs
                 classpath = test.classpath
                 maxParallelForks 5
-                systemProperty "geb.saucelabs.tunnelId", sauceLabsTunnelId
+                systemProperty "geb.saucelabs.tunnelId", tunnelId
             }
             account {
                 username = System.getenv(SauceAccount.USER_ENV_VAR)
@@ -199,7 +196,7 @@ subprojects {
             }
             connect {
                 timeout 10 // minutes
-                additionalOptions = ['--tunnel-identifier', sauceLabsTunnelId]
+                additionalOptions = ['--tunnel-identifier', tunnelId]
             }
         }
     }
