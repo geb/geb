@@ -69,7 +69,7 @@ class DefaultFrameSupport implements FrameSupport {
         }
         try {
             Closure cloned = block.clone()
-            cloned.delegate = new WithFrameDelegate(browser)
+            cloned.delegate = browser
             cloned.resolveStrategy = DELEGATE_FIRST
             cloned.call()
         } finally {
