@@ -32,20 +32,28 @@ class DefaultFrameSupport implements FrameSupport {
         this.browser = browser
     }
 
-    public <T> T withFrame(frame, Class<? extends Page> page = null, Closure<T> block) {
+    public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block) {
         executeWithFrame(frame, createPage(page), block)
     }
 
-    public <T> T withFrame(frame, Page page, Closure<T> block) {
+    public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block) {
         executeWithFrame(frame, page, block)
     }
 
-    public <T> T withFrame(Navigator frameNavigator, Class<? extends Page> page = null, Closure<T> block) {
+    public <P extends Page, T> T withFrame(Navigator frameNavigator, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block) {
         executeWithFrame(frameNavigator, createPage(page), block)
     }
 
-    public <T> T withFrame(Navigator frameNavigator, Page page, Closure<T> block) {
+    public <P extends Page, T> T withFrame(Navigator frameNavigator, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block) {
         executeWithFrame(frameNavigator, page, block)
+    }
+
+    public <T> T withFrame(frame, Closure<T> block) {
+        executeWithFrame(frame, null, block)
+    }
+
+    public <T> T withFrame(Navigator frameNavigator, Closure<T> block) {
+        executeWithFrame(frameNavigator, null, block)
     }
 
     public <T> T withFrame(TemplateDerivedPageContent frame, Closure<T> block) {

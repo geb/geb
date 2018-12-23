@@ -20,6 +20,8 @@ import geb.Page
 import geb.content.TemplateDerivedPageContent
 import geb.navigator.Navigator
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 class UninitializedFrameSupport implements FrameSupport {
     private final Initializable initializable
 
@@ -28,22 +30,32 @@ class UninitializedFrameSupport implements FrameSupport {
     }
 
     @Override
-    public <T> T withFrame(Object frame, Class<? extends Page> pageClass = null, Closure<T> block) {
+    public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block) {
         throw initializable.uninitializedException()
     }
 
     @Override
-    public <T> T withFrame(Object frame, Page page, Closure<T> block) {
+    public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block) {
         throw initializable.uninitializedException()
     }
 
     @Override
-    public <T> T withFrame(Navigator frame, Class<? extends Page> pageClass = null, Closure<T> block) {
+    public <P extends Page, T> T withFrame(Navigator frame, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block) {
         throw initializable.uninitializedException()
     }
 
     @Override
-    public <T> T withFrame(Navigator frame, Page pageClass, Closure<T> block) {
+    public <P extends Page, T> T withFrame(Navigator frame, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block) {
+        throw initializable.uninitializedException()
+    }
+
+    @Override
+    public <T> T withFrame(Object frame, Closure<T> block) {
+        throw initializable.uninitializedException()
+    }
+
+    @Override
+    public <T> T withFrame(Navigator frame, Closure<T> block) {
         throw initializable.uninitializedException()
     }
 
