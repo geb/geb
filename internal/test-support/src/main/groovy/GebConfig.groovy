@@ -26,7 +26,9 @@ if (sauceLabsBrowser) {
         assert username
         def accessKey = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
         assert accessKey
-        new SauceLabsDriverFactory().create(sauceLabsBrowser, username, accessKey)
+        def tunnelId = System.getProperty("geb.saucelabs.tunnelId")
+        assert tunnelId
+        new SauceLabsDriverFactory().create(sauceLabsBrowser, username, accessKey, ["tunnel-identifier": tunnelId])
     }
 }
 
