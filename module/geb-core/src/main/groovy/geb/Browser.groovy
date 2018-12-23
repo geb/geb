@@ -823,7 +823,7 @@ class Browser {
      */
     public <T extends Page> T createPage(Class<T> pageType) {
         validatePage(pageType)
-        pageType.newInstance().init(this)
+        initialisePage(pageType.newInstance())
     }
 
     /**
