@@ -456,6 +456,21 @@ Caused by: Assertion failed:.*
         to(PageOrientedSpecPageA).focusedContent.focused
     }
 
+    @Unroll
+    def "calling at methods from within a Page implementation results in a MissingMethodException and not the at checker closure to be executed"() {
+        when:
+        page(PageOrientedSpecPageB).at(*args)
+
+        then:
+        MissingMethodException e = thrown()
+        e.method == "at"
+        e.arguments == args
+        e.type == PageOrientedSpecPageB
+
+        where:
+        args << [[PageOrientedSpecPageA], [new PageOrientedSpecPageA()], []]
+    }
+
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -588,5 +603,11 @@ class PageOrientedSpecPageWithContent extends Page {
     static content = {
         simple { $() }
         parameterized { id -> $(id: id) }
+    }
+}
+
+class PageWithMethodCallingAt extends Page {
+    void callAt() {
+        at(Page)
     }
 }

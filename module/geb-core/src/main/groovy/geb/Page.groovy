@@ -477,6 +477,10 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         atChecker || browser.config.requirePageAtCheckers
     }
 
+    void at(Object... args) {
+        throw new MissingMethodException("at", getClass(), args)
+    }
+
     private Browser getInitializedBrowser() {
         if (browser == null) {
             throw uninitializedException()

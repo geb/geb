@@ -101,6 +101,10 @@ This page lists the high level changes between versions of Geb.
 
 * Compatibility with latest Sauce Connect. [issue:559[]]
 
+==== Improvements
+
+* Add an at() method to geb.Page which always throws MissingMethodException. [issue:543[]]
+
 === 2.2
 
 ==== New features
