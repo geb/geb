@@ -84,6 +84,10 @@ This page lists the high level changes between versions of Geb.
 
 :numbered!:
 
+=== {geb-version}
+
+No changes have been made, yet.
+
 === 2.3.1
 
 ==== Fixes
