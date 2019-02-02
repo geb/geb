@@ -730,15 +730,18 @@ class NonEmptyNavigator extends AbstractNavigator {
     protected setSelectValue(WebElement element, value) {
         def select = new SelectFactory().createSelectFor(element)
 
+        def multiple = select.multiple
+        if (multiple) {
+            select.deselectAll()
+        }
+
         if (value == null || (value instanceof Collection && value.empty)) {
-            if (select.multiple) {
-                select.deselectAll()
+            if (multiple) {
                 return
             }
             nonexistentSelectOptionSelected(value.toString(), select)
         }
 
-        def multiple = select.multiple
         def valueStrings
         if (multiple) {
             valueStrings = (value instanceof Collection ? new LinkedList(value) : [value])*.toString()
@@ -754,16 +757,6 @@ class NonEmptyNavigator extends AbstractNavigator {
                     select.selectByVisibleText(valueString)
                 } catch (NoSuchElementException e2) {
                     nonexistentSelectOptionSelected(valueString, select)
-                }
-            }
-        }
-
-        if (multiple) {
-            def selectedOptions = select.getAllSelectedOptions()
-            for (selectedOption in selectedOptions) {
-                if (!valueStrings.contains(selectedOption.getAttribute("value")) && !valueStrings.contains(selectedOption.text)) {
-                    selectedOption.click()
-                    assert !selectedOption.isSelected()
                 }
             }
         }
