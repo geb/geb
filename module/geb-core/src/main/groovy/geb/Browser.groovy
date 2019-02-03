@@ -692,7 +692,7 @@ class Browser {
      * @param block closure to be executed in the window context
      * @return The return value of {@code block}
      */
-    def withWindow(String window, Closure block) {
+    public <T> T withWindow(String window, @DelegatesTo(value = Browser, strategy = DELEGATE_FIRST) Closure<T> block) {
         withWindow([:], window, block)
     }
 
@@ -705,7 +705,7 @@ class Browser {
      * @param block closure to be executed in the window context
      * @return List containing values returned from {@code block} for each window for which {@code specification} returns groovy truth
      */
-    List<?> withWindow(Closure specification, Closure block) {
+    public <T> List<T> withWindow(Closure specification, @DelegatesTo(value = Browser, strategy = DELEGATE_FIRST) Closure<T> block) {
         withWindow([:], specification, block)
     }
 
@@ -719,7 +719,7 @@ class Browser {
      * @param block closure to be executed in the window context
      * @return List containing values returned from {@code block} for each window for which {@code specification} returns groovy truth
      */
-    List<?> withWindow(Map options, Closure specification, Closure block) {
+    public <T> List<T> withWindow(Map options, Closure specification, @DelegatesTo(value = Browser, strategy = DELEGATE_FIRST) Closure<T> block) {
         def anyMatching = false
         def original = currentWindow
         def originalPage = getPage()
@@ -754,7 +754,7 @@ class Browser {
      * @param block closure to be executed in the window context
      * @return The return value of {@code block}
      */
-    def withWindow(Map options, String window, Closure block) {
+    public <T> T withWindow(Map options, String window, @DelegatesTo(value = Browser, strategy = DELEGATE_FIRST) Closure<T> block) {
         def original = currentWindow
         def originalPage = getPage()
 
@@ -780,7 +780,7 @@ class Browser {
      * @throws geb.error.NoNewWindowException if the window opening closure doesn't open one or opens more
      * than one new window
      */
-    def withNewWindow(Map options, Closure windowOpeningBlock, Closure block) {
+    public <T> T withNewWindow(Map options, Closure windowOpeningBlock, @DelegatesTo(value = Browser, strategy = DELEGATE_FIRST) Closure<T> block) {
         def originalWindow = currentWindow
         def originalPage = getPage()
 
@@ -792,7 +792,10 @@ class Browser {
                 verifyAtImplicitly(options.page)
             }
 
-            block.call()
+            Closure cloned = block.clone()
+            cloned.delegate = browser
+            cloned.resolveStrategy = DELEGATE_FIRST
+            cloned.call()
         } finally {
             if ((!options.containsKey(CLOSE_OPTION) && config.withNewWindowConfig.close.orElse(true)) || options.close) {
                 driver.close()
@@ -812,7 +815,7 @@ class Browser {
      * @throws geb.error.NoNewWindowException if the window opening closure doesn't open one or opens more
      * than one new window
      */
-    def withNewWindow(Closure windowOpeningBlock, Closure block) {
+    public <T> T withNewWindow(Closure windowOpeningBlock, @DelegatesTo(value = Browser, strategy = DELEGATE_FIRST) Closure<T> block) {
         withNewWindow([:], windowOpeningBlock, block)
     }
 
@@ -953,13 +956,16 @@ class Browser {
         driver.switchTo().window(window)
     }
 
-    protected doWithWindow(Map options, Closure block) {
+    protected <T> T doWithWindow(Map options, Closure<T> block) {
         try {
             if (options.page) {
                 verifyAtImplicitly(options.page)
             }
 
-            block.call()
+            Closure cloned = block.clone()
+            cloned.delegate = browser
+            cloned.resolveStrategy = DELEGATE_FIRST
+            cloned.call()
         } finally {
             if (options.close || (!options.containsKey(CLOSE_OPTION) && config.withWindowConfig.close)) {
                 driver.close()

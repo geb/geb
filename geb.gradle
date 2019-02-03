@@ -32,7 +32,7 @@ nexusStaging {
 }
 
 allprojects { project ->
-    version = '2.3-SNAPSHOT'
+    version = '2.4-SNAPSHOT'
     group = 'org.gebish'
 
     apply plugin: "com.energizedwork.webdriver-binaries"
@@ -48,6 +48,7 @@ allprojects { project ->
         junit4Version = "4.10"
         geckodriverVersion = "0.19.0"
         jettyVersion = "9.4.8.v20171121"
+        threeTenExtraVersion = "1.4"
 
         spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
             exclude module: "groovy-all"
@@ -218,6 +219,9 @@ subprojects {
 
         link "http://static.javadoc.io/junit/junit/$junit4Version",
             "org.junit"
+
+        link "http://static.javadoc.io/org.threeten/threeten-extra/$threeTenExtraVersion",
+            "org.threeten.extra"
 
         link "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/api/",
             "groovy.lang"

@@ -19,17 +19,19 @@ import geb.Page
 import geb.content.TemplateDerivedPageContent
 import geb.navigator.Navigator
 
+import static groovy.lang.Closure.DELEGATE_FIRST
+
 interface FrameSupport {
 
     public <T> T withFrame(frame, Closure<T> block)
 
-    public <T> T withFrame(frame, Class<? extends Page> page, Closure<T> block)
+    public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block)
 
-    public <T> T withFrame(frame, Page page, Closure<T> block)
+    public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block)
 
-    public <T> T withFrame(Navigator frame, Class<? extends Page> page, Closure<T> block)
+    public <P extends Page, T> T withFrame(Navigator frame, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block)
 
-    public <T> T withFrame(Navigator frame, Page page, Closure<T> block)
+    public <P extends Page, T> T withFrame(Navigator frame, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block)
 
     public <T> T withFrame(Navigator frame, Closure<T> block)
 

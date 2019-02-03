@@ -18,7 +18,7 @@ dependencies {
     compile project(":module:geb-ast")
     compile project(":module:geb-waiting")
     compile 'org.jodd:jodd-lagarto:3.7.1'
-    compile'org.threeten:threeten-extra:1.4'
+    compile "org.threeten:threeten-extra:$threeTenExtraVersion"
 
     testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
 }
