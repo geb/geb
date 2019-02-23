@@ -23,6 +23,7 @@ import org.junit.rules.TemporaryFolder
 import org.junit.runner.Result
 import org.spockframework.runtime.ConditionNotSatisfiedError
 import spock.lang.AutoCleanup
+import spock.lang.Retry
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -53,6 +54,7 @@ class GebReportingSpecSpec extends Specification {
     def setup() {
         specRunner.addClassImport(GebReportingSpec)
         specRunner.addClassImport(Unroll)
+        specRunner.addClassImport(Retry)
         specRunner.addClassImport(Reporter)
         specRunner.addClassImport(ReportingListener)
         specRunner.addClassImport(ReportState)
@@ -155,6 +157,37 @@ class GebReportingSpecSpec extends Specification {
 
         then:
         reportFile("001-001-failing test_0_-failure.html").exists()
+    }
+
+    @Unroll
+    def "report is written after a failing test when using the retry annotation with #mode"() {
+        when:
+        runReportingSpec """
+            @Retry(count = 1, mode = $mode)
+            def "failing test"() {
+                given:
+                config.reportOnTestFailureOnly = true
+                go "/"
+
+                expect:
+                fail == false
+
+                where:
+                fail << [true, true]
+            }
+        """
+
+        then:
+        reportGroupDir.exists()
+        reportFileNumbers.every {
+            reportFile("${it}-failing test-failure.html").exists()
+        }
+
+        where:
+        mode                               | reportFileNumbers
+        'Retry.Mode.ITERATION'             | ['001-001', '001-002', '002-001', '002-002']
+        'Retry.Mode.FEATURE'               | ['001-001', '001-002', '002-001', '002-002']
+        'Retry.Mode.SETUP_FEATURE_CLEANUP' | ['001-001', '001-002', '002-001', '002-002']
     }
 
     def "failure when writing a report does not overwrite the original test failure"() {
