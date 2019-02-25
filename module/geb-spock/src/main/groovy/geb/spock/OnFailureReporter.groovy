@@ -15,7 +15,6 @@
  */
 package geb.spock
 
-import geb.Browser
 import org.spockframework.runtime.AbstractRunListener
 import org.spockframework.runtime.extension.IMethodInterceptor
 import org.spockframework.runtime.extension.IMethodInvocation
@@ -32,7 +31,9 @@ class OnFailureReporter extends AbstractRunListener implements IMethodIntercepto
 
     void error(ErrorInfo error) {
         try {
-            spec.reportFailure()
+            if (error) {
+                spec.reportFailure()
+            }
         } catch (Exception e) {
             //ignore
         }
