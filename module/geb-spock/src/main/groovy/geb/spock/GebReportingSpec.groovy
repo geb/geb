@@ -48,6 +48,8 @@ class GebReportingSpec extends GebSpec {
     void reportFailure() {
         if (_browser) {
             report "failure"
+        } else {
+            System.err.println "Could not write report '${createReportLabel('failure')}', because the browser was already cleaned up. Consider using Spock's @Stepwise as a workaround."
         }
     }
 

@@ -26,6 +26,7 @@ import spock.lang.AutoCleanup
 import spock.lang.Retry
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 import spock.lang.Unroll
 import spock.util.EmbeddedSpecRunner
 
@@ -160,11 +161,38 @@ class GebReportingSpecSpec extends Specification {
     }
 
     @Unroll
-    def "report is written after a failing test when using the retry annotation with #mode"() {
+    def "report is written after a failing test when using @Retry with #mode"() {
         when:
         runReportingSpec """
             @Retry(count = 1, mode = $mode)
             def "failing test"() {
+                given:
+                config.reportOnTestFailureOnly = true
+                go "/"
+
+                expect:
+                false
+            }
+        """
+
+        then:
+        reportFileNumbers.every {
+            reportFile("${it}-failing test-failure.html").exists()
+        }
+
+        where:
+        mode                               | reportFileNumbers      | explanation
+        'Retry.Mode.ITERATION'             | ['001-001', '001-002'] | 'reporter is called once per try'
+        'Retry.Mode.FEATURE'               | ['001-001', '001-002'] | 'reporter is called once per try'
+        'Retry.Mode.SETUP_FEATURE_CLEANUP' | []                     | 'no reports, because browser was cleaned up'
+    }
+
+    @Unroll
+    def "report is written after a failing data driven test when using @Retry with #mode"() {
+        when:
+        runReportingSpec """
+            @Retry(count = 1, mode = $mode)
+            def "failing data driven test"() {
                 given:
                 config.reportOnTestFailureOnly = true
                 go "/"
@@ -178,16 +206,72 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        reportGroupDir.exists()
         reportFileNumbers.every {
-            reportFile("${it}-failing test-failure.html").exists()
+            reportFile("${it}-failing data driven test-failure.html").exists()
         }
 
         where:
-        mode                               | reportFileNumbers
-        'Retry.Mode.ITERATION'             | ['001-001', '001-002', '002-001', '002-002']
-        'Retry.Mode.FEATURE'               | ['001-001', '001-002', '002-001', '002-002']
-        'Retry.Mode.SETUP_FEATURE_CLEANUP' | ['001-001', '001-002', '002-001', '002-002']
+        mode                               | reportFileNumbers                            | explanation
+        'Retry.Mode.ITERATION'             | ['001-001', '001-002', '002-001', '002-002'] | 'reporter is called once per try and once per iteration'
+        'Retry.Mode.FEATURE'               | []                                           | 'no reports, because browser was cleaned up'
+        'Retry.Mode.SETUP_FEATURE_CLEANUP' | []                                           | 'no reports, because browser was cleaned up'
+    }
+
+    @Unroll
+    def "report is written after a failing test when using @Stepwise and @Retry with #mode"() {
+        when:
+        runStepwiseReportingSpec """
+            @Retry(count = 1, mode = $mode)
+            def "failing stepwise test"() {
+                given:
+                config.reportOnTestFailureOnly = true
+                go "/"
+
+                expect:
+                false
+            }
+        """
+
+        then:
+        reportFileNumbers.every {
+            reportFile("${it}-failing stepwise test-failure.html").exists()
+        }
+
+        where:
+        mode                               | reportFileNumbers      | explanation
+        'Retry.Mode.ITERATION'             | ['001-001', '001-002'] | 'reporter is called once per try'
+        'Retry.Mode.FEATURE'               | ['001-001', '001-002'] | 'reporter is called once per try'
+        'Retry.Mode.SETUP_FEATURE_CLEANUP' | ['003-001', '003-002'] | 'reporter is called once per try, but test counter is off by one'
+    }
+
+    @Unroll
+    def "report is written after a failing data driven test when using @Stepwise and @Retry with #mode"() {
+        when:
+        runStepwiseReportingSpec """
+            @Retry(count = 1, mode = $mode)
+            def "failing stepwise data driven test"() {
+                given:
+                config.reportOnTestFailureOnly = true
+                go "/"
+
+                expect:
+                fail == false
+
+                where:
+                fail << [true, true]
+            }
+        """
+
+        then:
+        reportFileNumbers.every {
+            reportFile("${it}-failing stepwise data driven test-failure.html").exists()
+        }
+
+        where:
+        mode                               | reportFileNumbers                            | explanation
+        'Retry.Mode.ITERATION'             | ['001-001', '001-002', '002-001', '002-002'] | 'reporter is called once per try and once per iteration'
+        'Retry.Mode.FEATURE'               | ['005-001', '005-002', '005-003', '005-004'] | 'iterations and retries are flattened, reporter is called once per iteration'
+        'Retry.Mode.SETUP_FEATURE_CLEANUP' | ['003-001', '003-002', '005-001', '005-002'] | 'iterations are bundled, reporter is called once per try, test counters are off by one'
     }
 
     def "failure when writing a report does not overwrite the original test failure"() {
@@ -242,6 +326,21 @@ class GebReportingSpecSpec extends Specification {
 
     Result runReportingSpec(String body) {
         specRunner.run """
+            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+
+                def setup() {
+                    ${configuration}
+                }
+
+                $body
+            }
+        """
+    }
+
+    Result runStepwiseReportingSpec(String body) {
+        specRunner.addClassImport(Stepwise)
+        specRunner.run """
+            @Stepwise
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
                 def setup() {
