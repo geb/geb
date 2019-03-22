@@ -53,9 +53,9 @@ interface WaitingSupport {
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
      */
-    public <T> T waitFor(Double timeout, Closure<T> block)
+    public <T> T waitFor(Number timeout, Closure<T> block)
 
-    public <T> T waitFor(Map params, Double timeout, Closure<T> block)
+    public <T> T waitFor(Map params, Number timeout, Closure<T> block)
 
     /**
      * Invokes {@code block} every {@code interval} seconds, until it returns
@@ -67,8 +67,8 @@ interface WaitingSupport {
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
      */
-    public <T> T waitFor(Double timeout, Double interval, Closure<T> block)
+    public <T> T waitFor(Number timeout, Number interval, Closure<T> block)
 
-    public <T> T waitFor(Map params, Double timeout, Double interval, Closure<T> block)
+    public <T> T waitFor(Map params, Number timeout, Number interval, Closure<T> block)
 
 }

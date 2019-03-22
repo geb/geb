@@ -26,24 +26,24 @@ class Wait {
     /**
      * 5 seconds
      */
-    static public final Double DEFAULT_TIMEOUT = 5
+    static public final Number DEFAULT_TIMEOUT = 5
 
     /**
      * 100 milliseconds
      */
-    static public final Double DEFAULT_RETRY_INTERVAL = 0.1
+    static public final Number DEFAULT_RETRY_INTERVAL = 0.1
 
     private static final int HASHCODE_MULTIPLIER = 31
 
     /**
      * The maximum amount of seconds that something can be waited on.
      */
-    final Double timeout
+    final Number timeout
 
     /**
      * How many seconds to wait before trying something again while waiting.
      */
-    final Double retryInterval
+    final Number retryInterval
 
     /**
      * Whether we should append cause strings to the returned exception message or not
@@ -52,7 +52,7 @@ class Wait {
 
     String customMessage
 
-    Wait(Double timeout = DEFAULT_TIMEOUT, Double retryInterval = DEFAULT_RETRY_INTERVAL, boolean includeCauseInExceptionMessage = false) {
+    Wait(Number timeout = DEFAULT_TIMEOUT, Number retryInterval = DEFAULT_RETRY_INTERVAL, boolean includeCauseInExceptionMessage = false) {
         this.timeout = timeout
         this.retryInterval = [timeout, retryInterval].min()
         this.includeCauseInExceptionMessage = includeCauseInExceptionMessage
@@ -87,7 +87,7 @@ class Wait {
     Date calculateTimeoutFrom(Date start) {
         def calendar = Calendar.instance
         calendar.time = start
-        calendar.add(Calendar.MILLISECOND, Math.ceil(toMiliseconds(timeout)) as int)
+        calendar.add(Calendar.MILLISECOND, Math.ceil(toMilliseconds(timeout)) as int)
         calendar.time
     }
 
@@ -141,10 +141,10 @@ class Wait {
      * Blocks the caller for the retryInterval
      */
     void sleepForRetryInterval() {
-        Thread.sleep(toMiliseconds(retryInterval) as long)
+        Thread.sleep(toMilliseconds(retryInterval) as long)
     }
 
-    private double toMiliseconds(Double seconds) {
+    private static double toMilliseconds(Number seconds) {
         seconds * 1000
     }
 }
