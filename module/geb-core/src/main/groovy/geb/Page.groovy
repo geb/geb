@@ -439,7 +439,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
      */
-    public <T> T refreshWaitFor(Map params = [:], Double timeout, Closure<T> block) {
+    public <T> T refreshWaitFor(Map params = [:], Number timeout, Closure<T> block) {
         waitingSupport.waitFor(params, timeout, withRefresh(block))
     }
 
@@ -454,7 +454,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      * @return the true-ish return value from {@code block}
      * @throws {@link geb.waiting.WaitTimeoutException} if the block does not produce a true-ish value in time
      */
-    public <T> T refreshWaitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+    public <T> T refreshWaitFor(Map params = [:], Number timeout, Number interval, Closure<T> block) {
         waitingSupport.waitFor(params, timeout, interval, withRefresh(block))
     }
 

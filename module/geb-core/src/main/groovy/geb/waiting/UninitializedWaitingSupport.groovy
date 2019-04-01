@@ -35,12 +35,12 @@ class UninitializedWaitingSupport implements WaitingSupport {
     }
 
     @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+    def <T> T waitFor(Map params = [:], Number timeout, Closure<T> block) {
         throw initializable.uninitializedException()
     }
 
     @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+    def <T> T waitFor(Map params = [:], Number timeout, Number interval, Closure<T> block) {
         throw initializable.uninitializedException()
     }
 }

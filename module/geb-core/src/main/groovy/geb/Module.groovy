@@ -733,12 +733,12 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     }
 
     @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+    def <T> T waitFor(Map params = [:], Number timeout, Closure<T> block) {
         waitingSupport.waitFor(params, timeout, block)
     }
 
     @Override
-    def <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+    def <T> T waitFor(Map params = [:], Number timeout, Number interval, Closure<T> block) {
         waitingSupport.waitFor(params, timeout, interval, block)
     }
 
