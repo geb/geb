@@ -87,7 +87,7 @@ class Wait {
     Date calculateTimeoutFrom(Date start) {
         def calendar = Calendar.instance
         calendar.time = start
-        calendar.add(Calendar.MILLISECOND, Math.ceil(toMilliseconds(timeout)) as int)
+        calendar.add(Calendar.MILLISECOND, toMilliseconds(timeout))
         calendar.time
     }
 
@@ -141,10 +141,10 @@ class Wait {
      * Blocks the caller for the retryInterval
      */
     void sleepForRetryInterval() {
-        Thread.sleep(toMilliseconds(retryInterval) as long)
+        Thread.sleep(toMilliseconds(retryInterval))
     }
 
-    private static double toMilliseconds(Number seconds) {
+    private static int toMilliseconds(Number seconds) {
         seconds * 1000
     }
 }
