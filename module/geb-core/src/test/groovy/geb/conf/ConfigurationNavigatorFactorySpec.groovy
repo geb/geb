@@ -47,7 +47,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
 
     def "can use closure based inner"() {
         when:
-        raw.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+        raw.innerNavigatorFactory = { Browser browser, Iterable<WebElement> elements ->
             new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
         }
         go()
@@ -60,7 +60,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
         when:
         def impl = new InnerNavigatorFactory() {
             @Override
-            Navigator createNavigator(Browser browser, List<WebElement> elements) {
+            Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
                 new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
             }
         }
@@ -110,7 +110,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
     def "can explicitly set"() {
         when:
         raw.innerNavigatorFactory = new InnerNavigatorFactory() {
-            Navigator createNavigator(Browser browser, List<WebElement> elements) {
+            Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
                 new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
             }
         }

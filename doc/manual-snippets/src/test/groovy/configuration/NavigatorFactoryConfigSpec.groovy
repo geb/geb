@@ -41,7 +41,7 @@ class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements In
             import geb.Browser
             import org.openqa.selenium.WebElement
 
-            innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+            innerNavigatorFactory = { Browser browser, Iterable<WebElement> elements ->
                 new MyCustomNavigator(browser, elements)
             }
             // end::config[]

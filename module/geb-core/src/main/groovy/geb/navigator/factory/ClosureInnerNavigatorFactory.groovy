@@ -28,7 +28,7 @@ class ClosureInnerNavigatorFactory implements InnerNavigatorFactory {
     }
 
     @Override
-    Navigator createNavigator(Browser browser, List<WebElement> elements) {
+    Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
         closure.call(browser, elements)
     }
 }

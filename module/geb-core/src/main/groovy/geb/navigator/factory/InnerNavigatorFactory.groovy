@@ -38,6 +38,6 @@ interface InnerNavigatorFactory {
      * @param elements Zero or more content elements to wrap as a navigator
      * @return A navigator instance, for the given elements
      */
-    Navigator createNavigator(Browser browser, List<WebElement> elements)
+    Navigator createNavigator(Browser browser, Iterable<WebElement> elements)
 
 }

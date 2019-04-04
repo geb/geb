@@ -27,7 +27,7 @@ import org.openqa.selenium.WebElement
  */
 class DefaultInnerNavigatorFactory implements InnerNavigatorFactory {
 
-    Navigator createNavigator(Browser browser, List<WebElement> elements) {
+    Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
         new DefaultNavigator(browser, elements)
     }
 
