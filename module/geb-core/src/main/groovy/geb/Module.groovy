@@ -723,6 +723,11 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     }
 
     @Override
+    Iterator<WebElement> elementIterator() {
+        getInitializedNavigator().elementIterator()
+    }
+
+    @Override
     def <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
         waitingSupport.waitFor(params, waitPreset, block)
     }

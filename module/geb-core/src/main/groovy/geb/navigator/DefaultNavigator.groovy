@@ -416,6 +416,11 @@ class DefaultNavigator implements Navigator {
         contextElements.toList()
     }
 
+    @Override
+    Iterator<WebElement> elementIterator() {
+        contextElements.iterator()
+    }
+
     WebElement getElement(int index) {
         def elements = contextElements.toList()
         if (elements) {

@@ -25,7 +25,7 @@ class CustomNavigatorSpec extends GebSpecWithCallbackServer {
 
     def setup() {
         _browser = null
-        browser.config.rawConfig.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+        browser.config.rawConfig.innerNavigatorFactory = { Browser browser, Iterable<WebElement> elements ->
             new CustomNavigatorSpecCustomNavigator(browser, elements)
         }
 
