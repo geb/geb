@@ -803,26 +803,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         labels ? labels[0].text : null
     }
 
-    /**
-     * This works around an inconsistency in some of the WebDriver implementations.
-     * According to the spec WebElement.getAttribute should return the Strings "true" or "false"
-     * however ChromeDriver and HtmlUnitDriver will return "" or null.
-     */
-    protected boolean getBooleanAttribute(WebElement input, String attribute) {
-        !(input.getAttribute(attribute) in [null, false, "false"])
-    }
-
-    protected WebElement firstElementInContext(Closure closure) {
-        def result = null
-        for (int i = 0; !result && i < contextElements.size(); i++) {
-            try {
-                result = closure(contextElements[i])
-            } catch (org.openqa.selenium.NoSuchElementException e) {
-            }
-        }
-        result
-    }
-
     protected List<WebElement> collectElements(Closure closure) {
         List<WebElement> list = []
         contextElements.each {
@@ -887,17 +867,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         collectElements {
             def elements = it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
             filter ? filter(elements) : elements
-        }
-    }
-
-    protected void ensureTagIn(List<String> allowedTags, String attribute) {
-        String tagName = firstElement().tagName
-
-        if (!allowedTags.contains(tagName)) {
-            String joinedValidTags = allowedTags.join(', ')
-
-            def message = "Value of '$attribute' attribute cannot be checked for element: $tagName as this operation is only supported for the following elements: $joinedValidTags."
-            throw new UnsupportedOperationException(message)
         }
     }
 }
