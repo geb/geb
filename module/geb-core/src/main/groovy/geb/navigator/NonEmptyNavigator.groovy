@@ -110,7 +110,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     Collection<WebElement> allElements() {
-        contextElements as WebElement[]
+        contextElements
     }
 
     @Override
