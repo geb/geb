@@ -30,14 +30,14 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         name: By.&name
     ]
 
-    private final Collection<? extends SearchContext> searchContexts
+    private final Iterable<? extends SearchContext> searchContexts
     private final NavigatorFactory navigatorFactory
 
     SearchContextBasedBasicLocator(SearchContext searchContext, NavigatorFactory navigatorFactory) {
         this([searchContext], navigatorFactory)
     }
 
-    SearchContextBasedBasicLocator(Collection<? extends SearchContext> searchContexts, NavigatorFactory navigatorFactory) {
+    SearchContextBasedBasicLocator(Iterable<? extends SearchContext> searchContexts, NavigatorFactory navigatorFactory) {
         this.searchContexts = searchContexts
         this.navigatorFactory = navigatorFactory
     }

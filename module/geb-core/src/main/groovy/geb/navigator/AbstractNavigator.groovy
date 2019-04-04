@@ -307,19 +307,19 @@ abstract class AbstractNavigator implements Navigator {
     }
 
     int getHeight() {
-        firstElement()?.size?.height ?: 0
+        getElementHeight(firstElement())
     }
 
     int getWidth() {
-        firstElement()?.size?.width ?: 0
+        getElementWidth(firstElement())
     }
 
     int getX() {
-        firstElement()?.location?.x ?: 0
+        getElementX(firstElement())
     }
 
     int getY() {
-        firstElement()?.location?.y ?: 0
+        getElementY(firstElement())
     }
 
     String css(String propertyName) {
@@ -378,6 +378,22 @@ abstract class AbstractNavigator implements Navigator {
      * @return the elements at the given indexes, or an empty list if no such elements exist
      */
     protected abstract List<WebElement> getElements(Collection indexes)
+
+    protected int getElementHeight(WebElement element) {
+        element?.size?.height ?: 0
+    }
+
+    protected int getElementWidth(WebElement element) {
+        element?.size?.width ?: 0
+    }
+
+    protected int getElementX(WebElement element) {
+        element?.location?.x ?: 0
+    }
+
+    protected int getElementY(WebElement element) {
+        element?.location?.y ?: 0
+    }
 
     /**
      * Iterator for looping over the context elements of a Navigator instance.

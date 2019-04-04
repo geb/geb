@@ -42,11 +42,11 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     protected final static ELEMENTS_WITH_MUTABLE_VALUE = ['input', 'select', 'textarea']
 
-    protected final List<WebElement> contextElements
+    protected final Iterable<WebElement> contextElements
 
-    NonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
-        super(browser, new SearchContextBasedBasicLocator(contextElements.asImmutable(), browser.navigatorFactory))
-        this.contextElements = contextElements.toList().asImmutable()
+    NonEmptyNavigator(Browser browser, Iterable<? extends WebElement> contextElements) {
+        super(browser, new SearchContextBasedBasicLocator(contextElements, browser.navigatorFactory))
+        this.contextElements = contextElements
     }
 
     @Override
@@ -105,12 +105,11 @@ class NonEmptyNavigator extends AbstractNavigator {
     @Override
     WebElement singleElement() {
         ensureContainsSingleElement("singleElement")
-        super.singleElement()
     }
 
     @Override
     Collection<WebElement> allElements() {
-        contextElements
+        contextElements.toList()
     }
 
     @Override
@@ -120,7 +119,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     List<WebElement> getElements(Range range) {
-        contextElements[range]
+        allElements()[range]
     }
 
     @SuppressWarnings("UnusedMethodParameter")
@@ -130,7 +129,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     List<WebElement> getElements(Collection indexes) {
-        contextElements[indexes]
+        allElements()[indexes]
     }
 
     @Override
@@ -141,7 +140,8 @@ class NonEmptyNavigator extends AbstractNavigator {
         } else if (size == 1) {
             new EmptyNavigator(browser)
         } else {
-            navigatorFor(contextElements - contextElements[index])
+            def elements = contextElements.toList()
+            navigatorFor(elements - elements[index])
         }
     }
 
@@ -351,38 +351,32 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     boolean hasClass(String valueToContain) {
-        ensureContainsSingleElement("hasClass", String)
-        valueToContain in classes()
+        valueToContain in elementClasses(ensureContainsSingleElement("hasClass", String))
     }
 
     @Override
     boolean is(String tag) {
-        ensureContainsSingleElement("is", String)
-        tag.equalsIgnoreCase(firstElement().tagName)
+        tag.equalsIgnoreCase(ensureContainsSingleElement("is", String).tagName)
     }
 
     @Override
     boolean isDisplayed() {
-        ensureContainsSingleElement("isDisplayed")
-        firstElement().displayed
+        ensureContainsSingleElement("isDisplayed").displayed
     }
 
     @Override
     String tag() {
-        ensureContainsSingleElement("tag")
-        firstElement().tagName
+        ensureContainsSingleElement("tag").tagName
     }
 
     @Override
     String text() {
-        ensureContainsSingleElement("text")
-        firstElement().text
+        ensureContainsSingleElement("text").text
     }
 
     @Override
     String getAttribute(String name) {
-        ensureContainsSingleElement("getAttribute", String)
-        def attribute = firstElement().getAttribute(name)
+        def attribute = ensureContainsSingleElement("getAttribute", String).getAttribute(name)
         if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
             attribute = null
         }
@@ -392,14 +386,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     List<String> classes() {
-        ensureContainsSingleElement("classes")
-        contextElements.head().getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
+        elementClasses(ensureContainsSingleElement("classes"))
     }
 
     @Override
     def value() {
-        ensureContainsSingleElement("value")
-        getInputValue(contextElements.head())
+        getInputValue(ensureContainsSingleElement("value"))
     }
 
     @Override
@@ -418,8 +410,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     Navigator click() {
-        ensureContainsSingleElement("click")
-        contextElements.first().click()
+        ensureContainsSingleElement("click").click()
         this
     }
 
@@ -502,31 +493,27 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     int getHeight() {
-        ensureContainsSingleElement("getHeight")
-        super.getHeight()
+        getElementHeight(ensureContainsSingleElement("getHeight"))
     }
 
     @Override
     int getWidth() {
-        ensureContainsSingleElement("getWidth")
-        super.getWidth()
+        getElementWidth(ensureContainsSingleElement("getWidth"))
     }
 
     @Override
     int getX() {
-        ensureContainsSingleElement("getX")
-        super.getX()
+        getElementX(ensureContainsSingleElement("getX"))
     }
 
     @Override
     int getY() {
-        ensureContainsSingleElement("getY")
-        super.getY()
+        getElementY(ensureContainsSingleElement("getY"))
     }
 
     @Override
     Navigator unique() {
-        new NonEmptyNavigator(browser, contextElements.unique(false))
+        new NonEmptyNavigator(browser, allElements().unique(false))
     }
 
     @Override
@@ -536,14 +523,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     String css(String propertyName) {
-        ensureContainsSingleElement("css", String)
-        super.css(propertyName)
+        ensureContainsSingleElement("css", String).getCssValue(propertyName)
     }
 
     @Override
     boolean isFocused() {
-        ensureContainsSingleElement("isFocused")
-        firstElement() == browser.driver.switchTo().activeElement()
+        ensureContainsSingleElement("isFocused") == browser.driver.switchTo().activeElement()
     }
 
     def methodMissing(String name, arguments) {
@@ -598,10 +583,12 @@ class NonEmptyNavigator extends AbstractNavigator {
         }
     }
 
-    protected void ensureContainsSingleElement(String name, Class<?>... parameterTypes) {
-        if (contextElements.size() > 1) {
-            throw new SingleElementNavigatorOnlyMethodException(Navigator.getMethod(name, parameterTypes), contextElements.size())
+    protected WebElement ensureContainsSingleElement(String name, Class<?>... parameterTypes) {
+        def elements = allElements()
+        if (elements.size() > 1) {
+            throw new SingleElementNavigatorOnlyMethodException(Navigator.getMethod(name, parameterTypes), elements.size())
         }
+        elements.first()
     }
 
     protected Navigator navigatorFor(Collection<WebElement> contextElements) {
@@ -676,7 +663,7 @@ class NonEmptyNavigator extends AbstractNavigator {
         value
     }
 
-    protected void setInputValues(Collection<WebElement> inputs, value) {
+    protected void setInputValues(Iterable<WebElement> inputs, value) {
         def inputsToTagNames = inputs.collectEntries { [it, it.tagName.toLowerCase()] }
         def unsupportedElements = inputsToTagNames.values().toList() - ELEMENTS_WITH_MUTABLE_VALUE
 
@@ -817,7 +804,7 @@ class NonEmptyNavigator extends AbstractNavigator {
                             list << value
                         }
                 }
-            } catch (org.openqa.selenium.NoSuchElementException e) {
+            } catch (NoSuchElementException e) {
             }
         }
         list
@@ -868,5 +855,9 @@ class NonEmptyNavigator extends AbstractNavigator {
             def elements = it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
             filter ? filter(elements) : elements
         }
+    }
+
+    protected List<String> elementClasses(WebElement element) {
+        element.getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
     }
 }
