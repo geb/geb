@@ -33,11 +33,11 @@ class ContentToStringSpec extends GebSpecWithCallbackServer {
         div.a.toString() == 'geb.PageContentSpecPage -> div: geb.PageContentSpecModule -> a: geb.PageContentSpecInnerModule'
         div(1).a("foo").toString() == 'geb.PageContentSpecPage -> div(1): geb.PageContentSpecModule -> a(foo): geb.PageContentSpecInnerModule'
         divWithArgs("foo", "bar").toString() == 'geb.PageContentSpecPage -> divWithArgs(foo, bar): geb.PageContentSpecModule'
-        div.p.toString() == 'geb.PageContentSpecPage -> div: geb.PageContentSpecModule -> p: geb.navigator.NonEmptyNavigator'
+        div.p.toString() == 'geb.PageContentSpecPage -> div: geb.PageContentSpecModule -> p: geb.navigator.DefaultNavigator'
         div.toString() == 'geb.PageContentSpecPage -> div: geb.PageContentSpecModule'
 
         and:
-        $('div').module(PageContentSpecModule).p.toString() == 'geb.PageContentSpecModule -> p: geb.navigator.NonEmptyNavigator'
+        $('div').module(PageContentSpecModule).p.toString() == 'geb.PageContentSpecModule -> p: geb.navigator.DefaultNavigator'
         $('div').module(PageContentSpecModule).toString() == 'geb.PageContentSpecModule'
     }
 

@@ -16,27 +16,19 @@
 package geb.navigator.factory
 
 import geb.Browser
-import geb.navigator.EmptyNavigator
 import geb.navigator.Navigator
-import geb.navigator.NonEmptyNavigator
+import geb.navigator.DefaultNavigator
 import org.openqa.selenium.WebElement
 
 /**
  * Default implementation of {@link geb.navigator.factory.InnerNavigatorFactory}.
  *
- * Uses {@link NonEmptyNavigator} and {@link EmptyNavigator}.
+ * Returns an instance of {@link DefaultNavigator}.
  */
 class DefaultInnerNavigatorFactory implements InnerNavigatorFactory {
 
-    /**
-     * If {@code elements != null && elements.size() > 0} a {@link NonEmptyNavigator is returned, otherwise {@link EmptyNavigator}.
-
-     * @param browser The browse to associate with the navigator
-     * @param elements The elements to back the navigator
-     * @return The newly created navigator
-     */
     Navigator createNavigator(Browser browser, List<WebElement> elements) {
-        elements ? new NonEmptyNavigator(browser, elements) : new EmptyNavigator(browser)
+        new DefaultNavigator(browser, elements)
     }
 
 }

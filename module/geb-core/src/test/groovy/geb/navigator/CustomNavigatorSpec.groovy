@@ -38,7 +38,7 @@ class CustomNavigatorSpec extends GebSpecWithCallbackServer {
         go()
     }
 
-    def "can use not overridden methods from NonEmptyNavigator"() {
+    def "can use not overridden methods from DefaultNavigator"() {
         given:
         def input = $('input')
 
@@ -70,7 +70,7 @@ class CustomNavigatorSpecPage extends Page {
 }
 
 @InheritConstructors
-class CustomNavigatorSpecCustomNavigator extends NonEmptyNavigator {
+class CustomNavigatorSpecCustomNavigator extends DefaultNavigator {
 
     String getTypeAttribute() {
         attr('type')

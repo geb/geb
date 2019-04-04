@@ -148,6 +148,12 @@ include::{test-dir}/configuration/NavigatorFactoryConfigSpec.groovy[tag=config,i
 This is a rather advanced use case.
 If you need to do this, check out the source code or get in touch via the mailing list if you need help.
 
+[TIP]
+====
+While not as crosscutting as using a custom navigator factory it's also possible to decorate navigators with additional methods by creating <<modules, modules>> based on them.
+The benefit of the latter is that if you are <<strong-typing, strongly typing>> your Geb code then your IDE will be aware of the added methods while when using a custom `{navigator-api}` class the additional methods will be completely transparent to the IDE.
+====
+
 [[driver-caching-configuration]]
 === Driver caching
 

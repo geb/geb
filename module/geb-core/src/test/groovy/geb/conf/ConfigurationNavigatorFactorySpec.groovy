@@ -19,7 +19,7 @@ import geb.Browser
 import geb.Configuration
 import geb.error.InvalidGebConfiguration
 import geb.navigator.Navigator
-import geb.navigator.NonEmptyNavigator
+import geb.navigator.DefaultNavigator
 import geb.navigator.factory.BrowserBackedNavigatorFactory
 import geb.navigator.factory.DefaultInnerNavigatorFactory
 import geb.navigator.factory.InnerNavigatorFactory
@@ -123,5 +123,5 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
 }
 
 @InheritConstructors
-class ConfigurationNavigatorFactorySpecCustomNavigator extends NonEmptyNavigator {
+class ConfigurationNavigatorFactorySpecCustomNavigator extends DefaultNavigator {
 }

@@ -16,8 +16,7 @@
 package configuration
 
 import geb.Configuration
-import geb.navigator.EmptyNavigator
-import geb.navigator.NonEmptyNavigator
+import geb.navigator.DefaultNavigator
 import geb.test.GebSpecWithCallbackServer
 import groovy.transform.InheritConstructors
 import org.junit.ClassRule
@@ -38,13 +37,12 @@ class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements In
     Configuration createConf() {
         configScript """
             import configuration.MyCustomNavigator
-            import configuration.MyCustomEmptyNavigator
             // tag::config[]
             import geb.Browser
             import org.openqa.selenium.WebElement
 
             innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
-                elements ? new MyCustomNavigator(browser, elements) : new MyCustomEmptyNavigator()
+                new MyCustomNavigator(browser, elements)
             }
             // end::config[]
 
@@ -60,14 +58,9 @@ class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements In
 
         then:
         $() instanceof MyCustomNavigator
-        $("idontexist") instanceof MyCustomEmptyNavigator
     }
 }
 
 @InheritConstructors
-class MyCustomNavigator extends NonEmptyNavigator {
-}
-
-@InheritConstructors
-class MyCustomEmptyNavigator extends EmptyNavigator {
+class MyCustomNavigator extends DefaultNavigator {
 }

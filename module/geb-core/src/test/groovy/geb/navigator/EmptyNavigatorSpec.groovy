@@ -15,39 +15,118 @@
  */
 package geb.navigator
 
-import geb.Browser
 import geb.Page
+import geb.test.GebSpecWithCallbackServer
 import geb.waiting.Wait
-import spock.lang.Specification
 import spock.lang.Unroll
 
-class EmptyNavigatorSpec extends Specification {
+class EmptyNavigatorSpec extends GebSpecWithCallbackServer {
 
-    EmptyNavigator navigator
-    Browser browser = Mock(Browser)
+    Navigator navigator
 
     def setup() {
-        navigator = new EmptyNavigator(browser)
+        html {}
+        navigator = $("#not-existing")
     }
 
     def find() {
         expect:
-        navigator.find("foo") instanceof EmptyNavigator
-        navigator.find("foo", 0) instanceof EmptyNavigator
-        navigator.find("foo", 0..1) instanceof EmptyNavigator
-        navigator.find("foo", 0, a: "b") instanceof EmptyNavigator
-        navigator.find("foo", 0..1, a: "b") instanceof EmptyNavigator
-        navigator.find("foo", 0..<0, a: "b") instanceof EmptyNavigator
-        navigator.find("foo", a: "b") instanceof EmptyNavigator
-        navigator.find(0, a: "b") instanceof EmptyNavigator
-        navigator.find(0..1, a: "b") instanceof EmptyNavigator
-        navigator.find(a: "b") instanceof EmptyNavigator
+        navigator.find("foo").empty
+        navigator.find("foo", 0).empty
+        navigator.find("foo", 0..1).empty
+        navigator.find("foo", 0, a: "b").empty
+        navigator.find("foo", 0..1, a: "b").empty
+        navigator.find("foo", 0..<0, a: "b").empty
+        navigator.find("foo", a: "b").empty
+        navigator.find(0, a: "b").empty
+        navigator.find(0..1, a: "b").empty
+        navigator.find(a: "b").empty
     }
 
     def getAt() {
-        navigator[1] instanceof EmptyNavigator
-        navigator[1..10] instanceof EmptyNavigator
-        navigator[0..<0] instanceof EmptyNavigator
+        expect:
+        navigator[1].empty
+        navigator[1..10].empty
+        navigator[0..<0].empty
+    }
+
+    def head() {
+        expect:
+        navigator.head().empty
+    }
+
+    def first() {
+        expect:
+        navigator.first().empty
+    }
+
+    def hasClass() {
+        expect:
+        !navigator.hasClass("any-class")
+    }
+
+    def is() {
+        expect:
+        !navigator.is("div")
+    }
+
+    def last() {
+        expect:
+        navigator.last().empty
+    }
+
+    def tail() {
+        expect:
+        navigator.tail().empty
+    }
+
+    def remove() {
+        expect:
+        navigator.remove(0).empty
+        navigator.remove(1).empty
+    }
+
+    def isDisplayed() {
+        expect:
+        !navigator.displayed
+    }
+
+    def tag() {
+        expect:
+        navigator.tag() == null
+    }
+
+    def text() {
+        expect:
+        navigator.text() == null
+    }
+
+    def getAttribute() {
+        expect:
+        navigator.getAttribute("href") == null
+    }
+
+    def classes() {
+        expect:
+        navigator.classes() == []
+    }
+
+    def value() {
+        expect:
+        navigator.value() == null
+    }
+
+    def verifyNotEmpty() {
+        when:
+        navigator.verifyNotEmpty()
+
+        then:
+        thrown(EmptyNavigatorException)
+    }
+
+    def methodMissing() {
+        expect:
+        navigator.username().empty
     }
 
     @Unroll('click() for args: #args')

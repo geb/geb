@@ -36,10 +36,10 @@ ruleset {
     }
     ruleset('rulesets/dry.xml') {
         DuplicateStringLiteral {
-            doNotApplyToFileNames = '*Spec.groovy, RemoteWebDriverWithExpectations.groovy, Configuration.groovy, Page.groovy, BindingUpdater.groovy, TextMatchingSupport.groovy, NonEmptyNavigator.groovy, EmptyNavigator.groovy'
+            doNotApplyToFileNames = '*Spec.groovy, RemoteWebDriverWithExpectations.groovy, Configuration.groovy, Page.groovy, BindingUpdater.groovy, TextMatchingSupport.groovy, DefaultNavigator.groovy'
         }
         DuplicateNumberLiteral {
-            doNotApplyToFileNames = '*Spec.groovy, Crawler.groovy'
+            doNotApplyToFileNames = '*Spec.groovy, Crawler.groovy, DefaultNavigator.groovy'
         }
         DuplicateListLiteral {
             doNotApplyToFileNames = '*Spec.groovy, Page.groovy'

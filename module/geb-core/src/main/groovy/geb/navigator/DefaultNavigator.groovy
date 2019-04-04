@@ -16,10 +16,14 @@
 package geb.navigator
 
 import geb.Browser
+import geb.Module
 import geb.Page
+import geb.content.ModuleBaseCalculator
 import geb.error.SingleElementNavigatorOnlyMethodException
 import geb.error.UnableToSetElementException
 import geb.error.UnexpectedPageException
+import geb.js.JQueryAdapter
+import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatcher
 import geb.waiting.Wait
 import org.openqa.selenium.By
@@ -31,7 +35,7 @@ import java.util.regex.Pattern
 
 import static java.util.Collections.EMPTY_LIST
 
-class NonEmptyNavigator extends AbstractNavigator {
+class DefaultNavigator implements Navigator {
 
     protected final static BOOLEAN_ATTRIBUTES = ['async', 'autofocus', 'autoplay', 'checked', 'compact', 'complete',
                                                  'controls', 'declare', 'defaultchecked', 'defaultselected', 'defer', 'disabled', 'draggable', 'ended',
@@ -42,11 +46,316 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     protected final static ELEMENTS_WITH_MUTABLE_VALUE = ['input', 'select', 'textarea']
 
+    final Browser browser
+
+    final Locator locator
+
     protected final Iterable<WebElement> contextElements
 
-    NonEmptyNavigator(Browser browser, Iterable<? extends WebElement> contextElements) {
-        super(browser, new SearchContextBasedBasicLocator(contextElements, browser.navigatorFactory))
+    DefaultNavigator(Browser browser, Iterable<? extends WebElement> contextElements) {
+        this.browser = browser
+        this.locator = new DefaultLocator(new SearchContextBasedBasicLocator(contextElements, browser.navigatorFactory))
         this.contextElements = contextElements
+    }
+
+    boolean asBoolean() {
+        !empty
+    }
+
+    Navigator $(Map<String, Object> predicates) {
+        locator.$(predicates)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, int index) {
+        locator.$(predicates, index)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, Range<Integer> range) {
+        locator.$(predicates, range)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, String selector) {
+        locator.$(predicates, selector)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, String selector, int index) {
+        locator.$(predicates, selector, index)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, String selector, Range<Integer> range) {
+        locator.$(predicates, selector, range)
+    }
+
+    @Override
+    Navigator $(String selector) {
+        locator.$(selector)
+    }
+
+    @Override
+    Navigator $(String selector, int index) {
+        locator.$(selector, index)
+    }
+
+    @Override
+    Navigator $(String selector, Range<Integer> range) {
+        locator.$(selector, range)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, By bySelector) {
+        locator.$(predicates, bySelector)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, By bySelector, int index) {
+        locator.$(predicates, bySelector, index)
+    }
+
+    @Override
+    Navigator $(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+        locator.$(predicates, bySelector, range)
+    }
+
+    @Override
+    Navigator $(By bySelector) {
+        locator.$(bySelector)
+    }
+
+    @Override
+    Navigator $(By bySelector, int index) {
+        locator.$(bySelector, index)
+    }
+
+    @Override
+    Navigator $(By bySelector, Range<Integer> range) {
+        locator.$(bySelector, range)
+    }
+
+    Navigator find(Map<String, Object> predicates) {
+        locator.find(predicates)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, int index) {
+        locator.find(predicates, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, Range<Integer> range) {
+        locator.find(predicates, range)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, String selector) {
+        locator.find(predicates, selector)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, String selector, int index) {
+        locator.find(predicates, selector, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, String selector, Range<Integer> range) {
+        locator.find(predicates, selector, range)
+    }
+
+    @Override
+    Navigator find(String selector) {
+        locator.find(selector)
+    }
+
+    @Override
+    Navigator find(String selector, int index) {
+        locator.find(selector, index)
+    }
+
+    @Override
+    Navigator find(String selector, Range<Integer> range) {
+        locator.find(selector, range)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector) {
+        locator.find(predicates, bySelector)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector, int index) {
+        locator.find(predicates, bySelector, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
+        locator.find(predicates, bySelector, range)
+    }
+
+    @Override
+    Navigator find(By bySelector) {
+        locator.find(bySelector)
+    }
+
+    @Override
+    Navigator find(By bySelector, int index) {
+        locator.find(bySelector, index)
+    }
+
+    @Override
+    Navigator find(By bySelector, Range<Integer> range) {
+        locator.find(bySelector, range)
+    }
+
+    @Override
+    Navigator filter(Map<String, Object> predicates, String selector) {
+        filter(selector).filter(predicates)
+    }
+
+    Navigator has(String selector) {
+        findAll { Navigator it ->
+            !it.find(selector).empty
+        }
+    }
+
+    Navigator has(Map<String, Object> predicates) {
+        findAll { Navigator it ->
+            !it.find(predicates).empty
+        }
+    }
+
+    Navigator has(Map<String, Object> predicates, String selector) {
+        findAll { Navigator it ->
+            !it.find(predicates, selector).empty
+        }
+    }
+
+    Navigator has(By bySelector) {
+        findAll { Navigator it ->
+            !it.find(bySelector).empty
+        }
+    }
+
+    Navigator has(Map<String, Object> predicates, By bySelector) {
+        findAll { Navigator it ->
+            !it.find(predicates, bySelector).empty
+        }
+    }
+
+    Navigator hasNot(String selector) {
+        findAll { Navigator it ->
+            it.find(selector).empty
+        }
+    }
+
+    Navigator hasNot(Map<String, Object> predicates) {
+        findAll { Navigator it ->
+            it.find(predicates).empty
+        }
+    }
+
+    Navigator hasNot(Map<String, Object> predicates, String selector) {
+        findAll { Navigator it ->
+            it.find(predicates, selector).empty
+        }
+    }
+
+    Navigator hasNot(By bySelector) {
+        findAll { Navigator it ->
+            it.find(bySelector).empty
+        }
+    }
+
+    Navigator hasNot(Map<String, Object> predicates, By bySelector) {
+        findAll { Navigator it ->
+            it.find(predicates, bySelector).empty
+        }
+    }
+
+    Navigator eq(int index) {
+        this[index]
+    }
+
+    Navigator add(String selector) {
+        add(By.cssSelector(selector))
+    }
+
+    Navigator add(By bySelector) {
+        add browser.driver.findElements(bySelector)
+    }
+
+    Navigator add(WebElement[] elements) {
+        add Arrays.asList(elements)
+    }
+
+    Navigator add(Collection<WebElement> elements) {
+        List<WebElement> result = []
+        result.addAll allElements()
+        result.addAll elements
+        browser.navigatorFactory.createFromWebElements(result)
+    }
+
+    Navigator plus(Navigator navigator) {
+        add navigator.allElements()
+    }
+
+    String attr(String name) {
+        getAttribute(name)
+    }
+
+    WebElement firstElement() {
+        getElement(0)
+    }
+
+    WebElement lastElement() {
+        getElement(-1)
+    }
+
+    Iterator<Navigator> iterator() {
+        new NavigatorIterator()
+    }
+
+    Navigator findAll(Closure predicate) {
+        browser.navigatorFactory.createFromNavigators(super.findAll(predicate))
+    }
+
+    JQueryAdapter getJquery() {
+        new JQueryAdapter(this)
+    }
+
+    public <T extends Module> T module(Class<T> moduleClass) {
+        if (!Module.isAssignableFrom(moduleClass)) {
+            throw new IllegalArgumentException("$moduleClass is not a subclass of ${Module}")
+        }
+
+        module(moduleClass.newInstance())
+    }
+
+    public <T extends Module> T module(T module) {
+        def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
+
+        NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(module, baseNavigatorFactory, browser.driver.switchTo())
+
+        module.init(browser, moduleBaseNavigatorFactory)
+
+        module
+    }
+
+    public <T extends Module> List<T> moduleList(Class<T> moduleClass) {
+        iterator()*.module(moduleClass)
+    }
+
+    @SuppressWarnings(["UnnecessaryCollectCall"])
+    public <T extends Module> List<T> moduleList(Closure<T> moduleFactory) {
+        iterator().collect { it.module(moduleFactory.call()) }
+    }
+
+    @Override
+    String getStringRepresentation() {
+        getClass().name
     }
 
     @Override
@@ -92,11 +401,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         navigatorFor getElements(range)
     }
 
-    @SuppressWarnings("UnusedMethodParameter")
-    Navigator getAt(EmptyRange range) {
-        new EmptyNavigator(browser)
-    }
-
     @Override
     Navigator getAt(Collection indexes) {
         navigatorFor getElements(indexes)
@@ -104,7 +408,7 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     WebElement singleElement() {
-        ensureContainsSingleElement("singleElement")
+        ensureContainsAtMostSingleElement("singleElement")
     }
 
     @Override
@@ -112,24 +416,22 @@ class NonEmptyNavigator extends AbstractNavigator {
         contextElements.toList()
     }
 
-    @Override
     WebElement getElement(int index) {
-        contextElements[index]
+        def elements = contextElements.toList()
+        if (elements) {
+            contextElements[index]
+        }
     }
 
-    @Override
     List<WebElement> getElements(Range range) {
-        allElements()[range]
+        def elements = contextElements.toList()
+        if (elements) {
+            elements[range]
+        }
     }
 
-    @SuppressWarnings("UnusedMethodParameter")
-    List<WebElement> getElements(EmptyRange range) {
-        EMPTY_LIST
-    }
-
-    @Override
     List<WebElement> getElements(Collection indexes) {
-        allElements()[indexes]
+        contextElements.toList()[indexes]
     }
 
     @Override
@@ -137,8 +439,6 @@ class NonEmptyNavigator extends AbstractNavigator {
         int size = size()
         if (!(index in -size..<size)) {
             this
-        } else if (size == 1) {
-            new EmptyNavigator(browser)
         } else {
             def elements = contextElements.toList()
             navigatorFor(elements - elements[index])
@@ -351,47 +651,54 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     boolean hasClass(String valueToContain) {
-        valueToContain in elementClasses(ensureContainsSingleElement("hasClass", String))
+        valueToContain in elementClasses(ensureContainsAtMostSingleElement("hasClass", String))
     }
 
     @Override
     boolean is(String tag) {
-        tag.equalsIgnoreCase(ensureContainsSingleElement("is", String).tagName)
+        tag.equalsIgnoreCase(ensureContainsAtMostSingleElement("is", String)?.tagName)
     }
 
     @Override
     boolean isDisplayed() {
-        ensureContainsSingleElement("isDisplayed").displayed
+        ensureContainsAtMostSingleElement("isDisplayed")?.displayed
     }
 
     @Override
     String tag() {
-        ensureContainsSingleElement("tag").tagName
+        ensureContainsAtMostSingleElement("tag")?.tagName
     }
 
     @Override
     String text() {
-        ensureContainsSingleElement("text").text
+        ensureContainsAtMostSingleElement("text")?.text
     }
 
     @Override
     String getAttribute(String name) {
-        def attribute = ensureContainsSingleElement("getAttribute", String).getAttribute(name)
-        if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
-            attribute = null
-        }
+        def element = ensureContainsAtMostSingleElement("getAttribute", String)
 
-        attribute == null ? "" : attribute
+        if (element) {
+            def attribute = element.getAttribute(name)
+            if (attribute == 'false' && name in BOOLEAN_ATTRIBUTES) {
+                attribute = null
+            }
+
+            attribute == null ? "" : attribute
+        }
     }
 
     @Override
     List<String> classes() {
-        elementClasses(ensureContainsSingleElement("classes"))
+        elementClasses(ensureContainsAtMostSingleElement("classes"))
     }
 
     @Override
     def value() {
-        getInputValue(ensureContainsSingleElement("value"))
+        def element = ensureContainsAtMostSingleElement("value")
+        if (element) {
+            getInputValue(element)
+        }
     }
 
     @Override
@@ -410,7 +717,12 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     Navigator click() {
-        ensureContainsSingleElement("click").click()
+        def element = ensureContainsAtMostSingleElement("click")
+        if (element) {
+            element.click()
+        } else {
+            throw new UnsupportedOperationException("not supported on empty navigator objects")
+        }
         this
     }
 
@@ -483,37 +795,42 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     Navigator tail() {
-        navigatorFor contextElements.tail()
+        def elements = contextElements.toList()
+        def tail = elements ? elements.tail() : []
+        navigatorFor tail
     }
 
     @Override
     Navigator verifyNotEmpty() {
+        if (empty) {
+            throw new EmptyNavigatorException()
+        }
         this
     }
 
     @Override
     int getHeight() {
-        getElementHeight(ensureContainsSingleElement("getHeight"))
+        ensureContainsAtMostSingleElement("getHeight")?.size?.height ?: 0
     }
 
     @Override
     int getWidth() {
-        getElementWidth(ensureContainsSingleElement("getWidth"))
+        ensureContainsAtMostSingleElement("getWidth")?.size?.width ?: 0
     }
 
     @Override
     int getX() {
-        getElementX(ensureContainsSingleElement("getX"))
+        ensureContainsAtMostSingleElement("getX")?.location?.x ?: 0
     }
 
     @Override
     int getY() {
-        getElementY(ensureContainsSingleElement("getY"))
+        ensureContainsAtMostSingleElement("getY")?.location?.y ?: 0
     }
 
     @Override
     Navigator unique() {
-        new NonEmptyNavigator(browser, allElements().unique(false))
+        new DefaultNavigator(browser, allElements().unique(false))
     }
 
     @Override
@@ -523,20 +840,21 @@ class NonEmptyNavigator extends AbstractNavigator {
 
     @Override
     String css(String propertyName) {
-        ensureContainsSingleElement("css", String).getCssValue(propertyName)
+        ensureContainsAtMostSingleElement("css", String)?.getCssValue(propertyName)
     }
 
     @Override
     boolean isFocused() {
-        ensureContainsSingleElement("isFocused") == browser.driver.switchTo().activeElement()
+        ensureContainsAtMostSingleElement("isFocused") == browser.driver.switchTo().activeElement()
     }
 
     def methodMissing(String name, arguments) {
+        def elements = allElements()
         if (!arguments) {
-            def navigator = navigatorFor collectElements {
+            def navigator = navigatorFor elements.collectMany {
                 it.findElements By.name(name)
             }
-            if (!navigator.empty) {
+            if (!navigator.empty || !elements) {
                 return navigator
             }
         }
@@ -583,12 +901,14 @@ class NonEmptyNavigator extends AbstractNavigator {
         }
     }
 
-    protected WebElement ensureContainsSingleElement(String name, Class<?>... parameterTypes) {
+    protected WebElement ensureContainsAtMostSingleElement(String name, Class<?>... parameterTypes) {
         def elements = allElements()
         if (elements.size() > 1) {
             throw new SingleElementNavigatorOnlyMethodException(Navigator.getMethod(name, parameterTypes), elements.size())
         }
-        elements.first()
+        if (elements) {
+            elements.first()
+        }
     }
 
     protected Navigator navigatorFor(Collection<WebElement> contextElements) {
@@ -858,6 +1178,26 @@ class NonEmptyNavigator extends AbstractNavigator {
     }
 
     protected List<String> elementClasses(WebElement element) {
-        element.getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
+        element?.getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
+    }
+
+    /**
+     * Iterator for looping over the context elements of a Navigator instance.
+     */
+    private class NavigatorIterator implements Iterator<Navigator> {
+
+        private int index
+
+        boolean hasNext() {
+            index < DefaultNavigator.this.size()
+        }
+
+        Navigator next() {
+            DefaultNavigator.this[index++]
+        }
+
+        void remove() {
+            throw new UnsupportedOperationException()
+        }
     }
 }
