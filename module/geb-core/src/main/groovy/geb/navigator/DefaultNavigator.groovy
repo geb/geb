@@ -830,7 +830,7 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator unique() {
-        new DefaultNavigator(browser, allElements().unique(false))
+        navigatorFor(allElements().unique(false))
     }
 
     @Override
