@@ -39,17 +39,15 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
     def "selector based dynamic navigator"() {
         given:
         bodyWithJquery {
-            div(class: 'wrapper') {
-                div("div")
-            }
+            div("div")
         }
 
         and:
-        def nonDynamic = $("div div")
-        def dynamic = $("div div", dynamic: true)
+        def nonDynamic = $("div")
+        def dynamic = $("div", dynamic: true)
 
         when:
-        $(".wrapper").jquery.append("<div>div</div>")
+        $("body").jquery.append("<div>div</div>")
 
         then:
         nonDynamic.size() == 1
