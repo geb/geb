@@ -54,4 +54,20 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
+    def "dynamic attribute is interpreted using Groovy truth regardless of type"() {
+        given:
+        bodyWithJquery {
+            div("div")
+        }
+
+        and:
+        def dynamic = $("div", dynamic: "true")
+
+        when:
+        $("body").jquery.append("<div>div</div>")
+
+        then:
+        dynamic.size() == 2
+    }
+
 }

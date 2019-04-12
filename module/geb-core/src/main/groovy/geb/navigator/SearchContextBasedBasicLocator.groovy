@@ -31,6 +31,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             class: By.&className,
             name : By.&name
     ]
+    public static final List<String> NON_SELECTOR_TRANSLATEABLE_ATTRIBUTES = ["text", "dynamic"]
 
     private final Iterable<? extends SearchContext> searchContexts
     private final NavigatorFactory navigatorFactory
@@ -91,7 +92,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         def buffer = new StringBuilder(selector)
         for (def it = attributes.entrySet().iterator(); it.hasNext();) {
             def attribute = it.next()
-            if (attribute.key != "text" && attribute.value instanceof CharSequence) {
+            if (!(attribute.key in NON_SELECTOR_TRANSLATEABLE_ATTRIBUTES) && attribute.value instanceof CharSequence) {
                 def attributeValue = attribute.value.toString()
                 if (attribute.key == "class") {
                     attributeValue.split(/\s+/).each { className ->
