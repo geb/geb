@@ -31,7 +31,8 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             class: By.&className,
             name : By.&name
     ]
-    public static final List<String> NON_SELECTOR_TRANSLATEABLE_ATTRIBUTES = ["text", "dynamic"]
+    public static final String DYNAMIC_ATTRIBUTE_NAME = "dynamic"
+    public static final List<String> NON_SELECTOR_TRANSLATEABLE_ATTRIBUTES = ["text", DYNAMIC_ATTRIBUTE_NAME]
 
     private final Iterable<? extends SearchContext> searchContexts
     private final NavigatorFactory navigatorFactory
@@ -59,7 +60,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             return selectedUsingBy
         }
         def optimizedSelector = optimizeSelector(selector, attributesCopy)
-        optimizedSelector ? find(attributes["dynamic"].asBoolean(), By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
+        optimizedSelector ? find(attributes[DYNAMIC_ATTRIBUTE_NAME].asBoolean(), By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
     }
 
     protected Navigator navigatorFor(Iterable<WebElement> contextElements) {
