@@ -16,15 +16,9 @@
 package geb.module
 
 import geb.test.GebSpecWithCallbackServer
-import geb.test.browsers.Chrome
-import geb.test.browsers.Firefox
-import geb.test.browsers.RequiresRealBrowser
 
 import java.time.LocalDate
 
-@Chrome
-@Firefox
-@RequiresRealBrowser // due to https://sourceforge.net/p/htmlunit/bugs/1923/
 class DateInputSpec extends GebSpecWithCallbackServer {
 
     def setup() {
