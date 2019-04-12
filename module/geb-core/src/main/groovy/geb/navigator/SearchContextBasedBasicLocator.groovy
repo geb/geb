@@ -60,7 +60,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             return selectedUsingBy
         }
         def optimizedSelector = optimizeSelector(selector, attributesCopy)
-        optimizedSelector ? find(attributes[DYNAMIC_ATTRIBUTE_NAME].asBoolean(), By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
+        optimizedSelector ? find(attributes[DYNAMIC_ATTRIBUTE_NAME].asBoolean(), By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes, MATCH_ALL_SELECTOR)
     }
 
     protected Navigator navigatorFor(Iterable<WebElement> contextElements) {
