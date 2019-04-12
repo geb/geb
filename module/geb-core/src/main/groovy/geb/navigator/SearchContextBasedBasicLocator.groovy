@@ -20,14 +20,16 @@ import org.openqa.selenium.By
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.WebElement
 
+import java.util.function.Supplier
+
 import static geb.navigator.Locator.MATCH_ALL_SELECTOR
 
 class SearchContextBasedBasicLocator implements BasicLocator {
 
     private static final Map<String, Closure> BY_SELECTING_ATTRIBUTES = [
-        id: By.&id,
-        class: By.&className,
-        name: By.&name
+            id   : By.&id,
+            class: By.&className,
+            name : By.&name
     ]
 
     private final Iterable<? extends SearchContext> searchContexts
@@ -43,12 +45,9 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     }
 
     @Override
-    Navigator find(By bySelector) {
-        List<WebElement> list = []
-        for (searchContext in searchContexts) {
-            list.addAll searchContext.findElements(bySelector)
-        }
-        navigatorFor list
+    Navigator find(boolean dynamic = false, By bySelector) {
+        def elementsSupplier = elementsSupplier(bySelector)
+        navigatorFor(dynamic ? toDynamicIterable(elementsSupplier) : elementsSupplier.get())
     }
 
     @Override
@@ -59,10 +58,10 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             return selectedUsingBy
         }
         def optimizedSelector = optimizeSelector(selector, attributesCopy)
-        optimizedSelector ? find(By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
+        optimizedSelector ? find(attributes["dynamic"].asBoolean(), By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
     }
 
-    protected Navigator navigatorFor(Collection<WebElement> contextElements) {
+    protected Navigator navigatorFor(Iterable<WebElement> contextElements) {
         navigatorFactory.createFromWebElements(contextElements)
     }
 
@@ -109,5 +108,15 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             buffer.deleteCharAt(0)
         }
         buffer.toString()
+    }
+
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector) {
+        { ->
+            searchContexts.collectMany { it.findElements(bySelector) }
+        }
+    }
+
+    protected Iterable<WebElement> toDynamicIterable(Supplier<Collection<WebElement>> contextElementsSupplier) {
+        { -> contextElementsSupplier.get().iterator() } as Iterable<WebElement>
     }
 }

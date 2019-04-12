@@ -31,6 +31,7 @@ import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.StaleElementReferenceException
 import org.openqa.selenium.WebElement
 
+import java.util.function.Supplier
 import java.util.regex.Pattern
 
 import static java.util.Collections.EMPTY_LIST
@@ -367,7 +368,9 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator filter(Map<String, Object> predicates) {
-        navigatorFor contextElements.findAll { matches(it, predicates) }
+        navigatorFor(predicates["dynamic"].asBoolean()) {
+            contextElements.findAll { matches(it, predicates) }
+        }
     }
 
     @Override
@@ -920,8 +923,17 @@ class DefaultNavigator implements Navigator {
         browser.navigatorFactory.createFromWebElements(contextElements)
     }
 
+    protected Navigator navigatorFor(boolean dynamic, Supplier<Collection<WebElement>> contextElementsSupplier) {
+        def elements = dynamic ? toDynamicIterable(contextElementsSupplier) : contextElementsSupplier.get()
+        browser.navigatorFactory.createFromWebElements(elements)
+    }
+
+    protected Iterable<WebElement> toDynamicIterable(Supplier<Collection<WebElement>> contextElementsSupplier) {
+        { -> contextElementsSupplier.get().iterator() } as Iterable<WebElement>
+    }
+
     protected boolean matches(WebElement element, Map<String, Object> predicates) {
-        def result = predicates.every { name, requiredValue ->
+        def result = predicates.findAll { it.key != "dynamic" }.every { name, requiredValue ->
             def actualValue
             switch (name) {
                 case "text": actualValue = element.text; break
