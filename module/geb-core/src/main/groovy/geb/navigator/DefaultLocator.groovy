@@ -97,11 +97,6 @@ class DefaultLocator implements Locator {
     }
 
     @Override
-    Navigator find(By bySelector, int index) {
-        find(bySelector)[index]
-    }
-
-    @Override
     Navigator $(By bySelector, Range<Integer> range) {
         find(bySelector, range)
     }
@@ -139,11 +134,6 @@ class DefaultLocator implements Locator {
     @Override
     Navigator $(Map<String, Object> attributes, String selector) {
         find(attributes, selector)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> attributes, String selector, int index) {
-        find(attributes, selector)[index]
     }
 
     @Override

@@ -88,4 +88,23 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
+    def "selector and index based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("first")
+            div("second")
+        }
+
+        and:
+        def nonDynamic = $("div", 1)
+        def dynamic = $("div", 1, dynamic: true)
+
+        when:
+        $("div", 0).jquery.after('<div>inserted</div>')
+
+        then:
+        nonDynamic.text() == "second"
+        dynamic.text() == "inserted"
+    }
+
 }

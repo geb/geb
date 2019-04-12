@@ -151,7 +151,7 @@ interface Locator extends BasicLocator {
      *
      * @param bySelector a WebDriver By selector
      * @return new Navigator
-     * @see BasciLocator#find(org.openqa.selenium.By)
+     * @see BasicLocator#find(org.openqa.selenium.By)
      */
     Navigator $(By bySelector)
 
@@ -161,17 +161,9 @@ interface Locator extends BasicLocator {
      * @param bySelector a WebDriver By selector
      * @param index index of the required element in the selection
      * @return new Navigator instance containing a single element
-     * @see #find(org.openqa.selenium.By, int)
+     * @see BasicLocator#find(org.openqa.selenium.By, int)
      */
     Navigator $(By bySelector, int index)
-
-    /**
-     * Shorthand for <code>find(bySelector)[indexOfElement]</code>.
-     * @param bySelector a WebDriver By selector
-     * @param index index of the required element in the selection
-     * @return new Navigator instance containing a single element
-     */
-    Navigator find(By bySelector, int index)
 
     /**
      * Shorthand for <code>find(bySelector, range)</code>
@@ -239,14 +231,6 @@ interface Locator extends BasicLocator {
      * @return a new Navigator instance containing the matched elements
      */
     Navigator $(Map<String, Object> attributes, String selector)
-
-    /**
-     * Shorthand for <code>find(predicates, selector, index..index)</code>
-     *
-     * @param selector
-     * @return new Navigator
-     */
-    Navigator find(Map<String, Object> attributes, String selector, int index)
 
     /**
      * Creates a new Navigator instance containing the elements matching the given
