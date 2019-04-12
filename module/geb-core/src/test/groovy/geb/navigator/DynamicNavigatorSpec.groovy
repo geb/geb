@@ -70,4 +70,22 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
+    def "attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            input(type: "text")
+        }
+
+        and:
+        def nonDynamic = $(type: "text")
+        def dynamic = $(type: "text", dynamic: true)
+
+        when:
+        $("body").jquery.append('<input type="text">')
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
 }
