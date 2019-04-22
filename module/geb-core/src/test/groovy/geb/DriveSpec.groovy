@@ -108,7 +108,3 @@ class DriveSpec extends Specification {
 class DriveSpecPageAbsoluteUrl extends Page {
     static url
 }
-
-class DriveSpecPageRelativeUrl extends Page {
-    static url = "a/b"
-}
