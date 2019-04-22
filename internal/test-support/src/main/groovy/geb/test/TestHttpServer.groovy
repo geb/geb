@@ -54,10 +54,6 @@ abstract class TestHttpServer {
         "$protocol://localhost:$port/"
     }
 
-    def getBaseUrlAsUrl() {
-        new URL(getBaseUrl())
-    }
-
     abstract protected addServlets(ServletContextHandler context)
 
     protected Connector createConnector(Server server, int port) {
