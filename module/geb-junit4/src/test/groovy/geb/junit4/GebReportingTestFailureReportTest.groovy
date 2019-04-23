@@ -38,7 +38,7 @@ class GebReportingTestFailureReportTest {
 
 @Category(DoNotRunFromGradle)
 class FailingTest extends GebReportingTest {
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     @Before
     void setUp() {

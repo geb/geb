@@ -15,11 +15,16 @@
  */
 package geb.test
 
+import geb.ConfigurationLoader
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.openqa.selenium.remote.server.WebDriverServlet
 
 class WebDriverServer extends TestHttpServer {
+
+    WebDriverServer() {
+        super(new ConfigurationLoader().conf)
+    }
 
     protected addServlets(ServletContextHandler context) {
         context.setAttribute(WebDriverServlet.SESSION_TIMEOUT_PARAMETER, 10000)

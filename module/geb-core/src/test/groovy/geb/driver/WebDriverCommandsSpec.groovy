@@ -28,7 +28,7 @@ import spock.lang.Unroll
 class WebDriverCommandsSpec extends GebSpecWithServer {
 
     @Shared
-    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer()
+    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer(browser.config)
     RemoteWebDriverWithExpectations driver
 
     def setup() {

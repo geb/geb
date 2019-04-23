@@ -19,7 +19,7 @@ import geb.Page
 
 class GebTestTest extends GebTest {
 
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     void setUp() {
         server.start()

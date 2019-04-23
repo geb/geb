@@ -23,7 +23,7 @@ import org.testng.annotations.Test
 
 class GebTestTest implements GebTestTrait {
 
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     @BeforeMethod
     void setUp() {

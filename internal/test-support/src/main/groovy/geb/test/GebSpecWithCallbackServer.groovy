@@ -20,7 +20,7 @@ import spock.lang.Shared
 class GebSpecWithCallbackServer extends GebSpecWithServer {
 
     @Shared
-    CallbackHttpServer callbackServer = new CallbackHttpServer()
+    CallbackHttpServer callbackServer = new CallbackHttpServer({ browser.config })
 
     @Override
     TestHttpServer getServerInstance() {

@@ -18,20 +18,11 @@ package intro
 // tag::imports[]
 import geb.Browser
 // end::imports[]
-import geb.driver.CachingDriverFactory
 import intro.page.GebHomePage
 import intro.page.TheBookOfGebPage
 import spock.lang.Specification
 
 class ScriptingSpec extends Specification {
-
-    void setupSpec() {
-        CachingDriverFactory.clearCacheAndQuitDriver()
-    }
-
-    void cleanupSpec() {
-        CachingDriverFactory.clearCacheAndQuitDriver()
-    }
 
     def "inline"() {
         expect:

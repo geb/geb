@@ -15,6 +15,8 @@
  */
 package geb.test
 
+import geb.Configuration
+import geb.ConfigurationLoader
 import groovy.xml.MarkupBuilder
 import org.apache.http.entity.ContentType
 import org.eclipse.jetty.servlet.ServletContextHandler
@@ -22,6 +24,7 @@ import org.eclipse.jetty.servlet.ServletHolder
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import java.util.function.Supplier
 
 class CallbackHttpServer extends TestHttpServer {
 
@@ -31,6 +34,14 @@ class CallbackHttpServer extends TestHttpServer {
     Closure post
     Closure put
     Closure delete
+
+    CallbackHttpServer(Configuration configuration = new ConfigurationLoader().conf) {
+        super(configuration)
+    }
+
+    CallbackHttpServer(Supplier<Configuration> configurationSupplier) {
+        super(configurationSupplier)
+    }
 
     void responseHtml(Closure htmlMarkup) {
         get = { HttpServletRequest request, HttpServletResponse response ->

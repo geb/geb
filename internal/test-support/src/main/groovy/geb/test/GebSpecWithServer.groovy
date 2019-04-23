@@ -14,7 +14,6 @@
  */
 package geb.test
 
-import geb.Browser
 import spock.lang.Shared
 
 abstract class GebSpecWithServer extends GebSpec {
@@ -30,19 +29,15 @@ abstract class GebSpecWithServer extends GebSpec {
         browser.baseUrl = server.baseUrl
     }
 
+    def setup() {
+        browser.baseUrl = server.baseUrl
+    }
+
     abstract TestHttpServer getServerInstance()
 
     int getTestPort() {
         def portIndex = System.getProperty("geb.port.index")
         portIndex ? CROSS_BROWSER_PORTS[portIndex.toInteger()] : 0
-    }
-
-    Browser createBrowser() {
-        def browser = super.createBrowser()
-        if (server) {
-            browser.baseUrl = server.baseUrl
-        }
-        browser
     }
 
     def cleanupSpec() {

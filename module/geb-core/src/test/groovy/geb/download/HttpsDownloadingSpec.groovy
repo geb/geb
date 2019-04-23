@@ -34,7 +34,7 @@ class HttpsDownloadingSpec extends GebSpecWithServer {
     }
 
     @Shared
-    CallbackHttpsServer httpsServer = new CallbackHttpsServer()
+    CallbackHttpsServer httpsServer = new CallbackHttpsServer(browser.config)
 
     Configuration config
     ConfigObject rawConfig

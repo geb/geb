@@ -30,8 +30,9 @@ class NonCharacterKeystrokesSpec extends GebSpecWithServerUsingJavascript {
                 ${jquery()}
                 ${javascript '''
                     $(function() {
-                        $("input").keypress("c", function(event) {
-                            if (event.ctrlKey) {
+                        var cKey = 67;
+                        $("input").keydown(function(event) {
+                            if (event.keyCode == cKey && event.ctrlKey) {
                                 $(event.target).addClass("chord-recorded");
                             }
                         });

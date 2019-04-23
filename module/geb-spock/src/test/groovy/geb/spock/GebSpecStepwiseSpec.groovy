@@ -22,7 +22,7 @@ import geb.test.CallbackHttpServer
 class GebSpecStepwiseSpec extends GebReportingSpec {
 
     @Shared
-        server = new CallbackHttpServer()
+        server = new CallbackHttpServer(browser.config)
 
     def setupSpec() {
         server.start()

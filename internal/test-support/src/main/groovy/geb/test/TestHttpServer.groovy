@@ -15,14 +15,28 @@
  */
 package geb.test
 
+import geb.Configuration
 import org.eclipse.jetty.server.Connector
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.servlet.ServletContextHandler
 
+import java.util.function.Supplier
+
 abstract class TestHttpServer {
+
+    protected final Supplier<Configuration> configurationSupplier
+
     protected server
     boolean started
+
+    TestHttpServer(Configuration configuration) {
+        this({ configuration })
+    }
+
+    TestHttpServer(Supplier<Configuration> configurationSupplier) {
+        this.configurationSupplier = configurationSupplier
+    }
 
     void start(int port = 0) {
         if (!started) {
@@ -32,6 +46,14 @@ abstract class TestHttpServer {
             addServlets(context)
             server.start()
             started = true
+            notifyPortHandler(server.connectors[0].localPort)
+        }
+    }
+
+    void notifyPortHandler(int port) {
+        def handler = configuration.rawConfig.testHttpServerPortHandler
+        if (handler instanceof Closure) {
+            handler.call(port)
         }
     }
 
@@ -50,8 +72,12 @@ abstract class TestHttpServer {
         'http'
     }
 
+    String getHost() {
+        configuration.rawConfig.testHttpServerHost ?: "localhost"
+    }
+
     def getBaseUrl() {
-        "$protocol://localhost:$port/"
+        "$protocol://$host:$port/"
     }
 
     abstract protected addServlets(ServletContextHandler context)
@@ -60,5 +86,9 @@ abstract class TestHttpServer {
         def connector = new ServerConnector(server)
         connector.port = port
         connector
+    }
+
+    protected getConfiguration() {
+        configurationSupplier.get()
     }
 }

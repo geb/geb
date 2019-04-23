@@ -15,11 +15,16 @@
  */
 package geb.test
 
+import geb.Configuration
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.openqa.selenium.remote.server.WebDriverServlet
 
 class CallbackAndWebDriverServer extends CallbackHttpServer {
+
+    CallbackAndWebDriverServer(Configuration configuration) {
+        super(configuration)
+    }
 
     String getApplicationUrl() {
         "$protocol://localhost:$port/application/"

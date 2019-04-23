@@ -15,6 +15,7 @@
  */
 package geb.test
 
+import geb.Configuration
 import org.eclipse.jetty.server.*
 import org.eclipse.jetty.util.ssl.SslContextFactory
 
@@ -23,6 +24,10 @@ import static org.eclipse.jetty.http.HttpVersion.HTTP_1_1
 class CallbackHttpsServer extends CallbackHttpServer {
 
     private static final String PASSWORD = 'password'
+
+    CallbackHttpsServer(Configuration configuration) {
+        super(configuration)
+    }
 
     String getProtocol() {
         'https'

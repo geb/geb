@@ -15,7 +15,6 @@
  */
 package testing
 
-import geb.Browser
 // tag::concise[]
 // tag::verbose[]
 import geb.spock.GebSpec
@@ -35,7 +34,7 @@ class FunctionalSpec extends GebSpec {
     // end::verbose[]
     @Shared
     @AutoCleanup("stop")
-    CallbackHttpServer callbackServer = new CallbackHttpServer()
+    CallbackHttpServer callbackServer = new CallbackHttpServer(browser.config)
 
     def setupSpec() {
         callbackServer.start(0)
@@ -48,14 +47,12 @@ class FunctionalSpec extends GebSpec {
         }
     }
 
-    def cleanupSpec() {
-        callbackServer.stop()
+    def setup() {
+        browser.baseUrl = callbackServer.baseUrl
     }
 
-    Browser createBrowser() {
-        def browser = super.createBrowser()
-        browser.baseUrl = callbackServer.baseUrl
-        browser
+    def cleanupSpec() {
+        callbackServer.stop()
     }
 
     // tag::concise[]

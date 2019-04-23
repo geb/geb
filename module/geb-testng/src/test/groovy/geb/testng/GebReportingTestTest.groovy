@@ -35,7 +35,7 @@ class GebReportingTestTest implements GebReportingTestTrait {
         </html>
     """
 
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     private methodNumber = 0
     private reportNumberInTest = 1

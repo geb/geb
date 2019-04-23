@@ -15,7 +15,6 @@
  */
 package testing
 
-import geb.Browser
 //tag::example[]
 import geb.spock.GebReportingSpec
 
@@ -31,7 +30,7 @@ class ReportingFunctionalSpec extends GebReportingSpec {
     //end::example[]
     @Shared
     @AutoCleanup("stop")
-    CallbackHttpServer callbackServer = new CallbackHttpServer()
+    CallbackHttpServer callbackServer = new CallbackHttpServer(browser.config)
 
     def setupSpec() {
         callbackServer.start(0)
@@ -49,16 +48,12 @@ class ReportingFunctionalSpec extends GebReportingSpec {
         }
     }
 
-    def cleanupSpec() {
-        reportExists("001-002-login-end")
+    def setup() {
+        browser.baseUrl = callbackServer.baseUrl
     }
 
-    Browser createBrowser() {
-        def browser = super.createBrowser()
-        if (callbackServer.started) {
-            browser.baseUrl = callbackServer.baseUrl
-        }
-        browser
+    def cleanupSpec() {
+        reportExists("001-002-login-end")
     }
 
     void reportExists(String filename) {

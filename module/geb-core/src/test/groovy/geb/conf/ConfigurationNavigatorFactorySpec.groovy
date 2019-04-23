@@ -33,7 +33,6 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
     ConfigObject raw
 
     def setup() {
-        _browser = null
         config = browser.config
         raw = config.rawConfig
     }

@@ -56,7 +56,7 @@ class AutoClearWebStorageSpec extends Specification {
 
 @Category(DoNotRunFromGradle)
 class WebStorageModifyingTest extends GebTest {
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     @Before
     void setUp() {
