@@ -55,22 +55,15 @@ jobs:
           paths:
             - .gradle-home
   manual:
-    docker:
-      - image: gebish/ci:v7
-    environment:
-        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
-        GRADLE_USER_HOME: .gradle-home
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - restore_cache:
           keys:
             - gradle-home-manual
       - run:
           command: |
-            Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 &
-            export DISPLAY=:99
-            ./gradlew --no-daemon --max-workers 2 --parallel -Pci :doc:manual-snippets:check :doc:manual:build
+            docker run -v ${CIRCLE_WORKING_DIRECTORY}:${CIRCLE_WORKING_DIRECTORY} -v /var/run/docker.sock:/var/run/docker.sock -w ${CIRCLE_WORKING_DIRECTORY} gebish/ci:v7 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 2 --parallel -Pci :doc:manual-snippets:check :doc:manual:build"
       - store_artifacts:
           path: build/reports
       - save_cache:
