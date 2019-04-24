@@ -89,6 +89,23 @@ jobs:
           key: gradle-home-site
           paths:
             - .gradle-home
+  local-cross-browser:
+    machine: true
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - gradle-home-local-crossbrowser
+      - run:
+          command: |
+            export WORKING_DIRECTORY=`pwd`
+            docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v /var/run/docker.sock:/var/run/docker.sock -w ${WORKING_DIRECTORY} gebish/ci:v7 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --parallel -Pci allLocalCrossBrowserTests"
+      - store_artifacts:
+          path: build/reports
+      - save_cache:
+          key: gradle-home-local-crossbrowser
+          paths:
+            - .gradle-home
   saucelabs:
     docker:
       - image: gebish/ci:v7
@@ -217,6 +234,11 @@ workflows:
           requires:
             - modules
             - compatibility
+      - local-cross-browser:
+          requires:
+            - integrations
+            - manual
+            - site
       - saucelabs:
           requires:
             - integrations
@@ -232,6 +254,7 @@ workflows:
             - non-ie
       - upload:
           requires:
+            - local-cross-browser
             - saucelabs
             - ie
           filters:

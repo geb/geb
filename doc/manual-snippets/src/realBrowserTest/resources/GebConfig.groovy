@@ -5,7 +5,7 @@ import org.testcontainers.utility.ResourceReaper
 
 reportsDir = "build/geb"
 
-Testcontainers.exposeHostPorts(8000, 8080, 9000, 9090, 9999)
+Testcontainers.exposeHostPorts(8080)
 
 driver = {
     def container = new BrowserWebDriverContainer<>()

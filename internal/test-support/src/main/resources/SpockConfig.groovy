@@ -10,6 +10,7 @@ import geb.test.browsers.RequiresRealBrowser
 import geb.test.browsers.Safari
 
 def cloudBrowserSpecification = System.getProperty("geb.saucelabs.browser") ?: System.getProperty("geb.browserstack.browser")
+def dockerizedDriver = System.getProperty("geb.dockerized.driver")
 if (cloudBrowserSpecification) {
     def includes = []
     if (cloudBrowserSpecification.contains("realMobile")) {
@@ -41,6 +42,16 @@ if (cloudBrowserSpecification) {
     }
     runner {
         include(*includes)
+    }
+} else if (dockerizedDriver) {
+    def includes = []
+
+    if (dockerizedDriver == "chrome") {
+        includes << Chrome
+    }
+
+    runner {
+        include(CrossBrowser, *includes)
     }
 } else {
     runner {

@@ -29,14 +29,20 @@ test {
 }
 
 task allCrossBrowserTests {
-    dependsOn 'allSauceLabsTests', 'allBrowserStackTests'
+    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests'
+}
+
+task chromeLinuxTest(type: Test) {
+    maxHeapSize = "512m"
+    systemProperty "geb.dockerized.driver", "chrome"
+}
+
+task allLocalCrossBrowserTests {
+    dependsOn chromeLinuxTest
 }
 
 sauceLabs {
     browsers {
-        chrome_linux {
-            capabilities version: "48.0"
-        }
         firefox_linux {
             capabilities version: "45.0"
         }

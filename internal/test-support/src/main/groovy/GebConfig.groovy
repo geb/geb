@@ -1,6 +1,10 @@
 import geb.buildadapter.BuildAdapterFactory
 import geb.driver.BrowserStackDriverFactory
 import geb.driver.SauceLabsDriverFactory
+import org.openqa.selenium.chrome.ChromeOptions
+import org.testcontainers.Testcontainers
+import org.testcontainers.containers.BrowserWebDriverContainer
+import org.testcontainers.utility.ResourceReaper
 
 testValue = true // used in a test in geb-core
 
@@ -12,6 +16,25 @@ String getForkIndex(int total) {
 
 void setPortIndexProperty(String index) {
     System.setProperty('geb.port.index', index)
+}
+
+BrowserWebDriverContainer containerForDriver(String driverName) {
+    def container = new BrowserWebDriverContainer<>()
+            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, null)
+
+    switch (driverName) {
+        case "chrome":
+            container.withCapabilities(new ChromeOptions())
+            break
+        default:
+            throw new Exception("Unsupported dockerized driver: $driverName")
+    }
+
+    container.start()
+
+    ResourceReaper.instance().registerContainerForCleanup(container.containerId, container.dockerImageName)
+
+    container
 }
 
 if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
@@ -44,6 +67,19 @@ if (browserStackBrowser) {
         assert tunnelId
         new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, ["browserstack.localIdentifier": tunnelId])
     }
+}
+
+def dockerizedDriver = System.getProperty("geb.dockerized.driver")
+if (dockerizedDriver) {
+    Testcontainers.exposeHostPorts(8080)
+
+    driver = {
+        containerForDriver(dockerizedDriver).webDriver
+    }
+
+    testHttpServerHost = "host.testcontainers.internal"
+
+    testHttpServerPortHandler = { int port -> Testcontainers.exposeHostPorts(port) }
 }
 
 def devDriver = System.getProperty("geb.dev.driver")
