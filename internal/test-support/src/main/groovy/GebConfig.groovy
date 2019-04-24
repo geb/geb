@@ -2,8 +2,10 @@ import geb.buildadapter.BuildAdapterFactory
 import geb.driver.BrowserStackDriverFactory
 import geb.driver.SauceLabsDriverFactory
 import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.firefox.FirefoxOptions
 import org.testcontainers.Testcontainers
 import org.testcontainers.containers.BrowserWebDriverContainer
+import org.testcontainers.shaded.org.apache.commons.io.FileUtils
 import org.testcontainers.utility.ResourceReaper
 
 testValue = true // used in a test in geb-core
@@ -25,6 +27,10 @@ BrowserWebDriverContainer containerForDriver(String driverName) {
     switch (driverName) {
         case "chrome":
             container.withCapabilities(new ChromeOptions())
+            break
+        case "firefox":
+            container.withCapabilities(new FirefoxOptions())
+                .withSharedMemorySize(2 * FileUtils.ONE_GB)
             break
         default:
             throw new Exception("Unsupported dockerized driver: $driverName")

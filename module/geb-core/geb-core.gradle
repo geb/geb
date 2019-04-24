@@ -37,15 +37,17 @@ task chromeLinuxTest(type: Test) {
     systemProperty "geb.dockerized.driver", "chrome"
 }
 
+task firefoxLinuxTest(type: Test) {
+    maxHeapSize = "512m"
+    systemProperty "geb.dockerized.driver", "firefox"
+}
+
 task allLocalCrossBrowserTests {
-    dependsOn chromeLinuxTest
+    dependsOn chromeLinuxTest, firefoxLinuxTest
 }
 
 sauceLabs {
     browsers {
-        firefox_linux {
-            capabilities version: "45.0"
-        }
         safari_mac_8 {
             capabilities platform: "OS X 10.10"
         }

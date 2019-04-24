@@ -32,9 +32,6 @@ if (cloudBrowserSpecification) {
         }
         if (cloudBrowserSpecification.contains("firefox")) {
             includes << Firefox
-            if (cloudBrowserSpecification.contains("platform=LINUX")) {
-                includes << FirefoxLinux
-            }
         }
         if (cloudBrowserSpecification.contains("chrome")) {
             includes << Chrome
@@ -48,6 +45,9 @@ if (cloudBrowserSpecification) {
 
     if (dockerizedDriver == "chrome") {
         includes << Chrome
+    }
+    if (dockerizedDriver == "firefox") {
+        includes << Firefox << FirefoxLinux
     }
 
     runner {
