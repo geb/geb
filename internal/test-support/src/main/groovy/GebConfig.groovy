@@ -43,6 +43,15 @@ BrowserWebDriverContainer containerForDriver(String driverName) {
     container
 }
 
+String findLocalIp() {
+    def ip4Addresses = NetworkInterface.networkInterfaces.toList()
+            .collectMany { it.inetAddresses.toList() }
+            .findAll { it in Inet4Address }
+            *.hostAddress
+
+    ip4Addresses.find { it != "127.0.0.1" }
+}
+
 if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
     reportsDir = "build/geb"
 }
@@ -72,6 +81,10 @@ if (browserStackBrowser) {
         def tunnelId = System.getProperty("geb.browserstack.tunnelId")
         assert tunnelId
         new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, ["browserstack.localIdentifier": tunnelId])
+    }
+
+    if (browserStackBrowser.contains("realMobile")) {
+        testHttpServerHost = findLocalIp()
     }
 }
 
