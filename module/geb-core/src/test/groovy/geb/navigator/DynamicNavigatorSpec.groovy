@@ -107,4 +107,23 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.text() == "inserted"
     }
 
+    def "filter based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            input(type: "text")
+        }
+
+        and:
+        def base = $("input", dynamic: true)
+        def nonDynamic = base.filter(type: "text")
+        def dynamic = base.filter(type: "text", dynamic: true)
+
+        when:
+        $("body").jquery.append('<input type="text">')
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
 }
