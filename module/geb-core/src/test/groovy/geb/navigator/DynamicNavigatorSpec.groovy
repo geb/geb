@@ -16,6 +16,8 @@
 package geb.navigator
 
 import geb.test.GebSpecWithCallbackServer
+import org.openqa.selenium.By
+import spock.lang.Unroll
 
 class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
 
@@ -36,6 +38,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
     }
 
+    @Unroll("#scenario selector based dynamic navigator")
     def "selector based dynamic navigator"() {
         given:
         bodyWithJquery {
@@ -43,8 +46,8 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div")
-        def dynamic = $("div", dynamic: true)
+        def nonDynamic = $(selector)
+        def dynamic = $(selector, dynamic: true)
 
         when:
         $("body").jquery.append("<div>div</div>")
@@ -52,6 +55,11 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         then:
         nonDynamic.size() == 1
         dynamic.size() == 2
+
+        where:
+        scenario | selector
+        "string" | "div"
+        "By"     | By.cssSelector("div")
     }
 
     def "dynamic attribute is interpreted using Groovy truth regardless of type"() {

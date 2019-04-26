@@ -39,6 +39,15 @@ interface BasicLocator {
     Navigator find(By bySelector, int index)
 
     /**
+     * Selects elements by both <code>By</code> selector and attributes. For example <code>find(By.tagName("input"), name: "firstName")</code> will select
+     * all input elements with the name "firstName".
+     * @param bySelector a WebDriver By selector
+     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @return a new Navigator instance containing the matched elements
+     */
+    Navigator find(Map<String, Object> attributes, By bySelector)
+
+    /**
      * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
      * all input elements with the name "firstName".
      * @param selector a CSS selector

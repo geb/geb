@@ -58,6 +58,11 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     }
 
     @Override
+    Navigator find(Map<String, Object> attributes, By bySelector) {
+        find(dynamic(attributes), bySelector).filter(attributes)
+    }
+
+    @Override
     Navigator find(Map<String, Object> attributes, String selector) {
         find(attributes, selector) { Boolean dynamic, By bySelector ->
             find(dynamic, bySelector)
@@ -80,8 +85,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
 
         def optimizedSelector = optimizeSelector(selector, attributesCopy)
         if (optimizedSelector) {
-            def dynamic = attributes[DYNAMIC_ATTRIBUTE_NAME].asBoolean()
-            navigatorFromBy.apply(dynamic, By.cssSelector(optimizedSelector)).filter(attributesCopy)
+            navigatorFromBy.apply(dynamic(attributes), By.cssSelector(optimizedSelector)).filter(attributesCopy)
         } else {
             find(attributes, MATCH_ALL_SELECTOR)
         }
@@ -162,5 +166,9 @@ class SearchContextBasedBasicLocator implements BasicLocator {
 
     protected Navigator toNavigator(boolean dynamic, Supplier<Collection<WebElement>> contextElementsSupplier) {
         navigatorFor(dynamic ? toDynamicIterable(contextElementsSupplier) : contextElementsSupplier.get())
+    }
+
+    protected boolean dynamic(Map<String, Object> attributes) {
+        attributes[DYNAMIC_ATTRIBUTE_NAME]
     }
 }
