@@ -25,29 +25,41 @@ interface BasicLocator {
     public static final String DYNAMIC_ATTRIBUTE_NAME = "dynamic"
 
     /**
-     * Shorthand for <code>find(null, bySelector, null)</code>
-     *
+     * Creates a new Navigator instance containing the elements matching the given <code>By</code> type selector.
+     * Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
      * @param bySelector a WebDriver By selector
-     * @return new Navigator
+     * @return new Navigator instance containing the matched elements
      */
     Navigator find(By bySelector)
 
     /**
-     * Shorthand for <code>find(bySelector)[indexOfElement]</code>.
+     * Creates a new Navigator instance containing the elements matching the given
+     * <code>By</code> type selector and index. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
      * @param bySelector a WebDriver By selector
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
      * @param index index of the required element in the selection
-     * @return new Navigator instance containing a single element
+     * @return new Navigator instance containing the matched elements
      */
     Navigator find(By bySelector, int index)
 
     /**
-     * Selects elements by both <code>By</code> selector and attributes. For example <code>find(By.tagName("input"), name: "firstName")</code> will select
-     * all input elements with the name "firstName".
+     * Creates a new Navigator instance containing the elements matching the given
+     * <code>By</code> type selector and attributes. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
      * @param bySelector a WebDriver By selector
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
-     * @return a new Navigator instance containing the matched elements
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
+     * @return new Navigator instance containing the matched elements
      */
     Navigator find(Map<String, Object> attributes, By bySelector)
+
+    /**
+     * Creates a new Navigator instance containing the elements matching the given
+     * <code>By</code> type selector, attributes and index. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
+     * @param bySelector a WebDriver By selector
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
+     * @param index index of the required element in the selection
+     * @return new Navigator instance containing the matched elements
+     */
+    Navigator find(Map<String, Object> attributes, By bySelector, int index)
 
     /**
      * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
@@ -59,10 +71,12 @@ interface BasicLocator {
     Navigator find(Map<String, Object> attributes, String selector)
 
     /**
-     * Shorthand for <code>find(predicates, selector, index..index)</code>
-     *
-     * @param selector
-     * @return new Navigator
+     * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
+     * all input elements with the name "firstName".
+     * @param selector a CSS selector
+     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @param index index of the required element in the selection
+     * @return a new Navigator instance containing the matched elements
      */
     Navigator find(Map<String, Object> attributes, String selector, int index)
 }

@@ -96,6 +96,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
+    @Unroll("#scenario selector and index based dynamic navigator")
     def "selector and index based dynamic navigator"() {
         given:
         bodyWithJquery {
@@ -104,8 +105,8 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div", 1)
-        def dynamic = $("div", 1, dynamic: true)
+        def nonDynamic = $(selector, 1)
+        def dynamic = $(selector, 1, dynamic: true)
 
         when:
         $("div", 0).jquery.after('<div>inserted</div>')
@@ -113,6 +114,11 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         then:
         nonDynamic.text() == "second"
         dynamic.text() == "inserted"
+
+        where:
+        scenario | selector
+        "string" | "div"
+        "By"     | By.cssSelector("div")
     }
 
     def "attributes filter based dynamic navigator"() {

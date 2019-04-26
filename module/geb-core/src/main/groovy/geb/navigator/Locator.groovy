@@ -114,14 +114,6 @@ interface Locator extends BasicLocator {
     Navigator $(Map<String, Object> attributes, By bySelector, int index)
 
     /**
-     * Shorthand for <code>find(predicates, bySelector, index..index)</code>
-     *
-     * @param bySelector a WebDriver By selector
-     * @return new Navigator
-     */
-    Navigator find(Map<String, Object> attributes, By bySelector, int index)
-
-    /**
      * Shorthand for <code>find(predicates, bySelector, range)</code>
      *
      * @param bySelector a WebDriver By selector
