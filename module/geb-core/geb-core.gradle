@@ -1,4 +1,5 @@
 import geb.gradle.browserstack.BrowserStackAccount
+import geb.gradle.saucelabs.SauceAccount
 
 buildscript {
     repositories {
@@ -10,6 +11,7 @@ buildscript {
 }
 
 apply plugin: "geb-browserstack"
+apply plugin: "geb-saucelabs"
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
 dependencies {
@@ -21,6 +23,8 @@ dependencies {
     compile "org.threeten:threeten-extra:$threeTenExtraVersion"
 
     testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
+
+    sauceConnect sauceConnectDependency
 }
 
 test {
@@ -32,25 +36,34 @@ task allCrossBrowserTests {
     dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests'
 }
 
-task chromeLinuxTest(type: Test) {
-    maxHeapSize = "512m"
-    systemProperty "geb.dockerized.driver", "chrome"
-}
-
 task firefoxLinuxTest(type: Test) {
     maxHeapSize = "512m"
     systemProperty "geb.dockerized.driver", "firefox"
 }
 
-task allLocalCrossBrowserTests {
-    dependsOn chromeLinuxTest, firefoxLinuxTest
-}
+allLocalCrossBrowserTests.dependsOn firefoxLinuxTest
 
 sauceLabs {
+    def tunnelId = UUID.randomUUID().toString()
     browsers {
         safari_mac_8 {
             capabilities platform: "OS X 10.10"
         }
+    }
+    task {
+        maxHeapSize = "512m"
+        testClassesDirs = test.testClassesDirs
+        classpath = test.classpath
+        maxParallelForks 5
+        systemProperty "geb.saucelabs.tunnelId", tunnelId
+    }
+    account {
+        username = System.getenv(SauceAccount.USER_ENV_VAR)
+        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
+    }
+    connect {
+        timeout 10 // minutes
+        additionalOptions = ['--tunnel-identifier', tunnelId]
     }
 }
 

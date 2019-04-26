@@ -2,14 +2,6 @@ dependencies {
 	compile spockDependency
 }
 
-sauceLabs {
-	browsers {
-		chrome_linux {
-			capabilities version: "48.0"
-		}
-	}
-}
-
 modifyPom { pom ->
 	pom.project {
 		name "Geb for Spock"
