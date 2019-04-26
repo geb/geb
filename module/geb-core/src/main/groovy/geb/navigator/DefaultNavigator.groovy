@@ -35,6 +35,7 @@ import java.util.function.Supplier
 import java.util.regex.Pattern
 
 import static java.util.Collections.EMPTY_LIST
+import static geb.navigator.BasicLocator.DYNAMIC_ATTRIBUTE_NAME
 
 class DefaultNavigator implements Navigator {
 
@@ -213,7 +214,7 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator filter(Map<String, Object> predicates, String selector) {
-        navigatorFor(predicates["dynamic"].asBoolean()) {
+        navigatorFor(dynamic(predicates)) {
             contextElements.findAll {
                 CssSelector.matches(it, selector) && matches(it, predicates)
             }
@@ -372,8 +373,14 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator filter(Map<String, Object> predicates) {
-        navigatorFor(predicates["dynamic"].asBoolean()) {
-            contextElements.findAll { matches(it, predicates) }
+        def dynamic = dynamic(predicates)
+
+        if (!dynamic || predicates.size() != 1) {
+            navigatorFor(dynamic) {
+                contextElements.findAll { matches(it, predicates) }
+            }
+        } else {
+            this
         }
     }
 
@@ -937,7 +944,7 @@ class DefaultNavigator implements Navigator {
     }
 
     protected boolean matches(WebElement element, Map<String, Object> predicates) {
-        def result = predicates.findAll { it.key != "dynamic" }.every { name, requiredValue ->
+        def result = predicates.findAll { it.key != DYNAMIC_ATTRIBUTE_NAME }.every { name, requiredValue ->
             def actualValue
             switch (name) {
                 case "text": actualValue = element.text; break
@@ -1220,5 +1227,9 @@ class DefaultNavigator implements Navigator {
         void remove() {
             throw new UnsupportedOperationException()
         }
+    }
+
+    protected boolean dynamic(Map<String, Object> attributes) {
+        attributes[DYNAMIC_ATTRIBUTE_NAME]
     }
 }

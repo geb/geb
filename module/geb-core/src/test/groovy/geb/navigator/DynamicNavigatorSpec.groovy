@@ -119,6 +119,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         given:
         bodyWithJquery {
             input(type: "text")
+            input(type: "password")
         }
 
         and:

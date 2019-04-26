@@ -24,6 +24,7 @@ import java.util.function.BiFunction
 import java.util.function.Supplier
 
 import static geb.navigator.Locator.MATCH_ALL_SELECTOR
+import static geb.navigator.BasicLocator.DYNAMIC_ATTRIBUTE_NAME
 
 class SearchContextBasedBasicLocator implements BasicLocator {
 
@@ -32,7 +33,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             class: By.&className,
             name : By.&name
     ]
-    public static final String DYNAMIC_ATTRIBUTE_NAME = "dynamic"
+
     public static final List<String> NON_SELECTOR_TRANSLATABLE_ATTRIBUTES = ["text", DYNAMIC_ATTRIBUTE_NAME]
 
     private final Iterable<? extends SearchContext> searchContexts

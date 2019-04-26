@@ -22,6 +22,8 @@ import org.openqa.selenium.By
  */
 interface BasicLocator {
 
+    public static final String DYNAMIC_ATTRIBUTE_NAME = "dynamic"
+
     /**
      * Shorthand for <code>find(null, bySelector, null)</code>
      *
