@@ -213,7 +213,11 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator filter(Map<String, Object> predicates, String selector) {
-        filter(selector).filter(predicates)
+        navigatorFor(predicates["dynamic"].asBoolean()) {
+            contextElements.findAll {
+                CssSelector.matches(it, selector) && matches(it, predicates)
+            }
+        }
     }
 
     Navigator has(String selector) {
