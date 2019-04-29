@@ -62,6 +62,16 @@ interface BasicLocator {
     Navigator find(Map<String, Object> attributes, By bySelector, int index)
 
     /**
+     * Creates a new Navigator instance containing the elements matching the given
+     * <code>By</code> type selector, attributes and range. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
+     * @param bySelector a WebDriver By selector
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
+     * @param range range of the required elements in the selection
+     * @return new Navigator instance containing the matched elements
+     */
+    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range)
+
+    /**
      * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
      * all input elements with the name "firstName".
      * @param selector a CSS selector
@@ -71,12 +81,22 @@ interface BasicLocator {
     Navigator find(Map<String, Object> attributes, String selector)
 
     /**
-     * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
-     * all input elements with the name "firstName".
+     * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName", 1) will select
+     * second input element with the name "firstName".
      * @param selector a CSS selector
      * @param predicates a Map with keys representing attributes and values representing required values or patterns
      * @param index index of the required element in the selection
      * @return a new Navigator instance containing the matched elements
      */
     Navigator find(Map<String, Object> attributes, String selector, int index)
+
+    /**
+     * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName", 1..2) will select
+     * second and third input element with the name "firstName".
+     * @param selector a CSS selector
+     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @param range range of the required elements in the selection
+     * @return a new Navigator instance containing the matched elements
+     */
+    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range)
 }

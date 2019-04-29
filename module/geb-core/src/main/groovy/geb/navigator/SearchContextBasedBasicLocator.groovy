@@ -66,6 +66,11 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     }
 
     @Override
+    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+        find(dynamic(attributes), bySelector, attributes, range)
+    }
+
+    @Override
     Navigator find(Map<String, Object> attributes, By bySelector) {
         find(dynamic(attributes), bySelector, attributes)
     }
@@ -81,6 +86,13 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     Navigator find(Map<String, Object> attributes, String selector, int index) {
         find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
             find(dynamic, bySelector, filteredAttributes, index)
+        }
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
+        find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, range)
         }
     }
 
@@ -164,6 +176,10 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         toNavigator(dynamic, elementsSupplier(bySelector, attributes, index))
     }
 
+    protected Navigator find(boolean dynamic, By bySelector, Map<String, Object> attributes, Range<Integer> range) {
+        toNavigator(dynamic, elementsSupplier(bySelector, attributes, range))
+    }
+
     protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes) {
         { ->
             searchContexts.collectMany { it.findElements(bySelector) }.findAll { matches(it, attributes) }
@@ -173,6 +189,15 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes, int index) {
         { ->
             [elementsSupplier(bySelector, attributes).get()[index]]
+        }
+    }
+
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes, Range<Integer> range) {
+        { ->
+            def elements = elementsSupplier(bySelector, attributes).get()
+            if (elements) {
+                elements.toList()[range]
+            }
         }
     }
 

@@ -122,14 +122,6 @@ interface Locator extends BasicLocator {
     Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range)
 
     /**
-     * Creates a new Navigator instance containing the elements matching the given
-     * <code>By</code> type selector. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
-     * @param bySelector a WebDriver By selector
-     * @return new Navigator instance containing the matched elements
-     */
-    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range)
-
-    /**
      * Shorthand for <code>find(bySelector)</code>
      *
      * @param bySelector a WebDriver By selector
@@ -214,32 +206,6 @@ interface Locator extends BasicLocator {
      * @return a new Navigator instance containing the matched elements
      */
     Navigator $(Map<String, Object> attributes, String selector)
-
-    /**
-     * Creates a new Navigator instance containing the elements matching the given
-     * CSS selector. Any CSS capabilities supported by the underlying WebDriver instance are supported.
-     * If the underlying WebDriver instance does not natively support finding elements by CSS selectors then tag, id
-     * and class name selectors may be applied (in any combination).
-     * <p>Examples:</p>
-     * <dl>
-     * <dt>h1</dt>
-     * <dd>selects all 'h1' elements</dd>
-     * <dt>.article</dt>
-     * <dd>selects all elements with the class 'article'</dd>
-     * <dt>#header</dt>
-     * <dd>selects the element with the id 'header'</dd>
-     * <dt>div.article p</dt>
-     * <dd>selects all p elements that are descendants of a div with class 'article'</dd>
-     * <dt>h1, h2</dt>
-     * <dd>selects all h1 and h2 elements</dd>
-     * <dt>li:odd</dt>
-     * <dd>selects odd-numbered li elements (CSS3 selectors like this are only supported when supported by the
-     * underlying WebDriver instance)</dd>
-     * </dl>
-     * @param selector a CSS selector
-     * @return new Navigator instance containing the matched elements
-     */
-    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range)
 
     /**
      * Shorthand for <code>find(predicates, selector, index)</code>
