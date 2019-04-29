@@ -24,7 +24,6 @@ import geb.error.UnableToSetElementException
 import geb.error.UnexpectedPageException
 import geb.js.JQueryAdapter
 import geb.navigator.factory.NavigatorFactory
-import geb.textmatching.TextMatcher
 import geb.waiting.Wait
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
@@ -32,10 +31,10 @@ import org.openqa.selenium.StaleElementReferenceException
 import org.openqa.selenium.WebElement
 
 import java.util.function.Supplier
-import java.util.regex.Pattern
 
 import static java.util.Collections.EMPTY_LIST
 import static geb.navigator.BasicLocator.DYNAMIC_ATTRIBUTE_NAME
+import static geb.navigator.WebElementPredicates.matches
 
 class DefaultNavigator implements Navigator {
 
@@ -941,43 +940,6 @@ class DefaultNavigator implements Navigator {
 
     protected Iterable<WebElement> toDynamicIterable(Supplier<Collection<WebElement>> contextElementsSupplier) {
         { -> contextElementsSupplier.get().iterator() } as Iterable<WebElement>
-    }
-
-    protected boolean matches(WebElement element, Map<String, Object> predicates) {
-        def result = predicates.findAll { it.key != DYNAMIC_ATTRIBUTE_NAME }.every { name, requiredValue ->
-            def actualValue
-            switch (name) {
-                case "text": actualValue = element.text; break
-                case "class": actualValue = element.getAttribute("class")?.tokenize(); break
-                default: actualValue = element.getAttribute(name)
-            }
-            matches(actualValue, requiredValue)
-        }
-        result
-    }
-
-    protected boolean matches(String actualValue, String requiredValue) {
-        actualValue == requiredValue
-    }
-
-    protected boolean matches(String actualValue, Pattern requiredValue) {
-        actualValue ==~ requiredValue
-    }
-
-    protected boolean matches(String actualValue, TextMatcher matcher) {
-        matcher.matches(actualValue)
-    }
-
-    protected boolean matches(Collection<String> actualValue, String requiredValue) {
-        requiredValue in actualValue
-    }
-
-    protected boolean matches(Collection<String> actualValue, Pattern requiredValue) {
-        actualValue.any { it ==~ requiredValue }
-    }
-
-    protected boolean matches(Collection<String> actualValue, TextMatcher matcher) {
-        actualValue.any { matcher.matches(it) }
     }
 
     protected getInputValues(Collection<WebElement> inputs) {

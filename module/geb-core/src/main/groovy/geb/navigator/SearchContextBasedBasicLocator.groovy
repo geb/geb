@@ -16,15 +16,17 @@
 package geb.navigator
 
 import geb.navigator.factory.NavigatorFactory
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.FromString
 import org.openqa.selenium.By
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.WebElement
 
-import java.util.function.BiFunction
 import java.util.function.Supplier
 
 import static geb.navigator.Locator.MATCH_ALL_SELECTOR
 import static geb.navigator.BasicLocator.DYNAMIC_ATTRIBUTE_NAME
+import static geb.navigator.WebElementPredicates.matches
 
 class SearchContextBasedBasicLocator implements BasicLocator {
 
@@ -60,29 +62,33 @@ class SearchContextBasedBasicLocator implements BasicLocator {
 
     @Override
     Navigator find(Map<String, Object> attributes, By bySelector, int index) {
-        find(dynamic(attributes), bySelector, index).filter(attributes)
+        find(dynamic(attributes), bySelector, attributes, index)
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, By bySelector) {
-        find(dynamic(attributes), bySelector).filter(attributes)
+        find(dynamic(attributes), bySelector, attributes)
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, String selector) {
-        find(attributes, selector) { Boolean dynamic, By bySelector ->
-            find(dynamic, bySelector)
+        find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes)
         }
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, String selector, int index) {
-        find(attributes, selector) { Boolean dynamic, By bySelector ->
-            find(dynamic, bySelector, index)
+        find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, index)
         }
     }
 
-    protected Navigator find(Map<String, Object> attributes, String selector, BiFunction<Boolean, By, Navigator> navigatorFromBy) {
+    protected Navigator find(
+            Map<String, Object> attributes,
+            String selector,
+            @ClosureParams(value = FromString, options = "Boolean,org.openqa.selenium.By,Map<String, Object>") Closure<Navigator> navigatorFromBy
+    ) {
         def attributesCopy = attributes.clone()
         def selectedUsingBy = findUsingByIfPossible(attributesCopy, selector, navigatorFromBy)
         if (selectedUsingBy != null) {
@@ -91,7 +97,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
 
         def optimizedSelector = optimizeSelector(selector, attributesCopy)
         if (optimizedSelector) {
-            navigatorFromBy.apply(dynamic(attributes), By.cssSelector(optimizedSelector)).filter(attributesCopy)
+            navigatorFromBy.call(dynamic(attributes), By.cssSelector(optimizedSelector), attributesCopy)
         } else {
             find(attributes, MATCH_ALL_SELECTOR)
         }
@@ -101,11 +107,15 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         navigatorFactory.createFromWebElements(contextElements)
     }
 
-    protected Navigator findUsingByIfPossible(Map<String, Object> attributes, String selector, BiFunction<Boolean, By, Navigator> navigatorFromBy) {
+    protected Navigator findUsingByIfPossible(
+            Map<String, Object> attributes,
+            String selector,
+            @ClosureParams(value = FromString, options = "Boolean,org.openqa.selenium.By,Map<String, Object>") Closure<Navigator> navigatorFromBy
+    ) {
         if (attributes.size() == 1 && selector == MATCH_ALL_SELECTOR) {
             BY_SELECTING_ATTRIBUTES.findResult { String attributeName, Closure<By> byFactory ->
                 if (hasStringValueForKey(attributes, attributeName)) {
-                    navigatorFromBy.apply(false, byFactory.call(attributes[attributeName]))
+                    navigatorFromBy.call(false, byFactory.call(attributes[attributeName]), [:])
                 }
             }
         }
@@ -146,23 +156,23 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         buffer.toString()
     }
 
-    protected Navigator find(boolean dynamic, By bySelector) {
-        toNavigator(dynamic, elementsSupplier(bySelector))
+    protected Navigator find(boolean dynamic, By bySelector, Map<String, Object> attributes = [:]) {
+        toNavigator(dynamic, elementsSupplier(bySelector, attributes))
     }
 
-    protected Navigator find(boolean dynamic, By bySelector, int index) {
-        toNavigator(dynamic, elementsSupplier(bySelector, index))
+    protected Navigator find(boolean dynamic, By bySelector, Map<String, Object> attributes = [:], int index) {
+        toNavigator(dynamic, elementsSupplier(bySelector, attributes, index))
     }
 
-    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector) {
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes) {
         { ->
-            searchContexts.collectMany { it.findElements(bySelector) }
+            searchContexts.collectMany { it.findElements(bySelector) }.findAll { matches(it, attributes) }
         }
     }
 
-    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, int index) {
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes, int index) {
         { ->
-            [elementsSupplier(bySelector).get()[index]]
+            [elementsSupplier(bySelector, attributes).get()[index]]
         }
     }
 

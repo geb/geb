@@ -121,6 +121,52 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         "By"     | By.cssSelector("div")
     }
 
+    @Unroll("#scenario selector, attribute and index based dynamic navigator")
+    def "selector, attribute and index based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            input(type: "text", value: "first")
+            input(type: "password", value: "password")
+            input(type: "text", value: "second")
+        }
+
+        and:
+        def nonDynamic = $(selector, 1, type: "text")
+        def dynamic = $(selector, 1, type: "text", dynamic: true)
+
+        when:
+        $(type: "password").jquery.after('<input type="text" value="inserted">')
+
+        then:
+        nonDynamic.value() == "second"
+        dynamic.value() == "inserted"
+
+        where:
+        scenario | selector
+        "string" | "input"
+        "By"     | By.cssSelector("input")
+    }
+
+    def "string selector, non-translatable attribute and index based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(id: "first", "matching text")
+            div(id: "second", "not matching text")
+            div(id: "third", "matching text")
+        }
+
+        and:
+        def nonDynamic = $("div", 1, text: "matching text")
+        def dynamic = $("div", 1, text: "matching text", dynamic: true)
+
+        when:
+        $(id: "second").jquery.after('<div id="inserted">matching text</div>')
+
+        then:
+        nonDynamic.@id == "third"
+        dynamic.@id == "inserted"
+    }
+
     def "attributes filter based dynamic navigator"() {
         given:
         bodyWithJquery {
