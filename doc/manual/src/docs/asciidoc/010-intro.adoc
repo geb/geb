@@ -19,7 +19,7 @@ For more information see the manual section on link:#driver[using a driver imple
 == The Page Object pattern
 
 The Page Object Pattern gives us a common sense way to model content in a reusable and maintainable way.
-From the link:http://code.google.com/p/selenium/wiki/PageObjects[WebDriver wiki page on the Page Object Pattern]:
+From the link:https://github.com/SeleniumHQ/selenium/wiki/PageObjects[WebDriver wiki page on the Page Object Pattern]:
 
 ____
 
