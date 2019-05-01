@@ -77,6 +77,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:joschi[Jochen Schalanda] - Doc
 * github-profile:mkutz[Michael Kutz] - Addition of `{number-input-api}`, `{range-input-api}`, `{url-input-api}`, `{password-input-api}`, `{color-input-api}`, `{datetime-local-input-api}`, `{time-input-api}`, `{month-input-api}` and `{week-input-api}`
 * github-profile:kriegaex[Alexander Kriegisch] - Doc fixes
+* github-profile:topperfalkon[Harley Faggetter] - Doc fixes
 
 == History
 
