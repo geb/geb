@@ -116,6 +116,27 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.value() == "inserted"
     }
 
+    def "attribute and range based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            input(type: "text", value: "first")
+            input(type: "password", value: "password")
+            input(type: "text", value: "second")
+            input(type: "text", value: "third")
+        }
+
+        and:
+        def nonDynamic = $(1..2, type: "text")
+        def dynamic = $(1..2, type: "text", dynamic: true)
+
+        when:
+        $(type: "password").jquery.after('<input type="text" value="inserted">')
+
+        then:
+        nonDynamic*.value() == ["second", "third"]
+        dynamic*.value() == ["inserted", "second"]
+    }
+
     @Unroll("#scenario selector and index based dynamic navigator")
     def "selector and index based dynamic navigator"() {
         given:

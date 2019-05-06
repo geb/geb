@@ -52,13 +52,22 @@ interface BasicLocator {
     Navigator find(Map<String, Object> attributes, By bySelector)
 
     /**
-     * Selects elements by both attributes and index. For example find(name: "firstName", 1) will select
+     * Selects elements by both CSS attributes and index. For example find(name: "firstName", 1) will select
      * second element with the name attribute of "firstName".
      * @param attributes a Map with keys representing attributes and values representing required values or patterns
      * @param index index of the required element in the selection
      * @return a new Navigator instance containing the matched elements
      */
     Navigator find(Map<String, Object> attributes, int index)
+
+    /**
+     * Selects elements by both CSS attributes and range. For example find(name: "firstName", 1..2) will select
+     * second and third element with the name attribute of "firstName".
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
+     * @param range range of the required elements in the selection
+     * @return a new Navigator instance containing the matched elements
+     */
+    Navigator find(Map<String, Object> attributes, Range<Integer> range)
 
     /**
      * Creates a new Navigator instance containing the elements matching the given

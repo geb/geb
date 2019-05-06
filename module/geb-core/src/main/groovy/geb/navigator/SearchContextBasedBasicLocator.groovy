@@ -62,8 +62,15 @@ class SearchContextBasedBasicLocator implements BasicLocator {
 
     @Override
     Navigator find(Map<String, Object> attributes, int index) {
-        find(attributes, MATCH_ALL_SELECTOR) { dynamic, bySelector, filteredAttributes ->
+        find(attributes) { dynamic, bySelector, filteredAttributes ->
             find(dynamic, bySelector, filteredAttributes, index)
+        }
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, Range<Integer> range) {
+        find(attributes) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, range)
         }
     }
 
@@ -105,7 +112,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
 
     protected Navigator find(
             Map<String, Object> attributes,
-            String selector,
+            String selector = MATCH_ALL_SELECTOR,
             @ClosureParams(value = FromString, options = "Boolean,org.openqa.selenium.By,Map<String, Object>") Closure<Navigator> navigatorFromBy
     ) {
         def attributesCopy = attributes.clone()

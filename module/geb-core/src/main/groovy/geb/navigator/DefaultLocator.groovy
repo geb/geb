@@ -97,11 +97,6 @@ class DefaultLocator implements Locator {
     }
 
     @Override
-    Navigator find(Map<String, Object> attributes, Range<Integer> range) {
-        find(attributes)[range]
-    }
-
-    @Override
     Navigator $(Map<String, Object> attributes, int index) {
         find(attributes, index)
     }
