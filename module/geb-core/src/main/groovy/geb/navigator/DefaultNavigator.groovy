@@ -644,12 +644,20 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator children(Map<String, Object> attributes) {
-        children().filter(attributes)
+        navigatorFor(dynamic(attributes)) {
+            collectChildren().findAll {
+                matches(it, attributes)
+            }
+        }
     }
 
     @Override
     Navigator children(Map<String, Object> attributes = [:], String selector) {
-        children().filter(attributes, selector)
+        navigatorFor(dynamic(attributes)) {
+            collectChildren().findAll {
+                CssSelector.matches(it, selector) && matches(it, attributes)
+            }
+        }
     }
 
     @Override
