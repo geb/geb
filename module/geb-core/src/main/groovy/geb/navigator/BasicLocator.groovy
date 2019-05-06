@@ -52,6 +52,15 @@ interface BasicLocator {
     Navigator find(Map<String, Object> attributes, By bySelector)
 
     /**
+     * Selects elements by both attributes and index. For example find(name: "firstName", 1) will select
+     * second element with the name attribute of "firstName".
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
+     * @param index index of the required element in the selection
+     * @return a new Navigator instance containing the matched elements
+     */
+    Navigator find(Map<String, Object> attributes, int index)
+
+    /**
      * Creates a new Navigator instance containing the elements matching the given
      * <code>By</code> type selector, attributes and index. Any <code>By</code> type capabilities supported by the underlying WebDriver instance are supported.
      * @param bySelector a WebDriver By selector
@@ -75,7 +84,7 @@ interface BasicLocator {
      * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName") will select
      * all input elements with the name "firstName".
      * @param selector a CSS selector
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
      * @return a new Navigator instance containing the matched elements
      */
     Navigator find(Map<String, Object> attributes, String selector)
@@ -84,7 +93,7 @@ interface BasicLocator {
      * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName", 1) will select
      * second input element with the name "firstName".
      * @param selector a CSS selector
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
      * @param index index of the required element in the selection
      * @return a new Navigator instance containing the matched elements
      */
@@ -94,7 +103,7 @@ interface BasicLocator {
      * Selects elements by both CSS selector and attributes. For example find("input", name: "firstName", 1..2) will select
      * second and third input element with the name "firstName".
      * @param selector a CSS selector
-     * @param predicates a Map with keys representing attributes and values representing required values or patterns
+     * @param attributes a Map with keys representing attributes and values representing required values or patterns
      * @param range range of the required elements in the selection
      * @return a new Navigator instance containing the matched elements
      */

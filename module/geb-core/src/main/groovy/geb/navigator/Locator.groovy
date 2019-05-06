@@ -165,14 +165,6 @@ interface Locator extends BasicLocator {
     Navigator $(Map<String, Object> attributes)
 
     /**
-     * Shorthand for <code>find(predicates, null, index..index)</code>
-     *
-     * @param selector
-     * @return new Navigator
-     */
-    Navigator find(Map<String, Object> attributes, int index)
-
-    /**
      * Shorthand for <code>find(predicates, null, range)</code>
      *
      * @param predicates attribute predicates

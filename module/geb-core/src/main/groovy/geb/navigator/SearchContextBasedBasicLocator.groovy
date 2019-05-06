@@ -61,6 +61,13 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     }
 
     @Override
+    Navigator find(Map<String, Object> attributes, int index) {
+        find(attributes, MATCH_ALL_SELECTOR) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, index)
+        }
+    }
+
+    @Override
     Navigator find(Map<String, Object> attributes, By bySelector, int index) {
         find(dynamic(attributes), bySelector, attributes, index)
     }
