@@ -537,15 +537,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator previous(Map<String, Object> attributes) {
-        navigatorFor collectPreviousSiblings {
-            it.reverse().find { matches(it, attributes) }
+        navigatorFor(dynamic(attributes)) {
+            collectPreviousSiblings {
+                it.reverse().find { matches(it, attributes) }
+            }
         }
     }
 
     @Override
     Navigator previous(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectPreviousSiblings {
-            it.reverse().find { CssSelector.matches(it, selector) && matches(it, attributes) }
+        navigatorFor(dynamic(attributes)) {
+            collectPreviousSiblings {
+                it.reverse().find { CssSelector.matches(it, selector) && matches(it, attributes) }
+            }
         }
     }
 
@@ -1179,7 +1183,7 @@ class DefaultNavigator implements Navigator {
         collectRelativeElements("following-sibling::*", filter)
     }
 
-    protected Collection<WebElement> collectPreviousSiblings(Closure filter) {
+    protected Collection<WebElement> collectPreviousSiblings(@ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
         collectRelativeElements("preceding-sibling::*", filter)
     }
 
