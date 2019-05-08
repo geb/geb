@@ -626,4 +626,44 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.text() == "second"
     }
 
+    def "prevAll attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "match", "div")
+            div("div")
+            div("div")
+        }
+
+        and:
+        def nonDynamic = $("div::nth-of-type(3)").prevAll(class: "match")
+        def dynamic = $("div::nth-of-type(3)").prevAll(class: "match", dynamic: true)
+
+        when:
+        $("div::nth-of-type(2)").jquery.addClass("match")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
+    def "prevAll selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "match", "div")
+            div("div")
+            div("div")
+        }
+
+        and:
+        def nonDynamic = $("div::nth-of-type(3)").prevAll(".match")
+        def dynamic = $("div::nth-of-type(3)").prevAll(".match", dynamic: true)
+
+        when:
+        $("div::nth-of-type(2)").jquery.addClass("match")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
 }

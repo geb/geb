@@ -560,15 +560,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator prevAll(Map<String, Object> attributes) {
-        navigatorFor collectPreviousSiblings {
-            it.reverse().findAll { matches(it, attributes) }
+        navigatorFor(dynamic(attributes)) {
+            collectPreviousSiblings {
+                it.reverse().findAll { matches(it, attributes) }
+            }
         }
     }
 
     @Override
     Navigator prevAll(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectPreviousSiblings {
-            it.reverse().findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+        navigatorFor(dynamic(attributes)) {
+            collectPreviousSiblings {
+                it.reverse().findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+            }
         }
     }
 
