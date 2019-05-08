@@ -358,7 +358,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
-    def "closest attribute based attribute"() {
+    def "closest attribute based dynamic navigator"() {
         given:
         bodyWithJquery {
             div(id: "grandparent", class: "to-be-selected") {
@@ -380,7 +380,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.@id == "parent"
     }
 
-    def "closest selector based attribute"() {
+    def "closest selector based dynamic navigator"() {
         given:
         bodyWithJquery {
             div(id: "grandparent", class: "to-be-selected") {
