@@ -26,6 +26,7 @@ import geb.js.JQueryAdapter
 import geb.navigator.factory.NavigatorFactory
 import geb.waiting.Wait
 import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.FromString
 import groovy.transform.stc.SimpleType
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
@@ -474,15 +475,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator next(Map<String, Object> attributes) {
-        navigatorFor collectFollowingSiblings {
-            it.find { matches(it, attributes) }
+        navigatorFor(dynamic(attributes)) {
+            collectFollowingSiblings {
+                it.find { matches(it, attributes) }
+            }
         }
     }
 
     @Override
     Navigator next(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectFollowingSiblings {
-            it.find { CssSelector.matches(it, selector) && matches(it, attributes) }
+        navigatorFor(dynamic(attributes)) {
+            collectFollowingSiblings {
+                it.find { CssSelector.matches(it, selector) && matches(it, attributes) }
+            }
         }
     }
 
@@ -1159,14 +1164,14 @@ class DefaultNavigator implements Navigator {
         collectUntil(elements) { CssSelector.matches(it, selector) && matches(it, attributes) }
     }
 
-    protected Collection<WebElement> collectRelativeElements(String xpath, Closure filter) {
+    protected Collection<WebElement> collectRelativeElements(String xpath, @ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
         collectElements {
             def elements = it.findElements(By.xpath(xpath))
             filter ? filter(elements) : elements
         }
     }
 
-    protected Collection<WebElement> collectFollowingSiblings(Closure filter) {
+    protected Collection<WebElement> collectFollowingSiblings(@ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
         collectRelativeElements("following-sibling::*", filter)
     }
 

@@ -506,4 +506,44 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         "By"     | By.className("excluded")
     }
 
+    def "next attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("first")
+            div("second")
+            div(class: "match", "third")
+        }
+
+        and:
+        def nonDynamic = $("div::nth-of-type(1)").next(class: "match")
+        def dynamic = $("div::nth-of-type(1)").next(class: "match", dynamic: true)
+
+        when:
+        $("div::nth-of-type(2)").jquery.addClass("match")
+
+        then:
+        nonDynamic.text() == "third"
+        dynamic.text() == "second"
+    }
+
+    def "next selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("first")
+            div("second")
+            div(class: "match", "third")
+        }
+
+        and:
+        def nonDynamic = $("div::nth-of-type(1)").next(".match")
+        def dynamic = $("div::nth-of-type(1)").next(".match", dynamic: true)
+
+        when:
+        $("div::nth-of-type(2)").jquery.addClass("match")
+
+        then:
+        nonDynamic.text() == "third"
+        dynamic.text() == "second"
+    }
+
 }
