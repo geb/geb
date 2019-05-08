@@ -454,4 +454,56 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         "By"     | By.className("included")
     }
 
+    def "hasNot attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "top-level") {
+                div(class: "excluded", "div")
+            }
+            div(class: "top-level") {
+                div("div")
+            }
+        }
+
+        and:
+        def nonDynamic = $(".top-level").hasNot(class: "excluded")
+        def dynamic = $(".top-level").hasNot(class: "excluded", dynamic: true)
+
+        when:
+        $(".top-level:nth-of-type(2) div").jquery.addClass("excluded")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 0
+    }
+
+    @Unroll("#scenario hasNot selector based dynamic navigator")
+    def "hasNot selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "top-level") {
+                div(class: "excluded", "div")
+            }
+            div(class: "top-level") {
+                div("div")
+            }
+        }
+
+        and:
+        def nonDynamic = $(".top-level").hasNot(selector)
+        def dynamic = $(".top-level").hasNot(selector, dynamic: true)
+
+        when:
+        $(".top-level:nth-of-type(2) div").jquery.addClass("excluded")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 0
+
+        where:
+        scenario | selector
+        "string" | ".excluded"
+        "By"     | By.className("excluded")
+    }
+
 }

@@ -259,13 +259,13 @@ class DefaultNavigator implements Navigator {
     }
 
     Navigator hasNot(Map<String, Object> predicates) {
-        findAll { Navigator it ->
+        navigatorForMatching(dynamic(predicates)) {
             it.find(predicates).empty
         }
     }
 
     Navigator hasNot(Map<String, Object> predicates, String selector) {
-        findAll { Navigator it ->
+        navigatorForMatching(dynamic(predicates)) {
             it.find(predicates, selector).empty
         }
     }
@@ -277,7 +277,7 @@ class DefaultNavigator implements Navigator {
     }
 
     Navigator hasNot(Map<String, Object> predicates, By bySelector) {
-        findAll { Navigator it ->
+        navigatorForMatching(dynamic(predicates)) {
             it.find(predicates, bySelector).empty
         }
     }
