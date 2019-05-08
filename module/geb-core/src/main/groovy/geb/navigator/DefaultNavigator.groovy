@@ -25,6 +25,8 @@ import geb.error.UnexpectedPageException
 import geb.js.JQueryAdapter
 import geb.navigator.factory.NavigatorFactory
 import geb.waiting.Wait
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 import org.openqa.selenium.By
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.StaleElementReferenceException
@@ -227,14 +229,14 @@ class DefaultNavigator implements Navigator {
     }
 
     Navigator has(Map<String, Object> predicates) {
-        findAll { Navigator it ->
-            !it.find(predicates).empty
+        navigatorForMatching(dynamic(predicates)) {
+            it.find(predicates)
         }
     }
 
     Navigator has(Map<String, Object> predicates, String selector) {
-        findAll { Navigator it ->
-            !it.find(predicates, selector).empty
+        navigatorForMatching(dynamic(predicates)) {
+            it.find(predicates, selector)
         }
     }
 
@@ -245,8 +247,8 @@ class DefaultNavigator implements Navigator {
     }
 
     Navigator has(Map<String, Object> predicates, By bySelector) {
-        findAll { Navigator it ->
-            !it.find(predicates, bySelector).empty
+        navigatorForMatching(dynamic(predicates)) {
+            it.find(predicates, bySelector)
         }
     }
 
@@ -948,6 +950,14 @@ class DefaultNavigator implements Navigator {
     protected Navigator navigatorFor(boolean dynamic, Supplier<Collection<WebElement>> contextElementsSupplier) {
         def elements = dynamic ? toDynamicIterable(contextElementsSupplier) : contextElementsSupplier.get()
         browser.navigatorFactory.createFromWebElements(elements)
+    }
+
+    protected Navigator navigatorForMatching(boolean dynamic, @ClosureParams(value = SimpleType, options = "geb.navigator.Navigator") Closure<?> partialNavigatorPredicate) {
+        navigatorFor(dynamic) {
+            contextElements.findAll { element ->
+                partialNavigatorPredicate.call(navigatorFor(Collections.singleton(element)))
+            }
+        }
     }
 
     protected Iterable<WebElement> toDynamicIterable(Supplier<Collection<WebElement>> contextElementsSupplier) {

@@ -402,4 +402,56 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.@id == "parent"
     }
 
+    def "has attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "top-level") {
+                div(class: "included", "div")
+            }
+            div(class: "top-level") {
+                div("div")
+            }
+        }
+
+        and:
+        def nonDynamic = $(".top-level").has(class: "included")
+        def dynamic = $(".top-level").has(class: "included", dynamic: true)
+
+        when:
+        $(".top-level:nth-of-type(2) div").jquery.addClass("included")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
+    @Unroll("has #scenario selector based dynamic navigator")
+    def "has selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "top-level") {
+                div(class: "included", "div")
+            }
+            div(class: "top-level") {
+                div("div")
+            }
+        }
+
+        and:
+        def nonDynamic = $(".top-level").has(selector)
+        def dynamic = $(".top-level").has(selector, dynamic: true)
+
+        when:
+        $(".top-level:nth-of-type(2) div").jquery.addClass("included")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+
+        where:
+        scenario | selector
+        "string" | ".included"
+        "By"     | By.className("included")
+    }
+
 }
