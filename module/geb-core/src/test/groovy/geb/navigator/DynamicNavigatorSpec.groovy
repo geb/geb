@@ -586,6 +586,48 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
+    def "nextUntil attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("div")
+            div("div")
+            div("div")
+            div(class: "match", "div")
+        }
+
+        and:
+        def nonDynamic = $("div::nth-of-type(1)").nextUntil(class: "match")
+        def dynamic = $("div::nth-of-type(1)").nextUntil(class: "match", dynamic: true)
+
+        when:
+        $("div::nth-of-type(3)").jquery.addClass("match")
+
+        then:
+        nonDynamic.size() == 2
+        dynamic.size() == 1
+    }
+
+    def "nextUntil selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("div")
+            div("div")
+            div("div")
+            div(class: "match", "div")
+        }
+
+        and:
+        def nonDynamic = $("div::nth-of-type(1)").nextUntil(".match")
+        def dynamic = $("div::nth-of-type(1)").nextUntil(".match", dynamic: true)
+
+        when:
+        $("div::nth-of-type(3)").jquery.addClass("match")
+
+        then:
+        nonDynamic.size() == 2
+        dynamic.size() == 1
+    }
+
     def "previous attribute based dynamic navigator"() {
         given:
         bodyWithJquery {
