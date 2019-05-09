@@ -36,7 +36,6 @@ import org.openqa.selenium.WebElement
 import java.util.function.Supplier
 
 import static java.util.Collections.EMPTY_LIST
-import static geb.navigator.BasicLocator.DYNAMIC_ATTRIBUTE_NAME
 import static geb.navigator.WebElementPredicates.matches
 
 class DefaultNavigator implements Navigator {
@@ -604,52 +603,58 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator parent() {
-        navigatorFor collectElements {
-            it.findElement By.xpath("parent::*")
-        }
+        navigatorFor collectParents()
     }
 
     @Override
     Navigator parent(Map<String, Object> attributes) {
-        parent().filter(attributes)
+        navigatorFor(dynamic(attributes)) {
+            collectParents {
+                it.findAll { matches(it, attributes) }
+            }
+        }
     }
 
     @Override
     Navigator parent(Map<String, Object> attributes = [:], String selector) {
-        parent().filter(attributes, selector)
+        navigatorFor(dynamic(attributes)) {
+            collectParents {
+                it.findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+            }
+        }
     }
 
     @Override
     Navigator parents() {
-        navigatorFor collectParents {
+        navigatorFor collectAncestors {
             it.reverse()
         }
     }
 
     @Override
     Navigator parents(Map<String, Object> attributes) {
-        navigatorFor collectParents {
+        navigatorFor collectAncestors {
             it.reverse().findAll { matches(it, attributes) }
         }
     }
 
     @Override
     Navigator parents(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectParents {
+        navigatorFor collectAncestors {
             it.reverse().findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
         }
     }
 
     @Override
     Navigator parentsUntil(Map<String, Object> attributes) {
-        navigatorFor collectParents {
+        navigatorFor collectAncestors {
             collectUntil(it.reverse(), attributes)
         }
     }
 
     @Override
     Navigator parentsUntil(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectParents {
+        navigatorFor collectAncestors {
             collectUntil(it.reverse(), attributes, selector)
         }
     }
@@ -657,7 +662,7 @@ class DefaultNavigator implements Navigator {
     @Override
     Navigator closest(Map<String, Object> attributes) {
         navigatorFor(dynamic(attributes)) {
-            collectParents {
+            collectAncestors {
                 it.reverse().find { matches(it, attributes) }
             }
         }
@@ -666,7 +671,7 @@ class DefaultNavigator implements Navigator {
     @Override
     Navigator closest(Map<String, Object> attributes = [:], String selector) {
         navigatorFor(dynamic(attributes)) {
-            collectParents {
+            collectAncestors {
                 it.reverse().find { CssSelector.matches(it, selector) && matches(it, attributes) }
             }
         }
@@ -1203,7 +1208,11 @@ class DefaultNavigator implements Navigator {
         collectRelativeElements("preceding-sibling::*", filter)
     }
 
-    protected Collection<WebElement> collectParents(Closure filter) {
+    protected Collection<WebElement> collectParents(@ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
+        collectRelativeElements("parent::*", filter)
+    }
+
+    protected Collection<WebElement> collectAncestors(Closure filter) {
         collectRelativeElements("ancestor::*", filter)
     }
 
