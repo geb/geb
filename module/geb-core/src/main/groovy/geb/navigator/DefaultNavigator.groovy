@@ -582,15 +582,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator prevUntil(Map<String, Object> attributes) {
-        navigatorFor collectPreviousSiblings {
-            collectUntil(it.reverse(), attributes)
+        navigatorFor(dynamic(attributes)) {
+            collectPreviousSiblings {
+                collectUntil(it.reverse(), attributes)
+            }
         }
     }
 
     @Override
     Navigator prevUntil(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectPreviousSiblings {
-            collectUntil(it.reverse(), attributes, selector)
+        navigatorFor(dynamic(attributes)) {
+            collectPreviousSiblings {
+                collectUntil(it.reverse(), attributes, selector)
+            }
         }
     }
 
