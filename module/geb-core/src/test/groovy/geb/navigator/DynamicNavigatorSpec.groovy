@@ -329,11 +329,12 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("body").children("div")
-        def dynamic = $("body").children("div", dynamic: true)
+        def body = $("body")
+        def nonDynamic = body.children("div")
+        def dynamic = body.children("div", dynamic: true)
 
         when:
-        $("body").jquery.append("<div>div</div>")
+        body.jquery.append("<div>div</div>")
 
         then:
         nonDynamic.size() == 1
@@ -347,11 +348,12 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("body").children(type: "text")
-        def dynamic = $("body").children(type: "text", dynamic: true)
+        def body = $("body")
+        def nonDynamic = body.children(type: "text")
+        def dynamic = body.children(type: "text", dynamic: true)
 
         when:
-        $("body").jquery.append('<input type="text">')
+        body.jquery.append('<input type="text">')
 
         then:
         nonDynamic.size() == 1
@@ -369,8 +371,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("#child").closest(class: "to-be-selected")
-        def dynamic = $("#child").closest(class: "to-be-selected", dynamic: true)
+        def child = $("#child")
+        def nonDynamic = child.closest(class: "to-be-selected")
+        def dynamic = child.closest(class: "to-be-selected", dynamic: true)
 
         when:
         $("#parent").jquery.addClass("to-be-selected")
@@ -391,8 +394,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("#child").closest(".to-be-selected")
-        def dynamic = $("#child").closest(".to-be-selected", dynamic: true)
+        def child = $("#child")
+        def nonDynamic = child.closest(".to-be-selected")
+        def dynamic = child.closest(".to-be-selected", dynamic: true)
 
         when:
         $("#parent").jquery.addClass("to-be-selected")
@@ -414,8 +418,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $(".top-level").has(class: "included")
-        def dynamic = $(".top-level").has(class: "included", dynamic: true)
+        def parentDivs = $(".top-level")
+        def nonDynamic = parentDivs.has(class: "included")
+        def dynamic = parentDivs.has(class: "included", dynamic: true)
 
         when:
         $(".top-level:nth-of-type(2) div").jquery.addClass("included")
@@ -438,8 +443,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $(".top-level").has(selector)
-        def dynamic = $(".top-level").has(selector, dynamic: true)
+        def parentDivs = $(".top-level")
+        def nonDynamic = parentDivs.has(selector)
+        def dynamic = parentDivs.has(selector, dynamic: true)
 
         when:
         $(".top-level:nth-of-type(2) div").jquery.addClass("included")
@@ -466,8 +472,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $(".top-level").hasNot(class: "excluded")
-        def dynamic = $(".top-level").hasNot(class: "excluded", dynamic: true)
+        def parentDivs = $(".top-level")
+        def nonDynamic = parentDivs.hasNot(class: "excluded")
+        def dynamic = parentDivs.hasNot(class: "excluded", dynamic: true)
 
         when:
         $(".top-level:nth-of-type(2) div").jquery.addClass("excluded")
@@ -490,8 +497,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $(".top-level").hasNot(selector)
-        def dynamic = $(".top-level").hasNot(selector, dynamic: true)
+        def parentDivs = $(".top-level")
+        def nonDynamic = parentDivs.hasNot(selector)
+        def dynamic = parentDivs.hasNot(selector, dynamic: true)
 
         when:
         $(".top-level:nth-of-type(2) div").jquery.addClass("excluded")
@@ -515,8 +523,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(1)").next(class: "match")
-        def dynamic = $("div::nth-of-type(1)").next(class: "match", dynamic: true)
+        def firstDiv = $("div::nth-of-type(1)")
+        def nonDynamic = firstDiv.next(class: "match")
+        def dynamic = firstDiv.next(class: "match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -535,8 +544,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(1)").next(".match")
-        def dynamic = $("div::nth-of-type(1)").next(".match", dynamic: true)
+        def firstDiv = $("div::nth-of-type(1)")
+        def nonDynamic = firstDiv.next(".match")
+        def dynamic = firstDiv.next(".match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -555,8 +565,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(1)").nextAll(class: "match")
-        def dynamic = $("div::nth-of-type(1)").nextAll(class: "match", dynamic: true)
+        def firstDiv = $("div::nth-of-type(1)")
+        def nonDynamic = firstDiv.nextAll(class: "match")
+        def dynamic = firstDiv.nextAll(class: "match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -575,8 +586,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(1)").nextAll(".match")
-        def dynamic = $("div::nth-of-type(1)").nextAll(".match", dynamic: true)
+        def firstDiv = $("div::nth-of-type(1)")
+        def nonDynamic = firstDiv.nextAll(".match")
+        def dynamic = firstDiv.nextAll(".match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -596,8 +608,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(1)").nextUntil(class: "match")
-        def dynamic = $("div::nth-of-type(1)").nextUntil(class: "match", dynamic: true)
+        def firstDiv = $("div::nth-of-type(1)")
+        def nonDynamic = firstDiv.nextUntil(class: "match")
+        def dynamic = firstDiv.nextUntil(class: "match", dynamic: true)
 
         when:
         $("div::nth-of-type(3)").jquery.addClass("match")
@@ -617,8 +630,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(1)").nextUntil(".match")
-        def dynamic = $("div::nth-of-type(1)").nextUntil(".match", dynamic: true)
+        def firstDiv = $("div::nth-of-type(1)")
+        def nonDynamic = firstDiv.nextUntil(".match")
+        def dynamic = firstDiv.nextUntil(".match", dynamic: true)
 
         when:
         $("div::nth-of-type(3)").jquery.addClass("match")
@@ -637,8 +651,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(3)").previous(class: "match")
-        def dynamic = $("div::nth-of-type(3)").previous(class: "match", dynamic: true)
+        def lastDiv = $("div::nth-of-type(3)")
+        def nonDynamic = lastDiv.previous(class: "match")
+        def dynamic = lastDiv.previous(class: "match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -657,8 +672,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(3)").previous(".match")
-        def dynamic = $("div::nth-of-type(3)").previous(".match", dynamic: true)
+        def lastDiv = $("div::nth-of-type(3)")
+        def nonDynamic = lastDiv.previous(".match")
+        def dynamic = lastDiv.previous(".match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -677,8 +693,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(3)").prevAll(class: "match")
-        def dynamic = $("div::nth-of-type(3)").prevAll(class: "match", dynamic: true)
+        def lastDiv = $("div::nth-of-type(3)")
+        def nonDynamic = lastDiv.prevAll(class: "match")
+        def dynamic = lastDiv.prevAll(class: "match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -697,8 +714,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(3)").prevAll(".match")
-        def dynamic = $("div::nth-of-type(3)").prevAll(".match", dynamic: true)
+        def lastDiv = $("div::nth-of-type(3)")
+        def nonDynamic = lastDiv.prevAll(".match")
+        def dynamic = lastDiv.prevAll(".match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -718,8 +736,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(4)").prevUntil(class: "match")
-        def dynamic = $("div::nth-of-type(4)").prevUntil(class: "match", dynamic: true)
+        def lastDiv = $("div::nth-of-type(4)")
+        def nonDynamic = lastDiv.prevUntil(class: "match")
+        def dynamic = lastDiv.prevUntil(class: "match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
@@ -739,8 +758,9 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def nonDynamic = $("div::nth-of-type(4)").prevUntil(".match")
-        def dynamic = $("div::nth-of-type(4)").prevUntil(".match", dynamic: true)
+        def lastDiv = $("div::nth-of-type(4)")
+        def nonDynamic = lastDiv.prevUntil(".match")
+        def dynamic = lastDiv.prevUntil(".match", dynamic: true)
 
         when:
         $("div::nth-of-type(2)").jquery.addClass("match")
