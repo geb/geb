@@ -395,15 +395,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator not(Map<String, Object> predicates, String selector) {
-        navigatorFor contextElements.findAll { element ->
-            !(CssSelector.matches(element, selector) && matches(element, predicates))
+        navigatorFor(dynamic(predicates)) {
+            contextElements.findAll { element ->
+                !(CssSelector.matches(element, selector) && matches(element, predicates))
+            }
         }
     }
 
     @Override
     Navigator not(Map<String, Object> predicates) {
-        navigatorFor contextElements.findAll { element ->
-            !matches(element, predicates)
+        navigatorFor(dynamic(predicates)) {
+            contextElements.findAll { element ->
+                !matches(element, predicates)
+            }
         }
     }
 
