@@ -523,7 +523,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def firstDiv = $("div::nth-of-type(1)")
+        def firstDiv = $("div::first-child")
         def nonDynamic = firstDiv.next(class: "match")
         def dynamic = firstDiv.next(class: "match", dynamic: true)
 
@@ -544,7 +544,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def firstDiv = $("div::nth-of-type(1)")
+        def firstDiv = $("div::first-child")
         def nonDynamic = firstDiv.next(".match")
         def dynamic = firstDiv.next(".match", dynamic: true)
 
@@ -565,7 +565,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def firstDiv = $("div::nth-of-type(1)")
+        def firstDiv = $("div::first-child")
         def nonDynamic = firstDiv.nextAll(class: "match")
         def dynamic = firstDiv.nextAll(class: "match", dynamic: true)
 
@@ -586,7 +586,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def firstDiv = $("div::nth-of-type(1)")
+        def firstDiv = $("div::first-child")
         def nonDynamic = firstDiv.nextAll(".match")
         def dynamic = firstDiv.nextAll(".match", dynamic: true)
 
@@ -608,7 +608,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def firstDiv = $("div::nth-of-type(1)")
+        def firstDiv = $("div::first-child")
         def nonDynamic = firstDiv.nextUntil(class: "match")
         def dynamic = firstDiv.nextUntil(class: "match", dynamic: true)
 
@@ -630,7 +630,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def firstDiv = $("div::nth-of-type(1)")
+        def firstDiv = $("div::first-child")
         def nonDynamic = firstDiv.nextUntil(".match")
         def dynamic = firstDiv.nextUntil(".match", dynamic: true)
 
@@ -651,7 +651,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def lastDiv = $("div::nth-of-type(3)")
+        def lastDiv = $("div::last-child")
         def nonDynamic = lastDiv.previous(class: "match")
         def dynamic = lastDiv.previous(class: "match", dynamic: true)
 
@@ -672,7 +672,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def lastDiv = $("div::nth-of-type(3)")
+        def lastDiv = $("div::last-child")
         def nonDynamic = lastDiv.previous(".match")
         def dynamic = lastDiv.previous(".match", dynamic: true)
 
@@ -693,7 +693,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def lastDiv = $("div::nth-of-type(3)")
+        def lastDiv = $("div::last-child")
         def nonDynamic = lastDiv.prevAll(class: "match")
         def dynamic = lastDiv.prevAll(class: "match", dynamic: true)
 
@@ -714,7 +714,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def lastDiv = $("div::nth-of-type(3)")
+        def lastDiv = $("div::last-child")
         def nonDynamic = lastDiv.prevAll(".match")
         def dynamic = lastDiv.prevAll(".match", dynamic: true)
 
@@ -736,7 +736,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def lastDiv = $("div::nth-of-type(4)")
+        def lastDiv = $("div::last-child")
         def nonDynamic = lastDiv.prevUntil(class: "match")
         def dynamic = lastDiv.prevUntil(class: "match", dynamic: true)
 
@@ -758,7 +758,7 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         }
 
         and:
-        def lastDiv = $("div::nth-of-type(4)")
+        def lastDiv = $("div::last-child")
         def nonDynamic = lastDiv.prevUntil(".match")
         def dynamic = lastDiv.prevUntil(".match", dynamic: true)
 
