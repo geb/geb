@@ -862,4 +862,50 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 3
     }
 
+    def "parents attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "to-be-selected") {
+                div(id: "parent") {
+                    div(id: "child", "div")
+                }
+            }
+        }
+
+        and:
+        def child = $("#child")
+        def nonDynamic = child.parents(class: "to-be-selected")
+        def dynamic = child.parents(class: "to-be-selected", dynamic: true)
+
+        when:
+        $("#parent").jquery.addClass("to-be-selected")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
+    def "parents selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div(class: "to-be-selected") {
+                div(id: "parent") {
+                    div(id: "child", "div")
+                }
+            }
+        }
+
+        and:
+        def child = $("#child")
+        def nonDynamic = child.parents(".to-be-selected")
+        def dynamic = child.parents(".to-be-selected", dynamic: true)
+
+        when:
+        $("#parent").jquery.addClass("to-be-selected")
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
 }
