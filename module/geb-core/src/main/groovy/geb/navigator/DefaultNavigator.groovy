@@ -651,15 +651,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator parentsUntil(Map<String, Object> attributes) {
-        navigatorFor collectAncestors {
-            collectUntil(it.reverse(), attributes)
+        navigatorFor(dynamic(attributes)) {
+            collectAncestors {
+                collectUntil(it.reverse(), attributes)
+            }
         }
     }
 
     @Override
     Navigator parentsUntil(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor collectAncestors {
-            collectUntil(it.reverse(), attributes, selector)
+        navigatorFor(dynamic(attributes)) {
+            collectAncestors {
+                collectUntil(it.reverse(), attributes, selector)
+            }
         }
     }
 
@@ -1216,7 +1220,7 @@ class DefaultNavigator implements Navigator {
         collectRelativeElements("parent::*", filter)
     }
 
-    protected Collection<WebElement> collectAncestors(Closure filter) {
+    protected Collection<WebElement> collectAncestors(@ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
         collectRelativeElements("ancestor::*", filter)
     }
 
