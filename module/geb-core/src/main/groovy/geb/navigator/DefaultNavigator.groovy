@@ -715,12 +715,20 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator siblings(Map<String, Object> attributes) {
-        siblings().filter(attributes)
+        navigatorFor(dynamic(attributes)) {
+            collectSiblings {
+                it.findAll { matches(it, attributes) }
+            }
+        }
     }
 
     @Override
     Navigator siblings(Map<String, Object> attributes = [:], String selector) {
-        siblings().filter(attributes, selector)
+        navigatorFor(dynamic(attributes)) {
+            collectSiblings {
+                it.findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+            }
+        }
     }
 
     @Override
@@ -1228,7 +1236,7 @@ class DefaultNavigator implements Navigator {
         collectRelativeElements("child::*", filter)
     }
 
-    protected Collection<WebElement> collectSiblings(Closure filter) {
+    protected Collection<WebElement> collectSiblings(@ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
         collectElements {
             def elements = it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
             filter ? filter(elements) : elements

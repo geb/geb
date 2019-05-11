@@ -958,4 +958,46 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 1
     }
 
+    def "siblings attribute based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("div")
+            div("div")
+            div(class: "match", "div")
+        }
+
+        and:
+        def secondDiv = $("div::nth-of-type(2)")
+        def nonDynamic = secondDiv.siblings(class: "match")
+        def dynamic = secondDiv.siblings(class: "match", dynamic: true)
+
+        when:
+        secondDiv.jquery.before('<div class="match">div</div>')
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
+    def "siblings selector based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("div")
+            div("div")
+            div(class: "match", "div")
+        }
+
+        and:
+        def secondDiv = $("div::nth-of-type(2)")
+        def nonDynamic = secondDiv.siblings(".match")
+        def dynamic = secondDiv.siblings(".match", dynamic: true)
+
+        when:
+        secondDiv.jquery.before('<div class="match">div</div>')
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
+
 }
