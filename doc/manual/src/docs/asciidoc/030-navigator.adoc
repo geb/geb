@@ -42,15 +42,12 @@ There is an alias for the dollar function named “find” if a method named “
 
 === CSS Selectors
 
-You can use any CSS selector that the underlying `WebDriver` supports…
+You can use any CSS selector that the underlying `WebDriver` implementation supports…
 
 [source,groovy]
 ----
 include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=css3_selectors,indent=0]
 ----
-
-HTMLUnit driver only partially supports CSS 3.
-A future version of the HTMLUnit driver may gain better CSS 3 support.
 
 === Using WebDriver's `By` class selectors
 
