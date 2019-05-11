@@ -216,9 +216,7 @@ class DefaultNavigator implements Navigator {
     @Override
     Navigator filter(Map<String, Object> predicates, String selector) {
         navigatorFor(dynamic(predicates)) {
-            contextElements.findAll {
-                CssSelector.matches(it, selector) && matches(it, predicates)
-            }
+            contextElements.findAll(matchingSelectorAndPredicates(selector, predicates))
         }
     }
 
@@ -486,10 +484,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator next(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator next(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectFollowingSiblings {
-                it.find { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.find(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -509,10 +507,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator nextAll(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator nextAll(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectFollowingSiblings {
-                it.findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.findAll(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -552,10 +550,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator previous(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator previous(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectPreviousSiblings {
-                it.reverse().find { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.reverse().find(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -575,10 +573,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator prevAll(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator prevAll(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectPreviousSiblings {
-                it.reverse().findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.reverse().findAll(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -616,10 +614,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator parent(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator parent(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectParents {
-                it.findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.findAll(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -641,10 +639,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator parents(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator parents(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectAncestors {
-                it.reverse().findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.reverse().findAll(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -677,10 +675,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator closest(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator closest(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectAncestors {
-                it.reverse().find { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.reverse().find(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -693,17 +691,17 @@ class DefaultNavigator implements Navigator {
     @Override
     Navigator children(Map<String, Object> attributes) {
         navigatorFor(dynamic(attributes)) {
-            collectChildren().findAll {
-                matches(it, attributes)
+            collectChildren {
+                it.findAll { matches(it, attributes) }
             }
         }
     }
 
     @Override
-    Navigator children(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
-            collectChildren().findAll {
-                CssSelector.matches(it, selector) && matches(it, attributes)
+    Navigator children(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
+            collectChildren {
+                it.findAll(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -723,10 +721,10 @@ class DefaultNavigator implements Navigator {
     }
 
     @Override
-    Navigator siblings(Map<String, Object> attributes = [:], String selector) {
-        navigatorFor(dynamic(attributes)) {
+    Navigator siblings(Map<String, Object> predicates = [:], String selector) {
+        navigatorFor(dynamic(predicates)) {
             collectSiblings {
-                it.findAll { CssSelector.matches(it, selector) && matches(it, attributes) }
+                it.findAll(matchingSelectorAndPredicates(selector, predicates))
             }
         }
     }
@@ -1232,7 +1230,7 @@ class DefaultNavigator implements Navigator {
         collectRelativeElements("ancestor::*", filter)
     }
 
-    protected Collection<WebElement> collectChildren(Closure filter) {
+    protected Collection<WebElement> collectChildren(@ClosureParams(value = FromString, options = "java.util.List<org.openqa.selenium.WebElement>") Closure filter) {
         collectRelativeElements("child::*", filter)
     }
 
@@ -1245,6 +1243,10 @@ class DefaultNavigator implements Navigator {
 
     protected List<String> elementClasses(WebElement element) {
         element?.getAttribute("class")?.tokenize()?.unique()?.sort() ?: EMPTY_LIST
+    }
+
+    protected Closure<Boolean> matchingSelectorAndPredicates(String selector, Map<String, Object> predicates) {
+        { WebElement element -> CssSelector.matches(element, selector) && matches(element, predicates) }
     }
 
     /**
