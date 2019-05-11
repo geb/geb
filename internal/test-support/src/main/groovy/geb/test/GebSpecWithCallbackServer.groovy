@@ -19,6 +19,8 @@ import spock.lang.Shared
 
 class GebSpecWithCallbackServer extends GebSpecWithServer {
 
+    protected final static String JQUERY_CODE = getClass().getResource("/jquery-1.4.2.min.js").text
+
     @Shared
     CallbackHttpServer callbackServer = new CallbackHttpServer({ browser.config })
 
@@ -43,5 +45,20 @@ class GebSpecWithCallbackServer extends GebSpecWithServer {
     void html(String html) {
         responseHtml(html)
         go()
+    }
+
+    void bodyWithJquery(Closure closure = {}) {
+        html {
+            head {
+                script(type: "text/javascript") {
+                    mkp.yieldUnescaped JQUERY_CODE
+                }
+            }
+            body {
+                closure.delegate = delegate
+                closure.resolveStrategy = DELEGATE_FIRST
+                closure.call()
+            }
+        }
     }
 }

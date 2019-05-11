@@ -21,23 +21,6 @@ import spock.lang.Unroll
 
 class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
 
-    private final static String JQUERY_CODE = getClass().getResource("/jquery-1.4.2.min.js").text
-
-    void bodyWithJquery(Closure closure) {
-        html {
-            head {
-                script(type: "text/javascript") {
-                    mkp.yieldUnescaped JQUERY_CODE
-                }
-            }
-            body {
-                closure.delegate = delegate
-                closure.resolveStrategy = DELEGATE_FIRST
-                closure.call()
-            }
-        }
-    }
-
     @Unroll("#scenario selector based dynamic navigator")
     def "selector based dynamic navigator"() {
         given:
