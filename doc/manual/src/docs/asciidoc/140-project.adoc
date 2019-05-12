@@ -89,6 +89,17 @@ This page lists the high level changes between versions of Geb.
 
 * Use `Number` instead of `Double` for waitFor calls [issue:570[]]
 
+==== New features
+
+* <<dynamic-navigators,Dynamic navigators>>. [issue:557[]]
+
+==== Breaking changes
+
+* `geb.navigator.EmptyNavigator` class has been removed. [issue:557[]]
+* Signature of the method in `geb.navigator.factory.InnerNavigatorFactory` has been changed. [issue:557[]]
+* Multiple methods have been moved up from `geb.navigator.Locator` to `geb.navigator.BasicLocator`. [issue:557[]]
+* `geb.navigator.NonEmptyNavigator` has been renamed to `geb.navigator.DefaultNavigator`. [issue:557[]]
+
 === 2.3.1
 
 ==== Fixes
