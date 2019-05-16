@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.navigator.factory
+package geb.collection
 
-import geb.Browser
-import geb.navigator.Navigator
-import geb.navigator.DefaultNavigator
-import org.openqa.selenium.WebElement
+import java.util.function.Predicate
 
-/**
- * Default implementation of {@link geb.navigator.factory.InnerNavigatorFactory}.
- *
- * Returns an instance of {@link DefaultNavigator}.
- */
-class DefaultInnerNavigatorFactory implements InnerNavigatorFactory {
+class FilteringIterable<T> implements Iterable<T> {
 
-    Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
-        new DefaultNavigator(browser, elements)
+    private final Iterable<T> iterable
+    private final Predicate<T> predicate
+
+    FilteringIterable(Iterable<T> iterable, Predicate<T> predicate) {
+        this.iterable = iterable
+        this.predicate = predicate
     }
 
+    @Override
+    Iterator<T> iterator() {
+        new FilteringIterator<T>(iterable.iterator(), predicate)
+    }
 }

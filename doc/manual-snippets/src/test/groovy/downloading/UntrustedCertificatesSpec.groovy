@@ -28,7 +28,7 @@ import javax.net.ssl.HttpsURLConnection
 class UntrustedCertificatesSpec extends GebSpecWithCallbackServer {
 
     @Shared
-    CallbackHttpsServer httpsServer = new CallbackHttpsServer()
+    CallbackHttpsServer httpsServer = new CallbackHttpsServer(browser.config)
 
     TestHttpServer getServerInstance() {
         httpsServer

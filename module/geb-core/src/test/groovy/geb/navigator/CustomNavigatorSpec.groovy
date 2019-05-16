@@ -24,8 +24,7 @@ import org.openqa.selenium.WebElement
 class CustomNavigatorSpec extends GebSpecWithCallbackServer {
 
     def setup() {
-        _browser = null
-        browser.config.rawConfig.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+        browser.config.rawConfig.innerNavigatorFactory = { Browser browser, Iterable<WebElement> elements ->
             new CustomNavigatorSpecCustomNavigator(browser, elements)
         }
 
@@ -38,7 +37,7 @@ class CustomNavigatorSpec extends GebSpecWithCallbackServer {
         go()
     }
 
-    def "can use not overridden methods from NonEmptyNavigator"() {
+    def "can use not overridden methods from DefaultNavigator"() {
         given:
         def input = $('input')
 
@@ -70,7 +69,7 @@ class CustomNavigatorSpecPage extends Page {
 }
 
 @InheritConstructors
-class CustomNavigatorSpecCustomNavigator extends NonEmptyNavigator {
+class CustomNavigatorSpecCustomNavigator extends DefaultNavigator {
 
     String getTypeAttribute() {
         attr('type')

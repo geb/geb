@@ -62,28 +62,13 @@ class DefaultLocator implements Locator {
     }
 
     @Override
-    Navigator find(Map<String, Object> attributes, By bySelector) {
-        find(bySelector).filter(attributes)
-    }
-
-    @Override
     Navigator $(Map<String, Object> attributes, By bySelector, int index) {
         find(attributes, bySelector, index)
     }
 
     @Override
-    Navigator find(Map<String, Object> attributes, By bySelector, int index) {
-        find(attributes, bySelector)[index]
-    }
-
-    @Override
     Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
         find(attributes, bySelector, range)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-        find(attributes, bySelector)[range]
     }
 
     @Override
@@ -94,11 +79,6 @@ class DefaultLocator implements Locator {
     @Override
     Navigator $(By bySelector, int index) {
         find(bySelector, index)
-    }
-
-    @Override
-    Navigator find(By bySelector, int index) {
-        find(bySelector)[index]
     }
 
     @Override
@@ -117,16 +97,6 @@ class DefaultLocator implements Locator {
     }
 
     @Override
-    Navigator find(Map<String, Object> attributes, int index) {
-        find(attributes)[index]
-    }
-
-    @Override
-    Navigator find(Map<String, Object> attributes, Range<Integer> range) {
-        find(attributes)[range]
-    }
-
-    @Override
     Navigator $(Map<String, Object> attributes, int index) {
         find(attributes, index)
     }
@@ -139,16 +109,6 @@ class DefaultLocator implements Locator {
     @Override
     Navigator $(Map<String, Object> attributes, String selector) {
         find(attributes, selector)
-    }
-
-    @Override
-    Navigator find(Map<String, Object> attributes, String selector, int index) {
-        find(attributes, selector)[index]
-    }
-
-    @Override
-    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
-        find(attributes, selector)[range]
     }
 
     @Override

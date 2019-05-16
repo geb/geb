@@ -31,7 +31,7 @@ import static org.openqa.selenium.remote.DriverCommand.GET_CURRENT_URL
 class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer {
 
     @Shared
-    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer()
+    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer(browser.config)
 
     @Override
     TestHttpServer getServerInstance() {

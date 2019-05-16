@@ -32,7 +32,7 @@ class ContentWaitConditionSpec extends GebSpecWithCallbackServer {
                     <script type="text/javascript" charset="utf-8">
                     setTimeout(function() {
                         \$("div").show();
-                    }, 200);
+                    }, 300);
                     </script>
                 </head>
                 <body>

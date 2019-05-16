@@ -1,5 +1,3 @@
-import geb.gradle.saucelabs.SauceAccount
-
 buildscript {
     repositories {
         mavenCentral()
@@ -12,7 +10,7 @@ buildscript {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
         classpath "gradle.plugin.com.energizedwork:idea-gradle-plugins:1.4"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
-        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.1"
     }
 }
 
@@ -35,7 +33,7 @@ allprojects { project ->
     version = '2.4-SNAPSHOT'
     group = 'org.gebish'
 
-    apply plugin: "com.energizedwork.webdriver-binaries"
+    apply plugin: "com.github.erdi.webdriver-binaries"
 
     ext {
         isSnapshot = version.endsWith("-SNAPSHOT")
@@ -46,7 +44,7 @@ allprojects { project ->
         groovyVersion = "2.5.4"
         spockVersion = "1.1-groovy-2.4"
         junit4Version = "4.10"
-        geckodriverVersion = "0.19.0"
+        geckodriverVersion = "0.24.0"
         jettyVersion = "9.4.8.v20171121"
         threeTenExtraVersion = "1.4"
 
@@ -75,7 +73,7 @@ allprojects { project ->
 
         groovyModules = [
             ":module:geb-core", ":internal:test-support",
-            ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
+            ":module:geb-spock", ":module:geb-junit4",
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets",
@@ -84,10 +82,10 @@ allprojects { project ->
 
         publishedModules = [
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
+            ":module:geb-spock", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
 
-        sauceLabsModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
+        localCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
@@ -175,30 +173,14 @@ subprojects {
         }
     }
 
-    if (path in sauceLabsModules) {
-        apply plugin: "geb-saucelabs"
-
-        dependencies {
-            sauceConnect sauceConnectDependency
+    if (path in localCrossBrowserTestModules) {
+        task chromeLinuxTest(type: Test) {
+            maxHeapSize = "512m"
+            systemProperty "geb.dockerized.driver", "chrome"
         }
 
-        sauceLabs {
-            def tunnelId = UUID.randomUUID().toString()
-            task {
-                maxHeapSize = "512m"
-                testClassesDirs = test.testClassesDirs
-                classpath = test.classpath
-                maxParallelForks 5
-                systemProperty "geb.saucelabs.tunnelId", tunnelId
-            }
-            account {
-                username = System.getenv(SauceAccount.USER_ENV_VAR)
-                accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
-            }
-            connect {
-                timeout 10 // minutes
-                additionalOptions = ['--tunnel-identifier', tunnelId]
-            }
+        task allLocalCrossBrowserTests {
+            dependsOn chromeLinuxTest
         }
     }
 

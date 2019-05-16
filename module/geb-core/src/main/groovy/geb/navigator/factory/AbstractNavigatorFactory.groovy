@@ -16,7 +16,9 @@
 package geb.navigator.factory
 
 import geb.Browser
+import geb.collection.FilteringIterable
 import geb.navigator.Navigator
+import jodd.util.collection.CompositeIterator
 import org.openqa.selenium.WebElement
 
 abstract class AbstractNavigatorFactory implements NavigatorFactory {
@@ -30,23 +32,16 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
     }
 
     Navigator createFromWebElements(Iterable<WebElement> elements) {
-        List<WebElement> filtered = []
-        elements.each {
-            if (it != null) {
-                filtered << it
-            }
-        }
+        def filtered = new FilteringIterable(elements, { it != null })
+
         innerNavigatorFactory.createNavigator(browser, filtered)
     }
 
     Navigator createFromNavigators(Iterable<Navigator> navigators) {
-        List<WebElement> filtered = []
-        navigators.each {
-            if (it != null) {
-                filtered.addAll(it.allElements())
-            }
-        }
-        innerNavigatorFactory.createNavigator(browser, filtered)
+        def notNullNavigators = navigators.findAll { it != null }
+        def elements = { new CompositeIterator(notNullNavigators*.elementIterator() as Iterator[]) } as Iterable<WebElement>
+
+        createFromWebElements(elements)
     }
 
     NavigatorFactory relativeTo(Navigator newBase) {

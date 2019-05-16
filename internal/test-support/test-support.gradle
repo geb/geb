@@ -6,5 +6,6 @@ dependencies {
 		"org.eclipse.jetty:jetty-servlet:$jettyVersion",
 		firefoxDriverDependency,
 		htmlUnitDriverDependency,
-		"org.seleniumhq.selenium:selenium-server:$seleniumVersion"
+		"org.seleniumhq.selenium:selenium-server:$seleniumVersion",
+		"org.testcontainers:selenium:1.11.2"
 }

@@ -37,11 +37,11 @@ class DefaultWaitingSupport implements WaitingSupport {
         doWaitFor(params.message, config.defaultWait, block)
     }
 
-    public <T> T waitFor(Map params = [:], Double timeout, Closure<T> block) {
+    public <T> T waitFor(Map params = [:], Number timeout, Closure<T> block) {
         doWaitFor(params.message, config.getWait(timeout), block)
     }
 
-    public <T> T waitFor(Map params = [:], Double timeout, Double interval, Closure<T> block) {
+    public <T> T waitFor(Map params = [:], Number timeout, Number interval, Closure<T> block) {
         doWaitFor(params.message, new Wait(timeout, interval), block)
     }
 

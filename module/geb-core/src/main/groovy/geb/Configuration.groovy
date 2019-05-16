@@ -48,7 +48,7 @@ class Configuration {
     /**
      * Updates a {@code waiting.preset} config entry for a given preset name.
      */
-    void setWaitPreset(String name, Double presetTimeout, Double presetRetryInterval) {
+    void setWaitPreset(String name, Number presetTimeout, Number presetRetryInterval) {
         rawConfig.waiting.presets[name].with {
             timeout = presetTimeout
             retryInterval = presetRetryInterval
@@ -67,7 +67,7 @@ class Configuration {
         new Wait(getDefaultWaitTimeout(), getDefaultWaitRetryInterval(), getIncludeCauseInWaitTimeoutExceptionMessage())
     }
 
-    Wait getWait(Double timeout) {
+    Wait getWait(Number timeout) {
         new Wait(timeout, getDefaultWaitRetryInterval(), getIncludeCauseInWaitTimeoutExceptionMessage())
     }
 
@@ -77,14 +77,14 @@ class Configuration {
         } else if (waitingParam instanceof CharSequence) {
             getWaitPreset(waitingParam.toString())
         } else if (waitingParam instanceof Number && waitingParam > 0) {
-            getWait(waitingParam.doubleValue())
+            getWait(waitingParam)
         } else if (waitingParam instanceof Collection) {
             if (waitingParam.size() == 2) {
                 def timeout = waitingParam[0]
                 def retryInterval = waitingParam[1]
 
                 if (timeout instanceof Number && retryInterval instanceof Number) {
-                    new Wait(timeout.doubleValue(), retryInterval.doubleValue(), getIncludeCauseInWaitTimeoutExceptionMessage())
+                    new Wait(timeout, retryInterval, getIncludeCauseInWaitTimeoutExceptionMessage())
                 } else {
                     throw new IllegalArgumentException("'wait' param has illegal value '$waitingParam' (collection elements must be numbers)")
                 }
@@ -101,7 +101,7 @@ class Configuration {
      *
      * @see #getDefaultWaitTimeout()
      */
-    void setDefaultWaitTimeout(Double defaultWaitTimeout) {
+    void setDefaultWaitTimeout(Number defaultWaitTimeout) {
         rawConfig.waiting.timeout = defaultWaitTimeout
     }
 
@@ -110,8 +110,8 @@ class Configuration {
      * <p>
      * Either the value at config path {@code waiting.timeout} or {@link geb.waiting.Wait#DEFAULT_TIMEOUT 5}.
      */
-    Double getDefaultWaitTimeout() {
-        readValue(rawConfig.waiting, 'timeout', Wait.DEFAULT_TIMEOUT)
+    Number getDefaultWaitTimeout() {
+        readValue(rawConfig.waiting, 'timeout', Wait.DEFAULT_TIMEOUT) as Number
     }
 
     /**
@@ -137,7 +137,7 @@ class Configuration {
      *
      * @see #getDefaultWaitRetryInterval()
      */
-    void setDefaultWaitRetryInterval(Double defaultWaitRetryInterval) {
+    void setDefaultWaitRetryInterval(Number defaultWaitRetryInterval) {
         rawConfig.waiting.retryInterval = defaultWaitRetryInterval
     }
 
@@ -146,7 +146,7 @@ class Configuration {
      * <p>
      * Either the value at config path {@code waiting.retryInterval} or {@link geb.waiting.Wait#DEFAULT_RETRY_INTERVAL 0.1}.
      */
-    Double getDefaultWaitRetryInterval() {
+    Number getDefaultWaitRetryInterval() {
         readValue(rawConfig.waiting, 'retryInterval', Wait.DEFAULT_RETRY_INTERVAL)
     }
 

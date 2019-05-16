@@ -16,61 +16,132 @@
 package geb.navigator
 
 import geb.navigator.factory.NavigatorFactory
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.FromString
 import org.openqa.selenium.By
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.WebElement
 
+import java.util.function.Supplier
+
 import static geb.navigator.Locator.MATCH_ALL_SELECTOR
+import static geb.navigator.BasicLocator.DYNAMIC_ATTRIBUTE_NAME
+import static geb.navigator.WebElementPredicates.matches
 
 class SearchContextBasedBasicLocator implements BasicLocator {
 
     private static final Map<String, Closure> BY_SELECTING_ATTRIBUTES = [
-        id: By.&id,
-        class: By.&className,
-        name: By.&name
+            id   : By.&id,
+            class: By.&className,
+            name : By.&name
     ]
 
-    private final Collection<? extends SearchContext> searchContexts
+    public static final List<String> NON_SELECTOR_TRANSLATABLE_ATTRIBUTES = ["text", DYNAMIC_ATTRIBUTE_NAME]
+
+    private final Iterable<? extends SearchContext> searchContexts
     private final NavigatorFactory navigatorFactory
 
     SearchContextBasedBasicLocator(SearchContext searchContext, NavigatorFactory navigatorFactory) {
         this([searchContext], navigatorFactory)
     }
 
-    SearchContextBasedBasicLocator(Collection<? extends SearchContext> searchContexts, NavigatorFactory navigatorFactory) {
+    SearchContextBasedBasicLocator(Iterable<? extends SearchContext> searchContexts, NavigatorFactory navigatorFactory) {
         this.searchContexts = searchContexts
         this.navigatorFactory = navigatorFactory
     }
 
     @Override
     Navigator find(By bySelector) {
-        List<WebElement> list = []
-        for (searchContext in searchContexts) {
-            list.addAll searchContext.findElements(bySelector)
+        find(false, bySelector)
+    }
+
+    @Override
+    Navigator find(By bySelector, int index) {
+        find(false, bySelector, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, int index) {
+        find(attributes) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, index)
         }
-        navigatorFor list
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, Range<Integer> range) {
+        find(attributes) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, range)
+        }
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, By bySelector, int index) {
+        find(dynamic(attributes), bySelector, attributes, index)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
+        find(dynamic(attributes), bySelector, attributes, range)
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, By bySelector) {
+        find(dynamic(attributes), bySelector, attributes)
     }
 
     @Override
     Navigator find(Map<String, Object> attributes, String selector) {
+        find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes)
+        }
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, String selector, int index) {
+        find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, index)
+        }
+    }
+
+    @Override
+    Navigator find(Map<String, Object> attributes, String selector, Range<Integer> range) {
+        find(attributes, selector) { dynamic, bySelector, filteredAttributes ->
+            find(dynamic, bySelector, filteredAttributes, range)
+        }
+    }
+
+    protected Navigator find(
+            Map<String, Object> attributes,
+            String selector = MATCH_ALL_SELECTOR,
+            @ClosureParams(value = FromString, options = "Boolean,org.openqa.selenium.By,Map<String, Object>") Closure<Navigator> navigatorFromBy
+    ) {
         def attributesCopy = attributes.clone()
-        def selectedUsingBy = findUsingByIfPossible(attributesCopy, selector)
+        def selectedUsingBy = findUsingByIfPossible(attributesCopy, selector, navigatorFromBy)
         if (selectedUsingBy != null) {
             return selectedUsingBy
         }
+
         def optimizedSelector = optimizeSelector(selector, attributesCopy)
-        optimizedSelector ? find(By.cssSelector(optimizedSelector)).filter(attributesCopy) : find(attributes)
+        if (optimizedSelector) {
+            navigatorFromBy.call(dynamic(attributes), By.cssSelector(optimizedSelector), attributesCopy)
+        } else {
+            find(attributes, MATCH_ALL_SELECTOR)
+        }
     }
 
-    protected Navigator navigatorFor(Collection<WebElement> contextElements) {
+    protected Navigator navigatorFor(Iterable<WebElement> contextElements) {
         navigatorFactory.createFromWebElements(contextElements)
     }
 
-    protected Navigator findUsingByIfPossible(Map<String, Object> attributes, String selector) {
+    protected Navigator findUsingByIfPossible(
+            Map<String, Object> attributes,
+            String selector,
+            @ClosureParams(value = FromString, options = "Boolean,org.openqa.selenium.By,Map<String, Object>") Closure<Navigator> navigatorFromBy
+    ) {
         if (attributes.size() == 1 && selector == MATCH_ALL_SELECTOR) {
-            BY_SELECTING_ATTRIBUTES.findResult {
-                if (hasStringValueForKey(attributes, it.key)) {
-                    find(it.value.call(attributes[it.key]))
+            BY_SELECTING_ATTRIBUTES.findResult { String attributeName, Closure<By> byFactory ->
+                if (hasStringValueForKey(attributes, attributeName)) {
+                    navigatorFromBy.call(false, byFactory.call(attributes[attributeName]), [:])
                 }
             }
         }
@@ -92,7 +163,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
         def buffer = new StringBuilder(selector)
         for (def it = attributes.entrySet().iterator(); it.hasNext();) {
             def attribute = it.next()
-            if (attribute.key != "text" && attribute.value instanceof CharSequence) {
+            if (!(attribute.key in NON_SELECTOR_TRANSLATABLE_ATTRIBUTES) && attribute.value instanceof CharSequence) {
                 def attributeValue = attribute.value.toString()
                 if (attribute.key == "class") {
                     attributeValue.split(/\s+/).each { className ->
@@ -109,5 +180,50 @@ class SearchContextBasedBasicLocator implements BasicLocator {
             buffer.deleteCharAt(0)
         }
         buffer.toString()
+    }
+
+    protected Navigator find(boolean dynamic, By bySelector, Map<String, Object> attributes = [:]) {
+        toNavigator(dynamic, elementsSupplier(bySelector, attributes))
+    }
+
+    protected Navigator find(boolean dynamic, By bySelector, Map<String, Object> attributes = [:], int index) {
+        toNavigator(dynamic, elementsSupplier(bySelector, attributes, index))
+    }
+
+    protected Navigator find(boolean dynamic, By bySelector, Map<String, Object> attributes, Range<Integer> range) {
+        toNavigator(dynamic, elementsSupplier(bySelector, attributes, range))
+    }
+
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes) {
+        { ->
+            searchContexts.collectMany { it.findElements(bySelector) }.findAll { matches(it, attributes) }
+        }
+    }
+
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes, int index) {
+        { ->
+            [elementsSupplier(bySelector, attributes).get()[index]]
+        }
+    }
+
+    protected Supplier<Collection<WebElement>> elementsSupplier(By bySelector, Map<String, Object> attributes, Range<Integer> range) {
+        { ->
+            def elements = elementsSupplier(bySelector, attributes).get()
+            if (elements) {
+                elements.toList()[range]
+            }
+        }
+    }
+
+    protected Iterable<WebElement> toDynamicIterable(Supplier<Collection<WebElement>> contextElementsSupplier) {
+        { -> contextElementsSupplier.get().iterator() } as Iterable<WebElement>
+    }
+
+    protected Navigator toNavigator(boolean dynamic, Supplier<Collection<WebElement>> contextElementsSupplier) {
+        navigatorFor(dynamic ? toDynamicIterable(contextElementsSupplier) : contextElementsSupplier.get())
+    }
+
+    protected boolean dynamic(Map<String, Object> attributes) {
+        attributes[DYNAMIC_ATTRIBUTE_NAME]
     }
 }

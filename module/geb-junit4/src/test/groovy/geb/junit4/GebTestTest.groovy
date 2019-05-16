@@ -23,7 +23,7 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4)
 class GebTestTest extends GebTest {
 
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     @Before
     void setUp() {

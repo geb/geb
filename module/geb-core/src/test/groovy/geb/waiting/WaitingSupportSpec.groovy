@@ -17,7 +17,7 @@ package geb.waiting
 import geb.Module
 import geb.Page
 import geb.fixture.CrossPlatformSupport
-import geb.navigator.EmptyNavigator
+import geb.navigator.DefaultNavigator
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
 import spock.lang.Unroll
 
@@ -147,7 +147,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
         where:
         evaluatedClosure << [{ false }, { $('#not-existing-element') }, { throw new Exception() }] * 2
-        lastEvaluationValueClass << [Boolean, EmptyNavigator, UnknownWaitForEvaluationResult] * 2
+        lastEvaluationValueClass << [Boolean, DefaultNavigator, UnknownWaitForEvaluationResult] * 2
         waitForTime << [0, 0.1].sum { [it] * 3 }
     }
 

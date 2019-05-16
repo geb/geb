@@ -19,7 +19,7 @@ import geb.Browser
 import geb.Configuration
 import geb.error.InvalidGebConfiguration
 import geb.navigator.Navigator
-import geb.navigator.NonEmptyNavigator
+import geb.navigator.DefaultNavigator
 import geb.navigator.factory.BrowserBackedNavigatorFactory
 import geb.navigator.factory.DefaultInnerNavigatorFactory
 import geb.navigator.factory.InnerNavigatorFactory
@@ -33,7 +33,6 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
     ConfigObject raw
 
     def setup() {
-        _browser = null
         config = browser.config
         raw = config.rawConfig
     }
@@ -47,7 +46,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
 
     def "can use closure based inner"() {
         when:
-        raw.innerNavigatorFactory = { Browser browser, List<WebElement> elements ->
+        raw.innerNavigatorFactory = { Browser browser, Iterable<WebElement> elements ->
             new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
         }
         go()
@@ -60,7 +59,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
         when:
         def impl = new InnerNavigatorFactory() {
             @Override
-            Navigator createNavigator(Browser browser, List<WebElement> elements) {
+            Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
                 new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
             }
         }
@@ -110,7 +109,7 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
     def "can explicitly set"() {
         when:
         raw.innerNavigatorFactory = new InnerNavigatorFactory() {
-            Navigator createNavigator(Browser browser, List<WebElement> elements) {
+            Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
                 new ConfigurationNavigatorFactorySpecCustomNavigator(browser, elements)
             }
         }
@@ -123,5 +122,5 @@ class ConfigurationNavigatorFactorySpec extends GebSpecWithCallbackServer {
 }
 
 @InheritConstructors
-class ConfigurationNavigatorFactorySpecCustomNavigator extends NonEmptyNavigator {
+class ConfigurationNavigatorFactorySpecCustomNavigator extends DefaultNavigator {
 }

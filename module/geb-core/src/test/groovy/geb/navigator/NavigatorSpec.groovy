@@ -381,6 +381,19 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         !$(".notFocused").focused
     }
 
+    def "filtering with only dynamic attribute set to true is a noop"() {
+        given:
+        html {
+            div("div")
+        }
+
+        when:
+        def unfiltered = $("div")
+
+        then:
+        unfiltered.filter(dynamic: true).is(unfiltered)
+    }
+
 }
 
 class PageWithoutAtChecker extends Page {

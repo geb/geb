@@ -885,6 +885,8 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
     Collection<WebElement> allElements()
     // end::web_element_returning_methods[]
 
+    Iterator<WebElement> elementIterator()
+
     Iterator<Navigator> iterator()
 
     /**

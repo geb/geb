@@ -32,13 +32,12 @@ interface InnerNavigatorFactory {
     /**
      * Create a Navigator instance for the given web elements.
      *
-     * The elements list may be null or zero length. Which means that they navigator
-     * should represent “no matched content” (a.k.a {@link geb.navigator.EmptyNavigator})
+     * The elements list may be of zero length.
      *
      * @param browser The browser to attach the navigators too.
      * @param elements Zero or more content elements to wrap as a navigator
      * @return A navigator instance, for the given elements
      */
-    Navigator createNavigator(Browser browser, List<WebElement> elements)
+    Navigator createNavigator(Browser browser, Iterable<WebElement> elements)
 
 }

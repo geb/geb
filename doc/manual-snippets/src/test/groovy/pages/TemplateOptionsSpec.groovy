@@ -241,7 +241,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         """
         def exceptionMessage =
         // tag::min_exception_message[]
-        "Page content 'pages.PageWithTemplateUsingMinOption -> atLeastThreeElementNavigator: geb.navigator.NonEmptyNavigator' should return a navigator with at least 3 elements but has returned a navigator with 2 elements"
+        "Page content 'pages.PageWithTemplateUsingMinOption -> atLeastThreeElementNavigator: geb.navigator.DefaultNavigator' should return a navigator with at least 3 elements but has returned a navigator with 2 elements"
         // end::min_exception_message[]
 
         when:
@@ -268,7 +268,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         """
         def exceptionMessage =
         // tag::max_exception_message[]
-        "Page content 'pages.PageWithTemplateUsingMaxOption -> atMostThreeElementNavigator: geb.navigator.NonEmptyNavigator' should return a navigator with at most 3 elements but has returned a navigator with 4 elements"
+        "Page content 'pages.PageWithTemplateUsingMaxOption -> atMostThreeElementNavigator: geb.navigator.DefaultNavigator' should return a navigator with at most 3 elements but has returned a navigator with 4 elements"
         // end::max_exception_message[]
 
         when:
@@ -295,7 +295,7 @@ class TemplateOptionsSpec extends GebSpecWithCallbackServer {
         """
         def exceptionMessage =
         // tag::times_exception_message[]
-        "Page content 'pages.PageWithTemplateUsingTimesOption -> twoToThreeElementNavigator: geb.navigator.NonEmptyNavigator' should return a navigator with at most 3 elements but has returned a navigator with 4 elements"
+        "Page content 'pages.PageWithTemplateUsingTimesOption -> twoToThreeElementNavigator: geb.navigator.DefaultNavigator' should return a navigator with at most 3 elements but has returned a navigator with 4 elements"
         // end::times_exception_message[]
 
         when:

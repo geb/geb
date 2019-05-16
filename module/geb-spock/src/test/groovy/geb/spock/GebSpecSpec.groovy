@@ -21,7 +21,7 @@ import geb.test.CallbackHttpServer
 class GebSpecSpec extends GebSpec {
 
     @Shared
-        server = new CallbackHttpServer()
+        server = new CallbackHttpServer(browser.config)
 
     def setupSpec() {
         server.start()

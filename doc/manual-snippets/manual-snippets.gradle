@@ -33,4 +33,5 @@ test {
 
 idea.module {
     testSourceDirs += sourceSets.realBrowserTest.allSource.srcDirs
+    scopes.TEST.plus += [configurations.realBrowserTestCompile]
 }

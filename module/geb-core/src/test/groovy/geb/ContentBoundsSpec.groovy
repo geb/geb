@@ -34,7 +34,7 @@ class ContentBoundsSpec extends GebSpecWithCallbackServer {
 
         then:
         ContentCountOutOfBoundsException e = thrown()
-        e.message == "Page content 'geb.ContentBoundsSpecPage -> elements: geb.navigator.NonEmptyNavigator' should return a navigator with $boundsText but has returned a navigator with $actual"
+        e.message == "Page content 'geb.ContentBoundsSpecPage -> elements: geb.navigator.DefaultNavigator' should return a navigator with $boundsText but has returned a navigator with $actual"
 
         where:
         templateOptions | count | boundsText            | actual

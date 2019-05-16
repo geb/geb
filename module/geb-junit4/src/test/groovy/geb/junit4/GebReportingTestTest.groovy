@@ -34,7 +34,7 @@ class GebReportingTestTest extends GebReportingTest {
         </html>
     """
 
-    def server = new CallbackHttpServer()
+    def server = new CallbackHttpServer(browser.config)
 
     @Before
     void setUp() {

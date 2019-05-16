@@ -16,7 +16,7 @@ package geb
 
 import geb.error.UnableToSetElementException
 import geb.navigator.Navigator
-import geb.navigator.NonEmptyNavigator
+import geb.navigator.DefaultNavigator
 import geb.test.GebSpecWithCallbackServer
 import org.openqa.selenium.WebElement
 import spock.lang.Issue
@@ -165,7 +165,7 @@ class NavigableSpec extends GebSpecWithCallbackServer {
         WebElement element = Mock(WebElement) {
             getTagName() >> "INPUT"
         }
-        Navigator navigator = new NonEmptyNavigator(Stub(Browser), [element])
+        Navigator navigator = new DefaultNavigator(Stub(Browser), [element])
 
         when:
         navigator.value("test")

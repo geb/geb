@@ -718,7 +718,7 @@ What's the trade-off? Calling `toString()` on any content element, including mod
 
 [source]
 ----
-modules.ModuleUnwrappingPage -> theModule: modules.UnwrappedModule -> theContent: geb.navigator.NonEmptyNavigator
+modules.ModuleUnwrappingPage -> theModule: modules.UnwrappedModule -> theContent: geb.navigator.DefaultNavigator
 ----
 
 Such paths can be seen in error messages and this is exactly what you are going to give away for unwrapped modules.

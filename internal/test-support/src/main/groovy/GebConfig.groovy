@@ -1,6 +1,12 @@
 import geb.buildadapter.BuildAdapterFactory
 import geb.driver.BrowserStackDriverFactory
 import geb.driver.SauceLabsDriverFactory
+import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.firefox.FirefoxOptions
+import org.testcontainers.Testcontainers
+import org.testcontainers.containers.BrowserWebDriverContainer
+import org.testcontainers.shaded.org.apache.commons.io.FileUtils
+import org.testcontainers.utility.ResourceReaper
 
 testValue = true // used in a test in geb-core
 
@@ -12,6 +18,38 @@ String getForkIndex(int total) {
 
 void setPortIndexProperty(String index) {
     System.setProperty('geb.port.index', index)
+}
+
+BrowserWebDriverContainer containerForDriver(String driverName) {
+    def container = new BrowserWebDriverContainer<>()
+            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, null)
+
+    switch (driverName) {
+        case "chrome":
+            container.withCapabilities(new ChromeOptions())
+            break
+        case "firefox":
+            container.withCapabilities(new FirefoxOptions())
+                .withSharedMemorySize(2 * FileUtils.ONE_GB)
+            break
+        default:
+            throw new Exception("Unsupported dockerized driver: $driverName")
+    }
+
+    container.start()
+
+    ResourceReaper.instance().registerContainerForCleanup(container.containerId, container.dockerImageName)
+
+    container
+}
+
+String findLocalIp() {
+    def ip4Addresses = NetworkInterface.networkInterfaces.toList()
+            .collectMany { it.inetAddresses.toList() }
+            .findAll { it in Inet4Address }
+            *.hostAddress
+
+    ip4Addresses.find { it != "127.0.0.1" }
 }
 
 if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
@@ -44,6 +82,23 @@ if (browserStackBrowser) {
         assert tunnelId
         new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, ["browserstack.localIdentifier": tunnelId])
     }
+
+    if (browserStackBrowser.contains("realMobile")) {
+        testHttpServerHost = findLocalIp()
+    }
+}
+
+def dockerizedDriver = System.getProperty("geb.dockerized.driver")
+if (dockerizedDriver) {
+    Testcontainers.exposeHostPorts(8080)
+
+    driver = {
+        containerForDriver(dockerizedDriver).webDriver
+    }
+
+    testHttpServerHost = "host.testcontainers.internal"
+
+    testHttpServerPortHandler = { int port -> Testcontainers.exposeHostPorts(port) }
 }
 
 def devDriver = System.getProperty("geb.dev.driver")

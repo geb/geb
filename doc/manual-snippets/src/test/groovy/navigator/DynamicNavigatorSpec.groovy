@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.navigator.factory
+package navigator
 
-import geb.Browser
 import geb.navigator.Navigator
-import geb.navigator.DefaultNavigator
-import org.openqa.selenium.WebElement
+import geb.test.GebSpecWithCallbackServer
 
-/**
- * Default implementation of {@link geb.navigator.factory.InnerNavigatorFactory}.
- *
- * Returns an instance of {@link DefaultNavigator}.
- */
-class DefaultInnerNavigatorFactory implements InnerNavigatorFactory {
+class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
 
-    Navigator createNavigator(Browser browser, Iterable<WebElement> elements) {
-        new DefaultNavigator(browser, elements)
+    def "dynamic navigator example"() {
+        given:
+        bodyWithJquery()
+        def navigator = dynamicDivNavigator()
+
+        when:
+        $("body").jquery.append("<div>div</div>")
+
+        then:
+        navigator
     }
 
+    Navigator dynamicDivNavigator() {
+        // tag::example[]
+        $("div", dynamic: true)
+        // end::example[]
+    }
 }

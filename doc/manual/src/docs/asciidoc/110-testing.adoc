@@ -69,7 +69,7 @@ Wherever possible, favour the use of the auto-reporting base classes.
 === Cookie management
 
 The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies for the current domain at the end of each test method.
-For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
+For JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
 in `geb.testng.GebTestTrait`.
 
 The `geb.spock.GebSpec` class will clear the cookies in the `cleanup()` method unless the spec is `@Stepwise`, in which case they are cleared in `cleanupSpec()` (meaning that all feature methods in a
@@ -83,7 +83,7 @@ If you need to clear cookies in multiple domains you will need to manually track
 === Web storage management
 
 The Spock, JUnit and TestNG integrations can be <<auto-clearing-web-storage-configuration, configured>> to automatically clear the browser's web storage, that is both local and session storage, for the current domain at the end of each test method.
-For JUnit 3 this happens in the `tearDown()` method in `geb.junit3.GebTest`, for JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
+For JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
 in `geb.testng.GebTestTrait`.
 
 The `geb.spock.GebSpec` class will clear the web storage in the `cleanup()` method unless the spec is `@Stepwise`, in which case it is cleared in `cleanupSpec()` (meaning that all feature methods in a
@@ -110,7 +110,6 @@ The following table illustrates the specific JARs and class names for various te
 
 |Spock |http://mvnrepository.com/artifact/{geb-group}/geb-spock[geb-spock] |link:api/geb/spock/GebSpec.html[`geb.spock.GebSpec`] |link:api/geb/spock/GebReportingSpec.html[`geb.spock.GebReportingSpec`]
 |JUnit 4 |http://mvnrepository.com/artifact/{geb-group}/geb-junit4[geb-junit4] |link:api/geb/junit4/GebTest.html[`geb.junit4.GebTest`] |link:api/geb/junit4/GebReportingTest.html[`geb.junit4.GebReportingTest`]
-|JUnit 3 |http://mvnrepository.com/artifact/{geb-group}/geb-junit3[geb-junit3] |link:api/geb/junit3/GebTest.html[`geb.junit3.GebTest`] |link:api/geb/junit3/GebReportingTest.html[`geb.junit3.GebReportingTest`]
 |TestNG |http://mvnrepository.com/artifact/{geb-group}/geb-testng[geb-testng] |link:api/geb/testng/GebTestTrait.html[`geb.testng.GebTestTrait`] |link:api/geb/testng/GebReportingTestTrait.html[`geb.testng.GebReportingTestTrait`]
 |===
 
