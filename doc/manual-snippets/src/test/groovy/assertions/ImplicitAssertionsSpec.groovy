@@ -35,7 +35,7 @@ Assertion failed:
 title == "Implicit Assertions!"
 |     |
 |     false
-Something else
+'Something else'
 // end::at_checker_message[]
 """
     }
@@ -48,7 +48,7 @@ Assertion failed:
 headingText.empty
 |           |
 |           false
-This is a heading
+'This is a heading'
 // end::at_checking_with_assertions_message[]
 """
     }
@@ -61,7 +61,7 @@ Assertion failed:
 title == "Page Title"
 |     |
 |     false
-Something else
+'Something else'
 // end::waiting_message[]
 """
     }

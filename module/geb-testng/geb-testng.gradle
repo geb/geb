@@ -1,5 +1,5 @@
 dependencies {
-    compile "org.testng:testng:6.0.1"
+    compile "org.testng:testng:6.14.3"
 }
 
 test {

@@ -78,7 +78,7 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
         this.waitingSupport = new DefaultWaitingSupport(browser.config)
         this.frameSupport = new DefaultFrameSupport(browser)
         this.js = browser.js
-        this.alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.js }, browser.config)
+        this.alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
         this.interactionsSupport = new DefaultInteractionsSupport(browser)
         initialized()
     }

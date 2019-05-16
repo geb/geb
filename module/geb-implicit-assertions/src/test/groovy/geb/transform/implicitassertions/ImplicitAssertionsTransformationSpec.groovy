@@ -79,7 +79,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         noExceptionThrown()
 
         where:
-        closureBody << ['def a = false', 'assert true', 'voidMethod()']
+        closureBody << ['def a = false', 'assert true', 'voidMethod()', 'staticVoidMethod()']
     }
 
     @Unroll("compilation error is reported when not allowed statements are found")
@@ -130,15 +130,23 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     }
 
     @Issue("https://github.com/geb/issues/issues/462")
+    @Unroll("at closures return true even if the last method call is to #closureBody")
     def "at closures return true even if the last method call is to a void method"() {
         expect:
-        getTransformedInstanceWithClosureBody('voidMethod()').at() == true
+        getTransformedInstanceWithClosureBody(closureBody).verifyAt() == true
+
+        where:
+        closureBody << ['voidMethod()', 'staticVoidMethod()']
     }
 
     @Issue("https://github.com/geb/issues/issues/462")
+    @Unroll("return value from waitFor block is unchanged if the last method call is to #closureBody")
     def "return value from waitFor block is unchanged if the last method call is to a void method"() {
         expect:
-        getTransformedInstanceWithClosureBody('voidMethod()').runWaitFor() == null
+        getTransformedInstanceWithClosureBody(closureBody).runWaitFor() == null
+
+        where:
+        closureBody << ['voidMethod()', 'staticVoidMethod()']
     }
 
     @Issue("https://github.com/geb/issues/issues/398")

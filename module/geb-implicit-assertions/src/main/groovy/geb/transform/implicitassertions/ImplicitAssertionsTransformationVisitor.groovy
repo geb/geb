@@ -255,27 +255,50 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         assertAndRetrieveRecordedValue.addStatement(retrieveRecordedValueStatement)
 
         if (expression in MethodCallExpression) {
-            MethodCallExpression rewrittenMethodCall = expression
+            MethodCallExpression methodCall = expression
 
-            Statement noAssertion = new BlockStatement()
-            noAssertion.addStatement(new ExpressionStatement(expression))
-            if (appendTrueToNonAssertedStatements) {
-                noAssertion.addStatement(new ExpressionStatement(ConstantExpression.TRUE))
-            }
-            StaticMethodCallExpression isVoidMethod = createRuntimeCall(
-                "isVoidMethod",
-                rewrittenMethodCall.objectExpression,
-                rewrittenMethodCall.method,
-                toArgumentArray(rewrittenMethodCall.arguments)
+            replacement = wrapInVoidMethodCheck(
+                    expression,
+                    assertAndRetrieveRecordedValue,
+                    methodCall.objectExpression,
+                    methodCall.method,
+                    methodCall.arguments,
+                    appendTrueToNonAssertedStatements
             )
+        } else if (expression in StaticMethodCallExpression) {
+            StaticMethodCallExpression methodCall = expression
 
-            replacement = new IfStatement(new BooleanExpression(isVoidMethod), noAssertion, assertAndRetrieveRecordedValue)
+            replacement = wrapInVoidMethodCheck(
+                    expression,
+                    assertAndRetrieveRecordedValue,
+                    new ClassExpression(methodCall.ownerType),
+                    new ConstantExpression(methodCall.method),
+                    methodCall.arguments,
+                    appendTrueToNonAssertedStatements
+            )
         } else {
             replacement = assertAndRetrieveRecordedValue
         }
 
         replacement.sourcePosition = statement
         replacement
+    }
+
+    private Statement wrapInVoidMethodCheck(Expression original, BlockStatement assertAndRetrieveRecordedValue, Expression targetExpression, Expression methodExpression,
+                                            Expression argumentsExpression, boolean appendTrueToNonAssertedStatements) {
+        Statement noAssertion = new BlockStatement()
+        noAssertion.addStatement(new ExpressionStatement(original))
+        if (appendTrueToNonAssertedStatements) {
+            noAssertion.addStatement(new ExpressionStatement(ConstantExpression.TRUE))
+        }
+        StaticMethodCallExpression isVoidMethod = createRuntimeCall(
+                "isVoidMethod",
+                targetExpression,
+                methodExpression,
+                toArgumentArray(argumentsExpression)
+        )
+
+        new IfStatement(new BooleanExpression(isVoidMethod), noAssertion, assertAndRetrieveRecordedValue)
     }
 
     private StaticMethodCallExpression createRuntimeCall(String methodName, Expression... argumentExpressions) {

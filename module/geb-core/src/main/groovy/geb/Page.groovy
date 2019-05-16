@@ -32,16 +32,13 @@ import geb.js.AlertAndConfirmSupport
 import geb.js.DefaultAlertAndConfirmSupport
 import geb.js.JavascriptInterface
 import geb.js.UninitializedAlertAndConfirmSupport
-import geb.navigator.Navigator
 import geb.url.UrlFragment
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.DefaultWaitingSupport
 import geb.waiting.UninitializedWaitingSupport
 import geb.waiting.Wait
 import geb.waiting.WaitingSupport
-import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
 
 /**
  * The Page type is the basis of the Page Object pattern in Geb.
@@ -130,7 +127,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 
-    @Delegate
+    @Delegate(allNames = true)
     private Navigable navigableSupport = new UninitializedNavigableSupport(this)
 
     /**
@@ -147,7 +144,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         waitingSupport = new DefaultWaitingSupport(browser.config)
         frameSupport = new DefaultFrameSupport(browser)
         interactionsSupport = new DefaultInteractionsSupport(browser)
-        alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ this.getJs() }, browser.config)
+        alertAndConfirmSupport = new DefaultAlertAndConfirmSupport({ js }, browser.config)
         this
     }
 
@@ -318,86 +315,6 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
      */
     @SuppressWarnings(["UnusedMethodParameter", "EmptyMethod"])
     void onUnload(Page nextPage) {
-    }
-
-    Navigator $() {
-        navigableSupport.$()
-    }
-
-    Navigator $(int index) {
-        navigableSupport.$(index)
-    }
-
-    Navigator $(Range<Integer> range) {
-        navigableSupport.$(range)
-    }
-
-    Navigator $(String selector) {
-        navigableSupport.$(selector)
-    }
-
-    Navigator $(String selector, int index) {
-        navigableSupport.$(selector, index)
-    }
-
-    Navigator $(String selector, Range<Integer> range) {
-        navigableSupport.$(selector, range)
-    }
-
-    Navigator $(Map<String, Object> attributes) {
-        navigableSupport.$(attributes)
-    }
-
-    Navigator $(Map<String, Object> attributes, int index) {
-        navigableSupport.$(attributes, index)
-    }
-
-    Navigator $(Map<String, Object> attributes, Range<Integer> range) {
-        navigableSupport.$(attributes, range)
-    }
-
-    Navigator $(Map<String, Object> attributes, String selector) {
-        navigableSupport.$(attributes, selector)
-    }
-
-    Navigator $(Map<String, Object> attributes, String selector, int index) {
-        navigableSupport.$(attributes, selector, index)
-    }
-
-    Navigator $(Map<String, Object> attributes, String selector, Range<Integer> range) {
-        navigableSupport.$(attributes, selector, range)
-    }
-
-    Navigator $(Map<String, Object> attributes, By bySelector) {
-        navigableSupport.find(attributes, bySelector)
-    }
-
-    Navigator $(Map<String, Object> attributes, By bySelector, int index) {
-        navigableSupport.find(attributes, bySelector, index)
-    }
-
-    Navigator $(Map<String, Object> attributes, By bySelector, Range<Integer> range) {
-        navigableSupport.find(attributes, bySelector, range)
-    }
-
-    Navigator $(By bySelector) {
-        navigableSupport.find(bySelector)
-    }
-
-    Navigator $(By bySelector, int index) {
-        navigableSupport.find(bySelector, index)
-    }
-
-    Navigator $(By bySelector, Range<Integer> range) {
-        navigableSupport.find(bySelector, range)
-    }
-
-    Navigator $(Navigator[] navigators) {
-        navigableSupport.$(navigators)
-    }
-
-    Navigator $(WebElement[] elements) {
-        navigableSupport.$(elements)
     }
 
     /**
