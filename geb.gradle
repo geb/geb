@@ -77,7 +77,7 @@ allprojects { project ->
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets",
-            ":compatibility:groovy-2.3.7", ":compatibility:spock-1.0"
+            ":compatibility:spock-1.0"
         ]
 
         publishedModules = [
