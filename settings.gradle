@@ -1,6 +1,5 @@
 include "module:geb-core",
     "module:geb-spock",
-    "module:geb-junit3",
     "module:geb-junit4",
     "module:geb-testng",
     "module:geb-implicit-assertions",

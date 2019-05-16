@@ -99,6 +99,7 @@ This page lists the high level changes between versions of Geb.
 * Signature of the method in `geb.navigator.factory.InnerNavigatorFactory` has been changed. [issue:557[]]
 * Multiple methods have been moved up from `geb.navigator.Locator` to `geb.navigator.BasicLocator`. [issue:557[]]
 * `geb.navigator.NonEmptyNavigator` has been renamed to `geb.navigator.DefaultNavigator`. [issue:557[]]
+* JUnit 3 support has been retired. [issue:532[]]
 
 === 2.3.1
 

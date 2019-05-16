@@ -73,7 +73,7 @@ allprojects { project ->
 
         groovyModules = [
             ":module:geb-core", ":internal:test-support",
-            ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4",
+            ":module:geb-spock", ":module:geb-junit4",
             ":module:geb-testng", ":module:geb-implicit-assertions",
             ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets",
@@ -82,7 +82,7 @@ allprojects { project ->
 
         publishedModules = [
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":module:geb-spock", ":module:geb-junit3", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
+            ":module:geb-spock", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
 
         localCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
