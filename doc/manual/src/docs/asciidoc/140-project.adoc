@@ -87,7 +87,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-* Use `Number` instead of `Double` for waitFor calls [issue:570[]]
+==== Fixes
+
+* Use `Number` instead of `Double` for waitFor calls. [issue:570[]]
+* Make `RadioButtons` module extendable. [issue:562[]]
 
 ==== New features
 

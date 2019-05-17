@@ -76,6 +76,11 @@ class RadioButtonsSpec extends GebSpecWithCallbackServer {
         expect:
         nestedInLabel.checkedLabel == "wrapping label"
     }
+
+    def "module is extendable"() {
+        expect:
+        $(name: "checked").module(ExtendedRadioButtons).checked == "second"
+    }
 }
 
 class RadioButtonsPage extends Page {
@@ -84,4 +89,7 @@ class RadioButtonsPage extends Page {
         unchecked { $(name: "unchecked").module(RadioButtons) }
         nestedInLabel { $(name: "nested-in-label").module(RadioButtons) }
     }
+}
+
+class ExtendedRadioButtons extends RadioButtons {
 }

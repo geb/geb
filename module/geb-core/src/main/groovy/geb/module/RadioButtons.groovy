@@ -61,11 +61,11 @@ class RadioButtons extends Module {
         }
     }
 
-    private List<String> getAttributes(String attributeName) {
+    protected List<String> getAttributes(String attributeName) {
         navigator*.getAttribute(attributeName)*.toLowerCase().unique().sort()
     }
 
-    private WebElement getCheckedElement() {
+    protected WebElement getCheckedElement() {
         navigator.allElements().find { it.selected }
     }
 }
