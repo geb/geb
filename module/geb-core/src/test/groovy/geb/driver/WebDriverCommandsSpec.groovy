@@ -150,6 +150,24 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
         [name: "fizz"] | "name"       | "fizz"
     }
 
+    void "passing a single attribute map to find should be translated to a specific By selector even if the value is a GString"() {
+        given:
+        html {
+            body {
+                input name: "bar"
+            }
+        }
+
+        when:
+        def input = $(name: "${"bar"}")
+
+        then:
+        input
+
+        and:
+        driver.ensureExecuted("findElements", using: "name", value: "bar")
+    }
+
     void "setting text input value"() {
         given:
         html {

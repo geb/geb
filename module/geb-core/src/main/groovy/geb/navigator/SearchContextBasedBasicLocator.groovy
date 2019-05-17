@@ -148,7 +148,7 @@ class SearchContextBasedBasicLocator implements BasicLocator {
     }
 
     protected boolean hasStringValueForKey(Map<String, Object> attributes, String key) {
-        attributes.containsKey(key) && attributes[key] instanceof String
+        attributes.containsKey(key) && attributes[key] instanceof CharSequence
     }
 
     /**
