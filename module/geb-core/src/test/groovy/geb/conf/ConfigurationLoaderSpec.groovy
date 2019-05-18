@@ -64,6 +64,24 @@ class ConfigurationLoaderSpec extends Specification {
         thrown UnableToLoadException
     }
 
+    def "load file that does not compile"() {
+        given:
+        def classLoader = new GroovyClassLoader()
+
+        and:
+        def scriptClass = classLoader.parseClass("throw new Exception('bad config')")
+
+        and:
+        def loader = new ConfigurationLoader(null, null, classLoader)
+
+        when:
+        loader.getConfFromClass(scriptClass.name)
+
+        then:
+        def e = thrown(UnableToLoadException)
+        e.cause.message == "bad config"
+    }
+
     def "verify default config class name"() {
         expect:
         loader.defaultConfigClassName == 'GebConfig'

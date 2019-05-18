@@ -21,6 +21,6 @@ class UnableToLoadException extends GebException {
     }
 
     UnableToLoadException(Class configClass, String environment, Throwable cause) {
-        super("Unable to load configuration from class '$configClass' (with environment: $environment)")
+        super("Unable to load configuration from class '$configClass' (with environment: $environment)", cause)
     }
 }

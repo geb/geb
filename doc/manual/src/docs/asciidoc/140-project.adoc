@@ -92,6 +92,7 @@ This page lists the high level changes between versions of Geb.
 * Use `Number` instead of `Double` for waitFor calls. [issue:570[]]
 * Make `RadioButtons` module extendable. [issue:562[]]
 * Fix selector optimisation when attributes map contains `GString` values. [issue:564[]]
+* Do not swallow the cause when instantiating `UnableToLoadException`. [issue:572[]]
 
 ==== New features
 
