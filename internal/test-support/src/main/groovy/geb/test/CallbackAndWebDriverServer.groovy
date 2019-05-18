@@ -18,7 +18,11 @@ package geb.test
 import geb.Configuration
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
+import org.openqa.selenium.remote.server.ActiveSessions
+import org.openqa.selenium.remote.server.DefaultPipeline
 import org.openqa.selenium.remote.server.WebDriverServlet
+
+import static java.util.concurrent.TimeUnit.SECONDS
 
 class CallbackAndWebDriverServer extends CallbackHttpServer {
 
@@ -37,7 +41,8 @@ class CallbackAndWebDriverServer extends CallbackHttpServer {
     protected addServlets(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new CallbackServlet(this)), "/application/*")
 
-        context.setAttribute(WebDriverServlet.SESSION_TIMEOUT_PARAMETER, 10000)
-        context.addServlet(WebDriverServlet, "/webdriver/*")
+        def sessions = new ActiveSessions(10, SECONDS)
+        def servlet = new WebDriverServlet(sessions, DefaultPipeline.createDefaultPipeline().create())
+        context.addServlet(new ServletHolder(servlet), "/webdriver/*")
     }
 }

@@ -1,4 +1,5 @@
 import geb.test.browsers.Chrome
+import geb.test.browsers.ChromeLinux
 import geb.test.browsers.Edge
 import geb.test.browsers.FirefoxLinux
 import geb.test.browsers.CrossBrowser
@@ -44,7 +45,7 @@ if (cloudBrowserSpecification) {
     def includes = []
 
     if (dockerizedDriver == "chrome") {
-        includes << Chrome
+        includes << Chrome << ChromeLinux
     }
     if (dockerizedDriver == "firefox") {
         includes << Firefox << FirefoxLinux
