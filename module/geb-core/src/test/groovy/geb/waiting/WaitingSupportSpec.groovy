@@ -43,7 +43,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
         then:
         $("div").empty
-        subjectFactory().waitFor(0.2) { !$("div").empty }
+        subjectFactory().waitFor(0.3) { !$("div").empty }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -55,7 +55,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
         then:
         $("div").empty
-        subjectFactory().waitFor(0.2) { assert !$("div").empty; true }
+        subjectFactory().waitFor(0.3) { assert !$("div").empty; true }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -206,7 +206,7 @@ Assertion failed:
         js.showIn(0.15)
 
         then:
-        subjectFactory().waitFor(0.2, 0.1) { $("div") }
+        subjectFactory().waitFor(0.3, 0.1) { $("div") }
 
         where:
         [subjectFactory, subjectName] << subjects()
@@ -214,7 +214,7 @@ Assertion failed:
 
     def "using preset - when called on #subjectName"() {
         given:
-        browser.config.setWaitPreset("custom", 0.2, 0.1)
+        browser.config.setWaitPreset("custom", 0.3, 0.1)
 
         when:
         js.showIn(0.15)
