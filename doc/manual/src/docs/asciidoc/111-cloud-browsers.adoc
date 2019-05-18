@@ -87,6 +87,15 @@ if (sauceLabsBrowser) {
 }
 ----
 
+By default `SauceLabsDriverFactory` creates `RemoteWebDriver` instances connected to SauceLabs' US data center.
+If you wish to use a different data center then simply pass the host name for the given data center to the constructor.
+The below examples shows uses the hostname of the EU data center:
+
+[source,groovy]
+----
+new SauceLabsDriverFactory("ondemand.eu-central-1.saucelabs.com")
+----
+
 [[browser-stack-driver-factory]]
 === `BrowserStackDriverFactory`
 

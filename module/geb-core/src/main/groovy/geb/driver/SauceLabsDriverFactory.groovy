@@ -16,8 +16,15 @@
 package geb.driver
 
 class SauceLabsDriverFactory extends CloudDriverFactory {
+
+    private final String host
+
+    SauceLabsDriverFactory(String host = "ondemand.saucelabs.com") {
+        this.host = host
+    }
+
     @Override
     String assembleProviderUrl(String username, String password) {
-        "http://$username:$password@ondemand.saucelabs.com:80/wd/hub"
+        "http://$username:$password@$host/wd/hub"
     }
 }

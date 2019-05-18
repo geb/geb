@@ -97,6 +97,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * <<dynamic-navigators,Dynamic navigators>>. [issue:557[]]
+* Support specifying data center specific hostname when using SauceLabsDriverFactory. [issue:573[]]
 
 ==== Breaking changes
 
