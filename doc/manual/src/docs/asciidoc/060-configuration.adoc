@@ -351,9 +351,8 @@ you *must* set a reports dir.
 [[report-test-failures-configuration]]
 === Report test failures only
 
-By default Geb will take a report at the end of each test method, regardless of whether it ended successfully or not.
-The `reportOnTestFailureOnly` setting allows you to specify that a report should be taken only if a failure occurs.
-This might be useful as a way to speed up large test suites.
+By default Geb will take a report at the end of each *failed* test method.
+The `reportOnTestFailureOnly` setting can be set to `false` if you wish for reports to be taken after each test even if a failure does not occur.
 
 [source,groovy]
 ----

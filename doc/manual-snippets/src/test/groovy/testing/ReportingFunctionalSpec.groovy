@@ -15,66 +15,79 @@
  */
 package testing
 
-//tag::example[]
-import geb.spock.GebReportingSpec
-
-//end::example[]
 import geb.test.CallbackHttpServer
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.AutoCleanup
 import spock.lang.Shared
+import spock.lang.Specification
+import spock.util.EmbeddedSpecRunner
 
-import javax.servlet.http.HttpServletRequest
+class ReportingFunctionalSpec extends Specification {
 
-//tag::example[]
-class ReportingFunctionalSpec extends GebReportingSpec {
-    //end::example[]
+    EmbeddedSpecRunner specRunner = new EmbeddedSpecRunner(throwFailure: false)
+
     @Shared
     @AutoCleanup("stop")
-    CallbackHttpServer callbackServer = new CallbackHttpServer(browser.config)
+    def server = new CallbackHttpServer()
+
+    @Rule
+    TemporaryFolder tempDir
 
     def setupSpec() {
-        callbackServer.start(0)
-        browser.baseUrl = callbackServer.baseUrl
-        callbackServer.html { HttpServletRequest request ->
-            if (request.requestURI.endsWith("/login")) {
-                head {
-                    title "Logged in!"
-                }
-                body {
-                    input(type: "text", name: "username")
-                    input(type: "button", name: "login")
-                }
+        server.start()
+        server.html {
+            head {
+                title "Not logged in!"
+            }
+            body {
+                input(type: "text", name: "username")
+                input(type: "button", name: "login")
             }
         }
     }
 
-    def setup() {
-        browser.baseUrl = callbackServer.baseUrl
-    }
-
-    def cleanupSpec() {
-        reportExists("001-002-login-end")
+    File getReportsDir() {
+        new File(tempDir.root, "reports")
     }
 
     void reportExists(String filename) {
-        assert new File(browser.config.reportsDir, "testing/ReportingFunctionalSpec/${filename}.html").exists()
+        assert new File(reportsDir, "my/tests/LoginSpec/${filename}.html").exists()
     }
 
-    //tag::example[]
-    def "login"() {
+    def "reporting on a failing test which also writes a custom report"() {
         when:
-        go "/login"
-        username = "me"
-        report "login screen" //<1>
-        login().click()
+        specRunner.run """
+            //tag::example[]
+            package my.tests
+
+            import geb.spock.GebReportingSpec
+
+            class LoginSpec extends GebReportingSpec {
+            //end::example[]
+
+                def setup() {
+                    baseUrl = "${server.baseUrl}"
+                    config.rawConfig.reportsDir = "${reportsDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
+                }
+
+                //tag::example[]
+                def "login"() {
+                    when:
+                    go "/login"
+                    username = "me"
+                    report "login screen" //<1>
+                    login().click()
+
+                    then:
+                    title == "Logged in!"
+                }
+            }
+            //end::example[]
+        """
 
         then:
-        title == "Logged in!"
-        //end::example[]
-
-        and:
         reportExists("001-001-login-login screen")
-        //tag::example[]
+        reportExists("001-002-login-failure")
     }
 }
-//end::example[]

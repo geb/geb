@@ -28,12 +28,12 @@ class ReportOnTestFailuresConfigSpec extends Specification implements InlineConf
         when:
         configScript """
             // tag::config[]
-            reportOnTestFailureOnly = true
+            reportOnTestFailureOnly = false
             // end::config[]
         """
 
         then:
-        config.reportOnTestFailureOnly
+        !config.reportOnTestFailureOnly
     }
 
 }

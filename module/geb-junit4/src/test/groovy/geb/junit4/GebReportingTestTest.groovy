@@ -43,6 +43,7 @@ class GebReportingTestTest extends GebReportingTest {
             res.outputStream << responseText
         }
         browser.baseUrl = server.baseUrl
+        browser.config.reportOnTestFailureOnly = false
         go()
     }
 

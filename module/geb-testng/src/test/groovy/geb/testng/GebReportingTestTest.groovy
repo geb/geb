@@ -55,7 +55,7 @@ class GebReportingTestTest implements GebReportingTestTrait {
         ++methodNumber
         reportNumberInTest = 1
 
-        config.reportOnTestFailureOnly = false
+        config.reportOnTestFailureOnly = true
 
         browser.baseUrl = server.baseUrl
         go()
@@ -70,12 +70,14 @@ class GebReportingTestTest implements GebReportingTestTrait {
     @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportAfterMethodInit() {
         // initialization method that created in order to assert report creation in next method
+        config.reportOnTestFailureOnly = false
         methodNumberOfInitTest = methodNumber
     }
 
     @Test(dependsOnMethods = ["reportingTestShouldReportAfterMethodInit"], groups = ["GebReportingTestTest"])
     void reportingTestShouldReportAfterMethod() {
         // check previous method reporting (reportingTestShouldReportAfterMethodInit)
+        config.reportOnTestFailureOnly = false
         report("ondemand")
         doTestReport("reportingTestShouldReportAfterMethodInit", END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 1)
         methodNumberOfInitTest = methodNumber
@@ -90,7 +92,6 @@ class GebReportingTestTest implements GebReportingTestTrait {
 
     @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportOnTestFailureOnlyIfThatStrategyIsEnabled(Method testMethod) {
-        config.reportOnTestFailureOnly = true
         def testResult = new TestResult()
 
         testResult.status = ITestResult.SUCCESS

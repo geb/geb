@@ -15,10 +15,6 @@
 package geb.spock
 
 class ReportNameGebSpec extends GebReportingSpec {
-    def setup() {
-        config.reportOnTestFailureOnly = true
-    }
-
     def 'spec subclass can access report label'() {
         expect:
         createReportLabel("testing") == '001-001-spec subclass can access report label-testing'

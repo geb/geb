@@ -34,8 +34,7 @@ The browser instance is created by the testing integrations. The <<configuration
 [[testing-reporting]]
 === Reporting
 
-The Spock, JUnit and TestNG integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports at the end of test methods with
-the label “end”.
+The Spock, JUnit and TestNG integrations also ship a superclass (the name of the class for each integration module is provided below) that automatically takes reports with the label “failure” if a test fails.
 They also set the <<report-group, report group>> to the name of the test class (substituting “.” with “/”).
 
 The `{browser-report-method-api}` browser method is replaced with a specialised version.
@@ -43,18 +42,19 @@ This method works the same as the browser method, but adds counters and the curr
 
 [source,groovy]
 ----
-package my.tests
-
 include::{test-dir}/testing/ReportingFunctionalSpec.groovy[tag=example,indent=0]
 ----
 <1> Take a report of the login screen.
 
 Assuming a configured `reportsDir` of `reports/geb` and the default reporters (i.e. `{screenshot-reporter-api}` and `{page-source-reporter-api}`), we would find the following files:
 
-* `reports/geb/my/tests/ReportingFunctionalSpec/001-001-login-login screen.html`
-* `reports/geb/my/tests/ReportingFunctionalSpec/001-001-login-login screen.png`
-* `reports/geb/my/tests/ReportingFunctionalSpec/001-002-login-end.html`
-* `reports/geb/my/tests/ReportingFunctionalSpec/001-002-login-end.png`
+* `reports/geb/my/tests/LoginSpec/001-001-login-login screen.html`
+* `reports/geb/my/tests/LoginSpec/001-001-login-login screen.png`
+
+If the assertion on the title fails then the following files would be generated as well:
+
+* `reports/geb/my/tests/LoginSpec/001-002-login-failure.html`
+* `reports/geb/my/tests/LoginSpec/001-002-login-failure.png`
 
 The report file name format is:
 

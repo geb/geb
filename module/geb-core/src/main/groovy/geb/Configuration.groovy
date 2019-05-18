@@ -296,7 +296,7 @@ class Configuration {
     }
 
     boolean isReportOnTestFailureOnly() {
-        readValue("reportOnTestFailureOnly", false)
+        readValue("reportOnTestFailureOnly", true)
     }
 
     void setReportsDir(File reportsDir) {

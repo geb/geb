@@ -45,7 +45,6 @@ class FailingTest extends GebReportingTest {
         server.start()
         server.html {}
         browser.baseUrl = server.baseUrl
-        browser.config.reportOnTestFailureOnly = true
         go()
     }
 

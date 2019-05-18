@@ -75,6 +75,7 @@ class GebReportingSpecSpec extends Specification {
         runReportingSpec """
             def "a request is made"() {
                 given:
+                config.reportOnTestFailureOnly = false
                 go "/"
             }
         """
@@ -83,9 +84,9 @@ class GebReportingSpecSpec extends Specification {
         reportFile("001-001-a request is made-end.html").text.startsWith("<?xml")
     }
 
-    def "report is written after each test"() {
+    def "report is written after each test if reporting on failure only is disabled"() {
         when:
-        runReportingSpec """
+        runReportingSpec "config.reportOnTestFailureOnly = false", """
             def "first test"() {
                 given:
                 go "/"
@@ -107,7 +108,6 @@ class GebReportingSpecSpec extends Specification {
         runReportingSpec """
             def "passing test"() {
                 given:
-                config.reportOnTestFailureOnly = true
                 go "/"
 
                 expect:
@@ -124,7 +124,6 @@ class GebReportingSpecSpec extends Specification {
         runReportingSpec """
             def "failing test"() {
                 given:
-                config.reportOnTestFailureOnly = true
                 go "/"
 
                 expect:
@@ -142,7 +141,6 @@ class GebReportingSpecSpec extends Specification {
             @Unroll
             def "failing test"() {
                 given:
-                config.reportOnTestFailureOnly = true
                 go "/"
 
                 expect:
@@ -162,7 +160,6 @@ class GebReportingSpecSpec extends Specification {
         def result = runReportingSpec """
             def "failing test"() {
                 given:
-                config.reportOnTestFailureOnly = true
                 config.reporter = new Reporter() {
                     void writeReport(ReportState reportState) {
                         throw new Exception()
@@ -190,6 +187,7 @@ class GebReportingSpecSpec extends Specification {
 
             def setupSpec() {
                 ${configuration}
+                config.reportOnTestFailureOnly = false
 
                 go "/"
                 report('Report in setupSpec')
@@ -207,12 +205,13 @@ class GebReportingSpecSpec extends Specification {
         reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
     }
 
-    Result runReportingSpec(String body) {
+    Result runReportingSpec(String additionalConfiguration = "", String body) {
         specRunner.run """
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
                 def setup() {
                     ${configuration}
+                    ${additionalConfiguration}
                 }
 
                 $body

@@ -36,6 +36,6 @@ class GebReportingTestCleanupTest implements GebReportingTestTrait {
         def browser = createBrowser()
         browser.reportGroup(GebReportingTestTest)
 
-        assert browser.reportGroupDir.listFiles().size() == 7
+        assert browser.reportGroupDir.listFiles().size() == 5
     }
 }

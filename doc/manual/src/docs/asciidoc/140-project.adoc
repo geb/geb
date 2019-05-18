@@ -106,6 +106,7 @@ This page lists the high level changes between versions of Geb.
 * JUnit 3 support has been retired. [issue:532[]]
 * Update to Groovy 2.5.6. [issue:534[]]
 * Support for Groovy 2.3 has been removed. [issue:560[]]
+* Reports are now by default only taken only on test failure and not after every test. [issue:527[]]
 
 === 2.3.1
 
