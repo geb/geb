@@ -53,27 +53,28 @@ class BrowserStackTunnel extends ExternalTunnel {
         def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
         def commandLine = [tunnelPath]
         commandLine << extension.account.accessKey
-        if (extension.account.localId) {
-            commandLine << '-localIdentifier' << extension.account.localId
+        if (extension.local.identifier) {
+            commandLine << '-localIdentifier' << extension.local.identifier
         }
         if (extension.applicationUrls) {
             commandLine << "-only" << assembleAppSpecifier(extension.applicationUrls)
         }
-        if (extension.account.proxyHost) {
-            commandLine << "-proxyHost" << extension.account.proxyHost
+        if (extension.local.proxyHost) {
+            commandLine << "-proxyHost" << extension.local.proxyHost
         }
-        if (extension.account.proxyPort) {
-            commandLine << "-proxyPort" << extension.account.proxyPort
+        if (extension.local.proxyPort) {
+            commandLine << "-proxyPort" << extension.local.proxyPort
         }
-        if (extension.account.proxyUser) {
-            commandLine << "-proxyUser" << extension.account.proxyUser
+        if (extension.local.proxyUser) {
+            commandLine << "-proxyUser" << extension.local.proxyUser
         }
-        if (extension.account.proxyPass) {
-            commandLine << "-proxyPass" << extension.account.proxyPass
+        if (extension.local.proxyPass) {
+            commandLine << "-proxyPass" << extension.local.proxyPass
         }
-        if (extension.forceLocal) {
+        if (extension.local.force) {
             commandLine << "-forcelocal"
         }
+        commandLine.addAll(extension.local.additionalOptions)
         commandLine
     }
 }

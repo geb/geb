@@ -98,6 +98,7 @@ This page lists the high level changes between versions of Geb.
 
 * <<dynamic-navigators,Dynamic navigators>>. [issue:557[]]
 * Support specifying data center specific hostname when using SauceLabsDriverFactory. [issue:573[]]
+* Allow specifying custom commandline switches for BrowserStack local tunnel command in geb-browserstack Gradle plugin. [issue:573[]]
 
 ==== Breaking changes
 
@@ -109,6 +110,7 @@ This page lists the high level changes between versions of Geb.
 * Update to Groovy 2.5.6. [issue:534[]]
 * Support for Groovy 2.3 has been removed. [issue:560[]]
 * Reports are now by default only taken only on test failure and not after every test. [issue:527[]]
+* Proxy settings for BrowserStackLocal, tunnel identifier and forcing all traffic through local machine are now configured in a different block when using geb-browserstack Gradle plugin. [issue:573[]]
 
 === 2.3.1
 

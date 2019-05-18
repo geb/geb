@@ -78,7 +78,7 @@ if (browserStackBrowser) {
         assert username
         def accessKey = System.getenv("GEB_BROWSERSTACK_AUTHKEY")
         assert accessKey
-        def tunnelId = System.getProperty("geb.browserstack.tunnelId")
+        def tunnelId = System.getenv("GEB_BROWSERSTACK_LOCALID")
         assert tunnelId
         new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, ["browserstack.localIdentifier": tunnelId])
     }

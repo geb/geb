@@ -68,7 +68,6 @@ sauceLabs {
 }
 
 browserStack {
-    def tunnelId = UUID.randomUUID().toString()
     def applicationAddresses = [8000, 8080, 9000, 9090, 9999].collect { "http://localhost:$it" }
     application(*applicationAddresses)
 
@@ -90,12 +89,13 @@ browserStack {
         testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
-        systemProperty "geb.browserstack.tunnelId", tunnelId
     }
     account {
         username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
         accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
-        localId = tunnelId
+    }
+    local {
+        identifier = UUID.randomUUID().toString()
     }
 }
 

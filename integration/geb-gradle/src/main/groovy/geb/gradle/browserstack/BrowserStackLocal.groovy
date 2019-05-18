@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,20 @@ package geb.gradle.browserstack
 
 import org.gradle.api.tasks.testing.Test
 
-class BrowserStackAccount {
-    public static final String USER_ENV_VAR = "GEB_BROWSERSTACK_USERNAME"
-    public static final String ACCESS_KEY_ENV_VAR = "GEB_BROWSERSTACK_AUTHKEY"
+class BrowserStackLocal {
 
-    String username
-    String accessKey
+    public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
+
+    String identifier
+    boolean force
+    String proxyHost
+    String proxyPort
+    String proxyUser
+    String proxyPass
+
+    List<String> additionalOptions = []
 
     void configure(Test test) {
-        if (username) {
-            test.environment(USER_ENV_VAR, username)
-        }
-        if (accessKey) {
-            test.environment(ACCESS_KEY_ENV_VAR, accessKey)
-        }
+        test.environment(LOCAL_ID_ENV_VAR, identifier)
     }
 }
