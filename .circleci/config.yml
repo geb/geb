@@ -18,24 +18,6 @@ jobs:
           key: gradle-home-modules
           paths:
             - .gradle-home
-  compatibility:
-    docker:
-      - image: gebish/ci:v7
-    environment:
-        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
-        GRADLE_USER_HOME: .gradle-home
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - gradle-home-compatibility
-      - run: ./gradlew --no-daemon --max-workers 2 --parallel -p compatibility -Pci check --continue
-      - store_artifacts:
-          path: build/reports
-      - save_cache:
-          key: gradle-home-compatibility
-          paths:
-            - .gradle-home
   integrations:
     docker:
       - image: gebish/ci:v7
@@ -221,19 +203,15 @@ workflows:
   build-workflow:
     jobs:
       - modules
-      - compatibility
       - integrations:
           requires:
             - modules
-            - compatibility
       - manual:
           requires:
             - modules
-            - compatibility
       - site:
           requires:
             - modules
-            - compatibility
       - local-cross-browser:
           requires:
             - integrations
