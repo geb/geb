@@ -15,12 +15,13 @@
  */
 package geb.waiting
 
+import java.time.Instant
+
 /**
  * Represents a particular configuration of waiting, but does not encompass what is to be waited on.
  * <p>
  * Generally not used by user code, but used internally by {@link geb.Configuration} and {@link geb.waiting.WaitingSupport}.
  */
-@SuppressWarnings("NoJavaUtilDate")
 class Wait {
 
     /**
@@ -80,17 +81,6 @@ class Wait {
         code
     }
 
-    Date calculateTimeoutFromNow() {
-        calculateTimeoutFrom(new Date())
-    }
-
-    Date calculateTimeoutFrom(Date start) {
-        def calendar = Calendar.instance
-        calendar.time = start
-        calendar.add(Calendar.MILLISECOND, toMilliseconds(timeout))
-        calendar.time
-    }
-
     /**
      * Invokes the given {@code block} every {@code retryInterval} seconds until it returns
      * a true value according to the Groovy Truth. If {@code block} does not return a truish value
@@ -105,7 +95,7 @@ class Wait {
      * it will be the <em>cause</em> of the {@link geb.waiting.WaitTimeoutException} that will be thrown.
      */
     public <T> T waitFor(Closure<T> block) {
-        def stopAt = calculateTimeoutFromNow()
+        def timeoutThreshold = timeoutThresholdFromNow()
         def pass
         def thrown = null
 
@@ -116,7 +106,7 @@ class Wait {
             thrown = e
         }
 
-        def timedOut = new Date() > stopAt
+        def timedOut = Instant.now() > timeoutThreshold
         while (!pass && !timedOut) {
             sleepForRetryInterval()
             try {
@@ -126,7 +116,7 @@ class Wait {
                 pass = new UnknownWaitForEvaluationResult(e)
                 thrown = e
             } finally {
-                timedOut = new Date() > stopAt
+                timedOut = Instant.now() > timeoutThreshold
             }
         }
 
@@ -137,14 +127,18 @@ class Wait {
         pass as T
     }
 
+    private static int toMilliseconds(Number seconds) {
+        seconds * 1000
+    }
+
+    private Instant timeoutThresholdFromNow() {
+        Instant.now().plusMillis(toMilliseconds(timeout))
+    }
+
     /**
      * Blocks the caller for the retryInterval
      */
-    void sleepForRetryInterval() {
+    private void sleepForRetryInterval() {
         Thread.sleep(toMilliseconds(retryInterval))
-    }
-
-    private static int toMilliseconds(Number seconds) {
-        seconds * 1000
     }
 }
