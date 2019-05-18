@@ -78,8 +78,6 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
                     if (argumentExpressions.size() == 12) {
                         visitVerifyMethodConditionCall(argumentExpressions, 7)
-                    } else  if (argumentExpressions.size() >= 8) {
-                        visitVerifyMethodConditionCall(argumentExpressions, 6)
                     }
                 }
             }

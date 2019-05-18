@@ -10,8 +10,7 @@ include "module:geb-core",
     "integration:geb-gradle",
     "doc:manual",
     "doc:manual-snippets",
-    "doc:site",
-    "compatibility:spock-1.0"
+    "doc:site"
 
 rootProject.name = 'geb'
 
