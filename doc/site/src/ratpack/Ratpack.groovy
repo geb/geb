@@ -21,7 +21,10 @@ import geb.site.Model
 import ratpack.error.ClientErrorHandler
 import ratpack.groovy.template.TextTemplateModule
 import ratpack.handling.Context
+import ratpack.http.HttpUrlBuilder
+import ratpack.server.PublicAddress
 
+import static io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
 
@@ -38,6 +41,21 @@ ratpack {
         add Date, new Date()
     }
     handlers {
+        all {
+            def uri = get(PublicAddress).get()
+            def host = uri.host
+            if (host != "localhost") {
+                if (host != "gebish.org" || uri.scheme != "https") {
+                    def redirectUri = HttpUrlBuilder.https()
+                            .host("gebish.org")
+                            .path(request.path)
+                    redirect(MOVED_PERMANENTLY.code(), redirectUri)
+                    return
+                }
+            }
+            next()
+        }
+
         files {
             dir("public")
             indexFiles("index.html")
