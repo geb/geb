@@ -66,4 +66,6 @@ modifyPom {
     }
 
     dependencies.removeAll(dependencies.findAll { it.scope == "test" })
+
+    dependencies.find { it.artifactId == "groovy-all" }?.type = "pom"
 }
