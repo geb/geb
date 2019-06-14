@@ -87,7 +87,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Set the correct type of dependency on `groovy-all` in poms published for Geb artifacts. [issue:586[]]
 
 === 3.0
 
