@@ -25,12 +25,12 @@ class AdvancedNavigationSpec extends Specification {
     def "using to with page specifying an url"() {
         expect:
         // tag::to[]
-        Browser.drive(baseUrl: "http://www.gebish.org/") {
+        Browser.drive(baseUrl: "https://gebish.org/") {
             // end::to[]
             driver.javascriptEnabled = false
             // tag::to[]
             to PageObjectsPage
-            assert currentUrl == "http://www.gebish.org/pages"
+            assert currentUrl == "https://gebish.org/pages"
         }
         // end::to[]
     }
@@ -38,12 +38,12 @@ class AdvancedNavigationSpec extends Specification {
     def "using to with additional arguments"() {
         expect:
         // tag::to_with_args[]
-        Browser.drive(baseUrl: "http://www.gebish.org/") {
+        Browser.drive(baseUrl: "https://gebish.org/") {
             // end::to_with_args[]
             driver.javascriptEnabled = false
             // tag::to_with_args[]
             to ManualsPage, "0.9.3", "index.html"
-            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html"
+            assert currentUrl == "https://gebish.org/manual/0.9.3/index.html"
         }
         // end::to_with_args[]
     }
@@ -56,12 +56,12 @@ class AdvancedNavigationSpec extends Specification {
         // end::convert_to_path[]
         then:
         // tag::convert_to_path[]
-        Browser.drive(baseUrl: "http://www.gebish.org/") {
+        Browser.drive(baseUrl: "https://gebish.org/") {
             // end::convert_to_path[]
             driver.javascriptEnabled = false
             // tag::convert_to_path[]
             to ManualsPage, someManualVersion
-            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html"
+            assert currentUrl == "https://gebish.org/manual/0.9.3/index.html"
         }
         // end::convert_to_path[]
     }
@@ -74,12 +74,12 @@ class AdvancedNavigationSpec extends Specification {
         // end::to_with_named_params[]
         then:
         // tag::to_with_named_params[]
-        Browser.drive(baseUrl: "http://www.gebish.org/") {
+        Browser.drive(baseUrl: "https://gebish.org/") {
             // end::to_with_named_params[]
             driver.javascriptEnabled = false
             // tag::to_with_named_params[]
             to ManualsPage, someManualVersion, flag: true
-            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html?flag=true"
+            assert currentUrl == "https://gebish.org/manual/0.9.3/index.html?flag=true"
         }
         // end::to_with_named_params[]
     }
@@ -87,12 +87,12 @@ class AdvancedNavigationSpec extends Specification {
     def "using to with fragments"() {
         expect:
         // tag::to_with_fragment[]
-        Browser.drive(baseUrl: "http://www.gebish.org/") {
+        Browser.drive(baseUrl: "https://gebish.org/") {
             // end::to_with_fragment[]
             driver.javascriptEnabled = false
             // tag::to_with_fragment[]
             to ManualsPage, UrlFragment.of("advanced-page-navigation"), "0.9.3", "index.html"
-            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html#advanced-page-navigation"
+            assert currentUrl == "https://gebish.org/manual/0.9.3/index.html#advanced-page-navigation"
         }
         // end::to_with_fragment[]
     }
@@ -100,12 +100,12 @@ class AdvancedNavigationSpec extends Specification {
     def "using to with parameterized page"() {
         expect:
         // tag::to_with_parameterized_page[]
-        Browser.drive(baseUrl: "http://www.gebish.org/") {
+        Browser.drive(baseUrl: "https://gebish.org/") {
             // end::to_with_parameterized_page[]
             driver.javascriptEnabled = false
             // tag::to_with_parameterized_page[]
             to new ParameterizedManualsPage(version: "0.9.3", section: "advanced-page-navigation")
-            assert currentUrl == "http://www.gebish.org/manual/0.9.3/index.html#advanced-page-navigation"
+            assert currentUrl == "https://gebish.org/manual/0.9.3/index.html#advanced-page-navigation"
         }
         // end::to_with_parameterized_page[]
     }
