@@ -1,12 +1,15 @@
 import geb.buildadapter.BuildAdapterFactory
 import geb.driver.BrowserStackDriverFactory
 import geb.driver.SauceLabsDriverFactory
+import org.openqa.selenium.Capabilities
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxOptions
 import org.testcontainers.Testcontainers
 import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.shaded.org.apache.commons.io.FileUtils
 import org.testcontainers.utility.ResourceReaper
+
+import static org.testcontainers.containers.BrowserWebDriverContainer.getImageForCapabilities
 
 testValue = true // used in a test in geb-core
 
@@ -20,23 +23,28 @@ void setPortIndexProperty(String index) {
     System.setProperty('geb.port.index', index)
 }
 
+BrowserWebDriverContainer containerForCapabilities(Capabilities capabilities) {
+    new BrowserWebDriverContainer<>(getImageForCapabilities(capabilities, "3.141.59-oxygen"))
+        .withCapabilities(capabilities)
+}
+
 BrowserWebDriverContainer containerForDriver(String driverName) {
-    def container = new BrowserWebDriverContainer<>()
-            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, null)
+    def container
 
     switch (driverName) {
         case "chrome":
-            container.withCapabilities(new ChromeOptions())
+            container = containerForCapabilities(new ChromeOptions())
             break
         case "firefox":
-            container.withCapabilities(new FirefoxOptions())
-                .withSharedMemorySize(2 * FileUtils.ONE_GB)
+            container = containerForCapabilities(new FirefoxOptions())
+            container.withSharedMemorySize(2 * FileUtils.ONE_GB)
             break
         default:
             throw new Exception("Unsupported dockerized driver: $driverName")
     }
 
-    container.start()
+    container.withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, null)
+            .start()
 
     ResourceReaper.instance().registerContainerForCleanup(container.containerId, container.dockerImageName)
 

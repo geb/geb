@@ -3,13 +3,14 @@ import org.testcontainers.Testcontainers
 import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.utility.ResourceReaper
 
+import static org.testcontainers.containers.BrowserWebDriverContainer.getImageForCapabilities
+
 reportsDir = "build/geb"
 
 Testcontainers.exposeHostPorts(8080)
 
 driver = {
-    def container = new BrowserWebDriverContainer<>()
-            .withCapabilities(new ChromeOptions())
+    def container = new BrowserWebDriverContainer<>(getImageForCapabilities(new ChromeOptions(), "3.141.59-oxygen"))
             .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, null)
 
     container.start()
