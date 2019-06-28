@@ -637,6 +637,9 @@ class DefaultNavigator implements Navigator {
     @Override
     Navigator value(value) {
         setInputValues(contextElements, value)
+        if (!contextElements.empty) {
+            browser.notifyValueChangedListeners(contextElements.first())
+        }
         this
     }
 
@@ -653,6 +656,7 @@ class DefaultNavigator implements Navigator {
         def element = ensureContainsAtMostSingleElement("click")
         if (element) {
             element.click()
+            browser.notifyClickListeners(element)
         } else {
             throw new UnsupportedOperationException("not supported on empty navigator objects")
         }
@@ -677,6 +681,7 @@ class DefaultNavigator implements Navigator {
             } else {
                 at = true
             }
+            browser.notifyNavigationListeners(pageInstance)
         } catch (AssertionError e) {
             assertionError = e
         } catch (Throwable e) {
