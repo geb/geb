@@ -22,6 +22,9 @@ import geb.error.UnexpectedPageException
 import geb.error.WebStorageNotSupportedException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
+import geb.navigator.ClickListener
+import geb.navigator.ValueChangedListener
+import geb.navigator.NavigationListener
 import geb.url.UrlFragment
 import geb.report.ReportState
 import geb.webstorage.LocalStorage
@@ -53,6 +56,10 @@ class Browser {
     private final pageChangeListeners = new LinkedHashSet()
     private String reportGroup = null
     private NavigatorFactory navigatorFactory = null
+
+    private List clickListeners = []
+    private List navigationListeners = []
+    private List valueChangedListeners = []
 
     /**
      * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
@@ -949,6 +956,36 @@ class Browser {
             }
         } else {
             page(targetPage)
+        }
+    }
+
+    void addClickListener(ClickListener clickListener) {
+        clickListeners.add(clickListener)
+    }
+
+    void notifyClickListeners(eventSource) {
+        clickListeners.each {
+            it.onClick(eventSource)
+        }
+    }
+
+    void addNavigationListener(NavigationListener navigationListener) {
+        navigationListeners.add(navigationListener)
+    }
+
+    void notifyNavigationListeners(eventSource) {
+        navigationListeners.each {
+            it.onNavigation(eventSource)
+        }
+    }
+
+    void addValueChangedListener(ValueChangedListener valueChangedListener) {
+        valueChangedListeners.add(valueChangedListener)
+    }
+
+    void notifyValueChangedListeners(eventSource) {
+        valueChangedListeners.each {
+            it.onValueChanged(eventSource)
         }
     }
 
