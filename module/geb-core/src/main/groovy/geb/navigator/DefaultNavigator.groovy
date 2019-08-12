@@ -1023,7 +1023,7 @@ class DefaultNavigator implements Navigator {
         labels ? labels[0].text : null
     }
 
-    protected List<WebElement> collectElements(Closure closure) {
+    protected List<WebElement> collectElements(@ClosureParams(value = SimpleType, options = "org.openqa.selenium.WebElement") Closure closure) {
         List<WebElement> list = []
         contextElements.each {
             try {
