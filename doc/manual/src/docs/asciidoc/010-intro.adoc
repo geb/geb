@@ -204,6 +204,6 @@ Be sure to check the chapter on <<build-integrations, build integrations>> for i
 
 === Snapshot repository
 
-If you fancy living on the bleeding edge then you can try out Geb's snapshot artifacts located in link:https://oss.sonatype.org/content/repositories/snapshots/{geb-group-dir}[the Maven repository at https://oss.sonatype.org/content/repositories/snapshots].
+If you fancy living on the bleeding edge then you can try out Geb's snapshot artifacts located in link:https://oss.sonatype.org/content/repositories/snapshots/{geb-group-dir}/[the Maven repository at https://oss.sonatype.org/content/repositories/snapshots].
 
 :numbered:
