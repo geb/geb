@@ -79,4 +79,18 @@ class InteractionsSpec extends GebSpecWithServerUsingJavascript {
         then:
         $("li.clicky").hasClass("shift-clicked")
     }
+
+    def "accessing actions within interact closure"() {
+        when:
+        // tag::actions_in_interact[]
+        interact {
+            keyDown Keys.SHIFT
+            actions.click($("li.clicky").singleElement())
+            keyUp Keys.SHIFT
+        }
+        // end::actions_in_interact[]
+
+        then:
+        $("li.clicky").hasClass("shift-clicked")
+    }
 }

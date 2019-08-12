@@ -1036,6 +1036,13 @@ This `interact()` call performs the same work as the calls in the <<using-action
 include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=interact,indent=0]
 ----
 
+While usually not needed, it's possible to directly access the `Actions` instance backing the `InteractDelegate`:
+
+[source,groovy]
+----
+include::{real-browser-test-dir}/navigator/InteractionsSpec.groovy[tag=actions_in_interact,indent=0]
+----
+
 For the full list of available methods that can be used for emulating user gestures see the documentation for the `{interact-delegate-api}` class.
 
 === Interact examples

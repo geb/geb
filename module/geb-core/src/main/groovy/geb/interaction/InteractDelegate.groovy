@@ -20,9 +20,11 @@ import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
 
+import java.time.Duration
+
 class InteractDelegate {
 
-    private Actions actions
+    Actions actions
 
     InteractDelegate(WebDriver driver) {
         actions = new Actions(driver)
@@ -193,6 +195,22 @@ class InteractDelegate {
      */
     InteractDelegate dragAndDropBy(Navigator source, int xOffset, int yOffset) {
         actions.dragAndDropBy(source.singleElement(), xOffset, yOffset)
+        this
+    }
+
+    /**
+     * @see Actions#pause(long)
+     */
+    InteractDelegate pause(long pause) {
+        actions.pause(pause)
+        this
+    }
+
+    /**
+     * @see Actions#pause(java.time.Duration)
+     */
+    InteractDelegate pause(Duration duration) {
+        actions.pause(duration)
         this
     }
 
