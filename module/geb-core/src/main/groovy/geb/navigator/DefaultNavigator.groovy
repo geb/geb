@@ -1048,10 +1048,6 @@ class DefaultNavigator implements Navigator {
         index == -1 ? elements : elements[0..<index]
     }
 
-    protected Collection<WebElement> collectUntil(Collection<WebElement> elements, String selector) {
-        collectUntil(elements) { CssSelector.matches(it, selector) }
-    }
-
     protected Collection<WebElement> collectUntil(Collection<WebElement> elements, Map<String, Object> attributes) {
         collectUntil(elements) { matches(it, attributes) }
     }
