@@ -613,6 +613,11 @@ class Configuration {
         }
     }
 
+    Configuration merge(Configuration other) {
+        rawConfig.merge(other.rawConfig)
+        this
+    }
+
     protected readValue(String name, defaultValue) {
         readValue(rawConfig, name, defaultValue)
     }

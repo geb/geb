@@ -45,7 +45,7 @@ class DownloadingConfigurationSpec extends GebSpecWithCallbackServer implements 
             response.outputStream << request.getHeader("User-Agent")
         }
         configScript(directDownloadingConfig)
-        browser.config.rawConfig.merge(config.rawConfig)
+        browser.config.merge(config)
 
         when:
         go()

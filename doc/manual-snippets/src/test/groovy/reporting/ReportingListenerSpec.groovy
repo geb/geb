@@ -55,7 +55,7 @@ class ReportingListenerSpec extends GebSpecWithCallbackServer implements InlineC
 
         when:
         configScript(reportingListenerConfiguration)
-        browser.config.rawConfig.merge(config.rawConfig)
+        browser.config.merge(config)
 
         and:
         go()
