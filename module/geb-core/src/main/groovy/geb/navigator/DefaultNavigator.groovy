@@ -23,6 +23,8 @@ import geb.error.SingleElementNavigatorOnlyMethodException
 import geb.error.UnableToSetElementException
 import geb.error.UnexpectedPageException
 import geb.js.JQueryAdapter
+import geb.navigator.event.BrowserConfigurationDelegatingNavigatorEventListener
+import geb.navigator.event.NavigatorEventListener
 import geb.navigator.factory.NavigatorFactory
 import geb.waiting.Wait
 import groovy.transform.stc.ClosureParams
@@ -56,10 +58,13 @@ class DefaultNavigator implements Navigator {
 
     protected final Iterable<WebElement> contextElements
 
+    protected NavigatorEventListener eventListener
+
     DefaultNavigator(Browser browser, Iterable<? extends WebElement> contextElements) {
         this.browser = browser
         this.locator = new DefaultLocator(new SearchContextBasedBasicLocator(contextElements, browser.navigatorFactory))
         this.contextElements = contextElements
+        this.eventListener = new BrowserConfigurationDelegatingNavigatorEventListener(browser, this)
     }
 
     boolean asBoolean() {
@@ -214,6 +219,11 @@ class DefaultNavigator implements Navigator {
     @Override
     String getStringRepresentation() {
         getClass().name
+    }
+
+    @Override
+    void setEventListener(NavigatorEventListener listener) {
+        this.eventListener = listener
     }
 
     @Override
@@ -636,15 +646,19 @@ class DefaultNavigator implements Navigator {
 
     @Override
     Navigator value(value) {
+        eventListener.beforeValueSet(browser, this, value)
         setInputValues(contextElements, value)
+        eventListener.afterValueSet(browser, this, value)
         this
     }
 
     @Override
     Navigator leftShift(value) {
+        eventListener.beforeSendKeys(browser, this, value)
         contextElements.each {
             it.sendKeys value
         }
+        eventListener.afterSendKeys(browser, this, value)
         this
     }
 
@@ -652,7 +666,9 @@ class DefaultNavigator implements Navigator {
     Navigator click() {
         def element = ensureContainsAtMostSingleElement("click")
         if (element) {
+            eventListener.beforeClick(browser, this)
             element.click()
+            eventListener.afterClick(browser, this)
         } else {
             throw new UnsupportedOperationException("not supported on empty navigator objects")
         }

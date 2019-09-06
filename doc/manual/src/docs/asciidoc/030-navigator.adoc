@@ -283,6 +283,21 @@ include::{test-dir}/navigator/IterableSpec.groovy[tag=spread,indent=0]
 
 When treating a navigator as `Iterable`, the iterated over content is always the exact matched elements (as opposed to including children).
 
+=== Listening to Navigator events
+
+It is possible to register a listener that gets notified every time certain Navigator events occur.
+The best reference for events that can be listened to is {navigator-event-listener-api}[the documentation for `NavigatorEventListener` interface].
+If you wish to only listen to a subset of navigator events then `{navigator-event-listener-support-api}` might come in handy as it comes with default, empty implementations of all methods of {navigator-event-listener-api}[`NavigatorEventListener`].
+
+One of the use cases for utilising a navigator event listener would be to enhance reporting by writing a report every time a navigator is clicked, its value is changed, etc.
+
+The below example shows how to register a navigator event listener as part of the config script which simply prints navigator tags after navigators are clicked…
+
+[source,groovy]
+----
+include::{test-dir}/navigator/NavigatorEventListenerSpec.groovy[tag=config,indent=0]
+----
+
 === `equals()` and `hashCode()`
 
 It's possible to check `Navigator` instances for equality.

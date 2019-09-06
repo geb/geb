@@ -19,6 +19,7 @@ import geb.Module
 import geb.Page
 import geb.content.StringRepresentationProvider
 import geb.js.JQueryAdapter
+import geb.navigator.event.NavigatorEventListener
 import geb.waiting.Wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -1013,4 +1014,6 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * content element.
      */
     String getStringRepresentation()
+
+    void setEventListener(NavigatorEventListener listener)
 }

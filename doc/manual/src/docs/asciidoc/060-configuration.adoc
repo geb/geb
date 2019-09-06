@@ -363,6 +363,11 @@ include::{test-dir}/configuration/ReportOnTestFailuresConfigSpec.groovy[tag=conf
 
 It is possible to specify a listener that will be notified when reports are taken. See the section on <<listening-to-reporting, listening to reporting>> for details.
 
+
+=== Navigator events listener
+
+It is possible to specify a listener that will be notified on certain navigator events. See the section on <<listening-to-navigator-events, listening to navigator events>> for details.
+
 [[auto-clearing-cookies-configuration]]
 === Auto clearing cookies
 

@@ -17,6 +17,7 @@ package geb
 import geb.buildadapter.SystemPropertiesBuildAdapter
 import geb.driver.*
 import geb.error.InvalidGebConfiguration
+import geb.navigator.event.NavigatorEventListener
 import geb.navigator.factory.*
 import geb.report.*
 import geb.waiting.Wait
@@ -343,6 +344,14 @@ class Configuration {
 
     ReportingListener getReportingListener() {
         readValue("reportingListener", null)
+    }
+
+    NavigatorEventListener getNavigatorEventListener() {
+        readValue("navigatorEventListener", null)
+    }
+
+    void setNavigatorEventListener(NavigatorEventListener navigatorEventListener) {
+        rawConfig.navigatorEventListener = navigatorEventListener
     }
 
     /**

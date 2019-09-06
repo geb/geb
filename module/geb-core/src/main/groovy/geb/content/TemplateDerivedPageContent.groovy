@@ -17,7 +17,10 @@ package geb.content
 import geb.Browser
 import geb.error.ContentCountOutOfBoundsException
 import geb.error.RequiredPageContentNotPresent
+import geb.navigator.event.BrowserConfigurationDelegatingNavigatorEventListener
 import geb.navigator.Navigator
+import geb.navigator.event.DelegatingNavigatorEventListener
+import geb.navigator.event.NavigatorEventListener
 import org.openqa.selenium.WebDriver
 
 @SuppressWarnings("FieldName")
@@ -35,6 +38,7 @@ class TemplateDerivedPageContent implements Navigator {
         this._browser = browser
         this._template = template
         this._navigator = navigator
+        this._navigator.eventListener = new BrowserConfigurationDelegatingNavigatorEventListener(browser, this)
         this._args = args
         this._stringRepresentationProvider = new TemplateDerivedContentStringRepresentationProvider(template, args, navigator)
     }
@@ -96,6 +100,11 @@ class TemplateDerivedPageContent implements Navigator {
 
     def propertyMissing(String name) {
         _navigator[name]
+    }
+
+    @Override
+    void setEventListener(NavigatorEventListener listener) {
+        _navigator.eventListener = new DelegatingNavigatorEventListener(listener, this)
     }
 
     def propertyMissing(String name, val) {

@@ -86,6 +86,8 @@
 :multi-window-reporter-api: link:api/geb/report/MultiWindowReporter.html[MultiWindowReporter]
 :browser-report-method-api: link:api/geb/Browser.html#report(java.lang.String)[report(String label)]
 :reporting-listener-api: link:api/geb/report/ReportingListener.html[ReportingListener]
+:navigator-event-listener-api: link:api/geb/navigator/event/NavigatorEventListener.html
+:navigator-event-listener-support-api: link:api/geb/navigator/event/NavigatorEventListenerSupport.html[NavigatorEventListenerSupport]
 :clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]
 :sauce-connect: link:https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy[SauceConnect]
 :geb-module-package: link:api/geb/module/package-summary.html

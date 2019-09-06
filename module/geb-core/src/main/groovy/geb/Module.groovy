@@ -30,7 +30,10 @@ import geb.js.AlertAndConfirmSupport
 import geb.js.DefaultAlertAndConfirmSupport
 import geb.js.JavascriptInterface
 import geb.js.UninitializedAlertAndConfirmSupport
+import geb.navigator.event.BrowserConfigurationDelegatingNavigatorEventListener
 import geb.navigator.Navigator
+import geb.navigator.event.DelegatingNavigatorEventListener
+import geb.navigator.event.NavigatorEventListener
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.DefaultWaitingSupport
@@ -71,6 +74,7 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
     void init(Browser browser, NavigatorFactory navigatorFactory) {
         this.browser = browser
         this.navigator = navigatorFactory.base
+        this.navigator.eventListener = new BrowserConfigurationDelegatingNavigatorEventListener(browser, this)
         Map<String, PageContentTemplate> contentTemplates = PageContentTemplateBuilder.build(browser, this, navigatorFactory, 'content', this.class, Module)
         this.pageContentSupport = new DefaultPageContentSupport(this, contentTemplates, navigatorFactory, this.navigator)
         this.downloadSupport = new DefaultDownloadSupport(browser)
@@ -137,6 +141,11 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     String getStringRepresentation() {
         getClass().name
+    }
+
+    @Override
+    void setEventListener(NavigatorEventListener listener) {
+        getInitializedNavigator().eventListener = new DelegatingNavigatorEventListener(listener, this)
     }
 
     @Override

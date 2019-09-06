@@ -87,6 +87,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== New features
+
+* Add a way to listen for navigator events. [issue:585[]]
+
 ==== Fixes
 
 * Add `Actions` methods added in WebDriver 3.x to `InteractDelegate` and expose the backing `Actions` instance. [issue:587[]]
