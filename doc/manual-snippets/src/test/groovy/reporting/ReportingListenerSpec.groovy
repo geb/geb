@@ -18,6 +18,7 @@ package reporting
 import configuration.InlineConfigurationLoader
 import geb.test.GebSpecWithCallbackServer
 import org.junit.Rule
+import org.junit.contrib.java.lang.system.SystemOutRule
 import org.junit.rules.TemporaryFolder
 
 class ReportingListenerSpec extends GebSpecWithCallbackServer implements InlineConfigurationLoader {
@@ -25,21 +26,11 @@ class ReportingListenerSpec extends GebSpecWithCallbackServer implements InlineC
     @Rule
     TemporaryFolder temporaryFolder
 
-    PrintStream originalStdOut
-
-    ByteArrayOutputStream stdOut = new ByteArrayOutputStream()
-
-    def setup() {
-        originalStdOut = System.out
-        System.out = new PrintStream(stdOut)
-    }
-
-    def cleanup() {
-        System.out = originalStdOut
-    }
+    @Rule
+    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog()
 
     String getOutput() {
-        new String(stdOut.toByteArray(), "UTF-8")
+        systemOutRule.log
     }
 
     String getReportingListenerConfiguration() {
