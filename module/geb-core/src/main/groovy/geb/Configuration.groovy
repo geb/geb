@@ -202,10 +202,10 @@ class Configuration {
     }
 
     /**
-     * The driver is to be cached, this setting controls whether or not the driver is cached per thread,
-     * or per
+     * If the driver is to be cached, this setting controls whether or not the driver is cached per thread or
+     * globally for all threads.
      * <p>
-     * The value is the config entry {@code cacheDriverPerThread}, which defaults to {@code true}.
+     * The value is the config entry {@code cacheDriverPerThread}, which defaults to {@code false}.
      */
     boolean isCacheDriverPerThread() {
         readValue('cacheDriverPerThread', false)

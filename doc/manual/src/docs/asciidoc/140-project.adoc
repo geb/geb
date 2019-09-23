@@ -94,6 +94,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * Add `Actions` methods added in WebDriver 3.x to `InteractDelegate` and expose the backing `Actions` instance. [issue:587[]]
+* Fix incorrect javadoc for `Configuration.isCacheDriverPerThread()`. [issue:592[]]
 
 === 3.0.1
 
