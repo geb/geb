@@ -279,6 +279,11 @@ include::{test-dir}/browser/ContentDslToParameterSpec.groovy[tag=to_parameter,in
 
 == Page change listening
 
+[WARNING]
+====
+This mechanism has been deprecated and will be removed in the next major version of Geb. Please use a <<listening-to-page-events,`PageEventListener`>> instead.
+====
+
 It is possible to be notified when a browser's page _instance_ changes (note that this is not necessarily when the browser makes a request to a new URL) using the
 link:api/geb/PageChangeListener.html[`PageChangeListener`] interface.
 

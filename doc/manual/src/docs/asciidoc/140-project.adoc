@@ -90,6 +90,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * Add a way to listen for navigator events. [issue:585[]]
+* Add a way to listen for page switching and at checking events. [issue:590[]]
 
 ==== Fixes
 

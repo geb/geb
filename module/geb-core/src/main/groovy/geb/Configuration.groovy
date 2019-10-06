@@ -354,6 +354,14 @@ class Configuration {
         rawConfig.navigatorEventListener = navigatorEventListener
     }
 
+    PageEventListener getPageEventListener() {
+        readValue("pageEventListener", null)
+    }
+
+    void setPageEventListener(PageEventListener pageEventListener) {
+        rawConfig.pageEventListener = pageEventListener
+    }
+
     /**
      *
      */

@@ -368,6 +368,10 @@ It is possible to specify a listener that will be notified when reports are take
 
 It is possible to specify a listener that will be notified on certain navigator events. See the section on <<listening-to-navigator-events, listening to navigator events>> for details.
 
+=== Page events listener
+
+It is possible to specify a listener that will be notified on certain page events. See the section on <<listening-to-page-events, listening to page events>> for details.
+
 [[auto-clearing-cookies-configuration]]
 === Auto clearing cookies
 

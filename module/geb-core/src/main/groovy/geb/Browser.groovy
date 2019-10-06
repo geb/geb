@@ -51,6 +51,7 @@ class Browser {
     private Page page
     private final Configuration config
     private final pageChangeListeners = new LinkedHashSet()
+    private final pageChangeListenersBackedPageEventListener = new PageChangeListenersBackedPageEventListener(pageChangeListeners)
     private String reportGroup = null
     private NavigatorFactory navigatorFactory = null
 
@@ -452,9 +453,13 @@ class Browser {
      */
     boolean isAt(Page page, boolean honourGlobalAtCheckWaiting = true) {
         initialisePage(page)
+        pageEventListener.beforeAtCheck(this, page)
         def isAt = page.verifyAtSafely(honourGlobalAtCheckWaiting)
         if (isAt) {
             makeCurrentPage(page)
+            pageEventListener.onAtCheckSuccess(this, page)
+        } else {
+            pageEventListener.onAtCheckFailure(this, page)
         }
         isAt
     }
@@ -1009,10 +1014,6 @@ class Browser {
         }
     }
 
-    private informPageChangeListeners(Page oldPage, Page newPage) {
-        pageChangeListeners*.pageWillChange(this, oldPage, newPage)
-    }
-
     private String toQueryString(Map params) {
         def escaper = UrlEscapers.urlFormParameterEscaper()
         if (params) {
@@ -1100,15 +1101,15 @@ class Browser {
      * on the previous page and {@link geb.Page#onLoad(geb.Page)} is called on the incoming page.
      * <p>
      */
-    private Page makeCurrentPage(Page page) {
-        if (page != getPage()) {
-            informPageChangeListeners(getPage(), page)
-            getPage().onUnload(page)
-            def previousPage = getPage()
-            this.page = page
-            getPage().onLoad(previousPage)
+    private Page makeCurrentPage(Page newPage) {
+        if (newPage != page) {
+            pageEventListener.pageWillChange(this, page, newPage)
+            page?.onUnload(newPage)
+            def previousPage = page
+            page = newPage
+            page.onLoad(previousPage)
         }
-        getPage()
+        page
     }
 
     private <T extends Page> T initialisePage(T page) {
@@ -1123,11 +1124,22 @@ class Browser {
      */
     private <T extends Page> T doAt(T page) {
         initialisePage(page)
-        def atResult = page.verifyAt()
+        pageEventListener.beforeAtCheck(this, page)
+
+        def atResult
+        try {
+            atResult = page.verifyAt()
+        } catch (AssertionError e) {
+            pageEventListener.onAtCheckFailure(this, page)
+            throw e
+        }
+
         if (atResult) {
             makeCurrentPage(page)
+            pageEventListener.onAtCheckSuccess(this, page)
             page
         } else {
+            pageEventListener.onAtCheckFailure(this, page)
             null
         }
     }
@@ -1165,6 +1177,10 @@ class Browser {
 
     private URI ignoreFragment(URI uri) {
         new URI(uri.scheme, uri.schemeSpecificPart, null)
+    }
+
+    private getPageEventListener() {
+        new CompositePageEventListener(pageChangeListenersBackedPageEventListener, config.pageEventListener)
     }
 
 }

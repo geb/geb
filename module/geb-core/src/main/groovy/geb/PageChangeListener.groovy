@@ -16,7 +16,10 @@ package geb
 
 /**
  * Mechanism for 3rd parties to receive notification when a browser page instance changes
+ *
+ * @deprecated Use {@link PageEventListener} instead
  */
+@Deprecated
 interface PageChangeListener {
 
     /**

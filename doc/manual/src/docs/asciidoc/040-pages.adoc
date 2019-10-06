@@ -876,6 +876,23 @@ include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload_pages,indent=0
 include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload,indent=0]
 ----
 
+=== Listening to Page events
+
+It is possible to register a listener that gets notified every time certain events around switching and at checking pages occur.
+The best reference for events that can be listened to is {page-event-listener-api}[the documentation for `PageEventListener` interface].
+If you wish to only listen to a subset of page events then `{page-event-listener-support-api}` might come in handy as it comes with default, empty implementations of all methods of {page-event-listener-api}[`PageEventListener`].
+
+One of the use cases for utilising a page event listener would be to enhance reporting by writing a report every time an at checker fails.
+
+The below example shows how to register a page event listener as part of the config script which simply prints page title and current url when an at checker fails…
+
+[source,groovy]
+----
+include::{test-dir}/pages/PageEventListenerSpec.groovy[tag=config,indent=0]
+----
+
+
+
 == Dealing with frames
 
 Frames might seem a thing of the past, but if you're accessing or testing some legacy application with Geb, you might still need to deal with them.

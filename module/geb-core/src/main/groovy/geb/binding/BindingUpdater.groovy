@@ -16,8 +16,10 @@
 package geb.binding
 
 import geb.Browser
+import geb.CompositePageEventListener
 import geb.Page
-import geb.PageChangeListener
+import geb.PageEventListener
+import geb.PageEventListenerSupport
 
 class BindingUpdater {
 
@@ -32,12 +34,14 @@ class BindingUpdater {
     final Browser browser
     final Binding binding
 
-    protected final PageChangeListener pageChangeListener
+    private final BindingUpdatingPageEventListener pageEventListener
+
+    private PageEventListener originalPageEventListener
 
     protected BindingUpdater(Binding binding, Browser browser) {
         this.binding = binding
         this.browser = browser
-        this.pageChangeListener = createPageChangeListener(binding, browser)
+        this.pageEventListener = new BindingUpdatingPageEventListener()
     }
 
     /**
@@ -50,8 +54,9 @@ class BindingUpdater {
         FORWARDED_BROWSER_METHODS.each {
             binding.setVariable(it, new InvocationForwarding(it, browser))
         }
-
-        browser.registerPageChangeListener(pageChangeListener)
+        originalPageEventListener = browser.config.pageEventListener
+        browser.config.pageEventListener = new CompositePageEventListener(originalPageEventListener, pageEventListener)
+        pageEventListener.pageWillChange(browser, null, browser.page)
 
         this
     }
@@ -60,8 +65,8 @@ class BindingUpdater {
      * Removes everything from the binding and stops updating it.
      */
     BindingUpdater remove() {
-        browser.removePageChangeListener(pageChangeListener)
-        pageChangeListener.clearBinding()
+        browser.config.pageEventListener = originalPageEventListener
+        pageEventListener.clearBinding()
 
         binding.variables.remove('browser')
         binding.variables.remove('js')
@@ -73,12 +78,7 @@ class BindingUpdater {
         this
     }
 
-    @SuppressWarnings("UnusedMethodParameter")
-    protected PageChangeListener createPageChangeListener(Binding binding, Browser browser) {
-        new BindingUpdatingPageChangeListener()
-    }
-
-    private class BindingUpdatingPageChangeListener implements PageChangeListener {
+    private class BindingUpdatingPageEventListener extends PageEventListenerSupport {
         @Override
         void pageWillChange(Browser browser, Page oldPage, Page newPage) {
             binding.setVariable("page", newPage)
