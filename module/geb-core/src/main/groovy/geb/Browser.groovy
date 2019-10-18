@@ -1084,9 +1084,18 @@ class Browser {
     }
 
     private Page verifyPages(List<Page> pages) {
+        def atCheckWaiting = config.atCheckWaiting
+        if (atCheckWaiting) {
+            atCheckWaiting.waitFor { findMatchingPage(pages) }
+        } else {
+            findMatchingPage(pages)
+        }
+    }
+
+    private Page findMatchingPage(List<Page> pages) {
         Map pageVerificationResults = [:]
         def match = pages.find {
-            AtVerificationResult atVerificationResult = it.atVerificationResult
+            AtVerificationResult atVerificationResult = it.getAtVerificationResult(false)
             if (!atVerificationResult) {
                 pageVerificationResults.put(it, atVerificationResult)
             }
@@ -1097,7 +1106,6 @@ class Browser {
         } else {
             throw new UnexpectedPageException(pageVerificationResults)
         }
-        match
     }
 
     private doCheckIfAtAnUnexpectedPage(def expectedPages) {

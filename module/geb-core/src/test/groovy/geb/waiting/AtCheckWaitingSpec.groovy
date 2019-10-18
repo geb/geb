@@ -19,6 +19,8 @@ import geb.Configuration
 import geb.Page
 import spock.lang.Unroll
 
+import static java.lang.System.currentTimeMillis
+
 class AtCheckWaitingSpec extends WaitingSpec {
 
     Configuration config
@@ -131,6 +133,27 @@ class AtCheckWaitingSpec extends WaitingSpec {
         where:
         pageClass << [BooleanAtCheckWaitingSpecPage, NumberAtCheckWaitingSpecPage, ListOfNumbersAtCheckWaitingSpecPage]
     }
+
+    void 'globally configured atCheckWaiting is used around checking of the list of pages and not around each one of them'() {
+        given:
+        def globalAtCheckWaiting = 0.5
+        rawConfig.atCheckWaiting = globalAtCheckWaiting
+        via AtCheckWaitingSpecPage
+
+        when:
+        js.showIn(0.1)
+        def timestamp = currentTimeMillis()
+
+        and:
+        page(AlwaysFailingAtCheckWaitingSpecPage, AtCheckWaitingSpecPage)
+
+        then:
+        currentTimeMillis() - timestamp < globalAtCheckWaiting * 1000
+    }
+}
+
+class AlwaysFailingAtCheckWaitingSpecPage extends Page {
+    static at = { false }
 }
 
 class AtCheckWaitingSpecPage extends Page {
