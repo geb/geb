@@ -287,7 +287,6 @@ class Browser {
      * <p>
      * This method performs the following:
      * <ul>
-     *   <li>Check if not at an unexpected page
      *   <li>For each given page type:
      *     <ul>
      *     <li>Create a new instance of the class (which must be {@link geb.Page} or a subclass thereof) and connect it to the browser object
@@ -303,13 +302,22 @@ class Browser {
      *       <li>Try the next potential
      *       </ul>
      *     </ul>
+     *   <li>If none of the pages match:
+     *     <ul>
+     *     <li>Check if not at an unexpected page
+     *     </ul>
+     *   </ul>
      * </ul>
      *
      * @return an initialized page instance set as the current page
      */
     Page page(Class<? extends Page>[] potentialPageClasses) {
-        checkIfAtAnUnexpectedPage(potentialPageClasses)
-        verifyPages(potentialPageClasses.collect { createPage(it) })
+        try {
+            verifyPages(potentialPageClasses.collect { createPage(it) })
+        } catch (UnexpectedPageException e) {
+            checkIfAtAnUnexpectedPage(potentialPageClasses)
+            throw e
+        }
     }
 
     /**
@@ -336,7 +344,6 @@ class Browser {
      * <p>
      * This method performs the following:
      * <ul>
-     *   <li>Check if not at an unexpected page
      *   <li>For each given page instance:
      *     <ul>
      *     <li>Connects the page instance to the browser object
@@ -349,16 +356,24 @@ class Browser {
      *       </ul>
      *     </ul>
      *   <li>If the page's at checker is not successful:
-     *   <ul>
+     *     <ul>
      *     <li>Try the next potential
-     *   </ul>
+     *     </ul>
+     *   <li>If none of the pages match:
+     *     <ul>
+     *     <li>Check if not at an unexpected page
+     *     </ul>
      * </ul>
      *
      * @return an initialized page instance set as the current page
      */
     Page page(Page[] potentialPageInstances) {
-        checkIfAtAnUnexpectedPage(potentialPageInstances)
-        verifyPages(potentialPageInstances.collect { initialisePage(it) })
+        try {
+            verifyPages(potentialPageInstances.collect { initialisePage(it) })
+        } catch (UnexpectedPageException e) {
+            checkIfAtAnUnexpectedPage(potentialPageInstances)
+            throw e
+        }
     }
 
     /**

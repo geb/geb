@@ -87,7 +87,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Unexpected pages are now only checked after checking that none of the pages passed to `Browser.page()` methods taking a list match [issue:595[]]
 
 === 3.1
 

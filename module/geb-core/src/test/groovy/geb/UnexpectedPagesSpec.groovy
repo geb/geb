@@ -157,7 +157,7 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
         when:
         via UnexpectedPage
-        page(new ParametrizedPage(condition: true), new ParametrizedPage(condition: true))
+        page(new ParametrizedPage(condition: false), new ParametrizedPage(condition: false))
 
         then:
         UnexpectedPageException e = thrown()
@@ -218,6 +218,28 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         UnexpectedPage | "class geb.UnexpectedPage"
     }
 
+    void "checking for unexpected pages only happens after checking all of the at checkers for supplied list of page classes"() {
+        given:
+        defineUnexpectedPages()
+
+        when:
+        via UnexpectedPage
+
+        then:
+        page([AlwaysPassingAtCheckerPage] as Class[])
+    }
+
+    void "checking for unexpected pages only happens after checking all of the at checkers for supplied list of page instances"() {
+        given:
+        defineUnexpectedPages()
+
+        when:
+        via UnexpectedPage
+
+        then:
+        page([new AlwaysPassingAtCheckerPage()] as Page[])
+    }
+
     private void defineUnexpectedPages(Class<? extends Page>[] unexpectedPages = ([UnexpectedPage, AnotherUnexpectedPage] as Class<? extends Page>[])) {
         browser.config.unexpectedPages = unexpectedPages.toList()
     }
@@ -271,4 +293,8 @@ class ParametrizedPage extends Page {
     static at = { condition }
 
     boolean condition
+}
+
+class AlwaysPassingAtCheckerPage extends Page {
+    static at = { true }
 }
