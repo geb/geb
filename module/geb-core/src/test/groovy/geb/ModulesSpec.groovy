@@ -223,6 +223,14 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         then:
         divNoBase("a").contentNames == ['p'].toSet()
     }
+
+    def "accessing browser instance in base definition"() {
+        when:
+        to ModulesSpecPage
+
+        then:
+        browserAccessingBase.hasClass("a")
+    }
 }
 
 @SuppressWarnings("UnnecessaryCollectCall")
@@ -267,6 +275,8 @@ class ModulesSpecPage extends Page {
         }
 
         baseUsingMatcher { module ModulesSpecBaseUsingTextMatcher }
+
+        browserAccessingBase { module BrowserAccessingInBaseDefinitionModule }
     }
 }
 
@@ -344,9 +354,13 @@ class PageWithBrowserAccessingModule extends Page {
 }
 
 class BrowserAccessingModule extends Module {
-
     String getCurrentUrl() {
         browser.currentUrl
     }
+}
 
+class BrowserAccessingInBaseDefinitionModule extends Module {
+    static base = {
+        browser.find("div.a")
+    }
 }

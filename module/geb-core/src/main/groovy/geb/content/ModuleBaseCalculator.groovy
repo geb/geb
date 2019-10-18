@@ -14,6 +14,7 @@
  */
 package geb.content
 
+import geb.Browser
 import geb.Module
 import geb.error.InvalidPageContent
 import geb.navigator.Navigator
@@ -22,7 +23,10 @@ import org.openqa.selenium.WebDriver.TargetLocator
 
 class ModuleBaseCalculator {
 
-    static NavigatorFactory calculate(Module module, NavigatorFactory navigatorFactory, TargetLocator targetLocator, Map params = [:]) {
+    static NavigatorFactory calculate(
+            Browser browser, Module module, NavigatorFactory navigatorFactory, TargetLocator targetLocator,
+            Map params = [:]
+    ) {
         def moduleClass = module.getClass()
         def moduleBaseDefinition = moduleClass.base
         if (!moduleBaseDefinition) {
@@ -31,7 +35,7 @@ class ModuleBaseCalculator {
             // Clone it because the same closure may be used
             // via through a subclass and have a different base
             def moduleBaseDefinitionClone = moduleBaseDefinition.clone()
-            moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(module, navigatorFactory, targetLocator, params)
+            moduleBaseDefinitionClone.delegate = new ModuleBaseDefinitionDelegate(browser, module, navigatorFactory, targetLocator, params)
             moduleBaseDefinitionClone.resolveStrategy = Closure.DELEGATE_FIRST
             def moduleBase = moduleBaseDefinitionClone()
 

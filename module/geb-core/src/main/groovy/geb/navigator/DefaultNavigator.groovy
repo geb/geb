@@ -201,7 +201,8 @@ class DefaultNavigator implements Navigator {
     public <T extends Module> T module(T module) {
         def baseNavigatorFactory = browser.navigatorFactory.relativeTo(this)
 
-        NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(module, baseNavigatorFactory, browser.driver.switchTo())
+        NavigatorFactory moduleBaseNavigatorFactory = ModuleBaseCalculator.calculate(browser, module,
+                baseNavigatorFactory, browser.driver.switchTo())
 
         module.init(browser, moduleBaseNavigatorFactory)
 

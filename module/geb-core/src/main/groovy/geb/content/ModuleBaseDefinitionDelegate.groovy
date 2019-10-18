@@ -14,6 +14,7 @@
  */
 package geb.content
 
+import geb.Browser
 import geb.Module
 import geb.navigator.factory.NavigatorFactory
 import geb.textmatching.TextMatchingSupport
@@ -31,7 +32,12 @@ class ModuleBaseDefinitionDelegate {
     @Delegate
     private final TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
 
-    ModuleBaseDefinitionDelegate(Module module, NavigatorFactory navigatorFactory, TargetLocator targetLocator, Map params) {
+    final Browser browser
+
+    ModuleBaseDefinitionDelegate(
+            Browser browser, Module module, NavigatorFactory navigatorFactory, TargetLocator targetLocator, Map params
+    ) {
+        this.browser = browser
         this.params = params
         this.navigableSupport = new NavigableSupport(navigatorFactory, targetLocator)
         this.module = module
