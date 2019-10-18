@@ -26,6 +26,7 @@ import geb.js.JQueryAdapter
 import geb.navigator.event.BrowserConfigurationDelegatingNavigatorEventListener
 import geb.navigator.event.NavigatorEventListener
 import geb.navigator.factory.NavigatorFactory
+import geb.waiting.PotentiallyWaitingExecutor
 import geb.waiting.Wait
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.FromString
@@ -689,7 +690,7 @@ class DefaultNavigator implements Navigator {
         def throwable = null
         try {
             if (pageInstance.shouldVerifyAtImplicitly) {
-                at = wait ? wait.waitFor { browser.verifyAt() } : browser.verifyAt()
+                at = new PotentiallyWaitingExecutor(wait).execute { browser.verifyAt() }
             } else {
                 at = true
             }
@@ -709,11 +710,7 @@ class DefaultNavigator implements Navigator {
     @Override
     Navigator click(List potentialPages, Wait wait = null) {
         click()
-        def pageSwitchingAction = {
-            browser.page(*potentialPages)
-            true
-        }
-        wait ? wait.waitFor(pageSwitchingAction) : pageSwitchingAction.call()
+        new PotentiallyWaitingExecutor(wait).execute { browser.page(*potentialPages) }
         this
     }
 

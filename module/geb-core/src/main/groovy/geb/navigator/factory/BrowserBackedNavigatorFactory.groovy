@@ -20,6 +20,7 @@ import geb.navigator.DefaultLocator
 import geb.navigator.Locator
 import geb.navigator.Navigator
 import geb.navigator.SearchContextBasedBasicLocator
+import geb.waiting.PotentiallyWaitingExecutor
 import org.openqa.selenium.By
 
 class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
@@ -33,8 +34,7 @@ class BrowserBackedNavigatorFactory extends AbstractNavigatorFactory {
 
     @Override
     Navigator getBase() {
-        def baseNavigatorWaiting = browser.config.baseNavigatorWaiting
-        baseNavigatorWaiting ? baseNavigatorWaiting.waitFor { createBase() } : createBase()
+        new PotentiallyWaitingExecutor(browser.config.baseNavigatorWaiting).execute { createBase() }
     }
 
     protected String getBaseXPathExpression() {

@@ -24,6 +24,7 @@ import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
 import geb.url.UrlFragment
 import geb.report.ReportState
+import geb.waiting.PotentiallyWaitingExecutor
 import geb.webstorage.LocalStorage
 import geb.webstorage.SessionStorage
 import geb.webstorage.WebStorage
@@ -1084,27 +1085,20 @@ class Browser {
     }
 
     private Page verifyPages(List<Page> pages) {
-        def atCheckWaiting = config.atCheckWaiting
-        if (atCheckWaiting) {
-            atCheckWaiting.waitFor { findMatchingPage(pages) }
-        } else {
-            findMatchingPage(pages)
-        }
-    }
-
-    private Page findMatchingPage(List<Page> pages) {
-        Map pageVerificationResults = [:]
-        def match = pages.find {
-            AtVerificationResult atVerificationResult = it.getAtVerificationResult(false)
-            if (!atVerificationResult) {
-                pageVerificationResults.put(it, atVerificationResult)
+        new PotentiallyWaitingExecutor(config.atCheckWaiting).execute {
+            Map pageVerificationResults = [:]
+            def match = pages.find {
+                AtVerificationResult atVerificationResult = it.getAtVerificationResult(false)
+                if (!atVerificationResult) {
+                    pageVerificationResults.put(it, atVerificationResult)
+                }
+                atVerificationResult
             }
-            atVerificationResult
-        }
-        if (match) {
-            makeCurrentPage(match)
-        } else {
-            throw new UnexpectedPageException(pageVerificationResults)
+            if (match) {
+                makeCurrentPage(match)
+            } else {
+                throw new UnexpectedPageException(pageVerificationResults)
+            }
         }
     }
 

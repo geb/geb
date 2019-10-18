@@ -35,6 +35,7 @@ import geb.js.UninitializedAlertAndConfirmSupport
 import geb.url.UrlFragment
 import geb.textmatching.TextMatchingSupport
 import geb.waiting.DefaultWaitingSupport
+import geb.waiting.PotentiallyWaitingExecutor
 import geb.waiting.UninitializedWaitingSupport
 import geb.waiting.Wait
 import geb.waiting.WaitingSupport
@@ -320,7 +321,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     /**
      * Uses the {@link geb.Configuration#getDefaultWait() default wait} from the {@code configuration} to
      * wait for {@code block} to return a true value according to the Groovy Truth.
-     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh( )} before each evaluation of {@code block}.
      *
      * @param block what is to be waited on to return a true-ish value
      * @return the true-ish return value from {@code block}
@@ -334,7 +335,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     /**
      * Uses the {@link geb.Configuration#getWaitPreset(java.lang.String) wait preset} from the {@code configuration}
      * with the given name to to wait for {@code block} to return a true value according to the Groovy Truth.
-     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh( )} before each evaluation of {@code block}.
      *
      * @param waitPreset the name of the wait preset in {@code configuration} to use
      * @param block what is to be waited on to return a true-ish value
@@ -349,7 +350,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     /**
      * Invokes {@code block} every {@link geb.Configuration#getDefaultWaitRetryInterval()} seconds, until it returns
      * a true value according to the Groovy Truth, waiting at most {@code timeout} seconds.
-     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh( )} before each evaluation of {@code block}.
      *
      * @param timeout the number of seconds to wait for block to return (roughly)
      * @param block what is to be waited on to return a true-ish value
@@ -363,7 +364,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
     /**
      * Invokes {@code block} every {@code interval} seconds, until it returns
      * a true value according to the Groovy Truth, waiting at most {@code timeout} seconds.
-     * The page is reloaded using {@code WebDriver.Navigation#refresh()} before each evaluation of {@code block}.
+     * The page is reloaded using {@code WebDriver.Navigation#refresh( )} before each evaluation of {@code block}.
      *
      * @param interval the number of seconds to wait between invoking {@code block}
      * @param timeout the number of seconds to wait for block to return (roughly)
@@ -416,12 +417,7 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         if (verifier) {
             verifier.delegate = this
             verifier.resolveStrategy = Closure.DELEGATE_FIRST
-            def atCheckWaiting = getEffectiveAtCheckWaiting(honourGlobalAtCheckWaiting)
-            if (atCheckWaiting) {
-                atCheckWaiting.waitFor(verifier)
-            } else {
-                verifier()
-            }
+            getEffectiveAtCheckWaitingExecutor(honourGlobalAtCheckWaiting).execute(verifier)
         } else {
             throw new UndefinedAtCheckerException(this.class.name)
         }
@@ -435,8 +431,12 @@ class Page implements Navigable, PageContentContainer, Initializable, WaitingSup
         honourGlobalAtCheckWaiting ? getInitializedBrowser().config.atCheckWaiting : null
     }
 
-    private Wait getEffectiveAtCheckWaiting(boolean honourGlobalAtCheckWaiting) {
-        getClass().atCheckWaiting != null ? pageLevelAtCheckWaiting : getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
+    private PotentiallyWaitingExecutor getEffectiveAtCheckWaitingExecutor(boolean honourGlobalAtCheckWaiting) {
+        def wait = getClass().atCheckWaiting != null ?
+                pageLevelAtCheckWaiting :
+                getGlobalAtCheckWaiting(honourGlobalAtCheckWaiting)
+
+        new PotentiallyWaitingExecutor(wait)
     }
 
     protected Wait getPageLevelAtCheckWaiting() {

@@ -15,6 +15,7 @@
 package geb.js
 
 import geb.Configuration
+import geb.waiting.PotentiallyWaitingExecutor
 import geb.waiting.Wait
 
 class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
@@ -161,7 +162,7 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
         }
         def message
         try {
-            message = wait ? wait.waitFor { popLastDialogMessage(js) } : popLastDialogMessage(js)
+            message = new PotentiallyWaitingExecutor(wait).execute { popLastDialogMessage(js) }
         } finally {
             // Need to do this even if actions raised exception
             popLastDialogFunctionOnto(js, function)
