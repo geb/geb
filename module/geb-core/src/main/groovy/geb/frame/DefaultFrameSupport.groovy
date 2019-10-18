@@ -33,7 +33,7 @@ class DefaultFrameSupport implements FrameSupport {
     }
 
     public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block) {
-        executeWithFrame(frame, createPage(page), block)
+        withFrame(frame, createPage(page), block)
     }
 
     public <P extends Page, T> T withFrame(frame, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block) {
@@ -41,7 +41,7 @@ class DefaultFrameSupport implements FrameSupport {
     }
 
     public <P extends Page, T> T withFrame(Navigator frameNavigator, @DelegatesTo.Target Class<P> page, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) Closure<T> block) {
-        executeWithFrame(frameNavigator, createPage(page), block)
+        withFrame(frameNavigator, createPage(page), block)
     }
 
     public <P extends Page, T> T withFrame(Navigator frameNavigator, @DelegatesTo.Target P page, @DelegatesTo(strategy = DELEGATE_FIRST) Closure<T> block) {
@@ -78,7 +78,7 @@ class DefaultFrameSupport implements FrameSupport {
         }
     }
 
-    private <T> T executeWithFrame(Navigator frameNavigator, def page, Closure<T> block) {
+    private <T> T executeWithFrame(Navigator frameNavigator, Page page, Closure<T> block) {
         WebElement element = frameNavigator.firstElement()
         if (element == null) {
             throw new NoSuchFrameException("No elements for given content: ${frameNavigator}")

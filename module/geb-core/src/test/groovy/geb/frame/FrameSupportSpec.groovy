@@ -210,6 +210,14 @@ class FrameSupportSpec extends BaseFrameSupportSpec {
         frameFactory << [{ 'header' }, { 0 }, { $('#header-id') }, { page.footer }]
     }
 
+    def "no method dispatch errors happen when passing page content instance and root Page class to withFrame"() {
+        when:
+        withFrame(footer, Page) {}
+
+        then:
+        notThrown(MissingMethodException)
+    }
+
     private boolean isInFramesContext() {
         title == 'frames'
     }

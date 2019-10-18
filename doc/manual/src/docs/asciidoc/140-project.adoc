@@ -91,6 +91,7 @@ This page lists the high level changes between versions of Geb.
 
 * Unexpected pages are now only checked after checking that none of the pages passed to `Browser.page()` methods taking a list match. [issue:595[]]
 * Fix global atCheckWaiting in combination with to:[...] leading to potentially long delays. [issue:594[]]
+* Fix a MissingMethodException when `Browser.withFrame(Navigator, Class<P>, Closure<T>)` is called. [issue:591[]]
 
 === 3.1
 
