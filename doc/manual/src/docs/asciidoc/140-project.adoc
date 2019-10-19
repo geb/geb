@@ -93,6 +93,7 @@ This page lists the high level changes between versions of Geb.
 * Fix global atCheckWaiting in combination with to:[...] leading to potentially long delays. [issue:594[]]
 * Fix a MissingMethodException when `Browser.withFrame(Navigator, Class<P>, Closure<T>)` is called. [issue:591[]]
 * Support accessing `Browser` instance from module base definitions. [issue:582[]]
+* Fix `withConfirm()` to work when accepting the dialog closes the window. [issue:568[]]
 
 === 3.1
 

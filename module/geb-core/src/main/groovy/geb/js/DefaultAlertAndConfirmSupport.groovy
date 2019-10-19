@@ -17,6 +17,7 @@ package geb.js
 import geb.Configuration
 import geb.waiting.PotentiallyWaitingExecutor
 import geb.waiting.Wait
+import org.openqa.selenium.NoSuchWindowException
 
 class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
 
@@ -102,21 +103,30 @@ class DefaultAlertAndConfirmSupport implements AlertAndConfirmSupport {
     }
 
     private popLastDialogMessage(JavascriptInterface js) {
-        js.exec """
-            if (window.geb) {
-                return window.geb.dialogMessages.pop();
-            } else {
-                return $UNKNOWN;
-            }
-        """
+        try {
+            js.exec """
+                if (window.geb) {
+                    return window.geb.dialogMessages.pop();
+                } else {
+                    return $UNKNOWN;
+                }
+            """
+        } catch (NoSuchWindowException e) {
+            //happens when code executed after the dialog closed the window
+            UNKNOWN
+        }
     }
 
     private popLastDialogFunctionOnto(JavascriptInterface js, String onto) {
-        js.exec """
-            if (window.geb) {
-                window.$onto = window.geb.dialogFunctions.pop();
-            }
-        """
+        try {
+            js.exec """
+                if (window.geb) {
+                    window.$onto = window.geb.dialogFunctions.pop();
+                }
+            """
+        } catch (NoSuchWindowException e) {
+            //ignore, happens when code executed after the dialog closed the window
+        }
     }
 
     private installAlert(JavascriptInterface js) {
