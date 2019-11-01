@@ -20,18 +20,29 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 
 class BrowserStackDriverFactory extends CloudDriverFactory {
+
+    public static final String LOCAL_IDENTIFIER_CAPABILITY = "browserstack.localIdentifier"
+
     @Override
     String assembleProviderUrl(String username, String password) {
         "http://$username:$password@hub.browserstack.com/wd/hub"
     }
 
+    WebDriver create(String specification, Map<String, Object> additionalCapabilities = [:]) {
+        create(specification, System.getenv("GEB_BROWSERSTACK_USERNAME"), System.getenv("GEB_BROWSERSTACK_AUTHKEY"), additionalCapabilities)
+    }
+
     WebDriver create(String specification, String username, String password, String localId, Map<String, Object> capabilities = [:]) {
-        def mergedCapabilities = ImmutableMap.builder().putAll(capabilities).put("browserstack.localIdentifier", localId).build()
+        def mergedCapabilities = ImmutableMap.builder().putAll(capabilities).put(LOCAL_IDENTIFIER_CAPABILITY, localId).build()
         create(specification, username, password, mergedCapabilities)
     }
 
     @Override
     protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
         desiredCapabilities.setCapability("browserstack.local", "true")
+        def tunnelId = System.getenv("GEB_BROWSERSTACK_LOCALID")
+        if (tunnelId) {
+            desiredCapabilities.setCapability(LOCAL_IDENTIFIER_CAPABILITY, tunnelId)
+        }
     }
 }

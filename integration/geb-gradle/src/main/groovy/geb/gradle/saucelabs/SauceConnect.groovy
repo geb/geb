@@ -16,12 +16,17 @@
 package geb.gradle.saucelabs
 
 import geb.gradle.cloud.ExternalTunnel
+import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.tasks.testing.Test
 import org.slf4j.Logger
 
-class SauceConnect extends ExternalTunnel {
+class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
+
+    public static final String TUNNEL_ID_ENV_VAR = "GEB_SAUCE_LABS_TUNNEL_ID"
+
     final protected SauceAccount account
     final protected Configuration connectConfiguration
     final protected File sauceConnectDir
@@ -29,6 +34,7 @@ class SauceConnect extends ExternalTunnel {
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
+    String identifier
     int port = 4445
     List<String> additionalOptions = []
 
@@ -54,6 +60,14 @@ class SauceConnect extends ExternalTunnel {
 
     @Override
     List<String> assembleCommandLine() {
-        [sauceConnectExecutable.absolutePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port] + additionalOptions
+        def options = [sauceConnectExecutable.absolutePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port.toString()]
+        if (identifier) {
+            options << '--tunnel-identifier' << identifier
+        }
+        options + additionalOptions
+    }
+
+    void configure(Test test) {
+        test.environment(TUNNEL_ID_ENV_VAR, identifier)
     }
 }

@@ -44,7 +44,6 @@ task firefoxLinuxTest(type: Test) {
 allLocalCrossBrowserTests.dependsOn firefoxLinuxTest
 
 sauceLabs {
-    def tunnelId = UUID.randomUUID().toString()
     browsers {
         safari_mac_8 {
             capabilities platform: "OS X 10.10"
@@ -55,15 +54,14 @@ sauceLabs {
         testClassesDirs = test.testClassesDirs
         classpath = test.classpath
         maxParallelForks 5
-        systemProperty "geb.saucelabs.tunnelId", tunnelId
     }
     account {
         username = System.getenv(SauceAccount.USER_ENV_VAR)
         accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
     }
     connect {
-        timeout 10 // minutes
-        additionalOptions = ['--tunnel-identifier', tunnelId]
+        timeout = 10 // minutes
+        identifier = UUID.randomUUID().toString()
     }
 }
 

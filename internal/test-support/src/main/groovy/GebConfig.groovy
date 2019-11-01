@@ -68,13 +68,7 @@ def sauceLabsBrowser = System.getProperty("geb.saucelabs.browser")
 if (sauceLabsBrowser) {
     setPortIndexProperty(getForkIndex(5))
     driver = {
-        def username = System.getenv("GEB_SAUCE_LABS_USER")
-        assert username
-        def accessKey = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
-        assert accessKey
-        def tunnelId = System.getProperty("geb.saucelabs.tunnelId")
-        assert tunnelId
-        new SauceLabsDriverFactory().create(sauceLabsBrowser, username, accessKey, ["tunnel-identifier": tunnelId])
+        new SauceLabsDriverFactory().create(sauceLabsBrowser)
     }
 }
 
@@ -82,13 +76,7 @@ def browserStackBrowser = System.getProperty("geb.browserstack.browser")
 if (browserStackBrowser) {
     setPortIndexProperty(getForkIndex(5))
     driver = {
-        def username = System.getenv("GEB_BROWSERSTACK_USERNAME")
-        assert username
-        def accessKey = System.getenv("GEB_BROWSERSTACK_AUTHKEY")
-        assert accessKey
-        def tunnelId = System.getenv("GEB_BROWSERSTACK_LOCALID")
-        assert tunnelId
-        new BrowserStackDriverFactory().create(browserStackBrowser, username, accessKey, ["browserstack.localIdentifier": tunnelId])
+        new BrowserStackDriverFactory().create(browserStackBrowser)
     }
 
     if (browserStackBrowser.contains("realMobile")) {

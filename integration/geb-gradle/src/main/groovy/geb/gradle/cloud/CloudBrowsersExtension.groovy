@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.gradle.saucelabs
+package geb.gradle.cloud
 
-import geb.gradle.cloud.TestTaskConfigurer
-import org.gradle.api.tasks.testing.Test
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 
-class SauceAccount implements TestTaskConfigurer {
-    public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
-    public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_PASSWORD"
+class CloudBrowsersExtension {
+    protected final Project project
 
-    String username
-    String accessKey
+    protected NamedDomainObjectContainer<BrowserSpec> browsers
 
-    void configure(Test test) {
-        test.environment(USER_ENV_VAR, username)
-        test.environment(ACCESS_KEY_ENV_VAR, accessKey)
+    CloudBrowsersExtension(Project project) {
+        this.project = project
+    }
+
+    protected void configureTestTasksWith(TestTaskConfigurer configurer) {
+        browsers.all { BrowserSpec browser ->
+            configurer.configure project.tasks["${browser.displayName}Test"]
+        }
     }
 }

@@ -16,46 +16,40 @@
 package geb.gradle.browserstack
 
 import geb.gradle.cloud.BrowserSpec
-import org.gradle.api.Project
+import geb.gradle.cloud.CloudBrowsersExtension
+import groovy.transform.InheritConstructors
 
-class BrowserStackExtension {
+@InheritConstructors
+class BrowserStackExtension extends CloudBrowsersExtension {
 
-    Project project
     BrowserStackAccount account
     BrowserStackLocal local
     List<URL> applicationUrls = []
     boolean forceLocal
     boolean useTunnel = true
 
-    BrowserStackExtension(Project project) {
-        this.project = project
-    }
-
     void addExtensions() {
-        extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
+        browsers = project.container(BrowserSpec) { new BrowserSpec("browserstack", it) }
+        extensions.browsers = browsers
         account = new BrowserStackAccount()
         local = new BrowserStackLocal()
         extensions.create('tunnel', BrowserStackTunnel, project, project.logger, this)
     }
 
     void task(Closure configuration) {
-        extensions.browsers.all { BrowserSpec browser ->
+        browsers.all { BrowserSpec browser ->
             project.tasks["${browser.displayName}Test"].configure configuration
         }
     }
 
     void account(Closure configuration) {
         project.configure(account, configuration)
-        extensions.browsers.all { BrowserSpec browser ->
-            account.configure project.tasks["${browser.displayName}Test"]
-        }
+        configureTestTasksWith(account)
     }
 
     void local(Closure configuration) {
         project.configure(local, configuration)
-        extensions.browsers.all { BrowserSpec browser ->
-            local.configure project.tasks["${browser.displayName}Test"]
-        }
+        configureTestTasksWith(local)
     }
 
     void application(String... urls) {

@@ -16,22 +16,21 @@
 package geb.gradle.saucelabs
 
 import geb.gradle.cloud.BrowserSpec
-import org.gradle.api.Project
+import geb.gradle.cloud.CloudBrowsersExtension
+import groovy.transform.InheritConstructors
 
-class SauceLabsExtension {
+@InheritConstructors
+class SauceLabsExtension extends CloudBrowsersExtension {
 
-    Project project
+    SauceConnect connect
     SauceAccount account
     boolean useTunnel = true
 
-    SauceLabsExtension(Project project) {
-        this.project = project
-    }
-
     void addExtensions() {
-        extensions.browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
+        browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
+        extensions.browsers = browsers
         account = new SauceAccount()
-        extensions.create('connect', SauceConnect, project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
+        connect = new SauceConnect(project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
     }
 
     void task(Closure configuration) {
@@ -42,8 +41,11 @@ class SauceLabsExtension {
 
     void account(Closure configuration) {
         project.configure(account, configuration)
-        extensions.browsers.all { BrowserSpec browser ->
-            account.configure project.tasks["${browser.displayName}Test"]
-        }
+        configureTestTasksWith(account)
+    }
+
+    void connect(Closure configuration) {
+        project.configure(connect, configuration)
+        configureTestTasksWith(connect)
     }
 }

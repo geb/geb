@@ -15,9 +15,10 @@
  */
 package geb.gradle.browserstack
 
+import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.tasks.testing.Test
 
-class BrowserStackLocal {
+class BrowserStackLocal implements TestTaskConfigurer {
 
     public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
 

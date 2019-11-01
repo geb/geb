@@ -15,6 +15,9 @@
  */
 package geb.driver
 
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.remote.DesiredCapabilities
+
 class SauceLabsDriverFactory extends CloudDriverFactory {
 
     private final String host
@@ -23,8 +26,20 @@ class SauceLabsDriverFactory extends CloudDriverFactory {
         this.host = host
     }
 
+    WebDriver create(String specification, Map<String, Object> additionalCapabilities = [:]) {
+        create(specification, System.getenv("GEB_SAUCE_LABS_USER"), System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD"), additionalCapabilities)
+    }
+
     @Override
     String assembleProviderUrl(String username, String password) {
         "http://$username:$password@$host/wd/hub"
+    }
+
+    @Override
+    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+        def tunnelId = System.getenv("GEB_SAUCE_LABS_TUNNEL_ID")
+        if (tunnelId) {
+            desiredCapabilities.setCapability("tunnel-identifier", tunnelId)
+        }
     }
 }
