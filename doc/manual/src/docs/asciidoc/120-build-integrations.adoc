@@ -70,6 +70,7 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <version>{groovy-version}</version>
+      <type>pom</type>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
