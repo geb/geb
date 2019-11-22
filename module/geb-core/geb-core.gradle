@@ -79,7 +79,7 @@ browserStack {
         chrome_windows_78 {
             capabilities os: "Windows", os_version: "10"
         }
-        firefox_mac_70 {
+        firefox_mac_47 {
             capabilities os: "OS X", os_version: "High Sierra"
         }
         firefox_windows_70 {
@@ -111,7 +111,7 @@ browserStack {
 }
 
 task nonIeBrowserStackTests {
-    dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxWindows70Test', 'firefoxMac70Test'
+    dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxWindows70Test', 'firefoxMac47Test'
 }
 
 task ieBrowserStackTests {
