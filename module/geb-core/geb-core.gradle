@@ -73,14 +73,27 @@ browserStack {
         android {
             capabilities device: "Samsung Galaxy S6", realMobile: "true"
         }
-        chrome_mac_62
-        chrome_windows_62
-        firefox_windows_47 //newer versions do not currently support mouse interaction commands
-        firefox_mac_47 //newer versions do not currently support mouse interaction commands
-        create("internet explorer_windows_10")
-        create("internet explorer_windows_11")
-        create("edge_windows_17")
-
+        chrome_mac_78 {
+            capabilities os: "OS X", os_version: "High Sierra"
+        }
+        chrome_windows_78 {
+            capabilities os: "Windows", os_version: "10"
+        }
+        firefox_mac_70 {
+            capabilities os: "OS X", os_version: "High Sierra"
+        }
+        firefox_windows_70 {
+            capabilities os: "Windows", os_version: "10"
+        }
+        create("internet explorer_windows_10") {
+            capabilities os: "Windows", os_version: "8"
+        }
+        create("internet explorer_windows_11") {
+            capabilities os: "Windows", os_version: "10"
+        }
+        create("edge_windows_18") {
+            capabilities os: "Windows", os_version: "10"
+        }
     }
     task {
         maxHeapSize = "512m"
@@ -98,11 +111,11 @@ browserStack {
 }
 
 task nonIeBrowserStackTests {
-    dependsOn 'androidTest', 'chromeMac62Test', 'chromeWindows62Test', 'firefoxWindows47Test', 'firefoxMac47Test'
+    dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxWindows70Test', 'firefoxMac70Test'
 }
 
 task ieBrowserStackTests {
-    dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows17Test'
+    dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows18Test'
 }
 
 modifyPom { pom ->
