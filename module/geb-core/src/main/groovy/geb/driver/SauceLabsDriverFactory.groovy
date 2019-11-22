@@ -32,7 +32,7 @@ class SauceLabsDriverFactory extends CloudDriverFactory {
 
     @Override
     String assembleProviderUrl(String username, String password) {
-        "http://$username:$password@$host/wd/hub"
+        "https://$username:$password@$host/wd/hub"
     }
 
     @Override

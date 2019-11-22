@@ -25,7 +25,7 @@ class BrowserStackDriverFactory extends CloudDriverFactory {
 
     @Override
     String assembleProviderUrl(String username, String password) {
-        "http://$username:$password@hub.browserstack.com/wd/hub"
+        "https://$username:$password@hub.browserstack.com/wd/hub"
     }
 
     WebDriver create(String specification, Map<String, Object> additionalCapabilities = [:]) {
