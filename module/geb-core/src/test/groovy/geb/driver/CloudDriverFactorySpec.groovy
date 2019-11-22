@@ -72,7 +72,7 @@ class CloudDriverFactorySpec extends Specification {
         }
 
         @Override
-        protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+        protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
             desiredCapabilities.setCapability(TEST_CAPABILITY_NAME, false)
         }
     }

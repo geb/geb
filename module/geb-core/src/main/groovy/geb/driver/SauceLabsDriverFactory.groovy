@@ -35,11 +35,14 @@ class SauceLabsDriverFactory extends CloudDriverFactory {
 
     @Override
     String assembleProviderUrl(String username, String password) {
-        "https://$username:$password@$host/wd/hub"
+        "https://$host/wd/hub"
     }
 
     @Override
-    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+    protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
+        desiredCapabilities.setCapability("username", username)
+        desiredCapabilities.setCapability("accessKey", key)
+
         def tunnelId = System.getenv("GEB_SAUCE_LABS_TUNNEL_ID")
         if (tunnelId) {
             desiredCapabilities.setCapability("tunnel-identifier", tunnelId)

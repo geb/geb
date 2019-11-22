@@ -43,7 +43,7 @@ abstract class CloudDriverFactory {
         capabilities.putAll(additionalCapabilities)
 
         def desiredCapabilities = remoteDriverOperations.softLoadRemoteDriverClass('DesiredCapabilities').newInstance()
-        configureCapabilities(desiredCapabilities)
+        configureCapabilities(username, key, desiredCapabilities)
         capabilities.each { capability, value ->
             desiredCapabilities.setCapability(capability, value)
         }
@@ -52,6 +52,6 @@ abstract class CloudDriverFactory {
     }
 
     @SuppressWarnings("UnusedMethodParameter")
-    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+    protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
     }
 }

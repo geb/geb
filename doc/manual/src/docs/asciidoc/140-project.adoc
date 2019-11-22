@@ -91,6 +91,7 @@ This page lists the high level changes between versions of Geb.
 
 * Improve integration between cloud browser gradle plugins and driver factories. [issue:579[]]
 * Switch cloud driver factories to use https urls. [issue:599[]]
+* Pass SauceLabs credentials via capabilities and not the url. [issue:600[]]
 
 === 3.2
 

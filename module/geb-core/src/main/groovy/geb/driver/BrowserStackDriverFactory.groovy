@@ -41,7 +41,7 @@ class BrowserStackDriverFactory extends CloudDriverFactory {
     }
 
     @Override
-    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
+    protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
         desiredCapabilities.setCapability("browserstack.local", "true")
         def tunnelId = System.getenv("GEB_BROWSERSTACK_LOCALID")
         if (tunnelId) {
