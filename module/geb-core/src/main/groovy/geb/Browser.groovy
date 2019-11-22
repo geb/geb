@@ -1103,8 +1103,7 @@ class Browser {
     }
 
     private doCheckIfAtAnUnexpectedPage(def expectedPages) {
-        def unexpectedPages = config.unexpectedPages - expectedPages.toList()
-        unexpectedPages.each {
+        config.unexpectedPages.each {
             if (isAt(it, false)) {
                 throw new UnexpectedPageException(it, *expectedPages)
             }
