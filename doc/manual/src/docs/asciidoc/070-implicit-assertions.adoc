@@ -168,6 +168,7 @@ It is sometimes desirable not apply implicit assertions to all expressions in th
 One example might be calling methods which should fail the condition if they throw but should not fail the condition when they return a falsey value.
 To disable implicit assertions in a particular `waitFor()` or `refreshWaitFor()` call simply pass `false` as the `implicitAssertions` named parameter:
 
+[source,groovy]
 ----
 include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=disable_implicit_assertions,indent=0]
 ----
