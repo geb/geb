@@ -28,8 +28,11 @@ class BrowserStackDriverFactory extends CloudDriverFactory {
         "https://$username:$password@hub.browserstack.com/wd/hub"
     }
 
-    WebDriver create(String specification, Map<String, Object> additionalCapabilities = [:]) {
-        create(specification, System.getenv("GEB_BROWSERSTACK_USERNAME"), System.getenv("GEB_BROWSERSTACK_AUTHKEY"), additionalCapabilities)
+    WebDriver create(Map<String, Object> additionalCapabilities = [:]) {
+        def specification = System.getProperty("geb.browserstack.browser")
+        def user = System.getenv("GEB_BROWSERSTACK_USERNAME")
+        def key = System.getenv("GEB_BROWSERSTACK_AUTHKEY")
+        create(specification, user, key, additionalCapabilities)
     }
 
     WebDriver create(String specification, String username, String password, String localId, Map<String, Object> capabilities = [:]) {

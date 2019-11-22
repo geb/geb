@@ -68,7 +68,7 @@ def sauceLabsBrowser = System.getProperty("geb.saucelabs.browser")
 if (sauceLabsBrowser) {
     setPortIndexProperty(getForkIndex(5))
     driver = {
-        new SauceLabsDriverFactory().create(sauceLabsBrowser)
+        new SauceLabsDriverFactory().create()
     }
 }
 
@@ -76,7 +76,7 @@ def browserStackBrowser = System.getProperty("geb.browserstack.browser")
 if (browserStackBrowser) {
     setPortIndexProperty(getForkIndex(5))
     driver = {
-        new BrowserStackDriverFactory().create(browserStackBrowser)
+        new BrowserStackDriverFactory().create()
     }
 
     if (browserStackBrowser.contains("realMobile")) {

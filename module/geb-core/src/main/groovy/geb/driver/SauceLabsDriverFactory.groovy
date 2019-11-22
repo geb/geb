@@ -26,8 +26,11 @@ class SauceLabsDriverFactory extends CloudDriverFactory {
         this.host = host
     }
 
-    WebDriver create(String specification, Map<String, Object> additionalCapabilities = [:]) {
-        create(specification, System.getenv("GEB_SAUCE_LABS_USER"), System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD"), additionalCapabilities)
+    WebDriver create(Map<String, Object> additionalCapabilities = [:]) {
+        def specification = System.getProperty("geb.saucelabs.browser")
+        def user = System.getenv("GEB_SAUCE_LABS_USER")
+        def key = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
+        create(specification, user, key, additionalCapabilities)
     }
 
     @Override
