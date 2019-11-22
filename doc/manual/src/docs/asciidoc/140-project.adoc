@@ -90,6 +90,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * Add ability to disable implicit assertions in particular waitFor block. [issue:578[]]
+* Add support to provide more information for UnexpectedPageException. [issue:596[]]
 
 ==== Improvements
 

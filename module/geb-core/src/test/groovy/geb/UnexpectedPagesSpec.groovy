@@ -106,12 +106,51 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
         at ExpectedPage
 
         then:
         UnexpectedPageException e = thrown()
-        e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when expected to be at geb.ExpectedPage'
+        e.getMessage() == 'An unexpected page geb.PlainUnexpectedPage was encountered when expected to be at geb.ExpectedPage.'
+    }
+
+    void 'the exception message is enriched when the unexpected page implements geb.UnexpectedPage'() {
+        given:
+        defineUnexpectedPages(UnexpectedPageWithMessage)
+
+        when:
+        via UnexpectedPageWithMessage
+        at ExpectedPage
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.UnexpectedPageWithMessage was encountered when expected to be at geb.ExpectedPage. Custom message.'
+    }
+
+    void 'an exception is thrown when we end up at an unexpected page while at checking a page instance'() {
+        given:
+        defineUnexpectedPages()
+
+        when:
+        via PlainUnexpectedPage
+        at(new ExpectedPage())
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.PlainUnexpectedPage was encountered when expected to be at geb.ExpectedPage.'
+    }
+
+    void 'the exception message is enriched when the unexpected page implements geb.UnexpectedPage while at checking a page instance'() {
+        given:
+        defineUnexpectedPages(UnexpectedPageWithMessage)
+
+        when:
+        via UnexpectedPageWithMessage
+        at(new ExpectedPage())
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.UnexpectedPageWithMessage was encountered when expected to be at geb.ExpectedPage. Custom message.'
     }
 
     void 'atCheckWaiting configuration on page level is honoured for pages configured as unexpected'() {
@@ -124,7 +163,7 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
         then:
         UnexpectedPageException e = thrown()
-        e.getMessage() == 'An unexpected page geb.UnexpectedPageWithWaiting was encountered when expected to be at geb.ExpectedPage'
+        e.getMessage() == 'An unexpected page geb.UnexpectedPageWithWaiting was encountered when expected to be at geb.ExpectedPage.'
     }
 
     void 'it is possible to do at checking for an unexpected page'() {
@@ -132,10 +171,10 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
 
         then:
-        at UnexpectedPage
+        at PlainUnexpectedPage
     }
 
     void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible pages'() {
@@ -143,12 +182,26 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
         page(ExpectedPage, AnotherExpectedPage)
 
         then:
         UnexpectedPageException e = thrown()
-        e.getMessage() == 'An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [class geb.ExpectedPage, class geb.AnotherExpectedPage])'
+        e.getMessage() == 'An unexpected page geb.PlainUnexpectedPage was encountered when trying to find page match (given potentials: [class geb.ExpectedPage, class geb.AnotherExpectedPage]).'
+    }
+
+    void 'exception message is enriched when the unexpected page implements geb.UnexpectedPage and we end up on an unexpected page when setting a page from a list of possible pages'() {
+        given:
+        defineUnexpectedPages(UnexpectedPageWithMessage)
+
+        when:
+        via UnexpectedPageWithMessage
+        page(ExpectedPage, AnotherExpectedPage)
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == 'An unexpected page geb.UnexpectedPageWithMessage was encountered when trying to find page ' +
+                'match (given potentials: [class geb.ExpectedPage, class geb.AnotherExpectedPage]). Custom message.'
     }
 
     void 'an exception is thrown when we end up on an unexpected page when setting a page from a list of possible parametrized page instances'() {
@@ -156,12 +209,27 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
         page(new ParametrizedPage(condition: false), new ParametrizedPage(condition: false))
 
         then:
         UnexpectedPageException e = thrown()
-        e.getMessage() == "An unexpected page geb.UnexpectedPage was encountered when trying to find page match (given potentials: [${ParametrizedPage.name}, ${ParametrizedPage.name}])"
+        e.getMessage() == "An unexpected page geb.PlainUnexpectedPage was encountered when trying to find page match" +
+                " (given potentials: [${ParametrizedPage.name}, ${ParametrizedPage.name}])."
+    }
+
+    void 'exception message is enriched when the unexpected page implements geb.UnexpectedPage when we end up on an unexpected page when setting a page from a list of parametrized page instances'() {
+        given:
+        defineUnexpectedPages(UnexpectedPageWithMessage)
+
+        when:
+        via UnexpectedPageWithMessage
+        page(new ParametrizedPage(condition: false), new ParametrizedPage(condition: false))
+
+        then:
+        UnexpectedPageException e = thrown()
+        e.getMessage() == "An unexpected page geb.UnexpectedPageWithMessage was encountered when trying to find page" +
+                " match (given potentials: [${ParametrizedPage.name}, ${ParametrizedPage.name}]). Custom message."
     }
 
     void 'it is possible to pass an unexpected page when setting a page from a list of possible pages'() {
@@ -181,7 +249,7 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
 
         then:
         !isAt(ExpectedPage)
@@ -212,10 +280,10 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         e.message == "Unexpected pages configuration has to be a collection of classes that extend ${Page.name} but found \"$message\". Did you forget to include some imports in your config file?"
 
         where:
-        configValue    | message
-        ["foo"]        | '[foo]'
-        "foo"          | 'foo'
-        UnexpectedPage | "class geb.UnexpectedPage"
+        configValue         | message
+        ["foo"]             | '[foo]'
+        "foo"               | 'foo'
+        PlainUnexpectedPage | "class geb.PlainUnexpectedPage"
     }
 
     void "checking for unexpected pages only happens after checking all of the at checkers for supplied list of page classes"() {
@@ -223,7 +291,7 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
 
         then:
         page([AlwaysPassingAtCheckerPage] as Class[])
@@ -234,23 +302,32 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         defineUnexpectedPages()
 
         when:
-        via UnexpectedPage
+        via PlainUnexpectedPage
 
         then:
         page([new AlwaysPassingAtCheckerPage()] as Page[])
     }
 
-    private void defineUnexpectedPages(Class<? extends Page>[] unexpectedPages = ([UnexpectedPage, AnotherUnexpectedPage] as Class<? extends Page>[])) {
+    private void defineUnexpectedPages(Class<? extends Page>[] unexpectedPages = ([PlainUnexpectedPage, AnotherUnexpectedPage] as Class<? extends Page>[])) {
         browser.config.unexpectedPages = unexpectedPages.toList()
     }
 
 }
 
-class UnexpectedPage extends Page {
+class PlainUnexpectedPage extends Page {
 
     static url = "?title=unexpected"
 
     static at = { title == 'unexpected' }
+}
+
+class UnexpectedPageWithMessage extends Page implements UnexpectedPage {
+
+    static url = "?title=unexpected"
+
+    static at = { title == 'unexpected' }
+
+    final String unexpectedPageMessage = "Custom message."
 }
 
 class UnexpectedPageWithWaiting extends Page {

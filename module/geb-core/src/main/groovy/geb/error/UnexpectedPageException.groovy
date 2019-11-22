@@ -16,13 +16,14 @@ package geb.error
 
 import geb.AtVerificationResult
 import geb.Page
+import geb.UnexpectedPage
 
 import static java.lang.System.lineSeparator
 
 class UnexpectedPageException extends GebException {
 
     UnexpectedPageException(Page page) {
-        this(page, null)
+        this(page.getClass())
     }
 
     UnexpectedPageException(Class<? extends Page> page) {
@@ -33,24 +34,24 @@ class UnexpectedPageException extends GebException {
         super("At checker page verification failed for page $page", cause)
     }
 
-    UnexpectedPageException(Class<? extends Page> actualPage, Class<? extends Page> expectedPage) {
-        super("An unexpected page $actualPage.name was encountered when expected to be at $expectedPage.name")
+    UnexpectedPageException(Page actualPage, Class<? extends Page> expectedPage) {
+        super(buildMessage(actualPage, "expected to be at $expectedPage.name"))
     }
 
-    UnexpectedPageException(Class<? extends Page> actualPage, Page expectedPage) {
-        super("An unexpected page $actualPage.name was encountered when expected to be at ${expectedPage.getClass().name}")
+    UnexpectedPageException(Page actualPage, Page expectedPage) {
+        super(buildMessage(actualPage, "expected to be at ${expectedPage.getClass().name}"))
     }
 
-    UnexpectedPageException(Class<? extends Page> actualPage, Class<? extends Page>[] potentials) {
-        super("An unexpected page $actualPage.name was encountered when trying to find page match (given potentials: $potentials)")
+    UnexpectedPageException(Page actualPage, Class<? extends Page>[] potentials) {
+        super(buildMessage(actualPage, "trying to find page match (given potentials: $potentials)"))
     }
 
-    UnexpectedPageException(Class<? extends Page> actualPage, Page[] potentials) {
-        super("An unexpected page $actualPage.name was encountered when trying to find page match (given potentials: $potentials)")
+    UnexpectedPageException(Page actualPage, Page[] potentials) {
+        super(buildMessage(actualPage, "trying to find page match (given potentials: $potentials)"))
     }
 
     UnexpectedPageException(Map<? extends Page, AtVerificationResult> pageVerificationResults) {
-        super("Unable to find page match. At checker verification results:${lineSeparator()}${lineSeparator()}${format(pageVerificationResults)}")
+        super("Unable to find page match. At checker verification results:${lineSeparator()}${lineSeparator()}${format(pageVerificationResults)}.")
     }
 
     private static String format(Map<? extends Page, AtVerificationResult> pageVerificationResults) {
@@ -58,5 +59,11 @@ class UnexpectedPageException extends GebException {
             "Result for ${atVerificationResultEntry.key.getClass().name}: $atVerificationResultEntry.value"
         }
         textResults.join("${lineSeparator()}${lineSeparator()}")
+    }
+
+    private static buildMessage(Page actualPage, String message) {
+        def standardMessage = "An unexpected page ${actualPage.getClass().name} was encountered when $message."
+
+        actualPage instanceof UnexpectedPage ? "$standardMessage ${actualPage.unexpectedPageMessage}" : standardMessage
     }
 }

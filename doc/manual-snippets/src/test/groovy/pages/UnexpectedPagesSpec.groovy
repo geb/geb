@@ -16,23 +16,27 @@
 package pages
 
 import geb.Page
+import geb.UnexpectedPage
 import geb.error.UnexpectedPageException
 import geb.test.GebSpecWithCallbackServer
 
 class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
-    String getUnexpectedPagesConfig() {
-        """
-        import pages.PageNotFoundPage
+    void setupConfigurationForPageNotFoundPageUnexpectedPage() {
+        updateConfiguration("""
+            import pages.PageNotFoundPage
 
-        // tag::config[]
-        unexpectedPages = [PageNotFoundPage]
-        // end::config[]
-        """
+            // tag::config[]
+            unexpectedPages = [PageNotFoundPage]
+            // end::config[]
+        """)
+    }
+
+    void updateConfiguration(String unexpectedPagesConfig) {
+        browser.config.rawConfig.merge(new ConfigSlurper().parse(unexpectedPagesConfig))
     }
 
     def setup() {
-        browser.config.rawConfig.merge(new ConfigSlurper().parse(unexpectedPagesConfig))
         html {
             p(id: "error-message", "Sorry but we could not find that page")
         }
@@ -40,6 +44,9 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
 
     @SuppressWarnings("ConstantAssertExpression")
     def "using unexpected page"() {
+        given:
+        setupConfigurationForPageNotFoundPageUnexpectedPage()
+
         expect:
         // tag::usage[]
         try {
@@ -52,6 +59,9 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
     }
 
     def "checking for unexpected page"() {
+        given:
+        setupConfigurationForPageNotFoundPageUnexpectedPage()
+
         when:
         // tag::checking_for_unexpected_page[]
         at PageNotFoundPage
@@ -60,6 +70,22 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
         then:
         noExceptionThrown()
     }
+
+    @SuppressWarnings("ConstantAssertExpression")
+    def "using unexpected page with custom message"() {
+        given:
+        updateConfiguration("unexpectedPages = [pages.PageNotFoundPageWithCustomMessage]")
+
+        expect:
+        // tag::usage_with_custom_message[]
+        try {
+            at ExpectedPage
+            assert false //should not get here
+        } catch (UnexpectedPageException e) {
+            assert e.message.contains("Additional UnexpectedPageException message text")
+        }
+        // end::usage_with_custom_message[]
+    }
 }
 
 // tag::unexpected_page[]
@@ -67,6 +93,17 @@ class PageNotFoundPage extends Page {
     static at = { $("#error-message").text() == "Sorry but we could not find that page" }
 }
 // end::unexpected_page[]
+
+// tag::unexpected_page_with_custom_message[]
+class PageNotFoundPageWithCustomMessage extends Page implements UnexpectedPage {
+    static at = { $("#error-message").text() == "Sorry but we could not find that page" }
+
+    @Override
+    String getUnexpectedPageMessage() {
+        "Additional UnexpectedPageException message text"
+    }
+}
+// end::unexpected_page_with_custom_message[]
 
 class ExpectedPage extends Page {
     static at = { }

@@ -642,6 +642,16 @@ Following will pass without throwing an `UnexpectedPageException` if “at” ch
 include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=checking_for_unexpected_page,indent=0]
 ----
 
+It is also possible to enrich the message of `UnexpectedPageException` thrown when an unexpected page is encountered.
+This can be achieved by implementing `geb.UnexpectedPage` for the unexpected page:
+
+[source,groovy]
+----
+include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=unexpected_page_with_custom_message,indent=0]
+
+include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=usage_with_custom_message,indent=0]
+----
+
 [WARNING]
 ====
 The <<at-check-waiting,global `atCheckWaiting` configuration>> does not apply when checking for unexpected pages.
