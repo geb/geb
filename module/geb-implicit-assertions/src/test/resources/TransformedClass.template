@@ -3,11 +3,11 @@ class TestClass {
         $closureBody
     }
 
-    def waitFor(Closure closure) {
+    def waitFor(Map params = [:], Closure closure) {
         closure.call()
     }
 
-    def refreshWaitFor(Closure closure) {
+    def refreshWaitFor(Map params = [:], Closure closure) {
         closure.call()
     }
 
@@ -42,8 +42,20 @@ class TestClass {
         }
     }
 
+    def runWaitForWithDisabledImplicitAssertions() {
+        waitFor(implicitAssertions: false) {
+            $closureBody
+        }
+    }
+
     def runRefreshWaitFor() {
         refreshWaitFor {
+            $closureBody
+        }
+    }
+
+    def runRefreshWaitForWithDisabledImplicitAssertions() {
+        refreshWaitFor(implicitAssertions: false) {
             $closureBody
         }
     }

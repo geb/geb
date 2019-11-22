@@ -126,4 +126,21 @@ title == "Page Title"
         WaitTimeoutException e = thrown()
         stacktraceContains(e, expectedWaitingFailureMessage)
     }
+
+    def "selectively disabling implicit assertions"() {
+        when:
+        //tag::disable_implicit_assertions[]
+        waitFor(implicitAssertions: false) {
+            falseReturningMethod()
+            true
+        }
+        //end::disable_implicit_assertions[]
+
+        then:
+        noExceptionThrown()
+    }
+
+    boolean falseReturningMethod() {
+        false
+    }
 }

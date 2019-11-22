@@ -28,7 +28,11 @@ import static geb.transform.implicitassertions.ImplicitAssertionsTransformationU
 
 class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
 
-    private static final List<String> TRANSFORMED_CALLS_METHOD_NAMES = ["waitFor", "refreshWaitFor", "at"]
+    private static final List<ImplicitlyAssertedMethodCallMatcher> IMPLICITLY_ASSERTED_METHOD_CALL_MATCHERS = [
+            new ConfigurableByNameImplicitlyAssertedMethodCallMatcher("waitFor"),
+            new ConfigurableByNameImplicitlyAssertedMethodCallMatcher("refreshWaitFor"),
+            new ByNameImplicitlyAssertedMethodCallMatcher("at")
+    ]
     private static final String WAIT_CONDITION = "waitCondition"
 
     SourceUnit sourceUnit
@@ -55,32 +59,41 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
     void visitExpressionStatement(ExpressionStatement statement) {
         if (statement.expression in MethodCallExpression) {
             MethodCallExpression expression = statement.expression
-            if (expression.methodAsString in TRANSFORMED_CALLS_METHOD_NAMES && expression.arguments in ArgumentListExpression) {
+            if (isSpockVerifyMethodConditionCall(expression)) {
+                compensateForSpock(expression)
+            } else if (expression.arguments in ArgumentListExpression) {
                 ArgumentListExpression arguments = expression.arguments
-                if (lastArgumentIsClosureExpression(arguments)) {
-                    transformEachStatement(arguments.expressions.last(), false)
-                }
-            } else {
-                compensateForSpockIfNecessary(expression)
+                potentiallyTransform(expression.methodAsString, arguments.expressions)
             }
         }
     }
 
-    void compensateForSpockIfNecessary(MethodCallExpression expression) {
+    void compensateForSpock(MethodCallExpression expression) {
+        if (expression.arguments in ArgumentListExpression) {
+            ArgumentListExpression arguments = expression.arguments as ArgumentListExpression
+            List<Expression> argumentExpressions = arguments.expressions
+
+            if (argumentExpressions.size() == 12) {
+                visitVerifyMethodConditionCall(argumentExpressions, 7)
+            }
+        }
+    }
+
+    boolean isSpockVerifyMethodConditionCall(MethodCallExpression expression) {
         if (expression.objectExpression in ClassExpression && expression.method in ConstantExpression) {
             ClassExpression classExpression = expression.objectExpression as ClassExpression
             ConstantExpression method = expression.method as ConstantExpression
 
-            if (classExpression.type.name == "org.spockframework.runtime.SpockRuntime" && method.value == "verifyMethodCondition") {
-                if (expression.arguments in ArgumentListExpression) {
-                    ArgumentListExpression arguments = expression.arguments as ArgumentListExpression
-                    List<Expression> argumentExpressions = arguments.expressions
+            classExpression.type.name == "org.spockframework.runtime.SpockRuntime" && method.value == "verifyMethodCondition"
+        }
+    }
 
-                    if (argumentExpressions.size() == 12) {
-                        visitVerifyMethodConditionCall(argumentExpressions, 7)
-                    }
-                }
-            }
+    boolean potentiallyTransform(String methodName, List<Expression> arguments) {
+        def matcherSatisfied = IMPLICITLY_ASSERTED_METHOD_CALL_MATCHERS.any {
+            it.isImplicitlyAsserted(methodName, arguments)
+        }
+        if (matcherSatisfied && lastArgumentIsClosureExpression(arguments)) {
+            transformEachStatement(arguments.last() as ClosureExpression, false)
         }
     }
 
@@ -95,7 +108,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
                     extractRecordedValueExpression(argumentExpression)
                 }
 
-                visitSpockValueRecordMethodCall(methodName, values)
+                potentiallyTransform(methodName, values)
             }
         }
     }
@@ -125,17 +138,6 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         }
     }
 
-    void visitSpockValueRecordMethodCall(String name, List<Expression> arguments) {
-        if (name in TRANSFORMED_CALLS_METHOD_NAMES) {
-            if (!arguments.empty) {
-                Expression lastArg = arguments.last()
-                if (lastArg instanceof ClosureExpression) {
-                    transformEachStatement(lastArg as ClosureExpression, false)
-                }
-            }
-        }
-    }
-
     boolean isTransformable(ExpressionStatement statement) {
         if (statement.expression in BinaryExpression) {
             BinaryExpression binaryExpression = statement.expression
@@ -153,7 +155,11 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
     }
 
     private boolean lastArgumentIsClosureExpression(ArgumentListExpression arguments) {
-        arguments.expressions && arguments.expressions.last() in ClosureExpression
+        lastArgumentIsClosureExpression(arguments.expressions)
+    }
+
+    private boolean lastArgumentIsClosureExpression(List<Expression> arguments) {
+        arguments && arguments.last() in ClosureExpression
     }
 
     private boolean requiredOptionSpecifiedAsFalse(ArgumentListExpression arguments) {
@@ -230,7 +236,7 @@ class ImplicitAssertionsTransformationVisitor extends ClassCodeVisitorSupport {
         if (statement in ExpressionStatement) {
             ExpressionStatement expressionStatement = statement
             if (!(expressionStatement.expression in DeclarationExpression)
-                && isTransformable(expressionStatement)) {
+                    && isTransformable(expressionStatement)) {
                 return expressionStatement.expression
             }
         }

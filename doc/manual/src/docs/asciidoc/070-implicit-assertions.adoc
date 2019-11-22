@@ -162,6 +162,16 @@ If you're unfamiliar with Geb's “Reloading page when waiting” support, pleas
 
 Any calls to `refreshWaitFor()` method have implicit assertions added to each expression in the bloc passed to it just like for `waitFor()` method calls.
 
+=== Selectively disabling implicit assertions
+
+It is sometimes desirable not apply implicit assertions to all expressions in the closure passed to `waitFor()` or `refreshWaitFor()`.
+One example might be calling methods which should fail the condition if they throw but should not fail the condition when they return a falsey value.
+To disable implicit assertions in a particular `waitFor()` or `refreshWaitFor()` call simply pass `false` as the `implicitAssertions` named parameter:
+
+----
+include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=disable_implicit_assertions,indent=0]
+----
+
 :numbered:
 
 [[implicit-assertions-mechanics]]

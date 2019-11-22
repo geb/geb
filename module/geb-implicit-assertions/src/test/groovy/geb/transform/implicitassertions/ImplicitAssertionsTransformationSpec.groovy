@@ -102,6 +102,11 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         getTransformedInstanceWithClosureBody('true').runWaitFor() == true
     }
 
+    def "implicit assertions in waitFor closure can be disabled"() {
+        expect:
+        getTransformedInstanceWithClosureBody('false').runWaitForWithDisabledImplicitAssertions() == false
+    }
+
     def "transform is also applied to at closures"() {
         when:
         getTransformedInstanceWithClosureBody('false').at()
@@ -118,6 +123,11 @@ class ImplicitAssertionsTransformationSpec extends Specification {
         then:
         PowerAssertionError error = thrown()
         error.message.contains('false')
+    }
+
+    def "implicit assertions in runRefreshWaitFor closure can be disabled"() {
+        expect:
+        getTransformedInstanceWithClosureBody('false').runRefreshWaitForWithDisabledImplicitAssertions() == false
     }
 
     def "transform is also applied to at() calls"() {
