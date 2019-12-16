@@ -1,5 +1,6 @@
 import geb.buildadapter.BuildAdapterFactory
 import geb.driver.BrowserStackDriverFactory
+import geb.driver.LambdaTestDriverFactory
 import geb.driver.SauceLabsDriverFactory
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.chrome.ChromeOptions
@@ -81,6 +82,14 @@ if (browserStackBrowser) {
 
     if (browserStackBrowser.contains("realMobile")) {
         testHttpServerHost = findLocalIp()
+    }
+}
+
+def lambdaTestBrowser = System.getProperty("geb.lambdatest.browser")
+if (lambdaTestBrowser) {
+    setPortIndexProperty(getForkIndex(5))
+    driver = {
+        new LambdaTestDriverFactory().create(lambdaTestBrowser)
     }
 }
 

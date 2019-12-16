@@ -10,7 +10,7 @@ import geb.test.browsers.InternetExplorer11
 import geb.test.browsers.RequiresRealBrowser
 import geb.test.browsers.Safari
 
-def cloudBrowserSpecification = System.getProperty("geb.saucelabs.browser") ?: System.getProperty("geb.browserstack.browser")
+def cloudBrowserSpecification = System.getProperty("geb.saucelabs.browser") ?: System.getProperty("geb.browserstack.browser") ?: System.getProperty("geb.lambdatest.browser")
 def dockerizedDriver = System.getProperty("geb.dockerized.driver")
 if (cloudBrowserSpecification) {
     def includes = []
