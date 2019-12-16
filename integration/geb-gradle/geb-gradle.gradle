@@ -35,5 +35,9 @@ gradlePlugin {
             id = 'geb-browserstack'
             implementationClass = 'geb.gradle.browserstack.BrowserStackPlugin'
         }
+        lambdaTestPlugin {
+            id = 'geb-lambdatest'
+            implementationClass = 'geb.gradle.lambdatest.LambdaTestPlugin'
+        }
     }
 }

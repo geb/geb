@@ -1,5 +1,6 @@
 import geb.gradle.browserstack.BrowserStackAccount
 import geb.gradle.saucelabs.SauceAccount
+import geb.gradle.lambdatest.LambdaTestAccount
 
 buildscript {
     repositories {
@@ -12,6 +13,7 @@ buildscript {
 
 apply plugin: "geb-browserstack"
 apply plugin: "geb-saucelabs"
+apply plugin: "geb-lambdatest"
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
 dependencies {
@@ -33,7 +35,7 @@ test {
 }
 
 task allCrossBrowserTests {
-    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests'
+    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests','allLambdaTestTests'
 }
 
 task firefoxLinuxTest(type: Test) {
@@ -109,6 +111,31 @@ browserStack {
         identifier = UUID.randomUUID().toString()
     }
 }
+
+lambdaTest {
+    def applicationAddresses = [8000, 8080, 9000, 9090, 9999].collect { "http://localhost:$it" }
+    application(*applicationAddresses)
+
+    browsers {
+        chrome_windows_70 {
+            capabilities platform: "Windows 10"
+        }
+    }
+    task {
+        maxHeapSize = "512m"
+        testClassesDirs = test.testClassesDirs
+        classpath = test.classpath
+        maxParallelForks 5
+    }
+    account {
+        username = System.getenv(LambdaTestAccount.USER_ENV_VAR)
+        accessKey = System.getenv(LambdaTestAccount.ACCESS_KEY_ENV_VAR)
+    }
+    tunnelOps {
+        identifier = UUID.randomUUID().toString()
+    }
+}
+
 
 task nonIeBrowserStackTests {
     dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxWindows70Test', 'firefoxMac47Test'
