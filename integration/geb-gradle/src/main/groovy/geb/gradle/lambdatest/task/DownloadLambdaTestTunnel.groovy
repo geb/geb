@@ -25,7 +25,6 @@ class DownloadLambdaTestTunnel extends DefaultTask {
 
     @OutputFile
     File tunnelZip = project.file("${project.buildDir}/lambdatest/LambdaTestTunnel.zip")
-    String amd64 = "amd64"
 
     @TaskAction
     void download() {
@@ -38,12 +37,13 @@ class DownloadLambdaTestTunnel extends DefaultTask {
     }
 
     String getOsSpecificUrlPart() {
+        def archPart = Os.isArch("amd64") ? "64bit" : "32bit"
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            Os.isArch(amd64) ? "windows/64bit/LT_Windows" : "windows/32bit/LT_Windows"
+            "windows/$archPart/LT_Windows"
         } else if (Os.isFamily(Os.FAMILY_MAC)) {
-            Os.isArch(amd64) ? "mac/64bit/LT_Mac" : "mac/32bit/LT_Mac"
+            "mac/$archPart/LT_Mac"
         } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-            Os.isArch(amd64) ? "linux/64bit/LT_Linux" : "linux/32bit/LT_Linux"
+            "linux/$archPart/LT_Linux"
         }
     }
 }
