@@ -21,23 +21,28 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 class LambdaTestDriverFactory extends CloudDriverFactory {
 
-    public static final String LOCAL_IDENTIFIER_CAPABILITY = "lambdatest.localIdentifier"
+    public static final String LOCAL_IDENTIFIER_CAPABILITY = "tunnelName"
 
     @Override
     String assembleProviderUrl(String username, String password) {
         "https://$username:$password@hub.lambdatest.com/wd/hub"
     }
 
-    WebDriver create(String specification, Map<String, Object> additionalCapabilities = [:]) {
-        create(specification, System.getenv("GEB_LAMBDATEST_USERNAME"), System.getenv("GEB_LAMBDATEST_AUTHKEY"), additionalCapabilities)
+    WebDriver create(Map<String, Object> additionalCapabilities = [:]) {
+        def specification = System.getProperty("geb.lambdatest.browser")
+        def user = System.getenv("GEB_LAMBDATEST_USERNAME")
+        def key = System.getenv("GEB_LAMBDATEST_AUTHKEY")
+        create(specification, user, key, additionalCapabilities)
     }
 
     WebDriver create(String specification, String username, String password, String localId, Map<String, Object> capabilities = [:]) {
         def mergedCapabilities = ImmutableMap.builder().putAll(capabilities).put(LOCAL_IDENTIFIER_CAPABILITY, localId).build()
         create(specification, username, password, mergedCapabilities)
     }
-    protected void configureCapabilities(DesiredCapabilities desiredCapabilities) {
-        desiredCapabilities.setCapability("tunnel", "false")
+
+    @Override
+    protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
+        desiredCapabilities.setCapability("tunnel", "true")
         def tunnelId = System.getenv("GEB_LAMBDATEST_TUNNELID")
         if (tunnelId) {
             desiredCapabilities.setCapability(LOCAL_IDENTIFIER_CAPABILITY, tunnelId)

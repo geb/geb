@@ -84,9 +84,6 @@ browserStack {
         firefox_mac_47 {
             capabilities os: "OS X", os_version: "High Sierra"
         }
-        firefox_windows_70 {
-            capabilities os: "Windows", os_version: "10"
-        }
         create("internet explorer_windows_10") {
             capabilities os: "Windows", os_version: "8"
         }
@@ -117,7 +114,7 @@ lambdaTest {
     application(*applicationAddresses)
 
     browsers {
-        chrome_windows_70 {
+        firefox_windows_70 {
             capabilities platform: "Windows 10"
         }
     }
@@ -132,13 +129,13 @@ lambdaTest {
         accessKey = System.getenv(LambdaTestAccount.ACCESS_KEY_ENV_VAR)
     }
     tunnelOps {
-        identifier = UUID.randomUUID().toString()
+        tunnelName = UUID.randomUUID().toString()
     }
 }
 
 
 task nonIeBrowserStackTests {
-    dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxWindows70Test', 'firefoxMac47Test'
+    dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxMac47Test'
 }
 
 task ieBrowserStackTests {

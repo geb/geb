@@ -89,7 +89,7 @@ def lambdaTestBrowser = System.getProperty("geb.lambdatest.browser")
 if (lambdaTestBrowser) {
     setPortIndexProperty(getForkIndex(5))
     driver = {
-        new LambdaTestDriverFactory().create(lambdaTestBrowser)
+        new LambdaTestDriverFactory().create()
     }
 }
 

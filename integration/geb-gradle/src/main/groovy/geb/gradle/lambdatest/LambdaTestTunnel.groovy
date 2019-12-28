@@ -147,6 +147,8 @@ class LambdaTestTunnel extends ExternalTunnel {
         if (extension.local.version) {
             commandLine << "-version" << extension.local.version
         }
+
+        commandLine.addAll(extension.local.additionalOptions)
         commandLine
     }
 

@@ -22,7 +22,6 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
 
     public static final String LOCAL_ID_ENV_VAR = "GEB_LAMBDATEST_TUNNELID"
 
-    String identifier
     String tunnelName
     String config
     String controller
@@ -55,6 +54,6 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
     List<String> additionalOptions = []
 
     void configure(Test test) {
-        test.environment(LOCAL_ID_ENV_VAR, identifier)
+        test.environment(LOCAL_ID_ENV_VAR, tunnelName)
     }
 }
