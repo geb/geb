@@ -22,8 +22,6 @@ import org.gradle.api.Project
 import org.slf4j.Logger
 
 class LambdaTestTunnel extends ExternalTunnel {
-    private static final String HTTPS_PROTOCOL = 'https'
-
     final LambdaTestExtension extension
 
     final String outputPrefix = 'lambdatest-tunnel'
@@ -32,14 +30,6 @@ class LambdaTestTunnel extends ExternalTunnel {
     LambdaTestTunnel(Project project, Logger logger, LambdaTestExtension extension) {
         super(project, logger)
         this.extension = extension
-    }
-
-    static String assembleAppSpecifier(List<URL> applicationUrls) {
-        applicationUrls.collect { "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}" }.join(',')
-    }
-
-    static int determinePort(URL url) {
-        url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
     }
 
     @Override
@@ -67,7 +57,7 @@ class LambdaTestTunnel extends ExternalTunnel {
             commandLine << '-tunnelName' << extension.local.tunnelName
         }
         if (extension.local.config) {
-            commandLine << "-config" << assembleAppSpecifier(extension.local.config)
+            commandLine << "-config" << extension.local.config
         }
         if (extension.local.controller) {
             commandLine << "-controller" << extension.local.controller
