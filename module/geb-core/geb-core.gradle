@@ -35,7 +35,7 @@ test {
 }
 
 task allCrossBrowserTests {
-    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests','allLambdaTestTests'
+    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests', 'allLambdaTestTests'
 }
 
 task firefoxLinuxTest(type: Test) {
