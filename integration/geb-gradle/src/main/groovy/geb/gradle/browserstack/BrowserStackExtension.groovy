@@ -25,7 +25,6 @@ class BrowserStackExtension extends CloudBrowsersExtension {
     BrowserStackAccount account
     BrowserStackLocal local
     List<URL> applicationUrls = []
-    boolean forceLocal
     boolean useTunnel = true
 
     void addExtensions() {
