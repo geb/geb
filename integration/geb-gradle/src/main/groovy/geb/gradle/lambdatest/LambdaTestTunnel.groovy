@@ -35,14 +35,10 @@ class LambdaTestTunnel extends ExternalTunnel {
     @Override
     void validateState() {
         if (!extension.account.username) {
-            def errorMsg = 'LambdaTest username not provided, Set Environment variable :' + LambdaTestAccount.USER_ENV_VAR
-            println(errorMsg)
-            throw new InvalidUserDataException(errorMsg)
+            throw new InvalidUserDataException("LambdaTest username not provided")
         }
         if (!extension.account.accessKey) {
-            def errorMsg = 'LambdaTest accesskey not provided, Set Environment variable :' + LambdaTestAccount.ACCESS_KEY_ENV_VAR
-            println(errorMsg)
-            throw new InvalidUserDataException(errorMsg)
+            throw new InvalidUserDataException("LambdaTest accesskey not provided")
         }
     }
 
