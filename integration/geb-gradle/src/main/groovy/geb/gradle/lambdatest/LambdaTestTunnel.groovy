@@ -25,7 +25,7 @@ class LambdaTestTunnel extends ExternalTunnel {
     final LambdaTestExtension extension
 
     final String outputPrefix = 'lambdatest-tunnel'
-    final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
+    final String tunnelReadyMessage = 'Tunnel claim successful'
 
     LambdaTestTunnel(Project project, Logger logger, LambdaTestExtension extension) {
         super(project, logger)
@@ -140,10 +140,5 @@ class LambdaTestTunnel extends ExternalTunnel {
 
         commandLine.addAll(extension.local.additionalOptions)
         commandLine
-    }
-
-    @Override
-    String getTunnelReadyMessage() {
-        "Tunnel claim successful"
     }
 }
