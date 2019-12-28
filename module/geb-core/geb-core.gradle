@@ -110,9 +110,6 @@ browserStack {
 }
 
 lambdaTest {
-    def applicationAddresses = [8000, 8080, 9000, 9090, 9999].collect { "http://localhost:$it" }
-    application(*applicationAddresses)
-
     browsers {
         firefox_windows_70 {
             capabilities platform: "Windows 10"

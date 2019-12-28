@@ -24,7 +24,6 @@ class LambdaTestExtension extends CloudBrowsersExtension {
 
     LambdaTestAccount account
     LambdaTestTunnelOps local
-    List<URL> applicationUrls = []
     boolean useTunnel = true
 
     void addExtensions() {
@@ -49,13 +48,5 @@ class LambdaTestExtension extends CloudBrowsersExtension {
     void tunnelOps(Closure configuration) {
         project.configure(local, configuration)
         configureTestTasksWith(local)
-    }
-
-    void application(String... urls) {
-        applicationUrls.addAll(urls.collect { new URL(it) })
-    }
-
-    void application(URL... urls) {
-        applicationUrls.addAll(urls)
     }
 }
