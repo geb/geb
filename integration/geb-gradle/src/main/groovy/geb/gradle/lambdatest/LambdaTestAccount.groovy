@@ -22,8 +22,8 @@ class LambdaTestAccount implements TestTaskConfigurer {
     public static final String USER_ENV_VAR = "GEB_LAMBDATEST_USERNAME"
     public static final String ACCESS_KEY_ENV_VAR = "GEB_LAMBDATEST_AUTHKEY"
 
-    String username = System.getenv("GEB_LAMBDATEST_USERNAME")
-    String accessKey = System.getenv("GEB_LAMBDATEST_AUTHKEY")
+    String username
+    String accessKey
 
     void configure(Test test) {
         if (username) {
