@@ -24,8 +24,6 @@ ext {
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:{groovy-version}"
-
     // If using Spock, need to depend on geb-spock
     testCompile "{geb-group}:geb-spock:$\{gebVersion\}"
     testCompile "org.spockframework:spock-core:{spock-core-version}"
@@ -66,11 +64,6 @@ Below is a valid `pom.xml` file for working with Geb for testing (with Spock).
   <name>Geb Maven Example</name>
   <url>http://www.gebish.org</url>
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>{groovy-version}</version>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
