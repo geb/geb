@@ -42,4 +42,9 @@ class CompositePageEventListener implements PageEventListener {
     void pageWillChange(Browser browser, Page oldPage, Page newPage) {
         pageEventListeners*.pageWillChange(browser, oldPage, newPage)
     }
+
+    @Override
+    void unexpectedPageEncountered(Browser browser, Page unexpectedPage) {
+        pageEventListeners*.unexpectedPageEncountered(browser, unexpectedPage)
+    }
 }

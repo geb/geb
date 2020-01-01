@@ -1106,6 +1106,7 @@ class Browser {
         config.unexpectedPages.each {
             def pageInstance = createPage(it)
             if (isAt(pageInstance, false)) {
+                pageEventListener.unexpectedPageEncountered(this, pageInstance)
                 throw new UnexpectedPageException(pageInstance, *expectedPages)
             }
         }

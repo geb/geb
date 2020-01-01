@@ -35,4 +35,8 @@ class PageEventListenerSupport implements PageEventListener {
     @Override
     void pageWillChange(Browser browser, Page oldPage, Page newPage) {
     }
+
+    @Override
+    void unexpectedPageEncountered(Browser browser, Page unexpectedPage) {
+    }
 }

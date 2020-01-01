@@ -58,4 +58,12 @@ interface PageEventListener {
      * @param newPage The {@link geb.Page} instance which is about to be set on the browser
      */
     void pageWillChange(Browser browser, Page oldPage, Page newPage)
+
+    /**
+     * Called when an unexpected page is encountered
+     *
+     * @param browser The {@link Browser} instance used to check for the unexpected page
+     * @param unexpectedPage The unexpected {@link geb.Page} for which the at checker has succeeded
+     */
+    void unexpectedPageEncountered(Browser browser, Page unexpectedPage)
 }

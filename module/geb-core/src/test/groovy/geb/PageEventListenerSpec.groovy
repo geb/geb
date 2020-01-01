@@ -15,6 +15,7 @@
  */
 package geb
 
+import geb.error.UnexpectedPageException
 import geb.test.GebSpecWithCallbackServer
 import spock.lang.Unroll
 
@@ -108,6 +109,20 @@ class PageEventListenerSpec extends GebSpecWithCallbackServer {
 
         then:
         1 * listener.pageWillChange(browser, { it instanceof PageEventListenerSpecPageWithPassingAtChecker }, { it instanceof PageEventListenerSpecWithFalseReturningAtChecker })
+    }
+
+    def "page event listener is called when an unexpected page is detected"() {
+        given:
+        browser.config.unexpectedPages = [PageEventListenerSpecPageWithPassingAtChecker]
+
+        when:
+        at PageEventListenerSpecWithFailingAtChecker
+
+        then:
+        thrown(UnexpectedPageException)
+
+        and:
+        1 * listener.unexpectedPageEncountered(browser, { it instanceof PageEventListenerSpecPageWithPassingAtChecker })
     }
 }
 
