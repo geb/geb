@@ -24,11 +24,34 @@ import geb.PageEventListenerSupport
 class BindingUpdater {
 
     static public final FORWARDED_BROWSER_METHODS = [
-            "go", "to", "via", "at",
-            "waitFor",
+            "getPage", "getDriver", "getAugmentedDriver", "getNavigatorFactory", "getConfig", "getSessionStorage", "getLocalStorage", "getBaseUrl", "getCurrentUrl", "getJs",
+            "getAvailableWindows", "getCurrentWindow", "getReportGroupDir",
+            "setDriver", "setBaseUrl",
+            "go", "to", "via",
+            "at", "isAt", "verifyAtImplicitly", "checkIfAtAnUnexpectedPage", "createPage",
+            "pause",
+            "withWindow", "withNewWindow",
+            "report", "reportGroup", "cleanReportGroupDir",
+            "registerPageChangeListener", "removePageChangeListener",
+            "clearCookies", "clearCookiesQuietly", "clearWebStorage",
+            "close", "quit"
+    ].asImmutable()
+
+    static public final FORWARDED_PAGE_METHODS = [
+            "init",
+            /$/, "find",
+            "module",
+            "contains", "iContains", "notContains", "iNotContains", "endsWith", "iEndsWith", "notEndsWith", "iNotEndsWith", "containsWord", "iContainsWord", "notContainsWord", "iNotContainsWord",
+            "startsWith", "iStartsWith", "notStartsWith", "iNotStartsWith",
+            "withFrame",
+            "getOwner", "getPageFragment", "getRootContainer", "getContentNames", "getShouldVerifyAtImplicitly", "getAtVerificationResult", "getTitle", "getContentPath", "getContent", "getPageUrl",
+            "getBrowser", "getNavigator",
+            "onLoad", "onUnload",
+            "verifyAt", "verifyAtSafely",
+            "waitFor", "refreshWaitFor",
+            "focused", "interact", "convertToPath",
             "withAlert", "withNoAlert", "withConfirm", "withNoConfirm",
-            "download", "downloadStream", "downloadText", "downloadBytes", "downloadContent",
-            "report", "reportGroup", "cleanReportGroupDir"
+            "download", "downloadStream", "downloadText", "downloadBytes", "downloadContent"
     ].asImmutable()
 
     final Browser browser
@@ -50,6 +73,7 @@ class BindingUpdater {
     BindingUpdater initialize() {
         binding.browser = browser
         binding.js = browser.js
+        binding.config = browser.config
 
         FORWARDED_BROWSER_METHODS.each {
             binding.setVariable(it, new InvocationForwarding(it, browser))
@@ -70,6 +94,7 @@ class BindingUpdater {
 
         binding.variables.remove('browser')
         binding.variables.remove('js')
+        binding.variables.remove('config')
 
         FORWARDED_BROWSER_METHODS.each {
             binding.variables.remove(it)
@@ -82,12 +107,16 @@ class BindingUpdater {
         @Override
         void pageWillChange(Browser browser, Page oldPage, Page newPage) {
             binding.setVariable("page", newPage)
-            binding.setVariable("\$", new InvocationForwarding("\$", newPage))
+            FORWARDED_PAGE_METHODS.each {
+                binding.setVariable(it, new InvocationForwarding(it, newPage))
+            }
         }
 
         void clearBinding() {
             binding.variables.remove("page")
-            binding.variables.remove("\$")
+            FORWARDED_PAGE_METHODS.each {
+                binding.variables.remove(it)
+            }
         }
     }
 

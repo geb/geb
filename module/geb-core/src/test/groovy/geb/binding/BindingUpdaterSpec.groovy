@@ -15,6 +15,8 @@
  */
 package geb.binding
 
+import geb.Browser
+import geb.Initializable
 import geb.Page
 import geb.test.GebSpecWithCallbackServer
 
@@ -108,6 +110,50 @@ class BindingUpdaterSpec extends GebSpecWithCallbackServer {
         thrown MissingMethodException
     }
 
+    def "all browser methods are delegated to"() {
+        given:
+        updater.initialize()
+
+        when:
+        def notDelegatedMethods = findPublicInstanceNonInternalMethodNames(Browser) - binding.variables.keySet()
+
+        then:
+        !notDelegatedMethods
+    }
+
+    def "all page methods are delegated to"() {
+        given:
+        updater.initialize()
+
+        when:
+        def notDelegatedMethods = findPublicInstanceNonInternalMethodNames(Page) - findPublicInstanceNonInternalMethodNames(Browser) - binding.variables.keySet()
+
+        then:
+        !notDelegatedMethods
+    }
+
+    def "only existing browser methods are delegated to"() {
+        when:
+        def extraDelegatedMethods = BindingUpdater.FORWARDED_BROWSER_METHODS - findPublicInstanceNonInternalMethodNames(Browser)
+
+        then:
+        !extraDelegatedMethods
+    }
+
+    def "only existing page methods are delegated to"() {
+        when:
+        def extraDelegatedMethods = BindingUpdater.FORWARDED_PAGE_METHODS - findPublicInstanceNonInternalMethodNames(Page)
+
+        then:
+        !extraDelegatedMethods
+    }
+
+    private Set<String> findPublicInstanceNonInternalMethodNames(Class clazz) {
+        def ignoredMethods = Object.methods + GroovyObject.methods + Initializable.methods
+        def internalMethodNames = ignoredMethods*.name + ["methodMissing", "propertyMissing"]
+        def publicInstanceMethods = clazz.metaClass.methods.findAll { it.public && !it.static }
+        publicInstanceMethods*.name.toSet() - internalMethodNames
+    }
 }
 
 class BindingUpdaterSpecPage1 extends Page {
