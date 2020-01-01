@@ -61,6 +61,8 @@ String findLocalIp() {
     ip4Addresses.find { it != "127.0.0.1" }
 }
 
+driver = "htmlunit"
+
 if (!BuildAdapterFactory.getBuildAdapter(this.class.classLoader).reportsDir) {
     reportsDir = "build/geb"
 }
@@ -104,9 +106,4 @@ if (dockerizedDriver) {
     testHttpServerHost = "host.testcontainers.internal"
 
     testHttpServerPortHandler = { int port -> Testcontainers.exposeHostPorts(port) }
-}
-
-def devDriver = System.getProperty("geb.dev.driver")
-if (devDriver != "htmlunit") {
-    driver = devDriver
 }

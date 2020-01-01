@@ -135,9 +135,6 @@ subprojects {
             reports.html.destination = reporting.file("test-reports/$name")
             binResultsDir = file("$buildDir/test-results-bin/$name")
 
-            ext.driver = project.properties["driver"] ?: "htmlunit"
-            systemProperty 'geb.dev.driver', driver
-
             systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
 
             systemProperty 'jna.nosys', 'true'
