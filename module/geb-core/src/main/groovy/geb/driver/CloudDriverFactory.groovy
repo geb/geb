@@ -31,7 +31,7 @@ abstract class CloudDriverFactory {
         def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
         Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
         if (!remoteWebDriverClass) {
-            throw new ClassNotFoundException('org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create RemoteWebDriverInstances')
+            throw new ClassNotFoundException('org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create RemoteWebDriver instances')
         }
 
         def url = new URL(assembleProviderUrl(username, key))
