@@ -84,7 +84,7 @@ allprojects { project ->
             ":module:geb-spock", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
 
-        localCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
+        dockerisedCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
@@ -169,13 +169,13 @@ subprojects {
         }
     }
 
-    if (path in localCrossBrowserTestModules) {
+    if (path in dockerisedCrossBrowserTestModules) {
         task chromeLinuxTest(type: Test) {
             maxHeapSize = "512m"
             systemProperty "geb.dockerized.driver", "chrome"
         }
 
-        task allLocalCrossBrowserTests {
+        task allDockerisedCrossBrowserTests {
             dependsOn chromeLinuxTest
         }
     }

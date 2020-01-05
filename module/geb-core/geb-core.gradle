@@ -35,7 +35,7 @@ test {
 }
 
 task allCrossBrowserTests {
-    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allLocalCrossBrowserTests', 'allLambdaTestTests'
+    dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allDockerisedCrossBrowserTests', 'allLambdaTestTests'
 }
 
 task firefoxLinuxTest(type: Test) {
@@ -43,7 +43,7 @@ task firefoxLinuxTest(type: Test) {
     systemProperty "geb.dockerized.driver", "firefox"
 }
 
-allLocalCrossBrowserTests.dependsOn firefoxLinuxTest
+allDockerisedCrossBrowserTests.dependsOn firefoxLinuxTest
 
 sauceLabs {
     browsers {
