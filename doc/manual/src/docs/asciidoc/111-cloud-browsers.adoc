@@ -399,8 +399,8 @@ lambdaTest {
     application 'http://localhost:8080' //<3>
     browsers { //<4>
         chrome_windows_70 {
-                   capabilities platform: "Windows 10"
-               }
+           capabilities platform: "Windows 10" //<5>
+        }
     }
     task { //<6>
        testClassesDir = test.testClassesDir
