@@ -33,6 +33,8 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebDriverException
 import org.openqa.selenium.html5.WebStorage as SeleniumWebStorage
 
+import java.time.Duration
+
 import static groovy.lang.Closure.DELEGATE_FIRST
 import static java.lang.Integer.MAX_VALUE
 
@@ -53,6 +55,7 @@ class Browser {
     private final Configuration config
     private final pageChangeListeners = new LinkedHashSet()
     private final pageChangeListenersBackedPageEventListener = new PageChangeListenersBackedPageEventListener(pageChangeListeners)
+    private final RemoteDriverOperations remoteDriverOperations = new RemoteDriverOperations(this.class.classLoader)
     private String reportGroup = null
     private NavigatorFactory navigatorFactory = null
 
@@ -60,7 +63,7 @@ class Browser {
      * If the driver is remote, this object allows access to its capabilities (users of Geb should not access this object, it is used internally).
      */
     @Lazy
-    WebDriver augmentedDriver = new RemoteDriverOperations(this.class.classLoader).getAugmentedDriver(driver)
+    WebDriver augmentedDriver = remoteDriverOperations.getAugmentedDriver(driver)
 
     /**
      * Create a new browser with a default configuration loader, loading the default configuration file.
@@ -971,6 +974,37 @@ class Browser {
         } else {
             page(targetPage)
         }
+    }
+
+    /**
+     * Allows to introduce network latency to the browser being driven.
+     * <p>
+     * Helpful for exposing network related timing issues in automation code under development.
+     * <p>
+     * Depends on custom WebDriver commands only available for local Chrome and thus only supported when driving that browser.
+     *
+     * @throws geb.error.IncorrectDriverTypeException When called if driving a browser other than local Chrome
+     * @throws org.openqa.selenium.UnsupportedCommandException When called if driving a browser other than local Chrome
+     */
+    void setNetworkLatency(Duration duration) {
+        def params = [
+                network_conditions: [
+                        latency   : duration.toMillis(),
+                        throughput: MAX_VALUE
+                ]
+        ]
+
+        remoteDriverOperations.executeCommand(driver, "setNetworkConditions", params)
+    }
+
+    /**
+     * Removes any previously configured network latency.
+     *
+     * @throws geb.error.IncorrectDriverTypeException When called if driving a browser other than local Chrome
+     * @throws org.openqa.selenium.UnsupportedCommandException When called if driving a browser other than local Chrome
+     */
+    void resetNetworkLatency() {
+        remoteDriverOperations.executeCommand(driver, "deleteNetworkConditions")
     }
 
     protected switchToWindow(String window) {

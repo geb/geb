@@ -14,6 +14,7 @@
  */
 package geb.driver
 
+import geb.error.IncorrectDriverTypeException
 import org.openqa.selenium.WebDriver
 
 /**
@@ -54,5 +55,16 @@ class RemoteDriverOperations {
         } catch (ClassNotFoundException e) {
             null
         }
+    }
+
+    Object executeCommand(WebDriver driver, String commandName, Map<String, ?> parameters = [:]) {
+        def remoteWebDriverClass = getRemoteWebDriverClass()
+        if (!remoteWebDriverClass || !(driver in remoteWebDriverClass)) {
+            throw new IncorrectDriverTypeException("This operation is only possible on instances of RemoteWebDriver but ${driver} was passed")
+        }
+
+        def executor = driver.getCommandExecutor()
+        def command = softLoadRemoteDriverClass("Command").newInstance(driver.getSessionId(), commandName, parameters)
+        executor.execute(command).value
     }
 }

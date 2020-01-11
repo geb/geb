@@ -3,6 +3,7 @@ import geb.driver.BrowserStackDriverFactory
 import geb.driver.LambdaTestDriverFactory
 import geb.driver.SauceLabsDriverFactory
 import org.openqa.selenium.Capabilities
+import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxOptions
 import org.testcontainers.Testcontainers
@@ -106,4 +107,11 @@ if (dockerizedDriver) {
     testHttpServerHost = "host.testcontainers.internal"
 
     testHttpServerPortHandler = { int port -> Testcontainers.exposeHostPorts(port) }
+}
+
+if (System.getProperty("geb.local.driver") == "chrome") {
+    driver = {
+        def chromeOptions = new ChromeOptions().addArguments('headless')
+        new ChromeDriver(chromeOptions)
+    }
 }

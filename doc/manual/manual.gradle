@@ -39,6 +39,7 @@ asciidoctor {
         'test-resources-dir'   : '../../../../manual-snippets/src/test/resources',
         'real-browser-test-dir': '../../../../manual-snippets/src/realBrowserTest/groovy',
         'core-source-dir'      : '../../../../../module/geb-core/src/main/groovy',
+        'core-test-dir'        : '../../../../../module/geb-core/src/test/groovy',
         numbered               : true,
         sectlinks              : true,
         idprefix               : '',
@@ -137,7 +138,8 @@ asciidoctor {
     inputs.files(
         { project(":doc:manual-snippets").sourceSets.test.allSource },
         { project(":doc:manual-snippets").sourceSets.realBrowserTest.allSource },
-        { project(":module:geb-core").sourceSets.main.allSource }
+        { project(":module:geb-core").sourceSets.main.allSource },
+        { project(":module:geb-core").sourceSets.test.allSource }
     )
 }
 

@@ -7,11 +7,13 @@ import geb.test.browsers.Android
 import geb.test.browsers.Firefox
 import geb.test.browsers.InternetExplorer
 import geb.test.browsers.InternetExplorer11
+import geb.test.browsers.LocalChrome
 import geb.test.browsers.RequiresRealBrowser
 import geb.test.browsers.Safari
 
 def cloudBrowserSpecification = System.getProperty("geb.saucelabs.browser") ?: System.getProperty("geb.browserstack.browser") ?: System.getProperty("geb.lambdatest.browser")
 def dockerizedDriver = System.getProperty("geb.dockerized.driver")
+def localDriver = System.getProperty("geb.local.driver")
 if (cloudBrowserSpecification) {
     def includes = []
     if (cloudBrowserSpecification.contains("realMobile")) {
@@ -53,6 +55,10 @@ if (cloudBrowserSpecification) {
 
     runner {
         include(CrossBrowser, *includes)
+    }
+} else if (localDriver == "chrome") {
+    runner {
+        include(LocalChrome)
     }
 } else {
     runner {

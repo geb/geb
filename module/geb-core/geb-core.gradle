@@ -45,6 +45,11 @@ task firefoxLinuxTest(type: Test) {
 
 allDockerisedCrossBrowserTests.dependsOn firefoxLinuxTest
 
+task localChromeTest(type: Test) {
+    maxHeapSize = "512m"
+    systemProperty "geb.local.driver", "chrome"
+}
+
 sauceLabs {
     browsers {
         safari_mac_8 {

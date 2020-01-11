@@ -94,6 +94,7 @@ This page lists the high level changes between versions of Geb.
 * Add support to provide more information for UnexpectedPageException. [issue:596[]]
 * Add integration with LambdaTest. [issue:603[]]
 * Add a way to react when an unexpected page is encountered. [issue:598[]]
+* Add support for setting network throttling via setNetworkConditions Chrome command. [issue:602[]]
 
 ==== Fixes
 

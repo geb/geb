@@ -45,6 +45,7 @@ allprojects { project ->
         spockVersion = "1.3-groovy-2.5"
         junit4Version = "4.10"
         geckodriverVersion = "0.24.0"
+        chromedriverVersion = "79.0.3945.36"
         jettyVersion = "9.4.8.v20171121"
         threeTenExtraVersion = "1.4"
 
@@ -92,6 +93,7 @@ allprojects { project ->
 
     webdriverBinaries {
         geckodriver geckodriverVersion
+        chromedriver chromedriverVersion
     }
 
     if (isCi) {

@@ -119,3 +119,5 @@
 :string-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(java.lang.String)
 :map-url-fragment-factory-link: link:api/geb/url/UrlFragment.html#of(Map<?,%20?>)
 :browser-get-current-window-api-link: link:api/geb/Browser.html#getCurrentWindow()
+:browser-set-network-latency-link: link:api/geb/Browser.html#setNetworkLatency(java.time.Duration)
+:browser-reset-network-latency-link: link:api/geb/Browser.html#resetNetworkLatency()

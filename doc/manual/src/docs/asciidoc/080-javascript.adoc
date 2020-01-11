@@ -213,6 +213,34 @@ include::{test-dir}/javascript/RefreshWaitingSpec.groovy[tag=page,indent=0]
 
 include::{test-dir}/javascript/RefreshWaitingSpec.groovy[tag=test,indent=0]
 ----
+== Controlling network conditions
+
+When driving modern, single page, highly asynchronous web applications timing issues frequently appear and are the bane of browser automation leading to flakey tests.
+Correctly waiting for asynchronous events to complete becomes essential.
+Quite often the asynchronicity is hard to spot if the asynchronous events occur relatively fast and is only exposed when running in a slower execution or networking environment.
+
+[IMPORTANT]
+====
+This section introduces a feature which depends on a Chrome specific, custom WebDriver command.
+Calling the methods mentioned in the next paraghraph will only work when driving a local Chrome browser and will throw an exception for all other browsers, including a remote Chrome browser driven via an instance of `RemoteWebDrvier`.
+====
+
+Thankfully Chrome driver supports controlling network conditions via it's custom `setNetworkConditions` command which allows to control the network conditions of the browser.
+Geb provides {browser-set-network-latency-link}[`setNetworkLatency()`] and {browser-reset-network-latency-link}[`resetNetworkLatency()`] methods on the `Browser` class which allow to introduce network latency to the browser being driven.
+Adding latency in the region of couple of hundred milliseconds will usually expose network related timing issues.
+Temporarily adding network latency during test development allows to shake off timing issues and is useful when debugging such issues which might occur in one environment like the CI server but do not in another like developer machines.
+
+This is how `setNetworkLatency()` method be used:
+[source,groovy]
+----
+include::{core-test-dir}/geb/BrowserNetworkLatencySpec.groovy[tag=setNetworkLatency,indent=0]
+----
+
+[NOTE]
+====
+There are various types of asynchronous events occuring in a browser and AJAX calls which are network related are only one example.
+Animations would be another example of asynchronicity in web applications and the methods mentioned above will have no influence on timining issues introduced by animations or any other asynchronous events.
+====
 
 == Alert and confirm dialogs
 
