@@ -10,7 +10,7 @@ buildscript {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.1"
         classpath "gradle.plugin.com.github.erdi:idea-gradle-plugins:2.1"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
-        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.1"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.2"
     }
 }
 
@@ -93,7 +93,10 @@ allprojects { project ->
 
     webdriverBinaries {
         geckodriver geckodriverVersion
-        chromedriver chromedriverVersion
+        chromedriver {
+            version = chromedriverVersion
+            fallbackTo32Bit = true
+        }
     }
 
     if (isCi) {
