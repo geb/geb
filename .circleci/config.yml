@@ -128,6 +128,28 @@ jobs:
           key: gradle-home-saucelabs
           paths:
             - .gradle-home
+  lambdatest:
+    docker:
+      - image: gebish/ci:v7
+    environment:
+      GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+      GRADLE_USER_HOME: .gradle-home
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - gradle-home-lambdatest
+      - run:
+          command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ]; then
+              ./gradlew --no-daemon -Pci allLambdaTestTests
+            fi
+      - store_artifacts:
+          path: build/reports
+      - save_cache:
+          key: gradle-home-lambdatest
+          paths:
+            - .gradle-home
   non-ie:
     docker:
       - image: gebish/ci:v7
@@ -245,6 +267,11 @@ workflows:
             - integrations
             - manual
             - site
+      - lambdatest:
+          requires:
+            - integrations
+            - manual
+            - site
       - non-ie:
           requires:
             - integrations
@@ -258,6 +285,7 @@ workflows:
             - dockerised-cross-browser
             - local-cross-browser
             - saucelabs
+            - lambdatest
             - ie
           filters:
             branches:
