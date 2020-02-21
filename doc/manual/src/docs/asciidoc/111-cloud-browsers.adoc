@@ -219,9 +219,7 @@ sauceLabs {
        }
     }
     task { //<6>
-       testClassesDir = test.testClassesDir
-       testSrcDirs = test.testSrcDirs
-       classpath = test.classpath
+       maxHeapSize = "512m"
     }
     additionalTask("quick") { //<7>
         useJUnit {
@@ -306,9 +304,7 @@ browserStack {
        }
     }
     task { //<6>
-       testClassesDir = test.testClassesDir
-       testSrcDirs = test.testSrcDirs
-       classpath = test.classpath
+       maxHeapSize = "512m"
     }
     additionalTask("quick") { //<7>
         useJUnit {
@@ -414,9 +410,7 @@ lambdaTest {
         }
     }
     task { //<6>
-       testClassesDir = test.testClassesDir
-       testSrcDirs = test.testSrcDirs
-       classpath = test.classpath
+       maxHeapSize = "512m"
     }
     additionalTask("quick") { //<7>
         useJUnit {
