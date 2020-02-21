@@ -16,59 +16,32 @@
 package geb.gradle.browserstack
 
 import geb.gradle.browserstack.task.DownloadBrowserStackTunnel
-import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.cloud.task.StopExternalTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Sync
-import org.gradle.api.tasks.testing.Test
 
 class BrowserStackPlugin implements Plugin<Project> {
 
     public static final String CLOSE_TUNNEL_TASK_NAME = 'closeBrowserStackTunnel'
     public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openBrowserStackTunnelInBackground'
     public static final String UNZIP_TUNNEL_TASK_NAME = 'unzipBrowserStackTunnel'
+
     Project project
 
     @Override
     void apply(Project project) {
         this.project = project
 
-        def browserStackExtension = project.extensions.create('browserStack', BrowserStackExtension, project)
-        browserStackExtension.addExtensions()
-
-        addTunnelTasks(browserStackExtension)
-        addBrowserStackTasks()
-    }
-
-    void addBrowserStackTasks() {
         def allBrowserStackTests = project.task("allBrowserStackTests") {
             group "BrowserStack Test"
         }
 
-        project.browserStack.browsers.all { BrowserSpec browser ->
-            def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
-                group allBrowserStackTests.group
-                task.dependsOn OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-                allBrowserStackTests.dependsOn task
-                finalizedBy CLOSE_TUNNEL_TASK_NAME
+        def browserStackExtension = project.extensions.create('browserStack', BrowserStackExtension, project, allBrowserStackTests)
+        browserStackExtension.addExtensions()
 
-                systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
-
-                browser.testTask = task
-                browser.configureTestTask()
-            }
-
-            def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {
-                from testTask.reports.junitXml.destination
-                into "${testTask.reports.junitXml.destination}-decorated"
-                filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
-            }
-
-            testTask.finalizedBy decorateReportsTask
-        }
+        addTunnelTasks(browserStackExtension)
     }
 
     void addTunnelTasks(BrowserStackExtension browserStackExtension) {

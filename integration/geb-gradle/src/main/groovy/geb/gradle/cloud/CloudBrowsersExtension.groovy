@@ -15,21 +15,78 @@
  */
 package geb.gradle.cloud
 
+import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.testing.Test
 
-class CloudBrowsersExtension {
+import static org.gradle.util.WrapUtil.toDomainObjectSet
+
+abstract class CloudBrowsersExtension {
     protected final Project project
+    protected final Task allTestsLifecycleTask
+    protected final DomainObjectCollection<Test> testTasks = toDomainObjectSet(Test)
 
     protected NamedDomainObjectContainer<BrowserSpec> browsers
 
-    CloudBrowsersExtension(Project project) {
+    CloudBrowsersExtension(Project project, Task allTestsLifecycleTask) {
         this.project = project
+        this.allTestsLifecycleTask = allTestsLifecycleTask
+    }
+
+    abstract String getOpenTunnelInBackgroundTaskName()
+    abstract String getCloseTunnelTaskName()
+    abstract String getProviderName()
+
+    void addExtensions() {
+        browsers = project.container(BrowserSpec) {
+            def browser = new BrowserSpec(providerName, it)
+            addTestTask(browser)
+            browser
+        }
+        extensions.browsers = browsers
+    }
+
+    void task(Closure configuration) {
+        testTasks.all(configuration)
+    }
+
+    void additionalTask(String namePrefix, Closure configuration) {
+        browsers.all {
+            def task = addTestTask(it, namePrefix)
+            task.configure(configuration)
+        }
     }
 
     protected void configureTestTasksWith(TestTaskConfigurer configurer) {
-        browsers.all { BrowserSpec browser ->
-            configurer.configure project.tasks["${browser.displayName}Test"]
+        testTasks.all { Test task -> configurer.configure(task) }
+    }
+
+    protected Test addTestTask(BrowserSpec browser, String prefix = null) {
+        def name = prefix ? "${prefix}${browser.displayName.capitalize()}" : browser.displayName
+
+        def testTask = project.task("${name}Test", type: Test) { Test task ->
+            group allTestsLifecycleTask.group
+            task.dependsOn openTunnelInBackgroundTaskName
+            allTestsLifecycleTask.dependsOn task
+            finalizedBy closeTunnelTaskName
+
+            systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
         }
+
+        browser.addTask(testTask)
+        testTasks.add(testTask)
+
+        def decorateReportsTask = project.task("${name}DecorateReports", type: Copy) {
+            from testTask.reports.junitXml.destination
+            into "${testTask.reports.junitXml.destination}-decorated"
+            filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($name)\"") }
+        }
+
+        testTask.finalizedBy decorateReportsTask
+
+        testTask
     }
 }

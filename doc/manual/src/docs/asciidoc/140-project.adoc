@@ -90,7 +90,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== New features
+
+* Add support for adding multiple test tasks per browser type to cloud browser gradle plugins. [issue:597[]]
 
 === 3.3
 

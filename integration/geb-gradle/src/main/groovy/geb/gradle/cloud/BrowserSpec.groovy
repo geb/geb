@@ -15,7 +15,9 @@
  */
 package geb.gradle.cloud
 
+import org.gradle.api.DomainObjectCollection
 import org.gradle.api.tasks.testing.Test
+import org.gradle.util.WrapUtil
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE
@@ -25,8 +27,7 @@ class BrowserSpec {
     final String name
     final String displayName
 
-    Test testTask
-
+    private final DomainObjectCollection<Test> tasks = WrapUtil.toDomainObjectSet(Test)
     private final Properties capabilities = new Properties()
 
     BrowserSpec(String cloudProvider, String name) {
@@ -47,16 +48,17 @@ class BrowserSpec {
                 capabilities["platform"] = capabilities["platform"].toUpperCase()
             }
         }
+        setCapabilitiesOnTasks()
     }
 
     void capability(String capability, String value) {
         capabilities.put(capability, value)
-        configureTestTask()
+        setCapabilitiesOnTasks()
     }
 
     void capabilities(Map<String, String> capabilities) {
         this.capabilities.putAll(capabilities)
-        configureTestTask()
+        setCapabilitiesOnTasks()
     }
 
     void setCapabilities(Map<String, String> capabilities) {
@@ -64,10 +66,24 @@ class BrowserSpec {
         capabilities(capabilities)
     }
 
-    void configureTestTask() {
+    void addTask(Test task) {
+        tasks.add(task)
+    }
+
+    void configureTasks(Closure configuration) {
+        tasks.all(configuration)
+    }
+
+    protected void configureCapabilitiesOnTask(Test task) {
         StringWriter writer = new StringWriter()
         capabilities.store(writer, null)
-        testTask.systemProperty "geb.${cloudProvider}.browser", writer.toString()
+        task.systemProperty "geb.${cloudProvider}.browser", writer.toString()
+    }
+
+    private void setCapabilitiesOnTasks() {
+        tasks.all { Test task ->
+            configureCapabilitiesOnTask(task)
+        }
     }
 
     private String camelCase(String camelCaseTextWithSpaces) {

@@ -15,14 +15,11 @@
  */
 package geb.gradle.saucelabs
 
-import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.cloud.task.StopExternalTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.testing.Test
 
 class SaucePlugin implements Plugin<Project> {
 
@@ -35,9 +32,13 @@ class SaucePlugin implements Plugin<Project> {
     void apply(Project project) {
         this.project = project
 
+        def allSauceLabsTests = project.task("allSauceLabsTests") {
+            group "Sauce Test"
+        }
+
         project.configurations.create('sauceConnect')
 
-        def sauceLabsExtension = project.extensions.create('sauceLabs', SauceLabsExtension, project)
+        def sauceLabsExtension = project.extensions.create('sauceLabs', SauceLabsExtension, project, allSauceLabsTests)
 
         project.task(UNPACK_CONNECT_TASK_NAME, type: UnpackSauceConnect) { Task task ->
             task.onlyIf { sauceLabsExtension.useTunnel }
@@ -46,35 +47,6 @@ class SaucePlugin implements Plugin<Project> {
         sauceLabsExtension.addExtensions()
 
         addTunnelTasks(sauceLabsExtension)
-        addSauceTasks()
-    }
-
-    void addSauceTasks() {
-        def allSauceLabsTests = project.task("allSauceLabsTests") {
-            group "Sauce Test"
-        }
-
-        project.sauceLabs.browsers.all { BrowserSpec browser ->
-            def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
-                group allSauceLabsTests.group
-                task.dependsOn OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-                allSauceLabsTests.dependsOn task
-                finalizedBy CLOSE_TUNNEL_TASK_NAME
-
-                systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
-
-                browser.testTask = task
-                browser.configureTestTask()
-            }
-
-            def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {
-                from testTask.reports.junitXml.destination
-                into "${testTask.reports.junitXml.destination}-decorated"
-                filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
-            }
-
-            testTask.finalizedBy decorateReportsTask
-        }
     }
 
     void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {

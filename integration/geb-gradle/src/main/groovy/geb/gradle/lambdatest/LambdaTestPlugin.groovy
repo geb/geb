@@ -15,15 +15,12 @@
  */
 package geb.gradle.lambdatest
 
-import geb.gradle.lambdatest.task.DownloadLambdaTestTunnel
-import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.cloud.task.StopExternalTunnel
+import geb.gradle.lambdatest.task.DownloadLambdaTestTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Sync
-import org.gradle.api.tasks.testing.Test
 
 class LambdaTestPlugin implements Plugin<Project> {
 
@@ -38,39 +35,14 @@ class LambdaTestPlugin implements Plugin<Project> {
     void apply(Project project) {
         this.project = project
 
-        def lambdaTestExtension = project.extensions.create('lambdaTest', LambdaTestExtension, project)
-        lambdaTestExtension.addExtensions()
-
-        addTunnelTasks(lambdaTestExtension)
-        addLambdaTestTasks()
-    }
-
-    void addLambdaTestTasks() {
         def allLambdaTestTests = project.task("allLambdaTestTests") {
             group "LambdaTest Test"
         }
 
-        project.lambdaTest.browsers.all { BrowserSpec browser ->
-            def testTask = project.task("${browser.displayName}Test", type: Test) { Test task ->
-                group allLambdaTestTests.group
-                task.dependsOn OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-                allLambdaTestTests.dependsOn task
-                finalizedBy CLOSE_TUNNEL_TASK_NAME
+        def lambdaTestExtension = project.extensions.create('lambdaTest', LambdaTestExtension, project, allLambdaTestTests)
+        lambdaTestExtension.addExtensions()
 
-                systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
-
-                browser.testTask = task
-                browser.configureTestTask()
-            }
-
-            def decorateReportsTask = project.task("${browser.displayName}DecorateReports", type: Copy) {
-                from testTask.reports.junitXml.destination
-                into "${testTask.reports.junitXml.destination}-decorated"
-                filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($browser.displayName)\"") }
-            }
-
-            testTask.finalizedBy decorateReportsTask
-        }
+        addTunnelTasks(lambdaTestExtension)
     }
 
     void addTunnelTasks(LambdaTestExtension lambdaTestExtension) {

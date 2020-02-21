@@ -223,13 +223,18 @@ sauceLabs {
        testSrcDirs = test.testSrcDirs
        classpath = test.classpath
     }
-    account { //<7>
+    additionalTask("quick") { //<7>
+        useJUnit {
+            includeCategories "com.example.Quick"
+        }
+    }
+    account { //<8>
        username = System.getenv(SauceAccount.USER_ENV_VAR)
        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
     }
-    connect { //<8>
-       port = 4444 //<9>
-       additionalOptions = ['--proxy', 'proxy.example.com:8080'] //<10>
+    connect { //<9>
+       port = 4444 //<10>
+       additionalOptions = ['--proxy', 'proxy.example.com:8080'] //<11>
     }
 }
 ----
@@ -241,10 +246,11 @@ running the generated test tasks which means that the browsers in the cloud will
 `internet explorerVista9Test`.
 <5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 <6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Pass credentials for {sauce-connect}.
-<8> Additionally configure {sauce-connect} if desired.
-<9> Override the port used by SauceConnect, defaults to 4445.
-<10> Pass additional link:https://docs.saucelabs.com/reference/sauce-connect/#command-line-options[command line options] to SauceConnect.
+<7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
+<8> Pass credentials for {sauce-connect}.
+<9> Additionally configure {sauce-connect} if desired.
+<10> Override the port used by SauceConnect, defaults to 4445.
+<11> Pass additional link:https://docs.saucelabs.com/reference/sauce-connect/#command-line-options[command line options] to SauceConnect.
 
 [TIP]
 ====
@@ -304,12 +310,17 @@ browserStack {
        testSrcDirs = test.testSrcDirs
        classpath = test.classpath
     }
-    account { //<7>
+    additionalTask("quick") { //<7>
+        useJUnit {
+            includeCategories "com.example.Quick"
+        }
+    }
+    account { //<8>
        username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
        accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
     }
     local {
-        force = true //<8>
+        force = true //<9>
     }
 }
 ----
@@ -322,9 +333,9 @@ If no applications are specified, the tunnel will not be restricted to particula
 `internet explorerVista9Test`.
 <5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
 <6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Pass credentials for BrowserStack.
-<8> Configure BrowserStack tunnel to route all traffic via the local machine.
-This configuration property controls the `-forcelocal` flag and the default value for it is `false`.
+<7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
+<8> Pass credentials for BrowserStack.
+<9> Configure BrowserStack tunnel to route all traffic via the local machine; this configuration property controls the `-forcelocal` flag and the default value for it is `false`.
 
 It's also possible to specify location and credentials for the proxy to be used with the BrowserStack Tunnel:
 
@@ -407,12 +418,17 @@ lambdaTest {
        testSrcDirs = test.testSrcDirs
        classpath = test.classpath
     }
-    account { //<7>
+    additionalTask("quick") { //<7>
+        useJUnit {
+            includeCategories "com.example.Quick"
+        }
+    }
+    account { //<8>
        username = System.getenv(LambdaTestAccount.USER_ENV_VAR)
        accessKey = System.getenv(LambdaTestAccount.ACCESS_KEY_ENV_VAR)
     }
     tunnelOps {
-        additionalOptions = ['--proxyhost', 'proxy.example.com'] //<8>
+        additionalOptions = ['--proxyhost', 'proxy.example.com'] //<9>
     }
 }
 ----
@@ -424,8 +440,9 @@ If no applications are specified, the tunnel will not be restricted to particula
 <4> The tests would run in chrome on Windows 10 as sample.
 <5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities.
 <6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Pass credentials for LambdaTest.
-<8> Pass additional link:https://www.lambdatest.com/support/docs/lambda-tunnel-modifiers/[command line options] to LambdaTestTunnel.
+<7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
+<8> Pass credentials for LambdaTest.
+<9> Pass additional link:https://www.lambdatest.com/support/docs/lambda-tunnel-modifiers/[command line options] to LambdaTestTunnel.
 
 
 [TIP]

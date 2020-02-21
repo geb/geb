@@ -15,28 +15,27 @@
  */
 package geb.gradle.saucelabs
 
-import geb.gradle.cloud.BrowserSpec
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
 
+import static geb.gradle.saucelabs.SaucePlugin.CLOSE_TUNNEL_TASK_NAME
+import static geb.gradle.saucelabs.SaucePlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
+
 @InheritConstructors
 class SauceLabsExtension extends CloudBrowsersExtension {
+
+    final String openTunnelInBackgroundTaskName = OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
+    final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
+    final String providerName = "saucelabs"
 
     SauceConnect connect
     SauceAccount account
     boolean useTunnel = true
 
     void addExtensions() {
-        browsers = project.container(BrowserSpec) { new BrowserSpec("saucelabs", it) }
-        extensions.browsers = browsers
+        super.addExtensions()
         account = new SauceAccount()
         connect = new SauceConnect(project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
-    }
-
-    void task(Closure configuration) {
-        extensions.browsers.all { BrowserSpec browser ->
-            project.tasks["${browser.displayName}Test"].configure configuration
-        }
     }
 
     void account(Closure configuration) {
