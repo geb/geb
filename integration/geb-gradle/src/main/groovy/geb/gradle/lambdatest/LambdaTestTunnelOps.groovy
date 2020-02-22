@@ -20,7 +20,8 @@ import org.gradle.api.tasks.testing.Test
 
 class LambdaTestTunnelOps implements TestTaskConfigurer {
 
-    public static final String LOCAL_ID_ENV_VAR = "GEB_LAMBDATEST_TUNNELID"
+    public static final String TUNNEL_NAME_ENV_VAR = "GEB_LAMBDATEST_TUNNELNAME"
+    public static int apiPort = findRandomOpenPortForLTTunnel()
 
     String tunnelName
     String config
@@ -53,7 +54,22 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
 
     List<String> additionalOptions = []
 
+    static int getAPIPort() {
+       LambdaTestTunnelOps.apiPort
+    }
+
     void configure(Test test) {
-        test.environment(LOCAL_ID_ENV_VAR, tunnelName)
+        test.environment(TUNNEL_NAME_ENV_VAR, tunnelName)
+    }
+
+    private static Integer findRandomOpenPortForLTTunnel() throws IOException {
+        try {
+            ServerSocket socket = new ServerSocket(0)
+            return socket.getLocalPort()
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.printStackTrace())
+        }
     }
 }

@@ -16,7 +16,7 @@
 package geb.gradle.lambdatest
 
 import geb.gradle.cloud.task.StartExternalTunnel
-import geb.gradle.cloud.task.StopExternalTunnel
+import geb.gradle.lambdatest.task.StopLambdaTestTunnel
 import geb.gradle.lambdatest.task.DownloadLambdaTestTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -54,7 +54,7 @@ class LambdaTestPlugin implements Plugin<Project> {
             from(project.zipTree(downloadLambdaTestTunnel.outputs.files.singleFile))
         }
 
-        def closeLambdaTestTunnel = project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
+        def closeLambdaTestTunnel = project.task(CLOSE_TUNNEL_TASK_NAME, type: StopLambdaTestTunnel) {
             tunnel = project.lambdaTest.tunnel
             onlyIf { lambdaTestExtension.useTunnel }
         }
