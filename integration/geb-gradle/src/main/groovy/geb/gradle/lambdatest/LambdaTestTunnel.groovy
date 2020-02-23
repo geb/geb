@@ -22,10 +22,12 @@ import org.gradle.api.Project
 import org.slf4j.Logger
 
 class LambdaTestTunnel extends ExternalTunnel {
-    final LambdaTestExtension extension
+    static int userAPIPort
 
+    final LambdaTestExtension extension
     final String outputPrefix = 'lambdatest-tunnel'
     final String tunnelReadyMessage = 'Tunnel claim successful'
+    final String infoAPIPortKey = "-infoAPIPort"
 
     LambdaTestTunnel(Project project, Logger logger, LambdaTestExtension extension) {
         super(project, logger)
@@ -83,7 +85,11 @@ class LambdaTestTunnel extends ExternalTunnel {
             commandLine << "-env" << extension.local.env
         }
         if (extension.local.infoAPIPort) {
-            commandLine << "-infoAPIPort" << extension.local.infoAPIPort
+            commandLine << infoAPIPortKey << extension.local.infoAPIPort
+            userAPIPort = extension.local.infoAPIPort.toInteger()
+        }
+        else {
+            commandLine << infoAPIPortKey << extension.local.apiPort
         }
         if (extension.local.localdomains) {
             commandLine << "-local-domains" << extension.local.localdomains
