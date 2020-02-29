@@ -94,6 +94,10 @@ This page lists the high level changes between versions of Geb.
 
 * Add support for adding multiple test tasks per browser type to cloud browser gradle plugins. [issue:597[]]
 
+==== Fixes
+
+* Fix an overflow for large `int` timeouts in `geb.Wait` causing `Browser.pause()` to fail and return instantly. [issue:605[]]
+
 === 3.3
 
 ==== New features

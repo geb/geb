@@ -15,7 +15,9 @@
  */
 package geb
 
+import geb.js.JavascriptInterface
 import geb.test.GebSpecWithCallbackServer
+import geb.waiting.Wait
 import groovy.transform.InheritConstructors
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
@@ -30,27 +32,17 @@ class PauseSpec extends GebSpecWithCallbackServer {
     def 'pausing triggered using pause() can be cancelled by setting geb.unpause js variable to true'() {
         given:
         html {}
-        def pausedBrowserThread = pauseBrowserInNewThread()
+
+        and:
+        def browserPausingThread = new BrowserPausingThread(browser)
+        browserPausingThread.start()
 
         when:
         js.exec 'geb.unpause = true;'
 
         then:
-        eventuallyCompletes(pausedBrowserThread)
-    }
-
-    private boolean eventuallyCompletes(Thread thread) {
-        waitFor {
-            !thread.alive
-        }
-    }
-
-    private Thread pauseBrowserInNewThread() {
-        def thread = Thread.start { browser.pause() }
-        waitFor {
-            js.exec 'return geb.unpause !== undefined;'
-        }
-        thread
+        browserPausingThread.awaitCompletion()
+        !browserPausingThread.error
     }
 
     @InheritConstructors
@@ -98,6 +90,37 @@ class PauseSpec extends GebSpecWithCallbackServer {
         Object executeScript(String script, Object... args) {
             synchronized (executeScriptMutex) {
                 javascriptExecutor.executeScript(script, args)
+            }
+        }
+    }
+
+    private static class BrowserPausingThread {
+
+        private final Wait waiting = new Wait()
+        private final JavascriptInterface js
+        private final Thread thread
+
+        private Throwable error
+
+        BrowserPausingThread(Browser browser) {
+            this.js = browser.js
+
+            this.thread = new Thread({ browser.pause() })
+            this.thread.uncaughtExceptionHandler = { Thread t, Throwable e ->
+                error = e
+            }
+        }
+
+        void start() {
+            thread.start()
+            waiting.waitFor {
+                js.exec 'return geb.unpause !== undefined;'
+            }
+        }
+
+        void awaitCompletion() {
+            waiting.waitFor {
+                !thread.alive
             }
         }
     }

@@ -127,8 +127,8 @@ class Wait {
         pass as T
     }
 
-    private static int toMilliseconds(Number seconds) {
-        seconds * 1000
+    private static long toMilliseconds(Number seconds) {
+        seconds * 1000L
     }
 
     private Instant timeoutThresholdFromNow() {
