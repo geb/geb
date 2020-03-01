@@ -26,14 +26,15 @@ class DownloadBrowserStackTunnel extends DefaultTask {
     @OutputFile
     File tunnelZip = project.file("${project.buildDir}/browserstack/BrowserStackTunnel.zip")
 
+    DownloadBrowserStackTunnel() {
+        outputs.upToDateWhen { false }
+    }
+
     @TaskAction
     void download() {
-        tunnelZip.parentFile.mkdirs()
-        if (!tunnelZip.exists()) {
-            def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart}.zip"
-            logger.info("Downloading {} to {}", url, tunnelZip)
-            tunnelZip << new URL(url).bytes
-        }
+        def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart}.zip"
+        logger.info("Downloading {} to {}", url, tunnelZip)
+        tunnelZip.withOutputStream { it << new URL(url).bytes }
     }
 
     String getOsSpecificUrlPart() {

@@ -26,14 +26,15 @@ class DownloadLambdaTestTunnel extends DefaultTask {
     @OutputFile
     File tunnelZip = project.file("${project.buildDir}/lambdatest/LambdaTestTunnel.zip")
 
+    DownloadLambdaTestTunnel() {
+        outputs.upToDateWhen { false }
+    }
+
     @TaskAction
     void download() {
-        tunnelZip.parentFile.mkdirs()
-        if (!tunnelZip.exists()) {
-            def url = "https://downloads.lambdatest.com/tunnel/${osSpecificUrlPart}.zip"
-            logger.info("Downloading {} to {}", url, tunnelZip)
-            tunnelZip << new URL(url).bytes
-        }
+        def url = "https://downloads.lambdatest.com/tunnel/${osSpecificUrlPart}.zip"
+        logger.info("Downloading {} to {}", url, tunnelZip)
+        tunnelZip.withOutputStream { it << new URL(url).bytes }
     }
 
     String getOsSpecificUrlPart() {
