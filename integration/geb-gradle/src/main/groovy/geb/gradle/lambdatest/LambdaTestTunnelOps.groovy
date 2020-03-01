@@ -16,11 +16,15 @@
 package geb.gradle.lambdatest
 
 import geb.gradle.cloud.TestTaskConfigurer
+import org.gradle.api.Project
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.testing.Test
 
 class LambdaTestTunnelOps implements TestTaskConfigurer {
 
     public static final String LOCAL_ID_ENV_VAR = "GEB_LAMBDATEST_TUNNELID"
+
+    private final Property<String> infoAPIPortProperty
 
     String tunnelName
     String config
@@ -33,7 +37,6 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
     String dns
     String emulateChrome
     String env
-    String infoAPIPort
     String localdomains
     String logFile
     String mode
@@ -53,7 +56,20 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
 
     List<String> additionalOptions = []
 
+    LambdaTestTunnelOps(Project project) {
+        this.infoAPIPortProperty = project.objects.property(String)
+        this.infoAPIPortProperty.set(project.providers.provider(new FreePortNumberProvider()))
+    }
+
     void configure(Test test) {
         test.environment(LOCAL_ID_ENV_VAR, tunnelName)
+    }
+
+    void setInfoAPIPort(String infoAPIPort) {
+        infoAPIPortProperty.set(infoAPIPort)
+    }
+
+    String getInfoAPIPort() {
+        infoAPIPortProperty.get()
     }
 }

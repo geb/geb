@@ -35,7 +35,7 @@ class LambdaTestExtension extends CloudBrowsersExtension {
     void addExtensions() {
         super.addExtensions()
         account = new LambdaTestAccount()
-        local = new LambdaTestTunnelOps()
+        local = new LambdaTestTunnelOps(project)
         extensions.create('tunnel', LambdaTestTunnel, project, project.logger, this)
     }
 
