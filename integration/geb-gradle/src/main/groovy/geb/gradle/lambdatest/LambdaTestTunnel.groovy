@@ -25,7 +25,7 @@ class LambdaTestTunnel extends ExternalTunnel {
     final LambdaTestExtension extension
 
     final String outputPrefix = 'lambdatest-tunnel'
-    final String tunnelReadyMessage = 'Tunnel claim successful'
+    final String tunnelReadyMessage = 'Secure connection established, you may start your tests now'
 
     LambdaTestTunnel(Project project, Logger logger, LambdaTestExtension extension) {
         super(project, logger)
