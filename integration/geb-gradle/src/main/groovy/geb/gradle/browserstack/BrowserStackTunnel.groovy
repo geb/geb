@@ -26,7 +26,7 @@ class BrowserStackTunnel extends ExternalTunnel {
     final BrowserStackExtension extension
 
     final String outputPrefix = 'browserstack-tunnel'
-    final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser.'
+    final String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser'
 
     BrowserStackTunnel(Project project, Logger logger, BrowserStackExtension extension) {
         super(project, logger)

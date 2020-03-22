@@ -111,6 +111,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * `BindingUpdater` is not forwarding methods from `geb.textmatching.TextMatchingSupport` onto the `Browser` instance. [issue:601[]]
+* Update the message searched for in BrowserStack tunnel process output before considering it successfully as started after output changes in the latest version. [issue:607[]]
 
 ==== Improvements
 
