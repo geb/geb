@@ -97,6 +97,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * Fix an overflow for large `int` timeouts in `geb.Wait` causing `Browser.pause()` to fail and return instantly. [issue:605[]]
+* Update the message searched for in BrowserStack tunnel process output before considering it successfully as started after output changes in the latest version. [issue:607[]]
 
 === 3.3
 
@@ -111,7 +112,6 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * `BindingUpdater` is not forwarding methods from `geb.textmatching.TextMatchingSupport` onto the `Browser` instance. [issue:601[]]
-* Update the message searched for in BrowserStack tunnel process output before considering it successfully as started after output changes in the latest version. [issue:607[]]
 
 ==== Improvements
 
