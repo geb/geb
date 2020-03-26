@@ -22,6 +22,8 @@ class BrowserStackLocal implements TestTaskConfigurer {
 
     public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
 
+    String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser'
+
     String identifier
     boolean force
     String proxyHost

@@ -26,6 +26,8 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
 
     private final Property<String> infoAPIPortProperty
 
+    String tunnelReadyMessage = 'Secure connection established, you may start your tests now'
+
     String tunnelName
     String config
     String controller

@@ -317,6 +317,7 @@ browserStack {
     }
     local {
         force = true //<9>
+        tunnelReadyMessage = 'You can now access your local server(s) in our remote browser' //<10>
     }
 }
 ----
@@ -332,6 +333,7 @@ If no applications are specified, the tunnel will not be restricted to particula
 <7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
 <8> Pass credentials for BrowserStack.
 <9> Configure BrowserStack tunnel to route all traffic via the local machine; this configuration property controls the `-forcelocal` flag and the default value for it is `false`.
+<10> Set a custom message searched for in BrowserStack tunnel process output before considering it successfully started - useful if the output of the process has changed and the default message is no longer found.
 
 It's also possible to specify location and credentials for the proxy to be used with the BrowserStack Tunnel:
 
@@ -423,6 +425,7 @@ lambdaTest {
     }
     tunnelOps {
         additionalOptions = ['--proxyhost', 'proxy.example.com'] //<9>
+        tunnelReadyMessage = 'Secure connection established, you may start your tests now' //<10>
     }
 }
 ----
@@ -437,6 +440,7 @@ If no applications are specified, the tunnel will not be restricted to particula
 <7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
 <8> Pass credentials for LambdaTest.
 <9> Pass additional link:https://www.lambdatest.com/support/docs/lambda-tunnel-modifiers/[command line options] to LambdaTestTunnel.
+<10> Set a custom message searched for in LambdaTest tunnel process output before considering it successfully started - useful if the output of the process has changed and the default message is no longer found.
 
 
 [TIP]
