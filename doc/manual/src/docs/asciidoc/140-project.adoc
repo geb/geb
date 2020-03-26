@@ -98,6 +98,7 @@ This page lists the high level changes between versions of Geb.
 
 * Fix an overflow for large `int` timeouts in `geb.Wait` causing `Browser.pause()` to fail and return instantly. [issue:605[]]
 * Update the message searched for in BrowserStack tunnel process output before considering it successfully as started after output changes in the latest version. [issue:607[]]
+* Update the message searched for in LambdaTest tunnel process output before considering it successfully as started after output changes in the latest version. [issue:608[]]
 
 === 3.3
 
