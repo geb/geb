@@ -38,7 +38,7 @@ class DownloadLambdaTestTunnel extends DefaultTask {
     }
 
     String getOsSpecificUrlPart() {
-        def archPart = Os.isArch("amd64") ? "64bit" : "32bit"
+        def archPart = (Os.isArch("amd64") || Os.isArch("x86_64")) ? "64bit" : "32bit"
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             "windows/$archPart/LT_Windows"
         } else if (Os.isFamily(Os.FAMILY_MAC)) {

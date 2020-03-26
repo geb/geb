@@ -43,7 +43,7 @@ class DownloadBrowserStackTunnel extends DefaultTask {
         } else if (Os.isFamily(Os.FAMILY_MAC)) {
             "darwin-x64"
         } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-            Os.isArch("amd64") ? "linux-x64" : "linux-ia32"
+            (Os.isArch("amd64") || Os.isArch("x86_64")) ? "linux-x64" : "linux-ia32"
         }
     }
 }
