@@ -353,6 +353,20 @@ class PageOrientedSpec extends GebSpecWithCallbackServer {
         contentName << ["linkWithToWait", "linkWithToWaitUsingPageInstance"]
     }
 
+    def "implicitly waits when at checking after clicking on content that has to option specified if global atCheckWaiting is specified"() {
+        given:
+        config.atCheckWaiting = true
+
+        when:
+        to PageOrientedSpecPageA
+
+        and:
+        linkToPageWithDynamicContent.click()
+
+        then:
+        page in PageOrientedSpecPageE
+    }
+
     @Unroll
     def "implicitly waits when at checking if toWait content option is specified and to option contains a list of candidates for '#contentName' content"() {
         when:
@@ -488,6 +502,7 @@ class PageOrientedSpecPageA extends Page {
         linkWithVariantToUsingPageInstances(to: [new PageOrientedSpecPageD(), new PageOrientedSpecPageC(), new PageOrientedSpecPageB()]) { link }
         linkWithVariantToNoMatches(to: [PageOrientedSpecPageD, PageOrientedSpecPageC]) { link }
         linkWithVariantToNoMatchesUsingPageInstances(to: [new PageOrientedSpecPageD(), new PageOrientedSpecPageC()]) { link }
+        linkToPageWithDynamicContent(to: PageOrientedSpecPageE) { link }
         linkWithToWait(to: PageOrientedSpecPageE, toWait: true) { link }
         linkWithToWaitUsingPageInstance(to: new PageOrientedSpecPageE(), toWait: true) { link }
         linkWithToWaitAndVariantTo(to: [PageOrientedSpecPageC, PageOrientedSpecPageE], toWait: true) { link }
