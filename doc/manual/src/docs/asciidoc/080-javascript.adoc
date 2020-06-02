@@ -245,7 +245,7 @@ Animations would be another example of asynchronicity in web applications and th
 == Alert and confirm dialogs
 
 WebDriver currently does not handle the alert() and confirm() dialog windows.
-However, we can fake it through some JavaScript magic as link:http://code.google.com/p/selenium/issues/detail?id=27#c17[discussed on the WebDriver issue for this].
+However, we can fake it through some JavaScript magic as link:https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/27#issuecomment-191402931[discussed on the WebDriver issue for this].
 Geb implements a workaround based on this solution for you.
 Note that this feature relies on making changes to the browser's `window` DOM object so may not work on all browsers on all platforms.
 At the time when WebDriver adds support for this functionality the underlying implementation of the following methods will change to use that which will presumably be more robust.

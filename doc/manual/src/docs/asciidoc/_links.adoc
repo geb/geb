@@ -2,7 +2,7 @@
 
 :groovy: link:http://groovy-lang.org/[Groovy]
 :jquery: link:http://jquery.com/[jQuery]
-:webdriver: link:http://code.google.com/p/selenium/[WebDriver]
+:webdriver: link:https://github.com/SeleniumHQ/selenium[WebDriver]
 :selenium-api-link: link:http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/{selenium-version}
 :webdriver-api: {selenium-api-link}/org/openqa/selenium/WebDriver.html[WebDriver]
 :webelement-api: {selenium-api-link}/org/openqa/selenium/WebElement.html[WebElement]
@@ -25,7 +25,7 @@
 :cucumber-jvm: link:https://github.com/cucumber/cucumber-jvm[Cucumber-JVM]
 :geb-cucumber: link:https://github.com/tomdcc/geb-cucumber[geb-cucumber]
 :remotewebdriver: link:http://code.google.com/p/selenium/wiki/RemoteWebDriver[RemoteWebDriver]
-:remotewebdriver-server: link:http://code.google.com/p/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
+:remotewebdriver-server: link:https://github.com/SeleniumHQ/selenium/wiki/RemoteWebDriverServer[RemoteWebDriverServer]
 :groovy-api-link: link:http://docs.groovy-lang.org/docs/groovy-{groovy-version}/html
 :config-slurper-api: {groovy-api-link}/gapi/groovy/util/ConfigSlurper.html[ConfigSlurper]
 :groovy-binding-link: {groovy-api-link}/api/groovy/lang/Binding.html
