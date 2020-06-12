@@ -18,45 +18,23 @@ package geb.test
 import geb.Browser
 import geb.Configuration
 import geb.ConfigurationLoader
+import geb.spock.SpockGebTestManagerBuilder
 import geb.transform.DynamicallyDispatchesToBrowser
-import org.junit.Rule
-import org.junit.rules.TestName
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import spock.lang.Specification
-import spock.lang.Stepwise
 
 import java.util.function.Supplier
 
 @DynamicallyDispatchesToBrowser
-class GebSpec extends Specification implements HasReportingTestManager {
+class GebSpec extends geb.spock.GebReportingSpec {
 
     private static final GebTestManager TEST_MANAGER = managerBuilder()
             .withBrowserCreator(configToBrowserSupplier { new ConfigurationLoader().conf })
             .build()
 
-    @Rule
-    TestName gebSpecTestName
-
     @Override
     @Delegate(includes = ["getBrowser", "report"])
     GebTestManager getTestManager() {
         TEST_MANAGER
-    }
-
-    def setupSpec() {
-        testManager.beforeTestClass(getClass())
-    }
-
-    def setup() {
-        testManager.beforeTest(gebSpecTestName.methodName)
-    }
-
-    def cleanup() {
-        testManager.afterTest()
-    }
-
-    def cleanupSpec() {
-        testManager.afterTestClass()
     }
 
     protected static Supplier<Browser> configToBrowserSupplier(Supplier<Configuration> configSupplier) {
@@ -70,8 +48,7 @@ class GebSpec extends Specification implements HasReportingTestManager {
     }
 
     protected static GebTestManagerBuilder managerBuilder() {
-        new GebTestManagerBuilder()
+        new SpockGebTestManagerBuilder()
                 .withReportingEnabled(true)
-                .withResetBrowserAfterEachTestPredicate { !it.isAnnotationPresent(Stepwise) }
     }
 }

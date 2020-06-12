@@ -58,7 +58,6 @@ allprojects { project ->
 
         seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
         seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-        firefoxDriverDependency = "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
         htmlUnitDriverDependency = "org.seleniumhq.selenium:htmlunit-driver:$htmlUnitDriverVersion"
 
         groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
@@ -76,16 +75,16 @@ allprojects { project ->
         }
 
         groovyModules = [
-            ":module:geb-core", ":internal:test-support",
-            ":module:geb-spock", ":module:geb-junit4",
-            ":module:geb-testng", ":module:geb-implicit-assertions",
-            ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets"
+            ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
+            ":module:geb-junit4", ":module:geb-testng", ":module:geb-implicit-assertions", ":module:geb-ast",
+            ":module:geb-waiting", ":module:geb-exceptions", ":integration:geb-gradle", ":doc:site",
+            ":doc:manual-snippets"
         ]
 
         publishedModules = [
-            ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":module:geb-spock", ":module:geb-junit4", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
+            ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
+            ":module:geb-exceptions", ":module:geb-spock", ":module:geb-junit4", ":module:geb-testng", ":doc:manual",
+            ":integration:geb-gradle"
         ]
 
         dockerisedCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]

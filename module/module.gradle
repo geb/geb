@@ -1,6 +1,8 @@
 subprojects {
     dependencies {
-        testCompile project(":internal:test-support")
+        if (project.name != "geb-spock" ) {
+            testCompile project(":internal:test-support-spock")
+        }
         if (![
             "geb-core",
             "geb-ast",
