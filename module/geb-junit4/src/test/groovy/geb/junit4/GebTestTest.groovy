@@ -14,13 +14,12 @@
  */
 package geb.junit4
 
-import geb.test.CallbackHttpServer
 import geb.Page
-import org.junit.*
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import geb.test.CallbackHttpServer
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
-@RunWith(JUnit4)
 class GebTestTest extends GebTest {
 
     def server = new CallbackHttpServer(browser.config)

@@ -18,10 +18,7 @@ import geb.test.CallbackHttpServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 
-@RunWith(JUnit4)
 class GebReportingTestTest extends GebReportingTest {
 
     static private counter = 0
@@ -45,6 +42,11 @@ class GebReportingTestTest extends GebReportingTest {
         browser.baseUrl = server.baseUrl
         browser.config.reportOnTestFailureOnly = false
         go()
+    }
+
+    @Test
+    void reportGroupDirIsSetToClassName() {
+        assert reportGroupDir.absolutePath.endsWith(getClass().name.replaceAll(/\./, File.separator))
     }
 
     @Test

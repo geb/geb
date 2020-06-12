@@ -26,7 +26,7 @@ class GebTestManager {
 
     private final Supplier<Browser> browserCreator
     private final Predicate<Class<?>> resetBrowserAfterEachTestPredicate
-    private final boolean reportingEnabled
+    final boolean reportingEnabled
 
     protected Browser browser
     private Class<?> currentTestClass
