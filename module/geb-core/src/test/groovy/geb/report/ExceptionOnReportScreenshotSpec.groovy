@@ -53,7 +53,7 @@ class ExceptionOnReportScreenshotSpec extends GebSpecWithCallbackServer {
         report("test")
 
         then:
-        reportFileNames == ["000-000-a stacktrace screenshot is taken when an exception is thrown while taking a screenshot-test.png"].toSet()
+        reportFileNames == ["001-001-a stacktrace screenshot is taken when an exception is thrown while taking a screenshot-test.png"].toSet()
     }
 
 }
