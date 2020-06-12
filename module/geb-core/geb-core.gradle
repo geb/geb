@@ -30,7 +30,6 @@ dependencies {
 }
 
 test {
-    def availableProcessors = isCi ? 2 : Math.min(Runtime.runtime.availableProcessors().intdiv(2), 4)
     maxParallelForks availableProcessors
 }
 
@@ -41,6 +40,11 @@ task allCrossBrowserTests {
 task firefoxLinuxTest(type: Test) {
     maxHeapSize = "512m"
     systemProperty "geb.dockerized.driver", "firefox"
+    maxParallelForks 2
+}
+
+chromeLinuxTest {
+    maxParallelForks 2
 }
 
 allDockerisedCrossBrowserTests.dependsOn firefoxLinuxTest

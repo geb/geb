@@ -1,3 +1,5 @@
+import static java.lang.Runtime.runtime
+
 buildscript {
     repositories {
         mavenCentral()
@@ -38,6 +40,7 @@ allprojects { project ->
     ext {
         isSnapshot = version.endsWith("-SNAPSHOT")
         isCi = project.hasProperty("ci")
+        availableProcessors = isCi ? 2 : Math.min(runtime.availableProcessors().intdiv(2), 4)
 
         seleniumVersion = "3.141.59"
         htmlUnitDriverVersion = "2.35.1"

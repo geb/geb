@@ -28,7 +28,6 @@ task realBrowserTest(type: Test) {
 check.dependsOn realBrowserTest
 
 test {
-    def availableProcessors = isCi ? 2 : Math.min(Runtime.runtime.availableProcessors().intdiv(2), 4)
     maxParallelForks availableProcessors
 }
 
