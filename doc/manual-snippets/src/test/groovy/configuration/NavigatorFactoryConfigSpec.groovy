@@ -15,27 +15,19 @@
  */
 package configuration
 
-import geb.Configuration
+import geb.Browser
+import geb.ConfigurationLoader
 import geb.navigator.DefaultNavigator
 import geb.test.GebSpecWithCallbackServer
+import geb.test.GebTestManager
 import groovy.transform.InheritConstructors
-import org.junit.ClassRule
-import org.junit.rules.TemporaryFolder
-import spock.lang.Shared
 
-class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements InlineConfigurationLoader {
+import java.util.function.Supplier
 
-    @ClassRule
-    @Shared
-    TemporaryFolder tempDir
+class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer {
 
-    TemporaryFolder getTemporaryFolder() {
-        tempDir
-    }
-
-    @Override
-    Configuration createConf() {
-        configScript """
+    private static final Supplier<Browser> BROWSER_SUPPLIER = configToBrowserSupplier {
+        InlineConfiguration.parseConfigScript(NavigatorFactoryConfigSpec.classLoader, """
             import configuration.MyCustomNavigator
             // tag::config[]
             import geb.Browser
@@ -46,9 +38,17 @@ class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer implements In
             }
             // end::config[]
 
-            reportsDir = "${super.createConf().reportsDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
-        """
-        config
+            reportsDir = "${new ConfigurationLoader().conf.reportsDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
+        """)
+    }
+
+    private static final GebTestManager TEST_MANAGER = managerBuilder()
+            .withBrowserCreator(BROWSER_SUPPLIER)
+            .build()
+
+    @Override
+    GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
     def "specifying custom navigator implementation"() {

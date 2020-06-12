@@ -42,7 +42,7 @@ class MultiWindowReporterSpec extends BaseWindowHandlingSpec {
         report("test")
 
         then:
-        reportFileNames == availableWindows.collect { "000-000-writes report for each open window-test-window ${it}.html" }.toSet()
+        reportFileNames == availableWindows.collect { "001-001-writes report for each open window-test-window ${it}.html" }.toSet()
 
         and:
         linkTextsInReports == [
@@ -60,7 +60,7 @@ class MultiWindowReporterSpec extends BaseWindowHandlingSpec {
         report("test")
 
         then:
-        reportFileNames == ["001-000-does not include window id in report name if there is only a single window open-test.html"].toSet()
+        reportFileNames == ["002-001-does not include window id in report name if there is only a single window open-test.html"].toSet()
     }
 
     Set<List<String>> getLinkTextsInReports() {

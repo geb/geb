@@ -14,49 +14,19 @@
  */
 package geb.spock
 
-import geb.report.ReporterSupport
-import org.junit.Rule
-import org.junit.rules.TestName
-import spock.lang.Shared
+import geb.test.GebTestManager
+import geb.test.HasReportingTestManager
 
-class GebReportingSpec extends GebSpec {
+class GebReportingSpec extends GebSpec implements HasReportingTestManager {
 
-    // Ridiculous name to avoid name clashes
-    @Rule
-    TestName gebReportingSpecTestName
-    private int gebReportingPerTestCounter = 1
-    @Shared
-    private int gebReportingSpecTestCounter = 1
+    private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder()
+            .withReportingEnabled(true)
+            .build()
 
-    def setupSpec() {
-        reportGroup getClass()
-        cleanReportGroupDir()
-    }
-
-    def setup() {
-        reportGroup getClass()
-    }
-
-    def cleanup() {
-        if (_browser && !browser.config.reportOnTestFailureOnly) {
-            report "end"
-        }
-
-        ++gebReportingSpecTestCounter
-    }
-
-    void reportFailure() {
-        if (_browser) {
-            report "failure"
-        }
-    }
-
-    void report(String label = "") {
-        browser.report(createReportLabel(label))
-    }
-
-    String createReportLabel(String label = "") {
-        ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName?.methodName ?: 'fixture', label)
+    @Override
+    @Delegate(includes = ["getBrowser", "report"])
+    GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
 }

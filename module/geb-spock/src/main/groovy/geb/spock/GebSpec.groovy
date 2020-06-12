@@ -14,73 +14,39 @@
  */
 package geb.spock
 
-import geb.Browser
-import geb.Configuration
-import geb.ConfigurationLoader
-import spock.lang.Shared
+import geb.test.GebTestManager
+import geb.transform.DynamicallyDispatchesToBrowser
+import org.junit.Rule
+import org.junit.rules.TestName
 import spock.lang.Specification
-import spock.lang.Stepwise
 
+@DynamicallyDispatchesToBrowser
 class GebSpec extends Specification {
 
-    String gebConfEnv = null
-    String gebConfScript = null
+    private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder().build()
 
-    @SuppressWarnings("PropertyName")
-    @Shared
-    Browser _browser
+    @Rule
+    TestName gebSpecTestName
 
-    Configuration createConf() {
-        new ConfigurationLoader(gebConfEnv, System.properties, new GroovyClassLoader(getClass().classLoader)).getConf(gebConfScript)
+    @Delegate(includes = ["getBrowser"])
+    GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
-    Browser createBrowser() {
-        new Browser(createConf())
+    def setupSpec() {
+        testManager.beforeTestClass(getClass())
     }
 
-    Browser getBrowser() {
-        if (_browser == null) {
-            _browser = createBrowser()
-        }
-        _browser
-    }
-
-    void resetBrowser() {
-        def config = _browser?.config
-        if (config?.autoClearCookies) {
-            _browser.clearCookiesQuietly()
-        }
-        if (config?.autoClearWebStorage) {
-            _browser.clearWebStorage()
-        }
-        _browser = null
-    }
-
-    def methodMissing(String name, args) {
-        getBrowser()."$name"(*args)
-    }
-
-    def propertyMissing(String name) {
-        getBrowser()."$name"
-    }
-
-    def propertyMissing(String name, value) {
-        getBrowser()."$name" = value
+    def setup() {
+        testManager.beforeTest(gebSpecTestName.methodName)
     }
 
     def cleanup() {
-        if (!isSpecStepwise()) {
-            resetBrowser()
-        }
+        testManager.afterTest()
     }
 
     def cleanupSpec() {
-        if (isSpecStepwise()) {
-            resetBrowser()
-        }
+        testManager.afterTestClass()
     }
 
-    private isSpecStepwise() {
-        this.class.getAnnotation(Stepwise) != null
-    }
 }

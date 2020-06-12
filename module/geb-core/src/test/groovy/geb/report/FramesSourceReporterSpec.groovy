@@ -60,8 +60,8 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
         report('test')
 
         then:
-        reportSpanText('000-000-reports on source of frames-test-frame 1') == 'header'
-        reportSpanText('000-000-reports on source of frames-test-frame 2') == 'footer'
+        reportSpanText('001-001-reports on source of frames-test-frame 1') == 'header'
+        reportSpanText('001-001-reports on source of frames-test-frame 2') == 'footer'
     }
 
     def "reports on source of iframes"() {
@@ -72,7 +72,7 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
         report('test')
 
         then:
-        reportSpanText('001-000-reports on source of iframes-test-frame 1') == 'inline'
+        reportSpanText('002-001-reports on source of iframes-test-frame 1') == 'inline'
     }
 
     String reportSpanText(String reportName) {

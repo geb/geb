@@ -18,94 +18,60 @@ package geb.test
 import geb.Browser
 import geb.Configuration
 import geb.ConfigurationLoader
-import geb.report.ReporterSupport
+import geb.transform.DynamicallyDispatchesToBrowser
 import org.junit.Rule
 import org.junit.rules.TestName
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 
-class GebSpec extends Specification {
+import java.util.function.Supplier
 
-    String gebConfEnv = null
-    String gebConfScript = null
+@DynamicallyDispatchesToBrowser
+class GebSpec extends Specification implements HasReportingTestManager {
 
-    @SuppressWarnings("PropertyName")
-    @Shared
-    Browser _browser
+    private static final GebTestManager TEST_MANAGER = managerBuilder()
+            .withBrowserCreator(configToBrowserSupplier { new ConfigurationLoader().conf })
+            .build()
 
-    // Ridiculous name to avoid name clashes
     @Rule
-    TestName gebReportingSpecTestName
-    private int gebReportingPerTestCounter = 0
-    @Shared
-    private int gebReportingSpecTestCounter = 0
+    TestName gebSpecTestName
 
-    Configuration createConf() {
-        new ConfigurationLoader(gebConfEnv).getConf(gebConfScript)
-    }
-
-    Browser createBrowser() {
-        def browser = new Browser(createConf())
-        if (browser.driver instanceof HtmlUnitDriver) {
-            browser.driver.javascriptEnabled = true
-        }
-        browser
-    }
-
-    Browser getBrowser() {
-        if (_browser == null) {
-            _browser = createBrowser()
-        }
-        _browser
-    }
-
-    void resetBrowser() {
-        if (_browser?.config?.autoClearCookies) {
-            _browser.clearCookiesQuietly()
-        }
-        _browser = null
+    @Override
+    @Delegate(includes = ["getBrowser", "report"])
+    GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
     def setupSpec() {
-        reportGroup getClass()
-        cleanReportGroupDir()
+        testManager.beforeTestClass(getClass())
     }
 
     def setup() {
-        reportGroup getClass()
-    }
-
-    void report(String label = "") {
-        browser.report(ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter++, gebReportingPerTestCounter++, gebReportingSpecTestName.methodName, label))
-    }
-
-    def methodMissing(String name, args) {
-        getBrowser()."$name"(*args)
-    }
-
-    def propertyMissing(String name) {
-        getBrowser()."$name"
-    }
-
-    def propertyMissing(String name, value) {
-        getBrowser()."$name" = value
+        testManager.beforeTest(gebSpecTestName.methodName)
     }
 
     def cleanup() {
-        if (!isSpecStepwise()) {
-            resetBrowser()
-        }
+        testManager.afterTest()
     }
 
     def cleanupSpec() {
-        if (isSpecStepwise()) {
-            resetBrowser()
+        testManager.afterTestClass()
+    }
+
+    protected static Supplier<Browser> configToBrowserSupplier(Supplier<Configuration> configSupplier) {
+        { ->
+            def browser = new Browser(configSupplier.get())
+            if (browser.driver instanceof HtmlUnitDriver) {
+                browser.driver.javascriptEnabled = true
+            }
+            browser
         }
     }
 
-    private isSpecStepwise() {
-        this.class.getAnnotation(Stepwise) != null
+    protected static GebTestManagerBuilder managerBuilder() {
+        new GebTestManagerBuilder()
+                .withReportingEnabled(true)
+                .withResetBrowserAfterEachTestPredicate { !it.isAnnotationPresent(Stepwise) }
     }
 }

@@ -17,6 +17,7 @@ package geb
 
 import geb.js.JavascriptInterface
 import geb.test.GebSpecWithCallbackServer
+import geb.test.GebTestManager
 import geb.waiting.Wait
 import groovy.transform.InheritConstructors
 import org.openqa.selenium.JavascriptExecutor
@@ -24,9 +25,13 @@ import org.openqa.selenium.WebDriver
 
 class PauseSpec extends GebSpecWithCallbackServer {
 
+    private static final GebTestManager TEST_MANAGER = managerBuilder()
+            .withBrowserCreator(configToBrowserSupplier { new ThreadSafeScriptExecutionDriverConfigurationLoader().conf })
+            .build()
+
     @Override
-    Configuration createConf() {
-        new ThreadSafeScriptExecutionDriverConfigurationLoader(gebConfEnv).getConf(gebConfScript)
+    GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
     def 'pausing triggered using pause() can be cancelled by setting geb.unpause js variable to true'() {

@@ -201,8 +201,8 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        reportFile("001-000-fixture-Report in setupSpec.html").text.startsWith("<?xml")
-        reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
+        reportFile("001-001-fixture-Report in setupSpec.html").text.startsWith("<?xml")
+        reportFile("001-002-passing test-end.html").text.startsWith("<?xml")
     }
 
     Result runReportingSpec(String additionalConfiguration = "", String body) {
