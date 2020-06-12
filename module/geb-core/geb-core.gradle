@@ -30,7 +30,7 @@ dependencies {
 }
 
 test {
-    def availableProcessors = isCi ? 2 : Runtime.runtime.availableProcessors().intdiv(2)
+    def availableProcessors = isCi ? 2 : Math.min(Runtime.runtime.availableProcessors().intdiv(2), 4)
     maxParallelForks availableProcessors
 }
 
