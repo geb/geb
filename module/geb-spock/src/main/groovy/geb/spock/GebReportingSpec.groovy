@@ -21,9 +21,6 @@ import spock.lang.Shared
 
 class GebReportingSpec extends GebSpec {
 
-    // Ridiculous name to avoid name clashes
-    @Rule
-    TestName gebReportingSpecTestName
     private int gebReportingPerTestCounter = 1
     @Shared
     private int gebReportingSpecTestCounter = 1
@@ -56,7 +53,7 @@ class GebReportingSpec extends GebSpec {
     }
 
     String createReportLabel(String label = "") {
-        ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, gebReportingSpecTestName?.methodName ?: 'fixture', label)
+        ReporterSupport.toTestReportLabel(gebReportingSpecTestCounter, gebReportingPerTestCounter++, specificationContext?.currentIteration?.name ?: 'fixture', label)
     }
 
 }
