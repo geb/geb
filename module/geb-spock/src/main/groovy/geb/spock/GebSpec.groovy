@@ -25,9 +25,6 @@ class GebSpec extends Specification {
 
     private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder().build()
 
-    @Rule
-    TestName gebSpecTestName
-
     @Delegate(includes = ["getBrowser"])
     GebTestManager getTestManager() {
         TEST_MANAGER
@@ -38,7 +35,7 @@ class GebSpec extends Specification {
     }
 
     def setup() {
-        testManager.beforeTest(gebSpecTestName.methodName)
+        testManager.beforeTest(specificationContext?.currentIteration?.name)
     }
 
     def cleanup() {
