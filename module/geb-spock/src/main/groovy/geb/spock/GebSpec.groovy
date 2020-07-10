@@ -16,8 +16,6 @@ package geb.spock
 
 import geb.test.GebTestManager
 import geb.transform.DynamicallyDispatchesToBrowser
-import org.junit.Rule
-import org.junit.rules.TestName
 import spock.lang.Specification
 
 @DynamicallyDispatchesToBrowser
@@ -35,7 +33,7 @@ class GebSpec extends Specification {
     }
 
     def setup() {
-        testManager.beforeTest(specificationContext?.currentIteration?.name)
+        testManager.beforeTest(specificationContext.currentIteration.name)
     }
 
     def cleanup() {
