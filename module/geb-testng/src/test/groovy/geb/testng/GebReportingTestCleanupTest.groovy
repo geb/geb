@@ -18,7 +18,7 @@ package geb.testng
 import org.testng.annotations.BeforeGroups
 import org.testng.annotations.Test
 
-class GebReportingTestCleanupTest implements GebReportingTestTrait {
+class GebReportingTestCleanupTest extends GebReportingTest {
 
     @BeforeGroups("GebReportingTestTest")
     void addStaleReports() {
@@ -33,9 +33,8 @@ class GebReportingTestCleanupTest implements GebReportingTestTrait {
 
     @Test(dependsOnGroups = ["GebReportingTestTest"], dependsOnMethods = ["reportingDirectoryIsEmptiedBeforeTheFirstTest"])
     void reportsOfAPreviouslyRunTestClassReportShouldBeLeftIntact() {
-        def browser = createBrowser()
         browser.reportGroup(GebReportingTestTest)
 
-        assert browser.reportGroupDir.listFiles().size() == 5
+        assert browser.reportGroupDir.listFiles().size() == 4
     }
 }

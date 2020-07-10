@@ -3,7 +3,9 @@ dependencies {
 }
 
 test {
-    useTestNG()
+    useTestNG {
+        excludeGroups "doNotRunFromGradle"
+    }
 }
 
 modifyPom { pom ->

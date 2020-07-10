@@ -15,51 +15,11 @@
  */
 package geb.testng
 
-import geb.report.ReporterSupport
-import geb.test.CallbackHttpServer
-import java.lang.reflect.Method
-import org.testng.ITestResult
-import org.testng.annotations.AfterClass
-import org.testng.annotations.BeforeClass
-import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
-import org.testng.internal.TestResult
 
-class GebReportingTestTest implements GebReportingTestTrait {
+import java.lang.reflect.Method
 
-    static responseText = """
-        <html>
-        <body>
-            <div class="d1" id="d1">d1</div>
-        </body>
-        </html>
-    """
-
-    def server = new CallbackHttpServer(browser.config)
-
-    private methodNumber = 0
-    private reportNumberInTest = 1
-
-    private methodNumberOfInitTest = 0
-
-    @BeforeClass
-    void setUpClass() {
-        server.start()
-        server.get = { req, res ->
-            res.outputStream << responseText
-        }
-    }
-
-    @BeforeMethod
-    void setUp() {
-        ++methodNumber
-        reportNumberInTest = 1
-
-        config.reportOnTestFailureOnly = true
-
-        browser.baseUrl = server.baseUrl
-        go()
-    }
+class GebReportingTestTest extends AbstractGebReportingTestTest {
 
     @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportOnDemand(Method testMethod) {
@@ -90,37 +50,4 @@ class GebReportingTestTest implements GebReportingTestTrait {
         doTestReport("reportingTestShouldReportAfterMethod", END_OF_METHOD_REPORT_LABEL, methodNumberOfInitTest, 2)
     }
 
-    @Test(groups = ["GebReportingTestTest"])
-    void reportingTestShouldReportOnTestFailureOnlyIfThatStrategyIsEnabled(Method testMethod) {
-        def testResult = new TestResult()
-
-        testResult.status = ITestResult.SUCCESS
-        reportingAfter testResult
-        def report = tryToFindReport(testMethod.name, END_OF_METHOD_REPORT_LABEL)
-        assert report == null
-
-        testResult.status = ITestResult.FAILURE
-        reportingAfter testResult
-        doTestReport(testMethod.name, END_OF_METHOD_REPORT_LABEL)
-    }
-
-    def doTestReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
-        def report = tryToFindReport(methodName, label, methodNumber, reportCounter)
-
-        assert report != null, "${ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)} not found in ${reportGroupDir.listFiles()}"
-        assert report.exists()
-        reportNumberInTest++
-
-        assert report.text.contains('<div class="d1" id="d1">')
-    }
-
-    def tryToFindReport(methodName = "", label = "", methodNumber = this.methodNumber, reportCounter = reportNumberInTest) {
-        def reportName = ReporterSupport.toTestReportLabel(methodNumber, reportCounter, methodName, label)
-        reportGroupDir.listFiles().find { it.name.startsWith reportName }
-    }
-
-    @AfterClass
-    void tearDown() {
-        server.stop()
-    }
 }

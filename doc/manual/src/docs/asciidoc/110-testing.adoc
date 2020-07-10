@@ -106,11 +106,11 @@ include::{test-dir}/testing/BrowserRestartSpec.groovy[tag=restart,indent=0]
 The following table illustrates the specific JARs and class names for various test frameworks that Geb integrates with.
 
 |===
-|Framework |JAR |Base Class / Trait |Reporting Base Class / Trait
+|Framework |JAR |Base Class |Reporting Base Class
 
 |Spock |http://mvnrepository.com/artifact/{geb-group}/geb-spock[geb-spock] |link:api/geb/spock/GebSpec.html[`geb.spock.GebSpec`] |link:api/geb/spock/GebReportingSpec.html[`geb.spock.GebReportingSpec`]
 |JUnit 4 |http://mvnrepository.com/artifact/{geb-group}/geb-junit4[geb-junit4] |link:api/geb/junit4/GebTest.html[`geb.junit4.GebTest`] |link:api/geb/junit4/GebReportingTest.html[`geb.junit4.GebReportingTest`]
-|TestNG |http://mvnrepository.com/artifact/{geb-group}/geb-testng[geb-testng] |link:api/geb/testng/GebTestTrait.html[`geb.testng.GebTestTrait`] |link:api/geb/testng/GebReportingTestTrait.html[`geb.testng.GebReportingTestTrait`]
+|TestNG |http://mvnrepository.com/artifact/{geb-group}/geb-testng[geb-testng] |link:api/geb/testng/GebTest.html[`geb.testng.GebTest`] |link:api/geb/testng/GebReportingTest.html[`geb.testng.GebReportingTest`]
 |===
 
 === Example projects
