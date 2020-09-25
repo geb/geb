@@ -4,3 +4,7 @@ modifyPom { pom ->
         description "Geb (pronounced \"jeb\") AST transformations module."
     }
 }
+
+dependencies {
+    groovy "org.codehaus.groovy:groovy-macro:${groovyVersion}"
+}

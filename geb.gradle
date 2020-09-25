@@ -60,8 +60,6 @@ allprojects { project ->
         seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
         htmlUnitDriverDependency = "org.seleniumhq.selenium:htmlunit-driver:$htmlUnitDriverVersion"
 
-        groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
-
         jsoupDependency = "org.jsoup:jsoup:1.11.2"
 
         sauceConnectDependency = "com.saucelabs:ci-sauce:1.141"
@@ -116,13 +114,20 @@ subprojects {
         apply plugin: "idea"
         apply plugin: "codenarc"
 
+        configurations {
+            groovy
+
+            compile.extendsFrom groovy
+            codenarc.extendsFrom groovy
+        }
+
         dependencies {
-            compile groovyDependency
+            groovy "org.codehaus.groovy:groovy:${groovyVersion}"
+            groovy "org.codehaus.groovy:groovy-templates:${groovyVersion}"
             codenarc 'org.codenarc:CodeNarc:1.2', {
                 exclude module: "GMetrics"
                 exclude group: "org.codehaus.groovy"
             }
-            codenarc groovyDependency
         }
 
         codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')

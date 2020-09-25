@@ -27,7 +27,8 @@ configurations {
 }
 
 dependencies {
-    groovydoc groovyDependency
+    groovydoc "org.codehaus.groovy:groovy-groovydoc:${groovyVersion}"
+    groovydoc "org.codehaus.groovy:groovy-ant:${groovyVersion}"
 }
 
 asciidoctor {
