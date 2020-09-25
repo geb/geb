@@ -74,15 +74,15 @@ allprojects { project ->
 
         groovyModules = [
             ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
-            ":module:geb-junit4", ":module:geb-testng", ":module:geb-implicit-assertions", ":module:geb-ast",
-            ":module:geb-waiting", ":module:geb-exceptions", ":integration:geb-gradle", ":doc:site",
-            ":doc:manual-snippets"
+            ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
+            ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
+            ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets"
         ]
 
         publishedModules = [
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
-            ":module:geb-exceptions", ":module:geb-spock", ":module:geb-junit4", ":module:geb-testng", ":doc:manual",
-            ":integration:geb-gradle"
+            ":module:geb-exceptions", ":module:geb-spock", ":module:geb-junit", ":module:geb-junit4",
+            ":module:geb-junit5", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
 
         dockerisedCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]

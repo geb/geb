@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.junit4
+package geb.junit.error
 
-import geb.junit4.error.IncompatibleTestClass
+import geb.error.GebException
 import geb.test.GebTestManager
 
-class GebTestUtil {
-    static GebTestManager getTestManager(Class<?> testClass) {
-        try {
-            testClass.testManager as GebTestManager
-        } catch (MissingPropertyException e) {
-            throw new IncompatibleTestClass(e)
-        }
+class IncompatibleTestClass extends GebException {
+
+    IncompatibleTestClass(Exception e) {
+        super(
+                "Geb test manager JUnit rules and extensions can only be used with test classes which define a " +
+                        "static 'testManager' property of type ${GebTestManager}",
+                e
+        )
     }
 }

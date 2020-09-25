@@ -1,0 +1,10 @@
+dependencies {
+    testCompile "junit:junit:$junit4Version"
+}
+
+modifyPom { pom ->
+    pom.project {
+        name "Geb utilities for JUnit"
+        description "Geb (pronounced \"jeb\") utilities for JUnit 4 and 5 test frameworks."
+    }
+}

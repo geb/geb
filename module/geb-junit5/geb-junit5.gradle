@@ -1,0 +1,27 @@
+ext {
+    junit5Version = "5.7.0"
+}
+
+dependencies {
+    compile project(":module:geb-junit")
+    compile "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+
+    testCompile "org.junit.platform:junit-platform-launcher:1.7.0"
+    testCompile jsoupDependency
+
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+modifyPom { pom ->
+    pom.project {
+        name "Geb for JUnit 5"
+        description "Geb (pronounced \"jeb\") integration with the JUnit 5 test framework."
+    }
+
+    // User provides their own junit
+    pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.junit.jupiter" })
+}

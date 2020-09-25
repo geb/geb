@@ -1,4 +1,5 @@
 dependencies {
+    compile project(":module:geb-junit")
     compile "junit:junit:$junit4Version"
 }
 

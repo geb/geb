@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.junit4
+package geb.junit5
 
-import org.junit.rules.TestRule
-import org.junit.runner.Description
-import org.junit.runners.model.Statement
+import geb.test.GebTestManager
+import geb.test.GebTestManagerBuilder
+import geb.transform.DynamicallyDispatchesToBrowser
+import org.junit.jupiter.api.extension.ExtendWith
 
-import static geb.junit.GebTestUtil.getTestManager
+@DynamicallyDispatchesToBrowser
+@ExtendWith(GebTestManagerExtension)
+class GebTest {
 
-class GebReportingTestManagerRule implements TestRule {
+    private final static GebTestManager TEST_MANAGER = new GebTestManagerBuilder().build()
 
-    @Override
-    Statement apply(Statement base, Description description) {
-        { ->
-            def testManager = getTestManager(description.testClass)
-
-            testManager.beforeTestClass(description.testClass)
-            try {
-                base.evaluate()
-            } finally {
-                testManager.afterTestClass()
-            }
-        } as Statement
+    @Delegate(includes = ["getBrowser"])
+    static GebTestManager getTestManager() {
+        TEST_MANAGER
     }
+
 }

@@ -15,7 +15,7 @@
  */
 package geb.junit4
 
-import geb.junit4.error.IncompatibleTestClass
+import geb.junit.error.IncompatibleTestClass
 import org.junit.ClassRule
 import org.junit.Rule
 import org.junit.Test
