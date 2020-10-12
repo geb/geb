@@ -118,7 +118,7 @@ class GebReportingTestReportingTest {
                 @BeforeEach
                 void setup() {
                     baseUrl = "${server.baseUrl}"
-                    config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\\\\\", "\\\\\\\\\\\\\\\\")}"
+                    config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
                 }
 
                 ${testCode}

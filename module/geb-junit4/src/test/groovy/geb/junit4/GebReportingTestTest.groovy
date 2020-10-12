@@ -46,7 +46,9 @@ class GebReportingTestTest extends GebReportingTest {
 
     @Test
     void reportGroupDirIsSetToClassName() {
-        assert reportGroupDir.absolutePath.endsWith(getClass().name.replaceAll(/\./, File.separator))
+        def classNameSegments = getClass().name.tokenize(".")
+
+        assert reportGroupDir.toPath()*.toString().takeRight(classNameSegments.size()) == classNameSegments
     }
 
     @Test
