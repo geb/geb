@@ -91,7 +91,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Fix `Browser.setNetworkLatency()` on newer versions of Chrome. [issue:620[]]
 
 === 3.4
 
