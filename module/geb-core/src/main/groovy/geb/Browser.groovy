@@ -990,7 +990,7 @@ class Browser {
         def params = [
                 network_conditions: [
                         latency   : duration.toMillis(),
-                        throughput: MAX_VALUE
+                        throughput: MAX_VALUE >> 2
                 ]
         ]
 

@@ -90,7 +90,7 @@ jobs:
             - .gradle-home
   local-cross-browser:
     docker:
-      - image: gebish/ci:v9
+      - image: gebish/ci:v10
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
