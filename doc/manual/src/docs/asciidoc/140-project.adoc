@@ -89,6 +89,10 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
+==== New features
+
+* Add integration with JUnit 5. [issue:539[]]
+
 ==== Improvements
 
 * Introduce `{geb-test-manager-api}` to decrease code duplication between test framework integrations and make it easier for users to add integrations for additional frameworks. [issue:614[]]

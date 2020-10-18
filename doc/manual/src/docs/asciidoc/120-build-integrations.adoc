@@ -28,7 +28,7 @@ dependencies {
     testCompile "{geb-group}:geb-spock:$\{gebVersion\}"
     testCompile "org.spockframework:spock-core:{spock-core-version}"
 
-    // If using JUnit, need to depend on geb-junit (3 or 4)
+    // If using JUnit, need to depend on geb-junit (4 or 5)
     testCompile "{geb-group}:geb-junit4:$\{gebVersion\}"
     testCompile "junit:junit-dep:4.8.2"
 
