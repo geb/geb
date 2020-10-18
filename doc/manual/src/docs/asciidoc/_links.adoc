@@ -121,3 +121,6 @@
 :browser-get-current-window-api-link: link:api/geb/Browser.html#getCurrentWindow()
 :browser-set-network-latency-link: link:api/geb/Browser.html#setNetworkLatency(java.time.Duration)
 :browser-reset-network-latency-link: link:api/geb/Browser.html#resetNetworkLatency()
+:geb-test-manager-api: link:api/geb/test/GebTestManager.html[GebTestManager]
+:dynamically-dispatches-to-browser-api: link:api/geb/transform/DynamicallyDispatchesToBrowser.html[DynamicallyDispatchesToBrowser]
+

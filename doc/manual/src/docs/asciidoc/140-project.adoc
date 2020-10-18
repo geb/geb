@@ -87,11 +87,15 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 This page lists the high level changes between versions of Geb.
 
-:numbered!:
-
 === {geb-version}
 
-No changes have been made, yet.
+==== Improvements
+
+* Introduce `{geb-test-manager-api}` to decrease code duplication between test framework integrations and make it easier for users to add integrations for additional frameworks. [issue:614[]]
+
+==== Breaking changes
+
+* Superclasses providing <<spock-junit-testng, support for various test frameworks>> have been rewritten in a backwards incompatible way to benefit from introduction of `{geb-test-manager-api}`. [issue:614[]]
 
 === 3.4.1
 

@@ -3,10 +3,14 @@
 
 Geb provides first class support for functional web testing via integration with popular testing frameworks such as {spock}, {junit}, {testng} and {cucumber-jvm}.
 
+[[spock-junit-testng]]
 == Spock, JUnit &amp; TestNG
 
 The Spock, JUnit and TestNG integrations work fundamentally the same way.
-They provide subclasses that setup a `{browser-api}` instance that all method calls and property accesses/references resolve against via Groovy's `methodMissing` and `propertyMissing` mechanism.
+They provide superclasses that setup a `{browser-api}` instance that all method calls and property accesses/references resolve against via Groovy's `methodMissing` and `propertyMissing` mechanism.
+These superclasses are just a thin layer on top of `{geb-test-manager-api}` and utilize an AST transformation registered using `{dynamically-dispatches-to-browser-api}` annotation to implement dynamic method and property dispatching onto the instance of `{browser-api}`.
+If the provided superclasses are inconvenient to use, or you wish to use a testing framework for which an integration is not provided out of the box then it's highly recommended to use `{geb-test-manager-api}` together with `{dynamically-dispatches-to-browser-api}` when implementing your custom integration.
+Taking a look at the code of the superclasses providing the built-in support for test frameworks is a good starting point when undertaking implementation of a custom integration.
 
 [TIP]
 ====
@@ -29,7 +33,7 @@ include::{test-dir}/testing/FunctionalSpec.groovy[tag=verbose,indent=0]
 
 === Configuration
 
-The browser instance is created by the testing integrations. The <<configuration, configuration mechanism>> allows you to control aspects such as the driver implementation and base URL.
+The browser instance is created by the testing integrations via use of `{geb-test-manager-api}`. The <<configuration, configuration mechanism>> allows you to control aspects such as the driver implementation and base URL.
 
 [[testing-reporting]]
 === Reporting
@@ -68,12 +72,8 @@ Wherever possible, favour the use of the auto-reporting base classes.
 [[cookie-management-in-tests]]
 === Cookie management
 
-The Spock, JUnit and TestNG integrations will automatically clear the browser's cookies for the current domain at the end of each test method.
-For JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
-in `geb.testng.GebTestTrait`.
-
-The `geb.spock.GebSpec` class will clear the cookies in the `cleanup()` method unless the spec is `@Stepwise`, in which case they are cleared in `cleanupSpec()` (meaning that all feature methods in a
-stepwise spec share the same browser state).
+`{geb-test-manager-api}` and thus also the Spock, JUnit and TestNG built-in integrations will automatically clear the browser's cookies for the current domain at the end of each test method.
+This happens when `GebTestManager.afterTest()` is called unless `GebTestManager.resetBrowserAfterEachTestPredicate` evaluates to `false` like it does for `@Stepwise` Spock specifications - in such case cookie clearing happens in `GebTestManager.afterTestClass()` (meaning that all feature methods in a stepwise spec share the same browser state).
 
 This auto-clearing of cookies can be <<auto-clearing-cookies-configuration, disabled via configuration>>.
 
@@ -82,17 +82,13 @@ If you need to clear cookies in multiple domains you will need to manually track
 [[web-storage-management-in-tests]]
 === Web storage management
 
-The Spock, JUnit and TestNG integrations can be <<auto-clearing-web-storage-configuration, configured>> to automatically clear the browser's web storage, that is both local and session storage, for the current domain at the end of each test method.
-For JUnit 4 it happens in an `@After` method in `geb.junit4.GebTest` and for TestNG it happens in an `@AfterMethod` method
-in `geb.testng.GebTestTrait`.
-
-The `geb.spock.GebSpec` class will clear the web storage in the `cleanup()` method unless the spec is `@Stepwise`, in which case it is cleared in `cleanupSpec()` (meaning that all feature methods in a
-stepwise spec share the same browser state).
+`{geb-test-manager-api}` and thus also the Spock, JUnit and TestNG built-in integrations can be <<auto-clearing-web-storage-configuration, configured>> to automatically clear the browser's web storage, that is both local and session storage, for the current domain at the end of each test method.
+This happens when `GebTestManager.afterTest()` is called unless `GebTestManager.resetBrowserAfterEachTestPredicate` evaluates to `false` like it does for `@Stepwise` Spock specifications - in such case cookie clearing happens in `GebTestManager.afterTestClass()` (meaning that all feature methods in a stepwise spec share the same browser state).
 
 === Restarting the browser mid-test
 
 Should you ever wish to restart the browser mid-test you have to be aware that there are two layers of caching of the driver instance within Geb's testing support.
-Firstly the lazy initialised `Browser` instance stored as a field in base classes providing support for various test frameworks holds a reference to a `WebDriver` instance - you will therefore need to call `resetBrowser()` method from the base class to clear that field.
+Firstly the lazy initialised `Browser` instance stored as a field in the `{geb-test-manager-api}` instance held by base classes providing support for various test frameworks holds a reference to a `WebDriver` instance - you will therefore need to call `resetBrowser()` method from the base class or directly on the `{geb-test-manager-api}` instance to clear that field.
 Secondly, Geb caches `WebDriver` instances by default as described in the section about <<implicit-driver-lifecycle, implicit driver lifecycle>>. To clear the cache and quit the browser you will need to call `{clear-browser-cache-and-quit-api}`.
 
 Therefore, you can use the following code within a test to restart the browser:
