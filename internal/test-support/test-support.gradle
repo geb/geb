@@ -2,7 +2,7 @@ dependencies {
     compile project(':module:geb-core'),
         spockDependency,
         htmlUnitDriverDependency,
-        "org.testcontainers:selenium:1.11.2",
+        "org.testcontainers:selenium:1.15.0-rc2",
         "org.eclipse.jetty:jetty-server:$jettyVersion",
         "org.eclipse.jetty:jetty-servlet:$jettyVersion",
         "org.seleniumhq.selenium:selenium-server:$seleniumVersion"
