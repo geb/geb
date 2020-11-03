@@ -362,9 +362,6 @@ class Configuration {
         rawConfig.pageEventListener = pageEventListener
     }
 
-    /**
-     *
-     */
     WebDriver getDriver() {
         if (driver == null) {
             driver = createDriver()
@@ -422,7 +419,6 @@ class Configuration {
      * and returns an instance of {@link NavigatorFactory}
      *
      * @param browser The browser to use as the basis of the navigatory factory.
-     * @return
      */
     NavigatorFactory createNavigatorFactory(Browser browser) {
         def navigatorFactory = readValue("navigatorFactory", null)
@@ -472,8 +468,6 @@ class Configuration {
      * Sets the inner navigator factory.
      *
      * Only effectual before the browser calls {@link #createNavigatorFactory(Browser)} initially.
-     *
-     * @param innerNavigatorFactory
      */
     void setInnerNavigatorFactory(InnerNavigatorFactory innerNavigatorFactory) {
         this.rawConfig.innerNavigatorFactory = innerNavigatorFactory
@@ -543,7 +537,6 @@ class Configuration {
 
     /**
      * Returns default values used for some of the content DSL template options.
-     * @return
      */
     TemplateOptionsConfiguration getTemplateOptions() {
         def raw = rawConfig.templateOptions

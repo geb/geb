@@ -124,7 +124,7 @@ subprojects {
         dependencies {
             groovy "org.codehaus.groovy:groovy:${groovyVersion}"
             groovy "org.codehaus.groovy:groovy-templates:${groovyVersion}"
-            codenarc 'org.codenarc:CodeNarc:1.2', {
+            codenarc 'org.codenarc:CodeNarc:2.0.0', {
                 exclude module: "GMetrics"
                 exclude group: "org.codehaus.groovy"
             }

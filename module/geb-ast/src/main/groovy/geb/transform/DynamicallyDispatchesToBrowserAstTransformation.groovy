@@ -30,6 +30,7 @@ import static org.codehaus.groovy.ast.ClassHelper.STRING_TYPE
 import static org.codehaus.groovy.ast.tools.GeneralUtils.param
 import static org.codehaus.groovy.ast.tools.GeneralUtils.params
 
+@SuppressWarnings("SpaceAfterComma")
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class DynamicallyDispatchesToBrowserAstTransformation extends AbstractASTTransformation {
 

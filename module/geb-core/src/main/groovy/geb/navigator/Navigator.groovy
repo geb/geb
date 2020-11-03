@@ -687,7 +687,6 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * Returns the <b>visible</b> (i.e. not hidden by CSS) inner text content of the sole context element and its sub-elements or null for empty Navigators.
      * Cannot be called on multi element Navigators.
      *
-     *
      * @return the text content of the sole context element
      * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */
@@ -962,7 +961,6 @@ interface Navigator extends Iterable<Navigator>, Locator, StringRepresentationPr
      * are not returned, in accordance with the DOM CSS2 specification - you should directly access the longhand properties (e.g. background-color)
      * to access the desired values.
      *
-     * @param propertyName
      * @return The current, computed value of the property or null if the is not specified.
      * @throws geb.error.SingleElementNavigatorOnlyMethodException when called on a multi element navigator
      */

@@ -36,6 +36,20 @@ ruleset {
         MethodParameterTypeRequired {
             enabled = false
         }
+        CompileStatic {
+            enabled = false
+        }
+        ImplicitClosureParameter {
+            enabled = false
+        }
+        ImplicitReturnStatement {
+            enabled = false
+        }
+    }
+    ruleset('rulesets/comments.xml') {
+        ClassJavadoc {
+            enabled = false
+        }
     }
     ruleset('rulesets/dry.xml') {
         DuplicateStringLiteral {
@@ -52,9 +66,6 @@ ruleset {
         }
     }
     ruleset('rulesets/formatting.xml') {
-        ClassJavadoc {
-            enabled = false
-        }
         SpaceAroundMapEntryColon {
             characterAfterColonRegex = /\s/
             characterBeforeColonRegex = /.*/
@@ -79,6 +90,12 @@ ruleset {
             doNotApplyToFileNames = 'ManualsMenuModule.groovy'
         }
         Indentation {
+            enabled = false
+        }
+        ClassEndsWithBlankLine {
+            enabled = false
+        }
+        ClassStartsWithBlankLine {
             enabled = false
         }
     }

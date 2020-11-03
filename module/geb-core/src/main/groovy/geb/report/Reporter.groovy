@@ -34,9 +34,7 @@ interface Reporter {
      * Registers an object to be notified when a report is taken.
      *
      * Adding a listener that has previously been added (based on equals()) is a noop.
-     *
-     * @param listener
      */
     void addListener(ReportingListener listener)
 
-} 
+}

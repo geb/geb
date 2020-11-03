@@ -28,7 +28,6 @@ interface Locator extends BasicLocator {
     /**
      * Shorthand for <code>find(null, selector, null)</code>
      *
-     * @param selector
      * @return new Navigator
      */
     Navigator find(String selector)
@@ -36,7 +35,6 @@ interface Locator extends BasicLocator {
     /**
      * Shorthand for <code>find(selector)</code>
      *
-     * @param selector
      * @return new Navigator
      * @see #find(java.lang.String)
      */
@@ -167,7 +165,6 @@ interface Locator extends BasicLocator {
     /**
      * Shorthand for <code>find(predicates, index)</code>
      *
-     * @param selector
      * @return new Navigator
      */
     Navigator $(Map<String, Object> attributes, int index)
@@ -193,7 +190,6 @@ interface Locator extends BasicLocator {
     /**
      * Shorthand for <code>find(predicates, selector, index)</code>
      *
-     * @param selector
      * @return new Navigator
      */
     Navigator $(Map<String, Object> attributes, String selector, int index)
