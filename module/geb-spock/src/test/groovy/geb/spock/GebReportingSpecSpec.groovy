@@ -183,21 +183,21 @@ class GebReportingSpecSpec extends Specification {
     def "report called from fixture method should create report with default name"() {
         when:
         specRunner.run """
-        class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
-            def setupSpec() {
-                ${configuration}
-                config.reportOnTestFailureOnly = false
+                def setupSpec() {
+                    ${configuration}
+                    config.reportOnTestFailureOnly = false
 
-                go "/"
-                report('Report in setupSpec')
+                    go "/"
+                    report('Report in setupSpec')
+                }
+
+                def "passing test"() {
+                    expect:
+                    true
+                }
             }
-
-            def "passing test"() {
-                expect:
-                true
-            }
-        }
         """
 
         then:
@@ -208,19 +208,19 @@ class GebReportingSpecSpec extends Specification {
     def "failures in setup methods are reported on"() {
         when:
         specRunner.run """
-        class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
-            def setup() {
-                ${configuration}
-                go "/"
-                throw new Exception()
-            }
+                def setup() {
+                    ${configuration}
+                    go "/"
+                    throw new Exception()
+                }
 
-            def "test with failure in setup"() {
-                expect:
-                true
+                def "test with failure in setup"() {
+                    expect:
+                    true
+                }
             }
-        }
         """
 
         then:
@@ -247,19 +247,19 @@ class GebReportingSpecSpec extends Specification {
     def "failures in setupSpec methods are reported on"() {
         when:
         specRunner.run """
-        class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends GebReportingSpec {
 
-            def setupSpec() {
-                ${configuration}
-                go "/"
-                throw new Exception()
-            }
+                def setupSpec() {
+                    ${configuration}
+                    go "/"
+                    throw new Exception()
+                }
 
-            def "test with failure in setupSpec"() {
-                expect:
-                true
+                def "test with failure in setupSpec"() {
+                    expect:
+                    true
+                }
             }
-        }
         """
 
         then:
