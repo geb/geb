@@ -28,12 +28,13 @@ class OnFailureReporter extends AbstractRunListener implements IMethodIntercepto
     private HasReportingTestManager spec
 
     void intercept(IMethodInvocation invocation) throws Throwable {
-        spec = invocation.instance
+        spec = invocation.instance ?: invocation.sharedInstance
         invocation.proceed()
     }
 
     void error(ErrorInfo error) {
-        if (error.method.kind == FEATURE) {
+        def methodKind = error.method.kind
+        if (methodKind == FEATURE || methodKind.fixtureMethod) {
             try {
                 spec.testManager.reportFailure()
             } catch (Exception e) {

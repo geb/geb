@@ -205,6 +205,86 @@ class GebReportingSpecSpec extends Specification {
         reportFile("001-002-passing test-end.html").text.startsWith("<?xml")
     }
 
+    def "failures in setup methods are reported on"() {
+        when:
+        specRunner.run """
+        class $REPORTING_SPEC_NAME extends GebReportingSpec {
+
+            def setup() {
+                ${configuration}
+                go "/"
+                throw new Exception()
+            }
+
+            def "test with failure in setup"() {
+                expect:
+                true
+            }
+        }
+        """
+
+        then:
+        reportFile("001-001-test with failure in setup-failure.html").exists()
+    }
+
+    def "failures in cleanup methods are reported on"() {
+        when:
+        runReportingSpec """
+            def cleanup() {
+                throw new Exception()
+            }
+
+            def "test with failure in cleanup"() {
+                expect:
+                browser.go "/"
+            }
+        """
+
+        then:
+        reportFile("001-001-test with failure in cleanup-failure.html").exists()
+    }
+
+    def "failures in setupSpec methods are reported on"() {
+        when:
+        specRunner.run """
+        class $REPORTING_SPEC_NAME extends GebReportingSpec {
+
+            def setupSpec() {
+                ${configuration}
+                go "/"
+                throw new Exception()
+            }
+
+            def "test with failure in setupSpec"() {
+                expect:
+                true
+            }
+        }
+        """
+
+        then:
+        reportFile("001-001-fixture-failure.html").exists()
+    }
+
+    def "failures in cleanupSpec methods are reported on"() {
+        when:
+        runReportingSpec """
+            def cleanupSpec() {
+                ${configuration}
+                go "/"
+                throw new Exception()
+            }
+
+            def "test with failure in cleanupSpec"() {
+                expect:
+                true
+            }
+        """
+
+        then:
+        new File(reportDir, "002-001-fixture-failure.html").exists()
+    }
+
     Result runReportingSpec(String additionalConfiguration = "", String body) {
         specRunner.run """
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
