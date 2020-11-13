@@ -32,7 +32,6 @@ class BindingUpdater {
             "pause",
             "withWindow", "withNewWindow",
             "report", "reportGroup", "cleanReportGroupDir",
-            "registerPageChangeListener", "removePageChangeListener",
             "setNetworkLatency", "resetNetworkLatency",
             "clearCookies", "clearCookiesQuietly", "clearWebStorage",
             "close", "quit"

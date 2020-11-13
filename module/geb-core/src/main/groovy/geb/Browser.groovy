@@ -17,13 +17,12 @@ package geb
 import com.google.common.net.UrlEscapers
 import geb.driver.RemoteDriverOperations
 import geb.error.NoNewWindowException
-import geb.error.PageChangeListenerAlreadyRegisteredException
 import geb.error.UnexpectedPageException
 import geb.error.WebStorageNotSupportedException
 import geb.js.JavascriptInterface
 import geb.navigator.factory.NavigatorFactory
-import geb.url.UrlFragment
 import geb.report.ReportState
+import geb.url.UrlFragment
 import geb.waiting.PotentiallyWaitingExecutor
 import geb.webstorage.LocalStorage
 import geb.webstorage.SessionStorage
@@ -53,8 +52,6 @@ class Browser {
 
     private Page page
     private final Configuration config
-    private final pageChangeListeners = new LinkedHashSet()
-    private final pageChangeListenersBackedPageEventListener = new PageChangeListenersBackedPageEventListener(pageChangeListeners)
     private final RemoteDriverOperations remoteDriverOperations = new RemoteDriverOperations(this.class.classLoader)
     private String reportGroup = null
     private NavigatorFactory navigatorFactory = null
@@ -219,32 +216,6 @@ class Browser {
      */
     String getCurrentUrl() {
         driver.currentUrl
-    }
-
-    /**
-     * Allows new page change listeners to be registered with this browser.
-     * <p>
-     * This method will immediately call the {@link geb.PageChangeListener#pageWillChange(geb.Browser, geb.Page, geb.Page)} method on
-     * {@code listener} with the current page as the {@code newPage} argument and {@code null} for the {@code oldPage} argument.
-     *
-     * @throws geb.error.PageChangeListenerAlreadyRegisteredException if the listener is already registered.
-     * @see geb.PageChangeListener
-     */
-    void registerPageChangeListener(PageChangeListener listener) {
-        if (pageChangeListeners.add(listener)) {
-            listener.pageWillChange(this, null, getPage())
-        } else {
-            throw new PageChangeListenerAlreadyRegisteredException(this, listener)
-        }
-    }
-
-    /**
-     * Removes the given page change listener.
-     *
-     * @return whether or not the listener was actually registered or not.
-     */
-    boolean removePageChangeListener(PageChangeListener listener) {
-        pageChangeListeners.remove(listener)
     }
 
     /**
@@ -1231,8 +1202,8 @@ class Browser {
         new URI(uri.scheme, uri.schemeSpecificPart, null)
     }
 
-    private getPageEventListener() {
-        new CompositePageEventListener(pageChangeListenersBackedPageEventListener, config.pageEventListener)
+    private PageEventListener getPageEventListener() {
+        config.pageEventListener
     }
 
 }

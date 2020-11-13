@@ -28,6 +28,8 @@ import org.openqa.selenium.WebDriver
  */
 class Configuration {
 
+    private final static PageEventListener NOOP_PAGE_EVENT_LISTENER = new PageEventListenerSupport()
+
     final ClassLoader classLoader
     final ConfigObject rawConfig
     final Properties properties
@@ -355,7 +357,7 @@ class Configuration {
     }
 
     PageEventListener getPageEventListener() {
-        readValue("pageEventListener", null)
+        readValue("pageEventListener", NOOP_PAGE_EVENT_LISTENER)
     }
 
     void setPageEventListener(PageEventListener pageEventListener) {

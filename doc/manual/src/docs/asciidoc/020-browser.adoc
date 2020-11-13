@@ -277,40 +277,6 @@ include::{test-dir}/browser/ContentDslToParameterSpec.groovy[tag=pages,indent=0]
 include::{test-dir}/browser/ContentDslToParameterSpec.groovy[tag=to_parameter,indent=0]
 ----
 
-== Page change listening
-
-[WARNING]
-====
-This mechanism has been deprecated and will be removed in the next major version of Geb. Please use a <<listening-to-page-events,`PageEventListener`>> instead.
-====
-
-It is possible to be notified when a browser's page _instance_ changes (note that this is not necessarily when the browser makes a request to a new URL) using the
-link:api/geb/PageChangeListener.html[`PageChangeListener`] interface.
-
-As soon as a listener is registered, its `pageWillChange()` method will be called with `newPage` as the current page and `oldPage` as `null`.
-Subsequently, each time the page changes `oldPage` will be the page that the browser currently has, and `newPage` will be the page that will soon be the browser's page.
-
-[source,groovy]
-----
-include::{test-dir}/browser/PageChangeListenerSpec.groovy[tag=helper_classes,indent=0]
-
-include::{test-dir}/browser/PageChangeListenerSpec.groovy[tag=using_page_change_listener,indent=0]
-----
-
-You can remove a listener at any time…
-
-[source,groovy]
-----
-include::{test-dir}/browser/PageChangeListenerSpec.groovy[tag=removing_listener,indent=0]
-----
-
-The link:api/geb/Browser.html#removePageChangeListener(geb.PageChangeListener)[`removePageChangeListener(PageChangeListener listener)`] returns `true` if `listener` was registered and has now been
-removed, otherwise it returns `false`.
-
-Listeners cannot be registered twice.
-If an attempt is made to register a listener that is already registered (i.e. there is another listener that is _equal_ to the listener being registered, based on their `equals()` implementation)
-then a link:api/geb/error/PageChangeListenerAlreadyRegisteredException.html[`PageChangeListenerAlreadyRegisteredException`] will be raised.
-
 == Working with multiple tabs and windows
 
 When you're working with an application that opens new windows or tabs, for example when clicking on a link with a target attribute set, you can use `withWindow()` and `withNewWindow()` methods to
