@@ -202,7 +202,7 @@ class GebReportingSpecSpec extends Specification {
 
         then:
         reportFile("001-001-fixture-Report in setupSpec.html").text.startsWith("<?xml")
-        reportFile("001-002-passing test-end.html").text.startsWith("<?xml")
+        reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
     }
 
     def "failures in setup methods are reported on"() {

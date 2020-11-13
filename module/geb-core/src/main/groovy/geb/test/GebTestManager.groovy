@@ -69,6 +69,8 @@ class GebTestManager {
         if (reportingEnabled) {
             getBrowser().reportGroup(testClass)
             getBrowser().cleanReportGroupDir()
+            testCounter = 1
+            perTestReportCounter = 1
         }
     }
 
@@ -76,6 +78,7 @@ class GebTestManager {
         currentTestName = testName
         if (reportingEnabled) {
             getBrowser().reportGroup(currentTestClass)
+            perTestReportCounter = 1
         }
     }
 
@@ -86,7 +89,6 @@ class GebTestManager {
             }
 
             testCounter++
-            perTestReportCounter = 1
         }
 
         if (resetBrowserAfterEachTest) {
@@ -98,9 +100,6 @@ class GebTestManager {
     void afterTestClass() {
         if (!resetBrowserAfterEachTest) {
             resetBrowser()
-        }
-        if (reportingEnabled) {
-            testCounter = 1
         }
         currentTestClass = null
     }
