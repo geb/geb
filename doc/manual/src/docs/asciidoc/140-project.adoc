@@ -101,6 +101,7 @@ This page lists the high level changes between versions of Geb.
 
 * Superclasses providing <<spock-junit-testng, support for various test frameworks>> have been rewritten in a backwards incompatible way to benefit from introduction of `{geb-test-manager-api}`. [issue:614[]]
 * Geb no longer depends on `groovy-all` artifact but instead depends on `groovy`, `groovy-templates` and `groovy-macro` artifacts from `org.codehaus.groovy` group. [issue:618[]]
+* Update to Groovy 2.5.13. [issue:617[]]
 
 === 3.4.1
 

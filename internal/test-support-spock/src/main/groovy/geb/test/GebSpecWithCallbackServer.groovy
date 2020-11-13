@@ -56,7 +56,7 @@ class GebSpecWithCallbackServer extends GebSpecWithServer {
             }
             body {
                 closure.delegate = delegate
-                closure.resolveStrategy = DELEGATE_FIRST
+                closure.resolveStrategy = Closure.DELEGATE_FIRST
                 closure.call()
             }
         }

@@ -28,7 +28,7 @@ import java.util.function.Supplier
 
 class CallbackHttpServer extends TestHttpServer {
 
-    private static final String UTF8 = "utf8"
+    protected static final String UTF8 = "utf8"
 
     Closure get
     Closure post
