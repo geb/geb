@@ -18,11 +18,15 @@ package geb.gradle.lambdatest.task
 import geb.gradle.cloud.ExternalTunnel
 import geb.gradle.lambdatest.LambdaTestTunnelOps
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
 class StopLambdaTestTunnel extends DefaultTask {
 
+    @Internal
     LambdaTestTunnelOps lambdaTestTunnelOps
+
+    @Internal
     ExternalTunnel tunnel
 
     @TaskAction

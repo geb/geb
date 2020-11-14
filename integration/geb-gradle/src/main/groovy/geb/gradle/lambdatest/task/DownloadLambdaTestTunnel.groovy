@@ -32,12 +32,12 @@ class DownloadLambdaTestTunnel extends DefaultTask {
 
     @TaskAction
     void download() {
-        def url = "https://downloads.lambdatest.com/tunnel/${osSpecificUrlPart}.zip"
+        def url = "https://downloads.lambdatest.com/tunnel/${osSpecificUrlPart()}.zip"
         logger.info("Downloading {} to {}", url, tunnelZip)
         tunnelZip.withOutputStream { it << new URL(url).bytes }
     }
 
-    String getOsSpecificUrlPart() {
+    private String osSpecificUrlPart() {
         def archPart = (Os.isArch("amd64") || Os.isArch("x86_64")) ? "64bit" : "32bit"
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             "windows/$archPart/LT_Windows"

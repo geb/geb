@@ -17,11 +17,18 @@ package geb.gradle.cloud.task
 
 import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
 class StartExternalTunnel extends DefaultTask {
+
+    @Internal
     boolean inBackground = false
+
+    @Internal
     File workingDir
+
+    @Internal
     ExternalTunnel tunnel
 
     @TaskAction

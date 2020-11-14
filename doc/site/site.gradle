@@ -22,13 +22,12 @@ buildscript {
     }
     dependencies {
         classpath 'io.ratpack:ratpack-gradle:1.6.0'
-        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+        classpath 'com.github.node-gradle:gradle-node-plugin:2.2.0'
     }
 }
 
 apply plugin: "io.ratpack.ratpack-groovy"
-apply plugin: "com.moowork.node"
-apply plugin: "com.moowork.gulp"
+apply plugin: "com.github.node-gradle.node"
 
 ext {
     // The old versions of Geb we are including manuals for
@@ -77,12 +76,11 @@ node {
     nodeModulesDir = file("src/npm")
 }
 
-gulp {
-    workDir = file("src/npm/semantic")
-}
-
-task bundleSemantic(type: GulpTask) {
+task bundleSemantic(type: NodeTask) {
     dependsOn npmInstall
+
+    workingDir = file('src/npm/semantic')
+    script = new File(project.node.nodeModulesDir, 'node_modules/gulp/bin/gulp.js')
 
     inputs.dir 'src/npm/semantic/src'
     inputs.dir 'src/npm/semantic/tasks'

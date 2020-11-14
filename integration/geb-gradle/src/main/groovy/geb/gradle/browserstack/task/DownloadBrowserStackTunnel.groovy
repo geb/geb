@@ -32,12 +32,12 @@ class DownloadBrowserStackTunnel extends DefaultTask {
 
     @TaskAction
     void download() {
-        def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart}.zip"
+        def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart()}.zip"
         logger.info("Downloading {} to {}", url, tunnelZip)
         tunnelZip.withOutputStream { it << new URL(url).bytes }
     }
 
-    String getOsSpecificUrlPart() {
+    private String osSpecificUrlPart() {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             "win32"
         } else if (Os.isFamily(Os.FAMILY_MAC)) {

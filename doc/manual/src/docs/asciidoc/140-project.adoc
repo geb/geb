@@ -107,6 +107,7 @@ This page lists the high level changes between versions of Geb.
 * Geb no longer depends on `groovy-all` artifact but instead depends on `groovy`, `groovy-templates` and `groovy-macro` artifacts from `org.codehaus.groovy` group. [issue:618[]]
 * Update to Groovy 2.5.13. [issue:617[]]
 * Removed `geb.PageChangeListener` which was deprecated in favour of `geb.PageEventListener`. [issue:593[]]
+* Update to Gradle 6.7 and build the cloud browser Gradle plugin against it. [issue:622[]]
 
 === 3.4.1
 

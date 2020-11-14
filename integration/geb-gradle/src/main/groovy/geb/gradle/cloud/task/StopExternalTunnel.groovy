@@ -17,9 +17,12 @@ package geb.gradle.cloud.task
 
 import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
 class StopExternalTunnel extends DefaultTask {
+
+    @Internal
     ExternalTunnel tunnel
 
     @TaskAction
