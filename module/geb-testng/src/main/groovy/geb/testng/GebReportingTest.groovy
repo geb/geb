@@ -22,14 +22,9 @@ import geb.transform.DynamicallyDispatchesToBrowser
 @DynamicallyDispatchesToBrowser
 class GebReportingTest implements HasTestManager {
 
-    public static final GebTestManager TEST_MANAGER = new GebTestManagerBuilder()
+    @Delegate(includes = ["getBrowser", "report"])
+    final GebTestManager testManager = new GebTestManagerBuilder()
             .withReportingEnabled(true)
             .build()
-
-    @Override
-    @Delegate(includes = ["getBrowser", "report"])
-    GebTestManager getTestManager() {
-        TEST_MANAGER
-    }
 
 }
