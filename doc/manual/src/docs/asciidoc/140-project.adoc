@@ -100,6 +100,7 @@ This page lists the high level changes between versions of Geb.
 ==== Improvements
 
 * Introduce `{geb-test-manager-api}` to decrease code duplication between test framework integrations and make it easier for users to add integrations for additional frameworks. [issue:614[]]
+* Improve frame context management when nested withFrame() calls are used. [issue:612[]]
 
 ==== Breaking changes
 

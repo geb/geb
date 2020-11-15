@@ -20,6 +20,7 @@ import geb.Page
 import geb.content.TemplateDerivedPageContent
 import geb.navigator.Navigator
 import org.openqa.selenium.NoSuchFrameException
+import org.openqa.selenium.WebDriverException
 import org.openqa.selenium.WebElement
 
 import static groovy.lang.Closure.DELEGATE_FIRST
@@ -74,7 +75,16 @@ class DefaultFrameSupport implements FrameSupport {
             cloned.call()
         } finally {
             browser.page(originalPage)
-            browser.driver.switchTo().defaultContent()
+            def targetLocator = browser.driver.switchTo()
+            try {
+                targetLocator.parentFrame()
+            } catch (WebDriverException e) {
+                if (e.message.startsWith("Command not found") || e.message.startsWith("Unknown command")) {
+                    targetLocator.defaultContent()
+                } else {
+                    throw e
+                }
+            }
         }
     }
 
