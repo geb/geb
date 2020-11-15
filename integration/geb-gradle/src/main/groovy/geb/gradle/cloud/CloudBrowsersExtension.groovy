@@ -22,18 +22,17 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.testing.Test
 
-import static org.gradle.util.WrapUtil.toDomainObjectSet
-
 abstract class CloudBrowsersExtension {
     protected final Project project
     protected final Task allTestsLifecycleTask
-    protected final DomainObjectCollection<Test> testTasks = toDomainObjectSet(Test)
+    protected final DomainObjectCollection<Test> testTasks
 
     protected NamedDomainObjectContainer<BrowserSpec> browsers
 
     CloudBrowsersExtension(Project project, Task allTestsLifecycleTask) {
         this.project = project
         this.allTestsLifecycleTask = allTestsLifecycleTask
+        this.testTasks = project.objects.domainObjectSet(Test)
     }
 
     abstract String getOpenTunnelInBackgroundTaskName()
@@ -42,7 +41,7 @@ abstract class CloudBrowsersExtension {
 
     void addExtensions() {
         browsers = project.container(BrowserSpec) {
-            def browser = new BrowserSpec(providerName, it)
+            def browser = new BrowserSpec(project.objects, providerName, it)
             addTestTask(browser)
             browser
         }

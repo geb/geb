@@ -16,8 +16,8 @@
 package geb.gradle.cloud
 
 import org.gradle.api.DomainObjectCollection
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.testing.Test
-import org.gradle.util.WrapUtil
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE
@@ -27,12 +27,13 @@ class BrowserSpec {
     final String name
     final String displayName
 
-    private final DomainObjectCollection<Test> tasks = WrapUtil.toDomainObjectSet(Test)
+    private final DomainObjectCollection<Test> tasks
     private final Properties capabilities = new Properties()
 
-    BrowserSpec(String cloudProvider, String name) {
+    BrowserSpec(ObjectFactory objects, String cloudProvider, String name) {
         this.cloudProvider = cloudProvider
         this.name = name
+        this.tasks = objects.domainObjectSet(Test)
         String browserSpec = name
         if (browserSpec) {
             String[] split = browserSpec.split("_", 3)
