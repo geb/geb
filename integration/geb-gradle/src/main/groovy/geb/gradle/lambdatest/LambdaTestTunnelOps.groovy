@@ -22,7 +22,7 @@ import org.gradle.api.tasks.testing.Test
 
 class LambdaTestTunnelOps implements TestTaskConfigurer {
 
-    public static final String LOCAL_ID_ENV_VAR = "GEB_LAMBDATEST_TUNNELID"
+    public static final String TUNNEL_NAME_ENV_VAR = "GEB_LAMBDATEST_TUNNEL_NAME"
 
     private final Property<String> infoAPIPortProperty
 
@@ -64,7 +64,7 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
     }
 
     void configure(Test test) {
-        test.environment(LOCAL_ID_ENV_VAR, tunnelName)
+        test.environment(TUNNEL_NAME_ENV_VAR, tunnelName)
     }
 
     void setInfoAPIPort(String infoAPIPort) {

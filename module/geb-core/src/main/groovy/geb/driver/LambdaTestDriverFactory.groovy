@@ -43,9 +43,9 @@ class LambdaTestDriverFactory extends CloudDriverFactory {
     @Override
     protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
         desiredCapabilities.setCapability("tunnel", "true")
-        def tunnelId = System.getenv("GEB_LAMBDATEST_TUNNELID")
-        if (tunnelId) {
-            desiredCapabilities.setCapability(LOCAL_IDENTIFIER_CAPABILITY, tunnelId)
+        def tunnelName = System.getenv("GEB_LAMBDATEST_TUNNEL_NAME")
+        if (tunnelName) {
+            desiredCapabilities.setCapability(LOCAL_IDENTIFIER_CAPABILITY, tunnelName)
         }
     }
 }

@@ -108,6 +108,7 @@ This page lists the high level changes between versions of Geb.
 * Update to Groovy 2.5.13. [issue:617[]]
 * Removed `geb.PageChangeListener` which was deprecated in favour of `geb.PageEventListener`. [issue:593[]]
 * Update to Gradle 6.7 and build the cloud browser Gradle plugin against it. [issue:622[]]
+* Rename tunnel id to tunnel name in the Gradle plugin for LambdaTest integration. [issue:606[]]
 
 === 3.4.1
 
