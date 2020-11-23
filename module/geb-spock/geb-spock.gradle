@@ -1,6 +1,6 @@
 dependencies {
-	compile spockDependency,
-		project(":internal:test-support")
+	compile spockDependency
+	testCompile project(":internal:test-support")
 }
 
 modifyPom { pom ->
