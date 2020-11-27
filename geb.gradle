@@ -121,6 +121,10 @@ subprojects {
             codenarc.extendsFrom groovy
         }
 
+        pluginManager.withPlugin("maven") {
+            conf2ScopeMappings.addMapping(0, configurations.groovy, Conf2ScopeMappingContainer.COMPILE)
+        }
+
         dependencies {
             groovy "org.codehaus.groovy:groovy:${groovyVersion}"
             groovy "org.codehaus.groovy:groovy-templates:${groovyVersion}"
