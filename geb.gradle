@@ -32,7 +32,7 @@ nexusStaging {
 }
 
 allprojects { project ->
-    version = '3.5-SNAPSHOT'
+    version = '4.0-rc-1'
     group = 'org.gebish'
 
     apply plugin: "com.github.erdi.webdriver-binaries"
