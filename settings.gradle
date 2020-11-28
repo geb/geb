@@ -26,3 +26,41 @@ def setBuildFile(project) {
 }
 
 setBuildFile(rootProject)
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath('org.kordamp.gradle:oci-gradle-build-cache-plugin:0.5.0')
+    }
+}
+
+apply plugin: 'org.kordamp.gradle.oci-build-cache'
+
+ext.isCiServer = System.getenv("OCI_WRITER_KEY_PASSPHRASE") != null
+
+buildCache {
+    local {
+        enabled = !isCiServer
+    }
+    remote(org.kordamp.gradle.plugin.buildcache.OCIBuildCache) {
+        push = isCiServer
+        compartmentId = 'ocid1.compartment.oc1..aaaaaaaap3fg3t2n5lm4vopfcn4ypw6frqgr5qblb3kdkjrwstskho2o5y6q'
+        config {
+            region = 'us-ashburn-1'
+            tenantId = 'ocid1.tenancy.oc1..aaaaaaaakdvpvkhjg75hmgkzgwt5f6bxycvfinbi5fh4hk5jwwvrflitradq'
+            if (isCiServer) {
+                userId = 'ocid1.user.oc1..aaaaaaaavxg4ceribtzyjqcjgjq44dnwo4d4wdunxkh7l5owk2zifrr7dfea'
+                keyfile = new File('.oci/writer.pem')
+                passphrase = System.getenv("OCI_WRITER_KEY_PASSPHRASE")
+                fingerprint = 'ff:d9:c6:96:cb:20:64:77:1d:4e:a0:3e:bf:85:c7:e3'
+            } else {
+                userId = 'ocid1.user.oc1..aaaaaaaa463rzwweyef2fcby47wz73i6eyp7hwd6skx7bdgf2ie6ido35tla'
+                keyfile = new File('.oci/reader.pem')
+                fingerprint = '20:b5:2b:b1:c7:ab:da:2d:82:e9:81:1b:63:f8:59:16'
+            }
+        }
+    }
+}
