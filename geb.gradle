@@ -101,7 +101,14 @@ allprojects { project ->
 
     if (isCi) {
         plugins.withType(ReportingBasePlugin) {
-            reporting.baseDir = rootProject.file("$rootProject.buildDir/reports/$project.name")
+            def projectDirPath = project.path.substring(1).replaceAll(":", "/")
+            def copyTask = task("copyReportsIntoRoot", type: Copy) {
+                into "${rootProject.buildDir}/reports/${projectDirPath}"
+                from reporting.baseDir
+            }
+            tasks.withType(Reporting) { reportingTask ->
+                reportingTask.finalizedBy copyTask
+            }
         }
     }
 }
