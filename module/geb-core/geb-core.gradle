@@ -16,6 +16,10 @@ apply plugin: "geb-saucelabs"
 apply plugin: "geb-lambdatest"
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
+configurations {
+    webdriverBinariesProperties
+}
+
 dependencies {
     compile seleniumDependency, seleniumSupportDependency
 
@@ -27,6 +31,8 @@ dependencies {
     testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
 
     sauceConnect sauceConnectDependency
+
+    webdriverBinariesProperties project(path: ":", configuration: "webdriverBinariesProperties")
 }
 
 test {
@@ -52,6 +58,8 @@ allDockerisedCrossBrowserTests.dependsOn firefoxLinuxTest
 task localChromeTest(type: Test) {
     maxHeapSize = "512m"
     systemProperty "geb.local.driver", "chrome"
+
+    inputs.property("chromedriverVersion", chromedriverVersion)
 }
 
 sauceLabs {
@@ -141,6 +149,13 @@ task nonIeBrowserStackTests {
 task ieBrowserStackTests {
     dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows18Test'
 }
+
+task copyWebdriverBinariesProperties(type: Copy) {
+    from configurations.webdriverBinariesProperties
+    into "${buildDir}/webdriver-binaries"
+}
+
+localChromeTest.dependsOn copyWebdriverBinariesProperties
 
 modifyPom { pom ->
     pom.project {
