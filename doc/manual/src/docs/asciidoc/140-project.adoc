@@ -87,11 +87,12 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 This page lists the high level changes between versions of Geb.
 
-=== 4.0-rc-1
+=== 4.0-SNAPSHOT
 
 ==== Fixes
 
 * Fix failure reporting in Spock fixture methods. [issue:613[]]
+* Fix using constants (static final fields) is content definitions on Groovy 2.5.14. [issue:627[]]
 
 ==== New features
 

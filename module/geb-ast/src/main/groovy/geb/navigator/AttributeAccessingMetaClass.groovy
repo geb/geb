@@ -25,7 +25,11 @@ class AttributeAccessingMetaClass extends DelegatingMetaClass {
     }
 
     Object getAttribute(Object object, String attribute) {
-        object.getProperty("@$attribute")
+        if (object instanceof GroovyObject) {
+            object.getProperty("@$attribute")
+        } else {
+            super.getAttribute(object, attribute)
+        }
     }
 
 }

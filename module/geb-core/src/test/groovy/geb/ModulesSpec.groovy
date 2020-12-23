@@ -231,6 +231,14 @@ class ModulesSpec extends GebSpecWithCallbackServer {
         then:
         browserAccessingBase.hasClass("a")
     }
+
+    def "accessing content which uses a constant in the definition"() {
+        when:
+        to ModulesSpecPage
+
+        then:
+        constantUsing.p
+    }
 }
 
 @SuppressWarnings("UnnecessaryCollectCall")
@@ -277,6 +285,8 @@ class ModulesSpecPage extends Page {
         baseUsingMatcher { module ModulesSpecBaseUsingTextMatcher }
 
         browserAccessingBase { module BrowserAccessingInBaseDefinitionModule }
+
+        constantUsing { module ConstantUsingContentDefinitionModule }
     }
 }
 
@@ -362,5 +372,14 @@ class BrowserAccessingModule extends Module {
 class BrowserAccessingInBaseDefinitionModule extends Module {
     static base = {
         browser.find("div.a")
+    }
+}
+
+class ConstantUsingContentDefinitionModule extends Module {
+
+    private final static String SELECTOR = "p"
+
+    static content = {
+        p { $(SELECTOR) }
     }
 }
