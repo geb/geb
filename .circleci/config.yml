@@ -18,6 +18,24 @@ jobs:
           key: gradle-home-modules
           paths:
             - .gradle-home
+  internal:
+    docker:
+      - image: gebish/ci:v7
+    environment:
+      GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
+      GRADLE_USER_HOME: .gradle-home
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - gradle-home-internal
+      - run: ./gradlew --no-daemon --max-workers 2 --parallel -p internal -Pci check --continue
+      - store_artifacts:
+          path: build/reports
+      - save_cache:
+          key: gradle-home-internal
+          paths:
+            - .gradle-home
   integrations:
     docker:
       - image: gebish/ci:v7
@@ -243,15 +261,19 @@ workflows:
   build-workflow:
     jobs:
       - modules
+      - internal
       - integrations:
           requires:
             - modules
+            - internal
       - manual:
           requires:
             - modules
+            - internal
       - site:
           requires:
             - modules
+            - internal
       - dockerised-cross-browser:
           requires:
             - integrations
