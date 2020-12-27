@@ -1,14 +1,6 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.2'
-    }
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.1.0'
 }
-
-apply plugin: 'org.asciidoctor.convert'
 
 archivesBaseName = "geb-manual"
 
@@ -19,10 +11,14 @@ modifyPom { pom ->
     }
 }
 
+repositories {
+    jcenter()
+}
+
 configurations {
     groovydoc
     manual
-    
+
     delegate.default.extendsFrom manual
 }
 
@@ -31,10 +27,10 @@ dependencies {
     groovydoc "org.codehaus.groovy:groovy-ant:${groovyVersion}"
 }
 
-asciidoctor {
+asciidoctorj {
+    options = [doctype: 'book']
     attributes = [
         toc                    : 'left',
-        doctype                : 'book',
         encoding               : 'utf-8',
         'test-dir'             : '../../../../manual-snippets/src/test/groovy',
         'test-resources-dir'   : '../../../../manual-snippets/src/test/resources',
@@ -61,6 +57,26 @@ asciidoctor {
         imagesdir              : 'images'
     ]
 
+    docExtensions {
+        inline_macro(name: "issue") { parent, target, attributes ->
+            def options = [
+                type  : ":link",
+                target: "https://github.com/geb/issues/issues/${target}"
+            ]
+
+            createPhraseNode(parent, "anchor", "#$target", attributes, options)
+        }
+        inline_macro(name: "github-profile") { parent, target, attributes ->
+            def options = [
+                type  : ":link",
+                target: "https://github.com/${target}"
+            ]
+            createPhraseNode(parent, "anchor", attributes["1"], attributes, options)
+        }
+    }
+}
+
+asciidoctor {
     sources {
         include 'index.adoc'
     }
@@ -69,23 +85,7 @@ asciidoctor {
         from file('src/resources')
     }
 
-    extensions {
-        inlinemacro(name: "issue") { parent, target, attributes ->
-            options = [
-                type  : ":link",
-                target: "https://github.com/geb/issues/issues/${target}"
-            ]
-
-            createInline(parent, "anchor", "#$target", attributes, options).render()
-        }
-        inlinemacro(name: "github-profile") { parent, target, attributes ->
-            options = [
-                type  : ":link",
-                target: "https://github.com/${target}"
-            ]
-            createInline(parent, "anchor", attributes.text, attributes, options).render()
-        }
-    }
+    baseDirFollowsSourceDir()
 }
 
 task apiDoc(type: Groovydoc) {

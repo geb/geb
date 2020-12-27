@@ -14,4 +14,4 @@ to InitialPage
 assert page instanceof InitialPage
 page.button.click()
 assert page instanceof NextPage
-// tag::script[]
+// end::script[]
