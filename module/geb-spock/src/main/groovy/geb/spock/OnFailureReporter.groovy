@@ -28,7 +28,7 @@ class OnFailureReporter extends AbstractRunListener implements IMethodIntercepto
     private HasReportingTestManager spec
 
     void intercept(IMethodInvocation invocation) throws Throwable {
-        spec = invocation.instance ?: invocation.sharedInstance
+        spec = invocation.instance
         invocation.proceed()
     }
 

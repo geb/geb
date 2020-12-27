@@ -33,8 +33,8 @@ class ReportingOnFailureExtension implements IGlobalExtension {
         if (HasReportingTestManager.isAssignableFrom(spec.reflection)) {
             def reporter = new OnFailureReporter()
             spec.addListener(reporter)
-            spec.setupSpecInterceptors.add(reporter)
-            spec.allFeatures*.addIterationInterceptor(reporter)
+            spec.addSetupSpecInterceptor(reporter)
+            spec.addSetupInterceptor(reporter)
         }
     }
 }
