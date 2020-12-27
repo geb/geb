@@ -15,7 +15,7 @@
  */
 package geb.spock
 
-import geb.test.HasReportingTestManager
+import geb.test.ManagedGebTest
 import org.spockframework.runtime.extension.IGlobalExtension
 import org.spockframework.runtime.model.SpecInfo
 
@@ -30,7 +30,7 @@ class ReportingOnFailureExtension implements IGlobalExtension {
     }
 
     void visitSpec(SpecInfo spec) {
-        if (HasReportingTestManager.isAssignableFrom(spec.reflection)) {
+        if (ManagedGebTest.isAssignableFrom(spec.reflection)) {
             def reporter = new OnFailureReporter()
             spec.addListener(reporter)
             spec.addSetupSpecInterceptor(reporter)

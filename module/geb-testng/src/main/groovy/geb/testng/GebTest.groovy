@@ -17,10 +17,11 @@ package geb.testng
 
 import geb.test.GebTestManager
 import geb.test.GebTestManagerBuilder
+import geb.test.ManagedGebTest
 import geb.transform.DynamicallyDispatchesToBrowser
 
 @DynamicallyDispatchesToBrowser
-class GebTest implements HasTestManager {
+class GebTest implements ManagedGebTest {
 
     @Delegate(includes = ["getBrowser"])
     final GebTestManager testManager = new GebTestManagerBuilder().build()

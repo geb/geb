@@ -16,6 +16,7 @@
 package geb.testng
 
 import geb.test.GebTestManager
+import geb.test.ManagedGebTest
 import org.testng.IClassListener
 import org.testng.ITestClass
 import org.testng.ITestContext
@@ -102,7 +103,7 @@ class GebTestListener implements IClassListener, ITestListener {
 
     private GebTestManager testManager(ITestResult result) {
         def instance = result.instance
-        if (instance instanceof HasTestManager) {
+        if (instance instanceof ManagedGebTest) {
             instance.testManager
         }
     }
@@ -111,7 +112,7 @@ class GebTestListener implements IClassListener, ITestListener {
         def instances = testClass.getInstances(false)
         if (instances) {
             def instance = instances.first()
-            if (instance instanceof HasTestManager) {
+            if (instance instanceof ManagedGebTest) {
                 instance.testManager
             }
         }

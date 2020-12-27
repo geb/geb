@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.testng
+package geb.test
 
-import geb.test.GebTestManager
-
-interface HasTestManager {
+interface ManagedGebTest {
 
     GebTestManager getTestManager()
 
