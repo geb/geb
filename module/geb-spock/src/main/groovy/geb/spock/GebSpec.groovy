@@ -15,33 +15,18 @@
 package geb.spock
 
 import geb.test.GebTestManager
+import geb.test.ManagedGebTest
 import geb.transform.DynamicallyDispatchesToBrowser
 import spock.lang.Specification
 
 @DynamicallyDispatchesToBrowser
-class GebSpec extends Specification {
+class GebSpec extends Specification implements ManagedGebTest {
 
     private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder().build()
 
     @Delegate(includes = ["getBrowser"])
     GebTestManager getTestManager() {
         TEST_MANAGER
-    }
-
-    def setupSpec() {
-        testManager.beforeTestClass(getClass())
-    }
-
-    def setup() {
-        testManager.beforeTest(specificationContext.currentIteration.name)
-    }
-
-    def cleanup() {
-        testManager.afterTest()
-    }
-
-    def cleanupSpec() {
-        testManager.afterTestClass()
     }
 
 }

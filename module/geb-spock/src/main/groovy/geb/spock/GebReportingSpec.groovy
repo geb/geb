@@ -15,9 +15,8 @@
 package geb.spock
 
 import geb.test.GebTestManager
-import geb.test.ManagedGebTest
 
-class GebReportingSpec extends GebSpec implements ManagedGebTest {
+class GebReportingSpec extends GebSpec {
 
     private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder()
             .withReportingEnabled(true)
