@@ -87,7 +87,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 This page lists the high level changes between versions of Geb.
 
-=== 4.0-SNAPSHOT
+=== 4.0
 
 ==== Fixes
 
