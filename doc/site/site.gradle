@@ -69,36 +69,46 @@ dependencies {
 }
 
 node {
-    version = '7.9.0'
+    version = '8.17.0'
 
     download = true
 
     nodeModulesDir = file("src/npm")
 }
 
+npm_ci {
+    inputs.file 'src/npm/package-lock.json'
+    outputs.dir 'src/npm/node_modules'
+}
+
 task bundleSemantic(type: NodeTask) {
-    dependsOn npmInstall
+    dependsOn npm_ci
 
     workingDir = file('src/npm/semantic')
     script = new File(project.node.nodeModulesDir, 'node_modules/gulp/bin/gulp.js')
-
-    inputs.dir 'src/npm/semantic/src'
-    inputs.dir 'src/npm/semantic/tasks'
-    inputs.file 'src/npm/semantic/gulpfile.js'
-    outputs.dir 'src/npm/semantic/dist'
-
     args = ["build"]
+
+    inputs.files(
+        'src/npm/package-lock.json',
+        'src/npm/semantic.json',
+        'src/npm/semantic/gulpfile.js'
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir('src/npm/semantic/src').withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir('src/npm/semantic/tasks').withPathSensitivity(PathSensitivity.RELATIVE)
+
+    outputs.dir 'src/npm/semantic/dist'
+    outputs.cacheIf { true }
 }
 
 processResources {
-    from(npmInstall) {
+    from(npm_ci) {
         includeEmptyDirs = false
         include 'jquery/dist/jquery.min.js'
         eachFile {
             it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
         }
     }
-    from(npmInstall) {
+    from(npm_ci) {
         includeEmptyDirs = false
         include '@browser-logos/android/android_128x128.png'
         include '@browser-logos/chrome/chrome_128x128.png'
