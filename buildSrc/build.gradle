@@ -15,6 +15,7 @@
  */
 
 apply plugin: 'groovy'
+apply plugin: 'idea'
 
 repositories {
 	mavenCentral()
@@ -29,7 +30,7 @@ dependencies {
 
 sourceSets {
 	main {
-		groovy.srcDirs = ["../integration/geb-gradle/src/main/groovy"]
-		resources.srcDirs = ["../integration/geb-gradle/src/main/resources"]
+		groovy.srcDir("../integration/geb-gradle/src/main/groovy")
+		resources.srcDir("../integration/geb-gradle/src/main/resources")
 	}
 }

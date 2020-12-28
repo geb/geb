@@ -1,3 +1,7 @@
+import com.github.erdi.gradle.webdriver.BinaryAwareProperties
+import com.github.erdi.gradle.webdriver.task.ConfigureBinary
+import geb.gradle.task.webdriver.PropertyFile
+
 import static java.lang.Runtime.runtime
 
 buildscript {
@@ -20,6 +24,7 @@ apply plugin: 'base'
 apply plugin: 'io.codearte.nexus-staging'
 apply plugin: 'com.energizedwork.asl2'
 apply plugin: 'com.github.erdi.extended-idea'
+apply plugin: 'com.github.erdi.webdriver-binaries'
 apply from: "gradle/idea.gradle"
 
 def getProperty(String name, defaultValue) {
@@ -36,8 +41,6 @@ nexusStaging {
 allprojects { project ->
     version = '4.1-SNAPSHOT'
     group = 'org.gebish'
-
-    apply plugin: "com.github.erdi.webdriver-binaries"
 
     ext {
         isSnapshot = version.endsWith("-SNAPSHOT")
@@ -75,8 +78,8 @@ allprojects { project ->
         }
 
         groovyModules = [
-            ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
-            ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
+            ":module:geb-core", ":internal:system-properties", ":internal:test-support", ":internal:test-support-spock",
+            ":module:geb-spock", ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
             ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets"
         ]
@@ -93,17 +96,16 @@ allprojects { project ->
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
     }
 
-    webdriverBinaries {
-        geckodriver geckodriverVersion
-        chromedriver {
-            version = chromedriverVersion
-            fallbackTo32Bit = true
-        }
-    }
-
     if (isCi) {
         plugins.withType(ReportingBasePlugin) {
-            reporting.baseDir = rootProject.file("$rootProject.buildDir/reports/$project.name")
+            def projectDirPath = project.path.substring(1).replaceAll(":", "/")
+            def copyTask = task("copyReportsIntoRoot", type: Copy) {
+                into "${rootProject.buildDir}/reports/${projectDirPath}"
+                from reporting.baseDir
+            }
+            tasks.withType(Reporting) { reportingTask ->
+                reportingTask.finalizedBy copyTask
+            }
         }
     }
 }
@@ -153,7 +155,10 @@ subprojects {
             reports.html.destination = reporting.file("test-reports/$name")
             binResultsDir = file("$buildDir/test-results-bin/$name")
 
-            systemProperty 'geb.build.reportsDir', reporting.file("geb-reports/$name")
+            def gebReportsDir = reporting.file("geb-reports/$name")
+            outputs.dir(gebReportsDir)
+
+            systemProperty 'geb.build.reportsDir', projectDir.toPath().relativize(gebReportsDir.toPath()).toString()
 
             systemProperty 'jna.nosys', 'true'
         }
@@ -283,10 +288,40 @@ subprojects {
 
 }
 
+webdriverBinaries {
+    geckodriver geckodriverVersion
+    chromedriver {
+        version = chromedriverVersion
+        fallbackTo32Bit = true
+    }
+}
+
+configurations {
+    webdriverBinariesProperties
+}
+
 task release {
     dependsOn { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
 }
 
 task stage(type: Sync) {
     dependsOn 'doc:site:prepareDeployment'
+}
+
+task webdriverBinariesPropertyFile(type: PropertyFile) {
+    outputFile = file("${buildDir}/webdriver-binaries.properties")
+}
+
+tasks.withType(ConfigureBinary) { task ->
+    def binaryAwareProperties = new BinaryAwareProperties(
+            webdriverBinariesPropertyFile.systemProperties, task.webDriverBinaryMetadata.systemProperty
+    )
+    task.addBinaryAware(binaryAwareProperties)
+    webdriverBinariesPropertyFile.dependsOn(task)
+}
+
+artifacts {
+    webdriverBinariesProperties(webdriverBinariesPropertyFile.outputFile) {
+        builtBy(webdriverBinariesPropertyFile)
+    }
 }

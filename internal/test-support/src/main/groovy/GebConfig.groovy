@@ -11,6 +11,7 @@ import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.shaded.org.apache.commons.io.FileUtils
 import org.testcontainers.utility.ResourceReaper
 
+import static geb.properties.SystemPropertiesUtil.loadSystemPropertiesFromFile
 import static org.testcontainers.containers.BrowserWebDriverContainer.getImageForCapabilities
 
 testValue = true // used in a test in geb-core
@@ -98,6 +99,8 @@ if (dockerizedDriver) {
 
 if (System.getProperty("geb.local.driver") == "chrome") {
     driver = {
+        loadSystemPropertiesFromFile("build/webdriver-binaries/webdriver-binaries.properties")
+
         def chromeOptions = new ChromeOptions().addArguments('headless')
         new ChromeDriver(chromeOptions)
     }

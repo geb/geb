@@ -58,4 +58,4 @@ class PageWithTemplateUsingToWaitOption extends Page {
 class AsyncPage extends Page {
     static at = { $("#async-content") }
 }
-// tag::to_wait_page[]
+// end::to_wait_page[]
