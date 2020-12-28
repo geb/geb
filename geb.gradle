@@ -29,6 +29,8 @@ def getProperty(String name, defaultValue) {
 nexusStaging {
     username = getProperty("sonatypeOssUsername", null)
     password = getProperty("sonatypeOssPassword", null)
+    numberOfRetries = 60
+    delayBetweenRetriesInMillis = 2000
 }
 
 allprojects { project ->
