@@ -12,6 +12,7 @@ include "module:geb-core",
     "internal:test-support",
     "internal:test-support-spock",
     "integration:geb-gradle",
+    "doc:asciidoctor-extension",
     "doc:manual",
     "doc:manual-snippets",
     "doc:site"

@@ -81,7 +81,7 @@ allprojects { project ->
             ":module:geb-core", ":internal:system-properties", ":internal:test-support", ":internal:test-support-spock",
             ":module:geb-spock", ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
             ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets"
+            ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets", ":doc:asciidoctor-extension"
         ]
 
         publishedModules = [

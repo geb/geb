@@ -1,5 +1,5 @@
 plugins {
-    id 'org.asciidoctor.jvm.convert' version '3.1.0'
+    id 'org.asciidoctor.jvm.convert' version '3.3.0'
 }
 
 archivesBaseName = "geb-manual"
@@ -57,23 +57,7 @@ asciidoctorj {
         imagesdir              : 'images'
     ]
 
-    docExtensions {
-        inline_macro(name: "issue") { parent, target, attributes ->
-            def options = [
-                type  : ":link",
-                target: "https://github.com/geb/issues/issues/${target}"
-            ]
-
-            createPhraseNode(parent, "anchor", "#$target", attributes, options)
-        }
-        inline_macro(name: "github-profile") { parent, target, attributes ->
-            def options = [
-                type  : ":link",
-                target: "https://github.com/${target}"
-            ]
-            createPhraseNode(parent, "anchor", attributes["1"], attributes, options)
-        }
-    }
+    docExtensions project(":doc:asciidoctor-extension")
 }
 
 asciidoctor {
