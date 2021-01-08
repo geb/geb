@@ -42,7 +42,7 @@ asciidoctorj {
         idprefix               : '',
         idseparator            : '-',
         icons                  : 'font',
-        'source-highlighter'   : 'prettify',
+        'source-highlighter'   : 'coderay',
         'geb-version'          : project.version,
         'geb-group'            : project.group,
         'geb-group-dir'        : project.group.replace('.', '/'),
