@@ -1,0 +1,10 @@
+<component name="ProjectCodeStyleConfiguration">
+	<option name="USE_PER_PROJECT_SETTINGS" value="true"/>
+	<code_scheme name="Project" version="173">
+		<codeStyleSettings language="Groovy">
+			<indentOptions>
+				<option name="CONTINUATION_INDENT_SIZE" value="4"/>
+			</indentOptions>
+		</codeStyleSettings>
+	</code_scheme>
+</component>
