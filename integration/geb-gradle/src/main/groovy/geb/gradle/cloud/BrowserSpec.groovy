@@ -76,9 +76,16 @@ class BrowserSpec {
     }
 
     protected void configureCapabilitiesOnTask(Test task) {
+        task.systemProperty "geb.${cloudProvider}.browser", capabilitiesAsString
+    }
+
+    private String getCapabilitiesAsString() {
         StringWriter writer = new StringWriter()
         capabilities.store(writer, null)
-        task.systemProperty "geb.${cloudProvider}.browser", writer.toString()
+
+        writer.toString().readLines().findAll {
+            !it.startsWith("#")
+        }.join(System.lineSeparator())
     }
 
     private void setCapabilitiesOnTasks() {
