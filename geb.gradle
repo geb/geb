@@ -1,6 +1,7 @@
 import com.github.erdi.gradle.webdriver.BinaryAwareProperties
 import com.github.erdi.gradle.webdriver.task.ConfigureBinary
 import geb.gradle.task.webdriver.PropertyFile
+import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 
 import static java.lang.Runtime.runtime
 
@@ -151,10 +152,11 @@ subprojects {
         }
 
         tasks.withType(Test) {
-            def gebReportsDir = reporting.file("geb-reports/$name")
+            def gebReportsDir = reporting.file("geb/$name")
             outputs.dir(gebReportsDir)
-
-            systemProperty 'geb.build.reportsDir', projectDir.toPath().relativize(gebReportsDir.toPath()).toString()
+            jvmArgumentProviders.add(
+                new EnvironmentVariablesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
+            )
 
             systemProperty 'jna.nosys', 'true'
         }

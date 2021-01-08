@@ -15,10 +15,12 @@
  */
 package geb.gradle.cloud
 
+import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.testing.Test
 
@@ -72,7 +74,12 @@ abstract class CloudBrowsersExtension {
             allTestsLifecycleTask.dependsOn task
             finalizedBy closeTunnelTaskName
 
-            systemProperty 'geb.build.reportsDir', project.reporting.file("$name-geb")
+            def reporting = project.reporting as ReportingExtension
+            def gebReportsDir = reporting.file("geb/${task.name}")
+            outputs.dir(gebReportsDir)
+            jvmArgumentProviders.add(
+                new EnvironmentVariablesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
+            )
         }
 
         browser.addTask(testTask)
