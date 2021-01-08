@@ -151,10 +151,6 @@ subprojects {
         }
 
         tasks.withType(Test) {
-            reports.junitXml.destination = reporting.file("test-results/$name")
-            reports.html.destination = reporting.file("test-reports/$name")
-            binResultsDir = file("$buildDir/test-results-bin/$name")
-
             def gebReportsDir = reporting.file("geb-reports/$name")
             outputs.dir(gebReportsDir)
 
