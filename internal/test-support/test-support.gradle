@@ -1,6 +1,5 @@
 dependencies {
     compile project(':module:geb-core'),
-        project(':internal:system-properties'),
         spockDependency,
         htmlUnitDriverDependency,
         "org.testcontainers:selenium:1.15.0-rc2",

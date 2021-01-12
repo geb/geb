@@ -25,8 +25,6 @@ import org.openqa.selenium.remote.RemoteWebDriver
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static geb.properties.SystemPropertiesUtil.loadSystemPropertiesFromFile
-
 class DriverConfigSpec extends Specification implements InlineConfigurationLoader {
 
     @Rule
@@ -34,8 +32,6 @@ class DriverConfigSpec extends Specification implements InlineConfigurationLoade
 
     def setupSpec() {
         CachingDriverFactory.clearCacheAndQuitDriver()
-
-        loadSystemPropertiesFromFile("build/webdriver-binaries/webdriver-binaries.properties")
     }
 
     def "configuring driver using closure"() {

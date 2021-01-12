@@ -1,6 +1,3 @@
-import com.github.erdi.gradle.webdriver.BinaryAwareProperties
-import com.github.erdi.gradle.webdriver.task.ConfigureBinary
-import geb.gradle.task.webdriver.PropertyFile
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 
 import static java.lang.Runtime.runtime
@@ -17,7 +14,7 @@ buildscript {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.1"
         classpath "gradle.plugin.com.github.erdi:idea-gradle-plugins:2.1"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
-        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.2"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.4"
     }
 }
 
@@ -25,7 +22,6 @@ apply plugin: 'base'
 apply plugin: 'io.codearte.nexus-staging'
 apply plugin: 'com.energizedwork.asl2'
 apply plugin: 'com.github.erdi.extended-idea'
-apply plugin: 'com.github.erdi.webdriver-binaries'
 apply from: "gradle/idea.gradle"
 
 def getProperty(String name, defaultValue) {
@@ -53,8 +49,6 @@ allprojects { project ->
         groovyVersion = "2.5.14"
         spockVersion = "1.3-groovy-2.5"
         junit4Version = "4.12"
-        geckodriverVersion = "0.24.0"
-        chromedriverVersion = "86.0.4240.22"
         jettyVersion = "9.4.8.v20171121"
         threeTenExtraVersion = "1.4"
 
@@ -79,8 +73,8 @@ allprojects { project ->
         }
 
         groovyModules = [
-            ":module:geb-core", ":internal:system-properties", ":internal:test-support", ":internal:test-support-spock",
-            ":module:geb-spock", ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
+            ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
+            ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
             ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
             ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets", ":doc:asciidoctor-extension"
         ]
@@ -286,40 +280,10 @@ subprojects {
 
 }
 
-webdriverBinaries {
-    geckodriver geckodriverVersion
-    chromedriver {
-        version = chromedriverVersion
-        fallbackTo32Bit = true
-    }
-}
-
-configurations {
-    webdriverBinariesProperties
-}
-
 task release {
     dependsOn { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
 }
 
 task stage(type: Sync) {
     dependsOn 'doc:site:prepareDeployment'
-}
-
-task webdriverBinariesPropertyFile(type: PropertyFile) {
-    outputFile = file("${buildDir}/webdriver-binaries.properties")
-}
-
-tasks.withType(ConfigureBinary) { task ->
-    def binaryAwareProperties = new BinaryAwareProperties(
-            webdriverBinariesPropertyFile.systemProperties, task.webDriverBinaryMetadata.systemProperty
-    )
-    task.addBinaryAware(binaryAwareProperties)
-    webdriverBinariesPropertyFile.dependsOn(task)
-}
-
-artifacts {
-    webdriverBinariesProperties(webdriverBinariesPropertyFile.outputFile) {
-        builtBy(webdriverBinariesPropertyFile)
-    }
 }

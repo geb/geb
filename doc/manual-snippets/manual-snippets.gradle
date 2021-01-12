@@ -1,31 +1,27 @@
+apply plugin: 'com.github.erdi.webdriver-binaries'
+
 configurations {
     realBrowserTestCompile.extendsFrom testCompile
     realBrowserTestRuntime.extendsFrom testRuntime
-
-    webdriverBinariesProperties
 }
 
 dependencies {
     testCompile project(':internal:test-support-spock')
-    testCompile project(':internal:system-properties')
     testCompile project(':module:geb-spock')
     testCompile 'commons-fileupload:commons-fileupload:1.3.1'
     testCompile 'com.github.stefanbirkner:system-rules:1.19.0'
-
-    webdriverBinariesProperties project(path: ":", configuration: "webdriverBinariesProperties")
 }
 
 sourceSets {
     realBrowserTest
 }
 
-compileRealBrowserTestGroovy {
-    classpath += sourceSets.test.output.classesDirs
+webdriverBinaries {
+    geckodriver "0.24.0"
 }
 
-task copyWebdriverBinariesProperties(type: Copy) {
-    from configurations.webdriverBinariesProperties
-    into "${buildDir}/webdriver-binaries"
+compileRealBrowserTestGroovy {
+    classpath += sourceSets.test.output.classesDirs
 }
 
 task realBrowserTest(type: Test) {
@@ -38,11 +34,7 @@ task realBrowserTest(type: Test) {
 check.dependsOn realBrowserTest
 
 test {
-    inputs.property("geckodriverVersion", geckodriverVersion)
-
     maxParallelForks availableProcessors
-
-    dependsOn copyWebdriverBinariesProperties
 }
 
 idea.module {
