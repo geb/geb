@@ -77,27 +77,12 @@ node {
 }
 
 npm_ci {
-    inputs.file 'src/npm/package-lock.json'
-    outputs.dir 'src/npm/node_modules'
-}
-
-task bundleSemantic(type: NodeTask) {
-    dependsOn npm_ci
-
-    workingDir = file('src/npm/semantic')
-    script = new File(project.node.nodeModulesDir, 'node_modules/gulp/bin/gulp.js')
-    args = ["build"]
-
     inputs.files(
         'src/npm/package-lock.json',
-        'src/npm/semantic.json',
-        'src/npm/semantic/gulpfile.js'
-    ).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.dir('src/npm/semantic/src').withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.dir('src/npm/semantic/tasks').withPathSensitivity(PathSensitivity.RELATIVE)
-
-    outputs.dir 'src/npm/semantic/dist'
-    outputs.cacheIf { true }
+        'src/npm/semantic.json'
+    )
+    outputs.dir 'src/npm/node_modules'
+    outputs.dir 'src/npm/semantic'
 }
 
 processResources {
@@ -120,15 +105,21 @@ processResources {
             it.relativePath = new RelativePath(true, 'public', 'images', it.sourceName)
         }
     }
-    from(bundleSemantic) {
-        include 'semantic.min.js'
-        into 'public/js'
+    from(npm_ci) {
+        includeEmptyDirs = false
+        include 'dist/semantic.min.js'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'js', *it.relativePath.segments[1..-1])
+        }
     }
-    from(bundleSemantic) {
-        include 'semantic.min.css'
-        include 'themes/default/assets/fonts/**'
-        include 'themes/default/assets/images/**'
-        into 'public/css'
+    from(npm_ci) {
+        includeEmptyDirs = false
+        include 'dist/semantic.min.css'
+        include 'dist/themes/default/assets/fonts/**'
+        include 'dist/themes/default/assets/images/**'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'css', *it.relativePath.segments[1..-1])
+        }
     }
 }
 
