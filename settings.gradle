@@ -47,7 +47,6 @@ buildCache {
         enabled = !isCiServer
     }
     remote(org.kordamp.gradle.plugin.buildcache.OCIBuildCache) {
-        enabled = System.getenv("APPVEYOR") == null
         push = isCiServer
         compartmentId = 'ocid1.compartment.oc1..aaaaaaaap3fg3t2n5lm4vopfcn4ypw6frqgr5qblb3kdkjrwstskho2o5y6q'
         config {

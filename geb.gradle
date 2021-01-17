@@ -1,4 +1,5 @@
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
+import org.ysb33r.grolifant.api.OperatingSystem
 
 import static java.lang.Runtime.runtime
 
@@ -231,6 +232,7 @@ subprojects {
         testLogging {
             exceptionFormat = 'full'
         }
+        inputs.property("isWindows", OperatingSystem.current().windows)
     }
 
     tasks.withType(GroovyCompile) {
