@@ -401,7 +401,7 @@ Or select the two `div` that do not contain `input` with a type attribute of "su
 include::{test-dir}/navigator/FindingAndFilteringSpec.groovy[tag=has_not,indent=0]
 ----
 
-The `find()` and `$()` methods support the *exact same argument types as the `$()` function*.
+The `find()` method supports the *exact same argument types as the `$()` function*.
 
 The `filter()`, `not()`, `has()` and `hasNot()` methods have the same signatures - they accept: a selector string, a predicates map or both.
 

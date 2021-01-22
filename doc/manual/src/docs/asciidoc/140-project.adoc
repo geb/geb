@@ -89,7 +89,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Fixes
+
+* Minor fix to confusing statement in the documentation section about finding and filtering web elements. [issue:625[]]
 
 === 4.0
 
