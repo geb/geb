@@ -22,7 +22,9 @@ dependencies {
 
     compile project(":module:geb-ast")
     compile project(":module:geb-waiting")
-    compile 'org.jodd:jodd-lagarto:5.1.5'
+    compile('org.jodd:jodd-lagarto:5.1.5') {
+        exclude(group: "ch.qos.logback")
+    }
     compile "org.threeten:threeten-extra:$threeTenExtraVersion"
 
     testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
