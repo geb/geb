@@ -10,12 +10,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-modules-{{ .Branch }}
+            - gradle-home-modules-master
             - gradle-home-modules
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p module -Pci check --continue
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-modules
+          key: gradle-home-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   internal:
@@ -28,12 +30,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-internal-{{ .Branch }}
+            - gradle-home-internal-master
             - gradle-home-internal
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p internal -Pci check --continue
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-internal
+          key: gradle-home-internal-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   integrations:
@@ -46,12 +50,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-integrations-{{ .Branch }}
+            - gradle-home-integrations-master
             - gradle-home-integrations
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p integration -Pci check --continue
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-integrations
+          key: gradle-home-integrations-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   manual:
@@ -60,6 +66,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-manual-machine-{{ .Branch }}
+            - gradle-home-manual-machine-master
             - gradle-home-manual-machine
       - run:
           command: |
@@ -68,7 +76,7 @@ jobs:
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-manual-machine
+          key: gradle-home-manual-machine-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   site:
@@ -81,12 +89,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-site-{{ .Branch }}
+            - gradle-home-site-master
             - gradle-home-site
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p doc/site -Pci check
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-site
+          key: gradle-home-site-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   dockerised-cross-browser:
@@ -95,6 +105,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-dockerised-crossbrowser-{{ .Branch }}
+            - gradle-home-dockerised-crossbrowser-master
             - gradle-home-dockerised-crossbrowser
       - run:
           command: |
@@ -103,7 +115,7 @@ jobs:
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-dockerised-crossbrowser
+          key: gradle-home-dockerised-crossbrowser-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   local-cross-browser:
@@ -116,12 +128,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-local-crossbrowser-{{ .Branch }}
+            - gradle-home-local-crossbrowser-master
             - gradle-home-local-crossbrowser
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p module -Pci localChromeTest
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-local-crossbrowser
+          key: gradle-home-local-crossbrowser-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   saucelabs:
@@ -134,6 +148,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-saucelabs-{{ .Branch }}
+            - gradle-home-saucelabs-master
             - gradle-home-saucelabs
       - run:
           command: |
@@ -143,7 +159,7 @@ jobs:
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-saucelabs
+          key: gradle-home-saucelabs-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   lambdatest:
@@ -156,6 +172,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-lambdatest-{{ .Branch }}
+            - gradle-home-lambdatest-master
             - gradle-home-lambdatest
       - run:
           command: |
@@ -165,7 +183,7 @@ jobs:
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-lambdatest
+          key: gradle-home-lambdatest-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   non-ie:
@@ -178,6 +196,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-non-ie-{{ .Branch }}
+            - gradle-home-non-ie-master
             - gradle-home-non-ie
       - run:
           command: |
@@ -187,7 +207,7 @@ jobs:
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-non-ie
+          key: gradle-home-non-ie-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   ie:
@@ -200,6 +220,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-ie-{{ .Branch }}
+            - gradle-home-ie-master
             - gradle-home-ie
       - run:
           command: |
@@ -209,7 +231,7 @@ jobs:
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-ie
+          key: gradle-home-ie-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   upload:
@@ -222,6 +244,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - gradle-home-upload-{{ .Branch }}
+            - gradle-home-upload-master
             - gradle-home-upload
       - run:
           command: |
@@ -229,7 +253,7 @@ jobs:
               ./gradlew --no-daemon -Pci uploadArchives
             fi
       - save_cache:
-          key: gradle-home-upload
+          key: gradle-home-upload-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   publish-site:
