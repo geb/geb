@@ -92,6 +92,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 
 * Minor fix to confusing statement in the documentation section about finding and filtering web elements. [issue:625[]]
+* Improve information about IntelliJ support in the section on IDE authoring assistance in the manual. [issue:629[]]
 
 === 4.0
 
