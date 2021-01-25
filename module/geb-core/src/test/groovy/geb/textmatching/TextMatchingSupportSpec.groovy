@@ -14,11 +14,13 @@
  */
 package geb.textmatching
 
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class TextMatchingSupportSpec extends Specification {
 
+    @Shared
     def matchers = new TextMatchingSupport()
 
     // Can't have expected in name due to
@@ -103,5 +105,32 @@ class TextMatchingSupportSpec extends Specification {
         "containsWord"  | ~"noun"   | true     | "noun verb"
         "containsWord"  | ~"noun"   | false    | "non-noun verb"
         "containsWord"  | "noun"    | false    | "noune verb"
+    }
+
+    @Unroll
+    def "allOf matches input"(List<TextMatcher> input, String text, boolean expected) {
+        expect:
+        matchers.allOf(*input).matches(text) == expected
+
+        where:
+        input                                                   | text   | expected
+        [matchers.contains('A')]                                | 'ABBA' | true
+        [matchers.contains('C')]                                | 'ABBA' | false
+        [matchers.contains('AB'), matchers.contains('BBA')]     | 'ABBA' | true
+        [matchers.contains('AB'), matchers.contains('C')]       | 'ABBA' | false
+        [matchers.startsWith('AB'), matchers.notEndsWith('BA')] | 'ABBA' | false
+    }
+
+    @Unroll
+    def "anyOf matches input"(List<TextMatcher> input, String text, boolean expected) {
+        expect:
+        matchers.anyOf(*input).matches(text) == expected
+
+        where:
+        input                                                   | text   | expected
+        [matchers.contains('A')]                                | 'ABBA' | true
+        [matchers.contains('C')]                                | 'ABBA' | false
+        [matchers.contains('AB'), matchers.contains('C')]       | 'ABBA' | true
+        [matchers.startsWith('AB'), matchers.notEndsWith('BA')] | 'ABBA' | true
     }
 }

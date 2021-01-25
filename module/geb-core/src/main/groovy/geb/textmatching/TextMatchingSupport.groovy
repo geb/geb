@@ -146,4 +146,11 @@ class TextMatchingSupport {
         new NegatedTextMatcher(iContainsWord(pattern))
     }
 
+    TextMatcher allOf(TextMatcher... matchers) {
+        new GroupTextMatcher.AllTextMatcher(matchers)
+    }
+
+    TextMatcher anyOf(TextMatcher... matchers) {
+        new GroupTextMatcher.AnyTextMatcher(matchers)
+    }
 }
