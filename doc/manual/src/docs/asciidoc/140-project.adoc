@@ -70,7 +70,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:thecodesmith[Brian Stewart] - Doc improvements
 * github-profile:JacobAae[Jacob Aae Mikkelsen] - Various fixes and improvements
 * github-profile:pradtke[Patrick Radtke] - Doc improvements
-* github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page
+* github-profile:leonard84[Leonard Brünings] - Fix for unexpected pages only being checked after at check fails for the expected page, added new composite text matchers
 * github-profile:mahileeb[Lee Butts] - Improved error message when trying to select null on a single-select select element
 * github-profile:rickirunge[Ricki Runge] - Ignore case of tag names passed as part of css selectors to `Navigator.filter()`
 * github-profile:jdmuriel[Jesús L. D. Muriel] - Doc fixes
@@ -93,6 +93,10 @@ This page lists the high level changes between versions of Geb.
 
 * Minor fix to confusing statement in the documentation section about finding and filtering web elements. [issue:625[]]
 * Improve information about IntelliJ support in the section on IDE authoring assistance in the manual. [issue:629[]]
+
+==== New features
+
+* Add ability to compose multiple text matchers. [issue:631[]]
 
 === 4.0
 
