@@ -261,12 +261,10 @@ They simply just return patterns.
 Sometimes, you have the need to search for alternative patterns, for example if you have a multi-brand page with different text for each brand,
 in this case you can use the composite matchers `allOf` and `anyOf`. Both, accept any combinations of the other matchers.
 
-
 [source,groovy]
 ----
 include::{test-dir}/navigator/DollarExamplesSpec.groovy[tag=pattern_composite,indent=0]
 ----
-
 
 |===
 |Composite Matcher |Description
