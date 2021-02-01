@@ -113,12 +113,11 @@ class TextMatchingSupportSpec extends Specification {
         matchers.allOf(*input).matches(text) == expected
 
         where:
-        input                                                   | text   | expected
-        [matchers.contains('A')]                                | 'ABBA' | true
-        [matchers.contains('C')]                                | 'ABBA' | false
-        [matchers.contains('AB'), matchers.contains('BBA')]     | 'ABBA' | true
-        [matchers.contains('AB'), matchers.contains('C')]       | 'ABBA' | false
-        [matchers.startsWith('AB'), matchers.notEndsWith('BA')] | 'ABBA' | false
+        input                                               | text   | expected
+        [matchers.contains('A')]                            | 'ABBA' | true
+        [matchers.contains('C')]                            | 'ABBA' | false
+        [matchers.contains('AB'), matchers.contains('BBA')] | 'ABBA' | true
+        [matchers.contains('AB'), matchers.contains('C')]   | 'ABBA' | false
     }
 
     @Unroll
@@ -127,10 +126,10 @@ class TextMatchingSupportSpec extends Specification {
         matchers.anyOf(*input).matches(text) == expected
 
         where:
-        input                                                   | text   | expected
-        [matchers.contains('A')]                                | 'ABBA' | true
-        [matchers.contains('C')]                                | 'ABBA' | false
-        [matchers.contains('AB'), matchers.contains('C')]       | 'ABBA' | true
-        [matchers.startsWith('AB'), matchers.notEndsWith('BA')] | 'ABBA' | true
+        input                                              | text   | expected
+        [matchers.contains('A')]                           | 'ABBA' | true
+        [matchers.contains('C')]                           | 'ABBA' | false
+        [matchers.contains('AB'), matchers.contains('C')]  | 'ABBA' | true
+        [matchers.contains('ABA'), matchers.contains('C')] | 'ABBA' | false
     }
 }

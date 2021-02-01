@@ -42,7 +42,7 @@ class BindingUpdater {
             /$/, "find",
             "module",
             "contains", "iContains", "notContains", "iNotContains", "endsWith", "iEndsWith", "notEndsWith", "iNotEndsWith", "containsWord", "iContainsWord", "notContainsWord", "iNotContainsWord",
-            "startsWith", "iStartsWith", "notStartsWith", "iNotStartsWith",
+            "startsWith", "iStartsWith", "notStartsWith", "iNotStartsWith", "allOf", "anyOf",
             "withFrame",
             "getOwner", "getPageFragment", "getRootContainer", "getContentNames", "getShouldVerifyAtImplicitly", "getAtVerificationResult", "getTitle", "getContentPath", "getContent", "getPageUrl",
             "getBrowser", "getNavigator",

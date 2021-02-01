@@ -147,10 +147,10 @@ class TextMatchingSupport {
     }
 
     TextMatcher allOf(TextMatcher... matchers) {
-        new GroupTextMatcher.AllTextMatcher(matchers)
+        new AllTextMatcher(matchers)
     }
 
     TextMatcher anyOf(TextMatcher... matchers) {
-        new GroupTextMatcher.AnyTextMatcher(matchers)
+        new AnyTextMatcher(matchers)
     }
 }

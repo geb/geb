@@ -137,6 +137,10 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
         // tag::pattern_methods_using_pattern[]
         assert $("p", text: contains(~/\d/)).size() == 2
         // end::pattern_methods_using_pattern[]
+        // tag::pattern_composite[]
+        assert $("p", text: allOf(contains("p1"), contains("p2"))).size() == 0
+        assert $("p", text: anyOf(contains("p1"), contains("p2"))).size() == 2
+        // end::pattern_composite[]
     }
 
     private void attributesAndTextMatchingHtml() {
