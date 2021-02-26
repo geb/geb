@@ -97,6 +97,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * Add ability to compose multiple text matchers. [issue:631[]]
+* Add configuration option to quit the driver each time the browser instance is reset by `GebTestManager`. [issue:632[]]
 
 === 4.0
 

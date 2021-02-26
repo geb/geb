@@ -39,7 +39,7 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
     }
 
     def cleanup() {
-        driver.resetExpectations()
+        driver.checkAndResetExpectations()
     }
 
     @Override
@@ -98,7 +98,7 @@ class WebDriverCommandsSpec extends GebSpecWithServer {
 
         then:
         driver.findRootElementExecuted()
-        driver.resetExpectations()
+        driver.checkAndResetExpectations()
 
         when:
         module.someName()

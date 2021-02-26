@@ -75,7 +75,7 @@ adapter which is not true for system properties.
 === Driver implementation
 
 The driver to use is specified by the config key `driver`, or the system property `geb.driver`.
-
+[[driver-factory-closure]]
 ==== Factory closure
 
 In the config script it can be a closure that when invoked with no arguments returns an instance of `{webdriver-api}`…
@@ -167,6 +167,21 @@ To remedy this, you can instruct Geb to cache the driver instance per thread by 
 
 Also, by default Geb will register a shutdown hook to quit any cached browsers when the JVM exits.
 You can disable this by setting te config property `quitCachedDriverOnShutdown` to `false`.
+
+=== Quitting driver on browser reset
+
+If for some reason you would like the driver not to be cached but quit after each test and recreated before the next then Geb supports such management of the driver instance.
+To quit the driver after each test you can set the `quitDriverOnBrowserReset` config property to `true`.
+
+[source,groovy]
+----
+include::{test-dir}/configuration/QuitDriverOnBrowserResetConfigSpec.groovy[tag=config,indent=0]
+----
+
+[NOTE]
+====
+If the driver is fully managed by Geb and being using the <<driver-factory-closure, configured driver factory closure>> then it probably makes sense to disable <<driver-caching-configuration, driver caching>> when setting `quitDriverOnBrowserReset` to `true`.
+====
 
 [[configuration-base-url]]
 === Base URL

@@ -15,22 +15,31 @@
  */
 package geb.test
 
-import groovy.transform.InheritConstructors
+import org.openqa.selenium.Capabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.Response
 
-@InheritConstructors
 class RemoteWebDriverWithExpectations extends RemoteWebDriver {
 
-    private final static List<String> IGNORED_COMMANDS = ['newSession', 'getPageSource', 'quit', 'screenshot', 'deleteAllCookies']
+    public final static List<String> DEFAULT_IGNORED_COMMANDS = [
+        'getPageSource', 'quit', 'screenshot', 'deleteAllCookies'
+    ].asImmutable()
 
-    private List<Command> executedCommands = []
+    private final List<Command> executedCommands = []
+    private final List<String> ignoredCommands
 
-    void clearRecordedCommands() {
-        executedCommands = []
+    RemoteWebDriverWithExpectations(
+        URL remoteAddress, Capabilities capabilities, List<String> ignoredCommands = DEFAULT_IGNORED_COMMANDS
+    ) {
+        super(remoteAddress, capabilities)
+        this.ignoredCommands = ignoredCommands
     }
 
-    void resetExpectations() {
+    void clearRecordedCommands() {
+        executedCommands.clear()
+    }
+
+    void checkAndResetExpectations() {
         try {
             def unexpected = executedCommands.findAll { !it.matched }
             if (unexpected) {
@@ -84,9 +93,13 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
         ensureExecuted('sendKeysToElement')
     }
 
+    void quitExecuted() {
+        ensureExecuted('quit')
+    }
+
     @Override
     protected Response execute(String command, Map<String, ?> parameters) {
-        if (!IGNORED_COMMANDS.contains(command)) {
+        if (!ignoredCommands?.contains(command) && command != 'newSession') {
             executedCommands << new Command(command: command, parameters: parameters)
         }
         super.execute(command, parameters)
@@ -112,14 +125,14 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
         }
     }
 
-    private static class UnexpectedCommandException extends Exception {
+    static class UnexpectedCommandException extends Exception {
 
         UnexpectedCommandException(Command... unexpectedCommands) {
             super("An unexpected command has been issued:\n${unexpectedCommands.join("\n")}")
         }
     }
 
-    private static class CommandNotExecutedException extends Exception {
+    static class CommandNotExecutedException extends Exception {
 
         CommandNotExecutedException(Command expectedCommand) {
             super("A command has been expected but has not been executed: $expectedCommand")

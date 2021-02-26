@@ -238,6 +238,14 @@ class Configuration {
         rawConfig.quitCachedDriverOnShutdown = flag
     }
 
+    void setQuitDriverOnBrowserReset(boolean flag) {
+        rawConfig.quitDriverOnBrowserReset = flag
+    }
+
+    boolean isQuitDriverOnBrowserReset() {
+        readValue('quitDriverOnBrowserReset', false)
+    }
+
     /**
      * Sets the driver configuration value.
      * <p>

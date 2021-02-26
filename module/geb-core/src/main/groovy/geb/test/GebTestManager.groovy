@@ -117,6 +117,9 @@ class GebTestManager {
         if (config?.autoClearWebStorage) {
             browser.clearWebStorage()
         }
+        if (config?.quitDriverOnBrowserReset) {
+            browser.driver.quit()
+        }
         browser = null
     }
 
