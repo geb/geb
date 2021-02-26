@@ -18,14 +18,12 @@ import spock.lang.Shared
 
 abstract class GebSpecWithServer extends GebSpec {
 
-    private static final List<Integer> CROSS_BROWSER_PORTS = [8000, 8080, 9000, 9090, 9999]
-
     @Shared
     TestHttpServer server
 
     def setupSpec() {
         server = serverInstance
-        server.start(testPort)
+        server.start()
         browser.baseUrl = server.baseUrl
     }
 
@@ -34,11 +32,6 @@ abstract class GebSpecWithServer extends GebSpec {
     }
 
     abstract TestHttpServer getServerInstance()
-
-    int getTestPort() {
-        def portIndex = System.getProperty("geb.port.index")
-        portIndex ? CROSS_BROWSER_PORTS[portIndex.toInteger()] : 0
-    }
 
     def cleanupSpec() {
         server?.stop()

@@ -25,6 +25,8 @@ import java.util.function.Supplier
 
 abstract class TestHttpServer {
 
+    private static final List<Integer> CROSS_BROWSER_PORTS = [8000, 8080, 9000, 9090, 9999]
+
     protected final Supplier<Configuration> configurationSupplier
 
     protected server
@@ -38,7 +40,13 @@ abstract class TestHttpServer {
         this.configurationSupplier = configurationSupplier
     }
 
-    void start(int port = 0) {
+    void start() {
+        def portIndex = System.getProperty("geb.port.index")
+        def port = portIndex ? CROSS_BROWSER_PORTS[portIndex.toInteger()] : 0
+        start(port)
+    }
+
+    void start(int port) {
         if (!started) {
             server = new Server()
             server.addConnector(createConnector(server, port))
