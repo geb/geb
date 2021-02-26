@@ -248,7 +248,7 @@ running the generated test tasks which means that the browsers in the cloud will
 <8> Pass credentials for {sauce-connect}.
 <9> Additionally configure {sauce-connect} if desired.
 <10> Override the port used by SauceConnect, defaults to 4445.
-<11> Pass additional link:https://docs.saucelabs.com/reference/sauce-connect/#command-line-options[command line options] to SauceConnect.
+<11> Pass additional link:https://docs.saucelabs.com/dev/cli/sauce-connect-proxy#sauce-connect-proxy-command-line-options[command line options] to SauceConnect.
 
 [TIP]
 ====
