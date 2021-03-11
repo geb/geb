@@ -1,4 +1,9 @@
+plugins {
+	id 'java-library'
+}
+
 dependencies {
-	compile project(':internal:test-support'),
-		project(':module:geb-spock')
+	api project(':internal:test-support')
+	implementation project(':module:geb-ast')
+	implementation project(':module:geb-spock')
 }

@@ -1,5 +1,5 @@
 dependencies {
-    testCompile "junit:junit:$junit4Version"
+    testImplementation "junit:junit:$junit4Version"
 }
 
 modifyPom { pom ->
