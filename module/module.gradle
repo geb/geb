@@ -1,7 +1,7 @@
 subprojects {
     dependencies {
         if (project.name != "geb-spock" ) {
-            testCompile project(":internal:test-support-spock")
+            testImplementation project(":internal:test-support-spock")
         }
         if (![
             "geb-core",
@@ -10,7 +10,7 @@ subprojects {
             "geb-waiting",
             "geb-exceptions"
         ].contains(project.name)) {
-            compile project(':module:geb-core')
+            implementation project(':module:geb-core')
         }
     }
 }

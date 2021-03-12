@@ -1,6 +1,7 @@
 dependencies {
-    compile project(":module:geb-junit")
-    compile "junit:junit:$junit4Version"
+    implementation project(":module:geb-ast")
+    implementation project(":module:geb-junit")
+    implementation "junit:junit:$junit4Version"
 }
 
 modifyPom { pom ->

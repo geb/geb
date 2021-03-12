@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'java-library'
+}
+
 apply plugin: "geb-browserstack"
 apply plugin: "geb-saucelabs"
 apply plugin: "geb-lambdatest"
@@ -18,16 +22,17 @@ apply plugin: 'com.github.erdi.webdriver-binaries'
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
 dependencies {
-    compile seleniumDependency, seleniumSupportDependency
+    api project(":module:geb-waiting")
 
-    compile project(":module:geb-ast")
-    compile project(":module:geb-waiting")
-    compile('org.jodd:jodd-lagarto:5.1.5') {
+    implementation seleniumDependency, seleniumSupportDependency
+    implementation project(":module:geb-ast")
+    implementation('org.jodd:jodd-lagarto:5.1.5') {
         exclude(group: "ch.qos.logback")
     }
-    compile "org.threeten:threeten-extra:$threeTenExtraVersion"
+    implementation "org.threeten:threeten-extra:$threeTenExtraVersion"
 
-    testCompile "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
+    testImplementation "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
+    testImplementation project(":module:geb-spock")
 
     sauceConnect sauceConnectDependency
 }

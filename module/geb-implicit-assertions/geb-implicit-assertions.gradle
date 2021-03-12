@@ -1,5 +1,5 @@
 dependencies {
-    testCompile spockDependency
+    testImplementation spockDependency
 }
 
 modifyPom { pom ->

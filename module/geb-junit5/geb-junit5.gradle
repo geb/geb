@@ -3,13 +3,14 @@ ext {
 }
 
 dependencies {
-    compile project(":module:geb-junit")
-    compile "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    implementation project(":module:geb-ast")
+    implementation project(":module:geb-junit")
+    implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 
-    testCompile "org.junit.platform:junit-platform-launcher:1.7.0"
-    testCompile jsoupDependency
+    testImplementation "org.junit.platform:junit-platform-launcher:1.7.0"
+    testImplementation jsoupDependency
 
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
 }
 
 test {

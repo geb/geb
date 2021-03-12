@@ -1,3 +1,7 @@
+plugins {
+    id 'java-library'
+}
+
 modifyPom { pom ->
     pom.project {
         name "Geb Exceptions"

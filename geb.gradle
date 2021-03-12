@@ -70,6 +70,7 @@ allprojects { project ->
             maven {
                 name "java.net"
                 url "http://download.java.net/maven/2"
+                allowInsecureProtocol true
             }
         }
 

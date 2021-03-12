@@ -17,11 +17,14 @@
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "http://oss.jfrog.org/artifactory/repo" }
-        jcenter()
+        maven {
+            url "http://oss.jfrog.org/artifactory/repo"
+            allowInsecureProtocol true
+        }
+        mavenCentral()
     }
     dependencies {
-        classpath 'io.ratpack:ratpack-gradle:1.6.0'
+        classpath 'io.ratpack:ratpack-gradle:1.8.2'
         classpath 'com.github.node-gradle:gradle-node-plugin:2.2.0'
     }
 }
@@ -42,8 +45,11 @@ ext {
 }
 
 repositories {
-    maven { url "http://oss.jfrog.org/artifactory/repo" }
-    jcenter()
+    maven {
+        url "http://oss.jfrog.org/artifactory/repo"
+        allowInsecureProtocol true
+    }
+    mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://oss.sonatype.org/content/repositories/releases" }
 }
@@ -57,10 +63,11 @@ configurations {
 }
 
 dependencies {
-    testCompile spockDependency,
-        jsoupDependency,
-        project(':module:geb-spock'),
-        htmlUnitDriverDependency
+    testImplementation spockDependency
+    testImplementation jsoupDependency
+    testImplementation project(':module:geb-core')
+    testImplementation project(':module:geb-spock')
+    testImplementation htmlUnitDriverDependency
 
     currentManual project(":doc:manual")
     oldManualVersions.each {
@@ -170,6 +177,10 @@ task publish(type: Exec) {
 task prepareDeployment(type: Sync) {
     into rootProject.file("deploy")
     with distributions.main.contents
+}
+
+tasks.withType(JavaApplication) {
+    mainClass.set('ratpack.groovy.GroovyRatpackMain')
 }
 
 if (project.gradle.startParameter.continuous) {

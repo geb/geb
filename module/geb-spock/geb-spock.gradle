@@ -1,6 +1,11 @@
+plugins {
+	id 'java-library'
+}
+
 dependencies {
-	compile spockDependency
-	testCompile project(":internal:test-support")
+	api spockDependency
+	implementation project(":module:geb-ast")
+	testImplementation project(":internal:test-support")
 }
 
 modifyPom { pom ->

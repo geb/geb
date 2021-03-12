@@ -22,10 +22,10 @@ repositories {
 }
 
 dependencies {
-	compile localGroovy()
-	compile gradleApi()
+	implementation localGroovy()
+	implementation gradleApi()
 
-	compile "com.google.guava:guava:23.0"
+	implementation "com.google.guava:guava:23.0"
 }
 
 sourceSets {
