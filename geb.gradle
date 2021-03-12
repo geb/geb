@@ -67,11 +67,6 @@ allprojects { project ->
 
         repositories {
             mavenCentral()
-            maven {
-                name "java.net"
-                url "http://download.java.net/maven/2"
-                allowInsecureProtocol true
-            }
         }
 
         groovyModules = [

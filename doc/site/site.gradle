@@ -17,10 +17,6 @@
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
-        maven {
-            url "http://oss.jfrog.org/artifactory/repo"
-            allowInsecureProtocol true
-        }
         mavenCentral()
     }
     dependencies {
@@ -45,10 +41,6 @@ ext {
 }
 
 repositories {
-    maven {
-        url "http://oss.jfrog.org/artifactory/repo"
-        allowInsecureProtocol true
-    }
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://oss.sonatype.org/content/repositories/releases" }
