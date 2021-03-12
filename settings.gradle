@@ -40,7 +40,7 @@ buildscript {
 
 apply plugin: 'org.kordamp.gradle.oci-build-cache'
 
-ext.isCiServer = System.getenv("OCI_WRITER_KEY_PASSPHRASE") != null
+ext.isCiServer = System.getenv("OCI_WRITER_KEY_PASSPHRASE")?.size() > 0
 
 buildCache {
     local {
