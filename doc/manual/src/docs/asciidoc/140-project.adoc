@@ -82,6 +82,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:JLLeitschuh[Jonathan Leitschuh] - Configure execution of Gradle Wrapper Validation GitHub Action on the project
 * github-profile:jrodalo[José Luis Rodríguez Alonso] - Website improvements
 * github-profile:sclassen[Stephan Classen] - Doc improvements
+* github-profile:pbielicki[Przemysław Bielicki] - Removal of deprecations from the build
 
 == History
 
