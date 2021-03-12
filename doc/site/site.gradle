@@ -179,10 +179,6 @@ task prepareDeployment(type: Sync) {
     with distributions.main.contents
 }
 
-tasks.withType(JavaApplication) {
-    mainClass.set('ratpack.groovy.GroovyRatpackMain')
-}
-
 if (project.gradle.startParameter.continuous) {
     run {
         flattenClassloaders = true
