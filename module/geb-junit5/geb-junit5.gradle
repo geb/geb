@@ -3,9 +3,8 @@ ext {
 }
 
 dependencies {
-    implementation project(":module:geb-ast")
-    implementation project(":module:geb-junit")
-    implementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    api project(":module:geb-junit")
+    api "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 
     testImplementation "org.junit.platform:junit-platform-launcher:1.7.0"
     testImplementation jsoupDependency

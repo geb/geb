@@ -1,6 +1,6 @@
 dependencies {
-    implementation project(":module:geb-ast")
-    implementation "org.testng:testng:6.14.3"
+    api project(":module:geb-ast")
+    api "org.testng:testng:6.14.3"
 }
 
 test {

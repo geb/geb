@@ -1,12 +1,8 @@
-plugins {
-    id 'java-library'
-}
-
 dependencies {
-    // This is not strictly aa API dependency.
+    // This is not strictly an API dependency.
     // We list it as one so that it becomes a transitive dependency of geb-core and therefore
-    // making it available at implementation time of client code, assuming that their dependency management
-    // system makes transitive implementation dependencies first class implementation dependencies.
+    // making it available at compile time of client code, assuming that their dependency management
+    // system makes transitive compile dependencies first class compile dependencies.
     api project(":module:geb-implicit-assertions")
     api project(":module:geb-exceptions")
 }

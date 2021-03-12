@@ -10,7 +10,7 @@ subprojects {
             "geb-waiting",
             "geb-exceptions"
         ].contains(project.name)) {
-            implementation project(':module:geb-core')
+            api project(':module:geb-core')
         }
     }
 }

@@ -112,6 +112,7 @@ tasks.create('codenarc')
 subprojects {
     if (path in groovyModules) {
         apply plugin: "groovy"
+        apply plugin: "java-library"
         apply plugin: "idea"
         apply plugin: "codenarc"
 
