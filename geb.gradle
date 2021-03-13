@@ -170,8 +170,12 @@ subprojects {
     }
 
     if (path in publishedGroovyModules) {
-        plugins.withId("maven-publish") {
+        task javadocJar(type: Jar) {
+            classifier 'javadoc'
+            from groovydoc
+        }
 
+        plugins.withId("maven-publish") {
             java {
                 withJavadocJar()
                 withSourcesJar()
