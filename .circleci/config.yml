@@ -241,7 +241,7 @@ jobs:
             - gradle-home-upload
       - run:
           command: |
-            ./gradlew --no-daemon -Pci uploadArchives
+            ./gradlew --no-daemon -Pci publishToSonatype
       - save_cache:
           key: gradle-home-upload-{{ .Branch }}-{{ epoch }}
           paths:

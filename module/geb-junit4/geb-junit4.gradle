@@ -4,14 +4,15 @@ dependencies {
     api "junit:junit:$junit4Version"
 }
 
-modifyPom { pom ->
-    pom.project {
-        name "Geb for JUnit 4"
-        description "Geb (pronounced \"jeb\") integration with the JUnit 4 test framework."
-    }
+publishing.publications.main.pom {
+    name = "Geb for JUnit 4"
+    description = "Geb (pronounced \"jeb\") integration with the JUnit 4 test framework."
 
-    // User provides their own junit
-    pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "junit" })
+    withXml {
+        def dependencies = asNode().dependencies
+        def jUnitDependencies = dependencies.dependency.findAll { it.groupId.text() == "junit" }
+        jUnitDependencies.each { dependencies*.remove(it) }
+    }
 }
 
 test {

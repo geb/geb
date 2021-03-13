@@ -4,13 +4,6 @@ plugins {
 
 archivesBaseName = "geb-manual"
 
-modifyPom { pom ->
-    pom.project {
-        name "Geb Manual - The Book of Geb"
-        description "Geb (pronounced \"jeb\") manual, user guide and API reference."
-    }
-}
-
 repositories {
     jcenter()
 }
@@ -106,6 +99,19 @@ task manualZip(type: Zip) {
 
 artifacts {
     manual manualZip
+}
+
+publishing {
+    publications {
+        manual(MavenPublication) {
+            artifactId 'geb-manual'
+            artifact manualZip
+            pom {
+                name = "Geb Manual - The Book of Geb"
+                description = "Geb (pronounced \"jeb\") manual, user guide and API reference."
+            }
+        }
+    }
 }
 
 build {

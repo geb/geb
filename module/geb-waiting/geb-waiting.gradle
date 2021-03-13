@@ -7,9 +7,7 @@ dependencies {
     api project(":module:geb-exceptions")
 }
 
-modifyPom { pom ->
-    pom.project {
-        name "Geb Waiting"
-        description "Geb (pronounced \"jeb\") waiting module."
-    }
+publishing.publications.main.pom {
+    name = "Geb Waiting"
+    description = "Geb (pronounced \"jeb\") waiting module."
 }

@@ -18,11 +18,9 @@ dependencies {
     testImplementation spockDependency
 }
 
-modifyPom { pom ->
-    pom.project {
-        name "Geb Gradle plugins"
-        description "Gradle plugins for Geb (pronounced \"jeb\")."
-    }
+publishing.publications.main.pom {
+    name = "Geb Gradle plugins"
+    description = "Gradle plugins for Geb (pronounced \"jeb\")."
 }
 
 gradlePlugin {

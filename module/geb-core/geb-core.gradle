@@ -162,11 +162,13 @@ task ieBrowserStackTests {
     dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows18Test'
 }
 
-modifyPom { pom ->
-    pom.project {
-        name "Geb Core"
-        description "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
-    }
+publishing.publications.main.pom {
+    name = "Geb Core"
+    description = "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
 
-    pom.dependencies.findAll { it.groupId == "org.seleniumhq.selenium" }*.scope = "provided"
+    withXml {
+        def dependencies = asNode().dependencies
+        def seleniumDependencies = dependencies.dependency.findAll { it.groupId.text() == "org.seleniumhq.selenium" }
+        seleniumDependencies.scope*.getAt(0)*.value = 'provided'
+    }
 }

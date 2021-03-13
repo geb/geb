@@ -16,12 +16,13 @@ test {
     useJUnitPlatform()
 }
 
-modifyPom { pom ->
-    pom.project {
-        name "Geb for JUnit 5"
-        description "Geb (pronounced \"jeb\") integration with the JUnit 5 test framework."
-    }
+publishing.publications.main.pom {
+    name = "Geb for JUnit 5"
+    description = "Geb (pronounced \"jeb\") integration with the JUnit 5 test framework."
 
-    // User provides their own junit
-    pom.dependencies.removeAll(pom.dependencies.findAll { it.groupId == "org.junit.jupiter" })
+    withXml {
+        def dependencies = asNode().dependencies
+        def jUnitDependencies = dependencies.dependency.findAll { it.groupId.text() == "org.junit.jupiter" }
+        jUnitDependencies.each { dependencies*.remove(it) }
+    }
 }

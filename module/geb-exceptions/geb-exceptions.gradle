@@ -1,6 +1,4 @@
-modifyPom { pom ->
-    pom.project {
-        name "Geb Exceptions"
-        description "Common exceptions used by different Geb (pronounced \"jeb\") modules."
-    }
+publishing.publications.main.pom {
+    name = "Geb Exceptions"
+    description = "Common exceptions used by different Geb (pronounced \"jeb\") modules."
 }

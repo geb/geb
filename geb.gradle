@@ -1,6 +1,8 @@
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 import org.ysb33r.grolifant.api.OperatingSystem
 
+import java.time.Duration
+
 import static java.lang.Runtime.runtime
 
 buildscript {
@@ -12,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.1"
+        classpath "io.github.gradle-nexus:publish-plugin:1.0.0"
         classpath "gradle.plugin.com.github.erdi:idea-gradle-plugins:2.1"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.4"
@@ -20,7 +22,7 @@ buildscript {
 }
 
 apply plugin: 'base'
-apply plugin: 'io.codearte.nexus-staging'
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
 apply plugin: 'com.energizedwork.asl2'
 apply plugin: 'com.github.erdi.extended-idea'
 apply from: "gradle/idea.gradle"
@@ -29,12 +31,6 @@ def getProperty(String name, defaultValue) {
     hasProperty(name) ? property(name) : defaultValue
 }
 
-nexusStaging {
-    username = getProperty("sonatypeOssUsername", null)
-    password = getProperty("sonatypeOssPassword", null)
-    numberOfRetries = 60
-    delayBetweenRetriesInMillis = 2000
-}
 
 allprojects { project ->
     version = '4.1-SNAPSHOT'
@@ -104,6 +100,24 @@ allprojects { project ->
 
 tasks.create('codenarc')
 
+nexusPublishing {
+    repositories {
+        sonatype {
+            stagingProfileId = "c1802e5c2fe49"
+            username.set(providers.gradleProperty("sonatypeOssUsername").forUseAtConfigurationTime())
+            password.set(providers.gradleProperty("sonatypeOssPassword").forUseAtConfigurationTime())
+        }
+    }
+
+    clientTimeout = Duration.ofSeconds(300)
+    connectTimeout = Duration.ofSeconds(60)
+
+    transitionCheckOptions {
+        maxRetries.set(60)
+        delayBetween.set(Duration.ofMillis(3000))
+    }
+}
+
 subprojects {
     if (path in groovyModules) {
         apply plugin: "groovy"
@@ -156,27 +170,18 @@ subprojects {
     }
 
     if (path in publishedGroovyModules) {
-        task sourcesJar(type: Jar) {
-            classifier 'sources'
-            from sourceSets.main.allSource
-        }
+        plugins.withId("maven-publish") {
 
-        task javadocJar(type: Jar) {
-            classifier 'javadoc'
-            from groovydoc
-        }
+            java {
+                withJavadocJar()
+                withSourcesJar()
+            }
 
-        artifacts {
-            archives javadocJar, sourcesJar
-        }
-
-        gradle.taskGraph.whenReady { taskGraph ->
-            if (taskGraph.hasTask(uploadArchives) && !isSnapshot) {
-                tasks.withType(JavaCompile) {
-                    options.compilerArgs << "-Werror" << "-Xlint:options"
-                }
-                tasks.withType(GroovyCompile) {
-                    options.compilerArgs << "-Werror" << "-Xlint:options"
+            publishing {
+                publications {
+                    main(MavenPublication) {
+                        from components.java
+                    }
                 }
             }
         }
@@ -239,32 +244,49 @@ subprojects {
 
     if (path in publishedModules) {
         apply plugin: "base"
-        apply plugin: "maven"
+        apply plugin: "maven-publish"
         apply plugin: "signing"
 
         signing {
-            sign configurations.archives
-            required { !isSnapshot && !isCi && gradle.taskGraph.hasTask(uploadArchives) }
+            required { isSnapshot && !isCi }
+            publishing.publications.configureEach {
+                sign(it)
+            }
         }
 
-        apply from: "$rootDir/gradle/pom.gradle"
-
-        uploadArchives { task ->
-            repositories.mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                gradle.taskGraph.whenReady { taskGraph ->
-                    if (taskGraph.hasTask(task)) {
-                        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                            authentication(userName: sonatypeOssUsername, password: sonatypeOssPassword)
+        publishing {
+            publications.configureEach {
+                pom {
+                    url = "http://www.gebish.org"
+                    inceptionYear = "2010"
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
                         }
-                        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                            authentication(userName: sonatypeOssUsername, password: sonatypeOssPassword)
+                    }
+                    scm {
+                        url = "https://github.com/geb/geb/"
+                    }
+                    developers {
+                        developer {
+                            id = "alkemist"
+                            name = "Luke Daley"
+                            roles = ["Founder"]
+                        }
+                        developer {
+                            id = "erdi"
+                            name = "Marcin Erdmann"
+                            roles = ["Lead"]
                         }
                     }
                 }
             }
+        }
 
-            task.onlyIf { isSnapshot || !isCi }
+        tasks.withType(PublishToMavenRepository) {
+            onlyIf { isSnapshot || !isCi }
         }
     }
 
@@ -277,10 +299,6 @@ subprojects {
         }
     }
 
-}
-
-task release {
-    dependsOn { allprojects.findAll { it.path in publishedModules }*.uploadArchives }
 }
 
 task stage(type: Sync) {
