@@ -189,6 +189,10 @@ subprojects {
                 }
             }
         }
+
+        task publishJarsAndManual {
+            dependsOn 'publishMainPublicationToSonatypeRepository'
+        }
     }
 
     if (path in dockerisedCrossBrowserTestModules) {

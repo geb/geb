@@ -114,6 +114,10 @@ publishing {
     }
 }
 
+task publishJarsAndManual {
+    dependsOn 'publishManualPublicationToSonatypeRepository'
+}
+
 build {
     dependsOn manualZip
 }

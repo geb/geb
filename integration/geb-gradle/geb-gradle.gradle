@@ -23,10 +23,6 @@ publishing.publications.main.pom {
     description = "Gradle plugins for Geb (pronounced \"jeb\")."
 }
 
-tasks.withType(PublishToMavenRepository).matching { it.name.contains "PluginMarker" }.all {
-    onlyIf { false }
-}
-
 gradlePlugin {
     plugins {
         sauceLabsPlugin {
