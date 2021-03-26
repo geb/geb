@@ -22,8 +22,6 @@ import spock.lang.Issue
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
-
 class ImplicitAssertionsTransformationSpec extends Specification {
 
     @Unroll("expression '#closureBody' is asserted and fails")
@@ -175,20 +173,7 @@ class ImplicitAssertionsTransformationSpec extends Specification {
     }
 
     private Class getTransformedClassWithClosureBody(String... code) {
-        File tempFile = File.createTempFile('TransformedClass', '.groovy')
-        tempFile << makeCodeTemplate(code)
-
-        def invoker = new TransformTestHelper() {
-            protected configure(TransformTestHelper.Transforms transforms) {
-                transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
-            }
-        }
-
-        invoker.parse(tempFile)
-
-        Class transformed = invoker.parse(tempFile)
-        tempFile.delete()
-        transformed
+        new GroovyClassLoader().parseClass(makeCodeTemplate(code))
     }
 
     private getTransformedInstanceWithClosureBody(String... code) {

@@ -16,40 +16,33 @@
 package geb.transform.implicitassertions
 
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-import org.junit.runner.JUnitCore
-import org.junit.runner.Result
 import org.junit.runner.notification.Failure
-import org.spockframework.compiler.SpockTransform
 import spock.lang.Specification
-
-import static org.codehaus.groovy.control.CompilePhase.CANONICALIZATION
-import static org.codehaus.groovy.control.CompilePhase.SEMANTIC_ANALYSIS
+import spock.util.EmbeddedSpecRunner
 
 class SpockIntegrationSpec extends Specification {
 
-    @Rule
-    TemporaryFolder temporaryFolder
+    EmbeddedSpecRunner specRunner = new EmbeddedSpecRunner(throwFailure: false)
 
-    def makeSpecClass(filename = "ExampleSpec") {
-        def invoker = new TransformTestHelper() {
-            protected configure(TransformTestHelper.Transforms transforms) {
-                transforms.add(new SpockTransform(), SEMANTIC_ANALYSIS)
-                transforms.add(new ImplicitAssertionsTransformation(), CANONICALIZATION)
-            }
-        }
-
-        def file = temporaryFolder.newFile() << getClass().classLoader.getResourceAsStream("${filename}.text")
-        invoker.parse(file)
+    def setup() {
+        specRunner.addClassImport(Specification)
     }
 
     def "transform works in a spec feature method"() {
-        given:
-        def specClass = makeSpecClass()
-
         when:
-        Result result = JUnitCore.runClasses(specClass)
+        def result = specRunner.run """
+            class ExampleSpec extends Specification {
+
+                def featureMethod() {
+                    expect:
+                    waitFor { 1 == 2 }
+                }
+
+                private waitFor(Closure c) {
+                    c()
+                }
+            }
+        """
 
         then:
         result.failureCount == 1
@@ -63,14 +56,29 @@ class SpockIntegrationSpec extends Specification {
     }
 
     def "transform works in a spec helper method"() {
-        given:
-        def specClass = makeSpecClass()
-
         when:
-        specClass.newInstance().helperMethod()
+        def result = specRunner.run """
+            class ExampleSpec extends Specification {
+
+                def featureMethod() {
+                    expect:
+                    helperMethod()
+                }
+
+                def helperMethod() {
+                    waitFor { 3 == 4 }
+                }
+
+                private waitFor(Closure c) {
+                    c()
+                }
+            }
+        """
 
         then:
-        PowerAssertionError error = thrown()
+        result.failureCount == 1
+        Failure failure = result.failures.first()
+        PowerAssertionError error = failure.exception.cause
         error.message == """
             3 == 4
               |
@@ -79,11 +87,24 @@ class SpockIntegrationSpec extends Specification {
     }
 
     def "can have wait for methods with explicit asserts"() {
-        given:
-        def specClass = makeSpecClass("ExampleSpec2")
-
         when:
-        Result result = JUnitCore.runClasses(specClass)
+        def result = specRunner.run """
+            class ExampleSpec extends Specification {
+
+                def featureMethodWithAssertInWaitFor() {
+                    expect:
+                    waitFor { assert 1 == 1; true }
+                }
+
+                private waitFor(Closure c) {
+                    try {
+                        c()
+                    } catch (Throwable e) {
+                        throw new Exception("nested", e)
+                    }
+                }
+            }
+        """
 
         then:
         result.failureCount == 0
