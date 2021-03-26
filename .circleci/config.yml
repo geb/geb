@@ -333,13 +333,15 @@ workflows:
             - ie
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - 5.x
       - publish-site:
           requires:
             - upload
           filters:
             branches:
-              only: master
+              only: 5.x
       - trigger-example-projects:
           requires:
             - upload
