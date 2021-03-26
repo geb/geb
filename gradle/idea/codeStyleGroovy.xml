@@ -2,6 +2,9 @@
 	<option name="USE_PER_PROJECT_SETTINGS" value="true"/>
 	<code_scheme name="Project" version="173">
 		<codeStyleSettings language="Groovy">
+            <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1"/>
+            <option name="KEEP_BLANK_LINES_IN_CODE" value="1"/>
+            <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1"/>
 			<indentOptions>
 				<option name="CONTINUATION_INDENT_SIZE" value="4"/>
 			</indentOptions>
