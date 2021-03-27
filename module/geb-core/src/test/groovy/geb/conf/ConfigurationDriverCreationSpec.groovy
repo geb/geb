@@ -26,7 +26,10 @@ import spock.lang.Specification
 class ConfigurationDriverCreationSpec extends Specification {
 
     @Shared
-        classLoader
+    URLClassLoader originalContextClassLoader
+
+    @Shared
+    URLClassLoader classLoader
 
     def d
 
@@ -35,7 +38,17 @@ class ConfigurationDriverCreationSpec extends Specification {
         def thisLoader = getClass().classLoader
         def classpath = thisLoader.getURLs().findAll { !it.path.contains("selenium-ie-driver") }
         classLoader = new URLClassLoader(classpath as URL[], thisLoader.parent)
+
+        originalContextClassLoader = Thread.currentThread().contextClassLoader
         Thread.currentThread().contextClassLoader = classLoader
+    }
+
+    def cleanupSpec() {
+        Thread.currentThread().contextClassLoader = originalContextClassLoader
+    }
+
+    def cleanup() {
+        d?.quit()
     }
 
     def p(m = [:]) {
@@ -64,14 +77,6 @@ class ConfigurationDriverCreationSpec extends Specification {
 
     boolean isInstanceOf(Class clazz, Object instance) {
         loadClass(clazz).isInstance(instance)
-    }
-
-    def cleanup() {
-        d?.quit()
-    }
-
-    def cleanupSpec() {
-        Thread.currentThread().contextClassLoader = null
     }
 
     def "no property"() {
