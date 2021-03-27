@@ -15,14 +15,9 @@
  */
 package configuration
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class TemplateOptionsConfigScriptSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "configuring default values for template options"() {
         when:

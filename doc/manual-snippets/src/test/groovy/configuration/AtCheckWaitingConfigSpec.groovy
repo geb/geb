@@ -15,14 +15,9 @@
  */
 package configuration
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class AtCheckWaitingConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "at check waiting configuration"() {
         when:

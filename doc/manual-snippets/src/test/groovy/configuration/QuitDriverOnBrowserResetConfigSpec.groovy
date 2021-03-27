@@ -15,14 +15,9 @@
  */
 package configuration
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class QuitDriverOnBrowserResetConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "configuring quitting driver on browser reset"() {
         when:

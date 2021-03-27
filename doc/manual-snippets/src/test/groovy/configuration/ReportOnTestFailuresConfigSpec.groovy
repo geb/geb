@@ -15,14 +15,9 @@
  */
 package configuration
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class ReportOnTestFailuresConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "configuring reporting on test failures only"() {
         when:

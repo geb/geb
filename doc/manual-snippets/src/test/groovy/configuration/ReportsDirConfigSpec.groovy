@@ -15,14 +15,9 @@
  */
 package configuration
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class ReportsDirConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "using path as reports dir value"() {
         when:

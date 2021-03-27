@@ -17,15 +17,10 @@ package geb.conf
 
 import configuration.InlineConfigurationLoader
 import geb.error.InvalidGebConfiguration
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class TemplateOptionsConfigScriptSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "invalid waitCondition default template option configuration value"() {
         given:

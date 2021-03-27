@@ -17,8 +17,6 @@ package configuration
 
 import geb.driver.CachingDriverFactory
 import geb.test.WebDriverServer
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.remote.RemoteWebDriver
@@ -26,9 +24,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class DriverConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def setupSpec() {
         CachingDriverFactory.clearCacheAndQuitDriver()

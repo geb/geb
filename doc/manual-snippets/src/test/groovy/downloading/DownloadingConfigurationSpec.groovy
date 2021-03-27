@@ -17,16 +17,11 @@ package downloading
 
 import configuration.InlineConfigurationLoader
 import geb.test.GebSpecWithCallbackServer
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class DownloadingConfigurationSpec extends GebSpecWithCallbackServer implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     String getDirectDownloadingConfig() {
         """

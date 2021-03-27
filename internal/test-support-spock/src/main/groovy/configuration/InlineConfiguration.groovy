@@ -17,19 +17,22 @@ package configuration
 
 import geb.Configuration
 import geb.ConfigurationLoader
+import geb.test.CloseableTempDirectory
 
 class InlineConfiguration {
 
-    static Configuration parseConfigScript(ClassLoader classLoader, String script) {
-        def tempDir = File.createTempDir()
-        try {
-            def groovyClassLoader = new GroovyClassLoader(classLoader)
-            groovyClassLoader.addClasspath(tempDir.absolutePath)
-            def configFile = new File(tempDir, "GebConfig.groovy")
+    static Configuration parseConfigScript(String script) {
+        parseConfigScript(null, script)
+    }
+
+    static Configuration parseConfigScript(String env, String script) {
+        new CloseableTempDirectory().withCloseable {
+            def directory = it.file
+            def groovyClassLoader = new GroovyClassLoader(InlineConfiguration.classLoader)
+            groovyClassLoader.addClasspath(directory.absolutePath)
+            def configFile = new File(directory, "GebConfig.groovy")
             configFile << script
-            new ConfigurationLoader(null, null, groovyClassLoader).getConf(configFile.name)
-        } finally {
-            tempDir.deleteDir()
+            new ConfigurationLoader(env, null, groovyClassLoader).getConf(configFile.name)
         }
     }
 

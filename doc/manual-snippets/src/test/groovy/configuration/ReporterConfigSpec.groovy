@@ -18,14 +18,9 @@ package configuration
 import geb.report.ReportState
 import geb.report.Reporter
 import geb.report.ReportingListener
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class ReporterConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "configuring custom reporter"() {
         when:

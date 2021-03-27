@@ -16,14 +16,9 @@
 package configuration
 
 import geb.Page
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class UnexpectedPagesConfigSpec extends Specification implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
 
     def "unexpected pages"() {
         when:

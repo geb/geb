@@ -27,7 +27,7 @@ import java.util.function.Supplier
 class NavigatorFactoryConfigSpec extends GebSpecWithCallbackServer {
 
     private static final Supplier<Browser> BROWSER_SUPPLIER = configToBrowserSupplier {
-        InlineConfiguration.parseConfigScript(NavigatorFactoryConfigSpec.classLoader, """
+        InlineConfiguration.parseConfigScript("""
             import configuration.MyCustomNavigator
             // tag::config[]
             import geb.Browser

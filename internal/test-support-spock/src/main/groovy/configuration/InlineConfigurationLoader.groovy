@@ -16,12 +16,8 @@
 package configuration
 
 import geb.Configuration
-import geb.ConfigurationLoader
-import org.junit.rules.TemporaryFolder
 
 trait InlineConfigurationLoader {
-
-    abstract TemporaryFolder getTemporaryFolder()
 
     Configuration config
 
@@ -30,10 +26,6 @@ trait InlineConfigurationLoader {
     }
 
     void configScript(String env, String script) {
-        def classLoader = new GroovyClassLoader(getClass().classLoader)
-        classLoader.addClasspath(temporaryFolder.root.absolutePath)
-        def configFile = temporaryFolder.newFile()
-        configFile << script
-        config = new ConfigurationLoader(env, null, classLoader).getConf(configFile.name)
+        config = InlineConfiguration.parseConfigScript(env, script)
     }
 }
