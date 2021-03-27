@@ -17,21 +17,10 @@ package navigator
 
 import configuration.InlineConfigurationLoader
 import geb.test.GebSpecWithCallbackServer
-import org.junit.Rule
-import org.junit.contrib.java.lang.system.SystemOutRule
-import org.junit.rules.TemporaryFolder
+
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut
 
 class NavigatorEventListenerSpec extends GebSpecWithCallbackServer implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
-
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog()
-
-    String getOutput() {
-        systemOutRule.log
-    }
 
     @SuppressWarnings("GStringExpressionWithinString")
     String getNavigatorEventListenerConfiguration() {
@@ -61,7 +50,7 @@ class NavigatorEventListenerSpec extends GebSpecWithCallbackServer implements In
         }
 
         and:
-        $("button").click()
+        def output = tapSystemOut { $("button").click() }
 
         then:
         output =~ /\[button\] was clicked/

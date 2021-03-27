@@ -55,13 +55,14 @@ configurations {
 }
 
 dependencies {
-    testImplementation spockDependency
+    groovy "org.codehaus.groovy:groovy-all:2.5.4"
+
+    testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
     testImplementation jsoupDependency
-    testImplementation project(':module:geb-core')
-    testImplementation project(':module:geb-spock')
+    testImplementation 'org.gebish:geb-spock:4.0'
     testImplementation htmlUnitDriverDependency
 
-    currentManual project(":doc:manual")
+    currentManual project(path: ":doc:manual", configuration: "manual")
     oldManualVersions.each {
         delegate."manual-$it" "org.gebish:geb-manual:$it@zip"
     }

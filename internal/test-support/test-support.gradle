@@ -1,4 +1,5 @@
 dependencies {
+    groovy "org.codehaus.groovy:groovy-xml"
     api project(':module:geb-core')
     api spockDependency
     api htmlUnitDriverDependency

@@ -16,7 +16,6 @@
 package geb.transform.implicitassertions
 
 import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
-import org.junit.runner.notification.Failure
 import spock.lang.Specification
 import spock.util.EmbeddedSpecRunner
 
@@ -45,8 +44,8 @@ class SpockIntegrationSpec extends Specification {
         """
 
         then:
-        result.failureCount == 1
-        Failure failure = result.failures.first()
+        result.totalFailureCount == 1
+        def failure = result.failures.first()
         PowerAssertionError error = failure.exception.cause
         error.message == """
             1 == 2
@@ -76,8 +75,8 @@ class SpockIntegrationSpec extends Specification {
         """
 
         then:
-        result.failureCount == 1
-        Failure failure = result.failures.first()
+        result.totalFailureCount == 1
+        def failure = result.failures.first()
         PowerAssertionError error = failure.exception.cause
         error.message == """
             3 == 4
@@ -107,7 +106,7 @@ class SpockIntegrationSpec extends Specification {
         """
 
         then:
-        result.failureCount == 0
+        result.totalFailureCount == 0
     }
 }
 

@@ -16,11 +16,10 @@
 package testing
 
 import geb.test.CallbackHttpServer
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.TempDir
 import spock.util.EmbeddedSpecRunner
 
 class ReportingFunctionalSpec extends Specification {
@@ -31,8 +30,8 @@ class ReportingFunctionalSpec extends Specification {
     @AutoCleanup("stop")
     def server = new CallbackHttpServer()
 
-    @Rule
-    TemporaryFolder tempDir
+    @TempDir
+    File temporaryDir
 
     def setupSpec() {
         server.start()
@@ -48,7 +47,7 @@ class ReportingFunctionalSpec extends Specification {
     }
 
     File getReportsDir() {
-        new File(tempDir.root, "reports")
+        new File(temporaryDir, "reports")
     }
 
     void reportExists(String filename) {

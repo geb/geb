@@ -16,6 +16,14 @@
 package geb.module
 
 class TimeInputBaseSpec extends InputBasedModuleSpec<TimeInput> {
-    final String inputType = 'time'
-    final String otherInputType = 'checkbox'
+
+    @Override
+    String getInputType() {
+        'time'
+    }
+
+    @Override
+    String getOtherInputType() {
+        'checkbox'
+    }
 }

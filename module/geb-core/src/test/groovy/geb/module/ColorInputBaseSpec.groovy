@@ -16,6 +16,14 @@
 package geb.module
 
 class ColorInputBaseSpec extends InputBasedModuleSpec<ColorInput> {
-    final String inputType = 'color'
-    final String otherInputType = 'checkbox'
+
+    @Override
+    String getInputType() {
+        'color'
+    }
+
+    @Override
+    String getOtherInputType() {
+        'checkbox'
+    }
 }

@@ -17,7 +17,9 @@ package geb.gradle.saucelabs
 
 import geb.gradle.PluginSpec
 
-import static geb.gradle.saucelabs.SaucePlugin.*
+import static geb.gradle.saucelabs.SaucePlugin.CLOSE_TUNNEL_TASK_NAME
+import static geb.gradle.saucelabs.SaucePlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
+import static geb.gradle.saucelabs.SaucePlugin.UNPACK_CONNECT_TASK_NAME
 import static org.gradle.testkit.runner.TaskOutcome.SKIPPED
 
 class SaucePluginSpec extends PluginSpec {

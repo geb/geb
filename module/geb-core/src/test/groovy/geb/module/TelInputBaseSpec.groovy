@@ -16,6 +16,14 @@
 package geb.module
 
 class TelInputBaseSpec extends InputBasedModuleSpec<TelInput> {
-    final String inputType = "tel"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "tel"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

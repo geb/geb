@@ -16,6 +16,14 @@
 package geb.module
 
 class PasswordInputBaseSpec extends InputBasedModuleSpec<PasswordInput> {
-    final String inputType = "password"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "password"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

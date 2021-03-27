@@ -4,5 +4,5 @@ publishing.publications.main.pom {
 }
 
 dependencies {
-    groovy "org.codehaus.groovy:groovy-macro:${groovyVersion}"
+    groovy "org.codehaus.groovy:groovy-macro"
 }

@@ -25,9 +25,7 @@ class DelegatingNavigatorEventListener implements NavigatorEventListener {
     private final Supplier<NavigatorEventListener> delegateSupplier
     private final Navigator source
 
-    DelegatingNavigatorEventListener(
-            Supplier<NavigatorEventListener> delegateSupplier, Navigator source
-    ) {
+    DelegatingNavigatorEventListener(Supplier<NavigatorEventListener> delegateSupplier, Navigator source) {
         this.delegateSupplier = delegateSupplier
         this.source = source
     }

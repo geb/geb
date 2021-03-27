@@ -23,6 +23,14 @@ import geb.test.browsers.RequiresRealBrowser
 @Firefox
 @RequiresRealBrowser // due to https://sourceforge.net/p/htmlunit/bugs/1923/
 class SearchInputBaseSpec extends InputBasedModuleSpec<SearchInput> {
-    final String inputType = "search"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "search"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

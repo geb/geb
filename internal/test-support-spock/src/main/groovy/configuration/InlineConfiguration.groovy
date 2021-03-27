@@ -26,8 +26,8 @@ class InlineConfiguration {
     }
 
     static Configuration parseConfigScript(String env, String script) {
-        new CloseableTempDirectory().withCloseable {
-            def directory = it.file
+        try(def tempDirectory = new CloseableTempDirectory()) {
+            def directory = tempDirectory.file
             def groovyClassLoader = new GroovyClassLoader(InlineConfiguration.classLoader)
             groovyClassLoader.addClasspath(directory.absolutePath)
             def configFile = new File(directory, "GebConfig.groovy")

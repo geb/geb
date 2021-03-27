@@ -17,10 +17,9 @@ package geb.conf
 import geb.ConfigurationLoader
 import geb.error.UnableToLoadException
 import org.codehaus.groovy.reflection.ClassInfo
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Issue
 import spock.lang.Specification
+import spock.lang.TempDir
 import spock.lang.Unroll
 
 class ConfigurationLoaderSpec extends Specification {
@@ -28,8 +27,8 @@ class ConfigurationLoaderSpec extends Specification {
     def env
     def config
 
-    @Rule
-    TemporaryFolder tmp = new TemporaryFolder()
+    @TempDir
+    File tmp
 
     def "load file from classpath with no env"() {
         when:
@@ -92,8 +91,8 @@ class ConfigurationLoaderSpec extends Specification {
         def loader = new GroovyClassLoader()
 
         and:
-        tmp.newFile("GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
-        loader.addURL(tmp.root.toURI().toURL())
+        new File(tmp, "GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
+        loader.addURL(tmp.toURI().toURL())
 
         expect:
         loader.getResource('GebConfigBothScriptAndClass.groovy')
@@ -107,8 +106,8 @@ class ConfigurationLoaderSpec extends Specification {
         def loader = new ConfigurationLoaderWithOverriddenConfigNames('GebConfigBothScriptAndClass')
 
         and:
-        tmp.newFile("GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
-        loader.specialClassLoader.addURL(tmp.root.toURI().toURL())
+        new File(tmp, "GebConfigBothScriptAndClass.groovy") << "testValue = 'from script'"
+        loader.specialClassLoader.addURL(tmp.toURI().toURL())
 
         expect:
         loader.getConf().rawConfig.testValue == 'from script'

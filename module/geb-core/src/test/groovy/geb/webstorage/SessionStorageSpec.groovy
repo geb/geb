@@ -17,7 +17,10 @@ package geb.webstorage
 
 class SessionStorageSpec extends AbstractWebStorageSpec {
 
-    final String storageObjectName = "sessionStorage"
+    @Override
+    String getStorageObjectName() {
+        "sessionStorage"
+    }
 
     @Override
     WebStorage getStorage() {

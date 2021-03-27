@@ -66,7 +66,7 @@ The configuration options available are described in your cloud provider's docum
 * link:http://www.browserstack.com/automate/capabilities[BrowserStack Capabilities]
 * link:https://www.lambdatest.com/capabilities-generator/[LambdaTest capabilities]
 
-Finally, there is also link:api/geb/driver/CloudDriverFactory.html#create(java.lang.String,%20java.lang.String,%20Map%3CString,%20Object%3E)[an overloaded version of `create()` method] available that
+Finally, there is also link:api/geb/driver/CloudDriverFactory.html#create(java.lang.String,%20java.lang.String,%20java.lang.String,%20Map)[an overloaded version of `create()` method] available that
 doesn't take a string specification and allows you to simply specify all the required capabilities using a map.
 This method might be useful if you just want to use the factory, but don't need the build level parametrization.
 

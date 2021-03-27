@@ -16,6 +16,14 @@
 package geb.module
 
 class MonthInputBaseSpec extends InputBasedModuleSpec<MonthInput> {
-    final String inputType = 'month'
-    final String otherInputType = 'checkbox'
+
+    @Override
+    String getInputType() {
+        'month'
+    }
+
+    @Override
+    String getOtherInputType() {
+        'checkbox'
+    }
 }

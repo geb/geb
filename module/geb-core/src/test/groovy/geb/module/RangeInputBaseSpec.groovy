@@ -16,6 +16,14 @@
 package geb.module
 
 class RangeInputBaseSpec extends InputBasedModuleSpec<RangeInput> {
-    final String inputType = "range"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "range"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

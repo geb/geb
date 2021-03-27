@@ -98,6 +98,9 @@ ruleset {
         ClassStartsWithBlankLine {
             enabled = false
         }
+        BracesForMethod {
+            doNotApplyToClassNames = 'RemoteWebDriverWithExpectations, ModuleBaseDefinitionDelegate, GebTestManager'
+        }
     }
     ruleset('rulesets/generic.xml') {
         RequiredString {

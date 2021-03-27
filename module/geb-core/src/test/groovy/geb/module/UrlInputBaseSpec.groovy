@@ -16,6 +16,14 @@
 package geb.module
 
 class UrlInputBaseSpec extends InputBasedModuleSpec<UrlInput> {
-    final String inputType = "url"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "url"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

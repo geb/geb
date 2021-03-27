@@ -19,22 +19,19 @@ import geb.test.GebSpecWithCallbackServer
 import org.apache.commons.fileupload.disk.DiskFileItemFactory
 import org.apache.commons.fileupload.servlet.ServletFileUpload
 import org.apache.http.entity.ContentType
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-import static geb.Browser.UTF8
-
 class FileUploadSpec extends GebSpecWithCallbackServer {
 
-    @Rule
-    TemporaryFolder dir = new TemporaryFolder()
+    @TempDir
+    File temporaryDir
 
     def "uploadig a file"() {
         given:
-        def uploadedFile = dir.newFile() << "from file"
+        def uploadedFile = File.createTempFile("upload", null, temporaryDir) << "from file"
         setupServer()
 
         when:

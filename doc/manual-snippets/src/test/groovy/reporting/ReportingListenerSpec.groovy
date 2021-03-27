@@ -17,21 +17,10 @@ package reporting
 
 import configuration.InlineConfigurationLoader
 import geb.test.GebSpecWithCallbackServer
-import org.junit.Rule
-import org.junit.contrib.java.lang.system.SystemOutRule
-import org.junit.rules.TemporaryFolder
+
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut
 
 class ReportingListenerSpec extends GebSpecWithCallbackServer implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
-
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog()
-
-    String getOutput() {
-        systemOutRule.log
-    }
 
     String getReportingListenerConfiguration() {
         '''
@@ -59,7 +48,7 @@ class ReportingListenerSpec extends GebSpecWithCallbackServer implements InlineC
 
         and:
         go()
-        report "some report"
+        def output = tapSystemOut { report "some report" }
 
         then:
         output =~ /\[\[ATTACHMENT\|.*some report\.html\]\]/

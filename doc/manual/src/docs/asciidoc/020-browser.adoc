@@ -124,7 +124,7 @@ It is usually most desirable to define your base urls with trailing slashes and 
 === Using pages
 
 Page objects (<<the-page, discussed further shortly>>) can define a url that will be used when explicitly navigating to that page.
-This is done with the link:api/geb/Browser.html#to(java.util.Map,%20Class%3CT%3E,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(java.util.Map,%20Class%3CT%3E,%20java.lang.Object)[`via()`] methods.
+This is done with the link:api/geb/Browser.html#to(java.util.Map,%20Class,%20java.lang.Object)[`to()`] and link:api/geb/Browser.html#via(java.util.Map,%20Class,%20java.lang.Object)[`via()`] methods.
 
 [source,groovy]
 ----
@@ -289,7 +289,7 @@ windows.
 === Already opened windows
 
 If you know the name of the window in context of which you want to execute the code you can use
-`link:api/geb/Browser.html#withWindow(java.lang.String,%20Closure%3CT%3E)["withWindow(String windowName, Closure block)"]`.
+`link:api/geb/Browser.html#withWindow(java.lang.String,%20Closure)["withWindow(String windowName, Closure block)"]`.
 
 Given that this HTML is rendered for the `baseUrl`:
 
@@ -306,7 +306,7 @@ include::{test-dir}/browser/WithWindowSpec.groovy[tag=using_name]
 ----
 
 If you don't know the name of the window but you know something about the content of the window you can use the
-`link:api/geb/Browser.html#withWindow(groovy.lang.Closure,%20Closure%3CT%3E)["withWindow(Closure specification, Closure block)"]` method.
+`link:api/geb/Browser.html#withWindow(groovy.lang.Closure,%20Closure)["withWindow(Closure specification, Closure block)"]` method.
 The first closure passed should return true for the window, or windows, you want to use as context for execution of the second closure.
 
 [WARNING]
@@ -339,7 +339,7 @@ If code of the closure passed as the last argument changes browser's current pag
 [[with-window-options]]
 ==== `withWindow()` options
 
-There are some additional options that can be passed to a link:api/geb/Browser.html#withWindow(java.util.Map,%20groovy.lang.Closure,%20Closure%3CT%3E)[`withWindow()`] call which make working
+There are some additional options that can be passed to a link:api/geb/Browser.html#withWindow(java.util.Map,%20groovy.lang.Closure,%20Closure)[`withWindow()`] call which make working
 with already opened windows even simpler. The general syntax is:
 
 [source,groovy]
@@ -365,7 +365,7 @@ reverted to its original value afterwards. If the page class defines an “at ch
 === Newly opened windows
 
 If you wish to execute code in a window that is newly opened by some of your actions, use the
-`link:api/geb/Browser.html#withNewWindow(groovy.lang.Closure,%20Closure%3CT%3E)["withNewWindow(Closure windowOpeningBlock, Closure block)"]` method.
+`link:api/geb/Browser.html#withNewWindow(groovy.lang.Closure,%20Closure)["withNewWindow(Closure windowOpeningBlock, Closure block)"]` method.
 Given that this HTML is rendered for the `baseUrl`:
 
 [source,html,indent=0]
@@ -394,7 +394,7 @@ If code of the closure passed as the last argument changes browser's current pag
 [[with-new-window-options]]
 ==== `withNewWindow()` options
 
-There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20Closure%3CT%3E)[`withNewWindow()`] call which make working
+There are several options that can be passed to a link:api/geb/Browser.html#withNewWindow(java.util.Map,%20groovy.lang.Closure,%20Closure)[`withNewWindow()`] call which make working
 with newly opened windows even simpler. The general syntax is:
 
 [source,groovy]

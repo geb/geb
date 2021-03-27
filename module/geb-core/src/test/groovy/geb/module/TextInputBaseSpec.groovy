@@ -16,6 +16,14 @@
 package geb.module
 
 class TextInputBaseSpec extends InputBasedModuleSpec<TextInput> {
-    final String inputType = "text"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "text"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

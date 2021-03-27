@@ -18,15 +18,10 @@ import geb.report.ReportState
 import geb.report.Reporter
 import geb.report.ReportingListener
 import geb.test.CallbackHttpServer
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-import org.junit.runner.Result
 import org.spockframework.runtime.ConditionNotSatisfiedError
-import spock.lang.AutoCleanup
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.lang.Unroll
+import spock.lang.*
 import spock.util.EmbeddedSpecRunner
+import spock.util.EmbeddedSpecRunner.SummarizedEngineExecutionResults
 
 class GebReportingSpecSpec extends Specification {
 
@@ -34,8 +29,8 @@ class GebReportingSpecSpec extends Specification {
 
     EmbeddedSpecRunner specRunner = new EmbeddedSpecRunner(throwFailure: false)
 
-    @Rule
-    TemporaryFolder tempDir
+    @TempDir
+    File temporaryDir
 
     @Shared
     @AutoCleanup("stop")
@@ -59,7 +54,7 @@ class GebReportingSpecSpec extends Specification {
     }
 
     File getReportDir() {
-        new File(tempDir.root, "reports")
+        new File(temporaryDir, "reports")
     }
 
     File getReportGroupDir() {
@@ -152,7 +147,7 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        reportFile("001-001-failing test_0_-failure.html").exists()
+        reportFile("001-001-failing test _parameter_ 0_ _0_-failure.html").exists()
     }
 
     def "failure when writing a report does not overwrite the original test failure"() {
@@ -285,7 +280,7 @@ class GebReportingSpecSpec extends Specification {
         new File(reportDir, "002-001-fixture-failure.html").exists()
     }
 
-    Result runReportingSpec(String additionalConfiguration = "", String body) {
+    SummarizedEngineExecutionResults runReportingSpec(String additionalConfiguration = "", String body) {
         specRunner.run """
             class $REPORTING_SPEC_NAME extends GebReportingSpec {
 

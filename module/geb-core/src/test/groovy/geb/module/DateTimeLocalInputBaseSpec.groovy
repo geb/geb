@@ -16,6 +16,14 @@
 package geb.module
 
 class DateTimeLocalInputBaseSpec extends InputBasedModuleSpec<DateTimeLocalInput> {
-    final String inputType = 'datetime-local'
-    final String otherInputType = 'checkbox'
+
+    @Override
+    String getInputType() {
+        'datetime-local'
+    }
+
+    @Override
+    String getOtherInputType() {
+        'checkbox'
+    }
 }

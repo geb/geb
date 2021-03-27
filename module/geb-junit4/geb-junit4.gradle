@@ -2,6 +2,9 @@ dependencies {
     api project(":module:geb-ast")
     api project(":module:geb-junit")
     api "junit:junit:$junit4Version"
+
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.7.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 }
 
 publishing.publications.main.pom {
@@ -17,7 +20,7 @@ publishing.publications.main.pom {
 
 test {
     options {
-        excludeCategories 'geb.junit4.DoNotRunFromGradle'
+        excludeTags 'geb.junit4.DoNotRunFromGradle'
     }
 }
 

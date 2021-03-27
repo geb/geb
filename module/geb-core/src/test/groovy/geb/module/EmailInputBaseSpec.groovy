@@ -16,6 +16,14 @@
 package geb.module
 
 class EmailInputBaseSpec extends InputBasedModuleSpec<EmailInput> {
-    final String inputType = "email"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "email"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

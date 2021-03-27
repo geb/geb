@@ -1,5 +1,6 @@
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.0'
+    id 'java-platform'
 }
 
 archivesBaseName = "geb-manual"
@@ -11,13 +12,12 @@ repositories {
 configurations {
     groovydoc
     manual
-
-    delegate.default.extendsFrom manual
 }
 
 dependencies {
-    groovydoc "org.codehaus.groovy:groovy-groovydoc:${groovyVersion}"
-    groovydoc "org.codehaus.groovy:groovy-ant:${groovyVersion}"
+    groovydoc platform("org.codehaus.groovy:groovy-bom:${groovyVersion}")
+    groovydoc "org.codehaus.groovy:groovy-groovydoc"
+    groovydoc "org.codehaus.groovy:groovy-ant"
 }
 
 asciidoctorj {

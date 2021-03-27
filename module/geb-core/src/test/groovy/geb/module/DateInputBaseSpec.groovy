@@ -16,6 +16,14 @@
 package geb.module
 
 class DateInputBaseSpec extends InputBasedModuleSpec<DateInput> {
-    final String inputType = 'date'
-    final String otherInputType = 'checkbox'
+
+    @Override
+    String getInputType() {
+        'date'
+    }
+
+    @Override
+    String getOtherInputType() {
+        'checkbox'
+    }
 }
