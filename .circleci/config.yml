@@ -261,10 +261,10 @@ jobs:
     steps:
       - run:
           command: |
-            curl -X POST -u ${CIRCLE_API_EXAMPLE_GRADLE_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-gradle/tree/latest
+            curl -X POST -u ${CIRCLE_API_EXAMPLE_GRADLE_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-gradle/tree/4.x
             curl -X POST -u ${CIRCLE_API_EXAMPLE_CUCUMBER_JVM_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-cucumber-jvm/tree/latest
-            curl -X POST -u ${CIRCLE_API_EXAMPLE_MAVEN_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-maven/tree/latest
-            curl -H "Authorization: Bearer ${APPVEYOR_TOKEN}" -H "Content-type: application/json" -X POST https://ci.appveyor.com/api/builds -d '{"accountName": "erdi", "projectSlug": "geb-example-gradle", "branch": "latest"}'
+            curl -X POST -u ${CIRCLE_API_EXAMPLE_MAVEN_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-maven/tree/4.x
+            curl -H "Authorization: Bearer ${APPVEYOR_TOKEN}" -H "Content-type: application/json" -X POST https://ci.appveyor.com/api/builds -d '{"accountName": "erdi", "projectSlug": "geb-example-gradle", "branch": "4.x"}'
 
 workflows:
   version: 2
