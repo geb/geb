@@ -17,8 +17,14 @@ apply plugin: "geb-lambdatest"
 apply plugin: 'com.github.erdi.webdriver-binaries'
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
+java {
+    registerFeature('select') {
+        usingSourceSet(sourceSets.main)
+    }
+}
+
 dependencies {
-    api seleniumDependency, seleniumSupportDependency
+    api seleniumDependency
 
     api project(":module:geb-ast")
     api project(":module:geb-waiting")
@@ -26,6 +32,8 @@ dependencies {
         exclude(group: "ch.qos.logback")
     }
     api "org.threeten:threeten-extra:$threeTenExtraVersion"
+
+    selectImplementation(seleniumSupportDependency)
 
     testImplementation "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
     testImplementation project(":module:geb-spock")
@@ -162,13 +170,11 @@ task ieBrowserStackTests {
     dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows18Test'
 }
 
-publishing.publications.main.pom {
-    name = "Geb Core"
-    description = "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
-
-    withXml {
-        def dependencies = asNode().dependencies
-        def seleniumDependencies = dependencies.dependency.findAll { it.groupId.text() == "org.seleniumhq.selenium" }
-        seleniumDependencies.scope*.getAt(0)*.value = 'provided'
+publishing.publications.main {
+    suppressPomMetadataWarningsFor('selectApiElements')
+    suppressPomMetadataWarningsFor('selectRuntimeElements')
+    pom {
+        name = "Geb Core"
+        description = "Geb (pronounced \"jeb\") is a browser automation solution. It brings together the power of WebDriver, the elegance of jQuery content selection, the robustness of Page Object modelling and the expressiveness of the Groovy language."
     }
 }

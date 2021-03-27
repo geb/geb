@@ -11,10 +11,4 @@ dependencies {
 publishing.publications.main.pom {
     name = "Geb for JUnit 5"
     description = "Geb (pronounced \"jeb\") integration with the JUnit 5 test framework."
-
-    withXml {
-        def dependencies = asNode().dependencies
-        def jUnitDependencies = dependencies.dependency.findAll { it.groupId.text() == "org.junit.jupiter" }
-        jUnitDependencies.each { dependencies*.remove(it) }
-    }
 }

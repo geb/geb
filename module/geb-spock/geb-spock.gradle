@@ -6,10 +6,4 @@ dependencies {
 publishing.publications.main.pom {
     name = "Geb for Spock"
     description = "Geb (pronounced \"jeb\") integration with the Spock test framework."
-
-    withXml {
-        def dependencies = asNode().dependencies
-        def jUnitDependencies = dependencies.dependency.findAll { it.groupId.text() == "org.spockframework" }
-        jUnitDependencies.each { dependencies*.remove(it) }
-    }
 }
