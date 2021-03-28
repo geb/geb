@@ -45,7 +45,7 @@ allprojects { project ->
         htmlUnitDriverVersion = "2.35.1"
         groovyVersion = "2.5.14"
         spockVersion = "1.3-groovy-2.5"
-        junit4Version = "4.12"
+        junit4Version = "4.13.2"
         junit5Version = "5.7.0"
         jettyVersion = "9.4.8.v20171121"
         threeTenExtraVersion = "1.4"
