@@ -10,14 +10,7 @@ repositories {
 }
 
 configurations {
-    groovydoc
     manual
-}
-
-dependencies {
-    groovydoc platform("org.codehaus.groovy:groovy-bom:${groovyVersion}")
-    groovydoc "org.codehaus.groovy:groovy-groovydoc"
-    groovydoc "org.codehaus.groovy:groovy-ant"
 }
 
 asciidoctorj {
@@ -67,7 +60,8 @@ asciidoctor {
 
 task apiDoc(type: Groovydoc) {
     def apiGroovyModuleProjects = apiGroovyModules.collect { project(it) }
-    groovyClasspath = files(apiGroovyModuleProjects*.configurations*.compileClasspath + [configurations.groovydoc])
+    def apiGroovyModulesClasspath = files(apiGroovyModuleProjects*.configurations*.compileClasspath)
+    groovyClasspath = new GroovyRuntime(project).inferGroovyClasspath(apiGroovyModulesClasspath)
     classpath = files()
     destinationDir = file("$buildDir/apiDoc")
     apiGroovyModuleProjects.each {
