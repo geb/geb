@@ -60,8 +60,6 @@ asciidoctor {
 
 task apiDoc(type: Groovydoc) {
     def apiGroovyModuleProjects = apiGroovyModules.collect { project(it) }
-    def apiGroovyModulesClasspath = files(apiGroovyModuleProjects*.configurations*.compileClasspath)
-    groovyClasspath = new GroovyRuntime(project).inferGroovyClasspath(apiGroovyModulesClasspath)
     classpath = files()
     destinationDir = file("$buildDir/apiDoc")
     apiGroovyModuleProjects.each {
