@@ -45,7 +45,7 @@ allprojects { project ->
         htmlUnitDriverVersion = "2.35.1"
         groovyVersion = "3.0.7"
         spockVersion = "2.0-M5-groovy-3.0"
-        junit4Version = "4.12"
+        junit4Version = "4.13.2"
         junit5Version = "5.7.0"
         jettyVersion = "9.4.8.v20171121"
         threeTenExtraVersion = "1.4"
@@ -249,6 +249,9 @@ subprojects {
 
             link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
                 "spock.lang"
+
+            link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/$junit5Version",
+                "org.junit.jupiter.api"
 
             link "http://static.javadoc.io/junit/junit/$junit4Version",
                 "org.junit"
