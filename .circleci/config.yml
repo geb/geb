@@ -254,7 +254,7 @@ jobs:
       - run:
           command: |
             git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/gebish.git
-            git push -f heroku 5.x
+            git push -f heroku 5.x:master
   trigger-example-projects-master:
     docker:
       - image: gebish/ci:v7
