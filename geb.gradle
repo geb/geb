@@ -83,8 +83,6 @@ allprojects { project ->
 
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
-
-        groovydocModules = publishedGroovyModules + ":doc:manual"
     }
 
     if (isCi) {
@@ -222,33 +220,20 @@ subprojects {
         }
     }
 
-    if (path in groovydocModules) {
-        configurations {
-            create("groovydoc")
-        }
+    tasks.withType(Groovydoc) {
+        exclude "**/internal/**"
 
-        dependencies {
-            groovydoc platform("org.codehaus.groovy:groovy-bom:${groovyVersion}")
-            groovydoc "org.codehaus.groovy:groovy-groovydoc"
-            groovydoc "org.codehaus.groovy:groovy-ant"
-        }
+        link "http://docs.oracle.com/javase/8/docs/api/",
+            "java.net",
+            "java.util",
+            "java.lang",
+            "java.io"
 
-        tasks.withType(Groovydoc) {
-            groovyClasspath = configurations.groovydoc
+        link "http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/$seleniumVersion",
+            "org.openqa.selenium"
 
-            exclude "**/internal/**"
-
-            link "http://docs.oracle.com/javase/8/docs/api/",
-                "java.net",
-                "java.util",
-                "java.lang",
-                "java.io"
-
-            link "http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/$seleniumVersion",
-                "org.openqa.selenium"
-
-            link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
-                "spock.lang"
+        link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
+            "spock.lang"
 
             link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/$junit5Version",
                 "org.junit.jupiter.api"
@@ -256,17 +241,16 @@ subprojects {
             link "http://static.javadoc.io/junit/junit/$junit4Version",
                 "org.junit"
 
-            link "http://static.javadoc.io/org.threeten/threeten-extra/$threeTenExtraVersion",
-                "org.threeten.extra"
+        link "http://static.javadoc.io/org.threeten/threeten-extra/$threeTenExtraVersion",
+            "org.threeten.extra"
 
-            link "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/api/",
-                "groovy.lang"
+        link "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/api/",
+            "groovy.lang"
 
-            def docName = project.name == "manual" ? "Geb" : project.name
-            docTitle = "Groovy API Documentation for $docName $version"
-            footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
-            windowTitle = "Groovy API for $docName $version"
-        }
+        def docName = project.name == "manual" ? "Geb" : project.name
+        docTitle = "Groovy API Documentation for $docName $version"
+        footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
+        windowTitle = "Groovy API for $docName $version"
     }
 
     tasks.withType(Test) {
