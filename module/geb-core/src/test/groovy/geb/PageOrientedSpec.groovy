@@ -485,6 +485,11 @@ Caused by: Assertion failed:.*
         args << [[PageOrientedSpecPageA], [new PageOrientedSpecPageA()], []]
     }
 
+    @Issue("https://github.com/geb/issues/issues/640")
+    def "using 'container' as a content element name is supported"() {
+        expect:
+        to(PageWithContentCalledContainer).container.tag() == "body"
+    }
 }
 
 class PageOrientedSpecPageA extends Page {
@@ -624,5 +629,11 @@ class PageOrientedSpecPageWithContent extends Page {
 class PageWithMethodCallingAt extends Page {
     void callAt() {
         at(Page)
+    }
+}
+
+class PageWithContentCalledContainer extends Page {
+    static content = {
+        container { $("body") }
     }
 }
