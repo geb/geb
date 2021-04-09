@@ -21,14 +21,14 @@ import geb.navigator.factory.NavigatorFactory
 class PageContentTemplateBuilder {
 
     final Browser browser
-    final PageContentContainer container
+    final DynamicDelegationSuppressingPageContentContainer container
     final NavigatorFactory navigatorFactory
 
     final Map<String, PageContentTemplate> templates = [:]
 
     PageContentTemplateBuilder(Browser browser, PageContentContainer container, NavigatorFactory navigatorFactory) {
         this.browser = browser
-        this.container = container
+        this.container = new DynamicDelegationSuppressingPageContentContainer(container)
         this.navigatorFactory = navigatorFactory
     }
 
@@ -72,14 +72,14 @@ class PageContentTemplateBuilder {
     }
 
     def propertyMissing(String name) {
-        container[name]
+        container.unwrap()[name]
     }
 
     def methodMissing(String name, args) {
         def definition = null
         def params = null
 
-        if (PageContentNames.isNotAllowed(container, name)) {
+        if (PageContentNames.isNotAllowed(container.unwrap(), name)) {
             throwInvalidContent(name, "uses a not allowed content name: '$name'. Please use another name.")
         }
 
@@ -115,7 +115,7 @@ class PageContentTemplateBuilder {
     }
 
     private void throwInvalidContent(String name, String message) {
-        throw new InvalidPageContent(container, name, message)
+        throw new InvalidPageContent(container.unwrap(), name, message)
     }
 
     private throwBadInvocationError(name, args) {
@@ -130,7 +130,7 @@ class PageContentTemplateBuilder {
             }
             templates[aliasedName]
         } else {
-            new PageContentTemplate(browser, container, name, params, definition, navigatorFactory)
+            new PageContentTemplate(browser, container.unwrap(), name, params, definition, navigatorFactory)
         }
     }
 
