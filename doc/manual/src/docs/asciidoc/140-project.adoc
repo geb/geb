@@ -99,6 +99,10 @@ No changes have been made, yet.
 * Update Groovy to 3.0.7 and Spock to 2.0-M5-groovy-3.0. [issue:619[]]
 * Don't make non-optional dependencies optional in various modules' POMs. [issue:638[]]
 
+==== Fixes
+
+* Fix a bug under Groovy 3 which caused PageInstanceNotInitializedException when "container" was used as a content element name. [issue:640[]]
+
 === 4.1-SNAPSHOT
 
 ==== Fixes
