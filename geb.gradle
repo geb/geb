@@ -33,7 +33,7 @@ def getProperty(String name, defaultValue) {
 
 
 allprojects { project ->
-    version = '5.0-milestone-2'
+    version = '5.0-SNAPSHOT'
     group = 'org.gebish'
 
     ext {
