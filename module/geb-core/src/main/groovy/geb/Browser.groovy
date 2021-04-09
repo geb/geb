@@ -34,6 +34,7 @@ import org.openqa.selenium.html5.WebStorage as SeleniumWebStorage
 
 import java.time.Duration
 
+import static com.google.common.net.UrlEscapers.urlFragmentEscaper
 import static groovy.lang.Closure.DELEGATE_FIRST
 import static java.lang.Integer.MAX_VALUE
 
@@ -1060,20 +1061,26 @@ class Browser {
     private URI calculateUri(String path, Map params, UrlFragment fragment) {
         def absolute = calculateAbsoluteUri(path)
 
-        def uriStringBuilder = new StringBuilder()
-        uriStringBuilder << new URI(absolute.scheme, absolute.userInfo, absolute.host, absolute.port, absolute.path, null, null)
+        def effectiveFragment = urlFragmentEscaper().escape(fragment?.toString() ?: "") ?: absolute.rawFragment
 
-        def queryString = [absolute.rawQuery, toQueryString(params)].findAll().join(QUERY_STRING_SEPARATOR) ?: null
-        if (queryString) {
-            uriStringBuilder << "?" << queryString
+        if (absolute.opaque) {
+            new URI(absolute.scheme, absolute.schemeSpecificPart, effectiveFragment)
+        } else {
+            def uriStringBuilder = new StringBuilder() << new URI(
+                absolute.scheme, absolute.userInfo, absolute.host, absolute.port, absolute.path, null, null
+            )
+
+            def queryString = [absolute.rawQuery, toQueryString(params)].findAll().join(QUERY_STRING_SEPARATOR) ?: null
+            if (queryString) {
+                uriStringBuilder << "?" << queryString
+            }
+
+            if (effectiveFragment) {
+                uriStringBuilder << "#" << effectiveFragment
+            }
+
+            new URI(uriStringBuilder.toString())
         }
-
-        def effectiveFragment = UrlEscapers.urlFragmentEscaper().escape(fragment?.toString() ?: "") ?: absolute.rawFragment
-        if (effectiveFragment) {
-            uriStringBuilder << "#" << effectiveFragment
-        }
-
-        new URI(uriStringBuilder.toString())
     }
 
     private URI calculateAbsoluteUri(String path) {
