@@ -67,6 +67,14 @@ class UrlCalculationSpec extends GebSpecWithCallbackServer {
         server.baseUrl | [a: '$'] | "?b=%3D" | server.baseUrl + "?b=%3D&a=%24"
     }
 
+    def "can navigate to opaque uris"() {
+        when:
+        go("about:blank")
+
+        then:
+        driver.currentUrl == "about:blank"
+    }
+
     protected toRequestParameterMapString(map) {
         def requestMap = [:]
         map.each { k, v ->

@@ -105,6 +105,7 @@ No changes have been made, yet.
 
 * Minor fix to confusing statement in the documentation section about finding and filtering web elements. [issue:625[]]
 * Improve information about IntelliJ support in the section on IDE authoring assistance in the manual. [issue:629[]]
+* Fix `Browser.go()` not to fail for non-hierarchical, opaque URIs. [issue:634[]]
 
 ==== New features
 
