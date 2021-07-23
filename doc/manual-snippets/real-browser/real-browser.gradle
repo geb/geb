@@ -1,0 +1,8 @@
+dependencies {
+    testImplementation project(':internal:test-support-spock')
+    testImplementation project(':doc:manual-snippets:fixtures')
+}
+
+test {
+    mustRunAfter ':doc:manual-snippets:test'
+}

@@ -41,7 +41,7 @@ To compile the manual in or to see any changes made, simply run (from the root o
 
 You will then find the compiled HTML in the `doc/manual/build/asciidoc` directory.
 
-Note that all snippets in the manual are imported from the tests of the `:doc:manual-snippets` subproject.
+Note that all snippets in the manual are imported from the tests of the `:doc:manual-snippets` and `:doc:manual-snippets:real-browser` subprojects.
 This is to make them executable and be able to check that they are working with current Geb code in an automated manner.
 
 ### The API reference

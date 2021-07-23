@@ -1,43 +1,17 @@
 apply plugin: 'com.github.erdi.webdriver-binaries'
 
-configurations {
-    realBrowserTestCompile.extendsFrom testCompileClasspath
-    realBrowserTestRuntime.extendsFrom testRuntimeClasspath
+webdriverBinaries {
+    geckodriver "0.24.0"
 }
 
 dependencies {
     testImplementation project(':internal:test-support-spock')
     testImplementation project(':module:geb-spock')
+    testImplementation project(':doc:manual-snippets:fixtures')
     testImplementation 'commons-fileupload:commons-fileupload:1.3.1'
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
 }
 
-sourceSets {
-    realBrowserTest
-}
-
-webdriverBinaries {
-    geckodriver "0.24.0"
-}
-
-compileRealBrowserTestGroovy {
-    classpath += sourceSets.test.output.classesDirs
-}
-
-task realBrowserTest(type: Test) {
-    testClassesDirs = sourceSets.realBrowserTest.output.classesDirs
-    classpath = sourceSets.realBrowserTest.runtimeClasspath + sourceSets.test.output.classesDirs
-
-    mustRunAfter test
-}
-
-check.dependsOn realBrowserTest
-
 test {
     maxParallelForks availableProcessors
-}
-
-idea.module {
-    testSourceDirs += sourceSets.realBrowserTest.allSource.srcDirs
-    scopes.TEST.plus += [configurations.realBrowserTestCompile]
 }
