@@ -14,6 +14,8 @@ include "module:geb-core",
     "doc:asciidoctor-extension",
     "doc:manual",
     "doc:manual-snippets",
+    "doc:manual-snippets:fixtures",
+    "doc:manual-snippets:real-browser",
     "doc:site"
 
 rootProject.name = 'geb'

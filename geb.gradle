@@ -68,7 +68,8 @@ allprojects { project ->
             ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
             ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
             ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":integration:geb-gradle", ":doc:manual-snippets", ":doc:asciidoctor-extension"
+            ":integration:geb-gradle", ":doc:manual-snippets", ":doc:manual-snippets:fixtures",
+            ":doc:manual-snippets:real-browser", ":doc:asciidoctor-extension"
         ]
 
         groovyModules = groovy3Modules + [":doc:site"]

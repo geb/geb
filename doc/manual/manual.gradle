@@ -20,7 +20,7 @@ asciidoctorj {
         encoding               : 'utf-8',
         'test-dir'             : '../../../../manual-snippets/src/test/groovy',
         'test-resources-dir'   : '../../../../manual-snippets/src/test/resources',
-        'real-browser-test-dir': '../../../../manual-snippets/src/realBrowserTest/groovy',
+        'real-browser-test-dir': '../../../../manual-snippets/real-browser/src/test/groovy',
         'core-source-dir'      : '../../../../../module/geb-core/src/main/groovy',
         'core-test-dir'        : '../../../../../module/geb-core/src/test/groovy',
         numbered               : true,
@@ -126,7 +126,7 @@ task openManual() {
 asciidoctor {
     inputs.files(
         { project(":doc:manual-snippets").sourceSets.test.allSource },
-        { project(":doc:manual-snippets").sourceSets.realBrowserTest.allSource },
+        { project(":doc:manual-snippets:real-browser").sourceSets.test.allSource },
         { project(":module:geb-core").sourceSets.main.allSource },
         { project(":module:geb-core").sourceSets.test.allSource }
     ).withPathSensitivity(PathSensitivity.RELATIVE)
