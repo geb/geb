@@ -26,7 +26,6 @@
 1. Push (make sure you push the tag as well).
 1. Bump Geb versions in example projects: 
 	* [geb-example-gradle](https://github.com/geb/geb-example-gradle)
-	* [geb-example-cucumber-jvm](https://github.com/geb/geb-example-cucumber-jvm)
 	* [geb-example-maven](https://github.com/geb/geb-example-maven)
 1. Update issues and milestones in Github tracker:
 	* Find all unresolved issues in the tracker that have the fix version set to the recently released version and bulk edit them to have the fix version set to the next version.
