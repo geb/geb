@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 dependencies {
     api "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 

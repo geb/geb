@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 dependencies {
     api project(':internal:test-support-spock')
 }

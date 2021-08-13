@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 dependencies {
     // This is not strictly an API dependency.
     // We list it as one so that it becomes a transitive dependency of geb-core and therefore

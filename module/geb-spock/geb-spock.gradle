@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 dependencies {
     api spockDependency
     testImplementation project(":internal:test-support")

@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 publishing.publications.main.pom {
     name = "Geb AST"
     description = "Geb (pronounced \"jeb\") AST transformations module."

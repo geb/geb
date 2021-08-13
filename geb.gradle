@@ -87,19 +87,6 @@ allprojects { project ->
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
     }
-
-    if (isCi) {
-        plugins.withType(ReportingBasePlugin) {
-            def projectDirPath = project.path.substring(1).replaceAll(":", "/")
-            def copyTask = task("copyReportsIntoRoot", type: Copy) {
-                into "${rootProject.buildDir}/reports/${projectDirPath}"
-                from reporting.baseDir
-            }
-            tasks.withType(Reporting) { reportingTask ->
-                reportingTask.finalizedBy copyTask
-            }
-        }
-    }
 }
 
 tasks.create('codenarc')
@@ -319,16 +306,6 @@ subprojects {
             onlyIf { isSnapshot || !isCi }
         }
     }
-
-    if (isCi) {
-        tasks.withType(Test) {
-            testLogging {
-                showStackTraces = true
-                exceptionFormat "full"
-            }
-        }
-    }
-
 }
 
 task stage(type: Sync) {

@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 apply plugin: 'com.github.erdi.webdriver-binaries'
 
 webdriverBinaries {

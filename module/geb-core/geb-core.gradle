@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'geb.base'
+}
+
 apply plugin: "geb-browserstack"
 apply plugin: "geb-saucelabs"
 apply plugin: "geb-lambdatest"

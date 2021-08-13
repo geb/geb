@@ -25,6 +25,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'geb.base'
+}
+
 apply plugin: "io.ratpack.ratpack-groovy"
 apply plugin: "com.github.node-gradle.node"
 

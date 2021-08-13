@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 publishing.publications.main.pom {
     name = "Geb utilities for JUnit"
     description = "Geb (pronounced \"jeb\") utilities for JUnit 4 and 5 test frameworks."

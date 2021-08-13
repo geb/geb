@@ -1,3 +1,7 @@
+plugins {
+    id 'geb.base'
+}
+
 apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 
