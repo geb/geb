@@ -90,7 +90,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== Breaking changes
+
+* The `quitDriverOnBrowserReset` config option now default to true if driver caching is disabled. [issue:633[]]
 
 === 5.0-milestone-2
 

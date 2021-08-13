@@ -243,7 +243,7 @@ class Configuration {
     }
 
     boolean isQuitDriverOnBrowserReset() {
-        readValue('quitDriverOnBrowserReset', false)
+        readValue('quitDriverOnBrowserReset', !cacheDriver && !cacheDriverPerThread)
     }
 
     /**
