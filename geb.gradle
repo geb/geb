@@ -44,7 +44,7 @@ allprojects { project ->
         seleniumVersion = "3.141.59"
         htmlUnitDriverVersion = "2.35.1"
         groovyVersion = "3.0.8"
-        spockVersion = "2.0-M5-groovy-3.0"
+        spockVersion = "2.0-groovy-3.0"
         junit4Version = "4.13.2"
         junit5Version = "5.7.0"
         jettyVersion = "9.4.8.v20171121"
