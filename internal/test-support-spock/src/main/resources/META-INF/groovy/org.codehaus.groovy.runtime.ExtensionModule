@@ -1,0 +1,3 @@
+moduleName = geb-spock-module
+moduleVersion = 1.0
+extensionClasses =geb.spock.GebSpockExtension

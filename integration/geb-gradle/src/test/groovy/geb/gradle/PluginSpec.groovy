@@ -17,22 +17,21 @@ package geb.gradle
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.TempDir
 
 abstract class PluginSpec extends Specification {
 
-    @Rule
-    TemporaryFolder testProjectDir
+    @TempDir
+    File testProjectDir
 
     protected void buildScript(String contents) {
-        testProjectDir.newFile('build.gradle') << contents
+        new File(testProjectDir, 'build.gradle') << contents
     }
 
     protected BuildResult runBuild(String... arguments) {
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir)
                 .withArguments(*arguments)
                 .withPluginClasspath()
                 .forwardOutput()

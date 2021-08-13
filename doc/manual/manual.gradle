@@ -1,5 +1,6 @@
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.0'
+    id 'java-platform'
 }
 
 archivesBaseName = "geb-manual"
@@ -10,8 +11,6 @@ repositories {
 
 configurations {
     manual
-
-    delegate.default.extendsFrom manual
 }
 
 asciidoctorj {

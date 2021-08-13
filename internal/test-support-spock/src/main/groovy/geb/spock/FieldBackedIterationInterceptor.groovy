@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.report
+package geb.spock
 
-import geb.test.CloseableTempDirectory
 import org.spockframework.runtime.extension.IMethodInterceptor
 import org.spockframework.runtime.extension.IMethodInvocation
+import org.spockframework.runtime.model.FieldInfo
 
-class ReportsFolder implements IMethodInterceptor {
+class FieldBackedIterationInterceptor implements IMethodInterceptor {
 
-    private final String groupName
+    private final FieldInfo fieldInfo
 
-    private File directory
-
-    ReportsFolder(String groupName) {
-        this.groupName = groupName
-    }
-
-    File getGroupDir() {
-        new File(directory, groupName)
-    }
-
-    Set<String> getReportFileNames() {
-        groupDir.listFiles()*.name
+    FieldBackedIterationInterceptor(FieldInfo fieldInfo) {
+        this.fieldInfo = fieldInfo
     }
 
     @Override
-    @SuppressWarnings("BracesForTryCatchFinally")
     void intercept(IMethodInvocation invocation) throws Throwable {
-        try(def tempDirectory = new CloseableTempDirectory()) {
-            directory = tempDirectory.file
-            invocation.browser.config.reportsDir = directory
-            invocation.proceed()
-        } finally {
-            directory = null
-        }
+        def interceptor = fieldInfo.readValue(invocation.instance) as IMethodInterceptor
+        interceptor.intercept(invocation)
     }
 }

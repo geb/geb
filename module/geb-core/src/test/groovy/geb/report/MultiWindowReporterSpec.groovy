@@ -15,9 +15,9 @@
  */
 package geb.report
 
+import geb.spock.IterationInterceptor
 import geb.window.BaseWindowHandlingSpec
 import org.jsoup.Jsoup
-import org.junit.Rule
 
 import java.nio.charset.StandardCharsets
 
@@ -25,9 +25,9 @@ class MultiWindowReporterSpec extends BaseWindowHandlingSpec {
 
     private final static GROUP_NAME = "windows"
 
-    @Rule
+    @IterationInterceptor
     @Delegate
-    ReportsFolder temporaryFolder = new ReportsFolder(browser, GROUP_NAME)
+    ReportsFolder temporaryFolder = new ReportsFolder(GROUP_NAME)
 
     def setup() {
         browser.config.reporter = new MultiWindowReporter(new PageSourceReporter())

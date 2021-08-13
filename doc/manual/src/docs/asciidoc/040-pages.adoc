@@ -322,7 +322,7 @@ include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to_list_page,indent=0]
 ----
 
 Then, on click, the browser's page is set to the first page in the list whose at checker passes.
-This is equivalent to the link:api/geb/Browser.html#page(Class%3C%3F%20extends%20Page%3E)[`page(Class&lt;? extends Page&gt;[\])`] and
+This is equivalent to the link:api/geb/Browser.html#page(Class)[`page(Class&lt;? extends Page&gt;[\])`] and
 link:api/geb/Browser.html#page(T)[`page(Page[\])`] browser methods which are explained in the section on <<changing-pages, changing pages>>.
 
 All of the page classes and classes of the page instances passed in when using any variant of the `to` option have to have an “at” checker defined otherwise an `UndefinedAtCheckerException` will be
@@ -576,7 +576,7 @@ implicitly in these cases.
 At checkers are subject to “implicit assertions”. See the section on <<implicit-assertions, implicit assertions>> for more information.
 
 If you don't wish to get an exception when “at” checking fails there are methods that return `false` in that case: link:api/geb/Page.html#verifyAtSafely(boolean)[`Page#verifyAtSafely()`] and
-link:api/geb/Browser.html#isAt(Class%3C%3F%20extends%20Page%3E,%20boolean)[`Browser#isAt(Class&lt;? extends Page&gt;)`].
+link:api/geb/Browser.html#isAt(Class,%20boolean)[`Browser#isAt(Class&lt;? extends Page&gt;)`].
 
 As mentioned previously, when a content template defines a <<content-dsl-to, `to` option>> of more than one page the page's `verifyAt()` method is used to determine which one of the pages to use.
 In this situation, any `AssertionError` thrown by “at” checkers are suppressed.

@@ -70,7 +70,13 @@ title == "Page Title"
         def stringWriter = new StringWriter()
         def printWriter = new PrintWriter(stringWriter)
         e.printStackTrace(printWriter)
-        assert stringWriter.toString().contains(message)
+        def normalizedStacktrace = normalizeLineSeparators(stringWriter.toString())
+        def normalizedMessage = normalizeLineSeparators(message)
+        assert normalizedStacktrace.contains(normalizedMessage)
+    }
+
+    String normalizeLineSeparators(String input) {
+        input.replaceAll(/\r\n|\r/, '\n')
     }
 
     def "at checking implicit assertion failure message"() {

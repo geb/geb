@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.webstorage
+package geb.spock
 
-class LocalStorageSpec extends AbstractWebStorageSpec {
+import org.spockframework.runtime.extension.ExtensionAnnotation
 
-    @Override
-    String getStorageObjectName() {
-        "localStorage"
-    }
+import java.lang.annotation.ElementType
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy
+import java.lang.annotation.Target
 
-    @Override
-    WebStorage getStorage() {
-        localStorage
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@ExtensionAnnotation(IterationInterceptorExtension)
+@interface IterationInterceptor {
+
 }

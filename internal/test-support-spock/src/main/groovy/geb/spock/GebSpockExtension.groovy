@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.webstorage
+package geb.spock
 
-class LocalStorageSpec extends AbstractWebStorageSpec {
+import geb.Browser
+import geb.test.ManagedGebTest
+import org.spockframework.runtime.extension.IMethodInvocation
 
-    @Override
-    String getStorageObjectName() {
-        "localStorage"
-    }
-
-    @Override
-    WebStorage getStorage() {
-        localStorage
+class GebSpockExtension {
+    static Browser getBrowser(IMethodInvocation invocation) {
+        (invocation.instance as ManagedGebTest).testManager.browser
     }
 }

@@ -18,17 +18,10 @@ package pages
 import configuration.InlineConfigurationLoader
 import geb.Page
 import geb.test.GebSpecWithCallbackServer
-import org.junit.Rule
-import org.junit.contrib.java.lang.system.SystemOutRule
-import org.junit.rules.TemporaryFolder
+
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut
 
 class PageEventListenerSpec extends GebSpecWithCallbackServer implements InlineConfigurationLoader {
-
-    @Rule
-    TemporaryFolder temporaryFolder
-
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog()
 
     def setup() {
         html {
@@ -36,10 +29,6 @@ class PageEventListenerSpec extends GebSpecWithCallbackServer implements InlineC
                 title "test page"
             }
         }
-    }
-
-    String getOutput() {
-        systemOutRule.log
     }
 
     @SuppressWarnings("GStringExpressionWithinString")
@@ -65,10 +54,17 @@ class PageEventListenerSpec extends GebSpecWithCallbackServer implements InlineC
         browser.config.merge(config)
 
         and:
-        to PageEventListenerSpecPage
+        def assertionError
+        def output = tapSystemOut {
+            try {
+                to PageEventListenerSpecPage
+            } catch (AssertionError e) {
+                assertionError = e
+            }
+        }
 
         then:
-        thrown(AssertionError)
+        assertionError
 
         and:
         output =~ /At check failed for page titled 'test page' at url http:\/\/localhost:\d+\/main.html/

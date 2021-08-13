@@ -16,6 +16,14 @@
 package geb.module
 
 class NumberInputBaseSpec extends InputBasedModuleSpec<NumberInput> {
-    final String inputType = "number"
-    final String otherInputType = "checkbox"
+
+    @Override
+    String getInputType() {
+        "number"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "checkbox"
+    }
 }

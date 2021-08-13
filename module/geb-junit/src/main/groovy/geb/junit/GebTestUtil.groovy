@@ -21,8 +21,8 @@ import geb.test.GebTestManager
 class GebTestUtil {
     static GebTestManager getTestManager(Class<?> testClass) {
         try {
-            testClass.testManager as GebTestManager
-        } catch (MissingPropertyException e) {
+            testClass.getTestManager() as GebTestManager
+        } catch (MissingMethodException e) {
             throw new IncompatibleTestClass(e)
         }
     }

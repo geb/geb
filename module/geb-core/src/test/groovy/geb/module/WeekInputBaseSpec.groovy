@@ -16,6 +16,14 @@
 package geb.module
 
 class WeekInputBaseSpec extends InputBasedModuleSpec<WeekInput> {
-    final String inputType = 'week'
-    final String otherInputType = 'checkbox'
+
+    @Override
+    String getInputType() {
+        'week'
+    }
+
+    @Override
+    String getOtherInputType() {
+        'checkbox'
+    }
 }

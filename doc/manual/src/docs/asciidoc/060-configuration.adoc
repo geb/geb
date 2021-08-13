@@ -170,7 +170,7 @@ You can disable this by setting te config property `quitCachedDriverOnShutdown` 
 
 === Quitting driver on browser reset
 
-If for some reason you would like the driver not to be cached but quit after each test and recreated before the next then Geb supports such management of the driver instance.
+If for some reason you would like the driver not to be cached but quit after each test and recreated before the next one then Geb supports such management of the driver instance.
 To quit the driver after each test you can set the `quitDriverOnBrowserReset` config property to `true`.
 
 [source,groovy]
@@ -180,7 +180,7 @@ include::{test-dir}/configuration/QuitDriverOnBrowserResetConfigSpec.groovy[tag=
 
 [NOTE]
 ====
-If the driver is fully managed by Geb and being using the <<driver-factory-closure, configured driver factory closure>> then it probably makes sense to disable <<driver-caching-configuration, driver caching>> when setting `quitDriverOnBrowserReset` to `true`.
+If <<driver-caching-configuration, driver caching>> is disabled then `quitDriverOnBrowserReset` defaults to `true`.
 ====
 
 [[configuration-base-url]]

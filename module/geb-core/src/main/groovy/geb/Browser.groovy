@@ -204,7 +204,7 @@ class Browser {
     /**
      * Changes the base url used for resolving relative urls.
      * <p>
-     * This method delegates to {@link geb.Configuration#setBaseUrl(def)}.
+     * This method delegates to {@link geb.Configuration#setBaseUrl(java.lang.Object)}.
      */
     void setBaseUrl(String baseUrl) {
         config.baseUrl = baseUrl

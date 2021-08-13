@@ -1,23 +1,19 @@
 dependencies {
-    api project(":module:geb-ast")
-    api project(":module:geb-junit")
-    api "junit:junit:$junit4Version"
+    implementation project(":module:geb-junit")
+    implementation "junit:junit:$junit4Version"
+
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.7.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
 }
 
 publishing.publications.main.pom {
     name = "Geb for JUnit 4"
     description = "Geb (pronounced \"jeb\") integration with the JUnit 4 test framework."
-
-    withXml {
-        def dependencies = asNode().dependencies
-        def jUnitDependencies = dependencies.dependency.findAll { it.groupId.text() == "junit" }
-        jUnitDependencies.each { dependencies*.remove(it) }
-    }
 }
 
 test {
     options {
-        excludeCategories 'geb.junit4.DoNotRunFromGradle'
+        excludeTags 'geb.junit4.DoNotRunFromGradle'
     }
 }
 

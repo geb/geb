@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.module
+package geb.conf
 
-import geb.test.browsers.Chrome
-import geb.test.browsers.Firefox
-import geb.test.browsers.RequiresRealBrowser
+import configuration.InlineConfigurationLoader
+import spock.lang.Specification
 
-@Chrome
-@Firefox
-@RequiresRealBrowser // due to https://sourceforge.net/p/htmlunit/bugs/1923/
-class SearchInputBaseSpec extends InputBasedModuleSpec<SearchInput> {
+class QuitDriverOnBrowserResetConfigScriptSpec extends Specification implements InlineConfigurationLoader {
 
-    @Override
-    String getInputType() {
-        "search"
+    def "defaults to false"() {
+        when:
+        configScript('')
+
+        then:
+        !config.quitDriverOnBrowserReset
     }
 
-    @Override
-    String getOtherInputType() {
-        "checkbox"
+    def "defaults to true if driver caching is disabled"() {
+        when:
+        configScript '''
+            cacheDriver = false
+        '''
+
+        then:
+        config.quitDriverOnBrowserReset
     }
+
 }

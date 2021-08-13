@@ -16,6 +16,14 @@
 package geb.module
 
 class FileInputBaseSpec extends InputBasedModuleSpec<FileInput> {
-    final String inputType = "file"
-    final String otherInputType = "text"
+
+    @Override
+    String getInputType() {
+        "file"
+    }
+
+    @Override
+    String getOtherInputType() {
+        "text"
+    }
 }

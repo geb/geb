@@ -15,10 +15,10 @@
  */
 package geb.report
 
+import geb.spock.IterationInterceptor
 import geb.test.GebSpecWithCallbackServer
 import geb.test.browsers.FirefoxLinux
 import geb.test.browsers.RequiresRealBrowser
-import org.junit.Rule
 
 import javax.servlet.http.HttpServletResponse
 
@@ -30,9 +30,9 @@ class ExceptionOnReportScreenshotSpec extends GebSpecWithCallbackServer {
 
     private final static GROUP_NAME = "exceptions"
 
-    @Rule
+    @IterationInterceptor
     @Delegate
-    ReportsFolder reportsFolder = new ReportsFolder(browser, GROUP_NAME)
+    ReportsFolder reportsFolder = new ReportsFolder(GROUP_NAME)
 
     def setup() {
         callbackServer.get = { req, HttpServletResponse res ->

@@ -15,9 +15,9 @@
  */
 package geb.report
 
+import geb.spock.IterationInterceptor
 import geb.test.GebSpecWithCallbackServer
 import org.jsoup.Jsoup
-import org.junit.Rule
 
 import java.nio.charset.StandardCharsets
 
@@ -25,9 +25,9 @@ class FramesSourceReporterSpec extends GebSpecWithCallbackServer {
 
     private final static GROUP_NAME = "frames"
 
-    @Rule
+    @IterationInterceptor
     @Delegate
-    ReportsFolder reportsFolder = new ReportsFolder(browser, GROUP_NAME)
+    ReportsFolder reportsFolder = new ReportsFolder(GROUP_NAME)
 
     def setupSpec() {
         responseHtml { request, response ->

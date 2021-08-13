@@ -1,16 +1,12 @@
 apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 
-configurations {
-    compile.exclude group: "org.codehaus.groovy"
-}
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation localGroovy()
+    groovy localGroovy()
     implementation gradleApi()
 
     implementation "com.google.guava:guava:23.0"

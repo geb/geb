@@ -1,5 +1,5 @@
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
-import org.ysb33r.grolifant.api.OperatingSystem
+import org.ysb33r.grolifant.api.core.OperatingSystem
 
 import java.time.Duration
 
@@ -17,7 +17,7 @@ buildscript {
         classpath "io.github.gradle-nexus:publish-plugin:1.0.0"
         classpath "gradle.plugin.com.github.erdi:idea-gradle-plugins:2.1"
         classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
-        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.4"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.5"
     }
 }
 
@@ -33,7 +33,7 @@ def getProperty(String name, defaultValue) {
 
 
 allprojects { project ->
-    version = '4.2-SNAPSHOT'
+    version = '5.0-SNAPSHOT'
     group = 'org.gebish'
 
     ext {
@@ -43,16 +43,14 @@ allprojects { project ->
 
         seleniumVersion = "3.141.59"
         htmlUnitDriverVersion = "2.35.1"
-        groovyVersion = "2.5.14"
-        spockVersion = "1.3-groovy-2.5"
+        groovyVersion = "3.0.8"
+        spockVersion = "2.0-groovy-3.0"
         junit4Version = "4.13.2"
         junit5Version = "5.7.0"
         jettyVersion = "9.4.8.v20171121"
         threeTenExtraVersion = "1.4"
 
-        spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion") {
-            exclude module: "groovy-all"
-        }
+        spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion")
 
         seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
         seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
@@ -66,13 +64,17 @@ allprojects { project ->
             mavenCentral()
         }
 
-        groovyModules = [
+        groovy3Modules = [
             ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
             ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
             ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":integration:geb-gradle", ":doc:site", ":doc:manual-snippets", ":doc:manual-snippets:fixtures",
-            ":doc:manual-snippets:real-browser", ":doc:asciidoctor-extension"
+            ":doc:manual-snippets", ":doc:manual-snippets:fixtures", ":doc:manual-snippets:real-browser",
+            ":doc:asciidoctor-extension"
         ]
+
+        spock2Modules = groovy3Modules + [":integration:geb-gradle"]
+
+        groovyModules = groovy3Modules + [":integration:geb-gradle", ":doc:site"]
 
         publishedModules = [
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
@@ -130,13 +132,11 @@ subprojects {
         configurations {
             groovy
 
-            compile.extendsFrom groovy
+            api.extendsFrom groovy
             codenarc.extendsFrom groovy
         }
 
         dependencies {
-            groovy "org.codehaus.groovy:groovy:${groovyVersion}"
-            groovy "org.codehaus.groovy:groovy-templates:${groovyVersion}"
             codenarc 'org.codenarc:CodeNarc:2.0.0', {
                 exclude module: "GMetrics"
                 exclude group: "org.codehaus.groovy"
@@ -162,9 +162,30 @@ subprojects {
                 new EnvironmentVariablesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
             )
 
+            afterSuite { desc, result ->
+                if (!desc.parent) {
+                    if (result.testCount == 0) {
+                        throw new IllegalStateException("No tests were found")
+                    }
+                }
+            }
+
             systemProperty 'jna.nosys', 'true'
         }
+    }
 
+    if (path in groovy3Modules) {
+        dependencies {
+            groovy platform("org.codehaus.groovy:groovy-bom:$groovyVersion")
+            groovy "org.codehaus.groovy:groovy"
+            groovy "org.codehaus.groovy:groovy-templates"
+        }
+    }
+
+    if (path in spock2Modules) {
+        tasks.withType(Test) {
+            useJUnitPlatform()
+        }
     }
 
     if (path in publishedGroovyModules) {
@@ -219,11 +240,11 @@ subprojects {
         link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
             "spock.lang"
 
-        link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/$junit5Version",
-            "org.junit.jupiter.api"
+            link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/$junit5Version",
+                "org.junit.jupiter.api"
 
-        link "http://static.javadoc.io/junit/junit/$junit4Version",
-            "org.junit"
+            link "http://static.javadoc.io/junit/junit/$junit4Version",
+                "org.junit"
 
         link "http://static.javadoc.io/org.threeten/threeten-extra/$threeTenExtraVersion",
             "org.threeten.extra"

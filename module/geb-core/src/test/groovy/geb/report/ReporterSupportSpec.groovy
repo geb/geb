@@ -15,17 +15,13 @@
  */
 package geb.report
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.TempDir
 
 class ReporterSupportSpec extends Specification {
 
-    @Rule TemporaryFolder tempFolder
-
-    File getReportDir() {
-        tempFolder.root
-    }
+    @TempDir
+    File reportDir
 
     def "report filename escaping"() {
         given:

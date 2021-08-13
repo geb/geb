@@ -1,6 +1,7 @@
 dependencies {
-    api project(":module:geb-junit")
     api "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+
+    implementation project(":module:geb-junit")
 
     testImplementation "org.junit.platform:junit-platform-launcher:1.7.0"
     testImplementation jsoupDependency
@@ -8,17 +9,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
 }
 
-test {
-    useJUnitPlatform()
-}
-
 publishing.publications.main.pom {
     name = "Geb for JUnit 5"
     description = "Geb (pronounced \"jeb\") integration with the JUnit 5 test framework."
-
-    withXml {
-        def dependencies = asNode().dependencies
-        def jUnitDependencies = dependencies.dependency.findAll { it.groupId.text() == "org.junit.jupiter" }
-        jUnitDependencies.each { dependencies*.remove(it) }
-    }
 }

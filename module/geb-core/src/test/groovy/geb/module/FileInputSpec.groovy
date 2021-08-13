@@ -16,13 +16,12 @@
 package geb.module
 
 import geb.test.GebSpecWithCallbackServer
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 class FileInputSpec extends GebSpecWithCallbackServer {
 
-    @Rule
-    TemporaryFolder temporaryFolder
+    @TempDir
+    File temporaryDir
 
     def setup() {
         html {
@@ -36,7 +35,7 @@ class FileInputSpec extends GebSpecWithCallbackServer {
 
     def "getting and setting file"() {
         given:
-        def file = temporaryFolder.newFile()
+        def file = new File(temporaryDir, "example.txt")
 
         when:
         input.file = file
@@ -50,7 +49,7 @@ class FileInputSpec extends GebSpecWithCallbackServer {
         def input = $("#i-dont-exist").module(FileInput)
 
         when:
-        input.file = temporaryFolder.newFile()
+        input.file = new File(temporaryDir, "example.txt")
 
         then:
         noExceptionThrown()
