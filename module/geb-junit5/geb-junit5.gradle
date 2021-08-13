@@ -1,6 +1,7 @@
 dependencies {
-    api project(":module:geb-junit")
     api "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+
+    implementation project(":module:geb-junit")
 
     testImplementation "org.junit.platform:junit-platform-launcher:1.7.0"
     testImplementation jsoupDependency

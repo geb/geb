@@ -28,10 +28,11 @@ dependencies {
 
     api project(":module:geb-ast")
     api project(":module:geb-waiting")
-    api('org.jodd:jodd-lagarto:5.1.5') {
+    api "org.threeten:threeten-extra:$threeTenExtraVersion"
+
+    implementation('org.jodd:jodd-lagarto:5.1.5') {
         exclude(group: "ch.qos.logback")
     }
-    api "org.threeten:threeten-extra:$threeTenExtraVersion"
 
     selectImplementation(seleniumSupportDependency)
 

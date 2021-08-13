@@ -4,6 +4,5 @@ plugins {
 
 dependencies {
 	api project(':internal:test-support')
-	api project(':module:geb-ast')
 	api project(':module:geb-spock')
 }

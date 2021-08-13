@@ -1,7 +1,6 @@
 dependencies {
-    api project(":module:geb-ast")
-    api project(":module:geb-junit")
-    api "junit:junit:$junit4Version"
+    implementation project(":module:geb-junit")
+    implementation "junit:junit:$junit4Version"
 
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.7.0"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
