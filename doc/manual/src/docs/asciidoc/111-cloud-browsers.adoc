@@ -201,7 +201,7 @@ buildscript { //<2>
 }
 
 dependencies { //<3>
-    sauceConnect "com.saucelabs:ci-sauce:1.141"
+    sauceConnect "com.saucelabs:ci-sauce:1.153"
 }
 
 sauceLabs {
