@@ -90,21 +90,14 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-==== Breaking changes
-
-* The `quitDriverOnBrowserReset` config option now default to true if driver caching is disabled. [issue:633[]]
-
-=== 5.0-milestone-2
-
 ==== Fixes
 
 * Fix a bug under Groovy 3 which caused PageInstanceNotInitializedException when "container" was used as a content element name. [issue:640[]]
 
-=== 5.0-milestone-1
-
 ==== Breaking changes
 
-* Update Groovy to 3.0.7 and Spock to 2.0-M5-groovy-3.0. [issue:619[]]
+* The `quitDriverOnBrowserReset` config option now default to true if driver caching is disabled. [issue:633[]]
+* Update Groovy to 3.0.8 and Spock to 2.0-groovy-3.0. [issue:619[]]
 * Don't make non-optional dependencies optional in various modules' POMs. [issue:638[]]
 
 === 4.1
