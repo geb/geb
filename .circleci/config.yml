@@ -254,8 +254,8 @@ jobs:
       - run:
           command: |
             git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/gebish.git
-            git push -f heroku 5.x:master
-  trigger-example-projects-master:
+            git push -f heroku master
+  trigger-example-projects-4.x:
     docker:
       - image: gebish/ci:v7
     steps:
@@ -265,7 +265,7 @@ jobs:
             curl -X POST -u ${CIRCLE_API_EXAMPLE_CUCUMBER_JVM_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-cucumber-jvm/tree/latest
             curl -X POST -u ${CIRCLE_API_EXAMPLE_MAVEN_TOKEN}: https://circleci.com/api/v1.1/project/github/geb/geb-example-maven/tree/4.x
             curl -H "Authorization: Bearer ${APPVEYOR_TOKEN}" -H "Content-type: application/json" -X POST https://ci.appveyor.com/api/builds -d '{"accountName": "erdi", "projectSlug": "geb-example-gradle", "branch": "4.x"}'
-  trigger-example-projects-5.x:
+  trigger-example-projects-master:
     docker:
       - image: gebish/ci:v7
     steps:
@@ -344,22 +344,22 @@ workflows:
             branches:
               only:
                 - master
-                - 5.x
+                - 4.x
       - publish-site:
           requires:
             - upload
           filters:
             branches:
-              only: 5.x
+              only: master
       - trigger-example-projects-master:
           requires:
             - upload
           filters:
             branches:
               only: master
-      - trigger-example-projects-5.x:
+      - trigger-example-projects-4.x:
           requires:
             - upload
           filters:
             branches:
-              only: 5.x
+              only: 4.x
