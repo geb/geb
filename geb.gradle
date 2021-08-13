@@ -43,7 +43,7 @@ allprojects { project ->
 
         seleniumVersion = "3.141.59"
         htmlUnitDriverVersion = "2.35.1"
-        groovyVersion = "3.0.7"
+        groovyVersion = "3.0.8"
         spockVersion = "2.0-M5-groovy-3.0"
         junit4Version = "4.13.2"
         junit5Version = "5.7.0"
@@ -68,11 +68,13 @@ allprojects { project ->
             ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
             ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
             ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":integration:geb-gradle", ":doc:manual-snippets", ":doc:manual-snippets:fixtures",
-            ":doc:manual-snippets:real-browser", ":doc:asciidoctor-extension"
+            ":doc:manual-snippets", ":doc:manual-snippets:fixtures", ":doc:manual-snippets:real-browser",
+            ":doc:asciidoctor-extension"
         ]
 
-        groovyModules = groovy3Modules + [":doc:site"]
+        spock2Modules = groovy3Modules + [":integration:geb-gradle"]
+
+        groovyModules = groovy3Modules + [":integration:geb-gradle", ":doc:site"]
 
         publishedModules = [
             ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
@@ -178,7 +180,9 @@ subprojects {
             groovy "org.codehaus.groovy:groovy"
             groovy "org.codehaus.groovy:groovy-templates"
         }
+    }
 
+    if (path in spock2Modules) {
         tasks.withType(Test) {
             useJUnitPlatform()
         }
