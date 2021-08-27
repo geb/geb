@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'codenarc'
+    id 'geb.base'
 }
 
 configurations {
