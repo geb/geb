@@ -158,6 +158,10 @@ subprojects {
 
             systemProperty 'jna.nosys', 'true'
         }
+
+        tasks.withType(GroovyCompile) {
+            groovyOptions.forkOptions.memoryMaximumSize = '256m'
+        }
     }
 
     if (path in groovy3Modules) {
@@ -242,10 +246,6 @@ subprojects {
         docTitle = "Groovy API Documentation for $docName $version"
         footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
         windowTitle = "Groovy API for $docName $version"
-    }
-
-    tasks.withType(GroovyCompile) {
-        groovyOptions.forkOptions.memoryMaximumSize = '256m'
     }
 }
 
