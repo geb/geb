@@ -15,4 +15,8 @@ class BaseExtension {
             project.configure(project, closure)
         }
     }
+
+    boolean isSnapshot() {
+        project.version.endsWith("-SNAPSHOT")
+    }
 }

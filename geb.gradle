@@ -257,55 +257,6 @@ subprojects {
     tasks.withType(GroovyCompile) {
         groovyOptions.forkOptions.memoryMaximumSize = '256m'
     }
-
-
-    if (path in publishedModules) {
-        apply plugin: "base"
-        apply plugin: "maven-publish"
-        apply plugin: "signing"
-
-        signing {
-            required { isSnapshot && !isCi }
-            publishing.publications.configureEach {
-                sign(it)
-            }
-        }
-
-        publishing {
-            publications.configureEach {
-                pom {
-                    url = "http://www.gebish.org"
-                    inceptionYear = "2010"
-                    licenses {
-                        license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            distribution = 'repo'
-                        }
-                    }
-                    scm {
-                        url = "https://github.com/geb/geb/"
-                    }
-                    developers {
-                        developer {
-                            id = "alkemist"
-                            name = "Luke Daley"
-                            roles = ["Founder"]
-                        }
-                        developer {
-                            id = "erdi"
-                            name = "Marcin Erdmann"
-                            roles = ["Lead"]
-                        }
-                    }
-                }
-            }
-        }
-
-        tasks.withType(PublishToMavenRepository) {
-            onlyIf { isSnapshot || !isCi }
-        }
-    }
 }
 
 task stage(type: Sync) {
