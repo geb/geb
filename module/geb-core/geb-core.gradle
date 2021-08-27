@@ -43,7 +43,7 @@ dependencies {
     selectImplementation(libs.selenium.support)
 
     testImplementation "cglib:cglib:2.2", libs.jsoup, ratpack.groovyTest
-    testImplementation project(":module:geb-spock")
+    testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect
 }

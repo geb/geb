@@ -10,6 +10,8 @@ dependencies {
     // system makes transitive compile dependencies first class compile dependencies.
     api project(":module:geb-implicit-assertions")
     api project(":module:geb-exceptions")
+
+    testImplementation project(":internal:test-support")
 }
 
 publishing.publications.main.pom {

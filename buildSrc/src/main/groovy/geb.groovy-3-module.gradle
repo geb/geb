@@ -1,4 +1,5 @@
 plugins {
+    id 'geb.groovy-module'
     id 'geb.spock-2-module'
 }
 

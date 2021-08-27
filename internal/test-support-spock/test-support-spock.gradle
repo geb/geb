@@ -1,5 +1,4 @@
 plugins {
-	id 'java-library'
 	id 'geb.base'
 	id 'geb.groovy-3-module'
 }

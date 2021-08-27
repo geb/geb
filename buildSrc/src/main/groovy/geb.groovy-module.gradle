@@ -1,0 +1,37 @@
+plugins {
+    id 'groovy'
+    id 'java-library'
+    id 'idea'
+    id 'codenarc'
+}
+
+configurations {
+    groovy
+
+    api.extendsFrom groovy
+    codenarc.extendsFrom groovy
+}
+
+dependencies {
+    codenarc 'org.codenarc:CodeNarc:2.0.0', {
+        exclude module: "GMetrics"
+        exclude group: "org.codehaus.groovy"
+    }
+}
+
+codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
+
+def codenarcTasks = tasks.withType(CodeNarc)
+
+tasks.create('codenarc') {
+    dependsOn codenarcTasks
+}
+
+codenarcTasks.configureEach {
+    exclude 'GebConfig*.groovy'
+    shouldRunAfter tasks.withType(Test)
+}
+
+tasks.withType(GroovyCompile) {
+    groovyOptions.forkOptions.memoryMaximumSize = '256m'
+}

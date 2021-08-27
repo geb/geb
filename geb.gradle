@@ -43,16 +43,6 @@ allprojects { project ->
         repositories {
             mavenCentral()
         }
-
-        groovy3Modules = [
-            ":module:geb-core", ":internal:test-support", ":internal:test-support-spock", ":module:geb-spock",
-            ":module:geb-junit", ":module:geb-junit4", ":module:geb-junit5", ":module:geb-testng",
-            ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting", ":module:geb-exceptions",
-            ":doc:manual-snippets", ":doc:manual-snippets:fixtures", ":doc:manual-snippets:real-browser",
-            ":doc:asciidoctor-extension"
-        ]
-
-        groovyModules = groovy3Modules + [":integration:geb-gradle", ":doc:site"]
     }
 }
 
@@ -71,47 +61,6 @@ nexusPublishing {
     transitionCheckOptions {
         maxRetries.set(60)
         delayBetween.set(Duration.ofMillis(3000))
-    }
-}
-
-subprojects {
-    if (path in groovyModules) {
-        apply plugin: "groovy"
-        apply plugin: "java-library"
-        apply plugin: "idea"
-        apply plugin: "codenarc"
-
-        configurations {
-            groovy
-
-            api.extendsFrom groovy
-            codenarc.extendsFrom groovy
-        }
-
-        dependencies {
-            codenarc 'org.codenarc:CodeNarc:2.0.0', {
-                exclude module: "GMetrics"
-                exclude group: "org.codehaus.groovy"
-            }
-        }
-
-        codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
-
-        tasks.create('codenarc')
-
-        project.tasks.withType(CodeNarc) { codenarcSourceSetTask ->
-            codenarcSourceSetTask.exclude 'GebConfig*.groovy'
-            tasks.codenarc.dependsOn codenarcSourceSetTask
-            rootProject.allprojects {
-                tasks.withType(Test) {
-                    mustRunAfter codenarcSourceSetTask
-                }
-            }
-        }
-
-        tasks.withType(GroovyCompile) {
-            groovyOptions.forkOptions.memoryMaximumSize = '256m'
-        }
     }
 }
 

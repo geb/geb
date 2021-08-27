@@ -1,6 +1,5 @@
 plugins {
-    id 'geb.published-groovy-3-module'
-    id 'geb.api-module'
+    id 'geb.test-framework-integration-module'
     id 'geb.dockerised-test'
 }
 

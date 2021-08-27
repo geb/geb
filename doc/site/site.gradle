@@ -27,6 +27,7 @@ buildscript {
 
 plugins {
     id 'geb.base'
+    id 'geb.groovy-module'
 }
 
 apply plugin: "io.ratpack.ratpack-groovy"
