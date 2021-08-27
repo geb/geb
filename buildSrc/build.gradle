@@ -27,6 +27,7 @@ dependencies {
 	implementation gradleApi()
 
 	implementation "com.google.guava:guava:23.0"
+	implementation "org.ysb33r.gradle:grolifant50:1.1.0"
 }
 
 sourceSets {

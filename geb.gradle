@@ -1,5 +1,4 @@
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
-import org.ysb33r.grolifant.api.core.OperatingSystem
 
 import java.time.Duration
 
@@ -243,15 +242,6 @@ subprojects {
         docTitle = "Groovy API Documentation for $docName $version"
         footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
         windowTitle = "Groovy API for $docName $version"
-    }
-
-    tasks.withType(Test) {
-        maxHeapSize = "768m"
-        jvmArgs '-XX:MaxMetaspaceSize=192m'
-        testLogging {
-            exceptionFormat = 'full'
-        }
-        inputs.property("isWindows", OperatingSystem.current().windows)
     }
 
     tasks.withType(GroovyCompile) {

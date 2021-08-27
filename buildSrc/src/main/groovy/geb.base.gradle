@@ -15,6 +15,7 @@
  */
 
 import org.gebish.gradle.BaseExtension
+import org.ysb33r.grolifant.api.core.OperatingSystem
 
 extensions.create('gebModule', BaseExtension, project)
 
@@ -38,4 +39,13 @@ gebModule {
             }
         }
     }
+}
+
+tasks.withType(Test) {
+    maxHeapSize = "768m"
+    jvmArgs '-XX:MaxMetaspaceSize=192m'
+    testLogging {
+        exceptionFormat = 'full'
+    }
+    inputs.property("isWindows", OperatingSystem.current().windows)
 }
