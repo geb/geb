@@ -1,5 +1,6 @@
 plugins {
     id 'geb.published-groovy-module'
+    id 'geb.spock-2-module'
 }
 
 apply plugin: 'groovy'

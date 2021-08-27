@@ -52,8 +52,6 @@ allprojects { project ->
             ":doc:asciidoctor-extension"
         ]
 
-        spock2Modules = groovy3Modules + [":integration:geb-gradle"]
-
         groovyModules = groovy3Modules + [":integration:geb-gradle", ":doc:site"]
 
         publishedModules = [
@@ -122,12 +120,6 @@ subprojects {
 
         tasks.withType(GroovyCompile) {
             groovyOptions.forkOptions.memoryMaximumSize = '256m'
-        }
-    }
-
-    if (path in spock2Modules) {
-        tasks.withType(Test) {
-            useJUnitPlatform()
         }
     }
 }
