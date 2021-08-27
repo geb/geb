@@ -1,5 +1,6 @@
 plugins {
     id 'geb.base'
+    id 'geb.groovy-3-module'
 }
 
 apply plugin: 'com.github.erdi.webdriver-binaries'

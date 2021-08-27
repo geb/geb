@@ -125,14 +125,6 @@ subprojects {
         }
     }
 
-    if (path in groovy3Modules) {
-        dependencies {
-            groovy platform(libs.groovy.bom)
-            groovy "org.codehaus.groovy:groovy"
-            groovy "org.codehaus.groovy:groovy-templates"
-        }
-    }
-
     if (path in spock2Modules) {
         tasks.withType(Test) {
             useJUnitPlatform()

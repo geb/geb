@@ -1,0 +1,5 @@
+dependencies {
+    groovy platform(libs.groovy.bom)
+    groovy "org.codehaus.groovy:groovy"
+    groovy "org.codehaus.groovy:groovy-templates"
+}
