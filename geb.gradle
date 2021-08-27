@@ -182,39 +182,6 @@ subprojects {
             dependsOn 'publishMainPublicationToSonatypeRepository'
         }
     }
-
-    tasks.withType(Groovydoc) {
-        exclude "**/internal/**"
-
-        link "http://docs.oracle.com/javase/8/docs/api/",
-            "java.net",
-            "java.util",
-            "java.lang",
-            "java.io"
-
-        link "http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/${libs.versions.selenium.get()}",
-            "org.openqa.selenium"
-
-        link "http://static.javadoc.io/org.spockframework/spock-core/${libs.versions.spock.get()}",
-            "spock.lang"
-
-            link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/${libs.versions.junit5.get()}",
-                "org.junit.jupiter.api"
-
-            link "http://static.javadoc.io/junit/junit/${libs.versions.junit4.get()}",
-                "org.junit"
-
-        link "http://static.javadoc.io/org.threeten/threeten-extra/${libs.versions.threeTen.get()}",
-            "org.threeten.extra"
-
-        link "http://docs.groovy-lang.org/docs/groovy-${libs.versions.groovy.get()}/html/api/",
-            "groovy.lang"
-
-        def docName = project.name == "manual" ? "Geb" : project.name
-        docTitle = "Groovy API Documentation for $docName $version"
-        footer = "<p style='text-align: center'>Groovy API Documentation for $docName $version - Licensed under the Apache License, Version 2.0 - <a href='http://www.gebish.org'>http://www.gebish.org</a></p>"
-        windowTitle = "Groovy API for $docName $version"
-    }
 }
 
 task stage(type: Sync) {
