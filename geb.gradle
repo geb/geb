@@ -53,15 +53,6 @@ allprojects { project ->
         ]
 
         groovyModules = groovy3Modules + [":integration:geb-gradle", ":doc:site"]
-
-        publishedModules = [
-            ":module:geb-core", ":module:geb-implicit-assertions", ":module:geb-ast", ":module:geb-waiting",
-            ":module:geb-exceptions", ":module:geb-spock", ":module:geb-junit", ":module:geb-junit4",
-            ":module:geb-junit5", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
-        ]
-
-        publishedGroovyModules = groovyModules.findAll { it in publishedModules }
-        apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
     }
 }
 

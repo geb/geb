@@ -1,0 +1,7 @@
+configurations {
+    sources
+}
+
+artifacts {
+    sources tasks.sourcesJar
+}

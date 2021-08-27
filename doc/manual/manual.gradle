@@ -12,6 +12,24 @@ repositories {
 
 configurations {
     manual
+
+    groovydocClasspath
+    groovydocSources
+}
+
+project(":module").subprojects.each { apiModule ->
+    dependencies {
+        groovydocClasspath project(path: apiModule.path)
+        groovydocSources project(path: apiModule.path, configuration: "sources")
+    }
+}
+
+dependencies {
+    groovydocClasspath(project(":module:geb-core")) {
+        capabilities {
+            requireCapability("org.gebish:geb-core-select")
+        }
+    }
 }
 
 asciidoctorj {
@@ -60,16 +78,18 @@ asciidoctor {
     baseDirFollowsSourceDir()
 }
 
+task groovydocSources(type: Sync) {
+    inputs.files configurations.groovydocSources
+    from({ configurations.groovydocSources.files.collect { zipTree(it) } })
+    exclude 'META-INF/**'
+    into "$buildDir/groovydocSources"
+}
+
 task apiDoc(type: Groovydoc) {
-    def apiGroovyModuleProjects = apiGroovyModules.collect { project(it) }
-    def apiGroovyModulesClasspath = files(apiGroovyModuleProjects*.configurations*.compileClasspath)
-    groovyClasspath = new GroovyRuntime(project).inferGroovyClasspath(apiGroovyModulesClasspath)
-    classpath = files()
+    groovyClasspath = new GroovyRuntime(project).inferGroovyClasspath(configurations.groovydocClasspath)
+    classpath = configurations.groovydocClasspath
     destinationDir = file("$buildDir/apiDoc")
-    apiGroovyModuleProjects.each {
-        source it.sourceSets.main.groovy, it.sourceSets.main.java
-        classpath += it.sourceSets.main.compileClasspath + it.sourceSets.main.output
-    }
+    source groovydocSources
 }
 
 task packageManual(type: Sync) {
