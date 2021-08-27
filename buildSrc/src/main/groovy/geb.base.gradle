@@ -16,6 +16,7 @@
 
 import org.gebish.gradle.BaseExtension
 import org.ysb33r.grolifant.api.core.OperatingSystem
+import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 
 extensions.create('gebModule', BaseExtension, project)
 
@@ -44,10 +45,28 @@ gebModule {
 tasks.withType(Test) {
     maxHeapSize = "768m"
     jvmArgs '-XX:MaxMetaspaceSize=192m'
+
     testLogging {
         exceptionFormat = 'full'
     }
+
     inputs.property("isWindows", OperatingSystem.current().windows)
+
+    def gebReportsDir = reporting.file("geb/$name")
+    outputs.dir(gebReportsDir)
+    jvmArgumentProviders.add(
+        new EnvironmentVariablesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
+    )
+
+    afterSuite { desc, result ->
+        if (!desc.parent) {
+            if (result.testCount == 0) {
+                throw new IllegalStateException("No tests were found")
+            }
+        }
+    }
+
+    systemProperty 'jna.nosys', 'true'
 }
 
 tasks.withType(Groovydoc) {
