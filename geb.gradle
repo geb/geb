@@ -67,8 +67,6 @@ allprojects { project ->
     }
 }
 
-tasks.create('codenarc')
-
 nexusPublishing {
     repositories {
         sonatype {
@@ -110,9 +108,11 @@ subprojects {
 
         codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
+        tasks.create('codenarc')
+
         project.tasks.withType(CodeNarc) { codenarcSourceSetTask ->
             codenarcSourceSetTask.exclude 'GebConfig*.groovy'
-            rootProject.tasks.codenarc.dependsOn codenarcSourceSetTask
+            tasks.codenarc.dependsOn codenarcSourceSetTask
             rootProject.allprojects {
                 tasks.withType(Test) {
                     mustRunAfter codenarcSourceSetTask
