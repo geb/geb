@@ -1,0 +1,8 @@
+task chromeLinuxTest(type: Test) {
+    maxHeapSize = "512m"
+    systemProperty "geb.dockerized.driver", "chrome"
+}
+
+task allDockerisedCrossBrowserTests {
+    dependsOn chromeLinuxTest
+}

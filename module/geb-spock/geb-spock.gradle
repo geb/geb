@@ -1,5 +1,6 @@
 plugins {
     id 'geb.publishing'
+    id 'geb.dockerised-test'
 }
 
 dependencies {

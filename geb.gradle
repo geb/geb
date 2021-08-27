@@ -81,8 +81,6 @@ allprojects { project ->
             ":module:geb-junit5", ":module:geb-testng", ":doc:manual", ":integration:geb-gradle"
         ]
 
-        dockerisedCrossBrowserTestModules = [":module:geb-core", ":module:geb-spock", ":module:geb-junit4"]
-
         publishedGroovyModules = groovyModules.findAll { it in publishedModules }
         apiGroovyModules = publishedGroovyModules - ":module:geb-implicit-assertions" - ":integration:geb-gradle"
     }
@@ -201,17 +199,6 @@ subprojects {
 
         task publishJarsAndManual {
             dependsOn 'publishMainPublicationToSonatypeRepository'
-        }
-    }
-
-    if (path in dockerisedCrossBrowserTestModules) {
-        task chromeLinuxTest(type: Test) {
-            maxHeapSize = "512m"
-            systemProperty "geb.dockerized.driver", "chrome"
-        }
-
-        task allDockerisedCrossBrowserTests {
-            dependsOn chromeLinuxTest
         }
     }
 

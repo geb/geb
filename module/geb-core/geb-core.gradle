@@ -13,6 +13,7 @@ buildscript {
 
 plugins {
     id 'geb.publishing'
+    id 'geb.dockerised-test'
 }
 
 apply plugin: "geb-browserstack"
