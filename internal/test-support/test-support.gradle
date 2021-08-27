@@ -6,10 +6,10 @@ dependencies {
     groovy "org.codehaus.groovy:groovy-xml"
 
     api project(':module:geb-core')
-    api htmlUnitDriverDependency
-    api "org.eclipse.jetty:jetty-servlet:$jettyVersion"
-    api "org.seleniumhq.selenium:selenium-server:$seleniumVersion"
+    api libs.htmlUnitDriver
+    api libs.jetty.servlet
+    api libs.selenium.server
 
     implementation "org.testcontainers:selenium:1.15.0-rc2"
-    implementation "org.eclipse.jetty:jetty-server:$jettyVersion"
+    implementation libs.jetty.server
 }

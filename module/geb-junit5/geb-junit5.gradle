@@ -3,14 +3,14 @@ plugins {
 }
 
 dependencies {
-    api "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    api libs.junit5.jupiter.api
 
     implementation project(":module:geb-junit")
 
     testImplementation "org.junit.platform:junit-platform-launcher:1.7.0"
-    testImplementation jsoupDependency
+    testImplementation libs.jsoup
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testRuntimeOnly libs.junit5.jupiter.engine
 }
 
 publishing.publications.main.pom {

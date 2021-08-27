@@ -29,22 +29,22 @@ java {
 }
 
 dependencies {
-    api seleniumDependency
+    api libs.selenium.api
 
     api project(":module:geb-ast")
     api project(":module:geb-waiting")
-    api "org.threeten:threeten-extra:$threeTenExtraVersion"
+    api libs.threeTen.extra
 
     implementation('org.jodd:jodd-lagarto:5.1.5') {
         exclude(group: "ch.qos.logback")
     }
 
-    selectImplementation(seleniumSupportDependency)
+    selectImplementation(libs.selenium.support)
 
-    testImplementation "cglib:cglib:2.2", jsoupDependency, ratpack.groovyTest
+    testImplementation "cglib:cglib:2.2", libs.jsoup, ratpack.groovyTest
     testImplementation project(":module:geb-spock")
 
-    sauceConnect sauceConnectDependency
+    sauceConnect libs.sauceConnect
 }
 
 webdriverBinaries {

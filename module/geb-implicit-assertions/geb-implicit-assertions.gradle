@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    testImplementation spockDependency
+    testImplementation libs.spock.core
 }
 
 publishing.publications.main.pom {

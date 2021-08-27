@@ -40,25 +40,6 @@ allprojects { project ->
         isCi = project.hasProperty("ci")
         availableProcessors = isCi ? 2 : Math.min(runtime.availableProcessors().intdiv(2), 4)
 
-        seleniumVersion = "3.141.59"
-        htmlUnitDriverVersion = "2.35.1"
-        groovyVersion = "3.0.8"
-        spockVersion = "2.0-groovy-3.0"
-        junit4Version = "4.13.2"
-        junit5Version = "5.7.0"
-        jettyVersion = "9.4.8.v20171121"
-        threeTenExtraVersion = "1.4"
-
-        spockDependency = dependencies.create("org.spockframework:spock-core:$spockVersion")
-
-        seleniumDependency = "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
-        seleniumSupportDependency = "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-        htmlUnitDriverDependency = "org.seleniumhq.selenium:htmlunit-driver:$htmlUnitDriverVersion"
-
-        jsoupDependency = "org.jsoup:jsoup:1.11.2"
-
-        sauceConnectDependency = "com.saucelabs:ci-sauce:1.153"
-
         repositories {
             mavenCentral()
         }
@@ -164,7 +145,7 @@ subprojects {
 
     if (path in groovy3Modules) {
         dependencies {
-            groovy platform("org.codehaus.groovy:groovy-bom:$groovyVersion")
+            groovy platform(libs.groovy.bom)
             groovy "org.codehaus.groovy:groovy"
             groovy "org.codehaus.groovy:groovy-templates"
         }
@@ -211,22 +192,22 @@ subprojects {
             "java.lang",
             "java.io"
 
-        link "http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/$seleniumVersion",
+        link "http://static.javadoc.io/org.seleniumhq.selenium/selenium-api/${libs.versions.selenium.get()}",
             "org.openqa.selenium"
 
-        link "http://static.javadoc.io/org.spockframework/spock-core/$spockVersion",
+        link "http://static.javadoc.io/org.spockframework/spock-core/${libs.versions.spock.get()}",
             "spock.lang"
 
-            link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/$junit5Version",
+            link "http://static.javadoc.io/org.junit.jupiter/junit-jupiter-api/${libs.versions.junit5.get()}",
                 "org.junit.jupiter.api"
 
-            link "http://static.javadoc.io/junit/junit/$junit4Version",
+            link "http://static.javadoc.io/junit/junit/${libs.versions.junit4.get()}",
                 "org.junit"
 
-        link "http://static.javadoc.io/org.threeten/threeten-extra/$threeTenExtraVersion",
+        link "http://static.javadoc.io/org.threeten/threeten-extra/${libs.versions.threeTen.get()}",
             "org.threeten.extra"
 
-        link "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/api/",
+        link "http://docs.groovy-lang.org/docs/groovy-${libs.versions.groovy.get()}/html/api/",
             "groovy.lang"
 
         def docName = project.name == "manual" ? "Geb" : project.name

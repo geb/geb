@@ -15,7 +15,7 @@ dependencies {
 
     implementation "com.google.guava:guava:23.0"
 
-    testImplementation spockDependency
+    testImplementation libs.spock.core
 }
 
 publishing.publications.main.pom {

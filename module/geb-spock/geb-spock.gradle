@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api spockDependency
+    api libs.spock.core
     testImplementation project(":internal:test-support")
 }
 

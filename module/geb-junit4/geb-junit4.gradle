@@ -5,10 +5,10 @@ plugins {
 
 dependencies {
     implementation project(":module:geb-junit")
-    implementation "junit:junit:$junit4Version"
+    implementation libs.junit4
 
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.7.0"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    testImplementation libs.junit5.jupiter.api
 }
 
 publishing.publications.main.pom {
