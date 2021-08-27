@@ -138,32 +138,6 @@ subprojects {
             useJUnitPlatform()
         }
     }
-
-    if (path in publishedGroovyModules) {
-        task javadocJar(type: Jar) {
-            classifier 'javadoc'
-            from groovydoc
-        }
-
-        plugins.withId("maven-publish") {
-            java {
-                withJavadocJar()
-                withSourcesJar()
-            }
-
-            publishing {
-                publications {
-                    main(MavenPublication) {
-                        from components.java
-                    }
-                }
-            }
-        }
-
-        task publishJarsAndManual {
-            dependsOn 'publishMainPublicationToSonatypeRepository'
-        }
-    }
 }
 
 task stage(type: Sync) {

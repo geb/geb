@@ -1,5 +1,5 @@
 plugins {
-    id 'geb.publishing'
+    id 'geb.published-groovy-module'
     id 'geb.dockerised-test'
 }
 

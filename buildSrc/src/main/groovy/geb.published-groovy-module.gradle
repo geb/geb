@@ -1,0 +1,25 @@
+plugins {
+    id 'geb.publishing'
+}
+
+task javadocJar(type: Jar) {
+    classifier 'javadoc'
+    from groovydoc
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        main(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+task publishJarsAndManual {
+    dependsOn 'publishMainPublicationToSonatypeRepository'
+}
