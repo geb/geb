@@ -26,18 +26,11 @@ apply plugin: 'com.energizedwork.asl2'
 apply plugin: 'com.github.erdi.extended-idea'
 apply from: "gradle/idea.gradle"
 
-def getProperty(String name, defaultValue) {
-    hasProperty(name) ? property(name) : defaultValue
-}
-
-
 allprojects { project ->
     version = '5.1-SNAPSHOT'
     group = 'org.gebish'
 
     ext {
-        isCi = project.hasProperty("ci")
-
         repositories {
             mavenCentral()
         }
