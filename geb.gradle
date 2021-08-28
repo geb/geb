@@ -37,7 +37,6 @@ allprojects { project ->
 
     ext {
         isCi = project.hasProperty("ci")
-        availableProcessors = isCi ? 2 : Math.min(runtime.availableProcessors().intdiv(2), 4)
 
         repositories {
             mavenCentral()

@@ -55,7 +55,7 @@ webdriverBinaries {
 }
 
 test {
-    maxParallelForks availableProcessors
+    maxParallelForks gebModule.maxWorkers
 }
 
 task allCrossBrowserTests {

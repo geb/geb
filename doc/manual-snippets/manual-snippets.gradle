@@ -17,5 +17,5 @@ dependencies {
 }
 
 test {
-    maxParallelForks availableProcessors
+    maxParallelForks gebModule.maxWorkers
 }
