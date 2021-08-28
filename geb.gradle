@@ -36,7 +36,6 @@ allprojects { project ->
     group = 'org.gebish'
 
     ext {
-        isSnapshot = version.endsWith("-SNAPSHOT")
         isCi = project.hasProperty("ci")
         availableProcessors = isCi ? 2 : Math.min(runtime.availableProcessors().intdiv(2), 4)
 

@@ -36,11 +36,11 @@ ext {
     // The old versions of Geb we are including manuals for
     oldManualVersions = ["1.0", "1.1", "1.1.1", "2.0", "2.1", "2.2", "2.3", "2.3.1", "3.0", "3.0.1", "3.1", "3.2", "3.3", "3.4", "3.4.1", "4.0", "4.1", "5.0"]
 
-    currentVersion = isSnapshot ? oldManualVersions.last() : version
+    currentVersion = gebModule.isSnapshot() ? oldManualVersions.last() : version
     manualsMetadata = [
         'old'     : (oldManualVersions - currentVersion).reverse().join(','),
         'current' : currentVersion,
-        'snapshot': isSnapshot ? project.version : ''
+        'snapshot': gebModule.isSnapshot() ? project.version : ''
     ]
 }
 
@@ -141,8 +141,8 @@ task gatherManuals(type: Sync) {
     oldManualVersions.each {
         configureManualExtraction(configurations["manual-$it"], it)
     }
-    configureManualExtraction(configurations.currentManual, isSnapshot ? 'snapshot' : version)
-    def latestStableManualConfiguration = isSnapshot ? configurations["manual-${oldManualVersions.last()}"] : configurations.currentManual
+    configureManualExtraction(configurations.currentManual, gebModule.isSnapshot() ? 'snapshot' : version)
+    def latestStableManualConfiguration = gebModule.isSnapshot() ? configurations["manual-${oldManualVersions.last()}"] : configurations.currentManual
     configureManualExtraction(latestStableManualConfiguration, "current")
 }
 
