@@ -4,7 +4,7 @@ import geb.gradle.lambdatest.LambdaTestAccount
 
 buildscript {
     repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'io.ratpack:ratpack-gradle:1.6.0'
