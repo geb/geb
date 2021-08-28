@@ -2,8 +2,6 @@ import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 
 import java.time.Duration
 
-import static java.lang.Runtime.runtime
-
 buildscript {
     repositories {
         mavenCentral()
