@@ -20,6 +20,10 @@ import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 
 extensions.create('gebModule', BaseExtension, project)
 
+repositories {
+    mavenCentral()
+}
+
 gebModule {
     onCi {
         plugins.withType(ReportingBasePlugin) {

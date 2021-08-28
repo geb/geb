@@ -25,12 +25,6 @@ apply from: "gradle/idea.gradle"
 allprojects { project ->
     version = '5.1-SNAPSHOT'
     group = 'org.gebish'
-
-    ext {
-        repositories {
-            mavenCentral()
-        }
-    }
 }
 
 nexusPublishing {
