@@ -6,11 +6,10 @@ plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
     id 'com.github.erdi.webdriver-binaries' version '2.5'
+    id 'geb-browserstack'
+    id 'geb-saucelabs'
+    id 'geb-lambdatest'
 }
-
-apply plugin: "geb-browserstack"
-apply plugin: "geb-saucelabs"
-apply plugin: "geb-lambdatest"
 
 java {
     registerFeature('select') {
