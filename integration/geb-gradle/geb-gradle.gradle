@@ -1,9 +1,8 @@
 plugins {
     id 'geb.published-groovy-module'
     id 'geb.spock-2-module'
+    id 'java-gradle-plugin'
 }
-
-apply plugin: 'java-gradle-plugin'
 
 repositories {
     mavenCentral()
