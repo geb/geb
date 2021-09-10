@@ -3,7 +3,6 @@ plugins {
     id 'geb.spock-2-module'
 }
 
-apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
