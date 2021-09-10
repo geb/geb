@@ -1,5 +1,3 @@
-import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
-
 import java.time.Duration
 
 buildscript {
