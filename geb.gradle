@@ -33,6 +33,11 @@ nexusPublishing {
     }
 }
 
+extensions.findByName("gradleEnterprise")?.buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
+
 task stage(type: Sync) {
     from configurations.site
     into 'deploy'
