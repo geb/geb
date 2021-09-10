@@ -16,8 +16,8 @@
 
 plugins {
     id "geb.groovy-module"
-    id "com.github.node-gradle.node" version "2.2.0"
-    id "io.ratpack.ratpack-groovy" version "1.8.2"
+    alias(libs.plugins.node)
+    alias(libs.plugins.ratpackGroovy)
 }
 
 ext {

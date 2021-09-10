@@ -5,7 +5,7 @@ import geb.gradle.lambdatest.LambdaTestAccount
 plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
-    id 'com.github.erdi.webdriver-binaries' version '2.5'
+    alias(libs.plugins.webdriverBinaries)
     id 'geb-browserstack'
     id 'geb-saucelabs'
     id 'geb-lambdatest'
