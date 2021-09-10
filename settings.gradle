@@ -36,35 +36,6 @@ def setBuildFile(project) {
 
 setBuildFile(rootProject)
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        libs {
-            version('groovy', '3.0.8')
-            version('jetty', '9.4.8.v20171121')
-            version('junit4', '4.13.2')
-            version('junit5', '5.7.0')
-            version('sauceConnect', '1.153')
-            version('selenium', '3.141.59')
-            version('spock', '2.0-groovy-3.0')
-            version('threeTen', '1.4')
-            alias('groovy.bom').to('org.codehaus.groovy', 'groovy-bom').versionRef('groovy')
-            alias('htmlUnitDriver').to('org.seleniumhq.selenium:htmlunit-driver:2.35.1')
-            alias('jetty.server').to('org.eclipse.jetty', 'jetty-server').versionRef('jetty')
-            alias('jetty.servlet').to('org.eclipse.jetty', 'jetty-servlet').versionRef('jetty')
-            alias('jsoup').to('org.jsoup:jsoup:1.11.2')
-            alias('junit4').to('junit', 'junit').versionRef('junit4')
-            alias('junit5.jupiter.api').to('org.junit.jupiter', 'junit-jupiter-api').versionRef('junit5')
-            alias('junit5.jupiter.engine').to('org.junit.jupiter', 'junit-jupiter-engine').versionRef('junit5')
-            alias('sauceConnect').to('com.saucelabs', 'ci-sauce').versionRef('sauceConnect')
-            alias('selenium.api').to('org.seleniumhq.selenium', 'selenium-api').versionRef('selenium')
-            alias('selenium.server').to('org.seleniumhq.selenium', 'selenium-server').versionRef('selenium')
-            alias('selenium.support').to('org.seleniumhq.selenium', 'selenium-support').versionRef('selenium')
-            alias('spock.core').to('org.spockframework', 'spock-core').versionRef('spock')
-            alias('threeTen.extra').to('org.threeten', 'threeten-extra').versionRef('threeTen')
-        }
-    }
-}
-
 ext.isCiServer = System.getenv("OCI_WRITER_KEY_PASSPHRASE")?.size() > 0
 
 buildCache {
