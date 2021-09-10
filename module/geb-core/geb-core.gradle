@@ -30,7 +30,9 @@ dependencies {
 
     selectImplementation(libs.selenium.support)
 
-    testImplementation libs.cglib, libs.jsoup, libs.ratpack.groovyTest
+    testImplementation libs.cglib
+    testImplementation libs.jsoup
+    testImplementation libs.ratpack.groovyTest
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect
