@@ -1,3 +1,7 @@
+plugins {
+    id "org.kordamp.gradle.oci-build-cache" version "0.5.0"
+}
+
 enableFeaturePreview('VERSION_CATALOGS')
 
 include "module:geb-core",
@@ -60,20 +64,6 @@ dependencyResolutionManagement {
         }
     }
 }
-
-
-
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath('org.kordamp.gradle:oci-gradle-build-cache-plugin:0.5.0')
-    }
-}
-
-apply plugin: 'org.kordamp.gradle.oci-build-cache'
 
 ext.isCiServer = System.getenv("OCI_WRITER_KEY_PASSPHRASE")?.size() > 0
 
