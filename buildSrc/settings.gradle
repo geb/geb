@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,10 @@
  * limitations under the License.
  */
 
-plugins {
-	id 'groovy'
-	id 'idea'
-	id 'groovy-gradle-plugin'
-}
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	implementation localGroovy()
-	implementation gradleApi()
-
-	implementation libs.guava
-	implementation libs.grolifant
-}
-
-sourceSets {
-	main {
-		groovy.srcDir("../integration/geb-gradle/src/main/groovy")
-		resources.srcDir("../integration/geb-gradle/src/main/resources")
-	}
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }

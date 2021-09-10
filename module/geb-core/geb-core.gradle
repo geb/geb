@@ -24,13 +24,13 @@ dependencies {
     api project(":module:geb-waiting")
     api libs.threeTen.extra
 
-    implementation('org.jodd:jodd-lagarto:5.1.5') {
+    implementation(libs.jodd.lagarto) {
         exclude(group: "ch.qos.logback")
     }
 
     selectImplementation(libs.selenium.support)
 
-    testImplementation "cglib:cglib:2.2", libs.jsoup, "io.ratpack:ratpack-groovy-test:1.8.2"
+    testImplementation libs.cglib, libs.jsoup, libs.ratpack.groovyTest
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect

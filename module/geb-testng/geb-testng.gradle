@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation "org.testng:testng:6.14.3"
+    implementation libs.testng
 }
 
 test {

@@ -7,7 +7,7 @@ dependencies {
     implementation project(":module:geb-junit")
     implementation libs.junit4
 
-    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.7.0"
+    testRuntimeOnly libs.junit5.vintage.engine
     testImplementation libs.junit5.jupiter.api
 }
 

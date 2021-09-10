@@ -7,7 +7,7 @@ dependencies {
 
     implementation project(":module:geb-junit")
 
-    testImplementation "org.junit.platform:junit-platform-launcher:1.7.0"
+    testImplementation libs.junit.platform.launcher
     testImplementation libs.jsoup
 
     testRuntimeOnly libs.junit5.jupiter.engine

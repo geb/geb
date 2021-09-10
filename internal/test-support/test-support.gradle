@@ -10,6 +10,6 @@ dependencies {
     api libs.jetty.servlet
     api libs.selenium.server
 
-    implementation "org.testcontainers:selenium:1.15.0-rc2"
+    implementation libs.testcontainers.selenium
     implementation libs.jetty.server
 }
