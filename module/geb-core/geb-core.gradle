@@ -2,15 +2,6 @@ import geb.gradle.browserstack.BrowserStackAccount
 import geb.gradle.saucelabs.SauceAccount
 import geb.gradle.lambdatest.LambdaTestAccount
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'io.ratpack:ratpack-gradle:1.8.2'
-    }
-}
-
 plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
@@ -20,7 +11,6 @@ plugins {
 apply plugin: "geb-browserstack"
 apply plugin: "geb-saucelabs"
 apply plugin: "geb-lambdatest"
-apply plugin: ratpack.gradle.RatpackBasePlugin
 
 java {
     registerFeature('select') {
@@ -41,7 +31,7 @@ dependencies {
 
     selectImplementation(libs.selenium.support)
 
-    testImplementation "cglib:cglib:2.2", libs.jsoup, ratpack.groovyTest
+    testImplementation "cglib:cglib:2.2", libs.jsoup, "io.ratpack:ratpack-groovy-test:1.8.2"
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect
