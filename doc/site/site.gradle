@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'io.ratpack:ratpack-gradle:1.8.2'
-        classpath 'com.github.node-gradle:gradle-node-plugin:2.2.0'
-    }
-}
-
 plugins {
-    id 'geb.groovy-module'
+    id "geb.groovy-module"
+    id "com.github.node-gradle.node" version "2.2.0"
+    id "io.ratpack.ratpack-groovy" version "1.8.2"
 }
-
-apply plugin: "io.ratpack.ratpack-groovy"
-apply plugin: "com.github.node-gradle.node"
 
 ext {
     // The old versions of Geb we are including manuals for
