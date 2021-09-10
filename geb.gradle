@@ -7,6 +7,14 @@ plugins {
     alias(libs.plugins.extendedIdea)
 }
 
+configurations {
+    site
+}
+
+dependencies {
+    site project(path: 'doc:site', configuration: 'distribution')
+}
+
 nexusPublishing {
     repositories {
         sonatype {
@@ -25,8 +33,9 @@ nexusPublishing {
     }
 }
 
-task stage {
-    dependsOn 'doc:site:prepareDeployment'
+task stage(type: Sync) {
+    from configurations.site
+    into 'deploy'
 }
 
 ideaProjectComponents { components ->

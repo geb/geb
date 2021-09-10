@@ -44,6 +44,8 @@ configurations {
     oldManualVersions.each {
         delegate."manual-$it"
     }
+
+    distribution
 }
 
 dependencies {
@@ -159,9 +161,15 @@ task publish(type: Exec) {
     mustRunAfter rootProject.allprojects*.tasks*.withType(Upload)
 }
 
-task prepareDeployment(type: Sync) {
-    into rootProject.file("deploy")
+task distribution(type: Sync) {
     with distributions.main.contents
+    into "${buildDir}/distribution"
+}
+
+artifacts {
+    distribution(tasks.distribution.outputs.files.singleFile) {
+        builtBy tasks.distribution
+    }
 }
 
 if (project.gradle.startParameter.continuous) {
