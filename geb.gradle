@@ -18,7 +18,6 @@ plugins {
     id 'geb.coordinates'
 }
 
-apply plugin: 'base'
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 apply plugin: 'com.energizedwork.asl2'
 apply plugin: 'com.github.erdi.extended-idea'
