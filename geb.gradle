@@ -7,19 +7,17 @@ buildscript {
     }
 
     dependencies {
-        classpath "io.github.gradle-nexus:publish-plugin:1.0.0"
         classpath "gradle.plugin.com.github.erdi:idea-gradle-plugins:2.1"
-        classpath "gradle.plugin.com.energizedwork.asl2:asl2-gradle-plugin:1.1"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.5"
     }
 }
 
 plugins {
     id 'geb.coordinates'
+    id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
+    id "com.energizedwork.asl2" version "1.1"
 }
 
-apply plugin: 'io.github.gradle-nexus.publish-plugin'
-apply plugin: 'com.energizedwork.asl2'
 apply plugin: 'com.github.erdi.extended-idea'
 apply from: "gradle/idea.gradle"
 
