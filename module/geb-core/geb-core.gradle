@@ -14,12 +14,12 @@ buildscript {
 plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
+    id 'com.github.erdi.webdriver-binaries' version '2.5'
 }
 
 apply plugin: "geb-browserstack"
 apply plugin: "geb-saucelabs"
 apply plugin: "geb-lambdatest"
-apply plugin: 'com.github.erdi.webdriver-binaries'
 apply plugin: ratpack.gradle.RatpackBasePlugin
 
 java {

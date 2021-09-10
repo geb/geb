@@ -1,8 +1,7 @@
 plugins {
     id 'geb.groovy-3-module'
+    id 'com.github.erdi.webdriver-binaries' version '2.5'
 }
-
-apply plugin: 'com.github.erdi.webdriver-binaries'
 
 webdriverBinaries {
     geckodriver "0.24.0"
