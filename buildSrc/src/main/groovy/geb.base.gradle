@@ -18,6 +18,10 @@ import org.gebish.gradle.BaseExtension
 import org.ysb33r.grolifant.api.core.OperatingSystem
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 
+plugins {
+    id 'geb.coordinates'
+}
+
 extensions.create('gebModule', BaseExtension, project)
 
 repositories {
