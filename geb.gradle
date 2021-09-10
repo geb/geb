@@ -45,6 +45,6 @@ nexusPublishing {
     }
 }
 
-task stage(type: Sync) {
+task stage {
     dependsOn 'doc:site:prepareDeployment'
 }
