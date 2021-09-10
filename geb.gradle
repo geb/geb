@@ -7,7 +7,6 @@ buildscript {
     }
 
     dependencies {
-        classpath "gradle.plugin.com.github.erdi:idea-gradle-plugins:2.1"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.5"
     }
 }
@@ -16,10 +15,8 @@ plugins {
     id 'geb.coordinates'
     id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
     id "com.energizedwork.asl2" version "1.1"
+    id "com.github.erdi.extended-idea" version "2.1"
 }
-
-apply plugin: 'com.github.erdi.extended-idea'
-apply from: "gradle/idea.gradle"
 
 nexusPublishing {
     repositories {
@@ -41,4 +38,25 @@ nexusPublishing {
 
 task stage {
     dependsOn 'doc:site:prepareDeployment'
+}
+
+ideaProjectComponents { components ->
+    components.file "gradle/idea/codeStyle.xml"
+    components.file "gradle/idea/codeStyleGroovy.xml"
+}
+
+idea {
+    project {
+        jdkName "1.8"
+
+        wildcards += ['good-conf.groovy', 'gebScript*.groovy']
+    }
+
+    extended {
+        workspace {
+            junit {
+                tasks = [':integration:geb-gradle:classes', ':integration:geb-gradle:pluginUnderTestMetadata']
+            }
+        }
+    }
 }
