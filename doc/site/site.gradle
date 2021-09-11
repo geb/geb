@@ -70,7 +70,7 @@ node {
     nodeModulesDir = file("src/npm")
 }
 
-npm_ci {
+def npmCiTask = tasks.named("npm_ci") {
     inputs.files(
         'src/npm/package-lock.json',
         'src/npm/semantic.json'
@@ -79,45 +79,7 @@ npm_ci {
     outputs.dir 'src/npm/semantic'
 }
 
-processResources {
-    from(npm_ci) {
-        includeEmptyDirs = false
-        include 'jquery/dist/jquery.min.js'
-        eachFile {
-            it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
-        }
-    }
-    from(npm_ci) {
-        includeEmptyDirs = false
-        include '@browser-logos/android/android_128x128.png'
-        include '@browser-logos/chrome/chrome_128x128.png'
-        include '@browser-logos/safari/safari_128x128.png'
-        include '@browser-logos/safari-ios/safari-ios_128x128.png'
-        include '@browser-logos/edge/edge_128x128.png'
-        include '@browser-logos/firefox/firefox_128x128.png'
-        eachFile {
-            it.relativePath = new RelativePath(true, 'public', 'images', it.sourceName)
-        }
-    }
-    from(npm_ci) {
-        includeEmptyDirs = false
-        include 'dist/semantic.min.js'
-        eachFile {
-            it.relativePath = new RelativePath(true, 'public', 'js', *it.relativePath.segments[1..-1])
-        }
-    }
-    from(npm_ci) {
-        includeEmptyDirs = false
-        include 'dist/semantic.min.css'
-        include 'dist/themes/default/assets/fonts/**'
-        include 'dist/themes/default/assets/images/**'
-        eachFile {
-            it.relativePath = new RelativePath(true, 'public', 'css', *it.relativePath.segments[1..-1])
-        }
-    }
-}
-
-task gatherManuals(type: Sync) {
+def gatherManualsTask = tasks.register("gatherManuals", Sync) {
     inputs.properties(manualsMetadata)
 
     def configureManualExtraction = { configuration, label ->
@@ -136,7 +98,7 @@ task gatherManuals(type: Sync) {
     configureManualExtraction(latestStableManualConfiguration, "current")
 }
 
-task generateConfigProperties() {
+def generateConfigPropertiesTask = tasks.register("generateConfigProperties") {
     def propertiesFile = file('src/ratpack/ratpack.properties')
     outputs.file(propertiesFile)
 
@@ -153,22 +115,58 @@ task generateConfigProperties() {
     }
 }
 
-processResources.inputs.files gatherManuals, generateConfigProperties
+tasks.named("processResources") {
+    inputs.files gatherManualsTask, generateConfigPropertiesTask
 
-task publish(type: Exec) {
-    commandLine 'git push git@heroku.com:gebish.git master'.tokenize(' ')
-
-    mustRunAfter rootProject.allprojects*.tasks*.withType(Upload)
+    from(npmCiTask) {
+        includeEmptyDirs = false
+        include 'jquery/dist/jquery.min.js'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
+        }
+    }
+    from(npmCiTask) {
+        includeEmptyDirs = false
+        include '@browser-logos/android/android_128x128.png'
+        include '@browser-logos/chrome/chrome_128x128.png'
+        include '@browser-logos/safari/safari_128x128.png'
+        include '@browser-logos/safari-ios/safari-ios_128x128.png'
+        include '@browser-logos/edge/edge_128x128.png'
+        include '@browser-logos/firefox/firefox_128x128.png'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'images', it.sourceName)
+        }
+    }
+    from(npmCiTask) {
+        includeEmptyDirs = false
+        include 'dist/semantic.min.js'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'js', *it.relativePath.segments[1..-1])
+        }
+    }
+    from(npmCiTask) {
+        includeEmptyDirs = false
+        include 'dist/semantic.min.css'
+        include 'dist/themes/default/assets/fonts/**'
+        include 'dist/themes/default/assets/images/**'
+        eachFile {
+            it.relativePath = new RelativePath(true, 'public', 'css', *it.relativePath.segments[1..-1])
+        }
+    }
 }
 
-task distribution(type: Sync) {
+tasks.register("publish", Exec) {
+    commandLine 'git push git@heroku.com:gebish.git master'.tokenize(' ')
+}
+
+def distributionTask = tasks.register("distribution", Sync) {
     with distributions.main.contents
     into "${buildDir}/distribution"
 }
 
 artifacts {
-    distribution(tasks.distribution.outputs.files.singleFile) {
-        builtBy tasks.distribution
+    distribution(distributionTask.map { it.outputs.files.singleFile }) {
+        builtBy distributionTask
     }
 }
 

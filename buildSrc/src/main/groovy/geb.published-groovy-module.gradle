@@ -3,9 +3,9 @@ plugins {
     id 'geb.groovy-module'
 }
 
-task javadocJar(type: Jar) {
+tasks.register("javadocJar", Jar) {
     classifier 'javadoc'
-    from groovydoc
+    from tasks.named("groovydoc")
 }
 
 java {
@@ -21,6 +21,6 @@ publishing {
     }
 }
 
-task publishJarsAndManual {
+tasks.register("publishJarsAndManual") {
     dependsOn 'publishMainPublicationToSonatypeRepository'
 }

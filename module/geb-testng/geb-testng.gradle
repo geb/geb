@@ -6,7 +6,7 @@ dependencies {
     implementation libs.testng
 }
 
-test {
+tasks.named("test") {
     useTestNG {
         excludeGroups "doNotRunFromGradle"
     }

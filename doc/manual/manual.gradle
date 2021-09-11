@@ -66,7 +66,7 @@ asciidoctorj {
     docExtensions project(":doc:asciidoctor-extension")
 }
 
-asciidoctor {
+tasks.named("asciidoctor") {
     sources {
         include 'index.adoc'
     }
@@ -76,28 +76,35 @@ asciidoctor {
     }
 
     baseDirFollowsSourceDir()
+
+    inputs.files(
+        { project(":doc:manual-snippets").sourceSets.test.allSource },
+        { project(":doc:manual-snippets:real-browser").sourceSets.test.allSource },
+        { project(":module:geb-core").sourceSets.main.allSource },
+        { project(":module:geb-core").sourceSets.test.allSource }
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
-task groovydocSources(type: Sync) {
+def groovydocSourcesTask = tasks.register("groovydocSources", Sync) {
     inputs.files configurations.groovydocSources
     from({ configurations.groovydocSources.files.collect { zipTree(it) } })
     exclude 'META-INF/**'
     into "$buildDir/groovydocSources"
 }
 
-task apiDoc(type: Groovydoc) {
+def apiDocTask = tasks.register("apiDoc", Groovydoc) {
     groovyClasspath = new GroovyRuntime(project).inferGroovyClasspath(configurations.groovydocClasspath)
     classpath = configurations.groovydocClasspath
     destinationDir = file("$buildDir/apiDoc")
-    source groovydocSources
+    source groovydocSourcesTask
 }
 
-task packageManual(type: Sync) {
+def packageManualTask = tasks.register("packageManual", Sync) {
     into "$buildDir/manual"
     from asciidoctor
 
     into("api") {
-        from apiDoc
+        from apiDocTask
     }
 
     eachFile { file ->
@@ -109,19 +116,19 @@ task packageManual(type: Sync) {
     includeEmptyDirs = false
 }
 
-task manualZip(type: Zip) {
-    from packageManual
+def manualZipTask = tasks.register("manualZip", Zip) {
+    from packageManualTask
 }
 
 artifacts {
-    manual manualZip
+    manual manualZipTask
 }
 
 publishing {
     publications {
         manual(MavenPublication) {
             artifactId 'geb-manual'
-            artifact manualZip
+            artifact manualZipTask
             pom {
                 name = "Geb Manual - The Book of Geb"
                 description = "Geb (pronounced \"jeb\") manual, user guide and API reference."
@@ -130,28 +137,15 @@ publishing {
     }
 }
 
-task publishJarsAndManual {
+tasks.register("publishJarsAndManual") {
     dependsOn 'publishManualPublicationToSonatypeRepository'
 }
 
-build {
-    dependsOn manualZip
-}
-
-task openManual() {
-    dependsOn tasks.asciidoctor
+tasks.register("openManual") {
+    dependsOn "asciidoctor"
     doLast {
         new java.awt.Desktop().browse(fileTree(tasks.asciidoctor.outputDir).find { it.name == 'index.html' }.toURI())
     }
-}
-
-asciidoctor {
-    inputs.files(
-        { project(":doc:manual-snippets").sourceSets.test.allSource },
-        { project(":doc:manual-snippets:real-browser").sourceSets.test.allSource },
-        { project(":module:geb-core").sourceSets.main.allSource },
-        { project(":module:geb-core").sourceSets.test.allSource }
-    ).withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 idea {

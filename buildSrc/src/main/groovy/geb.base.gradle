@@ -32,16 +32,16 @@ gebModule {
     onCi {
         plugins.withType(ReportingBasePlugin) {
             def projectDirPath = project.path.substring(1).replaceAll(":", "/")
-            def copyTask = task("copyReportsIntoRoot", type: Copy) {
+            def copyTask = tasks.register("copyReportsIntoRoot", Copy) {
                 into "${rootProject.buildDir}/reports/${projectDirPath}"
                 from reporting.baseDir
             }
-            tasks.withType(Reporting) { reportingTask ->
+            tasks.withType(Reporting).configureEach { reportingTask ->
                 reportingTask.finalizedBy copyTask
             }
         }
 
-        tasks.withType(Test) {
+        tasks.withType(Test).configureEach {
             testLogging {
                 showStackTraces = true
                 exceptionFormat "full"
@@ -50,7 +50,7 @@ gebModule {
     }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     maxHeapSize = "768m"
     jvmArgs '-XX:MaxMetaspaceSize=192m'
 
@@ -77,7 +77,7 @@ tasks.withType(Test) {
     systemProperty 'jna.nosys', 'true'
 }
 
-tasks.withType(Groovydoc) {
+tasks.withType(Groovydoc).configureEach {
     exclude "**/internal/**"
 
     link "http://docs.oracle.com/javase/8/docs/api/",

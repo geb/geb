@@ -45,27 +45,29 @@ webdriverBinaries {
     }
 }
 
-test {
+tasks.named("test") {
     maxParallelForks gebModule.maxWorkers
 }
 
-task allCrossBrowserTests {
+tasks.register("allCrossBrowserTests") {
     dependsOn 'allSauceLabsTests', 'allBrowserStackTests', 'allDockerisedCrossBrowserTests', 'allLambdaTestTests'
 }
 
-task firefoxLinuxTest(type: Test) {
+def firefoxLinuxTestTask = tasks.register("firefoxLinuxTest", Test) {
     maxHeapSize = "512m"
     systemProperty "geb.dockerized.driver", "firefox"
     maxParallelForks 2
 }
 
-chromeLinuxTest {
+tasks.named("chromeLinuxTest") {
     maxParallelForks 2
 }
 
-allDockerisedCrossBrowserTests.dependsOn firefoxLinuxTest
+tasks.named("allDockerisedCrossBrowserTests") {
+    dependsOn firefoxLinuxTestTask
+}
 
-task localChromeTest(type: Test) {
+tasks.register("localChromeTest", Test) {
     maxHeapSize = "512m"
     systemProperty "geb.local.driver", "chrome"
 }
@@ -159,11 +161,11 @@ lambdaTest {
 }
 
 
-task nonIeBrowserStackTests {
+tasks.register("nonIeBrowserStackTests") {
     dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxMac47Test'
 }
 
-task ieBrowserStackTests {
+tasks.register("ieBrowserStackTests") {
     dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows18Test'
 }
 

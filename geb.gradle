@@ -38,7 +38,7 @@ extensions.findByName("gradleEnterprise")?.buildScan {
     termsOfServiceAgree = 'yes'
 }
 
-task stage(type: Sync) {
+tasks.register("stage", Sync) {
     from configurations.site
     into 'deploy'
 }

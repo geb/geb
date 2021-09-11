@@ -7,5 +7,5 @@ configurations {
 }
 
 artifacts {
-    sources tasks.sourcesJar
+    sources tasks.named("sourcesJar")
 }

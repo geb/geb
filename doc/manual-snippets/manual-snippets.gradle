@@ -15,6 +15,6 @@ dependencies {
     testImplementation libs.systemLambda
 }
 
-test {
+tasks.named("test") {
     maxParallelForks gebModule.maxWorkers
 }

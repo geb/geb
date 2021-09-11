@@ -7,6 +7,6 @@ dependencies {
     testImplementation project(':doc:manual-snippets:fixtures')
 }
 
-test {
+tasks.named("test") {
     mustRunAfter ':doc:manual-snippets:test'
 }

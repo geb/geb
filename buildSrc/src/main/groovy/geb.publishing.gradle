@@ -49,7 +49,7 @@ gebModule {
             required { false }
         }
 
-        tasks.withType(PublishToMavenRepository) {
+        tasks.withType(PublishToMavenRepository).configureEach {
             onlyIf { gebModule.isSnapshot() }
         }
     }

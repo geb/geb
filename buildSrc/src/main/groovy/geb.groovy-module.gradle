@@ -24,7 +24,7 @@ codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
 def codenarcTasks = tasks.withType(CodeNarc)
 
-tasks.create('codenarc') {
+tasks.register('codenarc') {
     dependsOn codenarcTasks
 }
 
@@ -33,6 +33,6 @@ codenarcTasks.configureEach {
     shouldRunAfter tasks.withType(Test)
 }
 
-tasks.withType(GroovyCompile) {
+tasks.withType(GroovyCompile).configureEach {
     groovyOptions.forkOptions.memoryMaximumSize = '256m'
 }
