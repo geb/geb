@@ -17,6 +17,7 @@ package geb.gradle.cloud
 
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL
@@ -27,13 +28,13 @@ class BrowserSpec {
     final String name
     final String displayName
 
-    private final DomainObjectCollection<Test> tasks
+    private final DomainObjectCollection<TaskProvider<Test>> tasks
     private final Properties capabilities = new Properties()
 
     BrowserSpec(ObjectFactory objects, String cloudProvider, String name) {
         this.cloudProvider = cloudProvider
         this.name = name
-        this.tasks = objects.domainObjectSet(Test)
+        this.tasks = objects.domainObjectSet(TaskProvider)
         String browserSpec = name
         if (browserSpec) {
             String[] split = browserSpec.split("_", 3)
@@ -67,12 +68,14 @@ class BrowserSpec {
         capabilities(capabilities)
     }
 
-    void addTask(Test task) {
+    void addTask(TaskProvider<Test> task) {
         tasks.add(task)
     }
 
     void configureTasks(Closure configuration) {
-        tasks.all(configuration)
+        tasks.all { TaskProvider taskProvider ->
+            taskProvider.configure(configuration)
+        }
     }
 
     protected void configureCapabilitiesOnTask(Test task) {
@@ -89,8 +92,10 @@ class BrowserSpec {
     }
 
     private void setCapabilitiesOnTasks() {
-        tasks.all { Test task ->
-            configureCapabilitiesOnTask(task)
+        tasks.all { TaskProvider<Test> taskProvider ->
+            taskProvider.configure {
+                configureCapabilitiesOnTask(it)
+            }
         }
     }
 

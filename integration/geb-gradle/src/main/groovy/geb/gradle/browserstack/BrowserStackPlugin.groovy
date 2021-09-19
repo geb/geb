@@ -34,50 +34,49 @@ class BrowserStackPlugin implements Plugin<Project> {
     void apply(Project project) {
         this.project = project
 
-        def allBrowserStackTests = project.task("allBrowserStackTests") {
-            group "BrowserStack Test"
-        }
+        def allBrowserStackTests = project.tasks.register("allBrowserStackTests")
 
-        def browserStackExtension = project.extensions.create('browserStack', BrowserStackExtension, project, allBrowserStackTests)
+        def browserStackExtension = project.extensions.create(
+            'browserStack', BrowserStackExtension, project, allBrowserStackTests, "BrowserStack Test"
+        )
         browserStackExtension.addExtensions()
 
         addTunnelTasks(browserStackExtension)
     }
 
     void addTunnelTasks(BrowserStackExtension browserStackExtension) {
-        def downloadBrowserStackTunnel = project.task('downloadBrowserStackTunnel', type: DownloadBrowserStackTunnel)
+        def downloadBrowserStackTunnel = project.tasks.register('downloadBrowserStackTunnel', DownloadBrowserStackTunnel)
 
-        def unzipBrowserStackTunnel = project.task(UNZIP_TUNNEL_TASK_NAME, type: Sync) {
+        def unzipBrowserStackTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
             dependsOn downloadBrowserStackTunnel
 
-            from(project.zipTree(downloadBrowserStackTunnel.outputs.files.singleFile))
+            from(project.zipTree(downloadBrowserStackTunnel.map { it.outputs.files.singleFile }))
             into(project.file("${project.buildDir}/browserstack/unzipped"))
         }
 
-        def closeBrowserStackTunnel = project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
+        def closeBrowserStackTunnel = project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
             tunnel = project.browserStack.tunnel
         }
 
-        def openBrowserStackTunnel = project.task('openBrowserStackTunnel', type: StartExternalTunnel)
+        def openBrowserStackTunnel = project.tasks.register('openBrowserStackTunnel', StartExternalTunnel)
 
-        def openBrowserStackTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
+        def openBrowserStackTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
             inBackground = true
             finalizedBy CLOSE_TUNNEL_TASK_NAME
         }
 
-        [openBrowserStackTunnel, openBrowserStackTunnelInBackground].each {
-            it.configure {
-                dependsOn UNZIP_TUNNEL_TASK_NAME
+        [openBrowserStackTunnel, openBrowserStackTunnelInBackground]*.configure {
+            dependsOn UNZIP_TUNNEL_TASK_NAME
 
-                tunnel = project.browserStack.tunnel
-                workingDir = project.buildDir
-            }
+            tunnel = project.browserStack.tunnel
+            workingDir = project.buildDir
         }
 
-        [downloadBrowserStackTunnel, unzipBrowserStackTunnel, openBrowserStackTunnelInBackground, closeBrowserStackTunnel].each {
-            it.configure {
-                onlyIf { browserStackExtension.useTunnel }
-            }
+        [
+            downloadBrowserStackTunnel, unzipBrowserStackTunnel, openBrowserStackTunnelInBackground,
+            closeBrowserStackTunnel
+        ]*.configure {
+            onlyIf { browserStackExtension.useTunnel }
         }
     }
 }

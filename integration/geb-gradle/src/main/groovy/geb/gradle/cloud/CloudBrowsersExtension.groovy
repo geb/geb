@@ -22,19 +22,27 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
 abstract class CloudBrowsersExtension {
     protected final Project project
-    protected final Task allTestsLifecycleTask
-    protected final DomainObjectCollection<Test> testTasks
+    protected final TaskProvider<Task> allTestsLifecycleTask
+    protected final String tasksGroup
+    protected final DomainObjectCollection<TaskProvider<Test>> testTasks
 
     protected NamedDomainObjectContainer<BrowserSpec> browsers
 
-    CloudBrowsersExtension(Project project, Task allTestsLifecycleTask) {
+    CloudBrowsersExtension(Project project, TaskProvider<Task> allTestsLifecycleTask, String tasksGroup) {
         this.project = project
         this.allTestsLifecycleTask = allTestsLifecycleTask
-        this.testTasks = project.objects.domainObjectSet(Test)
+        this.tasksGroup = tasksGroup
+
+        allTestsLifecycleTask.configure {
+            it.group = tasksGroup
+        }
+
+        this.testTasks = project.objects.domainObjectSet(TaskProvider)
     }
 
     abstract String getOpenTunnelInBackgroundTaskName()
@@ -51,7 +59,9 @@ abstract class CloudBrowsersExtension {
     }
 
     void task(Closure configuration) {
-        testTasks.all(configuration)
+        testTasks.all { TaskProvider taskProvider ->
+            taskProvider.configure(configuration)
+        }
     }
 
     void additionalTask(String namePrefix, Closure configuration) {
@@ -62,16 +72,17 @@ abstract class CloudBrowsersExtension {
     }
 
     protected void configureTestTasksWith(TestTaskConfigurer configurer) {
-        testTasks.all { Test task -> configurer.configure(task) }
+        testTasks.all { TaskProvider<Test> taskProvider ->
+            taskProvider.configure(configurer.&configure)
+        }
     }
 
-    protected Test addTestTask(BrowserSpec browser, String prefix = null) {
+    protected TaskProvider<Test> addTestTask(BrowserSpec browser, String prefix = null) {
         def name = prefix ? "${prefix}${browser.displayName.capitalize()}" : browser.displayName
 
-        def testTask = project.task("${name}Test", type: Test) { Test task ->
-            group allTestsLifecycleTask.group
+        def testTask = project.tasks.register("${name}Test", Test) { Test task ->
+            task.group = tasksGroup
             task.dependsOn openTunnelInBackgroundTaskName
-            allTestsLifecycleTask.dependsOn task
             finalizedBy closeTunnelTaskName
 
             def reporting = project.reporting as ReportingExtension
@@ -82,16 +93,20 @@ abstract class CloudBrowsersExtension {
             )
         }
 
+        allTestsLifecycleTask.configure {
+            it.dependsOn testTask
+        }
+
         browser.addTask(testTask)
         testTasks.add(testTask)
 
-        def decorateReportsTask = project.task("${name}DecorateReports", type: Copy) {
-            from testTask.reports.junitXml.destination
-            into "${testTask.reports.junitXml.destination}-decorated"
+        def decorateReportsTask = project.tasks.register("${name}DecorateReports", Copy) {
+            from testTask.map { it.reports.junitXml.destination }
+            into testTask.map { "${it.reports.junitXml.destination}-decorated" }
             filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($name)\"") }
         }
 
-        testTask.finalizedBy decorateReportsTask
+        testTask.configure { finalizedBy decorateReportsTask }
 
         testTask
     }

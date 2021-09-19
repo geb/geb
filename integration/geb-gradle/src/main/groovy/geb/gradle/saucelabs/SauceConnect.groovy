@@ -20,6 +20,7 @@ import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.testing.Test
 import org.slf4j.Logger
 
@@ -29,7 +30,7 @@ class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
 
     final protected SauceAccount account
     final protected Configuration connectConfiguration
-    final protected File sauceConnectDir
+    final protected Provider<File> sauceConnectDir
 
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
@@ -40,11 +41,15 @@ class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
 
     File getSauceConnectExecutable() {
         def operations = new SauceConnectOperations(connectConfiguration)
-        def directory = new File(sauceConnectDir, operations.directory)
+        def directory = new File(sauceConnectDir.get(), operations.directory)
         new File(directory, operations.operatingSystem.executable)
     }
 
-    SauceConnect(Project project, Logger logger, SauceAccount account, Configuration connectConfiguration, File sauceConnectDir) {
+    @SuppressWarnings("BracesForMethod")
+    SauceConnect(
+        Project project, Logger logger, SauceAccount account, Configuration connectConfiguration,
+        Provider<File> sauceConnectDir
+    ) {
         super(project, logger)
         this.account = account
         this.connectConfiguration = connectConfiguration

@@ -20,6 +20,7 @@ import groovy.transform.InheritConstructors
 
 import static geb.gradle.saucelabs.SaucePlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.saucelabs.SaucePlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
+import static geb.gradle.saucelabs.SaucePlugin.UNPACK_CONNECT_TASK_NAME
 
 @InheritConstructors
 class SauceLabsExtension extends CloudBrowsersExtension {
@@ -35,7 +36,10 @@ class SauceLabsExtension extends CloudBrowsersExtension {
     void addExtensions() {
         super.addExtensions()
         account = new SauceAccount()
-        connect = new SauceConnect(project, project.logger, account, project.configurations.sauceConnect, project.tasks.unpackSauceConnect.sauceConnectDir)
+        connect = new SauceConnect(
+            project, project.logger, account, project.configurations.sauceConnect,
+            project.tasks.withType(UnpackSauceConnect).named(UNPACK_CONNECT_TASK_NAME).map { it.sauceConnectDir }
+        )
     }
 
     void account(Closure configuration) {

@@ -32,15 +32,15 @@ class SaucePlugin implements Plugin<Project> {
     void apply(Project project) {
         this.project = project
 
-        def allSauceLabsTests = project.task("allSauceLabsTests") {
-            group "Sauce Test"
-        }
+        def allSauceLabsTests = project.tasks.register("allSauceLabsTests")
 
         project.configurations.create('sauceConnect')
 
-        def sauceLabsExtension = project.extensions.create('sauceLabs', SauceLabsExtension, project, allSauceLabsTests)
+        def sauceLabsExtension = project.extensions.create(
+            'sauceLabs', SauceLabsExtension, project, allSauceLabsTests, "Sauce Test"
+        )
 
-        project.task(UNPACK_CONNECT_TASK_NAME, type: UnpackSauceConnect) { Task task ->
+        project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) { Task task ->
             task.onlyIf { sauceLabsExtension.useTunnel }
         }
 
@@ -50,25 +50,23 @@ class SaucePlugin implements Plugin<Project> {
     }
 
     void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {
-        project.task(CLOSE_TUNNEL_TASK_NAME, type: StopExternalTunnel) {
+        project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
             tunnel = project.sauceLabs.connect
             onlyIf { sauceLabsExtension.useTunnel }
         }
 
-        def openSauceTunnel = project.task('openSauceTunnel', type: StartExternalTunnel)
+        def openSauceTunnel = project.tasks.register('openSauceTunnel', StartExternalTunnel)
 
-        def openSauceTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
+        def openSauceTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
             inBackground = true
             finalizedBy CLOSE_TUNNEL_TASK_NAME
             onlyIf { sauceLabsExtension.useTunnel }
         }
 
-        [openSauceTunnel, openSauceTunnelInBackground].each {
-            it.configure {
-                dependsOn UNPACK_CONNECT_TASK_NAME
-                tunnel = project.sauceLabs.connect
-                workingDir = project.buildDir
-            }
+        [openSauceTunnel, openSauceTunnelInBackground]*.configure {
+            dependsOn UNPACK_CONNECT_TASK_NAME
+            tunnel = project.sauceLabs.connect
+            workingDir = project.buildDir
         }
     }
 }

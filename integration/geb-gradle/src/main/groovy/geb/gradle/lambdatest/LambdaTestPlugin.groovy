@@ -35,54 +35,52 @@ class LambdaTestPlugin implements Plugin<Project> {
     void apply(Project project) {
         this.project = project
 
-        def allLambdaTestTests = project.task("allLambdaTestTests") {
-            group "LambdaTest Test"
-        }
+        def allLambdaTestTests = project.tasks.register("allLambdaTestTests")
 
-        def lambdaTestExtension = project.extensions.create('lambdaTest', LambdaTestExtension, project, allLambdaTestTests)
+        def lambdaTestExtension = project.extensions.create(
+            'lambdaTest', LambdaTestExtension, project, allLambdaTestTests, "LambdaTest Test"
+        )
         lambdaTestExtension.addExtensions()
 
         addTunnelTasks(lambdaTestExtension)
     }
 
     void addTunnelTasks(LambdaTestExtension lambdaTestExtension) {
-        def downloadLambdaTestTunnel = project.task(DOWNLOAD_TUNNEL_TASK_NAME, type: DownloadLambdaTestTunnel)
+        def downloadLambdaTestTunnel = project.tasks.register(DOWNLOAD_TUNNEL_TASK_NAME, DownloadLambdaTestTunnel)
 
-        def unzipLambdaTestTunnel = project.task(UNZIP_TUNNEL_TASK_NAME, type: Sync) {
+        def unzipLambdaTestTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
             dependsOn downloadLambdaTestTunnel
             into(project.file("${project.buildDir}/lambdatest/unzipped"))
-            from(project.zipTree(downloadLambdaTestTunnel.outputs.files.singleFile))
+            from(project.zipTree(downloadLambdaTestTunnel.map { it.outputs.files.singleFile }))
         }
 
-        def closeLambdaTestTunnel = project.task(CLOSE_TUNNEL_TASK_NAME, type: StopLambdaTestTunnel) {
+        def closeLambdaTestTunnel = project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopLambdaTestTunnel) {
             tunnel = project.lambdaTest.tunnel
             lambdaTestTunnelOps = lambdaTestExtension.local
             onlyIf { lambdaTestExtension.useTunnel }
         }
 
-        def openLambdaTestTunnel = project.task(OPEN_TUNNEL_TASK_NAME, type: StartExternalTunnel) {
+        def openLambdaTestTunnel = project.tasks.register(OPEN_TUNNEL_TASK_NAME, StartExternalTunnel) {
             onlyIf { lambdaTestExtension.useTunnel }
         }
 
-        def openLambdaTestTunnelInBackground = project.task(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, type: StartExternalTunnel) {
+        def openLambdaTestTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
             inBackground = true
             finalizedBy CLOSE_TUNNEL_TASK_NAME
             onlyIf { lambdaTestExtension.useTunnel }
         }
 
-        [openLambdaTestTunnel, openLambdaTestTunnelInBackground].each {
-            it.configure {
-                dependsOn UNZIP_TUNNEL_TASK_NAME
+        [openLambdaTestTunnel, openLambdaTestTunnelInBackground]*.configure {
+            dependsOn UNZIP_TUNNEL_TASK_NAME
 
-                tunnel = project.lambdaTest.tunnel
-                workingDir = project.buildDir
-            }
+            tunnel = project.lambdaTest.tunnel
+            workingDir = project.buildDir
         }
 
-        [downloadLambdaTestTunnel, unzipLambdaTestTunnel, openLambdaTestTunnelInBackground, closeLambdaTestTunnel].each {
-            it.configure {
-                onlyIf { lambdaTestExtension.useTunnel }
-            }
+        [
+            downloadLambdaTestTunnel, unzipLambdaTestTunnel, openLambdaTestTunnelInBackground, closeLambdaTestTunnel
+        ]*.configure {
+            onlyIf { lambdaTestExtension.useTunnel }
         }
     }
 }
