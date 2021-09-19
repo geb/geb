@@ -70,13 +70,15 @@ node {
     nodeModulesDir = file("src/npm")
 }
 
-def npmCiTask = tasks.named("npm_ci") {
+def npmCiTask = tasks.register("npmCi", NpmTask) {
     inputs.files(
         'src/npm/package-lock.json',
         'src/npm/semantic.json'
     )
     outputs.dir 'src/npm/node_modules'
     outputs.dir 'src/npm/semantic'
+
+    npmCommand = ["ci"]
 }
 
 def gatherManualsTask = tasks.register("gatherManuals", Sync) {
