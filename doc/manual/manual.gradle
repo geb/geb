@@ -55,7 +55,6 @@ asciidoctorj {
         'geb-version'          : project.version,
         'geb-group'            : project.group,
         'geb-group-dir'        : project.group.replace('.', '/'),
-        'spock-version'        : '0.7',
         'spock-core-version'   : libs.versions.spock.get(),
         'selenium-version'     : libs.versions.selenium.get(),
         'groovy-version'       : libs.versions.groovy.get(),
