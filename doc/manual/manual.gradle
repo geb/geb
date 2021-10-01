@@ -110,12 +110,6 @@ def packageManualTask = tasks.register("packageManual", Sync) {
         from apiDocTask
     }
 
-    eachFile { file ->
-        if (file.path.startsWith("html5")) {
-            file.relativePath = new RelativePath(!file.directory, file.relativePath.segments[1..-1] as String[])
-        }
-    }
-
     includeEmptyDirs = false
 }
 
