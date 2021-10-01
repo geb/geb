@@ -30,9 +30,12 @@ tasks.register('codenarc') {
 
 codenarcTasks.configureEach {
     exclude 'GebConfig*.groovy'
-    shouldRunAfter tasks.withType(Test)
 }
 
 tasks.withType(GroovyCompile).configureEach {
     groovyOptions.forkOptions.memoryMaximumSize = '256m'
+}
+
+tasks.withType(Test).configureEach {
+    shouldRunAfter codenarcTasks
 }
