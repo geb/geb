@@ -84,9 +84,10 @@ def npmCiTask = tasks.register("npmCi", NpmTask) {
 def gatherManualsTask = tasks.register("gatherManuals", Sync) {
     inputs.properties(manualsMetadata)
 
+    into "${buildDir}/manuals"
+
     def configureManualExtraction = { configuration, label ->
         inputs.files configuration
-        into "src/ratpack/public/manual"
         into label, {
             from { zipTree(configuration.singleFile) }
         }
@@ -101,25 +102,39 @@ def gatherManualsTask = tasks.register("gatherManuals", Sync) {
 }
 
 def generateConfigPropertiesTask = tasks.register("generateConfigProperties") {
-    def propertiesFile = file('src/ratpack/ratpack.properties')
-    outputs.file(propertiesFile)
-
     inputs.properties(manualsMetadata)
 
+    def outputDirectory = new File(buildDir, "config-properties")
+    outputs.dir(outputDirectory)
+
     doLast {
+        outputDirectory.mkdirs()
         def properties = new Properties()
         manualsMetadata.each { key, value ->
             properties.setProperty("manuals.${key}", value)
         }
-        propertiesFile.withWriter { Writer writer ->
+        new File(outputDirectory, 'ratpack.properties').withWriter { Writer writer ->
             properties.store(writer, null)
         }
     }
 }
 
-tasks.named("processResources") {
-    inputs.files gatherManualsTask, generateConfigPropertiesTask
+def generateResourcesTask = tasks.register("generateResources", Sync) {
+    from(gatherManualsTask) {
+        into 'public/manual'
+    }
+    from generateConfigPropertiesTask
 
+    into 'src/main/generatedResources'
+}
+
+sourceSets.main.resources.srcDir generateResourcesTask
+
+tasks.named("ideaModule") {
+    dependsOn generateResourcesTask
+}
+
+tasks.named("processResources") {
     from(npmCiTask) {
         includeEmptyDirs = false
         include 'jquery/dist/jquery.min.js'

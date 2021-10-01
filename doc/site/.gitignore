@@ -1,4 +1,3 @@
-src/ratpack/public/manual
-src/ratpack/ratpack.properties
+src/main/generatedResources
 src/npm/node_modules
 src/npm/semantic

@@ -58,7 +58,10 @@ idea {
     extended {
         workspace {
             junit {
-                tasks = [':integration:geb-gradle:classes', ':integration:geb-gradle:pluginUnderTestMetadata']
+                tasks = [
+                    ':integration:geb-gradle:classes', ':integration:geb-gradle:pluginUnderTestMetadata',
+                    ':doc:site:generateResources'
+                ]
             }
         }
     }
