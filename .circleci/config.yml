@@ -14,6 +14,8 @@ jobs:
             - gradle-home-modules-master
             - gradle-home-modules
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p module -Pci check --continue
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -34,6 +36,8 @@ jobs:
             - gradle-home-internal-master
             - gradle-home-internal
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p internal -Pci check --continue
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -54,6 +58,8 @@ jobs:
             - gradle-home-integrations-master
             - gradle-home-integrations
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p integration -Pci check --continue
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -73,6 +79,8 @@ jobs:
           command: |
             export WORKING_DIRECTORY=`pwd`
             docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v /var/run/docker.sock:/var/run/docker.sock -w ${WORKING_DIRECTORY} -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE gebish/ci:v7 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 2 --parallel -Pci :doc:manual-snippets:check :doc:manual-snippets:fixtures:check :doc:manual-snippets:real-browser:check :doc:manual:build :doc:asciidoctor-extension:check"
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -93,6 +101,8 @@ jobs:
             - gradle-home-site-master
             - gradle-home-site
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p doc/site -Pci check
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -112,6 +122,8 @@ jobs:
           command: |
             export WORKING_DIRECTORY=`pwd`
             docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v /var/run/docker.sock:/var/run/docker.sock -w ${WORKING_DIRECTORY} -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE gebish/ci:v7 /bin/bash -c "GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --parallel -Pci allDockerisedCrossBrowserTests"
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -132,6 +144,8 @@ jobs:
             - gradle-home-local-crossbrowser-master
             - gradle-home-local-crossbrowser
       - run: ./gradlew --no-daemon --max-workers 2 --parallel -p module -Pci localChromeTest
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -154,6 +168,8 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci allSauceLabsTests
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -176,6 +192,8 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci allLambdaTestTests
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -198,6 +216,8 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci nonIeBrowserStackTests
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
@@ -220,6 +240,8 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci ieBrowserStackTests
+      - store_test_results:
+          path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
