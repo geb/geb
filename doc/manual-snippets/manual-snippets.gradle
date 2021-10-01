@@ -1,6 +1,7 @@
 plugins {
     id 'geb.groovy-3-module'
     alias(libs.plugins.webdriverBinaries)
+    id 'geb.all-sources-configuration'
 }
 
 webdriverBinaries {

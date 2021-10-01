@@ -1,5 +1,6 @@
 plugins {
     id 'geb.groovy-3-module'
+    id 'geb.all-sources-configuration'
 }
 
 dependencies {

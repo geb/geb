@@ -1,0 +1,15 @@
+configurations {
+    allSources
+}
+
+def allSourcesTask = tasks.register("allSources", Sync) {
+    from sourceSets.main.allSource.srcDirs
+    from sourceSets.test.allSource.srcDirs
+    into "$buildDir/allSources"
+}
+
+artifacts {
+    allSources(allSourcesTask.map { it.outputs.files.singleFile }) {
+        builtBy allSourcesTask
+    }
+}

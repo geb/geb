@@ -19,6 +19,8 @@ configurations {
 
     groovydocClasspath
     groovydocSources
+
+    snippets
 }
 
 project(":module").subprojects.each { apiModule ->
@@ -34,6 +36,26 @@ dependencies {
             requireCapability("org.gebish:geb-core-select")
         }
     }
+
+    snippets project(path: ":doc:manual-snippets", configuration: "allSources")
+    snippets project(path: ":doc:manual-snippets:real-browser", configuration: "allSources")
+    snippets project(path: ":module:geb-core", configuration: "allSources")
+}
+
+def snippetsDirectory = new File(buildDir, "snippets")
+
+def snippetsTask = tasks.register("snippets", Sync) {
+    from configurations.snippets
+    into snippetsDirectory
+
+    include { fileTreeElement ->
+        def file = fileTreeElement.file
+        file.isDirectory() || file.withReader { reader ->
+            reader.any { it.contains("tag::") }
+        }
+    }
+
+    includeEmptyDirs = false
 }
 
 asciidoctorj {
@@ -41,11 +63,11 @@ asciidoctorj {
     attributes = [
         toc                    : 'left',
         encoding               : 'utf-8',
-        'test-dir'             : '../../../../manual-snippets/src/test/groovy',
-        'test-resources-dir'   : '../../../../manual-snippets/src/test/resources',
-        'real-browser-test-dir': '../../../../manual-snippets/real-browser/src/test/groovy',
-        'core-source-dir'      : '../../../../../module/geb-core/src/main/groovy',
-        'core-test-dir'        : '../../../../../module/geb-core/src/test/groovy',
+        'test-dir'             : snippetsDirectory.absolutePath,
+        'test-resources-dir'   : snippetsDirectory.absolutePath,
+        'real-browser-test-dir': snippetsDirectory.absolutePath,
+        'core-source-dir'      : snippetsDirectory.absolutePath,
+        'core-test-dir'        : snippetsDirectory.absolutePath,
         numbered               : true,
         sectlinks              : true,
         idprefix               : '',
@@ -70,6 +92,8 @@ asciidoctorj {
 }
 
 tasks.named("asciidoctor") {
+    dependsOn snippetsTask
+
     sources {
         include 'index.adoc'
     }
@@ -80,12 +104,8 @@ tasks.named("asciidoctor") {
 
     baseDirFollowsSourceDir()
 
-    inputs.files(
-        { project(":doc:manual-snippets").sourceSets.test.allSource },
-        { project(":doc:manual-snippets:real-browser").sourceSets.test.allSource },
-        { project(":module:geb-core").sourceSets.main.allSource },
-        { project(":module:geb-core").sourceSets.test.allSource }
-    ).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(snippetsTask.map { it.outputs })
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 def groovydocSourcesTask = tasks.register("groovydocSources", Sync) {

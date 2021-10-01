@@ -9,6 +9,7 @@ plugins {
     id 'geb-browserstack'
     id 'geb-saucelabs'
     id 'geb-lambdatest'
+    id 'geb.all-sources-configuration'
 }
 
 java {
