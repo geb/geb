@@ -4,8 +4,6 @@ plugins {
     id 'geb.publishing'
 }
 
-archivesBaseName = "geb-manual"
-
 repositories {
     mavenCentral()
     maven {
@@ -124,6 +122,7 @@ def packageManualTask = tasks.register("packageManual", Sync) {
 
 def manualZipTask = tasks.register("manualZip", Zip) {
     from packageManualTask
+    archiveBaseName = "geb-manual"
 }
 
 artifacts {
