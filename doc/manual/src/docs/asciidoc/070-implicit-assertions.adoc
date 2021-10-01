@@ -24,7 +24,7 @@ In Geb, waiting expressions and at expressions automatically use implicit assert
 
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsExamplePage.groovy[tag=introduction_page,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsExamplePage.groovy[tag=introduction_page,indent=0]
 ----
 
 This automatically becomes…
@@ -50,7 +50,7 @@ This means that given…
 
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsExamplePage.groovy[tag=content,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsExamplePage.groovy[tag=content,indent=0]
 ----
 
 Accessing `headingText` here will _wait_ for there to be a `h1` and for it to have some text (because an {groovy-truth-link}[empty string is `false` in Groovy]), which will then be returned.
@@ -69,7 +69,7 @@ Consider the following small Geb script…
 
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checker,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checker,indent=0]
 ----
 
 At checking works by verifying that the page's “at check” returns a _trueish_ value.
@@ -79,7 +79,7 @@ Instead, the at checker will throw an `AssertionError`.
 Because the page's “at check” is turned into an assertion, you'll see the following in the stacktrace:
 
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checker_message,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checker_message,indent=0]
 ----
 
 As you can see, this is much more informative than the `at()` method simply returning `false`.
@@ -97,13 +97,13 @@ You might be familiar with Spock's `{spock-with}` method which has very similar 
 So given the following code…
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checking_with_assertions,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checking_with_assertions,indent=0]
 ----
 
 …you might see an error similar to…
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checking_with_assertions_message,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=at_checking_with_assertions_message,indent=0]
 ----
 
 …when the condition in the closure is not fulfilled.
@@ -124,14 +124,14 @@ Consider the following Geb script:
 
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=waiting,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=waiting,indent=0]
 ----
 
 The `waitFor` method verifies that the given clause returns a _trueish_ value within a certain timeframe. 
 Because of implicit assertions, when this fails you'll see the following in the stacktrace:
 
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=waiting_message,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=waiting_message,indent=0]
 ----
 
 The failed assertion is carried as the cause of the `geb.waiting.WaitTimeoutException` and gives you an informative message as to why the waiting failed.
@@ -170,7 +170,7 @@ To disable implicit assertions in a particular `waitFor()` or `refreshWaitFor()`
 
 [source,groovy]
 ----
-include::{test-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=disable_implicit_assertions,indent=0]
+include::{snippets-dir}/assertions/ImplicitAssertionsSpec.groovy[tag=disable_implicit_assertions,indent=0]
 ----
 
 :numbered:

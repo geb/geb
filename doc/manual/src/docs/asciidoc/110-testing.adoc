@@ -21,14 +21,14 @@ Consider the following Spock spec…
 
 [source,groovy]
 ----
-include::{test-dir}/testing/FunctionalSpec.groovy[tag=concise,indent=0]
+include::{snippets-dir}/testing/FunctionalSpec.groovy[tag=concise,indent=0]
 ----
 
 Which is equivalent to…
 
 [source,groovy]
 ----
-include::{test-dir}/testing/FunctionalSpec.groovy[tag=verbose,indent=0]
+include::{snippets-dir}/testing/FunctionalSpec.groovy[tag=verbose,indent=0]
 ----
 
 === Configuration
@@ -46,7 +46,7 @@ This method works the same as the browser method, but adds counters and the curr
 
 [source,groovy]
 ----
-include::{test-dir}/testing/ReportingFunctionalSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/testing/ReportingFunctionalSpec.groovy[tag=example,indent=0]
 ----
 <1> Take a report of the login screen.
 
@@ -94,7 +94,7 @@ Secondly, Geb caches `WebDriver` instances by default as described in the sectio
 Therefore, you can use the following code within a test to restart the browser:
 [source,groovy]
 ----
-include::{test-dir}/testing/BrowserRestartSpec.groovy[tag=restart,indent=0]
+include::{snippets-dir}/testing/BrowserRestartSpec.groovy[tag=restart,indent=0]
 ----
 
 === JAR and class names

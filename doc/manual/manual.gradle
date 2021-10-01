@@ -63,11 +63,7 @@ asciidoctorj {
     attributes = [
         toc                    : 'left',
         encoding               : 'utf-8',
-        'test-dir'             : snippetsDirectory.absolutePath,
-        'test-resources-dir'   : snippetsDirectory.absolutePath,
-        'real-browser-test-dir': snippetsDirectory.absolutePath,
-        'core-source-dir'      : snippetsDirectory.absolutePath,
-        'core-test-dir'        : snippetsDirectory.absolutePath,
+        'snippets-dir'         : snippetsDirectory.absolutePath,
         numbered               : true,
         sectlinks              : true,
         idprefix               : '',

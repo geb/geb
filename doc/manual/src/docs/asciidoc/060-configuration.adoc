@@ -82,7 +82,7 @@ In the config script it can be a closure that when invoked with no arguments ret
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver,indent=0]
+include::{snippets-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver,indent=0]
 ----
 
 This is the preferred mechanism, as it allows the most control over the drivers creation and configuration.
@@ -91,7 +91,7 @@ You can use the `{config-slurper-api}` mechanism's environment sensitivity to co
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/DriverConfigSpec.groovy[tag=env_sensitive_driver_config,indent=0]
+include::{snippets-dir}/configuration/DriverConfigSpec.groovy[tag=env_sensitive_driver_config,indent=0]
 ----
 
 [TIP]
@@ -107,14 +107,14 @@ The name of the driver class to use (it will be constructed with no arguments) c
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver_using_class_name,indent=0]
+include::{snippets-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver_using_class_name,indent=0]
 ----
 
 Or it can be one of the following short names: `ie`, `htmlunit`, `firefox`, `chrome` or `edge`. These will be implicitly expanded to their fully qualified class names…
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver_using_driver_name,indent=0]
+include::{snippets-dir}/configuration/DriverConfigSpec.groovy[tag=configuring_driver_using_driver_name,indent=0]
 ----
 
 The following table gives the possible short names that can be used:
@@ -142,7 +142,7 @@ To do this, you can specify a closure for the config key `innerNavigatorFactory`
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/NavigatorFactoryConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/NavigatorFactoryConfigSpec.groovy[tag=config,indent=0]
 ----
 
 This is a rather advanced use case.
@@ -175,7 +175,7 @@ To quit the driver after each test you can set the `quitDriverOnBrowserReset` co
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/QuitDriverOnBrowserResetConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/QuitDriverOnBrowserResetConfigSpec.groovy[tag=config,indent=0]
 ----
 
 [NOTE]
@@ -196,7 +196,7 @@ Default values for some of the <<template-options, content DSL template options>
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/TemplateOptionsConfigScriptSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/TemplateOptionsConfigScriptSpec.groovy[tag=config,indent=0]
 ----
 
 [[waiting-configuration]]
@@ -212,7 +212,7 @@ Defaults can be specified via:
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/WaitingConfigSpec.groovy[tag=default_config,indent=0]
+include::{snippets-dir}/configuration/WaitingConfigSpec.groovy[tag=default_config,indent=0]
 ----
 
 Both values are optional and in seconds. If unspecified, the values of `5` for `timeout` and `0.1` for `retryInterval`.
@@ -224,7 +224,7 @@ Presets can be specified via:
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/WaitingConfigSpec.groovy[tag=presets,indent=0]
+include::{snippets-dir}/configuration/WaitingConfigSpec.groovy[tag=presets,indent=0]
 ----
 
 Here we have defined two presets, `slow` and `quick`.
@@ -240,7 +240,7 @@ To make diagnostics easier in such situations it's possible to configure Geb to 
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/WaitingConfigSpec.groovy[tag=include_cause,indent=0]
+include::{snippets-dir}/configuration/WaitingConfigSpec.groovy[tag=include_cause,indent=0]
 ----
 
 [[at-check-waiting]]
@@ -250,7 +250,7 @@ At checkers can be configured to be implicitly wrapped with `waitFor()` calls. T
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/AtCheckWaitingConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/AtCheckWaitingConfigSpec.groovy[tag=config,indent=0]
 ----
 
 The possible values for the `atCheckWaiting` property are consistent with the <<content-dsl-wait, ones for `wait` option of content template definitions>>.
@@ -266,7 +266,7 @@ This behaviour can be changed to also throw `UndefinedAtCheckerException` when i
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/RequirePageAtCheckersConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/RequirePageAtCheckersConfigSpec.groovy[tag=config,indent=0]
 ----
 
 === Waiting for base navigator
@@ -283,7 +283,7 @@ You can prevent this error from happening by configuring a wait timeout to use w
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/BaseNavigatorWaitingConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/BaseNavigatorWaitingConfigSpec.groovy[tag=config,indent=0]
 ----
 
 The possible values for the `baseNavigatorWaiting` option are consistent with the <<content-dsl-wait, ones for `wait` option of content template definitions>>.
@@ -296,7 +296,7 @@ Given that `PageNotFoundPage` and `InternalServerErrorPage` have been defined yo
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/UnexpectedPagesConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/UnexpectedPagesConfigSpec.groovy[tag=config,indent=0]
 ----
 
 See <<unexpected-pages,this section>> for more information on unexpected pages.
@@ -307,7 +307,7 @@ Default values for some of the <<with-window-options, options for `withWindow()`
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/WithWindowConfigScriptSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/WithWindowConfigScriptSpec.groovy[tag=config,indent=0]
 ----
 
 === Default values for `withNewWindow()` options
@@ -316,7 +316,7 @@ Default values for some of the <<with-new-window-options, options for `withNewWi
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/WithNewWindowConfigScriptSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/WithNewWindowConfigScriptSpec.groovy[tag=config,indent=0]
 ----
 
 [[reporter-configuration]]
@@ -330,7 +330,7 @@ This is a sensible default, but should you wish to use a custom reporter you can
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/ReporterConfigSpec.groovy[tag=config,indent=0]
 ----
 
 [[reports-directory-configuration]]
@@ -342,7 +342,7 @@ In the config script, you can set the path to the directory to use for reports v
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_path,indent=0]
+include::{snippets-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_path,indent=0]
 ----
 
 [NOTE]
@@ -357,7 +357,7 @@ It is also possible to set the `reportsDir` config item to a file.
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_file,indent=0]
+include::{snippets-dir}/configuration/ReportsDirConfigSpec.groovy[tag=using_file,indent=0]
 ----
 
 By default this value is *not set*. The browser's link:api/geb/Browser.html#report(java.lang.String)[`report()`] method requires a value for this config item so if you are using the reporting features
@@ -371,7 +371,7 @@ The `reportOnTestFailureOnly` setting can be set to `false` if you wish for repo
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/ReportOnTestFailuresConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/ReportOnTestFailuresConfigSpec.groovy[tag=config,indent=0]
 ----
 
 === Reporting listener
@@ -395,7 +395,7 @@ This configuration flag, which is `true` by default, can be disabled by setting 
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/AutoClearCookiesConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/AutoClearCookiesConfigSpec.groovy[tag=config,indent=0]
 ----
 
 [[auto-clearing-web-storage-configuration]]
@@ -406,7 +406,7 @@ This configuration flag, which is `false` by default, can be enabled by setting 
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/AutoClearWebStorageConfigSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/configuration/AutoClearWebStorageConfigSpec.groovy[tag=config,indent=0]
 ----
 
 == Runtime overrides
@@ -417,5 +417,5 @@ For example, you may have one Spock spec that requires the `autoClearCookies` pr
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/FunctionalSpec.groovy[tag=runtime_override,indent=0]
+include::{snippets-dir}/configuration/FunctionalSpec.groovy[tag=runtime_override,indent=0]
 ----

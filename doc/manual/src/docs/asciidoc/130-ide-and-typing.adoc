@@ -42,21 +42,21 @@ Here's an example of idiomatic (untyped) Geb code.
 
 [source,groovy]
 ----
-include::{test-dir}/ide/StrongTypingSpec.groovy[tag=untyped,indent=0]
+include::{snippets-dir}/ide/StrongTypingSpec.groovy[tag=untyped,indent=0]
 ----
 
 The same code written with types would look like:
 
 [source,groovy]
 ----
-include::{test-dir}/ide/StrongTypingSpec.groovy[tag=typed,indent=0]
+include::{snippets-dir}/ide/StrongTypingSpec.groovy[tag=typed,indent=0]
 ----
 
 Where the page objects are:
 
 [source,groovy]
 ----
-include::{test-dir}/ide/StrongTypingSpec.groovy[tag=pages,indent=0]
+include::{snippets-dir}/ide/StrongTypingSpec.groovy[tag=pages,indent=0]
 ----
 
 In summary:
@@ -74,7 +74,7 @@ Ensure that you familiarise yourself with the <<intellij-support, section on wha
 
 [source,groovy]
 ----
-include::{test-dir}/ide/StrongTypingSpec.groovy[tag=types_with_content,indent=0]
+include::{snippets-dir}/ide/StrongTypingSpec.groovy[tag=types_with_content,indent=0]
 ----
 <1> Wait here for the async definition to return a non-empty Navigator…
 
@@ -94,7 +94,7 @@ The example from the previous section could be rewritten in the following way:
 
 [source,groovy]
 ----
-include::{test-dir}/ide/StrongTypingSpec.groovy[tag=at,indent=0]
+include::{snippets-dir}/ide/StrongTypingSpec.groovy[tag=at,indent=0]
 ----
 
 [[intellij-support]]
@@ -114,14 +114,14 @@ As an example of that means, let's revisit the sample from the <<strong-typing, 
 
 [source,groovy]
 ----
-include::{test-dir}/intellij/StrongTypingSpec.groovy[tag=typed,indent=0]
+include::{snippets-dir}/intellij/StrongTypingSpec.groovy[tag=typed,indent=0]
 ----
 
 Where the page objects are:
 
 [source,groovy]
 ----
-include::{test-dir}/intellij/StrongTypingSpec.groovy[tag=pages,indent=0]
+include::{snippets-dir}/intellij/StrongTypingSpec.groovy[tag=pages,indent=0]
 ----
 
 The Geb development team would like to thank the good folks at JetBrains for adding this explicit support for Geb to IDEA.

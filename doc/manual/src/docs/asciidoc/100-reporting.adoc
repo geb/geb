@@ -14,7 +14,7 @@ You take a report by calling the `{browser-report-method-api}` method on the bro
 
 [source,groovy]
 ----
-include::{test-dir}/reporting/ReportingSpec.groovy[tag=reporting,indent=0]
+include::{snippets-dir}/reporting/ReportingSpec.groovy[tag=reporting,indent=0]
 ----
 
 [WARNING]
@@ -39,7 +39,7 @@ If you wish to <<reporter-configuration, configure the reporting>> to also write
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=frames_source_reporter_config,indent=0]
+include::{snippets-dir}/configuration/ReporterConfigSpec.groovy[tag=frames_source_reporter_config,indent=0]
 ----
 
 == Reporting on multiple windows
@@ -49,7 +49,7 @@ It's also possible to take reports for each of the opened windows by <<reporter-
 
 [source,groovy]
 ----
-include::{test-dir}/configuration/ReporterConfigSpec.groovy[tag=multi_window_reporter_config,indent=0]
+include::{snippets-dir}/configuration/ReporterConfigSpec.groovy[tag=multi_window_reporter_config,indent=0]
 ----
 
 [[report-group]]
@@ -60,7 +60,7 @@ It is also possible to change the link:api/geb/Browser.html#reportGroup(java.lan
 
 [source,groovy]
 ----
-include::{test-dir}/reporting/ReportingSpec.groovy[tag=reporting_groups,indent=0]
+include::{snippets-dir}/reporting/ReportingSpec.groovy[tag=reporting_groups,indent=0]
 ----
 
 We have now created the following files inside the `reportsDir`…
@@ -89,7 +89,7 @@ Reporting listeners are of type `{reporting-listener-api}` can be specified as p
 
 [source,groovy]
 ----
-include::{test-dir}/reporting/ReportingListenerSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/reporting/ReportingListenerSpec.groovy[tag=config,indent=0]
 ----
 
 == Cleaning
@@ -98,7 +98,7 @@ Geb does not automatically clean the reports dir for you. It does however provid
 
 [source,groovy]
 ----
-include::{test-dir}/reporting/ReportingSpec.groovy[tag=cleaning,indent=0]
+include::{snippets-dir}/reporting/ReportingSpec.groovy[tag=cleaning,indent=0]
 ----
 
 The `{clean-report-group-dir-api}` method will remove whatever the reports group dir is set to at the time.

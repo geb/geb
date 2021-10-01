@@ -8,52 +8,52 @@ They are defined in a manner similar to pages, but extend `{module-api}`…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/FormContentSpec.groovy[tag=form_module,indent=0]
+include::{snippets-dir}/modules/FormContentSpec.groovy[tag=form_module,indent=0]
 ----
 
 Pages can “include” modules using the following syntax…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=module_page,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=module_page,indent=0]
 ----
 
 The `module` method returns an instance of a module class which can then be used in the following way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_modules,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=using_modules,indent=0]
 ----
 
 Modules can also be parameterised…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=parameterized_module,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=parameterized_module,indent=0]
 ----
 
 Where the parameters are passed to constructor of the module…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=parameterized_module_page,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=parameterized_module_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_parameterized_modules,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=using_parameterized_modules,indent=0]
 ----
 
 Modules can also include other modules…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=outer_module_and_page,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=outer_module_and_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/modules/IntroductionSpec.groovy[tag=using_nested_modules,indent=0]
+include::{snippets-dir}/modules/IntroductionSpec.groovy[tag=using_nested_modules,indent=0]
 ----
 
 [[base-and-context]]
@@ -66,21 +66,21 @@ Module can be based on a `Navigator` instance…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/FormContentSpec.groovy[tag=form_module,indent=0]
+include::{snippets-dir}/modules/FormContentSpec.groovy[tag=form_module,indent=0]
 
-include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=module_with_base_page,indent=0]
+include::{snippets-dir}/modules/BaseAndContextSpec.groovy[tag=module_with_base_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=using_module_with_dynamic_base,indent=0]
+include::{snippets-dir}/modules/BaseAndContextSpec.groovy[tag=using_module_with_dynamic_base,indent=0]
 ----
 
 It can also be done outside of a content definition…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=creating_module_inline,indent=0]
+include::{snippets-dir}/modules/BaseAndContextSpec.groovy[tag=creating_module_inline,indent=0]
 ----
 
 We can define a `Navigator` context when including the module using the above syntax.
@@ -90,33 +90,33 @@ However, module classes can also define their own base…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=form_module_with_base,indent=0]
+include::{snippets-dir}/modules/BaseAndContextSpec.groovy[tag=form_module_with_base,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/modules/BaseAndContextSpec.groovy[tag=using_module_with_static_base,indent=0]
+include::{snippets-dir}/modules/BaseAndContextSpec.groovy[tag=using_module_with_static_base,indent=0]
 ----
 
 Basing a module on a `Navigator` and defining a base in a module can be combined. Consider the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/modules/CombinedModuleBaseSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/CombinedModuleBaseSpec.groovy[tag=html,indent=0]
 ----
 
 And the following content definitions…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/CombinedModuleBaseSpec.groovy[tag=content,indent=0]
+include::{snippets-dir}/modules/CombinedModuleBaseSpec.groovy[tag=content,indent=0]
 ----
 
 Then they can be used in the following way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/CombinedModuleBaseSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/CombinedModuleBaseSpec.groovy[tag=example,indent=0]
 ----
 
 If the module declares a base, it is always calculated _relative_ to the `Navigator` used in the initialization statement.
@@ -130,33 +130,33 @@ Keeping in mind that `Module` implements `Navigator` and considering the followi
 
 [source,html]
 ----
-include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=html,indent=0]
 ----
 
 As well as these content definitions…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=content,indent=0]
+include::{snippets-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=content,indent=0]
 ----
 
 The following will pass…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=on_module,indent=0]
+include::{snippets-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=on_module,indent=0]
 ----
 
 It's also possible to use `Navigator` methods inside of a module implementation…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module_definition,indent=0]
+include::{snippets-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module_definition,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module,indent=0]
+include::{snippets-dir}/modules/ModuleIsANavigatorSpec.groovy[tag=in_module,indent=0]
 ----
 
 == Reusing modules across pages
@@ -167,7 +167,7 @@ You could handle this with modules…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ReusingModulesSpec.groovy[tag=content,indent=0]
+include::{snippets-dir}/modules/ReusingModulesSpec.groovy[tag=content,indent=0]
 ----
 
 Modules work well for this.
@@ -183,42 +183,42 @@ Consider the following HTML for our cart contents:
 
 [source,html]
 ----
-include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/RepeatingContentSpec.groovy[tag=html,indent=0]
 ----
 
 We can model one line of the table like this:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=module,indent=0]
+include::{snippets-dir}/modules/RepeatingContentSpec.groovy[tag=module,indent=0]
 ----
 
 And define a list of CartRows in our Page:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/modules/RepeatingContentSpec.groovy[tag=page,indent=0]
 ----
 
 Because the return value of `cartItems` is a list of CartRow instances, we can use any of the usual collection methods:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=collection,indent=0]
+include::{snippets-dir}/modules/RepeatingContentSpec.groovy[tag=collection,indent=0]
 ----
 
 We can also access the cart items using subscript operator together with an index or a range of indexes:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=indexing,indent=0]
+include::{snippets-dir}/modules/RepeatingContentSpec.groovy[tag=indexing,indent=0]
 ----
 
 Keep in mind that you can use parametrized module instances to create lists of modules for repeating content:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RepeatingContentSpec.groovy[tag=parameterized_module,indent=0]
+include::{snippets-dir}/modules/RepeatingContentSpec.groovy[tag=parameterized_module,indent=0]
 ----
 
 [TIP]
@@ -263,14 +263,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/FormElementSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/FormElementSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 Following is an example of using the shortcut property methods provided…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/FormElementSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/FormElementSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 [[checkbox-module]]
@@ -282,14 +282,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/CheckboxSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/CheckboxSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/CheckboxSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/CheckboxSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `Select`
@@ -300,14 +300,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/SelectSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/SelectSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/SelectSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/SelectSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `MultipleSelect`
@@ -319,14 +319,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/MultipleSelectSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/MultipleSelectSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/MultipleSelectSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/MultipleSelectSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `TextInput`
@@ -337,14 +337,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/TextInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/TextInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/TextInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/TextInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `Textarea`
@@ -355,14 +355,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/TextareaSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/TextareaSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/TextareaSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/TextareaSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `FileInput`
@@ -374,14 +374,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/FileInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/FileInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/FileInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/FileInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 [[radio-buttons-module]]
@@ -393,14 +393,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/RadioButtonsSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `SearchInput`
@@ -411,14 +411,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/SearchInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/SearchInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/SearchInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/SearchInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `DateInput`
@@ -429,14 +429,14 @@ Given the html…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/modules/DateInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/DateInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/DateInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/DateInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `DateTimeLocalInput`
@@ -447,14 +447,14 @@ Given the html…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/DateTimeLocalInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `TimeInput`
@@ -465,21 +465,21 @@ Given the html…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/TimeInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used either with a `java.time.LocalTime` object…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_time,indent=0]
+include::{snippets-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_time,indent=0]
 ----
 
 …or with a string…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_string,indent=0]
+include::{snippets-dir}/modules/TimeInputSnippetSpec.groovy[tag=example_string,indent=0]
 ----
 
 === `MonthInput`
@@ -490,21 +490,21 @@ Given the html…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/MonthInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used either with a `java.time.YearMonth` object…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_month,indent=0]
+include::{snippets-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_month,indent=0]
 ----
 
 …or with a string…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_string,indent=0]
+include::{snippets-dir}/modules/MonthInputSnippetSpec.groovy[tag=example_string,indent=0]
 ----
 
 === `WeekInput`
@@ -515,21 +515,21 @@ Given the html…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/modules/WeekInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/WeekInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used either with a `org.threeten.extra.YearWeek` object…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/WeekInputSnippetSpec.groovy[tag=example_week,indent=0]
+include::{snippets-dir}/modules/WeekInputSnippetSpec.groovy[tag=example_week,indent=0]
 ----
 
 …or with a string…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/WeekInputSnippetSpec.groovy[tag=example_string,indent=0]
+include::{snippets-dir}/modules/WeekInputSnippetSpec.groovy[tag=example_string,indent=0]
 ----
 
 === `EmailInput`
@@ -540,14 +540,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/EmailInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/EmailInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/EmailInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/EmailInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `TelInput`
@@ -558,14 +558,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/TelInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/TelInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/TelInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `NumberInput`
@@ -576,14 +576,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/NumberInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/NumberInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/NumberInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/NumberInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `RangeInput`
@@ -594,14 +594,14 @@ Given the html…
 
 [source,html]
 ----
-include::{real-browser-test-dir}/modules/RangeInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/RangeInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/modules/RangeInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/RangeInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `UrlInput`
@@ -612,14 +612,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/UrlInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/UrlInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/UrlInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/UrlInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `PasswordInput`
@@ -630,14 +630,14 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/PasswordInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/PasswordInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used this way…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/PasswordInputSnippetSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/modules/PasswordInputSnippetSpec.groovy[tag=example,indent=0]
 ----
 
 === `ColorInput`
@@ -648,21 +648,21 @@ Given the html…
 
 [source,html]
 ----
-include::{test-dir}/modules/ColorInputSnippetSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/modules/ColorInputSnippetSpec.groovy[tag=html,indent=0]
 ----
 
 It can be used either with a `org.openqa.selenium.support.Color` object…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ColorInputSnippetSpec.groovy[tag=example_color,indent=0]
+include::{snippets-dir}/modules/ColorInputSnippetSpec.groovy[tag=example_color,indent=0]
 ----
 
 …or with a hex string…
 
 [source,groovy]
 ----
-include::{test-dir}/modules/ColorInputSnippetSpec.groovy[tag=example_string,indent=0]
+include::{snippets-dir}/modules/ColorInputSnippetSpec.groovy[tag=example_string,indent=0]
 ----
 
 == Unwrapping modules returned from the `content` DSL
@@ -674,21 +674,21 @@ Given a page defined as follows:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=page,indent=0]
 ----
 
 And a custom module:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module,indent=0]
+include::{snippets-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module,indent=0]
 ----
 
 A module assignment to a variable of its declared type will fail with `GroovyCastException`:
 
 [source,groovy]
 ----
-include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_variable_fail,indent=0]
+include::{snippets-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_variable_fail,indent=0]
 ----
 <1> `GroovyCastException` is thrown
 
@@ -696,9 +696,9 @@ An invocation of a method which takes a module as argument with its declared typ
 
 [source,groovy]
 ----
-include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_argument_fail_method,indent=0]
+include::{snippets-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_argument_fail_method,indent=0]
 
-include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_argument_fail,indent=0]
+include::{snippets-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_argument_fail,indent=0]
 ----
 <1> `MissingMethodException` is thrown
 
@@ -706,7 +706,7 @@ As you may like or need to use strong typing for modules there is a way to do th
 
 [source,groovy]
 ----
-include::{test-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_cast,indent=0]
+include::{snippets-dir}/modules/UnwrappingModulesSnippetSpec.groovy[tag=module_cast,indent=0]
 ----
 
 [NOTE]

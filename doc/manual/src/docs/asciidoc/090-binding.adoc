@@ -11,9 +11,9 @@ To use the binding support, you simply create a {binding-updater-link}[`BindingU
 
 [source,groovy]
 ----
-include::{test-dir}/binding/BindingUpdatingSpec.groovy[tag=imports,indent=0]
+include::{snippets-dir}/binding/BindingUpdatingSpec.groovy[tag=imports,indent=0]
 
-include::{test-dir}/binding/BindingUpdatingSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/binding/BindingUpdatingSpec.groovy[tag=example,indent=0]
 ----
 <1> Populate and start updating the browser.
 <2> Run a script from a resource loaded from the classpath.
@@ -29,7 +29,7 @@ The following is an example script that will work if `BindingUpdater` is initial
 
 [source,groovy]
 ----
-include::{test-resources-dir}/gebScript.groovy[tag=script,indent=0]
+include::{snippets-dir}/gebScript.groovy[tag=script,indent=0]
 ----
 
 In a managed binding, all of the methods/properties that you can usually call in the {drive-method-link}[`Browser.drive()`] method are available.
@@ -64,5 +64,5 @@ The binding updater also updates the `page` property of the binding to be the br
 
 [source,groovy]
 ----
-include::{test-resources-dir}/gebScriptUsingPages.groovy[tag=script,indent=0]
+include::{snippets-dir}/gebScriptUsingPages.groovy[tag=script,indent=0]
 ----

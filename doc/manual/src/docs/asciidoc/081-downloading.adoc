@@ -18,12 +18,12 @@ The direct download API is there to fill this need.
 
 [source,groovy]
 ----
-include::{test-dir}/downloading/DownloadingSpec.groovy[tag=pages,indent=0]
+include::{snippets-dir}/downloading/DownloadingSpec.groovy[tag=pages,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/downloading/DownloadingSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/downloading/DownloadingSpec.groovy[tag=example,indent=0]
 ----
 
 Simple enough, but consider what is happening behind the scenes.
@@ -43,7 +43,7 @@ For example, we could test what happens when we send `application/json` in the `
 
 [source,groovy]
 ----
-include::{test-dir}/downloading/FineGrainedRequestSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/downloading/FineGrainedRequestSpec.groovy[tag=example,indent=0]
 ----
 
 [TIP]
@@ -61,9 +61,9 @@ Using the following code will allow running requests against a server which uses
 
 [source,groovy]
 ----
-include::{test-dir}/downloading/UntrustedCertificatesSpec.groovy[tag=import,indent=0]
+include::{snippets-dir}/downloading/UntrustedCertificatesSpec.groovy[tag=import,indent=0]
 
-include::{test-dir}/downloading/UntrustedCertificatesSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/downloading/UntrustedCertificatesSpec.groovy[tag=example,indent=0]
 ----
 
 == Default configuration
@@ -74,7 +74,7 @@ The below example configures all requests executed using direct downloading supp
 
 [source,groovy]
 ----
-include::{test-dir}/downloading/DownloadingConfigurationSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/downloading/DownloadingConfigurationSpec.groovy[tag=config,indent=0]
 ----
 
 This config closure will be run first, so anything set here can be overridden using the fine grained request configuration shown above.

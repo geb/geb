@@ -10,7 +10,7 @@ Before reading this chapter, please make sure you have read the <<drive, section
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageObjectPatternSpec.groovy[tag=using_navigators,indent=0]
+include::{snippets-dir}/pages/PageObjectPatternSpec.groovy[tag=using_navigators,indent=0]
 ----
 
 This is valid Geb code, and it works well for a one off script but there are two big issues with this approach.
@@ -23,10 +23,10 @@ Here is the same script, utilising page objects…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageObjectPatternSpec.groovy[tag=import,indent=0]
-include::{test-dir}/pages/PageObjectPatternSpec.groovy[tag=pages,indent=0]
+include::{snippets-dir}/pages/PageObjectPatternSpec.groovy[tag=import,indent=0]
+include::{snippets-dir}/pages/PageObjectPatternSpec.groovy[tag=pages,indent=0]
 
-include::{test-dir}/pages/PageObjectPatternSpec.groovy[tag=using_pages,indent=0]
+include::{snippets-dir}/pages/PageObjectPatternSpec.groovy[tag=using_pages,indent=0]
 ----
 
 You have now encapsulated, in a reusable fashion, information about each page and how to interact with it.
@@ -47,14 +47,14 @@ Consider the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=html,indent=0]
 ----
 
 We could define this content as so…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_div,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_div,indent=0]
 ----
 
 The structure to the content DSL is…
@@ -70,7 +70,7 @@ Here is how it could be used…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_div_usage,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_div_usage,indent=0]
 ----
 
 So how is this working?
@@ -79,14 +79,14 @@ So the above code is the same as…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=verbose_page_with_div_usage,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=verbose_page_with_div_usage,indent=0]
 ----
 
 Secondly, defined content becomes available as properties and methods on instance of the page…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=accessing_content_using_a_method,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=accessing_content_using_a_method,indent=0]
 ----
 
 The Content DSL actually defines content _templates_.
@@ -94,9 +94,9 @@ This is best illustrated by example…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=templated_page_with_div,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=templated_page_with_div,indent=0]
 
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=templated_page_with_div_usage,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=templated_page_with_div_usage,indent=0]
 ----
 
 There are no restrictions on what arguments can be passed to content templates.
@@ -106,9 +106,9 @@ Typically they will return a `{navigator-api}` object through the use of the `$(
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_string_content,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_string_content,indent=0]
 
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_string_content_usage,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_string_content_usage,indent=0]
 ----
 
 It's important to realise that `«definition»` code is evaluated against the page instance.
@@ -116,21 +116,21 @@ This allows code like the following…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_reuse,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_reuse,indent=0]
 ----
 
 And this is not restricted to other content…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_field,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_field,indent=0]
 ----
 
 Or…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_method,indent=0]
+include::{snippets-dir}/pages/ContentDslSpec.groovy[tag=page_with_content_using_a_method,indent=0]
 ----
 
 [[template-options]]
@@ -147,7 +147,7 @@ For example…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=introduction,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=introduction,indent=0]
 ----
 
 The following are the available options.
@@ -165,12 +165,12 @@ Given a completely empty html document the following will pass…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=required_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=required_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=required,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=required,indent=0]
 ----
 
 [[content-dsl-min]]
@@ -188,21 +188,21 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=min_html,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=min_html,indent=0]
 ----
 
 Accessing the following content definition…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=min_option,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=min_option,indent=0]
 ----
 
 Will result in a `ContentCountOutOfBoundsException` and the following exception message:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=min_exception_message,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=min_exception_message,indent=0]
 ----
 
 [[content-dsl-max]]
@@ -220,21 +220,21 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=max_html,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=max_html,indent=0]
 ----
 
 Accessing the following content definition…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=max_option,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=max_option,indent=0]
 ----
 
 Will result in a `ContentCountOutOfBoundsException` and the following exception message:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=max_exception_message,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=max_exception_message,indent=0]
 ----
 
 [[content-dsl-times]]
@@ -252,21 +252,21 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=times_html,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=times_html,indent=0]
 ----
 
 Accessing the following content definition…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=times_option,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=times_option,indent=0]
 ----
 
 Will result in a `ContentCountOutOfBoundsException` and the following exception message:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=times_exception_message,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=times_exception_message,indent=0]
 ----
 
 ==== `cache`
@@ -277,12 +277,12 @@ The `cache` option controls whether or not the definition is evaluated each time
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=cache_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=cache_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=cache,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=cache,indent=0]
 ----
 
 Caching is a performance optimisation and is disabled by default.
@@ -297,12 +297,12 @@ The `to` option allows the definition of which page the browser will be sent to 
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=to_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=to,indent=0]
 ----
 
 The `to` value will be implicitly used as an argument to the content's `click()` method, effectively setting the new page type and verifying its at checker.
@@ -318,7 +318,7 @@ When using lists variants (here shown with page classes)…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=to_list_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=to_list_page,indent=0]
 ----
 
 Then, on click, the browser's page is set to the first page in the list whose at checker passes.
@@ -347,24 +347,24 @@ requested.
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=waiting_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=waiting_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=waiting_content,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=waiting_content,indent=0]
 ----
 
 This is equivalent to:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=not_waiting_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=not_waiting_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=wrapped_waiting_content,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=wrapped_waiting_content,indent=0]
 ----
 
 See the <<waiting, section on waiting>> for the semantics of the `waitFor()` method, that is used here internally.
@@ -375,12 +375,12 @@ Geb will wait until the content definition returns a value that conforms to the 
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=non_navigator_waiting_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=non_navigator_waiting_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=non_navigator_waiting,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=non_navigator_waiting,indent=0]
 ----
 
 In this case, we are inherently waiting for the `status` content to be on the page and for it to contain the string “Success”.
@@ -391,7 +391,7 @@ You can modify the behaviour of content with `wait` option set to true if you us
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=not_required_waiting_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=not_required_waiting_page,indent=0]
 ----
 
 Then if wait timeout expires when retrieving `dynamicallyAdded`, there will be no `WaitTimeoutException` thrown, and the last closure evaluation value will be returned.
@@ -415,14 +415,14 @@ Consider the following example:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=wait_condition_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=wait_condition_page,indent=0]
 ----
 
 Accessing content named…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=wait_condition_page_content_access,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=wait_condition_page_content_access,indent=0]
 ----
 
 …will essentially cause Geb to wait until the content is not only in the DOM but also displayed.
@@ -442,13 +442,13 @@ This essentially means that verification of page transition (“at checking”) 
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait_page,indent=0]
+include::{snippets-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait_page,indent=0]
 ----
 <1> Page change is asynchronous, e.g. an ajax call is involved.
 
 [source,groovy]
 ----
-include::{real-browser-test-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait,indent=0]
+include::{snippets-dir}/pages/ToWaitOptionSpec.groovy[tag=to_wait,indent=0]
 ----
 
 See the <<waiting, section on waiting>> for the semantics of the `waitFor()` method, that is used here internally.
@@ -465,26 +465,26 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page_html,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=page_html,indent=0]
 ----
 
 …and the contents of frame.html…
 
 [source,html]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=frame_html,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=frame_html,indent=0]
 ----
 
 …the following will pass…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page_page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=page_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/TemplateOptionsSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/TemplateOptionsSpec.groovy[tag=page,indent=0]
 ----
 
 === Aliasing
@@ -493,12 +493,12 @@ If you wish to have the same content definitions available under different names
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AliasingSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/AliasingSpec.groovy[tag=page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AliasingSpec.groovy[tag=usage,indent=0]
+include::{snippets-dir}/pages/AliasingSpec.groovy[tag=usage,indent=0]
 ----
 
 Remember that the aliased content has to be defined before the aliasing content, otherwise you will get a `{invalid-page-content-api}` exception.
@@ -509,12 +509,12 @@ Should you need to access names of the content defined using the DSL at runtime 
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentNamesSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/ContentNamesSpec.groovy[tag=page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ContentNamesSpec.groovy[tag=usage,indent=0]
+include::{snippets-dir}/pages/ContentNamesSpec.groovy[tag=usage,indent=0]
 ----
 
 [[at-checker]]
@@ -525,7 +525,7 @@ This is done via a `static` `at` closure…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AtSpec.groovy[tag=introduction,indent=0]
+include::{snippets-dir}/pages/AtSpec.groovy[tag=introduction,indent=0]
 ----
 
 This closure can either return a `false` value or throw an `AssertionError` (via the `assert` method).
@@ -551,12 +551,12 @@ Considering the example above you could use it like this…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AtSpec.groovy[tag=leading_to_page,indent=0]
+include::{snippets-dir}/pages/AtSpec.groovy[tag=leading_to_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AtSpec.groovy[tag=verify_at,indent=0]
+include::{snippets-dir}/pages/AtSpec.groovy[tag=verify_at,indent=0]
 ----
 
 The `verifyAt()` method is used by the `Browser.at()` method that takes a page class or instance.
@@ -564,7 +564,7 @@ It behaves the same as `verifyAt()` if the “at” checker fails and returns a 
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AtSpec.groovy[tag=at,indent=0]
+include::{snippets-dir}/pages/AtSpec.groovy[tag=at,indent=0]
 ----
 
 [TIP]
@@ -585,7 +585,7 @@ The “at” checker is evaluated against the page instance, and can access defi
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AtSpec.groovy[tag=at_checker_using_content_definition,indent=0]
+include::{snippets-dir}/pages/AtSpec.groovy[tag=at_checker_using_content_definition,indent=0]
 ----
 
 If a page does not have an “at” checker, the `verifyAt()` and `at()` methods will throw an `UndefinedAtCheckerException`.
@@ -614,21 +614,21 @@ Given that your application renders a custom error page when a page is not found
 
 [source,groovy]
 ----
-include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=unexpected_page,indent=0]
+include::{snippets-dir}/pages/UnexpectedPagesSpec.groovy[tag=unexpected_page,indent=0]
 ----
 
 Then register that page in configuration:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/pages/UnexpectedPagesSpec.groovy[tag=config,indent=0]
 ----
 
 When checking if the browser is at a page while the “at” checker for `PageNotFoundPage` is fulfilled, an `UnexpectedPageException` will be raised.
 
 [source,groovy]
 ----
-include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=usage,indent=0]
+include::{snippets-dir}/pages/UnexpectedPagesSpec.groovy[tag=usage,indent=0]
 ----
 
 Unexpected pages will be checked for whenever “at” checking is performed, even implicitly like when using `to` content template option or passing one or many page classes to `Navigator.click()`
@@ -639,7 +639,7 @@ Following will pass without throwing an `UnexpectedPageException` if “at” ch
 
 [source,groovy]
 ----
-include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=checking_for_unexpected_page,indent=0]
+include::{snippets-dir}/pages/UnexpectedPagesSpec.groovy[tag=checking_for_unexpected_page,indent=0]
 ----
 
 It is also possible to enrich the message of `UnexpectedPageException` thrown when an unexpected page is encountered.
@@ -647,9 +647,9 @@ This can be achieved by implementing `geb.UnexpectedPage` for the unexpected pag
 
 [source,groovy]
 ----
-include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=unexpected_page_with_custom_message,indent=0]
+include::{snippets-dir}/pages/UnexpectedPagesSpec.groovy[tag=unexpected_page_with_custom_message,indent=0]
 
-include::{test-dir}/pages/UnexpectedPagesSpec.groovy[tag=usage_with_custom_message,indent=0]
+include::{snippets-dir}/pages/UnexpectedPagesSpec.groovy[tag=usage_with_custom_message,indent=0]
 ----
 
 [WARNING]
@@ -670,14 +670,14 @@ Pages can define URLs via the `static` `url` property.
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageUrlSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/PageUrlSpec.groovy[tag=page,indent=0]
 ----
 
 The url is used when using the browser `to()` method.
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageUrlSpec.groovy[tag=to,indent=0]
+include::{snippets-dir}/pages/PageUrlSpec.groovy[tag=to,indent=0]
 ----
 
 See the section on <<base-url, the base url>> for notes about URLs and slashes.
@@ -698,14 +698,14 @@ Consider the following page which defines an url fragment in such single page ap
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageUrlFragmentSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/PageUrlFragmentSpec.groovy[tag=page,indent=0]
 ----
 
 The fragment is then used when using the browser `to()` method.
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageUrlFragmentSpec.groovy[tag=to,indent=0]
+include::{snippets-dir}/pages/PageUrlFragmentSpec.groovy[tag=to,indent=0]
 ----
 
 You can also use fragments which are dynamic - you can learn how in <<advanced-page-navigation-url-fragments,_URL fragments_ subsection of _Advanced page navigation_ chapter>>.
@@ -718,7 +718,7 @@ This can be set with the `static` `atCheckWaiting` property.
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageAtCheckWaitingSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/PageAtCheckWaitingSpec.groovy[tag=page,indent=0]
 ----
 
 The possible values for the `atCheckWaiting` option are the same as for <<content-dsl-wait, the `wait` content template option>>.
@@ -734,24 +734,24 @@ Consider the following example…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=pages_page,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=pages_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=to,indent=0]
 ----
 
 The `to()` method can also take arguments…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_args,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_args,indent=0]
 ----
 
 Any arguments passed to the `to()` method after the page class are converted to a URL path by calling `toString()` on each argument and joining them with “`/`”.
@@ -763,7 +763,7 @@ The `{page-api}` implementation of this method looks like this…
 
 [source,groovy]
 ----
-include::{core-source-dir}/geb/Page.groovy[tag=convert_to_path,indent=0]
+include::{snippets-dir}/geb/Page.groovy[tag=convert_to_path,indent=0]
 ----
 
 You can either overwrite this catchall method to control path conversion for all invocations or provide an overloaded version for a specific type signature.
@@ -771,14 +771,14 @@ Consider the following…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manual_class,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=manual_class,indent=0]
 
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page_with_convert_to_path,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=manuals_page_with_convert_to_path,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=convert_to_path,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=convert_to_path,indent=0]
 ----
 
 === Named params
@@ -789,7 +789,7 @@ Using the classes from the above example…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_named_params,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_named_params,indent=0]
 ----
 
 [[advanced-page-navigation-url-fragments]]
@@ -802,16 +802,16 @@ The following shows a usage example utilising the classes from the examples abov
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_fragment,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_fragment,indent=0]
 ----
 
 If you are using <<parameterized-pages,parameterized pages>> and you wish the fragment to be determined dynamically, e.g. based on page properties then you can override the `{get-page-fragment-api}` method:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=parameterized_manuals_page,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=parameterized_manuals_page,indent=0]
 
-include::{test-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_parameterized_page,indent=0]
+include::{snippets-dir}/pages/AdvancedNavigationSpec.groovy[tag=to_with_parameterized_page,indent=0]
 ----
 
 [[parameterized-pages]]
@@ -822,12 +822,12 @@ This is useful for example when parameterizing pages to use property values in �
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ParameterizedPageSpec.groovy[tag=pages,indent=0]
+include::{snippets-dir}/pages/ParameterizedPageSpec.groovy[tag=pages,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/ParameterizedPageSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/pages/ParameterizedPageSpec.groovy[tag=example,indent=0]
 ----
 
 [IMPORTANT]
@@ -844,12 +844,12 @@ Pages can be arranged in an inheritance hierarchy. The content definitions are m
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageInheritanceSpec.groovy[tag=pages,indent=0]
+include::{snippets-dir}/pages/PageInheritanceSpec.groovy[tag=pages,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageInheritanceSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/pages/PageInheritanceSpec.groovy[tag=example,indent=0]
 ----
 
 If a subclass defines a content template with the same name as a content template defined in a superclass, the subclass version replaces the version from the superclass.
@@ -864,12 +864,12 @@ The `onLoad()` method is called with previous page object instance when the page
 
 [source,groovy]
 ----
-include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_load_pages,indent=0]
+include::{snippets-dir}/pages/LifecycleHooksSpec.groovy[tag=on_load_pages,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_load,indent=0]
+include::{snippets-dir}/pages/LifecycleHooksSpec.groovy[tag=on_load,indent=0]
 ----
 
 === `onUnload(Page newPage)`
@@ -878,12 +878,12 @@ The `onUnload()` method is called with next page object instance when the page i
 
 [source,groovy]
 ----
-include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload_pages,indent=0]
+include::{snippets-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload_pages,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload,indent=0]
+include::{snippets-dir}/pages/LifecycleHooksSpec.groovy[tag=on_unload,indent=0]
 ----
 
 === Listening to Page events
@@ -898,7 +898,7 @@ The below example shows how to register a page event listener as part of the con
 
 [source,groovy]
 ----
-include::{test-dir}/pages/PageEventListenerSpec.groovy[tag=config,indent=0]
+include::{snippets-dir}/pages/PageEventListenerSpec.groovy[tag=config,indent=0]
 ----
 
 
@@ -924,28 +924,28 @@ Given the following HTML…
 
 [source,html]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=html,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=html,indent=0]
 ----
 
 …the code for frame.html…
 
 [source,html]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=frame,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=frame,indent=0]
 ----
 
 …and a page class…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=page,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=page,indent=0]
 ----
 
 …then this code will pass…
 
 [source,groovy]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=example,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=example,indent=0]
 ----
 
 If a frame cannot be found for a given first argument of the `withFrame()` call, then `{no-such-frame-exception-api}` is thrown.
@@ -959,24 +959,24 @@ Given the html and page class from the previous example the following is an exam
 
 [source,groovy]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=frame_page,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=frame_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=switching_class,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=switching_class,indent=0]
 ----
 
 And this is how an example usage with a page instance looks like:
 
 [source,groovy]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=parameterized_frame_page,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=parameterized_frame_page,indent=0]
 ----
 
 [source,groovy]
 ----
-include::{test-dir}/pages/FramesSpec.groovy[tag=switching_instance,indent=0]
+include::{snippets-dir}/pages/FramesSpec.groovy[tag=switching_instance,indent=0]
 ----
 
 It is also possible to <<content-dsl-page, specify a page to switch to for a page content that describes a frame>>.
