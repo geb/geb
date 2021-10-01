@@ -7,8 +7,12 @@ plugins {
 archivesBaseName = "geb-manual"
 
 repositories {
+    mavenCentral()
     maven {
         url "https://jcenter.bintray.com"
+        mavenContent {
+            includeModule("org.asciidoctor", "asciidoctorj-groovy-dsl")
+        }
     }
 }
 
