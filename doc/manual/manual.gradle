@@ -88,8 +88,6 @@ asciidoctorj {
 }
 
 tasks.named("asciidoctor") {
-    dependsOn snippetsTask
-
     sources {
         include 'index.adoc'
     }
