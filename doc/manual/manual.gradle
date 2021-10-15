@@ -98,7 +98,7 @@ tasks.named("asciidoctor") {
 
     baseDirFollowsSourceDir()
 
-    inputs.files(snippetsTask.map { it.outputs })
+    inputs.files(snippetsTask)
         .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
