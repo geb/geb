@@ -38,3 +38,12 @@ sourceSets {
 		resources.srcDir("../integration/geb-gradle/src/main/resources")
 	}
 }
+
+gradlePlugin {
+	plugins {
+		manuals {
+			id = 'geb.manuals'
+			implementationClass = 'org.gebish.gradle.ManualsPlugin'
+		}
+	}
+}

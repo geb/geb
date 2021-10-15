@@ -135,7 +135,9 @@ def manualZipTask = tasks.register("manualZip", Zip) {
 }
 
 artifacts {
-    manual manualZipTask
+    manual(packageManualTask.map { it.outputs.files.singleFile }) {
+        builtBy packageManualTask
+    }
 }
 
 publishing {

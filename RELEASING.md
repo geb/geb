@@ -20,7 +20,7 @@
 
 # Post-release actions
 1. Bump the version to a snapshot of the next planned version.
-1. Remove the oldest version from `oldManualVersions` list in `site.gradle` and append the newly released one.
+1. Remove the oldest version from `manuals.include()` call in `site.gradle` and append the newly released one.
 1. Add a placeholder above the newest version in `History` section in `140-project.adoc` using `{geb-version}` expression.
 1. Commit with message 'Begin version «version»'
 1. Push (make sure you push the tag as well).

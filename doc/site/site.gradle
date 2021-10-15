@@ -16,20 +16,9 @@
 
 plugins {
     id "geb.groovy-module"
+    id "geb.manuals"
     alias(libs.plugins.node)
     alias(libs.plugins.ratpackGroovy)
-}
-
-ext {
-    // The old versions of Geb we are including manuals for
-    oldManualVersions = ["1.0", "1.1", "1.1.1", "2.0", "2.1", "2.2", "2.3", "2.3.1", "3.0", "3.0.1", "3.1", "3.2", "3.3", "3.4", "3.4.1", "4.0", "4.1", "5.0"]
-
-    currentVersion = gebModule.isSnapshot() ? oldManualVersions.last() : version
-    manualsMetadata = [
-        'old'     : (oldManualVersions - currentVersion).reverse().join(','),
-        'current' : currentVersion,
-        'snapshot': gebModule.isSnapshot() ? project.version : ''
-    ]
 }
 
 repositories {
@@ -41,11 +30,15 @@ repositories {
 configurations {
     currentManual
 
-    oldManualVersions.each {
-        delegate."manual-$it"
-    }
-
     distribution
+}
+
+manuals {
+    include(
+        "1.0", "1.1", "1.1.1", "2.0", "2.1", "2.2", "2.3", "2.3.1", "3.0", "3.0.1", "3.1", "3.2", "3.3", "3.4", "3.4.1",
+        "4.0", "4.1", "5.0"
+    )
+    currentManual.from(configurations.currentManual)
 }
 
 dependencies {
@@ -57,9 +50,6 @@ dependencies {
     testImplementation libs.htmlUnitDriver
 
     currentManual project(path: ":doc:manual", configuration: "manual")
-    oldManualVersions.each {
-        delegate."manual-$it" "org.gebish:geb-manual:$it@zip"
-    }
 }
 
 node {
@@ -81,49 +71,11 @@ def npmCiTask = tasks.register("npmCi", NpmTask) {
     npmCommand = ["ci"]
 }
 
-def gatherManualsTask = tasks.register("gatherManuals", Sync) {
-    inputs.properties(manualsMetadata)
-
-    into "${buildDir}/manuals"
-
-    def configureManualExtraction = { configuration, label ->
-        inputs.files configuration
-        into label, {
-            from { zipTree(configuration.singleFile) }
-        }
-    }
-
-    oldManualVersions.each {
-        configureManualExtraction(configurations["manual-$it"], it)
-    }
-    configureManualExtraction(configurations.currentManual, gebModule.isSnapshot() ? 'snapshot' : version)
-    def latestStableManualConfiguration = gebModule.isSnapshot() ? configurations["manual-${oldManualVersions.last()}"] : configurations.currentManual
-    configureManualExtraction(latestStableManualConfiguration, "current")
-}
-
-def generateConfigPropertiesTask = tasks.register("generateConfigProperties") {
-    inputs.properties(manualsMetadata)
-
-    def outputDirectory = new File(buildDir, "config-properties")
-    outputs.dir(outputDirectory)
-
-    doLast {
-        outputDirectory.mkdirs()
-        def properties = new Properties()
-        manualsMetadata.each { key, value ->
-            properties.setProperty("manuals.${key}", value)
-        }
-        new File(outputDirectory, 'ratpack.properties').withWriter { Writer writer ->
-            properties.store(writer, null)
-        }
-    }
-}
-
 def generateResourcesTask = tasks.register("generateResources", Sync) {
-    from(gatherManualsTask) {
+    from(tasks.named("gatherManuals")) {
         into 'public/manual'
     }
-    from generateConfigPropertiesTask
+    from tasks.named("generateConfigProperties")
 
     into 'src/main/generatedResources'
 }
