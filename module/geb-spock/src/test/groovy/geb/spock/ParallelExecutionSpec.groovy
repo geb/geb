@@ -16,11 +16,15 @@
 package geb.spock
 
 import geb.test.CallbackHttpServer
+import geb.test.browsers.Chrome
+import geb.test.browsers.RequiresRealBrowser
 import spock.lang.*
 import spock.util.EmbeddedSpecRunner
 
 import javax.servlet.http.HttpServletRequest
 
+@RequiresRealBrowser
+@Chrome
 class ParallelExecutionSpec extends Specification {
 
     EmbeddedSpecRunner specRunner = new EmbeddedSpecRunner(
