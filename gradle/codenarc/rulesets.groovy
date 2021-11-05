@@ -121,6 +121,9 @@ ruleset {
         ExplicitCallToModMethod {
             enabled = false
         }
+        ExplicitLinkedListInstantiation {
+            enabled = false
+        }
     }
     ruleset('rulesets/imports.xml') {
         MisorderedStaticImports {

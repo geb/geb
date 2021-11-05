@@ -33,7 +33,7 @@ class GebTestManagerExtension implements BeforeEachCallback, AfterEachCallback, 
 
     @Override
     void beforeEach(ExtensionContext context) throws Exception {
-        getTestManager(context).beforeTest(context.requiredTestMethod.name)
+        getTestManager(context).beforeTest(context.requiredTestClass, context.requiredTestMethod.name)
     }
 
     @Override

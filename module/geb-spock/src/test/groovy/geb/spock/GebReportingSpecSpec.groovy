@@ -196,7 +196,7 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        reportFile("001-001-fixture-Report in setupSpec.html").text.startsWith("<?xml")
+        reportFile("000-001-fixture-Report in setupSpec.html").text.startsWith("<?xml")
         reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
     }
 
@@ -258,7 +258,7 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        reportFile("001-001-fixture-failure.html").exists()
+        reportFile("000-001-fixture-failure.html").exists()
     }
 
     def "failures in cleanupSpec methods are reported on"() {
@@ -277,7 +277,7 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        new File(reportDir, "002-001-fixture-failure.html").exists()
+        new File(reportDir, "001-001-fixture-failure.html").exists()
     }
 
     SummarizedEngineExecutionResults runReportingSpec(String additionalConfiguration = "", String body) {

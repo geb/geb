@@ -29,7 +29,7 @@ class GebTestManagerRule implements TestRule {
         { ->
             def testManager = getTestManager(description.testClass)
 
-            testManager.beforeTest(description.methodName)
+            testManager.beforeTest(description.testClass, description.methodName)
             try {
                 base.evaluate()
             } catch (AssumptionViolatedException e) {

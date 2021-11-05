@@ -44,7 +44,7 @@ class GebTestListener implements IClassListener, ITestListener {
     @Override
     void onTestStart(ITestResult result) {
         withTestManager(result) {
-            it.beforeTest(result.name)
+            it.beforeTest(result.testClass.realClass, result.name)
         }
     }
 

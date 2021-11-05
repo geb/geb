@@ -18,14 +18,19 @@ import geb.test.GebTestManager
 
 class GebReportingSpec extends GebSpec {
 
-    private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder()
-            .withReportingEnabled(true)
-            .build()
+    private final static ThreadLocal<GebTestManager> TEST_MANAGER = new ThreadLocal<GebTestManager>() {
+        @Override
+        protected GebTestManager initialValue() {
+            new SpockGebTestManagerBuilder()
+                .withReportingEnabled(true)
+                .build()
+        }
+    }
 
     @Override
     @Delegate(includes = ["getBrowser", "report"])
     GebTestManager getTestManager() {
-        TEST_MANAGER
+        TEST_MANAGER.get()
     }
 
 }

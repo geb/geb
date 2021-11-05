@@ -17,6 +17,8 @@ package geb.test
 
 import geb.Browser
 
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Predicate
 import java.util.function.Supplier
 
@@ -24,12 +26,14 @@ import static geb.report.ReporterSupport.toTestReportLabel
 
 class GebTestManager {
 
+    private final static Map<Class<?>, AtomicInteger> TEST_COUNTERS = new ConcurrentHashMap<>()
+
     private final Supplier<Browser> browserCreator
     private final Predicate<Class<?>> resetBrowserAfterEachTestPredicate
     final boolean reportingEnabled
 
     protected Browser browser
-    private Class<?> currentTestClass
+    private Deque<Class<?>> currentTestClassStack = [] as Queue
     private int perTestReportCounter = 1
     private int testCounter = 1
     private String currentTestName
@@ -65,19 +69,21 @@ class GebTestManager {
     }
 
     void beforeTestClass(Class<?> testClass) {
-        currentTestClass = testClass
+        currentTestClassStack.push(testClass)
         if (reportingEnabled) {
             getBrowser().reportGroup(testClass)
             getBrowser().cleanReportGroupDir()
-            testCounter = 1
+            testCounter = nextTestCounter(currentTestClass)
             perTestReportCounter = 1
         }
     }
 
-    void beforeTest(String testName) {
+    void beforeTest(Class<?> testClass, String testName) {
+        currentTestClassStack.push(testClass)
         currentTestName = testName
         if (reportingEnabled) {
-            getBrowser().reportGroup(currentTestClass)
+            getBrowser().reportGroup(testClass)
+            testCounter = nextTestCounter(currentTestClass)
             perTestReportCounter = 1
         }
     }
@@ -87,21 +93,20 @@ class GebTestManager {
             if (browser && !browser.config.reportOnTestFailureOnly) {
                 report("end")
             }
-
-            testCounter++
         }
 
         if (resetBrowserAfterEachTest) {
             resetBrowser()
         }
         currentTestName = null
+        currentTestClassStack.pop()
     }
 
     void afterTestClass() {
         if (!resetBrowserAfterEachTest) {
             resetBrowser()
         }
-        currentTestClass = null
+        currentTestClassStack.pop()
     }
 
     String createReportLabel(String label) {
@@ -123,12 +128,21 @@ class GebTestManager {
         browser = null
     }
 
+    private static int nextTestCounter(Class<?> testClass) {
+        TEST_COUNTERS.putIfAbsent(testClass, new AtomicInteger(0))
+        TEST_COUNTERS[testClass].getAndIncrement()
+    }
+
     private Browser createBrowser() {
         browserCreator ? browserCreator.get() : new Browser()
     }
 
     private boolean getResetBrowserAfterEachTest() {
         resetBrowserAfterEachTestPredicate.test(currentTestClass)
+    }
+
+    private Class<?> getCurrentTestClass() {
+        currentTestClassStack.peek()
     }
 
 }

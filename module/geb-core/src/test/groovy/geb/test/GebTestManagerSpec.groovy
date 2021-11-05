@@ -50,7 +50,7 @@ class GebTestManagerSpec extends Specification {
             .build()
 
         beforeTestClass(getClass())
-        beforeTest(specificationContext.currentIteration.name)
+        beforeTest(getClass(), specificationContext.currentIteration.name)
         browser
     }
 

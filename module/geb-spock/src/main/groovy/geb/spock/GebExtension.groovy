@@ -57,7 +57,7 @@ class GebExtension implements IGlobalExtension {
         }
 
         spec.addSetupInterceptor { invocation ->
-            getManager(invocation).beforeTest(invocation.iteration.displayName)
+            getManager(invocation).beforeTest(invocation.instance.getClass(), invocation.iteration.displayName)
             invocation.proceed()
         }
 
