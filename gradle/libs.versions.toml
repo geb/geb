@@ -7,7 +7,7 @@ ratpack = "1.9.0"
 sauceConnect = "1.153"
 selenium = "3.141.59"
 spock = "2.0-groovy-3.0"
-threeTen = "1.4"
+threeTen = "1.7.0"
 
 [libraries]
 asciidoctorj = 'org.asciidoctor:asciidoctorj:2.4.1'
