@@ -103,7 +103,7 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
 
     def "message argument is appended to the exception message - when called on #subjectName"() {
         when:
-        subjectFactory().waitFor(0.1, message: 'Some custom message') { false }
+        subjectFactory().waitFor(0.01, 0.01, message: 'Some custom message') { false }
 
         then:
         WaitTimeoutException e = thrown()

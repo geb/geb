@@ -22,7 +22,8 @@ class CustomMessageSpec extends GebSpecWithCallbackServer {
 
     def "using custom failure message with waitFor"() {
         given:
-        browser.config.defaultWaitTimeout = 0.1
+        browser.config.defaultWaitTimeout = 0.01
+        browser.config.defaultWaitRetryInterval = 0.01
         html { }
 
         when:
