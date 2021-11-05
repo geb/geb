@@ -52,6 +52,7 @@ class Wait {
     final boolean includeCauseInExceptionMessage
 
     String customMessage
+    boolean quiet
 
     Wait(Number timeout = DEFAULT_TIMEOUT, Number retryInterval = DEFAULT_RETRY_INTERVAL, boolean includeCauseInExceptionMessage = false) {
         this.timeout = timeout
@@ -120,7 +121,7 @@ class Wait {
             }
         }
 
-        if (!pass && timedOut) {
+        if (!pass && timedOut && !quiet) {
             throw new WaitTimeoutException(this, thrown, pass)
         }
 

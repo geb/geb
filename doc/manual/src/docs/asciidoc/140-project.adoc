@@ -90,7 +90,9 @@ This page lists the high level changes between versions of Geb.
 
 === {geb-version}
 
-No changes have been made, yet.
+==== New features
+
+* Add an option to `waitFor()` to not throw `WaitTimeoutException` when the wait times out. [issue:644[]]
 
 === 5.1
 

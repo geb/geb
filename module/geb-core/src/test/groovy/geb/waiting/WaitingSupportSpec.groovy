@@ -113,6 +113,17 @@ class WaitingSupportSpec extends WaitingSpec implements CrossPlatformSupport {
         [subjectFactory, subjectName] << subjects()
     }
 
+    def "falsey value is returned rather than WaitTimeoutException being thrown if wait times out and noException is set to true"() {
+        when:
+        def result = subjectFactory().waitFor(0.01, 0.01, noException: true) { false }
+
+        then:
+        !result
+
+        where:
+        [subjectFactory, subjectName] << subjects()
+    }
+
     def "larger interval than timeout throwing exception - when called on #subjectName"() {
         given:
         js.showIn(0.3)

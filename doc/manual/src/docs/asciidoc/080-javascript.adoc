@@ -197,6 +197,15 @@ If you wish to add a custom message to `WaitTimeoutException` that is being thro
 include::{snippets-dir}/javascript/CustomMessageSpec.groovy[tag=custom_message,indent=0]
 ----
 
+=== Suppressing `WaitTimeoutException`
+
+If you wish for `WaitTimeoutException` not to be thrown, and the last evaluation result to be returned instead when the wait times out then you can set the `noException` parameter to a truthy value:
+
+[source,groovy]
+----
+include::{snippets-dir}/javascript/WaitForNoExceptionSpec.groovy[tag=no_exception,indent=0]
+----
+
 [[reloading-page-when-waiting]]
 == Reloading the page when waiting
 

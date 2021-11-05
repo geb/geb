@@ -30,23 +30,24 @@ class DefaultWaitingSupport implements WaitingSupport {
     }
 
     public <T> T waitFor(Map params = [:], String waitPreset, Closure<T> block) {
-        doWaitFor(params.message, config.getWaitPreset(waitPreset), block)
+        doWaitFor(params, config.getWaitPreset(waitPreset), block)
     }
 
     public <T> T waitFor(Map params = [:], Closure<T> block) {
-        doWaitFor(params.message, config.defaultWait, block)
+        doWaitFor(params, config.defaultWait, block)
     }
 
     public <T> T waitFor(Map params = [:], Number timeout, Closure<T> block) {
-        doWaitFor(params.message, config.getWait(timeout), block)
+        doWaitFor(params, config.getWait(timeout), block)
     }
 
     public <T> T waitFor(Map params = [:], Number timeout, Number interval, Closure<T> block) {
-        doWaitFor(params.message, new Wait(timeout, interval), block)
+        doWaitFor(params, new Wait(timeout, interval), block)
     }
 
-    private <T> T doWaitFor(String customMessage, Wait wait, Closure<T> block) {
-        wait.customMessage = customMessage
+    private <T> T doWaitFor(Map params, Wait wait, Closure<T> block) {
+        wait.customMessage = params["message"]
+        wait.quiet = params["noException"]
         wait.waitFor(block)
     }
 
