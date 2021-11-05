@@ -11,7 +11,7 @@ import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.shaded.org.apache.commons.io.FileUtils
 import org.testcontainers.utility.ResourceReaper
 
-import static org.testcontainers.containers.BrowserWebDriverContainer.getImageForCapabilities
+import static org.testcontainers.containers.BrowserWebDriverContainer.getDockerImageForCapabilities
 
 testValue = true // used in a test in geb-core
 
@@ -26,7 +26,7 @@ void setPortIndexProperty(String index) {
 }
 
 BrowserWebDriverContainer containerForCapabilities(Capabilities capabilities) {
-    new BrowserWebDriverContainer<>(getImageForCapabilities(capabilities, "3.141.59-oxygen"))
+    new BrowserWebDriverContainer<>(getDockerImageForCapabilities(capabilities, "3.141.59-oxygen"))
         .withCapabilities(capabilities)
 }
 

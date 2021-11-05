@@ -37,7 +37,7 @@ selenium-support = { module = 'org.seleniumhq.selenium:selenium-support', versio
 spock-core = { module = 'org.spockframework:spock-core', version.ref = 'spock' }
 spockCoreGroovy25 = 'org.spockframework:spock-core:1.3-groovy-2.5'
 systemLambda = 'com.github.stefanbirkner:system-lambda:1.2.0'
-testcontainers-selenium = 'org.testcontainers:selenium:1.15.0-rc2'
+testcontainers-selenium = 'org.testcontainers:selenium:1.16.2'
 testng = 'org.testng:testng:6.14.3'
 threeTen-extra = { module = 'org.threeten:threeten-extra', version.ref = 'threeTen' }
 
