@@ -28,8 +28,10 @@ class CssSelectorSpec extends Specification {
 
     @Shared
     Browser browser
+
     @Shared
     WebDriver driver
+
     @Shared
     Navigator onPage
 

@@ -23,6 +23,7 @@ class NavigatorGroovySpec extends Specification {
 
     @Shared
     Browser browser
+
     @Shared
     Navigator onPage
 

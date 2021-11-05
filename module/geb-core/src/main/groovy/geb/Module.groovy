@@ -46,15 +46,18 @@ class Module implements Navigator, PageContentContainer, Initializable, WaitingS
 
     @Delegate
     private PageContentSupport pageContentSupport = new UninitializedPageContentSupport(this)
+
     @Delegate
     private DownloadSupport downloadSupport = new UninitializedDownloadSupport(this)
 
     private WaitingSupport waitingSupport = new UninitializedWaitingSupport(this)
+
     @Delegate(parameterAnnotations = true)
     private FrameSupport frameSupport = new UninitializedFrameSupport(this)
 
     @Delegate
     private TextMatchingSupport textMatchingSupport = new TextMatchingSupport()
+
     @Delegate
     private AlertAndConfirmSupport alertAndConfirmSupport = new UninitializedAlertAndConfirmSupport(this)
 

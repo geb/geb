@@ -12,7 +12,7 @@ threeTen = "1.7.0"
 [libraries]
 asciidoctorj = 'org.asciidoctor:asciidoctorj:2.5.2'
 cglib = 'cglib:cglib:2.2'
-codenarc = 'org.codenarc:CodeNarc:2.0.0'
+codenarc = 'org.codenarc:CodeNarc:2.2.0'
 commons-fileupload = 'commons-fileupload:commons-fileupload:1.3.1'
 gebSpockGroovy25 = 'org.gebish:geb-spock:4.0'
 grolifant = 'org.ysb33r.gradle:grolifant50:1.1.0'
