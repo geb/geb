@@ -9,5 +9,5 @@ dependencies {
 }
 
 tasks.named("test") {
-    mustRunAfter ':doc:manual-snippets:test'
+    shouldRunAfter ':doc:manual-snippets:test'
 }
