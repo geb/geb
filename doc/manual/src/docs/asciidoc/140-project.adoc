@@ -83,6 +83,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:jrodalo[José Luis Rodríguez Alonso] - Website improvements
 * github-profile:sclassen[Stephan Classen] - Doc improvements
 * github-profile:pbielicki[Przemysław Bielicki] - Removal of deprecations from the build
+* github-profile:arixmkii[Arthur Sengileyev] - Dependency updates
 
 == History
 
