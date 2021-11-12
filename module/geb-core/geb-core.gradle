@@ -26,9 +26,7 @@ dependencies {
     api libs.threeTen.extra
 
     implementation(libs.jodd.core)
-    implementation(libs.jodd.lagarto) {
-        exclude(group: "ch.qos.logback")
-    }
+    implementation(libs.jodd.lagarto)
 
     selectImplementation(libs.selenium.support)
 
