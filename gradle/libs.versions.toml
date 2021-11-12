@@ -24,7 +24,7 @@ jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty
 jetty-servlet = { module = 'org.eclipse.jetty:jetty-servlet', version.ref = 'jetty' }
 jodd-core = 'org.jodd:jodd-core:5.3.0'
 jodd-lagarto = 'org.jodd:jodd-lagarto:6.0.5'
-jsoup = 'org.jsoup:jsoup:1.11.2'
+jsoup = 'org.jsoup:jsoup:1.14.3'
 junit-platform-launcher = 'org.junit.platform:junit-platform-launcher:1.8.1'
 junit4 = { module = 'junit:junit', version.ref = 'junit4' }
 junit5-jupiter-api = { module = 'org.junit.jupiter:junit-jupiter-api', version.ref = 'junit5' }
