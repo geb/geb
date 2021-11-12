@@ -25,6 +25,7 @@ dependencies {
     api project(":module:geb-waiting")
     api libs.threeTen.extra
 
+    implementation(libs.jodd.core)
     implementation(libs.jodd.lagarto) {
         exclude(group: "ch.qos.logback")
     }
