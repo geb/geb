@@ -3,6 +3,7 @@ jobs:
   modules:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -25,6 +26,7 @@ jobs:
   internal:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
       GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
       GRADLE_USER_HOME: .gradle-home
@@ -47,6 +49,7 @@ jobs:
   integrations:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -68,6 +71,7 @@ jobs:
             - .gradle-home
   manual:
     machine: true
+    resource_class: large
     steps:
       - checkout
       - restore_cache:
@@ -90,6 +94,7 @@ jobs:
   site:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -111,6 +116,7 @@ jobs:
             - .gradle-home
   dockerised-cross-browser:
     machine: true
+    resource_class: large
     steps:
       - checkout
       - restore_cache:
@@ -133,6 +139,7 @@ jobs:
   local-cross-browser:
     docker:
       - image: gebish/ci:v10
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -155,6 +162,7 @@ jobs:
   saucelabs:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -179,6 +187,7 @@ jobs:
   lambdatest:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
       GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
       GRADLE_USER_HOME: .gradle-home
@@ -203,6 +212,7 @@ jobs:
   non-ie:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -227,6 +237,7 @@ jobs:
   ie:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
@@ -251,6 +262,7 @@ jobs:
   upload:
     docker:
       - image: gebish/ci:v7
+    resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
         GRADLE_USER_HOME: .gradle-home
