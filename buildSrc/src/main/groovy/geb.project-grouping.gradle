@@ -1,0 +1,3 @@
+tasks.register('check') {
+    dependsOn subprojects.collect { subproject -> "${subproject.path}:check" }
+}

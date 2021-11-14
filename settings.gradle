@@ -4,7 +4,8 @@ plugins {
 
 enableFeaturePreview('VERSION_CATALOGS')
 
-include "module:geb-core",
+include "module",
+    "module:geb-core",
     "module:geb-spock",
     "module:geb-junit",
     "module:geb-junit4",
@@ -14,8 +15,10 @@ include "module:geb-core",
     "module:geb-ast",
     "module:geb-waiting",
     "module:geb-exceptions",
+    "internal",
     "internal:test-support",
     "internal:test-support-spock",
+    "integration",
     "integration:geb-gradle",
     "doc:asciidoctor-extension",
     "doc:manual",

@@ -1,29 +1,6 @@
 version: 2
 jobs:
-  modules:
-    docker:
-      - image: gebish/ci:v7
-    resource_class: large
-    environment:
-        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
-        GRADLE_USER_HOME: .gradle-home
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - gradle-home-modules-{{ .Branch }}
-            - gradle-home-modules-master
-            - gradle-home-modules
-      - run: ./gradlew --no-daemon --max-workers 4 --parallel -p module -Pci check --continue
-      - store_test_results:
-          path: .
-      - store_artifacts:
-          path: build/reports
-      - save_cache:
-          key: gradle-home-modules-{{ .Branch }}-{{ epoch }}
-          paths:
-            - .gradle-home
-  internal:
+  check:
     docker:
       - image: gebish/ci:v7
     resource_class: large
@@ -34,39 +11,16 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - gradle-home-internal-{{ .Branch }}
-            - gradle-home-internal-master
-            - gradle-home-internal
-      - run: ./gradlew --no-daemon --max-workers 4 --parallel -p internal -Pci check --continue
+            - gradle-home-check-{{ .Branch }}
+            - gradle-home-check-master
+            - gradle-home-check
+      - run: ./gradlew --no-daemon --max-workers 4 --parallel -Pci module:check internal:check integration:check doc:site:check --continue
       - store_test_results:
           path: .
       - store_artifacts:
           path: build/reports
       - save_cache:
-          key: gradle-home-internal-{{ .Branch }}-{{ epoch }}
-          paths:
-            - .gradle-home
-  integrations:
-    docker:
-      - image: gebish/ci:v7
-    resource_class: large
-    environment:
-        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
-        GRADLE_USER_HOME: .gradle-home
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - gradle-home-integrations-{{ .Branch }}
-            - gradle-home-integrations-master
-            - gradle-home-integrations
-      - run: ./gradlew --no-daemon --max-workers 4 --parallel -p integration -Pci check --continue
-      - store_test_results:
-          path: .
-      - store_artifacts:
-          path: build/reports
-      - save_cache:
-          key: gradle-home-integrations-{{ .Branch }}-{{ epoch }}
+          key: gradle-home-check-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   manual:
@@ -89,29 +43,6 @@ jobs:
           path: build/reports
       - save_cache:
           key: gradle-home-manual-machine-{{ .Branch }}-{{ epoch }}
-          paths:
-            - .gradle-home
-  site:
-    docker:
-      - image: gebish/ci:v7
-    resource_class: large
-    environment:
-        GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
-        GRADLE_USER_HOME: .gradle-home
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - gradle-home-site-{{ .Branch }}
-            - gradle-home-site-master
-            - gradle-home-site
-      - run: ./gradlew --no-daemon --max-workers 4 --parallel -p doc/site -Pci check
-      - store_test_results:
-          path: .
-      - store_artifacts:
-          path: build/reports
-      - save_cache:
-          key: gradle-home-site-{{ .Branch }}-{{ epoch }}
           paths:
             - .gradle-home
   dockerised-cross-browser:
@@ -313,51 +244,34 @@ workflows:
   version: 2
   build-workflow:
     jobs:
-      - modules
-      - internal
-      - integrations:
-          requires:
-            - modules
-            - internal
-      - manual:
-          requires:
-            - modules
-            - internal
-      - site:
-          requires:
-            - modules
-            - internal
+      - check
+      - manual
       - dockerised-cross-browser:
           requires:
-            - integrations
+            - check
             - manual
-            - site
       - local-cross-browser:
           requires:
-            - integrations
+            - check
             - manual
-            - site
       - saucelabs:
           requires:
-            - integrations
+            - check
             - manual
-            - site
           filters:
             branches:
               ignore: /pull\/[0-9]+/
       - lambdatest:
           requires:
-            - integrations
+            - check
             - manual
-            - site
           filters:
             branches:
               ignore: /pull\/[0-9]+/
       - non-ie:
           requires:
-            - integrations
+            - check
             - manual
-            - site
           filters:
             branches:
               ignore: /pull\/[0-9]+/
