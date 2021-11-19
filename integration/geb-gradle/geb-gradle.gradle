@@ -2,6 +2,7 @@ plugins {
     id 'geb.published-groovy-module'
     id 'geb.spock-2-module'
     id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.16.0'
 }
 
 repositories {
@@ -22,19 +23,37 @@ publishing.publications.main.pom {
     description = "Gradle plugins for Geb (pronounced \"jeb\")."
 }
 
+pluginBundle {
+    website = "https://gebish.org/manual/current/#gradle-plugins"
+    vcsUrl = "https://github.com/geb/geb"
+    tags = ["geb", "testing", "cloud", "browser"]
+}
+
 gradlePlugin {
     plugins {
         sauceLabsPlugin {
-            id = 'geb-saucelabs'
+            id = 'org.gebish.saucelabs'
+            displayName = "Geb Sauce Labs plugin"
+            description = "A plugin that simplifies running Geb tests at Sauce Labs"
             implementationClass = 'geb.gradle.saucelabs.SaucePlugin'
         }
         browserStackPlugin {
-            id = 'geb-browserstack'
+            id = 'org.gebish.browserstack'
+            displayName = "Geb BrowserStack plugin"
+            description = "A plugin that simplifies running Geb tests at BrowserStack"
             implementationClass = 'geb.gradle.browserstack.BrowserStackPlugin'
         }
         lambdaTestPlugin {
-            id = 'geb-lambdatest'
+            id = 'org.gebish.lambdatest'
+            displayName = "Geb LambdaTest plugin"
+            description = "A plugin that simplifies running Geb tests at LambdaTest"
             implementationClass = 'geb.gradle.lambdatest.LambdaTestPlugin'
         }
+    }
+}
+
+tasks.named("publishJarsAndManual") {
+    if (!gebModule.isSnapshot()) {
+        dependsOn 'publishPlugins'
     }
 }

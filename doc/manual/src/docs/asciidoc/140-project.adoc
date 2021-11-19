@@ -94,6 +94,7 @@ This page lists the high level changes between versions of Geb.
 ==== New features
 
 * Add an option to `waitFor()` to not throw `WaitTimeoutException` when the wait times out. [issue:644[]]
+* Cloud browser plugins are published to Gradle Plugin Portal. [issue:647[]]
 
 === 5.1
 
