@@ -14,6 +14,7 @@ dependencies {
     testImplementation project(':doc:manual-snippets:fixtures')
     testImplementation libs.commons.fileupload
     testImplementation libs.systemLambda
+    testImplementation libs.junit.platform.testkit
 }
 
 tasks.named("test") {

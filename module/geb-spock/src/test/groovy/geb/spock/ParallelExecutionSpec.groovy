@@ -80,7 +80,7 @@ class ParallelExecutionSpec extends Specification {
 
     def 'GebSpec supports parallel execution at feature level'() {
         when:
-        def result = specRunner.run """
+        def result = specRunner.runWithImports """
             class SpecRunningIterationsInParallel extends ConfigModifyingGebSpec {
 
                 @Shared
@@ -119,7 +119,7 @@ class ParallelExecutionSpec extends Specification {
 
     def 'GebReportingSpec supports parallel execution at feature level'() {
         when:
-        def result = specRunner.run """
+        def result = specRunner.runWithImports """
             abstract class AbstractSpecRunningIterationsInParallel extends ConfigModifyingGebReportingSpec {
                 static specParallelismLatch = new CountDownLatch(2)
                 @Shared
@@ -188,7 +188,7 @@ class ParallelExecutionSpec extends Specification {
     }
 
     private List<String> reportFileTestCounterPrefixes(String className) {
-        def reportGroupDir = new File(reportDir, className)
+        def reportGroupDir = new File(reportDir, "apackage/${className}")
         reportGroupDir.listFiles().collect {
             it.name.tokenize("-").first()
         }.sort()

@@ -29,7 +29,7 @@ class SpockIntegrationSpec extends Specification {
 
     def "transform works in a spec feature method"() {
         when:
-        def result = specRunner.run """
+        def result = specRunner.runWithImports """
             class ExampleSpec extends Specification {
 
                 def featureMethod() {
@@ -56,7 +56,7 @@ class SpockIntegrationSpec extends Specification {
 
     def "transform works in a spec helper method"() {
         when:
-        def result = specRunner.run """
+        def result = specRunner.runWithImports """
             class ExampleSpec extends Specification {
 
                 def featureMethod() {
@@ -87,7 +87,7 @@ class SpockIntegrationSpec extends Specification {
 
     def "can have wait for methods with explicit asserts"() {
         when:
-        def result = specRunner.run """
+        def result = specRunner.runWithImports """
             class ExampleSpec extends Specification {
 
                 def featureMethodWithAssertInWaitFor() {

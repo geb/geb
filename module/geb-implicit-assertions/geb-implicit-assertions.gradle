@@ -2,6 +2,10 @@ plugins {
     id 'geb.api-module'
 }
 
+dependencies {
+    testImplementation libs.junit.platform.testkit
+}
+
 publishing.publications.main.pom {
     name = "Geb Implicit Assertions"
     description = "Geb (pronounced \"jeb\") implicit assertion transform (used in conjunction with geb-core)."

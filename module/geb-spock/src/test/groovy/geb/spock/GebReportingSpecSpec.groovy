@@ -59,7 +59,7 @@ class GebReportingSpecSpec extends Specification {
     }
 
     File getReportGroupDir() {
-        new File(reportDir, REPORTING_SPEC_NAME)
+        new File(reportDir, "apackage/${REPORTING_SPEC_NAME}")
     }
 
     File reportFile(String name) {
@@ -178,7 +178,7 @@ class GebReportingSpecSpec extends Specification {
 
     def "report called from fixture method should create report with default name"() {
         when:
-        specRunner.run """
+        specRunner.runWithImports """
             class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setupSpec() {
@@ -203,7 +203,7 @@ class GebReportingSpecSpec extends Specification {
 
     def "report called from shared initializer should create report with default name"() {
         when:
-        specRunner.run """
+        specRunner.runWithImports """
             class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
                 @Shared
                 def sharedField = helper()
@@ -232,7 +232,7 @@ class GebReportingSpecSpec extends Specification {
 
     def "failures in setup methods are reported on"() {
         when:
-        specRunner.run """
+        specRunner.runWithImports """
             class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setup() {
@@ -271,7 +271,7 @@ class GebReportingSpecSpec extends Specification {
 
     def "failures in setupSpec methods are reported on"() {
         when:
-        specRunner.run """
+        specRunner.runWithImports """
             class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setupSpec() {
@@ -311,7 +311,7 @@ class GebReportingSpecSpec extends Specification {
     }
 
     SummarizedEngineExecutionResults runReportingSpec(String additionalConfiguration = "", String body) {
-        specRunner.run """
+        specRunner.runWithImports """
             class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setup() {

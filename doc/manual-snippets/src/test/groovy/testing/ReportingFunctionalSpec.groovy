@@ -51,15 +51,13 @@ class ReportingFunctionalSpec extends Specification {
     }
 
     void reportExists(String filename) {
-        assert new File(reportsDir, "my/tests/LoginSpec/${filename}.html").exists()
+        assert new File(reportsDir, "apackage/LoginSpec/${filename}.html").exists()
     }
 
     def "reporting on a failing test which also writes a custom report"() {
         when:
-        specRunner.run """
+        specRunner.runWithImports """
             //tag::example[]
-            package my.tests
-
             import geb.spock.GebReportingSpec
             import geb.spock.SpockGebTestManagerBuilder
             import geb.test.GebTestManager

@@ -103,6 +103,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== Improvements
 * Add parallel execution support for JUnit 5 integration. [issue:663[]]
+* Update Spock to 2.1-groovy-3.0. [issue:665[]]
 
 ==== Project related changes
 * Update Gradle logo at the bottom of gebish.org to the current design. [issue:653[]]

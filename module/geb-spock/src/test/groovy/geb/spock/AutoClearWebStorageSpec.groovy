@@ -47,7 +47,7 @@ class AutoClearWebStorageSpec extends Specification {
         def browser = new Browser()
 
         when:
-        specRunner.run """
+        specRunner.runWithImports """
             class AutoClearWebStorage extends ConfigModifyingGebSpec {
                 def "web storage is modified during a test"() {
                     given:

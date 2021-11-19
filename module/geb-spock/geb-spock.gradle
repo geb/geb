@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api libs.spock.core
+    testImplementation libs.junit.platform.testkit
 }
 
 publishing.publications.main.pom {
