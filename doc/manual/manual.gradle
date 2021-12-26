@@ -6,12 +6,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven {
-        url "https://jcenter.bintray.com"
-        mavenContent {
-            includeModule("org.asciidoctor", "asciidoctorj-groovy-dsl")
-        }
-    }
 }
 
 configurations {
@@ -83,6 +77,12 @@ asciidoctorj {
         stylesheet             : 'css/style.css',
         imagesdir              : 'images'
     ]
+
+    modules {
+        groovyDsl {
+            version '2.0.2'
+        }
+    }
 
     docExtensions project(":doc:asciidoctor-extension")
 }
