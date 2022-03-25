@@ -44,36 +44,28 @@ class GebExtension implements IGlobalExtension {
     }
 
     private void addOnFailureReporter(SpecInfo spec) {
-        def reporter = new OnFailureReporter()
-        spec.addListener(reporter)
-        spec.addSetupSpecInterceptor(reporter)
-        spec.addSetupInterceptor(reporter)
+        (spec.allFeatures*.featureMethod + spec.allFixtureMethods)
+                *.addInterceptor(new OnFailureReporter())
     }
 
     private void addManagerCalls(SpecInfo spec) {
-        spec.addSetupSpecInterceptor { invocation ->
-            getManager(invocation).beforeTestClass(invocation.spec.reflection)
-            invocation.proceed()
-        }
-
-        spec.addSetupInterceptor { invocation ->
-            getManager(invocation).beforeTest(invocation.instance.getClass(), invocation.iteration.displayName)
-            invocation.proceed()
-        }
-
-        spec.addCleanupInterceptor { invocation ->
+        spec.addInterceptor { invocation ->
+            GebTestManager testManager = getManager(invocation)
+            testManager.beforeTestClass(invocation.spec.reflection)
             try {
                 invocation.proceed()
             } finally {
-                getManager(invocation).afterTest()
+                testManager.afterTestClass()
             }
         }
 
-        spec.addCleanupSpecInterceptor { invocation ->
+        spec.allFeatures*.addIterationInterceptor { invocation ->
+            GebTestManager testManager = getManager(invocation)
+            testManager.beforeTest(invocation.instance.getClass(), invocation.iteration.displayName)
             try {
                 invocation.proceed()
             } finally {
-                getManager(invocation).afterTestClass()
+                testManager.afterTest()
             }
         }
     }
