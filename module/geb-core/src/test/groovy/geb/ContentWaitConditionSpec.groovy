@@ -56,7 +56,7 @@ class ContentWaitConditionSpec extends GebSpecWithCallbackServer {
 
         then:
         WaitTimeoutException exception = thrown()
-        exception.cause.message.contains("it.displayed")
+        exception.cause.message.contains("it.focused")
     }
 
 }
@@ -64,6 +64,6 @@ class ContentWaitConditionSpec extends GebSpecWithCallbackServer {
 class ContentWaitConditionSpecPage extends Page {
     static content = {
         div(waitCondition: { it.displayed }) { $('div') }
-        failingDiv(wait: 0.05, waitCondition: { it.displayed }) { $('div') }
+        failingDiv(wait: 0.05, waitCondition: { it.focused }) { $('div') }
     }
 }

@@ -43,6 +43,9 @@ class WaitingContentSpec extends WaitingSpec {
     }
 
     def "wait timeout"() {
+        given:
+        showDelay = 10
+
         when:
         params = [wait: 0.05]
 
