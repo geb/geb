@@ -15,7 +15,7 @@
  */
 package geb.waiting
 
-import java.time.Instant
+import static java.util.concurrent.TimeUnit.MILLISECONDS
 
 /**
  * Represents a particular configuration of waiting, but does not encompass what is to be waited on.
@@ -107,7 +107,7 @@ class Wait {
             thrown = e
         }
 
-        def timedOut = Instant.now() > timeoutThreshold
+        def timedOut = timeoutThreshold - System.nanoTime() <= 0
         while (!pass && !timedOut) {
             sleepForRetryInterval()
             try {
@@ -117,7 +117,7 @@ class Wait {
                 pass = new UnknownWaitForEvaluationResult(e)
                 thrown = e
             } finally {
-                timedOut = Instant.now() > timeoutThreshold
+                timedOut = timeoutThreshold - System.nanoTime() <= 0
             }
         }
 
@@ -132,8 +132,12 @@ class Wait {
         seconds * 1000L
     }
 
-    private Instant timeoutThresholdFromNow() {
-        Instant.now().plusMillis(toMilliseconds(timeout))
+    private static long toNanoseconds(Number seconds) {
+        MILLISECONDS.toNanos(toMilliseconds(seconds))
+    }
+
+    private long timeoutThresholdFromNow() {
+        System.nanoTime() + toNanoseconds(timeout)
     }
 
     /**

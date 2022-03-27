@@ -22,8 +22,6 @@ import org.openqa.selenium.UnsupportedCommandException
 
 import java.time.Duration
 
-import static java.time.Instant.now
-
 class BrowserNetworkLatencySpec extends GebSpecWithCallbackServer {
 
     def "setting network latency using htmlunit driver results in a IncorrectDriverTypeException"() {
@@ -74,10 +72,10 @@ class BrowserNetworkLatencySpec extends GebSpecWithCallbackServer {
         // end::setNetworkLatency[]
 
         when:
-        def startInstant = now()
+        def start = System.nanoTime()
         $("button").click()
         waitFor { $(".ajax-completed") }
-        def duration = Duration.between(startInstant, now())
+        def duration = Duration.ofNanos(System.nanoTime() - start)
 
         then:
         duration >= networkLatency
