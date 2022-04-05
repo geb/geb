@@ -2,8 +2,6 @@ plugins {
     id "org.kordamp.gradle.oci-build-cache" version "0.5.0"
 }
 
-enableFeaturePreview('VERSION_CATALOGS')
-
 include "module",
     "module:geb-core",
     "module:geb-spock",
