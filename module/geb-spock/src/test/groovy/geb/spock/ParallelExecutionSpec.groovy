@@ -15,6 +15,7 @@
  */
 package geb.spock
 
+import geb.driver.CachingDriverFactory
 import geb.test.CallbackHttpServer
 import geb.test.browsers.Chrome
 import geb.test.browsers.RequiresRealBrowser
@@ -45,6 +46,15 @@ class ParallelExecutionSpec extends Specification {
     @AutoCleanup("stop")
     CallbackHttpServer server = new CallbackHttpServer()
 
+    def setupSpec() {
+        CachingDriverFactory.clearCacheAndQuitDriver()
+        CachingDriverFactory.clearCacheCache()
+    }
+
+    def cleanupSpec() {
+        CachingDriverFactory.clearCacheCache()
+    }
+
     def setup() {
         server.start()
         server.html { HttpServletRequest request ->
@@ -56,6 +66,7 @@ class ParallelExecutionSpec extends Specification {
         specRunner.addClassImport(GebSpec)
         specRunner.addClassImport(GebReportingSpec)
         specRunner.addClassImport(Unroll)
+        specRunner.addClassImport(CachingDriverFactory)
     }
 
     def 'GebSpec supports parallel execution at feature level'() {
@@ -66,6 +77,11 @@ class ParallelExecutionSpec extends Specification {
                 def setup() {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
+                }
+                
+                def cleanup() {
+                    testManager.resetBrowser()
+                    CachingDriverFactory.clearCacheAndQuitDriver()
                 }
 
                 @Unroll
@@ -93,8 +109,13 @@ class ParallelExecutionSpec extends Specification {
                 def setup() {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
-                    config.reportOnTestFailureOnly = false
                     config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
+                }
+                
+                def cleanup() {
+                    report("end")
+                    testManager.resetBrowser()
+                    CachingDriverFactory.clearCacheAndQuitDriver()
                 }
 
                 @Unroll
