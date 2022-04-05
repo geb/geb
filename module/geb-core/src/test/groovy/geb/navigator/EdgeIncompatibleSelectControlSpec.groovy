@@ -18,13 +18,13 @@ package geb.navigator
 import geb.test.GebSpecWithCallbackServer
 import geb.test.browsers.Chrome
 import geb.test.browsers.Firefox
-import geb.test.browsers.InternetExplorer11
+import geb.test.browsers.InternetExplorer
 import geb.test.browsers.Safari
 
 //Some functionality around multiselect seems not to work in Edge
 @Chrome
 @Firefox
-@InternetExplorer11
+@InternetExplorer
 @Safari
 class EdgeIncompatibleSelectControlSpec extends GebSpecWithCallbackServer {
 

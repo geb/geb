@@ -6,7 +6,6 @@ import geb.test.browsers.CrossBrowser
 import geb.test.browsers.Android
 import geb.test.browsers.Firefox
 import geb.test.browsers.InternetExplorer
-import geb.test.browsers.InternetExplorer11
 import geb.test.browsers.LocalChrome
 import geb.test.browsers.RequiresRealBrowser
 import geb.test.browsers.Safari
@@ -25,9 +24,6 @@ if (cloudBrowserSpecification) {
         }
         if (cloudBrowserSpecification.contains("explorer")) {
             includes << InternetExplorer
-            if (cloudBrowserSpecification.contains("version=11")) {
-                includes << InternetExplorer11
-            }
         }
         if (cloudBrowserSpecification.contains("edge")) {
             includes << InternetExplorer

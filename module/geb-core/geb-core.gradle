@@ -166,7 +166,7 @@ tasks.register("nonIeBrowserStackTests") {
 }
 
 tasks.register("ieBrowserStackTests") {
-    dependsOn 'internetExplorerWindows10Test', 'internetExplorerWindows11Test', 'edgeWindows18Test'
+    dependsOn 'internetExplorerWindows11Test', 'edgeWindows18Test'
 }
 
 publishing.publications.main {

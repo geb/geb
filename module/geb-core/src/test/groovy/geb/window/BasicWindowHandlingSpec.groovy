@@ -18,14 +18,14 @@ package geb.window
 import geb.test.browsers.Chrome
 import geb.test.browsers.Edge
 import geb.test.browsers.Firefox
-import geb.test.browsers.InternetExplorer11
+import geb.test.browsers.InternetExplorer
 import geb.test.browsers.Safari
 import org.openqa.selenium.NoSuchWindowException
 import spock.lang.Unroll
 
 @Chrome
 @Firefox
-@InternetExplorer11
+@InternetExplorer
 @Edge
 @Safari
 class BasicWindowHandlingSpec extends BaseWindowHandlingSpec {
