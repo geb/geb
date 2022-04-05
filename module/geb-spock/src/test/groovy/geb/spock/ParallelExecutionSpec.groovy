@@ -78,7 +78,7 @@ class ParallelExecutionSpec extends Specification {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
                 }
-                
+
                 def cleanup() {
                     testManager.resetBrowser()
                     CachingDriverFactory.clearCacheAndQuitDriver()
@@ -111,7 +111,7 @@ class ParallelExecutionSpec extends Specification {
                     config.cacheDriverPerThread = true
                     config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
                 }
-                
+
                 def cleanup() {
                     report("end")
                     testManager.resetBrowser()
