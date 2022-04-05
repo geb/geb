@@ -5,6 +5,7 @@ import geb.test.browsers.FirefoxLinux
 import geb.test.browsers.CrossBrowser
 import geb.test.browsers.Android
 import geb.test.browsers.Firefox
+import geb.test.browsers.InternetExplorerAndEdge
 import geb.test.browsers.InternetExplorer
 import geb.test.browsers.LocalChrome
 import geb.test.browsers.RequiresRealBrowser
@@ -23,10 +24,11 @@ if (cloudBrowserSpecification) {
             includes << Safari
         }
         if (cloudBrowserSpecification.contains("explorer")) {
+            includes << InternetExplorerAndEdge
             includes << InternetExplorer
         }
         if (cloudBrowserSpecification.contains("edge")) {
-            includes << InternetExplorer
+            includes << InternetExplorerAndEdge
             includes << Edge
         }
         if (cloudBrowserSpecification.contains("firefox")) {

@@ -20,11 +20,11 @@ import geb.Page
 import geb.test.GebSpecWithCallbackServer
 import geb.test.browsers.Chrome
 import geb.test.browsers.Firefox
-import geb.test.browsers.InternetExplorer
+import geb.test.browsers.InternetExplorerAndEdge
 
 @Chrome
 @Firefox
-@InternetExplorer
+@InternetExplorerAndEdge
 class InteractionsSupportSpec extends GebSpecWithCallbackServer {
 
     def setup() {

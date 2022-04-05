@@ -35,9 +35,8 @@ class BrowserNetworkLatencySpec extends GebSpecWithCallbackServer {
         e.message =~ /This operation is only possible on instances of RemoteWebDriver but org\.openqa\.selenium\.htmlunit\.HtmlUnitDriver.* was passed/
     }
 
-    @Edge
     @Firefox
-    @InternetExplorer
+    @InternetExplorerAndEdge
     @Safari
     @Chrome
     @RequiresRealBrowser
