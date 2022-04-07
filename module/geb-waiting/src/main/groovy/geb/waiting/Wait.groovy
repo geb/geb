@@ -107,7 +107,7 @@ class Wait {
             thrown = e
         }
 
-        def timedOut = timeoutThreshold - System.nanoTime() <= 0
+        def timedOut = System.nanoTime() > timeoutThreshold
         while (!pass && !timedOut) {
             sleepForRetryInterval()
             try {
@@ -117,7 +117,7 @@ class Wait {
                 pass = new UnknownWaitForEvaluationResult(e)
                 thrown = e
             } finally {
-                timedOut = timeoutThreshold - System.nanoTime() <= 0
+                timedOut = System.nanoTime() > timeoutThreshold
             }
         }
 
