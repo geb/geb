@@ -16,30 +16,23 @@
 package geb.spock
 
 import geb.test.ManagedGebTest
-import org.spockframework.runtime.AbstractRunListener
 import org.spockframework.runtime.extension.IMethodInterceptor
 import org.spockframework.runtime.extension.IMethodInvocation
-import org.spockframework.runtime.model.ErrorInfo
 
-import static org.spockframework.runtime.model.MethodKind.FEATURE
-
-class OnFailureReporter extends AbstractRunListener implements IMethodInterceptor {
-
-    private ManagedGebTest spec
-
+class OnFailureReporter implements IMethodInterceptor {
     void intercept(IMethodInvocation invocation) throws Throwable {
-        spec = invocation.instance
-        invocation.proceed()
-    }
-
-    void error(ErrorInfo error) {
-        def methodKind = error.method.kind
-        if ((methodKind == FEATURE || methodKind.fixtureMethod) && spec.testManager.reportingEnabled) {
-            try {
-                spec.testManager.reportFailure()
-            } catch (Exception e) {
-                //ignore
+        try {
+            invocation.proceed()
+        } catch (Throwable throwable) {
+            ManagedGebTest spec = invocation.instance
+            if (spec.testManager.reportingEnabled) {
+                try {
+                    spec.testManager.reportFailure()
+                } catch (Exception ignored) {
+                    //ignore
+                }
             }
+            throw throwable
         }
     }
 }
