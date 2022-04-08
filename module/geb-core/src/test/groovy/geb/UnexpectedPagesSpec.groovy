@@ -33,7 +33,7 @@ class UnexpectedPagesSpec extends GebSpecWithCallbackServer {
                     script(type: "text/javascript", charset: "utf-8", """
                         setTimeout(function() {
                             document.title = "$titleValue";
-                        }, 100);
+                        }, 200);
                     """)
                 }
             }
@@ -332,7 +332,7 @@ class UnexpectedPageWithMessage extends Page implements UnexpectedPage {
 
 class UnexpectedPageWithWaiting extends Page {
 
-    static atCheckWaiting = 0.2
+    static atCheckWaiting = 0.3
 
     static url = "?title=unexpected&delayed=true"
 
