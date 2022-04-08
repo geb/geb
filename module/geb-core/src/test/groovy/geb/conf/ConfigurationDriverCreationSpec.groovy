@@ -26,18 +26,23 @@ import spock.lang.Specification
 class ConfigurationDriverCreationSpec extends Specification {
 
     @Shared
-    URLClassLoader originalContextClassLoader
+    ClassLoader originalContextClassLoader
 
     @Shared
-    URLClassLoader classLoader
+    ClassLoader classLoader
 
     def d
 
     def setupSpec() {
-        // We have to remove the ie driver from the classpath
-        def thisLoader = getClass().classLoader
-        def classpath = thisLoader.getURLs().findAll { !it.path.contains("selenium-ie-driver") }
-        classLoader = new URLClassLoader(classpath as URL[], thisLoader.parent)
+        // We have to suppress the ie driver on the classpath
+        classLoader = new ClassLoader(getClass().classLoader) {
+            @Override
+            protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                name.startsWith('org.openqa.selenium.ie.') ?
+                findClass(name) :
+                super.loadClass(name, resolve)
+            }
+        }
 
         originalContextClassLoader = Thread.currentThread().contextClassLoader
         Thread.currentThread().contextClassLoader = classLoader
