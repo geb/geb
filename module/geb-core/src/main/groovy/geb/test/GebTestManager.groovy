@@ -19,6 +19,7 @@ import geb.Browser
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.function.Consumer
 import java.util.function.Predicate
 import java.util.function.Supplier
 
@@ -29,6 +30,7 @@ class GebTestManager {
     private final static Map<Class<?>, AtomicInteger> TEST_COUNTERS = new ConcurrentHashMap<>()
 
     private final Supplier<Browser> browserCreator
+    private Consumer<Browser> browserConfigurer = {}
     private final Predicate<Class<?>> resetBrowserAfterEachTestPredicate
     final boolean reportingEnabled
 
@@ -73,6 +75,9 @@ class GebTestManager {
         if (reportingEnabled) {
             getBrowser().reportGroup(testClass)
             getBrowser().cleanReportGroupDir()
+            browserConfigurer = { Browser browser ->
+                browser.reportGroup(testClass)
+            }
             testCounter = nextTestCounter(currentTestClass)
             perTestReportCounter = 1
         }
@@ -82,7 +87,6 @@ class GebTestManager {
         currentTestClassStack.push(testClass)
         currentTestName = testName
         if (reportingEnabled) {
-            getBrowser().reportGroup(testClass)
             testCounter = nextTestCounter(currentTestClass)
             perTestReportCounter = 1
         }
@@ -106,6 +110,7 @@ class GebTestManager {
         if (!resetBrowserAfterEachTest) {
             resetBrowser()
         }
+        browserConfigurer = {}
         currentTestClassStack.pop()
     }
 
@@ -134,7 +139,8 @@ class GebTestManager {
     }
 
     private Browser createBrowser() {
-        browserCreator ? browserCreator.get() : new Browser()
+        (browserCreator ? browserCreator.get() : new Browser())
+                .tap(browserConfigurer.&accept)
     }
 
     private boolean getResetBrowserAfterEachTest() {
