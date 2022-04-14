@@ -87,6 +87,7 @@ class GebTestManager {
         currentTestClassStack.push(testClass)
         currentTestName = testName
         if (reportingEnabled) {
+            getBrowser().reportGroup(testClass)
             testCounter = nextTestCounter(currentTestClass)
             perTestReportCounter = 1
         }
