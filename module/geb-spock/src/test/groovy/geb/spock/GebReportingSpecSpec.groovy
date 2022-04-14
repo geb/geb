@@ -277,7 +277,7 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        new File(reportDir, "001-001-fixture-failure.html").exists()
+        reportFile("001-001-fixture-failure.html").exists()
     }
 
     SummarizedEngineExecutionResults runReportingSpec(String additionalConfiguration = "", String body) {
