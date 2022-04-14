@@ -140,8 +140,8 @@ class GebTestManager {
     }
 
     private Browser createBrowser() {
-        (browserCreator ? browserCreator.get() : new Browser())
-                .tap(browserConfigurer.&accept)
+        def browser = browserCreator ? browserCreator.get() : new Browser()
+        browser.tap(browserConfigurer.&accept)
     }
 
     private boolean getResetBrowserAfterEachTest() {
