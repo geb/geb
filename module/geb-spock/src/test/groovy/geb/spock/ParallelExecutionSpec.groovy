@@ -15,6 +15,9 @@
  */
 package geb.spock
 
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
 import geb.driver.CachingDriverFactory
 import geb.test.CallbackHttpServer
 import spock.lang.*
@@ -30,6 +33,13 @@ class ParallelExecutionSpec extends Specification {
             runner {
                 parallel {
                     enabled true
+                    // default Spock logic uses all except for 2 cores
+                    // so on 4 or less cores the test would only use 2 threads
+                    // which will not properly test thread-safety during parallel running
+                    // as all iterations run on the same thread as their specification
+                    if (Runtime.runtime.availableProcessors() <= 4) {
+                        fixed(3)
+                    }
                 }
             }
         }
@@ -63,6 +73,9 @@ class ParallelExecutionSpec extends Specification {
         specRunner.addClassImport(GebReportingSpec)
         specRunner.addClassImport(Unroll)
         specRunner.addClassImport(CachingDriverFactory)
+        specRunner.addClassImport(Shared)
+        specRunner.addClassImport(CountDownLatch)
+        specRunner.addClassImport(TimeUnit)
     }
 
     def 'GebSpec supports parallel execution at feature level'() {
@@ -70,9 +83,15 @@ class ParallelExecutionSpec extends Specification {
         def result = specRunner.run """
             class SpecRunningFixturesInParallel extends GebSpec {
 
+                @Shared
+                def featureParallelismLatch = new CountDownLatch(2)
+
                 def setup() {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
+                    featureParallelismLatch.countDown()
+                    // make sure tests are run in parallel
+                    assert featureParallelismLatch.await(30, TimeUnit.SECONDS)
                 }
 
                 def cleanup() {
@@ -102,7 +121,21 @@ class ParallelExecutionSpec extends Specification {
         when:
         def result = specRunner.run """
             abstract class AbstractSpecRunningFixturesInParallel extends GebReportingSpec {
+                static specParallelismLatch = new CountDownLatch(2)
+                @Shared
+                def featureParallelismLatch = new CountDownLatch(2)
+
+                def setupSpec() {
+                    specParallelismLatch.countDown()
+                    // make sure tests are run in parallel
+                    assert specParallelismLatch.await(30, TimeUnit.SECONDS)
+                }
+
                 def setup() {
+                    featureParallelismLatch.countDown()
+                    // make sure tests are run in parallel
+                    assert featureParallelismLatch.await(30, TimeUnit.SECONDS)
+
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
                     config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
