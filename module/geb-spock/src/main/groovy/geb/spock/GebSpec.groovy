@@ -22,16 +22,11 @@ import spock.lang.Specification
 @DynamicallyDispatchesToBrowser
 class GebSpec extends Specification implements ManagedGebTest {
 
-    private final static ThreadLocal<GebTestManager> TEST_MANAGER = new ThreadLocal<GebTestManager>() {
-        @Override
-        protected GebTestManager initialValue() {
-            new SpockGebTestManagerBuilder().build()
-        }
-    }
+    private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder().build()
 
     @Delegate(includes = ["getBrowser"])
     GebTestManager getTestManager() {
-        TEST_MANAGER.get()
+        TEST_MANAGER
     }
 
 }
