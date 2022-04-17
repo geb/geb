@@ -21,7 +21,7 @@ import org.junit.runners.model.Statement
 
 import static geb.junit.GebTestUtil.getTestManager
 
-class GebReportingTestManagerRule implements TestRule {
+class GebTestManagerClassRule implements TestRule {
 
     @Override
     Statement apply(Statement base, Description description) {

@@ -55,7 +55,7 @@ class UsingRuleWithoutTestManagerTest {
 @Category(DoNotRunFromGradle)
 class UsingReportingRuleWithoutTestManagerTest {
     @ClassRule
-    public static GebReportingTestManagerRule gebReportingTestManagerRule = new GebReportingTestManagerRule()
+    public static GebTestManagerClassRule gebReportingTestManagerRule = new GebTestManagerClassRule()
 
     @Test
     void dummyTest() {
