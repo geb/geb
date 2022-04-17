@@ -35,9 +35,9 @@ class GebTestManager {
     final boolean reportingEnabled
 
     protected Browser browser
-    private Deque<Class<?>> currentTestClassStack = [] as Queue
-    private int perTestReportCounter = 1
-    private int testCounter = 1
+    private final Deque<Class<?>> currentTestClassStack = new ArrayDeque()
+    private final Deque<Integer> perTestReportCounter = new ArrayDeque()
+    private final Deque<Integer> testCounter = new ArrayDeque()
     private String currentTestName
 
     GebTestManager(
@@ -60,14 +60,12 @@ class GebTestManager {
         if (!reportingEnabled) {
             throw new IllegalStateException("Reporting has not been enabled on this GebTestManager yet report() was called")
         }
-        browser.report(createReportLabel(label))
-        perTestReportCounter++
+        getBrowser().report(createReportLabel(label))
+        perTestReportCounter.push(perTestReportCounter.pop() + 1)
     }
 
     void reportFailure() {
-        if (browser) {
-            report("failure")
-        }
+        report("failure")
     }
 
     void beforeTestClass(Class<?> testClass) {
@@ -78,8 +76,8 @@ class GebTestManager {
             BROWSER_CONFIGURERS.put(testClass, { Browser browser ->
                 browser.reportGroup(testClass)
             } as Consumer<Browser>)
-            testCounter = nextTestCounter(currentTestClass)
-            perTestReportCounter = 1
+            testCounter.push(nextTestCounter(testClass))
+            perTestReportCounter.push(1)
         }
     }
 
@@ -87,8 +85,8 @@ class GebTestManager {
         currentTestClassStack.push(testClass)
         currentTestName = testName
         if (reportingEnabled) {
-            testCounter = nextTestCounter(currentTestClass)
-            perTestReportCounter = 1
+            testCounter.push(nextTestCounter(testClass))
+            perTestReportCounter.push(1)
         }
     }
 
@@ -97,6 +95,8 @@ class GebTestManager {
             if (browser && !browser.config.reportOnTestFailureOnly) {
                 report("end")
             }
+            perTestReportCounter.pop()
+            testCounter.pop()
         }
 
         if (resetBrowserAfterEachTest) {
@@ -108,6 +108,8 @@ class GebTestManager {
 
     void afterTestClass() {
         if (reportingEnabled) {
+            perTestReportCounter.pop()
+            testCounter.pop()
             BROWSER_CONFIGURERS.remove(currentTestClass)
         }
 
@@ -120,7 +122,7 @@ class GebTestManager {
 
     String createReportLabel(String label) {
         def methodName = currentTestName ?: 'fixture'
-        toTestReportLabel(testCounter, perTestReportCounter, methodName, label)
+        toTestReportLabel(currentTestCounter, currentPerTestReportCounter, methodName, label)
     }
 
     void resetBrowser() {
@@ -137,7 +139,7 @@ class GebTestManager {
         browser = null
     }
 
-    private static int nextTestCounter(Class<?> testClass) {
+    private int nextTestCounter(Class<?> testClass) {
         TEST_COUNTERS.putIfAbsent(testClass, new AtomicInteger(0))
         TEST_COUNTERS[testClass].getAndIncrement()
     }
@@ -150,6 +152,14 @@ class GebTestManager {
 
     private boolean getResetBrowserAfterEachTest() {
         resetBrowserAfterEachTestPredicate.test(currentTestClass)
+    }
+
+    private int getCurrentTestCounter() {
+        testCounter.peek()
+    }
+
+    private int getCurrentPerTestReportCounter() {
+        perTestReportCounter.peek()
     }
 
     private Class<?> getCurrentTestClass() {

@@ -129,6 +129,16 @@ class ParallelExecutionSpec extends Specification {
                     specParallelismLatch.countDown()
                     // make sure tests are run in parallel
                     assert specParallelismLatch.await(30, TimeUnit.SECONDS)
+
+                    setupConfiguration()
+                    go '/'
+                    report('start spec')
+                }
+
+                def cleanupSpec() {
+                    setupConfiguration()
+                    go '/'
+                    report('end spec')
                 }
 
                 def setup() {
@@ -136,6 +146,10 @@ class ParallelExecutionSpec extends Specification {
                     // make sure tests are run in parallel
                     assert featureParallelismLatch.await(30, TimeUnit.SECONDS)
 
+                    setupConfiguration()
+                }
+
+                def setupConfiguration() {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
                     config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
@@ -169,15 +183,15 @@ class ParallelExecutionSpec extends Specification {
 
         then:
         !result.failures*.exception
-        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel1") == (1..4)*.toString()*.padLeft(3, "0").toSet()
-        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel2") == (1..4)*.toString()*.padLeft(3, "0").toSet()
+        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel1") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
+        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel2") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
     }
 
-    private Set<String> reportFileTestCounterPrefixes(String className) {
+    private List<String> reportFileTestCounterPrefixes(String className) {
         def reportGroupDir = new File(reportDir, className)
         reportGroupDir.listFiles().collect {
             it.name.tokenize("-").first()
-        }
+        }.sort()
     }
 
     private File getReportDir() {
