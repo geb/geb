@@ -22,6 +22,9 @@ import org.gradle.api.Project
 import org.slf4j.Logger
 
 class LambdaTestTunnel extends ExternalTunnel {
+
+    private static final String COMMA = ","
+
     final LambdaTestExtension extension
 
     final String outputPrefix = 'lambdatest-tunnel'
@@ -45,92 +48,95 @@ class LambdaTestTunnel extends ExternalTunnel {
     List<String> assembleCommandLine() {
         def tunnelPath = project.fileTree(project.tasks.unzipLambdaTestTunnel.outputs.files.singleFile).singleFile.absolutePath
         def commandLine = [tunnelPath]
-        commandLine << "-user" << extension.account.username
-        commandLine << "-key" << extension.account.accessKey
+        commandLine << "--user" << extension.account.username
+        commandLine << "--key" << extension.account.accessKey
         commandLine << "-v"
         if (extension.local.tunnelName) {
-            commandLine << '-tunnelName' << extension.local.tunnelName
+            commandLine << '--tunnelName' << extension.local.tunnelName
+        }
+        if (extension.local.allowHosts) {
+            commandLine << '--allowHosts' << extension.local.allowHosts.join(COMMA)
+        }
+        if (extension.local.bypassHosts) {
+            commandLine << '--bypassHosts' << extension.local.bypassHosts.join(COMMA)
+        }
+        if (extension.local.callbackURL) {
+            commandLine << '--callbackURL' << extension.local.callbackURL
         }
         if (extension.local.config) {
-            commandLine << "-config" << extension.local.config
+            commandLine << "--config" << extension.local.config
         }
-        if (extension.local.controller) {
-            commandLine << "-controller" << extension.local.controller
+        if (extension.local.clientCert) {
+            commandLine << "--clientCert" << extension.local.clientCert
         }
-        if (extension.local.customSSHHost) {
-            commandLine << "-customSSHHost" << extension.local.customSSHHost
-        }
-        if (extension.local.customSSHPort) {
-            commandLine << "-customSSHPort" << extension.local.customSSHPort
-        }
-        if (extension.local.customSSHPrivateKey) {
-            commandLine << "-customSSHPrivateKey" << extension.local.customSSHPrivateKey
-        }
-        if (extension.local.customSSHUser) {
-            commandLine << "-customSSHUser" << extension.local.customSSHUser
+        if (extension.local.clientKey) {
+            commandLine << "--clientKey" << extension.local.clientKey
         }
         if (extension.local.dir) {
-            commandLine << "-dir" << extension.local.dir
+            commandLine << "--dir" << extension.local.dir
         }
         if (extension.local.dns) {
-            commandLine << "-dns" << extension.local.dns
+            commandLine << "--dns" << extension.local.dns
         }
-        if (extension.local.emulateChrome) {
-            commandLine << "-emulateChrome" << extension.local.emulateChrome
+        if (extension.local.egressOnly) {
+            commandLine << "--egress-only"
         }
         if (extension.local.env) {
-            commandLine << "-env" << extension.local.env
+            commandLine << "--env" << extension.local.env
         }
         if (extension.local.infoAPIPort) {
-            commandLine << "-infoAPIPort" << extension.local.infoAPIPort
+            commandLine << "--infoAPIPort" << extension.local.infoAPIPort
         }
-        if (extension.local.localdomains) {
-            commandLine << "-local-domains" << extension.local.localdomains
+        if (extension.local.ingressOnly) {
+            commandLine << "--ingress-only"
+        }
+        if (extension.local.loadBalanced) {
+            commandLine << "--load-balanced"
         }
         if (extension.local.logFile) {
-            commandLine << "-logFile" << extension.local.logFile
+            commandLine << "--logFile" << extension.local.logFile
+        }
+        if (extension.local.mitm) {
+            commandLine << "--mitm"
         }
         if (extension.local.mode) {
-            commandLine << "-mode" << extension.local.mode
+            commandLine << "--mode" << extension.local.mode
         }
-        if (extension.local.nows) {
-            commandLine << "-nows" << extension.local.nows
+        if (extension.local.mTLSHosts) {
+            commandLine << "--mTLSHosts" << extension.local.mTLSHosts.join(COMMA)
         }
-        if (extension.local.outputconfig) {
-            commandLine << "-output-config" << extension.local.outputconfig
-        }
-        if (extension.local.pac) {
-            commandLine << "-pac" << extension.local.pac
+        if (extension.local.noProxy) {
+            commandLine << "--no-proxy" << extension.local.noProxy.join(COMMA)
         }
         if (extension.local.pidfile) {
-            commandLine << "-pidfile" << extension.local.pidfile
+            commandLine << "--pidfile" << extension.local.pidfile
         }
         if (extension.local.port) {
-            commandLine << "-port" << extension.local.port
+            commandLine << "--port" << extension.local.port
         }
         if (extension.local.proxyhost) {
-            commandLine << "-proxy-host" << extension.local.proxyhost
+            commandLine << "--proxy-host" << extension.local.proxyhost
         }
         if (extension.local.proxypass) {
-            commandLine << "-proxy-pass" << extension.local.proxypass
+            commandLine << "--proxy-pass" << extension.local.proxypass
         }
         if (extension.local.proxyport) {
-            commandLine << "-proxy-port" << extension.local.proxyport
+            commandLine << "--proxy-port" << extension.local.proxyport
         }
         if (extension.local.proxyuser) {
-            commandLine << "-proxy-user" << extension.local.proxyuser
+            commandLine << "--proxy-user" << extension.local.proxyuser
         }
-        if (extension.local.remotedebug) {
-            commandLine << "-remote-debug" << extension.local.remotedebug
-        }
-        if (extension.local.server) {
-            commandLine << "-server" << extension.local.server
+        if (extension.local.pacfile) {
+            commandLine << "--pacfile" << extension.local.pacfile
         }
         if (extension.local.sharedtunnel) {
-            commandLine << "-shared-tunnel"
+            commandLine << "--shared-tunnel"
+        }
+        if (extension.local.sshConnType) {
+            commandLine << "--sshConnType" << extension.local.sshConnType
         }
         if (extension.local.version) {
-            commandLine << "-version" << extension.local.version
+            commandLine << "--version"
         }
 
         commandLine.addAll(extension.local.additionalOptions)

@@ -99,6 +99,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== Fixes
 * Fix a bug causing reports generated from within `cleanupSpec()` to not end up in the report group directory for the spec. [issue:661[]]
+* Update LambdaTest tunnel to v3. [issue:662[]]
 
 === 5.1
 

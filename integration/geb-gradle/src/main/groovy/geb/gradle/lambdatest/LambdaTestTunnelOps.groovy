@@ -26,35 +26,36 @@ class LambdaTestTunnelOps implements TestTaskConfigurer {
 
     private final Property<String> infoAPIPortProperty
 
-    String tunnelReadyMessage = 'Secure connection established, you may start your tests now'
+    String tunnelReadyMessage = 'You can start testing now'
 
     String tunnelName
+    List<String> allowHosts
+    List<String> bypassHosts
+    String callbackURL
     String config
-    String controller
-    String customSSHHost
-    String customSSHPort
-    String customSSHPrivateKey
-    String customSSHUser
+    String clientCert
+    String clientKey
     String dir
     String dns
-    String emulateChrome
+    boolean egressOnly
     String env
-    String localdomains
+    boolean ingressOnly
+    boolean loadBalanced
     String logFile
+    boolean mitm
     String mode
-    String nows
-    String outputconfig
-    String pac
+    List<String> mTLSHosts
+    List<String> noProxy
     String pidfile
     String port
     String proxyhost
     String proxypass
     String proxyport
     String proxyuser
-    String remotedebug
-    String server
-    String sharedtunnel
-    String version
+    String pacfile
+    boolean sharedtunnel
+    String sshConnType
+    boolean version
 
     List<String> additionalOptions = []
 

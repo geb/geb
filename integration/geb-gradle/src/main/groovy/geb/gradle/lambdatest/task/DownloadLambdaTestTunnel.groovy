@@ -32,7 +32,7 @@ class DownloadLambdaTestTunnel extends DefaultTask {
 
     @TaskAction
     void download() {
-        def url = "https://downloads.lambdatest.com/tunnel/${osSpecificUrlPart()}.zip"
+        def url = "https://downloads.lambdatest.com/tunnel/v3/${osSpecificUrlPart()}.zip"
         logger.info("Downloading {} to {}", url, tunnelZip)
         tunnelZip.withOutputStream { it << new URL(url).bytes }
     }
