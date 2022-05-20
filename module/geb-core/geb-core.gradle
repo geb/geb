@@ -157,6 +157,7 @@ lambdaTest {
     }
     tunnelOps {
         tunnelName = UUID.randomUUID().toString()
+        port = "8090"
     }
 }
 
