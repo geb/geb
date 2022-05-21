@@ -49,13 +49,19 @@ class GebExtension implements IGlobalExtension {
     }
 
     private void addManagerCalls(SpecInfo spec) {
+        // do it in shared initializer interceptor instead of
+        // specification interceptor, so that it is run already
+        // before shared field initializers are executed
+        spec.addSharedInitializerInterceptor { invocation ->
+            getManager(invocation).beforeTestClass(invocation.spec.reflection)
+            invocation.proceed()
+        }
+
         spec.addInterceptor { invocation ->
-            GebTestManager testManager = getManager(invocation)
-            testManager.beforeTestClass(invocation.spec.reflection)
             try {
                 invocation.proceed()
             } finally {
-                testManager.afterTestClass()
+                getManager(invocation).afterTestClass()
             }
         }
 
