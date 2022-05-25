@@ -81,7 +81,7 @@ class ParallelExecutionSpec extends Specification {
     def 'GebSpec supports parallel execution at feature level'() {
         when:
         def result = specRunner.run """
-            class SpecRunningFixturesInParallel extends GebSpec {
+            class SpecRunningIterationsInParallel extends GebSpec {
 
                 @Shared
                 def featureParallelismLatch = new CountDownLatch(2)
@@ -100,7 +100,7 @@ class ParallelExecutionSpec extends Specification {
                 }
 
                 @Unroll
-                def 'fixture running iterations in parallel'() {
+                def 'feature running iterations in parallel'() {
                     when:
                     go path
 
@@ -120,7 +120,7 @@ class ParallelExecutionSpec extends Specification {
     def 'GebReportingSpec supports parallel execution at feature level'() {
         when:
         def result = specRunner.run """
-            abstract class AbstractSpecRunningFixturesInParallel extends GebReportingSpec {
+            abstract class AbstractSpecRunningIterationsInParallel extends GebReportingSpec {
                 static specParallelismLatch = new CountDownLatch(2)
                 @Shared
                 def featureParallelismLatch = new CountDownLatch(2)
@@ -162,7 +162,7 @@ class ParallelExecutionSpec extends Specification {
                 }
 
                 @Unroll
-                def 'fixture running iterations in parallel'() {
+                def 'feature running iterations in parallel'() {
                     when:
                     go path
 
@@ -174,17 +174,17 @@ class ParallelExecutionSpec extends Specification {
                 }
             }
 
-            class SpecRunningFixturesInParallel1 extends AbstractSpecRunningFixturesInParallel {
+            class SpecRunningIterationsInParallel1 extends AbstractSpecRunningIterationsInParallel {
             }
 
-            class SpecRunningFixturesInParallel2 extends AbstractSpecRunningFixturesInParallel {
+            class SpecRunningIterationsInParallel2 extends AbstractSpecRunningIterationsInParallel {
             }
         """
 
         then:
         !result.failures*.exception
-        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel1") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
-        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel2") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
+        reportFileTestCounterPrefixes("SpecRunningIterationsInParallel1") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
+        reportFileTestCounterPrefixes("SpecRunningIterationsInParallel2") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
     }
 
     private List<String> reportFileTestCounterPrefixes(String className) {
