@@ -17,12 +17,16 @@ package geb.junit4
 import geb.test.GebTestManager
 import geb.test.GebTestManagerBuilder
 import geb.transform.DynamicallyDispatchesToBrowser
+import org.junit.ClassRule
 import org.junit.Rule
 
 @DynamicallyDispatchesToBrowser
 class GebTest {
 
     private final static GebTestManager TEST_MANAGER = new GebTestManagerBuilder().build()
+
+    @ClassRule
+    public static GebTestManagerClassRule gebTestManagerClassRule = new GebTestManagerClassRule()
 
     @Rule
     public GebTestManagerRule gebTestManagerRule = new GebTestManagerRule()

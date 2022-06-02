@@ -51,6 +51,7 @@ class GebReportingSpecSpec extends Specification {
         specRunner.addClassImport(Reporter)
         specRunner.addClassImport(ReportingListener)
         specRunner.addClassImport(ReportState)
+        specRunner.addClassImport(Shared)
     }
 
     File getReportDir() {
@@ -200,6 +201,35 @@ class GebReportingSpecSpec extends Specification {
         reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
     }
 
+    def "report called from shared initializer should create report with default name"() {
+        when:
+        specRunner.run """
+            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+                @Shared
+                def sharedField = helper()
+
+                def helper() {
+                    ${configuration}
+                    config.reportOnTestFailureOnly = false
+
+                    go "/"
+                    report('Report in shared field initializer')
+
+                    "foo"
+                }
+
+                def "passing test"() {
+                    expect:
+                    true
+                }
+            }
+        """
+
+        then:
+        reportFile("000-001-fixture-Report in shared field initializer.html").text.startsWith("<?xml")
+        reportFile("001-001-passing test-end.html").text.startsWith("<?xml")
+    }
+
     def "failures in setup methods are reported on"() {
         when:
         specRunner.run """
@@ -277,7 +307,7 @@ class GebReportingSpecSpec extends Specification {
         """
 
         then:
-        reportFile("001-001-fixture-failure.html").exists()
+        reportFile("000-001-fixture-failure.html").exists()
     }
 
     SummarizedEngineExecutionResults runReportingSpec(String additionalConfiguration = "", String body) {

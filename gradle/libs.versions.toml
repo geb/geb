@@ -29,6 +29,7 @@ junit-platform-launcher = 'org.junit.platform:junit-platform-launcher:1.8.1'
 junit4 = { module = 'junit:junit', version.ref = 'junit4' }
 junit5-jupiter-api = { module = 'org.junit.jupiter:junit-jupiter-api', version.ref = 'junit5' }
 junit5-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine', version.ref = 'junit5' }
+junit5-jupiter-params = { module = 'org.junit.jupiter:junit-jupiter-params', version.ref = 'junit5' }
 junit5-vintage-engine = { module = 'org.junit.vintage:junit-vintage-engine', version.ref = 'junit5' }
 ratpack-groovyTest = {module = 'io.ratpack:ratpack-groovy-test', version.ref = 'ratpack' }
 sauceConnect = { module = 'com.saucelabs:ci-sauce', version.ref = 'sauceConnect' }

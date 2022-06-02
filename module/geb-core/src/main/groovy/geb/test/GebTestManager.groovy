@@ -25,20 +25,26 @@ import java.util.function.Supplier
 
 import static geb.report.ReporterSupport.toTestReportLabel
 
+/**
+ * This implementation assumes that a thread is reserved for one test execution at least from
+ * {@code beforeTest} until {@code afterTest}, and that {@code beforeTestClass} and {@code afterTestClass}
+ * are called on the same thread, even if the thread executed some test inbetween.
+ * There should also only be one instance for all tests of a class even if run in parallel.
+ */
 class GebTestManager {
 
-    private final static Map<Class<?>, AtomicInteger> TEST_COUNTERS = new ConcurrentHashMap<>()
+    private final Map<Class<?>, AtomicInteger> testCounters = new ConcurrentHashMap<>()
+    private final Map<Class<?>, Consumer<Browser>> browserConfigurers = new ConcurrentHashMap<>()
 
     private final Supplier<Browser> browserCreator
-    private Consumer<Browser> browserConfigurer = {}
     private final Predicate<Class<?>> resetBrowserAfterEachTestPredicate
     final boolean reportingEnabled
 
-    protected Browser browser
-    private Deque<Class<?>> currentTestClassStack = [] as Queue
-    private int perTestReportCounter = 1
-    private int testCounter = 1
-    private String currentTestName
+    protected final ThreadLocal<Browser> browser = new ThreadLocal<>()
+    private final ThreadLocal<Deque<Class<?>>> testClass = ThreadLocal.withInitial { new ArrayDeque() }
+    private final ThreadLocal<Deque<Integer>> perTestReportCounter = ThreadLocal.withInitial { new ArrayDeque() }
+    private final ThreadLocal<Deque<Integer>> testCounter = ThreadLocal.withInitial { new ArrayDeque() }
+    private final ThreadLocal<String> currentTestName = new ThreadLocal<>()
 
     GebTestManager(
             Supplier<Browser> browserCreator, Predicate<Class<?>> resetBrowserAfterEachTestPredicate,
@@ -50,106 +56,120 @@ class GebTestManager {
     }
 
     Browser getBrowser() {
-        if (browser == null) {
-            browser = createBrowser()
+        if (browser.get() == null) {
+            browser.set(createBrowser())
         }
-        browser
+        browser.get()
     }
 
     void report(String label = "") {
         if (!reportingEnabled) {
             throw new IllegalStateException("Reporting has not been enabled on this GebTestManager yet report() was called")
         }
-        browser.report(createReportLabel(label))
-        perTestReportCounter++
+        getBrowser().report(createReportLabel(label))
+        perTestReportCounter.get().push(perTestReportCounter.get().pop() + 1)
     }
 
     void reportFailure() {
-        if (browser) {
-            report("failure")
-        }
+        report("failure")
     }
 
     void beforeTestClass(Class<?> testClass) {
-        currentTestClassStack.push(testClass)
+        this.testClass.get().push(testClass)
         if (reportingEnabled) {
             getBrowser().reportGroup(testClass)
             getBrowser().cleanReportGroupDir()
-            browserConfigurer = { Browser browser ->
+            browserConfigurers.put(testClass, { Browser browser ->
                 browser.reportGroup(testClass)
-            }
-            testCounter = nextTestCounter(currentTestClass)
-            perTestReportCounter = 1
+            } as Consumer<Browser>)
+            testCounter.get().push(nextTestCounter(testClass))
+            perTestReportCounter.get().push(1)
         }
     }
 
     void beforeTest(Class<?> testClass, String testName) {
-        currentTestClassStack.push(testClass)
-        currentTestName = testName
+        this.testClass.get().push(testClass)
+        currentTestName.set(testName)
         if (reportingEnabled) {
-            getBrowser().reportGroup(testClass)
-            testCounter = nextTestCounter(currentTestClass)
-            perTestReportCounter = 1
+            testCounter.get().push(nextTestCounter(testClass))
+            perTestReportCounter.get().push(1)
         }
     }
 
     void afterTest() {
         if (reportingEnabled) {
-            if (browser && !browser.config.reportOnTestFailureOnly) {
+            if (browser.get() && !getBrowser().config.reportOnTestFailureOnly) {
                 report("end")
             }
+            perTestReportCounter.get().pop()
+            testCounter.get().pop()
         }
 
         if (resetBrowserAfterEachTest) {
             resetBrowser()
         }
-        currentTestName = null
-        currentTestClassStack.pop()
+        currentTestName.remove()
+        testClass.get().pop()
     }
 
     void afterTestClass() {
+        if (reportingEnabled) {
+            perTestReportCounter.get().pop()
+            testCounter.get().pop()
+            browserConfigurers.remove(currentTestClass)
+        }
+
         if (!resetBrowserAfterEachTest) {
             resetBrowser()
         }
-        browserConfigurer = {}
-        currentTestClassStack.pop()
+
+        testClass.get().pop()
     }
 
     String createReportLabel(String label) {
-        def methodName = currentTestName ?: 'fixture'
-        toTestReportLabel(testCounter, perTestReportCounter, methodName, label)
+        def methodName = currentTestName.get() ?: 'fixture'
+        toTestReportLabel(currentTestCounter, currentPerTestReportCounter, methodName, label)
     }
 
     void resetBrowser() {
-        def config = browser?.config
+        def config = browser.get()?.config
         if (config?.autoClearCookies) {
-            browser.clearCookiesQuietly()
+            getBrowser().clearCookiesQuietly()
         }
         if (config?.autoClearWebStorage) {
-            browser.clearWebStorage()
+            getBrowser().clearWebStorage()
         }
         if (config?.quitDriverOnBrowserReset) {
-            browser.driver.quit()
+            getBrowser().driver.quit()
         }
-        browser = null
+        browser.remove()
     }
 
-    private static int nextTestCounter(Class<?> testClass) {
-        TEST_COUNTERS.putIfAbsent(testClass, new AtomicInteger(0))
-        TEST_COUNTERS[testClass].getAndIncrement()
+    private int nextTestCounter(Class<?> testClass) {
+        testCounters.putIfAbsent(testClass, new AtomicInteger(0))
+        testCounters[testClass].getAndIncrement()
     }
 
     private Browser createBrowser() {
         def browser = browserCreator ? browserCreator.get() : new Browser()
-        browser.tap(browserConfigurer.&accept)
+        currentTestClass?.with(browserConfigurers.&get)?.accept(browser)
+        browser
     }
 
     private boolean getResetBrowserAfterEachTest() {
         resetBrowserAfterEachTestPredicate.test(currentTestClass)
     }
 
+    private int getCurrentTestCounter() {
+        testCounter.get().peek()
+    }
+
+    private int getCurrentPerTestReportCounter() {
+        perTestReportCounter.get().peek()
+    }
+
     private Class<?> getCurrentTestClass() {
-        currentTestClassStack.peek()
+        testClass.get().peek()
     }
 
 }

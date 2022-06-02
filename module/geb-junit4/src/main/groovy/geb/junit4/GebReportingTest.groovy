@@ -16,14 +16,10 @@ package geb.junit4
 
 import geb.test.GebTestManager
 import geb.test.GebTestManagerBuilder
-import org.junit.ClassRule
 
 class GebReportingTest extends GebTest {
 
     private final static GebTestManager TEST_MANAGER = new GebTestManagerBuilder().withReportingEnabled(true).build()
-
-    @ClassRule
-    public static GebReportingTestManagerRule gebReportingTestManagerRule = new GebReportingTestManagerRule()
 
     @Delegate(includes = ["getBrowser", "report"])
     static GebTestManager getTestManager() {

@@ -15,6 +15,9 @@
  */
 package geb.spock
 
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+
 import geb.driver.CachingDriverFactory
 import geb.test.CallbackHttpServer
 import spock.lang.*
@@ -30,6 +33,13 @@ class ParallelExecutionSpec extends Specification {
             runner {
                 parallel {
                     enabled true
+                    // default Spock logic uses all except for 2 cores
+                    // so on 4 or less cores the test would only use 2 threads
+                    // which will not properly test thread-safety during parallel running
+                    // as all iterations run on the same thread as their specification
+                    if (Runtime.runtime.availableProcessors() <= 4) {
+                        fixed(3)
+                    }
                 }
             }
         }
@@ -63,16 +73,25 @@ class ParallelExecutionSpec extends Specification {
         specRunner.addClassImport(GebReportingSpec)
         specRunner.addClassImport(Unroll)
         specRunner.addClassImport(CachingDriverFactory)
+        specRunner.addClassImport(Shared)
+        specRunner.addClassImport(CountDownLatch)
+        specRunner.addClassImport(TimeUnit)
     }
 
     def 'GebSpec supports parallel execution at feature level'() {
         when:
         def result = specRunner.run """
-            class SpecRunningFixturesInParallel extends GebSpec {
+            class SpecRunningIterationsInParallel extends GebSpec {
+
+                @Shared
+                def featureParallelismLatch = new CountDownLatch(2)
 
                 def setup() {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
+                    featureParallelismLatch.countDown()
+                    // make sure tests are run in parallel
+                    assert featureParallelismLatch.await(30, TimeUnit.SECONDS)
                 }
 
                 def cleanup() {
@@ -81,7 +100,7 @@ class ParallelExecutionSpec extends Specification {
                 }
 
                 @Unroll
-                def 'fixture running iterations in parallel'() {
+                def 'feature running iterations in parallel'() {
                     when:
                     go path
 
@@ -101,8 +120,36 @@ class ParallelExecutionSpec extends Specification {
     def 'GebReportingSpec supports parallel execution at feature level'() {
         when:
         def result = specRunner.run """
-            abstract class AbstractSpecRunningFixturesInParallel extends GebReportingSpec {
+            abstract class AbstractSpecRunningIterationsInParallel extends GebReportingSpec {
+                static specParallelismLatch = new CountDownLatch(2)
+                @Shared
+                def featureParallelismLatch = new CountDownLatch(2)
+
+                def setupSpec() {
+                    specParallelismLatch.countDown()
+                    // make sure tests are run in parallel
+                    assert specParallelismLatch.await(30, TimeUnit.SECONDS)
+
+                    setupConfiguration()
+                    go '/'
+                    report('start spec')
+                }
+
+                def cleanupSpec() {
+                    setupConfiguration()
+                    go '/'
+                    report('end spec')
+                }
+
                 def setup() {
+                    featureParallelismLatch.countDown()
+                    // make sure tests are run in parallel
+                    assert featureParallelismLatch.await(30, TimeUnit.SECONDS)
+
+                    setupConfiguration()
+                }
+
+                def setupConfiguration() {
                     baseUrl = "${server.baseUrl}"
                     config.cacheDriverPerThread = true
                     config.rawConfig.reportsDir = "${reportDir.absolutePath.replaceAll("\\\\", "\\\\\\\\")}"
@@ -115,7 +162,7 @@ class ParallelExecutionSpec extends Specification {
                 }
 
                 @Unroll
-                def 'fixture running iterations in parallel'() {
+                def 'feature running iterations in parallel'() {
                     when:
                     go path
 
@@ -127,24 +174,24 @@ class ParallelExecutionSpec extends Specification {
                 }
             }
 
-            class SpecRunningFixturesInParallel1 extends AbstractSpecRunningFixturesInParallel {
+            class SpecRunningIterationsInParallel1 extends AbstractSpecRunningIterationsInParallel {
             }
 
-            class SpecRunningFixturesInParallel2 extends AbstractSpecRunningFixturesInParallel {
+            class SpecRunningIterationsInParallel2 extends AbstractSpecRunningIterationsInParallel {
             }
         """
 
         then:
         !result.failures*.exception
-        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel1") == (1..4)*.toString()*.padLeft(3, "0").toSet()
-        reportFileTestCounterPrefixes("SpecRunningFixturesInParallel2") == (1..4)*.toString()*.padLeft(3, "0").toSet()
+        reportFileTestCounterPrefixes("SpecRunningIterationsInParallel1") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
+        reportFileTestCounterPrefixes("SpecRunningIterationsInParallel2") == (["000"] * 2) + (1..4)*.toString()*.padLeft(3, "0")
     }
 
-    private Set<String> reportFileTestCounterPrefixes(String className) {
+    private List<String> reportFileTestCounterPrefixes(String className) {
         def reportGroupDir = new File(reportDir, className)
         reportGroupDir.listFiles().collect {
             it.name.tokenize("-").first()
-        }
+        }.sort()
     }
 
     private File getReportDir() {
