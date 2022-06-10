@@ -26,7 +26,7 @@ void setPortIndexProperty(String index) {
 }
 
 BrowserWebDriverContainer containerForCapabilities(Capabilities capabilities) {
-    new BrowserWebDriverContainer<>(getDockerImageForCapabilities(capabilities, "3.141.59-oxygen"))
+    new BrowserWebDriverContainer<>(getDockerImageForCapabilities(capabilities, "4.2.2-20220622"))
         .withCapabilities(capabilities)
 }
 
@@ -35,7 +35,9 @@ BrowserWebDriverContainer containerForDriver(String driverName) {
 
     switch (driverName) {
         case "chrome":
-            container = containerForCapabilities(new ChromeOptions())
+            def options = new ChromeOptions()
+            options.setCapability("se:cdpEnabled", false)
+            container = containerForCapabilities(options)
             break
         case "firefox":
             container = containerForCapabilities(new FirefoxOptions())

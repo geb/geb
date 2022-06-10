@@ -18,37 +18,31 @@ package geb
 import geb.error.IncorrectDriverTypeException
 import geb.test.GebSpecWithCallbackServer
 import geb.test.browsers.*
-import org.openqa.selenium.UnsupportedCommandException
 
 import java.time.Duration
+import java.util.regex.Pattern
 
 class BrowserNetworkLatencySpec extends GebSpecWithCallbackServer {
 
-    def "setting network latency using htmlunit driver results in a IncorrectDriverTypeException"() {
+    @Firefox
+    @RequiresRealBrowser
+    def "setting network latency using a driver that does not implement or is augmentable to HasNetworkConditions"() {
         when:
         networkLatency = Duration.ofMillis(1)
 
         then:
         def e = thrown(IncorrectDriverTypeException)
-        e.message =~ /This operation is only possible on instances of RemoteWebDriver but org\.openqa\.selenium\.htmlunit\.HtmlUnitDriver.* was passed/
+
+        and:
+        def message = "This operation is only possible on driver instances implementing or augmentable to " +
+            "org.openqa.selenium.chromium.HasNetworkConditions"
+        e.message =~ /${Pattern.quote(message)}/
     }
 
-    @Firefox
-    @InternetExplorerAndEdge
-    @Safari
+    @RequiresRealBrowser
     @Chrome
-    @RequiresRealBrowser
-    def "setting network latency using a driver other than chrome and htmlunit results in an UnsupportedCommandException"() {
-        when:
-        networkLatency = Duration.ofMillis(1)
-
-        then:
-        thrown(UnsupportedCommandException)
-    }
-
-    @RequiresRealBrowser
     @LocalChrome
-    def "setting network latency"() {
+    def "setting network latency on a supported browser"() {
         given:
         bodyWithJquery {
             button("Execute ajax request")
@@ -81,6 +75,6 @@ class BrowserNetworkLatencySpec extends GebSpecWithCallbackServer {
         duration >= networkLatency
 
         cleanup:
-        resetNetworkLatency()
+        browser.networkLatency = Duration.ZERO
     }
 }

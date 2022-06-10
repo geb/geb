@@ -16,14 +16,20 @@
 package configuration
 
 import geb.driver.CachingDriverFactory
-import geb.test.WebDriverServer
+import geb.test.StandaloneWebDriverServer
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.remote.RemoteWebDriver
+import spock.lang.AutoCleanup
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class DriverConfigSpec extends Specification implements InlineConfigurationLoader {
+
+    @Shared
+    @AutoCleanup
+    StandaloneWebDriverServer standaloneWebDriverServer = new StandaloneWebDriverServer()
 
     def setupSpec() {
         CachingDriverFactory.clearCacheAndQuitDriver()
@@ -78,16 +84,13 @@ class DriverConfigSpec extends Specification implements InlineConfigurationLoade
 
     @Unroll("driver should be #driverClass.simpleName when environment is #env")
     def "environment sensitive driver config"() {
-        given:
-        def webDriverServer = new WebDriverServer()
-        webDriverServer.start()
-
         when:
         configScript(env, """
             // tag::env_sensitive_driver_config[]
             import org.openqa.selenium.htmlunit.HtmlUnitDriver
 
-            import org.openqa.selenium.remote.DesiredCapabilities
+            import org.openqa.selenium.firefox.FirefoxOptions
+
             import org.openqa.selenium.remote.RemoteWebDriver
 
             // default is to use htmlunit
@@ -99,9 +102,9 @@ class DriverConfigSpec extends Specification implements InlineConfigurationLoade
                     driver = {
                         def remoteWebDriverServerUrl = new URL("http://example.com/webdriverserver")
                         // end::env_sensitive_driver_config[]
-                        remoteWebDriverServerUrl = new URL("${webDriverServer.getBaseUrl()}")
+                        remoteWebDriverServerUrl = new URL("${standaloneWebDriverServer.url}")
                         // tag::env_sensitive_driver_config[]
-                        new RemoteWebDriver(remoteWebDriverServerUrl, DesiredCapabilities.firefox())
+                        new RemoteWebDriver(remoteWebDriverServerUrl, new FirefoxOptions())
                     }
                 }
             }
@@ -114,7 +117,6 @@ class DriverConfigSpec extends Specification implements InlineConfigurationLoade
 
         cleanup:
         CachingDriverFactory.clearCacheAndQuitDriver()
-        webDriverServer.stop()
 
         where:
         env      | driverClass

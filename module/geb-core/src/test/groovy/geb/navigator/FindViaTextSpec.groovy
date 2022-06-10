@@ -52,7 +52,7 @@ class FindViaTextSpec extends GebSpecWithCallbackServer {
 
     def 'Get multi-line td with text'() {
         expect:
-        $('td', text: "First Line\nSecond Line")
+        $('td', text: contains(~/First Line.*Second Line/)) //not consistent across drivers
     }
 
     def 'Get multi-line td using startsWith'() {

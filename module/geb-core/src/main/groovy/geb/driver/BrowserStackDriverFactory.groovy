@@ -21,7 +21,7 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 class BrowserStackDriverFactory extends CloudDriverFactory {
 
-    public static final String LOCAL_IDENTIFIER_CAPABILITY = "browserstack.localIdentifier"
+    public static final String LOCAL_IDENTIFIER_CAPABILITY = "bstack:options.localIdentifier"
 
     @Override
     String assembleProviderUrl(String username, String password) {
@@ -42,7 +42,7 @@ class BrowserStackDriverFactory extends CloudDriverFactory {
 
     @Override
     protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
-        desiredCapabilities.setCapability("browserstack.local", "true")
+        desiredCapabilities.setCapability("bstack:options.local", "true")
         def tunnelId = System.getenv("GEB_BROWSERSTACK_LOCALID")
         if (tunnelId) {
             desiredCapabilities.setCapability(LOCAL_IDENTIFIER_CAPABILITY, tunnelId)

@@ -15,7 +15,8 @@
  */
 package geb.test
 
-import org.openqa.selenium.Capabilities
+import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.remote.CommandPayload
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.Response
 
@@ -29,9 +30,9 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
     private final List<String> ignoredCommands
 
     RemoteWebDriverWithExpectations(
-        URL remoteAddress, Capabilities capabilities, List<String> ignoredCommands = DEFAULT_IGNORED_COMMANDS
+        URL remoteAddress, List<String> ignoredCommands = DEFAULT_IGNORED_COMMANDS
     ) {
-        super(remoteAddress, capabilities)
+        super(remoteAddress, new ChromeOptions().addArguments('headless'))
         this.ignoredCommands = ignoredCommands
     }
 
@@ -43,7 +44,7 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
         try {
             def unexpected = executedCommands.findAll { !it.matched }
             if (unexpected) {
-                throw new UnexpectedCommandException(*unexpected)
+                throw new UnexpectedCommandException(unexpected)
             }
         } finally {
             clearRecordedCommands()
@@ -53,7 +54,9 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
     void ensureExecuted(Map<String, ?> parameters = [:], String command) {
         def executed = executedCommands.find { it.matches(command, parameters) }
         if (!executed) {
-            throw new CommandNotExecutedException(new Command(command: command, parameters: parameters))
+            throw new CommandNotExecutedException(
+                new Command(command: command, parameters: parameters), executedCommands
+            )
         }
     }
 
@@ -98,11 +101,14 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
     }
 
     @Override
-    protected Response execute(String command, Map<String, ?> parameters) {
-        if (!ignoredCommands?.contains(command) && command != 'newSession') {
-            executedCommands << new Command(command: command, parameters: parameters)
+    protected Response execute(CommandPayload payload) {
+        def name = payload.name
+
+        if (ignoredCommands && !ignoredCommands.contains(name)) {
+            executedCommands << new Command(command: name, parameters: payload.parameters)
         }
-        super.execute(command, parameters)
+
+        super.execute(payload)
     }
 
     private static class Command {
@@ -127,15 +133,23 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
 
     static class UnexpectedCommandException extends Exception {
 
-        UnexpectedCommandException(Command... unexpectedCommands) {
+        UnexpectedCommandException(List<Command> unexpectedCommands) {
             super("An unexpected command has been issued:\n${unexpectedCommands.join("\n")}")
         }
     }
 
     static class CommandNotExecutedException extends Exception {
 
-        CommandNotExecutedException(Command expectedCommand) {
-            super("A command has been expected but has not been executed: $expectedCommand")
+        CommandNotExecutedException(Command expectedCommand, List<Command> executedCommands) {
+            super(buildMessage(expectedCommand, executedCommands))
+        }
+
+        private static String buildMessage(Command expectedCommand, List<Command> executedCommands) {
+            def result = "A command has been expected but has not been executed: $expectedCommand"
+            if (executedCommands) {
+                result += ". Other commands that were executed:\n${executedCommands.join('\n')}"
+            }
+            result
         }
     }
 }

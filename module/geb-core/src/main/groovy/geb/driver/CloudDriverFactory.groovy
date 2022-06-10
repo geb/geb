@@ -21,6 +21,8 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 abstract class CloudDriverFactory {
 
+    private static final String VENDOR_PREFIX_DELIMETER = "."
+
     abstract String assembleProviderUrl(String username, String password)
 
     WebDriver create(String username, String key, Map<String, Object> capabilities) {
@@ -29,10 +31,13 @@ abstract class CloudDriverFactory {
 
     WebDriver create(String specification, String username, String key, Map<String, Object> additionalCapabilities = [:]) {
         def remoteDriverOperations = new RemoteDriverOperations(getClass().classLoader)
-        Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations.remoteWebDriverClass
-        if (!remoteWebDriverClass) {
-            throw new ClassNotFoundException('org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create RemoteWebDriver instances')
-        }
+        Class<? extends WebDriver> remoteWebDriverClass = remoteDriverOperations
+            .optionalRemoteWebDriverClass
+            .orElseThrow {
+                def message = 'org.openqa.selenium.remote.RemoteWebDriver needs to be on the classpath to create ' +
+                    'RemoteWebDriver instances'
+                throw new ClassNotFoundException(message)
+            }
 
         def url = new URL(assembleProviderUrl(username, key))
 
@@ -48,10 +53,26 @@ abstract class CloudDriverFactory {
             desiredCapabilities.setCapability(capability, value)
         }
 
-        remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, desiredCapabilities)
+        remoteWebDriverClass.getConstructor(URL, Capabilities).newInstance(url, makeW3cCompliant(desiredCapabilities))
     }
 
     @SuppressWarnings("UnusedMethodParameter")
     protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
+    }
+
+    private DesiredCapabilities makeW3cCompliant(DesiredCapabilities source) {
+        def sourceCapabilities = source.asMap()
+        def compliantCapabilities = [:].withDefault { [:] } as Map<String, Object>
+
+        sourceCapabilities.each { key, value ->
+            if (key.contains(VENDOR_PREFIX_DELIMETER)) {
+                def (prefix, newKey) = key.tokenize(VENDOR_PREFIX_DELIMETER)
+                compliantCapabilities[prefix][newKey] = value
+            } else {
+                compliantCapabilities[key] = value
+            }
+        }
+
+        new DesiredCapabilities(compliantCapabilities)
     }
 }

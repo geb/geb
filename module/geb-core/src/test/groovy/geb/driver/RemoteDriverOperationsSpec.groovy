@@ -38,7 +38,7 @@ class RemoteDriverOperationsSpec extends Specification {
         def o = new RemoteDriverOperations(classLoader)
 
         then:
-        o.remoteDriverAvailable == isAvailable
+        o.optionalRemoteWebDriverClass.present == isAvailable
 
         where:
         classLoader           | isAvailable

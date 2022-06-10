@@ -74,8 +74,8 @@ tasks.register("localChromeTest", Test) {
 
 sauceLabs {
     browsers {
-        safari_mac_8 {
-            capabilities platform: "OS X 10.10"
+        safari_mac_15 {
+            capabilities platformName: "OS X 12", "sauce:options.seleniumVersion": libs.versions.selenium.get()
         }
     }
     task {
@@ -101,25 +101,38 @@ browserStack {
 
     browsers {
         android {
-            capabilities device: "Samsung Galaxy S6", realMobile: "true"
+            capabilities "browserName": "chrome",
+                "bstack:options.deviceName": "Samsung Galaxy S22",
+                "bstack:options.realMobile": "true"
         }
-        chrome_mac_78 {
-            capabilities os: "OS X", os_version: "High Sierra"
+        chrome_mac {
+            capabilities "browserVersion": "102.0",
+                "bstack:options.os": "OS X",
+                "bstack:options.osVersion": "Monterey",
+                "bstack:options.seleniumVersion": libs.versions.selenium.get()
         }
-        chrome_windows_78 {
-            capabilities os: "Windows", os_version: "10"
+        chrome_windows {
+            capabilities "browserVersion": "102.0",
+                "bstack:options.os": "Windows",
+                "bstack:options.osVersion": "11",
+                "bstack:options.seleniumVersion": libs.versions.selenium.get()
         }
-        firefox_mac_47 {
-            capabilities os: "OS X", os_version: "High Sierra"
-        }
-        create("internet explorer_windows_10") {
-            capabilities os: "Windows", os_version: "8"
+        firefox_mac {
+            capabilities "browserVersion": "101.0",
+                "bstack:options.os": "OS X",
+                "bstack:options.osVersion": "Monterey",
+                "bstack:options.seleniumVersion": libs.versions.selenium.get()
         }
         create("internet explorer_windows_11") {
-            capabilities os: "Windows", os_version: "10"
+            capabilities "bstack:options.os": "Windows",
+                "bstack:options.osVersion": "10",
+                "bstack:options.seleniumVersion": libs.versions.selenium.get()
         }
-        create("edge_windows_18") {
-            capabilities os: "Windows", os_version: "10"
+        edge_windows {
+            capabilities "browserVersion": "101.0",
+                "bstack:options.os": "Windows",
+                "bstack:options.osVersion": "11",
+                "bstack:options.seleniumVersion": libs.versions.selenium.get()
         }
     }
     task {
@@ -140,8 +153,10 @@ browserStack {
 
 lambdaTest {
     browsers {
-        firefox_windows_70 {
-            capabilities platform: "Windows 10"
+        firefox_windows {
+            capabilities platformName: "Windows 11",
+            "browserVersion": "101.0",
+            "LT:Options.selenium_version": "4.1.2"
         }
     }
     task {
@@ -163,11 +178,11 @@ lambdaTest {
 
 
 tasks.register("nonIeBrowserStackTests") {
-    dependsOn 'androidTest', 'chromeMac78Test', 'chromeWindows78Test', 'firefoxMac47Test'
+    dependsOn 'androidTest', 'chromeMacTest', 'chromeWindowsTest', 'firefoxMacTest'
 }
 
 tasks.register("ieBrowserStackTests") {
-    dependsOn 'internetExplorerWindows11Test', 'edgeWindows18Test'
+    dependsOn 'internetExplorerWindows11Test', 'edgeWindowsTest'
 }
 
 publishing.publications.main {

@@ -175,8 +175,8 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         expect:
         $("a").text() == "a"
         $("a").add("b")*.text() == ["a", "b"]
-        $("div").text() in ["cd", "c d", "c d "] // this is not consistent across drivers
-        $("div")*.text() in [["cd"], ["c d"], ["c d "]] // this is not consistent across drivers
+        $("div").text() =~ /(?s)c.*d/ // this is not consistent across drivers
+        $("div")*.text().size() == 1 && $("div")*.text().first() =~ /(?s)c.*d/ // this is not consistent across drivers
         $("foo")*.text() == []
     }
 

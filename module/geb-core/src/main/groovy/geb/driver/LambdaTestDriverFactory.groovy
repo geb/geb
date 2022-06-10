@@ -21,7 +21,7 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 class LambdaTestDriverFactory extends CloudDriverFactory {
 
-    public static final String LOCAL_IDENTIFIER_CAPABILITY = "tunnelName"
+    public static final String LOCAL_IDENTIFIER_CAPABILITY = "LT:Options.tunnelName"
 
     @Override
     String assembleProviderUrl(String username, String password) {
@@ -42,7 +42,7 @@ class LambdaTestDriverFactory extends CloudDriverFactory {
 
     @Override
     protected void configureCapabilities(String username, String key, DesiredCapabilities desiredCapabilities) {
-        desiredCapabilities.setCapability("tunnel", "true")
+        desiredCapabilities.setCapability("LT:Options.tunnel", "true")
         def tunnelName = System.getenv("GEB_LAMBDATEST_TUNNEL_NAME")
         if (tunnelName) {
             desiredCapabilities.setCapability(LOCAL_IDENTIFIER_CAPABILITY, tunnelName)

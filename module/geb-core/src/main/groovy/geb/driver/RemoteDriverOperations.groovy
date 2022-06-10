@@ -34,19 +34,13 @@ class RemoteDriverOperations {
      * is returned.
      */
     WebDriver getAugmentedDriver(WebDriver driver) {
-        if (isRemoteDriverAvailable()) {
-            softLoadRemoteDriverClass("Augmenter").newInstance().augment(driver)
-        } else {
-            driver
-        }
+        asRemoteWebDriver(driver).map { remoteWebDriverClass ->
+            softLoadRemoteDriverClass("Augmenter").newInstance().augment(driver) as WebDriver
+        }.orElse(driver)
     }
 
-    boolean isRemoteDriverAvailable() {
-        remoteWebDriverClass != null
-    }
-
-    Class<? extends WebDriver> getRemoteWebDriverClass() {
-        softLoadRemoteDriverClass("RemoteWebDriver")
+    Optional<Class<? extends WebDriver>> getOptionalRemoteWebDriverClass() {
+        Optional.ofNullable(softLoadRemoteDriverClass("RemoteWebDriver")) as Optional<Class<? extends WebDriver>>
     }
 
     Class softLoadRemoteDriverClass(String name) {
@@ -57,13 +51,22 @@ class RemoteDriverOperations {
         }
     }
 
+    Optional<WebDriver> asRemoteWebDriver(WebDriver driver) {
+        optionalRemoteWebDriverClass.map { remoteWebDriverClass ->
+            remoteWebDriverClass.isInstance(driver) ?
+                driver :
+                null as WebDriver
+        }
+    }
+
     Object executeCommand(WebDriver driver, String commandName, Map<String, ?> parameters = [:]) {
-        def remoteWebDriverClass = getRemoteWebDriverClass()
-        if (!remoteWebDriverClass || !(driver in remoteWebDriverClass)) {
-            throw new IncorrectDriverTypeException("This operation is only possible on instances of RemoteWebDriver but ${driver} was passed")
+        def remoteWebDriver = asRemoteWebDriver(driver).orElseThrow {
+            throw new IncorrectDriverTypeException(
+                "This operation is only possible on instances of RemoteWebDriver but ${driver} was passed"
+            )
         }
 
-        def executor = driver.getCommandExecutor()
+        def executor = remoteWebDriver.getCommandExecutor()
         def command = softLoadRemoteDriverClass("Command").newInstance(driver.getSessionId(), commandName, parameters)
         executor.execute(command).value
     }

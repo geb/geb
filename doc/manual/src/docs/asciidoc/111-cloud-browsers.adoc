@@ -19,31 +19,31 @@ The first parameter passed to the `create()` method is a ”browser specificatio
 
 ----
 browserName=«browser name as per values of fields in org.openqa.selenium.remote.BrowserType»
-platform=«platform as per enum item names in org.openqa.selenium.Platform»
-version=«version»
+platformName=«platform as per enum item names in org.openqa.selenium.Platform»
+browserVersion=«version»
 ----
 
 Assuming you're using the following snippet in your `GebConfig.groovy` to execute your code via SauceLabs with Firefox 19 on Linux, you would set the `geb.saucelabs.browser` system property to:
 
 ----
 browserName=firefox
-platform=LINUX
-version=19
+platformName=LINUX
+browserVersion=19
 ----
 
 and to execute it with IE 9 on Vista to:
 
 ----
 browserName=internet explorer
-platform=VISTA
-version=9
+platformName=VISTA
+browserVersion=19=9
 ----
 
 Some browsers like Chrome automatically update to the latest version; for these browsers you don't need to specify the version as there's only one, and you would use something like:
 
 ----
 browserName=chrome
-platform=MAC
+platformName=MAC
 ----
 
 as the ”browser specification“. For a full list of available browsers, versions and operating systems refer to your cloud provider's documentation:
@@ -60,6 +60,8 @@ This is usually the easiest way of passing something secret to your build in ope
 use other mechanisms if desired.
 
 You can optionally pass additional configuration settings by providing a Map to the `create()` method as the last parameter.
+Since Selenium 4 you will need to use a vendor prefix for any capabilities that are not link:https://www.w3.org/TR/webdriver1/#capabilities[W3C compliant].
+So for example to specify Selenium version to be used in SauceLabs you will use `sauce:options.seleniumVersion` as the capability key where `sauce:options` is the vendor prefix and `seleniumVersion` is the vendor specific capability key.
 The configuration options available are described in your cloud provider's documentation:
 
 * link:https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options[SauceLabs additional config]
@@ -212,9 +214,9 @@ sauceLabs {
        nexus4 { //<5>
          capabilities(
             browserName: "android",
-            platform: "Linux",
-            version: "4.4",
-            deviceName: "LG Nexus 4"
+            platformName: "Linux",
+            browserVersion: "4.4",
+            "sauce:options.deviceName": "LG Nexus 4"
          )
        }
     }
@@ -300,7 +302,7 @@ browserStack {
        chrome_mac
        delegate."internet explorer_windows_9"
        nexus4 { //<5>
-         capabilities browserName: "android", platform: "ANDROID", device: "Google Nexus 4"
+         capabilities browserName: "android", platformName: "ANDROID", "bstack:options.device": "Google Nexus 4"
        }
     }
     task { //<6>
@@ -408,7 +410,7 @@ lambdaTest {
     application 'http://localhost:8080' //<3>
     browsers { //<4>
         chrome_windows_70 {
-           capabilities platform: "Windows 10" //<5>
+           capabilities platformName: "Windows 10" //<5>
         }
     }
     task { //<6>

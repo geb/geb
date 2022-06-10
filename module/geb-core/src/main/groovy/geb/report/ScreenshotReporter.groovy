@@ -14,7 +14,6 @@
  */
 package geb.report
 
-import geb.Browser
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriverException
@@ -27,11 +26,10 @@ class ScreenshotReporter extends ReporterSupport {
 
     void writeReport(ReportState reportState) {
         // note - this is not covered by tests unless using a driver that can take screenshots
-        def screenshotDriver = determineScreenshotDriver(reportState.browser)
-        if (screenshotDriver) {
+        reportState.browser.driverAs(TakesScreenshot).ifPresent {
             def decoded
             try {
-                decoded = screenshotDriver.getScreenshotAs(OutputType.BYTES)
+                decoded = it.getScreenshotAs(OutputType.BYTES)
 
                 // WebDriver has a bug where sometimes the screenshot has been encoded twice
                 if (!PngUtils.isPng(decoded)) {
@@ -43,16 +41,6 @@ class ScreenshotReporter extends ReporterSupport {
 
             def file = saveScreenshotPngBytes(reportState.outputDir, reportState.label, decoded)
             notifyListeners(reportState, [file])
-        }
-    }
-
-    protected static TakesScreenshot determineScreenshotDriver(Browser browser) {
-        if (browser.driver instanceof TakesScreenshot) {
-            browser.driver as TakesScreenshot
-        } else if (browser.augmentedDriver instanceof TakesScreenshot) {
-            browser.augmentedDriver as TakesScreenshot
-        } else {
-            null
         }
     }
 

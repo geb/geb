@@ -4,11 +4,12 @@ plugins {
 
 dependencies {
     groovy "org.codehaus.groovy:groovy-xml"
+    groovy "org.codehaus.groovy:groovy-json"
 
     api project(':module:geb-core')
     api libs.htmlUnitDriver
     api libs.jetty.servlet
-    api libs.selenium.server
+    api libs.selenium.grid
 
     implementation libs.testcontainers.selenium
     implementation libs.jetty.server

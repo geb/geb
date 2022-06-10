@@ -40,14 +40,14 @@ class BrowserSpec {
             String[] split = browserSpec.split("_", 3)
             capabilities["browserName"] = split[0]
             if (split.size() > 1) {
-                capabilities["platform"] = split[1]
+                capabilities["platformName"] = split[1]
             }
             if (split.size() > 2) {
-                capabilities["version"] = split[2]
+                capabilities["browserVersion"] = split[2]
             }
-            displayName = "${camelCase(capabilities["browserName"])}${capabilities["platform"]?.capitalize() ?: ""}${capabilities["version"]?.capitalize() ?: ""}"
-            if (capabilities["platform"]) {
-                capabilities["platform"] = capabilities["platform"].toUpperCase()
+            displayName = "${camelCase(capabilities["browserName"])}${capabilities["platformName"]?.capitalize() ?: ""}${capabilities["browserVersion"]?.capitalize() ?: ""}"
+            if (capabilities["platformName"]) {
+                capabilities["platformName"] = capabilities["platformName"].toUpperCase()
             }
         }
         setCapabilitiesOnTasks()

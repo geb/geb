@@ -611,7 +611,7 @@ class DefaultNavigator implements Navigator {
 
     @Override
     String tag() {
-        ensureContainsAtMostSingleElement("tag")?.tagName
+        ensureContainsAtMostSingleElement("tag")?.tagName?.toLowerCase()
     }
 
     @Override
@@ -893,7 +893,7 @@ class DefaultNavigator implements Navigator {
     protected getInputValue(WebElement input) {
         def value = null
         def type = input.getAttribute("type")
-        if (input.tagName == "select") {
+        if (input.tagName.toLowerCase() == "select") {
             def select = new SelectFactory().createSelectFor(input)
             if (select.multiple) {
                 value = select.allSelectedOptions.collect { getValue(it) }

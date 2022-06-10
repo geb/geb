@@ -17,38 +17,37 @@ package geb.driver
 
 import geb.Module
 import geb.Page
-import geb.test.CallbackAndWebDriverServer
-import geb.test.GebSpecWithServer
+import geb.test.GebSpecWithCallbackServer
 import geb.test.RemoteWebDriverWithExpectations
-import geb.test.TestHttpServer
-import org.openqa.selenium.remote.DesiredCapabilities
+import geb.test.StandaloneWebDriverServer
+import geb.test.browsers.LocalChrome
+import geb.test.browsers.RequiresRealBrowser
+import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Unroll
 
-class WebDriverCommandsSpec extends GebSpecWithServer {
+@RequiresRealBrowser
+@LocalChrome
+class WebDriverCommandsSpec extends GebSpecWithCallbackServer {
 
     @Shared
-    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer(browser.config)
-    RemoteWebDriverWithExpectations driver
+    @AutoCleanup
+    StandaloneWebDriverServer webDriverServer = new StandaloneWebDriverServer()
+
+    @Shared
+    @AutoCleanup("quit")
+    RemoteWebDriverWithExpectations driver = new RemoteWebDriverWithExpectations(webDriverServer.url)
 
     def setup() {
-        driver = new RemoteWebDriverWithExpectations(callbackAndWebDriverServer.webdriverUrl, DesiredCapabilities.htmlUnit())
         browser.driver = driver
-        browser.baseUrl = callbackAndWebDriverServer.applicationUrl
-        browser.config.cacheDriver = false
     }
 
     def cleanup() {
         driver.checkAndResetExpectations()
     }
 
-    @Override
-    TestHttpServer getServerInstance() {
-        callbackAndWebDriverServer
-    }
-
     void html(Closure htmlMarkup) {
-        callbackAndWebDriverServer.responseHtml(htmlMarkup)
+        responseHtml(htmlMarkup)
         go()
         driver.clearRecordedCommands()
     }

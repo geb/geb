@@ -52,7 +52,9 @@ abstract class BaseWindowHandlingSpec extends GebSpecWithCallbackServer {
 
     protected void openAllWindows() {
         go MAIN_PAGE_URL
-        $('a')*.click()
+        $('a').each { link ->
+            withNewWindow({ link.click() }, close: false) {}
+        }
         assert availableWindows.size() == 3
     }
 
@@ -77,9 +79,10 @@ abstract class BaseWindowHandlingSpec extends GebSpecWithCallbackServer {
     }
 
     protected void openWindow(int index) {
+        def originalWindowHandle = currentWindow
+
         $("a", index - 1).click()
 
-        def originalWindowHandle = currentWindow
         //ensure that we can switch to the new window by name and that the page has loaded, for some drivers (IE, Safari) it's not instant
         waitFor(40) {
             switchToWindow(windowName(index))

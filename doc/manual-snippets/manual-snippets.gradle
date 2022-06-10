@@ -5,7 +5,7 @@ plugins {
 }
 
 webdriverBinaries {
-    geckodriver "0.24.0"
+    geckodriver "0.31.0"
 }
 
 dependencies {

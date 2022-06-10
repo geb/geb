@@ -42,6 +42,8 @@ class InteractionsSupportSpec extends GebSpecWithCallbackServer {
             moveToElement $('#first-input')
             click()
             sendKeys 'GEB'
+        }
+        interact {
             moveToElement $('#second-input')
             click()
             sendKeys 'geb'
@@ -61,6 +63,8 @@ class InteractionsSupportSpec extends GebSpecWithCallbackServer {
             moveToElement interactions.first
             click()
             sendKeys 'GEB'
+        }
+        interact {
             moveToElement interactions.second
             click()
             sendKeys 'geb'
@@ -106,6 +110,8 @@ class InteractionPage extends Page {
             moveToElement interactions.first
             click()
             sendKeys 'GEB'
+        }
+        interact {
             moveToElement interactions.second
             click()
             sendKeys 'geb'
@@ -124,6 +130,8 @@ class InteractionsModule extends Module {
             moveToElement first
             delegate.click()
             sendKeys 'GEB'
+        }
+        interact {
             moveToElement second
             delegate.click()
             sendKeys 'geb'

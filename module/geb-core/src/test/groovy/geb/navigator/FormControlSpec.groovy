@@ -69,7 +69,7 @@ class FormControlSpec extends GebSpecWithCallbackServer {
         i2*.@id == ["i2"]
         i2.value() == "value"
         i2 << "-add"
-        i2.value() == "value-add"
+        i2.value() in ["value-add", "-addvalue"] //not consistent across drivers
 
         when:
         $().i1 = "bar"

@@ -29,6 +29,7 @@ class BindingUpdater {
             "setDriver", "setBaseUrl",
             "go", "to", "via",
             "at", "isAt", "verifyAtImplicitly", "checkIfAtAnUnexpectedPage", "createPage",
+            "driverAs",
             "pause",
             "withWindow", "withNewWindow",
             "report", "reportGroup", "cleanReportGroupDir",

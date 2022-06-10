@@ -27,7 +27,7 @@ import static ratpack.jackson.Jackson.json
 
 class CloudDriverFactorySpec extends Specification {
 
-    private static final String TEST_CAPABILITY_NAME = "test.capability"
+    private static final String TEST_CAPABILITY_NAME = "testCapability"
 
     @AutoCleanup
     GroovyEmbeddedApp mockWebDriverServer = GroovyEmbeddedApp.of {

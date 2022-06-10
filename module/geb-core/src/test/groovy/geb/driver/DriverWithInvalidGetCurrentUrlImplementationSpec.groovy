@@ -15,32 +15,30 @@
  */
 package geb.driver
 
-import geb.test.CallbackAndWebDriverServer
-import geb.test.GebSpecWithServer
-import geb.test.TestHttpServer
-import groovy.transform.InheritConstructors
-import org.openqa.selenium.Capabilities
-import org.openqa.selenium.remote.DesiredCapabilities
+import geb.test.GebSpecWithCallbackServer
+import geb.test.StandaloneWebDriverServer
+import geb.test.browsers.LocalChrome
+import geb.test.browsers.RequiresRealBrowser
+import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.Response
+import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
 
 import static org.openqa.selenium.remote.DriverCommand.GET_CURRENT_URL
 
-class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer {
+@RequiresRealBrowser
+@LocalChrome
+class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithCallbackServer {
 
     @Shared
-    CallbackAndWebDriverServer callbackAndWebDriverServer = new CallbackAndWebDriverServer(browser.config)
-
-    @Override
-    TestHttpServer getServerInstance() {
-        callbackAndWebDriverServer
-    }
+    @AutoCleanup
+    StandaloneWebDriverServer webDriverServer = new StandaloneWebDriverServer()
 
     def setup() {
-        browser.baseUrl = callbackAndWebDriverServer.applicationUrl
         browser.config.cacheDriver = false
+        responseHtml {}
     }
 
     @Issue('https://github.com/geb/issues/issues/291')
@@ -68,17 +66,16 @@ class DriverWithInvalidGetCurrentUrlImplementationSpec extends GebSpecWithServer
     }
 
     void setCurrentUrlResponseValue(String value) {
-        browser.driver = new DriverWithInvalidGetCurrentUrlImplementation(callbackAndWebDriverServer.webdriverUrl, DesiredCapabilities.htmlUnit(), value)
+        browser.driver = new DriverWithInvalidGetCurrentUrlImplementation(webDriverServer.url, value)
     }
 }
 
-@InheritConstructors
 class DriverWithInvalidGetCurrentUrlImplementation extends RemoteWebDriver {
 
     private final String currentUrl
 
-    DriverWithInvalidGetCurrentUrlImplementation(URL remoteAddress, Capabilities desiredCapabilities, String currentUrl) {
-        super(remoteAddress, desiredCapabilities)
+    DriverWithInvalidGetCurrentUrlImplementation(URL remoteAddress, String currentUrl) {
+        super(remoteAddress, new ChromeOptions().addArguments('headless'))
         this.currentUrl = currentUrl
     }
 

@@ -16,6 +16,7 @@ package geb
 
 import com.google.common.net.UrlEscapers
 import geb.driver.RemoteDriverOperations
+import geb.error.IncorrectDriverTypeException
 import geb.error.NoNewWindowException
 import geb.error.UnexpectedPageException
 import geb.error.WebStorageNotSupportedException
@@ -46,6 +47,8 @@ import static java.lang.Integer.MAX_VALUE
  * page instance via {@code propertyMissing ( )} and {@code methodMissing ( )}.
  */
 class Browser {
+
+    protected final static String HAS_NETWORK_CONDITIONS_CLASS_NAME = "org.openqa.selenium.chromium.HasNetworkConditions"
 
     public static final String UTF8 = "UTF-8"
     public static final String QUERY_STRING_SEPARATOR = "&"
@@ -953,30 +956,38 @@ class Browser {
      * <p>
      * Helpful for exposing network related timing issues in automation code under development.
      * <p>
-     * Depends on custom WebDriver commands only available for local Chrome and thus only supported when driving that browser.
+     * Only supported when using a driver implementing or augmentable to org.openqa.selenium.chromium.HasNetworkConditions.
      *
-     * @throws geb.error.IncorrectDriverTypeException When called if driving a browser other than local Chrome
-     * @throws org.openqa.selenium.UnsupportedCommandException When called if driving a browser other than local Chrome
+     * @throws geb.error.IncorrectDriverTypeException When called while using a driver which does not implement and is not augmentable to org.openqa.selenium.chromium.HasNetworkConditions
      */
     void setNetworkLatency(Duration duration) {
         def params = [
-                network_conditions: [
-                        latency   : duration.toMillis(),
-                        throughput: MAX_VALUE >> 2
-                ]
+            network_conditions: [
+                latency   : duration.toMillis(),
+                throughput: MAX_VALUE >> 2
+            ]
         ]
 
-        remoteDriverOperations.executeCommand(driver, "setNetworkConditions", params)
+        remoteDriverOperations.executeCommand(driverWithNetworkConditions, "setNetworkConditions", params)
     }
 
     /**
      * Removes any previously configured network latency.
      *
-     * @throws geb.error.IncorrectDriverTypeException When called if driving a browser other than local Chrome
-     * @throws org.openqa.selenium.UnsupportedCommandException When called if driving a browser other than local Chrome
+     * @throws geb.error.IncorrectDriverTypeException When called while using a driver which does not implement and is not augmentable to org.openqa.selenium.chromium.HasNetworkConditions
      */
     void resetNetworkLatency() {
-        remoteDriverOperations.executeCommand(driver, "deleteNetworkConditions")
+        remoteDriverOperations.executeCommand(driverWithNetworkConditions, "deleteNetworkConditions")
+    }
+
+    public <T> Optional<T> driverAs(Class<T> castType) {
+        if (castType.isInstance(driver)) {
+            Optional.of(driver as T)
+        } else if (castType.isInstance(augmentedDriver)) {
+            Optional.of(augmentedDriver as T)
+        } else {
+            Optional.empty()
+        }
     }
 
     protected switchToWindow(String window) {
@@ -1009,6 +1020,25 @@ class Browser {
         config.createNavigatorFactory(this)
     }
 
+    private WebDriver getDriverWithNetworkConditions() {
+        optionalHasNetworkConditionsClass.map { hasNetworkConditionsClass ->
+            driverAs(hasNetworkConditionsClass).orElse(null)
+        }.orElseThrow {
+            def message = "This operation is only possible on driver instances implementing or augmentable to " +
+                "${HAS_NETWORK_CONDITIONS_CLASS_NAME}"
+
+            new IncorrectDriverTypeException(message)
+        }
+    }
+
+    private Optional<Class<? extends WebDriver>> getOptionalHasNetworkConditionsClass() {
+        try {
+            Optional.of(getClass().classLoader.loadClass(HAS_NETWORK_CONDITIONS_CLASS_NAME))
+        } catch (ClassNotFoundException e) {
+            Optional.empty()
+        }
+    }
+
     private String executeNewWindowOpening(Closure windowOpeningBlock, wait) {
         def originalWindows = availableWindows
         windowOpeningBlock.call()
@@ -1027,12 +1057,8 @@ class Browser {
     }
 
     private SeleniumWebStorage getSeleniumWebStorage() {
-        if (driver instanceof SeleniumWebStorage) {
-            driver
-        } else if (augmentedDriver instanceof SeleniumWebStorage) {
-            augmentedDriver
-        } else {
-            throw new WebStorageNotSupportedException()
+        driverAs(SeleniumWebStorage).orElseThrow {
+            new WebStorageNotSupportedException()
         }
     }
 
