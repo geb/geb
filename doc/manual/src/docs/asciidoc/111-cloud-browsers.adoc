@@ -191,27 +191,20 @@ Following is an example of using the geb-saucelabs Gradle plugin.
 ----
 import geb.gradle.saucelabs.SauceAccount
 
-apply plugin: "geb-saucelabs" //<1>
-
-buildscript { //<2>
-    repositories {
-       mavenCentral()
-    }
-    dependencies {
-       classpath 'org.gebish:geb-gradle:{geb-version}'
-    }
+plugins {
+    id "org.gebish.saucelabs" version "{geb-version}" //<1>
 }
 
-dependencies { //<3>
+dependencies { //<2>
     sauceConnect "com.saucelabs:ci-sauce:{sauce-connect-version}"
 }
 
 sauceLabs {
-    browsers { //<4>
+    browsers { //<3>
        firefox_linux_19
        chrome_mac
        delegate."internet explorer_vista_9"
-       nexus4 { //<5>
+       nexus4 { //<4>
          capabilities(
             browserName: "android",
             platformName: "Linux",
@@ -220,37 +213,36 @@ sauceLabs {
          )
        }
     }
-    task { //<6>
+    task { //<5>
        maxHeapSize = "512m"
     }
-    additionalTask("quick") { //<7>
+    additionalTask("quick") { //<6>
         useJUnit {
             includeCategories "com.example.Quick"
         }
     }
-    account { //<8>
+    account { //<7>
        username = System.getenv(SauceAccount.USER_ENV_VAR)
        accessKey = System.getenv(SauceAccount.ACCESS_KEY_ENV_VAR)
     }
-    connect { //<9>
-       port = 4444 //<10>
-       additionalOptions = ['--proxy', 'proxy.example.com:8080'] //<11>
+    connect { //<8>
+       port = 4444 //<9>
+       additionalOptions = ['--proxy', 'proxy.example.com:8080'] //<10>
     }
 }
 ----
 <1> Apply the plugin to the build.
-<2> Specify how to resolve the plugin.
-<3> Declare version of SauceConnect to be used as part of the `sauceConnect` configuration. This will be used by tasks that open a {sauce-connect} tunnel before
+<2> Declare version of SauceConnect to be used as part of the `sauceConnect` configuration. This will be used by tasks that open a {sauce-connect} tunnel before
 running the generated test tasks which means that the browsers in the cloud will have localhost pointing at the machine running the build.
-<4> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
+<3> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
 `internet explorerVista9Test`.
-<5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
-<6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
-<8> Pass credentials for {sauce-connect}.
-<9> Additionally configure {sauce-connect} if desired.
-<10> Override the port used by SauceConnect, defaults to 4445.
-<11> Pass additional link:https://docs.saucelabs.com/dev/cli/sauce-connect-proxy#sauce-connect-proxy-command-line-options[command line options] to SauceConnect.
+<4> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
+<5> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+<6> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
+<7> Pass credentials for {sauce-connect}.
+<8> Additionally configure {sauce-connect} if desired.
+<9> Override the port used by SauceConnect, defaults to 4445.
+<10> Pass additional link:https://docs.saucelabs.com/dev/cli/sauce-connect-proxy#sauce-connect-proxy-command-line-options[command line options] to SauceConnect.
 
 [TIP]
 ====
@@ -284,58 +276,50 @@ Following is an example of using the geb-browserstack Gradle plugin.
 ----
 import geb.gradle.browserstack.BrowserStackAccount
 
-apply plugin: "geb-browserstack" //<1>
-
-buildscript { //<2>
-    repositories {
-       mavenCentral()
-    }
-    dependencies {
-       classpath 'org.gebish:geb-gradle:{geb-version}'
-    }
+plugins {
+    id "org.gebish.browserstack" version "{geb-version}" <1>
 }
 
 browserStack {
-    application 'http://localhost:8080' //<3>
-    browsers { //<4>
+    application 'http://localhost:8080' //<2>
+    browsers { //<3>
        firefox_mac_19
        chrome_mac
        delegate."internet explorer_windows_9"
-       nexus4 { //<5>
+       nexus4 { //<4>
          capabilities browserName: "android", platformName: "ANDROID", "bstack:options.device": "Google Nexus 4"
        }
     }
-    task { //<6>
+    task { //<5>
        maxHeapSize = "512m"
     }
-    additionalTask("quick") { //<7>
+    additionalTask("quick") { //<6>
         useJUnit {
             includeCategories "com.example.Quick"
         }
     }
-    account { //<8>
+    account { //<7>
        username = System.getenv(BrowserStackAccount.USER_ENV_VAR)
        accessKey = System.getenv(BrowserStackAccount.ACCESS_KEY_ENV_VAR)
     }
     local {
-        force = true //<9>
-        tunnelReadyMessage = 'You can now access your local server(s) in our remote browser' //<10>
+        force = true //<8>
+        tunnelReadyMessage = 'You can now access your local server(s) in our remote browser' //<9>
     }
 }
 ----
 <1> Apply the plugin to the build.
-<2> Specify how to resolve the plugin.
-<3> Specify which urls the BrowserStack Tunnel should be able to access.
+<2> Specify which urls the BrowserStack Tunnel should be able to access.
 Multiple applications can be specified.
 If no applications are specified, the tunnel will not be restricted to particular URLs.
-<4> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
+<3> Declare that tests should run in 3 different browsers using the shorthand syntax; this will generate the following `Test` tasks: `firefoxLinux19Test`, `chromeMacTest` and
 `internet explorerVista9Test`.
-<5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
-<6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
-<8> Pass credentials for BrowserStack.
-<9> Configure BrowserStack tunnel to route all traffic via the local machine; this configuration property controls the `-forcelocal` flag and the default value for it is `false`.
-<10> Set a custom message searched for in BrowserStack tunnel process output before considering it successfully started - useful if the output of the process has changed and the default message is no longer found.
+<4> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities; the example will generate a `Test` task named `nexus4Test`.
+<5> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+<6> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
+<7> Pass credentials for BrowserStack.
+<8> Configure BrowserStack tunnel to route all traffic via the local machine; this configuration property controls the `-forcelocal` flag and the default value for it is `false`.
+<9> Set a custom message searched for in BrowserStack tunnel process output before considering it successfully started - useful if the output of the process has changed and the default message is no longer found.
 
 It's also possible to specify location and credentials for the proxy to be used with the BrowserStack Tunnel:
 
@@ -395,54 +379,46 @@ Following is an example of using the geb-lambdatest Gradle plugin.
 ----
 import geb.gradle.lambdatest.LambdaTestAccount
 
-apply plugin: "geb-lambdatest" //<1>
-
-buildscript { //<2>
-    repositories {
-       mavenCentral()
-    }
-    dependencies {
-       classpath 'org.gebish:geb-gradle:{geb-version}'
-    }
+plugins {
+    id "org.gebish.lambdatest" version "{geb-version}" //<1>
 }
 
 lambdaTest {
-    application 'http://localhost:8080' //<3>
-    browsers { //<4>
+    application 'http://localhost:8080' //<2>
+    browsers { //<3>
         chrome_windows_70 {
-           capabilities platformName: "Windows 10" //<5>
+           capabilities platformName: "Windows 10" //<4>
         }
     }
-    task { //<6>
+    task { //<5>
        maxHeapSize = "512m"
     }
-    additionalTask("quick") { //<7>
+    additionalTask("quick") { //<6>
         useJUnit {
             includeCategories "com.example.Quick"
         }
     }
-    account { //<8>
+    account { //<7>
        username = System.getenv(LambdaTestAccount.USER_ENV_VAR)
        accessKey = System.getenv(LambdaTestAccount.ACCESS_KEY_ENV_VAR)
     }
     tunnelOps {
-        additionalOptions = ['--proxyhost', 'proxy.example.com'] //<9>
-        tunnelReadyMessage = 'Secure connection established, you may start your tests now' //<10>
+        additionalOptions = ['--proxyhost', 'proxy.example.com'] //<8>
+        tunnelReadyMessage = 'Secure connection established, you may start your tests now' //<9>
     }
 }
 ----
 <1> Apply the plugin to the build.
-<2> Specify how to resolve the plugin.
-<3> Specify which urls the LambdaTest Tunnel should be able to access.
+<2> Specify which urls the LambdaTest Tunnel should be able to access.
 Multiple applications can be specified.
 If no applications are specified, the tunnel will not be restricted to particular URLs.
-<4> The tests would run in chrome on Windows 10 as sample.
-<5> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities.
-<6> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
-<7> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
-<8> Pass credentials for LambdaTest.
-<9> Pass additional link:https://www.lambdatest.com/support/docs/lambda-tunnel-modifiers/[command line options] to LambdaTestTunnel.
-<10> Set a custom message searched for in LambdaTest tunnel process output before considering it successfully started - useful if the output of the process has changed and the default message is no longer found.
+<3> The tests would run in chrome on Windows 10 as sample.
+<4> Explicitly specify the required browser capabilities if the shorthand syntax doesn't allow you to express all needed capabilities.
+<5> Configure all of the generated test tasks; for each of them the closure is run with delegate set to a test task being configured.
+<6> Add an additional test task for each of the browsers with the string passed as the first argument prepended to the task name; the closure passed as the last argument is run with delegate set to the test task being added.
+<7> Pass credentials for LambdaTest.
+<8> Pass additional link:https://www.lambdatest.com/support/docs/lambda-tunnel-modifiers/[command line options] to LambdaTestTunnel.
+<9> Set a custom message searched for in LambdaTest tunnel process output before considering it successfully started - useful if the output of the process has changed and the default message is no longer found.
 
 
 [TIP]

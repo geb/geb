@@ -109,6 +109,7 @@ This page lists the high level changes between versions of Geb.
 
 ==== Breaking changes
 * Update to Selenium 4. [issue:664[]]
+* Cloud browser plugins are no longer published to Maven Central and should be resolved from Gradle Plugin portal instead. [[issue:648]]
 
 === 5.1
 

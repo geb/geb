@@ -47,3 +47,5 @@ gradlePlugin {
 		}
 	}
 }
+
+apply from: '../integration/geb-gradle/plugin-definitions.gradle'

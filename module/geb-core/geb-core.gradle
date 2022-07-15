@@ -6,9 +6,9 @@ plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
     alias(libs.plugins.webdriverBinaries)
-    id 'geb-browserstack'
-    id 'geb-saucelabs'
-    id 'geb-lambdatest'
+    id 'org.gebish.browserstack'
+    id 'org.gebish.saucelabs'
+    id 'org.gebish.lambdatest'
     id 'geb.all-sources-configuration'
 }
 
