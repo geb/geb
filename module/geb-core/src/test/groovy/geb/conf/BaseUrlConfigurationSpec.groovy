@@ -52,7 +52,6 @@ class BaseUrlConfigurationSpec extends Specification {
     def "can set explicit base on configuration"() {
         given:
         def c = new Configuration()
-        c.cacheDriver = false
         c.baseUrl = "abc"
 
         when:
