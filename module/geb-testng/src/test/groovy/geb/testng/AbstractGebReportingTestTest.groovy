@@ -25,7 +25,7 @@ abstract class AbstractGebReportingTestTest extends GebReportingTest {
 
     protected static final String END_OF_METHOD_REPORT_LABEL = "end"
 
-    private CallbackHttpServer server = new CallbackHttpServer(browser.config)
+    private CallbackHttpServer server
 
     protected int methodNumber = 0
     protected int reportNumberInTest = 1
@@ -33,6 +33,7 @@ abstract class AbstractGebReportingTestTest extends GebReportingTest {
 
     @BeforeClass
     void setUpClass() {
+        server = new CallbackHttpServer(browser.config)
         server.start()
         server.get = { req, res ->
             res.outputStream << """
@@ -49,8 +50,6 @@ abstract class AbstractGebReportingTestTest extends GebReportingTest {
     void setUp() {
         ++methodNumber
         reportNumberInTest = 1
-
-        config.reportOnTestFailureOnly = true
 
         browser.baseUrl = server.baseUrl
         go()

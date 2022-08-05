@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.testng
+package geb.junit5
 
+import geb.Browser
 import geb.test.GebTestManager
 import geb.test.GebTestManagerBuilder
-import geb.test.ManagedGebTest
 import geb.transform.DynamicallyDispatchesToBrowser
+import org.junit.jupiter.api.extension.ExtendWith
 
 @DynamicallyDispatchesToBrowser
-class GebTest implements ManagedGebTest {
+@ExtendWith(GebTestManagerExtension)
+class ConfigModifyingGebReportingTest {
 
-    final GebTestManager testManager = new GebTestManagerBuilder().build()
+    private final static GebTestManager TEST_MANAGER = new GebTestManagerBuilder()
+        .withBrowserCreator { new Browser() }
+        .withReportingEnabled(true)
+        .build()
 
-    @Delegate(includes = ["getBrowser"])
-    GebTestManager getTestManager() {
-        testManager
+    @Delegate(includes = ["getBrowser", "report"])
+    static GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
 }

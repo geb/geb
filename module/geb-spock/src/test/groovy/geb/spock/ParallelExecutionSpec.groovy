@@ -69,8 +69,8 @@ class ParallelExecutionSpec extends Specification {
             }
         }
 
-        specRunner.addClassImport(GebSpec)
-        specRunner.addClassImport(GebReportingSpec)
+        specRunner.addClassImport(ConfigModifyingGebSpec)
+        specRunner.addClassImport(ConfigModifyingGebReportingSpec)
         specRunner.addClassImport(Unroll)
         specRunner.addClassImport(CachingDriverFactory)
         specRunner.addClassImport(Shared)
@@ -81,7 +81,7 @@ class ParallelExecutionSpec extends Specification {
     def 'GebSpec supports parallel execution at feature level'() {
         when:
         def result = specRunner.run """
-            class SpecRunningIterationsInParallel extends GebSpec {
+            class SpecRunningIterationsInParallel extends ConfigModifyingGebSpec {
 
                 @Shared
                 def featureParallelismLatch = new CountDownLatch(2)
@@ -120,7 +120,7 @@ class ParallelExecutionSpec extends Specification {
     def 'GebReportingSpec supports parallel execution at feature level'() {
         when:
         def result = specRunner.run """
-            abstract class AbstractSpecRunningIterationsInParallel extends GebReportingSpec {
+            abstract class AbstractSpecRunningIterationsInParallel extends ConfigModifyingGebReportingSpec {
                 static specParallelismLatch = new CountDownLatch(2)
                 @Shared
                 def featureParallelismLatch = new CountDownLatch(2)

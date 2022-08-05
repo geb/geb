@@ -15,6 +15,8 @@
 package geb.junit4
 
 import geb.test.CallbackHttpServer
+import geb.test.GebTestManager
+import geb.test.GebTestManagerBuilder
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -30,6 +32,15 @@ class GebReportingTestTest extends GebReportingTest {
         </body>
         </html>
     """
+
+    private final static GebTestManager TEST_MANAGER = new GebTestManagerBuilder()
+        .withReportingEnabled(true)
+        .build()
+
+    @Delegate(includes = ["getBrowser", "report"])
+    static GebTestManager getTestManager() {
+        TEST_MANAGER
+    }
 
     def server = new CallbackHttpServer(browser.config)
 

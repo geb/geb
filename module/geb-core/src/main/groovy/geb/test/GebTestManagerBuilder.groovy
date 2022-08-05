@@ -22,7 +22,7 @@ import java.util.function.Supplier
 
 class GebTestManagerBuilder {
 
-    private Supplier<Browser> browserCreator = { new Browser() }
+    private Supplier<Browser> browserCreator
     private Predicate<Class<?>> resetBrowserAfterEachTestPredicate = { clazz -> true }
     private boolean reportingEnabled = false
 

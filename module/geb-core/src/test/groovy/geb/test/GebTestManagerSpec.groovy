@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 the original author or authors.
+ * Copyright 2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,74 +15,57 @@
  */
 package geb.test
 
-import geb.Browser
-import geb.Configuration
-import geb.ConfigurationLoader
-import geb.test.browsers.LocalChrome
-import geb.test.browsers.RequiresRealBrowser
-import spock.lang.AutoCleanup
-import spock.lang.Shared
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import spock.lang.Specification
+import spock.lang.TempDir
 
-import static geb.test.RemoteWebDriverWithExpectations.DEFAULT_IGNORED_COMMANDS
-
-@RequiresRealBrowser
-@LocalChrome
 class GebTestManagerSpec extends Specification {
 
-    Configuration configuration = new ConfigurationLoader().conf
+    @TempDir
+    File classpathResourceDir
 
-    @Shared
-    @AutoCleanup
-    StandaloneWebDriverServer webDriverServer = new StandaloneWebDriverServer()
-
-    RemoteWebDriverWithExpectations driver
-
-    @Delegate
-    GebTestManager gebTestManager
-
-    def setup() {
-        driver = new RemoteWebDriverWithExpectations(
-            webDriverServer.url, DEFAULT_IGNORED_COMMANDS - 'quit'
-        )
-        configuration.driver = driver
-        gebTestManager = new GebTestManagerBuilder()
-            .withBrowserCreator {
-                new Browser(configuration)
-            }
-            .build()
-
-        beforeTestClass(getClass())
-        beforeTest(getClass(), specificationContext.currentIteration.name)
-        browser
-    }
-
-    def cleanup() {
-        driver.checkAndResetExpectations()
-        afterTestClass()
-    }
-
-    def "by default driver not is quit when browser is being reset"() {
-        when:
-        afterTest()
-        driver.checkAndResetExpectations()
-
-        then:
-        notThrown(RemoteWebDriverWithExpectations.UnexpectedCommandException)
-
-        cleanup:
-        driver.quit()
-        driver.clearRecordedCommands()
-    }
-
-    def "driver is quit when browser is being reset when configured to do so"() {
+    def "GebTestManager by default executes GebConfig script only once even if multiple browser instances are requested"() {
         given:
-        configuration.quitDriverOnBrowserReset = true
+        // language=Groovy
+        def gebConfig = """
+            def propertyName = "geb.test.GebTestManagerSpec.hasExecuted"
+
+            if (System.getProperty(propertyName)) {
+                throw new Exception("GebConfig loaded more than once!")
+            }
+
+            System.setProperty(propertyName, true.toString())
+
+            driver = "htmlunit"
+        """
+
+        and:
+        def gebTestManager = new GebTestManagerBuilder().build()
 
         when:
-        afterTest()
+        def browser = withOverriddenGebConfig(gebConfig) {
+            gebTestManager.browser
+            gebTestManager.resetBrowser()
+            gebTestManager.browser
+        }
 
         then:
-        driver.quitExecuted()
+        noExceptionThrown()
+
+        and:
+        browser.driver instanceof HtmlUnitDriver
+    }
+
+    private <T> T withOverriddenGebConfig(String gebConfig, Closure<T> closure) {
+        new File(classpathResourceDir, "GebConfig.groovy").text = gebConfig
+
+        def currentThread = Thread.currentThread()
+        def originalContextClassLoader = currentThread.contextClassLoader
+        try {
+            currentThread.contextClassLoader = new URLClassLoader(classpathResourceDir.toURI().toURL())
+            closure.call()
+        } finally {
+            currentThread.contextClassLoader = originalContextClassLoader
+        }
     }
 }

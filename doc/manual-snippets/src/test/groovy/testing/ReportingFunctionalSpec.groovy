@@ -61,9 +61,19 @@ class ReportingFunctionalSpec extends Specification {
             package my.tests
 
             import geb.spock.GebReportingSpec
+            import geb.spock.SpockGebTestManagerBuilder
+            import geb.test.GebTestManager
 
             class LoginSpec extends GebReportingSpec {
             //end::example[]
+
+                private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder()
+                    .withReportingEnabled(true)
+                    .build()
+
+                GebTestManager getTestManager() {
+                    TEST_MANAGER
+                }
 
                 def setup() {
                     baseUrl = "${server.baseUrl}"

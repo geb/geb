@@ -15,11 +15,26 @@
  */
 package geb.testng
 
+import geb.Browser
+import geb.test.GebTestManager
+import geb.test.GebTestManagerBuilder
 import org.testng.annotations.Test
 
 import java.lang.reflect.Method
 
 class GebReportingTestTest extends AbstractGebReportingTestTest {
+
+    @Delegate(includes = ["getBrowser", "report"])
+    final GebTestManager testManager = new GebTestManagerBuilder()
+        .withBrowserCreator {
+            new Browser()
+        }
+        .withReportingEnabled(true)
+        .build()
+
+    GebTestManager getTestManager() {
+        testManager
+    }
 
     @Test(groups = ["GebReportingTestTest"])
     void reportingTestShouldReportOnDemand(Method testMethod) {

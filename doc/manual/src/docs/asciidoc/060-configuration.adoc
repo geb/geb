@@ -419,3 +419,8 @@ For example, you may have one Spock spec that requires the `autoClearCookies` pr
 ----
 include::{snippets-dir}/configuration/FunctionalSpec.groovy[tag=runtime_override,indent=0]
 ----
+
+[WARNING]
+====
+Bear in mind that since Geb 6.0 one `Configuration` instance is shared between all of the tests so to avoid configuration runtime overrides bleeding from one test to another you will have to revert any overrides after the test like it is done in `cleanup()` of the above example.
+====

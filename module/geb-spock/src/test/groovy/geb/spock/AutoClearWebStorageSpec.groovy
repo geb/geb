@@ -39,7 +39,7 @@ class AutoClearWebStorageSpec extends Specification {
     }
 
     def setup() {
-        specRunner.addClassImport(GebSpec)
+        specRunner.addClassImport(ConfigModifyingGebSpec)
     }
 
     def "web storage is cleaned after the test if configured to do so"() {
@@ -48,7 +48,7 @@ class AutoClearWebStorageSpec extends Specification {
 
         when:
         specRunner.run """
-            class AutoClearWebStorage extends GebSpec {
+            class AutoClearWebStorage extends ConfigModifyingGebSpec {
                 def "web storage is modified during a test"() {
                     given:
                     baseUrl = "${server.baseUrl}"

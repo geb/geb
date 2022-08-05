@@ -37,7 +37,7 @@ import static java.util.concurrent.TimeUnit.SECONDS
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 
 @Execution(CONCURRENT)
-class ParallelExecutionTest extends GebTest {
+class ParallelExecutionTest extends ConfigModifyingGebTest {
     public static classExecutionExclusivityLock = new Semaphore(1)
     public static classOrderLatch = new CountDownLatch(1)
 
@@ -89,7 +89,7 @@ class ParallelExecutionTest extends GebTest {
 }
 
 @Execution(CONCURRENT)
-abstract class AbstractParallelExecutionWithReportingTest extends GebReportingTest {
+abstract class AbstractParallelExecutionWithReportingTest extends ConfigModifyingGebReportingTest {
 
     private static classParallelismLatch = new CountDownLatch(2)
     private static executionOfTestsCompleteLatch = new CountDownLatch(2)

@@ -46,7 +46,7 @@ class GebReportingSpecSpec extends Specification {
     }
 
     def setup() {
-        specRunner.addClassImport(GebReportingSpec)
+        specRunner.addClassImport(ConfigModifyingGebReportingSpec)
         specRunner.addClassImport(Unroll)
         specRunner.addClassImport(Reporter)
         specRunner.addClassImport(ReportingListener)
@@ -179,7 +179,7 @@ class GebReportingSpecSpec extends Specification {
     def "report called from fixture method should create report with default name"() {
         when:
         specRunner.run """
-            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setupSpec() {
                     ${configuration}
@@ -204,7 +204,7 @@ class GebReportingSpecSpec extends Specification {
     def "report called from shared initializer should create report with default name"() {
         when:
         specRunner.run """
-            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
                 @Shared
                 def sharedField = helper()
 
@@ -233,7 +233,7 @@ class GebReportingSpecSpec extends Specification {
     def "failures in setup methods are reported on"() {
         when:
         specRunner.run """
-            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setup() {
                     ${configuration}
@@ -272,7 +272,7 @@ class GebReportingSpecSpec extends Specification {
     def "failures in setupSpec methods are reported on"() {
         when:
         specRunner.run """
-            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setupSpec() {
                     ${configuration}
@@ -312,7 +312,7 @@ class GebReportingSpecSpec extends Specification {
 
     SummarizedEngineExecutionResults runReportingSpec(String additionalConfiguration = "", String body) {
         specRunner.run """
-            class $REPORTING_SPEC_NAME extends GebReportingSpec {
+            class $REPORTING_SPEC_NAME extends ConfigModifyingGebReportingSpec {
 
                 def setup() {
                     ${configuration}

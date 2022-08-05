@@ -110,10 +110,10 @@ class GebReportingTestReportingTest {
 
     private String wrapIntoTestClass(String testCode) {
         """
-            import geb.junit5.GebReportingTest
+            import geb.junit5.ConfigModifyingGebReportingTest
             import org.junit.jupiter.api.*
 
-            class ${REPORTING_SPEC_TEST} extends GebReportingTest {
+            class ${REPORTING_SPEC_TEST} extends ConfigModifyingGebReportingTest {
 
                 @BeforeEach
                 void setup() {

@@ -16,6 +16,8 @@
 package geb.test
 
 import geb.Browser
+import geb.Configuration
+import geb.ConfigurationLoader
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
@@ -41,6 +43,7 @@ class GebTestManager {
     final boolean reportingEnabled
 
     protected final ThreadLocal<Browser> browser = new ThreadLocal<>()
+    private final ThreadLocal<Configuration> configuration = ThreadLocal.withInitial { new ConfigurationLoader().conf }
     private final ThreadLocal<Deque<Class<?>>> testClass = ThreadLocal.withInitial { new ArrayDeque() }
     private final ThreadLocal<Deque<Integer>> perTestReportCounter = ThreadLocal.withInitial { new ArrayDeque() }
     private final ThreadLocal<Deque<Integer>> testCounter = ThreadLocal.withInitial { new ArrayDeque() }
@@ -50,7 +53,7 @@ class GebTestManager {
             Supplier<Browser> browserCreator, Predicate<Class<?>> resetBrowserAfterEachTestPredicate,
             boolean reportingEnabled
     ) {
-        this.browserCreator = browserCreator
+        this.browserCreator = browserCreator ?: { new Browser(configuration.get()) } as Supplier<Browser>
         this.resetBrowserAfterEachTestPredicate = resetBrowserAfterEachTestPredicate
         this.reportingEnabled = reportingEnabled
     }
@@ -151,7 +154,7 @@ class GebTestManager {
     }
 
     private Browser createBrowser() {
-        def browser = browserCreator ? browserCreator.get() : new Browser()
+        def browser = browserCreator.get()
         currentTestClass?.with(browserConfigurers.&get)?.accept(browser)
         browser
     }

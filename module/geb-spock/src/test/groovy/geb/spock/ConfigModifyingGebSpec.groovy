@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package configuration
+package geb.spock
 
-// tag::runtime_override[]
-import geb.spock.GebReportingSpec
+import geb.Browser
+import geb.test.GebTestManager
 
-class FunctionalSpec extends GebReportingSpec {
+abstract class ConfigModifyingGebSpec extends GebSpec {
 
-    def setupSpec() {
-        browser.config.autoClearCookies = false
+    private final static GebTestManager TEST_MANAGER = new SpockGebTestManagerBuilder()
+        .withBrowserCreator { new Browser() }
+        .build()
+
+    GebTestManager getTestManager() {
+        TEST_MANAGER
     }
 
-    def cleanup() {
-        browser.config.autoClearCookies = true
-    }
-    // end::runtime_override[]
-    def "configuration is changed"() {
-        expect:
-        !browser.config.autoClearCookies
-    }
-    // tag::runtime_override[]
 }
-// end::runtime_override[]
