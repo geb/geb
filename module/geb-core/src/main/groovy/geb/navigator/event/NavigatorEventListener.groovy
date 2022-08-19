@@ -42,7 +42,7 @@ interface NavigatorEventListener {
     void afterClick(Browser browser, Navigator navigator)
 
     /**
-     * Called before setting value of a {@link Navigator}, that is at the beginning of {@link Navigator#value(def)}
+     * Called before setting value of a {@link Navigator}, that is at the beginning of {@link Navigator#value(Object)}
      *
      * @param browser The {@link Browser} instance used for creating the {@link Navigator} for which the event occurred
      * @param navigator The {@link Navigator} for which the event occurred
@@ -51,7 +51,7 @@ interface NavigatorEventListener {
     void beforeValueSet(Browser browser, Navigator navigator, Object value)
 
     /**
-     * Called after setting value of a {@link Navigator}, that is at the end of {@link Navigator#value(def)}
+     * Called after setting value of a {@link Navigator}, that is at the end of {@link Navigator#value(Object)}
      *
      * @param browser The {@link Browser} instance used for creating the {@link Navigator} for which the event occurred
      * @param navigator The {@link Navigator} for which the event occurred
@@ -60,20 +60,20 @@ interface NavigatorEventListener {
     void afterValueSet(Browser browser, Navigator navigator, Object value)
 
     /**
-     * Called before {@code sendKeys()} is called on all of the elements of a {@link Navigator}, as part of {@link Navigator#leftShift(def)}
+     * Called before {@code sendKeys()} is called on all of the elements of a {@link Navigator}, as part of {@link Navigator#leftShift(Object)}
      *
      * @param browser The {@link Browser} instance used for creating the {@link Navigator} for which the event occurred
      * @param navigator The {@link Navigator} for which the event occurred
-     * @param value The value that was passed to {@link Navigator#leftShift(def)}
+     * @param value The value that was passed to {@link Navigator#leftShift(Object)}
      */
     void beforeSendKeys(Browser browser, Navigator navigator, Object value)
 
     /**
-     * Called after {@code sendKeys()} is called on all of the elements of a {@link Navigator}, as part of {@link Navigator#leftShift(def)}
+     * Called after {@code sendKeys()} is called on all of the elements of a {@link Navigator}, as part of {@link Navigator#leftShift(Object)}
      *
      * @param browser The {@link Browser} instance used for creating the {@link Navigator} for which the event occurred
      * @param navigator The {@link Navigator} for which the event occurred
-     * @param value The value that was passed to {@link Navigator#leftShift(def)}
+     * @param value The value that was passed to {@link Navigator#leftShift(Object)}
      */
     void afterSendKeys(Browser browser, Navigator navigator, Object value)
 }
