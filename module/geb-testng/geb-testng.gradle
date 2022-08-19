@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation libs.testng
+    api libs.testng
 }
 
 tasks.named("test") {

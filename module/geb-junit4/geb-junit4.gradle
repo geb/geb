@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation project(":module:geb-junit")
-    implementation libs.junit4
+    api libs.junit4
 
     testRuntimeOnly libs.junit5.vintage.engine
     testImplementation libs.junit5.jupiter.api

@@ -100,6 +100,7 @@ This page lists the high level changes between versions of Geb.
 ==== Fixes
 * Fix a bug causing reports generated from within `cleanupSpec()` to not end up in the report group directory for the spec. [issue:661[]]
 * Update LambdaTest tunnel to v3. [issue:662[]]
+* Correctly expose all API dependencies for geb-junit4 and geb-testng modules to consumers.. [issue:666[]]
 
 ==== Improvements
 * Add parallel execution support for JUnit 5 integration. [issue:663[]]
