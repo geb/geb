@@ -114,6 +114,10 @@ def apiDocTask = tasks.register("apiDoc", Groovydoc) {
     classpath = configurations.groovydocClasspath
     destinationDir = file("$buildDir/apiDoc")
     source groovydocSourcesTask
+    access = GroovydocAccess.PROTECTED
+    processScripts = true
+    includeAuthor = false
+    includeMainForScripts = true
 }
 
 def packageManualTask = tasks.register("packageManual", Sync) {
