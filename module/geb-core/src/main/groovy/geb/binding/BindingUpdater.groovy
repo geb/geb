@@ -34,7 +34,7 @@ class BindingUpdater {
             "withWindow", "withNewWindow",
             "report", "reportGroup", "cleanReportGroupDir",
             "setNetworkLatency", "resetNetworkLatency",
-            "clearCookies", "clearCookiesQuietly", "clearWebStorage",
+            "clearCookies", "clearCookiesQuietly", "clearWebStorage", "clearWebStorageQuietly",
             "close", "quit"
     ].asImmutable()
 

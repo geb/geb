@@ -140,7 +140,7 @@ class GebTestManager {
             getBrowser().clearCookiesQuietly()
         }
         if (config?.autoClearWebStorage) {
-            getBrowser().clearWebStorage()
+            getBrowser().clearWebStorageQuietly()
         }
         if (config?.quitDriverOnBrowserReset) {
             getBrowser().driver.quit()

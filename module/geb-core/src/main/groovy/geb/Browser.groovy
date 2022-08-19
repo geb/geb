@@ -649,6 +649,17 @@ class Browser {
     }
 
     /**
+     * Clears web storage, that is both local and session storage for the <b>current domain</b>, suppressing any
+     * webdriver exceptions.
+     */
+    void clearWebStorageQuietly() {
+        try {
+            clearWebStorage()
+        } catch (WebDriverException ignore) {
+        }
+    }
+
+    /**
      * Quits the driver.
      *
      * @see org.openqa.selenium.WebDriver#quit()
