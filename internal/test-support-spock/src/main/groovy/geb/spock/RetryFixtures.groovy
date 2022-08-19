@@ -24,7 +24,7 @@ import java.lang.annotation.Target
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target([ElementType.TYPE, ElementType.METHOD])
-@ExtensionAnnotation(RetrySetupExtension)
-@interface RetrySetup {
+@ExtensionAnnotation(RetryFixturesExtension)
+@interface RetryFixtures {
     Class<? extends Closure> condition() default Closure
 }

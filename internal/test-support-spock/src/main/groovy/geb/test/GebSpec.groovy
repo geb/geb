@@ -19,7 +19,7 @@ import geb.Browser
 import geb.Configuration
 import geb.ConfigurationLoader
 import geb.spock.GebReportingSpec
-import geb.spock.RetrySetup
+import geb.spock.RetryFixtures
 import geb.spock.SpockGebTestManagerBuilder
 import geb.transform.DynamicallyDispatchesToBrowser
 import groovy.transform.InheritConstructors
@@ -40,7 +40,7 @@ import static spock.lang.Retry.Mode.SETUP_FEATURE_CLEANUP
     mode = SETUP_FEATURE_CLEANUP,
     condition = GebSpec.RetryCondition
 )
-@RetrySetup(
+@RetryFixtures(
     condition = GebSpec.RetryCondition
 )
 class GebSpec extends GebReportingSpec {

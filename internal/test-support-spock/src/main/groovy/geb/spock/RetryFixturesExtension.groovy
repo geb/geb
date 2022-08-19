@@ -23,13 +23,16 @@ import spock.lang.Retry
 
 import java.lang.annotation.Annotation
 
+import static org.spockframework.runtime.model.MethodKind.CLEANUP
 import static org.spockframework.runtime.model.MethodKind.SETUP
 
-class RetrySetupExtension implements IAnnotationDrivenExtension<RetrySetup> {
+class RetryFixturesExtension implements IAnnotationDrivenExtension<RetryFixtures> {
 
     @Override
-    void visitSpecAnnotation(RetrySetup annotation, SpecInfo spec) {
-        def allSetupMethods = spec.bottomSpec.allFixtureMethods.findAll { it.kind == SETUP } as Collection<MethodInfo>
+    void visitSpecAnnotation(RetryFixtures annotation, SpecInfo spec) {
+        def allSetupMethods = spec.bottomSpec.allFixtureMethods
+            .findAll { it.kind in [SETUP, CLEANUP] } as Collection<MethodInfo>
+
         allSetupMethods*.addInterceptor(
             new RetryFeatureInterceptor(new Retry() {
 
