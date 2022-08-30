@@ -1,8 +1,7 @@
 plugins {
     id 'geb.groovy-module'
     id 'geb.spock-2-module'
-    id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.16.0'
+    id 'com.gradle.plugin-publish' version '1.0.0'
 }
 
 repositories {
