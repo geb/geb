@@ -15,24 +15,24 @@
  */
 package geb.gradle.cloud
 
+import groovy.util.logging.Slf4j
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.process.ExecOperations
-import org.slf4j.Logger
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 import static org.gradle.api.tasks.PathSensitivity.RELATIVE
 
+@Slf4j
 abstract class ExternalTunnel {
 
     final protected Project project
     final protected ExecOperations execOperations
-    final protected Logger logger
 
     protected Process tunnelProcess
 
@@ -45,7 +45,6 @@ abstract class ExternalTunnel {
     ExternalTunnel(Project project, ExecOperations execOperations) {
         this.project = project
         this.execOperations = execOperations
-        this.logger = project.logger
     }
 
     @InputFiles
@@ -72,7 +71,7 @@ abstract class ExternalTunnel {
         validateState()
 
         def command = assembleCommandLine()*.toString()
-        logger.debug("Executing command: {}", command)
+        log.debug("Executing command: {}", command)
         if (background) {
             workingDir.mkdirs()
             tunnelProcess = new ProcessBuilder(command).
@@ -85,12 +84,12 @@ abstract class ExternalTunnel {
                 try {
                     tunnelProcess.inputStream.eachLine { String line ->
                         if (latch.count) {
-                            logger.info "$outputPrefix: $line"
+                            log.info "$outputPrefix: $line"
                             if (line.contains(tunnelReadyMessage)) {
                                 latch.countDown()
                             }
                         } else {
-                            logger.debug "$outputPrefix: $line"
+                            log.debug "$outputPrefix: $line"
                         }
                     }
                 } catch (IOException ignore) {
@@ -109,7 +108,7 @@ abstract class ExternalTunnel {
 
     void stopTunnel() {
         if (tunnelProcess) {
-            logger.info "disconnecting tunnel"
+            log.info "disconnecting tunnel"
             tunnelProcess.destroy()
         }
     }
