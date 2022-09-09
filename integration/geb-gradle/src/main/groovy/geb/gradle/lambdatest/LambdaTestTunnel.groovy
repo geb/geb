@@ -57,7 +57,7 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
 
     @Override
     List<String> assembleCommandLine() {
-        def tunnelPath = objectFactory.fileCollection().from(project.tasks.unzipLambdaTestTunnel).asFileTree.singleFile.absolutePath
+        def tunnelPath = executable.asFileTree.singleFile.absolutePath
         def commandLine = [tunnelPath]
         commandLine << "--user" << extension.account.username
         commandLine << "--key" << extension.account.accessKey
