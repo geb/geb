@@ -52,7 +52,7 @@ class SauceConnectOperations {
     protected URLClassLoader getSauceConnectManagerClassLoader() {
         if (!sauceConnectManagerClassLoader) {
             if (sauceConnectConfiguration.empty) {
-                throw new InvalidUserDataException("'sauceConnect' configuration is empty, please add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it")
+                throw new InvalidUserDataException("'${sauceConnectConfiguration.name}' configuration is empty, please add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it")
             }
             sauceConnectManagerClassLoader = new URLClassLoader(sauceConnectConfiguration.files*.toURI()*.toURL() as URL[])
         }

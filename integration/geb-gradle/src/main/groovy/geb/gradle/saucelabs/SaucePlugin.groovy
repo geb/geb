@@ -34,15 +34,9 @@ class SaucePlugin implements Plugin<Project> {
 
         def allSauceLabsTests = project.tasks.register("allSauceLabsTests")
 
-        project.configurations.create('sauceConnect')
-
         def sauceLabsExtension = project.extensions.create(
             'sauceLabs', SauceLabsExtension, allSauceLabsTests, "Sauce Test"
         )
-
-        project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) { Task task ->
-            task.onlyIf { sauceLabsExtension.useTunnel }
-        }
 
         sauceLabsExtension.addExtensions()
 
@@ -50,6 +44,20 @@ class SaucePlugin implements Plugin<Project> {
     }
 
     void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {
+        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) { Task task ->
+            task.onlyIf { sauceLabsExtension.useTunnel }
+        }
+
+        def connectConfiguration = project.configurations.create('sauceConnect')
+
+        sauceLabsExtension.connect.executable.from {
+            def operations = new SauceConnectOperations(connectConfiguration)
+
+            project.fileTree(unpackSauceConnect.map { it.outputs.files.singleFile })
+                .builtBy(unpackSauceConnect)
+                .include("${operations.directory}/${operations.operatingSystem.executable}")
+        }
+
         project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
             tunnel = project.sauceLabs.connect
             onlyIf { sauceLabsExtension.useTunnel }
@@ -64,7 +72,6 @@ class SaucePlugin implements Plugin<Project> {
         }
 
         [openSauceTunnel, openSauceTunnelInBackground]*.configure {
-            dependsOn UNPACK_CONNECT_TASK_NAME
             tunnel = project.sauceLabs.connect
             workingDir = project.buildDir
         }

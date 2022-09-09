@@ -19,8 +19,6 @@ import geb.gradle.cloud.ExternalTunnel
 import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.testing.Test
 import org.gradle.process.ExecOperations
@@ -32,8 +30,6 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
     public static final String TUNNEL_ID_ENV_VAR = "GEB_SAUCE_LABS_TUNNEL_ID"
 
     final protected SauceAccount account
-    final protected Configuration connectConfiguration
-    final protected Provider<File> sauceConnectDir
 
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
@@ -47,23 +43,10 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
     @Internal
     List<String> additionalOptions = []
 
-    @Internal
-    File getSauceConnectExecutable() {
-        def operations = new SauceConnectOperations(connectConfiguration)
-        def directory = new File(sauceConnectDir.get(), operations.directory)
-        new File(directory, operations.operatingSystem.executable)
-    }
-
-    @SuppressWarnings("BracesForMethod")
     @Inject
-    SauceConnect(
-        Project project, ExecOperations execOperations, SauceAccount account, Configuration connectConfiguration,
-        Provider<File> sauceConnectDir
-    ) {
+    SauceConnect(Project project, ExecOperations execOperations, SauceAccount account) {
         super(project, execOperations)
         this.account = account
-        this.connectConfiguration = connectConfiguration
-        this.sauceConnectDir = sauceConnectDir
     }
 
     @Override
@@ -75,7 +58,8 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
 
     @Override
     List<String> assembleCommandLine() {
-        def options = [sauceConnectExecutable.absolutePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port.toString()]
+        def executablePath = executable.asFileTree.singleFile.absolutePath
+        def options = [executablePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port.toString()]
         if (identifier) {
             options << '--tunnel-identifier' << identifier
         }
