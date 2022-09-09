@@ -20,16 +20,18 @@ import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
 
 import javax.inject.Inject
 
-class LambdaTestTunnel extends ExternalTunnel {
+abstract class LambdaTestTunnel extends ExternalTunnel {
 
     private static final String COMMA = ","
 
-    ObjectFactory objectFactory
+    private final ObjectFactory objectFactory
 
+    @Internal
     final LambdaTestExtension extension
 
     final String outputPrefix = 'lambdatest-tunnel'

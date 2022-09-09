@@ -21,12 +21,13 @@ import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.testing.Test
 import org.gradle.process.ExecOperations
 
 import javax.inject.Inject
 
-class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
+abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
 
     public static final String TUNNEL_ID_ENV_VAR = "GEB_SAUCE_LABS_TUNNEL_ID"
 
@@ -37,10 +38,16 @@ class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
+    @Internal
     String identifier
+
+    @Internal
     int port = 4445
+
+    @Internal
     List<String> additionalOptions = []
 
+    @Internal
     File getSauceConnectExecutable() {
         def operations = new SauceConnectOperations(connectConfiguration)
         def directory = new File(sauceConnectDir.get(), operations.directory)

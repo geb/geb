@@ -18,6 +18,7 @@ package geb.gradle.cloud.task
 import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.TaskAction
 
 class StartExternalTunnel extends DefaultTask {
@@ -28,7 +29,7 @@ class StartExternalTunnel extends DefaultTask {
     @Internal
     File workingDir
 
-    @Internal
+    @Nested
     ExternalTunnel tunnel
 
     @TaskAction

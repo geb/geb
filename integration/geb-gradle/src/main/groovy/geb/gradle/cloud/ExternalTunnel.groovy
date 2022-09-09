@@ -16,20 +16,30 @@
 package geb.gradle.cloud
 
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.PathSensitive
 import org.gradle.process.ExecOperations
 import org.slf4j.Logger
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+import static org.gradle.api.tasks.PathSensitivity.RELATIVE
+
 abstract class ExternalTunnel {
+
     final protected Project project
     final protected ExecOperations execOperations
     final protected Logger logger
 
     protected Process tunnelProcess
 
+    @Internal
     long timeout = 3
+
+    @Internal
     TimeUnit timeoutUnit = TimeUnit.MINUTES
 
     ExternalTunnel(Project project, ExecOperations execOperations) {
@@ -38,13 +48,19 @@ abstract class ExternalTunnel {
         this.logger = project.logger
     }
 
+    @InputFiles
+    @PathSensitive(RELATIVE)
+    abstract ConfigurableFileCollection getExecutable()
+
     void validateState() {
     }
 
+    @Internal
     abstract String getOutputPrefix()
 
     abstract List<String> assembleCommandLine()
 
+    @Internal
     abstract String getTunnelReadyMessage()
 
     void startTunnel(File workingDir, boolean background) {
