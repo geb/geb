@@ -38,7 +38,7 @@ class LambdaTestPlugin implements Plugin<Project> {
         def allLambdaTestTests = project.tasks.register("allLambdaTestTests")
 
         def lambdaTestExtension = project.extensions.create(
-            'lambdaTest', LambdaTestExtension, project, allLambdaTestTests, "LambdaTest Test"
+            'lambdaTest', LambdaTestExtension, allLambdaTestTests, "LambdaTest Test"
         )
         lambdaTestExtension.addExtensions()
 

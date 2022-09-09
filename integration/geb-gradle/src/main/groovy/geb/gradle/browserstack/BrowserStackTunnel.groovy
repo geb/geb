@@ -18,17 +18,27 @@ package geb.gradle.browserstack
 import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
-import org.slf4j.Logger
+import org.gradle.api.model.ObjectFactory
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
 
 class BrowserStackTunnel extends ExternalTunnel {
     private static final String HTTPS_PROTOCOL = 'https'
+
+    private final ObjectFactory objectFactory
 
     final BrowserStackExtension extension
 
     final String outputPrefix = 'browserstack-tunnel'
 
-    BrowserStackTunnel(Project project, Logger logger, BrowserStackExtension extension) {
-        super(project, logger)
+    @Inject
+    BrowserStackTunnel(
+        Project project, ExecOperations execOperations, ObjectFactory objectFactory,
+        BrowserStackExtension extension
+    ) {
+        super(project, execOperations)
+        this.objectFactory = objectFactory
         this.extension = extension
     }
 
@@ -49,7 +59,7 @@ class BrowserStackTunnel extends ExternalTunnel {
 
     @Override
     List<String> assembleCommandLine() {
-        def tunnelPath = project.fileTree(project.tasks.unzipBrowserStackTunnel.outputs.files.singleFile).singleFile.absolutePath
+        def tunnelPath = objectFactory.fileCollection().from(project.tasks.unzipBrowserStackTunnel).asFileTree.singleFile.absolutePath
         def commandLine = [tunnelPath]
         commandLine << extension.account.accessKey
         if (extension.local.identifier) {

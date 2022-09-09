@@ -37,7 +37,7 @@ class SaucePlugin implements Plugin<Project> {
         project.configurations.create('sauceConnect')
 
         def sauceLabsExtension = project.extensions.create(
-            'sauceLabs', SauceLabsExtension, project, allSauceLabsTests, "Sauce Test"
+            'sauceLabs', SauceLabsExtension, allSauceLabsTests, "Sauce Test"
         )
 
         project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) { Task task ->

@@ -21,8 +21,8 @@ import groovy.transform.InheritConstructors
 import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
 
-@InheritConstructors
-class BrowserStackExtension extends CloudBrowsersExtension {
+@InheritConstructors(constructorAnnotations = true)
+abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
     final String openTunnelInBackgroundTaskName = OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
@@ -37,7 +37,7 @@ class BrowserStackExtension extends CloudBrowsersExtension {
         super.addExtensions()
         account = new BrowserStackAccount()
         local = new BrowserStackLocal()
-        extensions.create('tunnel', BrowserStackTunnel, project, project.logger, this)
+        extensions.create('tunnel', BrowserStackTunnel, this)
     }
 
     void account(Closure configuration) {

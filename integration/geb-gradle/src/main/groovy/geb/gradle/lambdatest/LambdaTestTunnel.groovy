@@ -19,18 +19,27 @@ import geb.gradle.cloud.ExternalTunnel
 
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
-import org.slf4j.Logger
+import org.gradle.api.model.ObjectFactory
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
 
 class LambdaTestTunnel extends ExternalTunnel {
 
     private static final String COMMA = ","
 
+    ObjectFactory objectFactory
+
     final LambdaTestExtension extension
 
     final String outputPrefix = 'lambdatest-tunnel'
 
-    LambdaTestTunnel(Project project, Logger logger, LambdaTestExtension extension) {
-        super(project, logger)
+    @Inject
+    LambdaTestTunnel(
+        Project project, ExecOperations execOperations, ObjectFactory objectFactory, LambdaTestExtension extension
+    ) {
+        super(project, execOperations)
+        this.objectFactory = objectFactory
         this.extension = extension
     }
 
@@ -46,7 +55,7 @@ class LambdaTestTunnel extends ExternalTunnel {
 
     @Override
     List<String> assembleCommandLine() {
-        def tunnelPath = project.fileTree(project.tasks.unzipLambdaTestTunnel.outputs.files.singleFile).singleFile.absolutePath
+        def tunnelPath = objectFactory.fileCollection().from(project.tasks.unzipLambdaTestTunnel).asFileTree.singleFile.absolutePath
         def commandLine = [tunnelPath]
         commandLine << "--user" << extension.account.username
         commandLine << "--key" << extension.account.accessKey

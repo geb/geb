@@ -21,8 +21,8 @@ import groovy.transform.InheritConstructors
 import static geb.gradle.lambdatest.LambdaTestPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.lambdatest.LambdaTestPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
 
-@InheritConstructors
-class LambdaTestExtension extends CloudBrowsersExtension {
+@InheritConstructors(constructorAnnotations = true)
+abstract class LambdaTestExtension extends CloudBrowsersExtension {
 
     final String openTunnelInBackgroundTaskName = OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
@@ -36,7 +36,7 @@ class LambdaTestExtension extends CloudBrowsersExtension {
         super.addExtensions()
         account = new LambdaTestAccount()
         local = new LambdaTestTunnelOps(project)
-        extensions.create('tunnel', LambdaTestTunnel, project, project.logger, this)
+        extensions.create('tunnel', LambdaTestTunnel, this)
     }
 
     void account(Closure configuration) {

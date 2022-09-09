@@ -22,7 +22,9 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.testing.Test
-import org.slf4j.Logger
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
 
 class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
 
@@ -46,11 +48,12 @@ class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
     }
 
     @SuppressWarnings("BracesForMethod")
+    @Inject
     SauceConnect(
-        Project project, Logger logger, SauceAccount account, Configuration connectConfiguration,
+        Project project, ExecOperations execOperations, SauceAccount account, Configuration connectConfiguration,
         Provider<File> sauceConnectDir
     ) {
-        super(project, logger)
+        super(project, execOperations)
         this.account = account
         this.connectConfiguration = connectConfiguration
         this.sauceConnectDir = sauceConnectDir

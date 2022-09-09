@@ -37,7 +37,7 @@ class BrowserStackPlugin implements Plugin<Project> {
         def allBrowserStackTests = project.tasks.register("allBrowserStackTests")
 
         def browserStackExtension = project.extensions.create(
-            'browserStack', BrowserStackExtension, project, allBrowserStackTests, "BrowserStack Test"
+            'browserStack', BrowserStackExtension, allBrowserStackTests, "BrowserStack Test"
         )
         browserStackExtension.addExtensions()
 

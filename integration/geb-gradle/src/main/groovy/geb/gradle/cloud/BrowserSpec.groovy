@@ -15,40 +15,39 @@
  */
 package geb.gradle.cloud
 
-import org.gradle.api.DomainObjectCollection
-import org.gradle.api.model.ObjectFactory
+import org.gradle.api.DomainObjectSet
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
+
+import javax.inject.Inject
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE
 
-class BrowserSpec {
+abstract class BrowserSpec {
     final String cloudProvider
     final String name
     final String displayName
 
-    private final DomainObjectCollection<TaskProvider<Test>> tasks
     private final Properties capabilities = new Properties()
 
-    BrowserSpec(ObjectFactory objects, String cloudProvider, String name) {
+    abstract DomainObjectSet<TaskProvider<Test>> getTasks()
+
+    @Inject
+    BrowserSpec(String cloudProvider, String name) {
         this.cloudProvider = cloudProvider
         this.name = name
-        this.tasks = objects.domainObjectSet(TaskProvider)
-        String browserSpec = name
-        if (browserSpec) {
-            String[] split = browserSpec.split("_", 3)
-            capabilities["browserName"] = split[0]
-            if (split.size() > 1) {
-                capabilities["platformName"] = split[1]
-            }
-            if (split.size() > 2) {
-                capabilities["browserVersion"] = split[2]
-            }
-            displayName = "${camelCase(capabilities["browserName"])}${capabilities["platformName"]?.capitalize() ?: ""}${capabilities["browserVersion"]?.capitalize() ?: ""}"
-            if (capabilities["platformName"]) {
-                capabilities["platformName"] = capabilities["platformName"].toUpperCase()
-            }
+        String[] split = name.split("_", 3)
+        capabilities["browserName"] = split[0]
+        if (split.size() > 1) {
+            capabilities["platformName"] = split[1]
+        }
+        if (split.size() > 2) {
+            capabilities["browserVersion"] = split[2]
+        }
+        displayName = "${camelCase(capabilities["browserName"])}${capabilities["platformName"]?.capitalize() ?: ""}${capabilities["browserVersion"]?.capitalize() ?: ""}"
+        if (capabilities["platformName"]) {
+            capabilities["platformName"] = capabilities["platformName"].toUpperCase()
         }
         setCapabilitiesOnTasks()
     }
@@ -82,7 +81,7 @@ class BrowserSpec {
         task.systemProperty "geb.${cloudProvider}.browser", capabilitiesAsString
     }
 
-    private String getCapabilitiesAsString() {
+    protected String getCapabilitiesAsString() {
         StringWriter writer = new StringWriter()
         capabilities.store(writer, null)
 
@@ -91,7 +90,7 @@ class BrowserSpec {
         }.join(System.lineSeparator())
     }
 
-    private void setCapabilitiesOnTasks() {
+    protected void setCapabilitiesOnTasks() {
         tasks.all { TaskProvider<Test> taskProvider ->
             taskProvider.configure {
                 configureCapabilitiesOnTask(it)
@@ -99,7 +98,7 @@ class BrowserSpec {
         }
     }
 
-    private String camelCase(String camelCaseTextWithSpaces) {
+    protected String camelCase(String camelCaseTextWithSpaces) {
         def lowerUnderscoreText = LOWER_CAMEL.to(LOWER_UNDERSCORE, camelCaseTextWithSpaces).replaceAll(' ', '_').toLowerCase()
         LOWER_UNDERSCORE.to(LOWER_CAMEL, lowerUnderscoreText)
     }

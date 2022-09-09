@@ -20,12 +20,17 @@ import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
-abstract class CloudBrowsersExtension {
+import javax.inject.Inject
+
+abstract class CloudBrowsersExtension implements ExtensionAware {
+    protected final ObjectFactory objectFactory
     protected final Project project
     protected final TaskProvider<Task> allTestsLifecycleTask
     protected final String tasksGroup
@@ -33,7 +38,9 @@ abstract class CloudBrowsersExtension {
 
     protected NamedDomainObjectContainer<BrowserSpec> browsers
 
-    CloudBrowsersExtension(Project project, TaskProvider<Task> allTestsLifecycleTask, String tasksGroup) {
+    @Inject
+    CloudBrowsersExtension(ObjectFactory objectFactory, Project project, TaskProvider<Task> allTestsLifecycleTask, String tasksGroup) {
+        this.objectFactory = objectFactory
         this.project = project
         this.allTestsLifecycleTask = allTestsLifecycleTask
         this.tasksGroup = tasksGroup
@@ -50,12 +57,12 @@ abstract class CloudBrowsersExtension {
     abstract String getProviderName()
 
     void addExtensions() {
-        browsers = project.container(BrowserSpec) {
-            def browser = new BrowserSpec(project.objects, providerName, it)
-            addTestTask(browser)
-            browser
+        browsers = objectFactory.domainObjectContainer(BrowserSpec) { name ->
+            objectFactory.newInstance(BrowserSpec, providerName, name).tap { browserSpec ->
+                addTestTask(browserSpec)
+            }
         }
-        extensions.browsers = browsers
+        extensions.add("browsers", browsers)
     }
 
     void task(Closure configuration) {

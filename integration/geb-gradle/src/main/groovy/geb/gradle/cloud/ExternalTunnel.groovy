@@ -16,6 +16,7 @@
 package geb.gradle.cloud
 
 import org.gradle.api.Project
+import org.gradle.process.ExecOperations
 import org.slf4j.Logger
 
 import java.util.concurrent.CountDownLatch
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit
 
 abstract class ExternalTunnel {
     final protected Project project
+    final protected ExecOperations execOperations
     final protected Logger logger
 
     protected Process tunnelProcess
@@ -30,9 +32,10 @@ abstract class ExternalTunnel {
     long timeout = 3
     TimeUnit timeoutUnit = TimeUnit.MINUTES
 
-    ExternalTunnel(Project project, Logger logger) {
+    ExternalTunnel(Project project, ExecOperations execOperations) {
         this.project = project
-        this.logger = logger
+        this.execOperations = execOperations
+        this.logger = project.logger
     }
 
     void validateState() {
@@ -77,7 +80,7 @@ abstract class ExternalTunnel {
                 throw new RuntimeException("Timeout waiting for tunnel to open")
             }
         } else {
-            project.exec {
+            execOperations.exec {
                 commandLine command
             }
         }
