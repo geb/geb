@@ -18,7 +18,6 @@ package geb.gradle.lambdatest
 import geb.gradle.cloud.ExternalTunnel
 
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
@@ -37,10 +36,8 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
     final String outputPrefix = 'lambdatest-tunnel'
 
     @Inject
-    LambdaTestTunnel(
-        Project project, ExecOperations execOperations, ObjectFactory objectFactory, LambdaTestExtension extension
-    ) {
-        super(project, execOperations)
+    LambdaTestTunnel(ExecOperations execOperations, ObjectFactory objectFactory, LambdaTestExtension extension) {
+        super(execOperations)
         this.objectFactory = objectFactory
         this.extension = extension
     }

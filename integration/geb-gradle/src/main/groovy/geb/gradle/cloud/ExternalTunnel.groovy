@@ -16,7 +16,6 @@
 package geb.gradle.cloud
 
 import groovy.util.logging.Slf4j
-import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -31,7 +30,6 @@ import static org.gradle.api.tasks.PathSensitivity.RELATIVE
 @Slf4j
 abstract class ExternalTunnel {
 
-    final protected Project project
     final protected ExecOperations execOperations
 
     protected Process tunnelProcess
@@ -42,8 +40,7 @@ abstract class ExternalTunnel {
     @Internal
     TimeUnit timeoutUnit = TimeUnit.MINUTES
 
-    ExternalTunnel(Project project, ExecOperations execOperations) {
-        this.project = project
+    ExternalTunnel(ExecOperations execOperations) {
         this.execOperations = execOperations
     }
 

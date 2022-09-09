@@ -18,7 +18,6 @@ package geb.gradle.saucelabs
 import geb.gradle.cloud.ExternalTunnel
 import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.Project
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.testing.Test
 import org.gradle.process.ExecOperations
@@ -44,8 +43,8 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
     List<String> additionalOptions = []
 
     @Inject
-    SauceConnect(Project project, ExecOperations execOperations, SauceAccount account) {
-        super(project, execOperations)
+    SauceConnect(ExecOperations execOperations, SauceAccount account) {
+        super(execOperations)
         this.account = account
     }
 

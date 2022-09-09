@@ -17,7 +17,6 @@ package geb.gradle.browserstack
 
 import geb.gradle.cloud.ExternalTunnel
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
@@ -36,10 +35,9 @@ abstract class BrowserStackTunnel extends ExternalTunnel {
 
     @Inject
     BrowserStackTunnel(
-        Project project, ExecOperations execOperations, ObjectFactory objectFactory,
-        BrowserStackExtension extension
+        ExecOperations execOperations, ObjectFactory objectFactory, BrowserStackExtension extension
     ) {
-        super(project, execOperations)
+        super(execOperations)
         this.objectFactory = objectFactory
         this.extension = extension
     }
