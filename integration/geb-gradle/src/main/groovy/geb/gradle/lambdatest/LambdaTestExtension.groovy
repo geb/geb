@@ -32,7 +32,7 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     LambdaTestTunnelOps local
     boolean useTunnel = true
 
-    void addExtensions() {
+    protected void addExtensions() {
         super.addExtensions()
         account = new LambdaTestAccount()
         local = new LambdaTestTunnelOps(project)

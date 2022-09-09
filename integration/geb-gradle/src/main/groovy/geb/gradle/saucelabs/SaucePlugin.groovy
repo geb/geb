@@ -38,8 +38,6 @@ class SaucePlugin implements Plugin<Project> {
             'sauceLabs', SauceLabsExtension, allSauceLabsTests, "Sauce Test"
         )
 
-        sauceLabsExtension.addExtensions()
-
         addTunnelTasks(sauceLabsExtension)
     }
 

@@ -39,7 +39,6 @@ class BrowserStackPlugin implements Plugin<Project> {
         def browserStackExtension = project.extensions.create(
             'browserStack', BrowserStackExtension, allBrowserStackTests, "BrowserStack Test"
         )
-        browserStackExtension.addExtensions()
 
         addTunnelTasks(browserStackExtension)
     }

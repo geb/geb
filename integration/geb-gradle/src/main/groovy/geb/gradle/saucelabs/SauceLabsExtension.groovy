@@ -32,7 +32,7 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
     SauceAccount account
     boolean useTunnel = true
 
-    void addExtensions() {
+    protected void addExtensions() {
         super.addExtensions()
         account = new SauceAccount()
         connect = objectFactory.newInstance(SauceConnect, account)

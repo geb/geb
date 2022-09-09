@@ -40,7 +40,6 @@ class LambdaTestPlugin implements Plugin<Project> {
         def lambdaTestExtension = project.extensions.create(
             'lambdaTest', LambdaTestExtension, allLambdaTestTests, "LambdaTest Test"
         )
-        lambdaTestExtension.addExtensions()
 
         addTunnelTasks(lambdaTestExtension)
     }

@@ -50,13 +50,15 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
         }
 
         this.testTasks = project.objects.domainObjectSet(TaskProvider)
+
+        addExtensions()
     }
 
     abstract String getOpenTunnelInBackgroundTaskName()
     abstract String getCloseTunnelTaskName()
     abstract String getProviderName()
 
-    void addExtensions() {
+    protected void addExtensions() {
         browsers = objectFactory.domainObjectContainer(BrowserSpec) { name ->
             objectFactory.newInstance(BrowserSpec, providerName, name).tap { browserSpec ->
                 addTestTask(browserSpec)

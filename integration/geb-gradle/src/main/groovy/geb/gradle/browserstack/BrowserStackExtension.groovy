@@ -33,7 +33,7 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     List<URL> applicationUrls = []
     boolean useTunnel = true
 
-    void addExtensions() {
+    protected void addExtensions() {
         super.addExtensions()
         account = new BrowserStackAccount()
         local = new BrowserStackLocal()
