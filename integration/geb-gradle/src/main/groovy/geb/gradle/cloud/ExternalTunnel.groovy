@@ -52,6 +52,11 @@ abstract class ExternalTunnel {
     @PathSensitive(RELATIVE)
     abstract ConfigurableFileCollection getExecutable()
 
+    @Internal
+    String getExecutablePath() {
+        executable.asFileTree.singleFile.absolutePath
+    }
+
     void validateState() {
     }
 

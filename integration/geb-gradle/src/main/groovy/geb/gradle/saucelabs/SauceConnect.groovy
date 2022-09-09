@@ -58,7 +58,6 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
 
     @Override
     List<String> assembleCommandLine() {
-        def executablePath = executable.asFileTree.singleFile.absolutePath
         def options = [executablePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port.toString()]
         if (identifier) {
             options << '--tunnel-identifier' << identifier
