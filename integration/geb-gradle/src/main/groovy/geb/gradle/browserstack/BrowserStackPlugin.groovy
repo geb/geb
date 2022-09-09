@@ -48,9 +48,11 @@ class BrowserStackPlugin implements Plugin<Project> {
         def downloadBrowserStackTunnel = project.tasks.register('downloadBrowserStackTunnel', DownloadBrowserStackTunnel)
 
         def unzipBrowserStackTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
-            dependsOn downloadBrowserStackTunnel
-
-            from(project.zipTree(downloadBrowserStackTunnel.map { it.outputs.files.singleFile }))
+            from(
+                project.files(
+                    project.zipTree(downloadBrowserStackTunnel.map { it.outputs.files.singleFile })
+                ).builtBy(downloadBrowserStackTunnel)
+            )
             into(project.file("${project.buildDir}/browserstack/unzipped"))
         }
 
