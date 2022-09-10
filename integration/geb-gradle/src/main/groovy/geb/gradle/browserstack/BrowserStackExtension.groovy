@@ -33,13 +33,6 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     List<URL> applicationUrls = []
     boolean useTunnel = true
 
-    protected void addExtensions() {
-        super.addExtensions()
-        account = new BrowserStackAccount()
-        local = new BrowserStackLocal()
-        extensions.create('tunnel', BrowserStackTunnel, this)
-    }
-
     void account(Closure configuration) {
         project.configure(account, configuration)
         configureTestTasksWith(account)
@@ -56,5 +49,12 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
     void application(URL... urls) {
         applicationUrls.addAll(urls)
+    }
+
+    protected void addExtensions() {
+        super.addExtensions()
+        account = new BrowserStackAccount()
+        local = new BrowserStackLocal()
+        extensions.create('tunnel', BrowserStackTunnel, this)
     }
 }

@@ -32,13 +32,6 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     LambdaTestTunnelOps local
     boolean useTunnel = true
 
-    protected void addExtensions() {
-        super.addExtensions()
-        account = new LambdaTestAccount()
-        local = new LambdaTestTunnelOps(project)
-        extensions.create('tunnel', LambdaTestTunnel, this)
-    }
-
     void account(Closure configuration) {
         project.configure(account, configuration)
         configureTestTasksWith(account)
@@ -47,5 +40,12 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     void tunnelOps(Closure configuration) {
         project.configure(local, configuration)
         configureTestTasksWith(local)
+    }
+
+    protected void addExtensions() {
+        super.addExtensions()
+        account = new LambdaTestAccount()
+        local = new LambdaTestTunnelOps(project)
+        extensions.create('tunnel', LambdaTestTunnel, this)
     }
 }

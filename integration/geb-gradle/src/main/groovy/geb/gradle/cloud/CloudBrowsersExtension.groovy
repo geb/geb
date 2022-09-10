@@ -58,15 +58,6 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
     abstract String getCloseTunnelTaskName()
     abstract String getProviderName()
 
-    protected void addExtensions() {
-        browsers = objectFactory.domainObjectContainer(BrowserSpec) { name ->
-            objectFactory.newInstance(BrowserSpec, providerName, name).tap { browserSpec ->
-                addTestTask(browserSpec)
-            }
-        }
-        extensions.add("browsers", browsers)
-    }
-
     void task(Closure configuration) {
         testTasks.all { TaskProvider taskProvider ->
             taskProvider.configure(configuration)
@@ -78,6 +69,15 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
             def task = addTestTask(it, namePrefix)
             task.configure(configuration)
         }
+    }
+
+    protected void addExtensions() {
+        browsers = objectFactory.domainObjectContainer(BrowserSpec) { name ->
+            objectFactory.newInstance(BrowserSpec, providerName, name).tap { browserSpec ->
+                addTestTask(browserSpec)
+            }
+        }
+        extensions.add("browsers", browsers)
     }
 
     protected void configureTestTasksWith(TestTaskConfigurer configurer) {
