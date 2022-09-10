@@ -17,11 +17,24 @@ package geb.gradle.saucelabs
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
+import javax.inject.Inject
+
 class UnpackSauceConnect extends DefaultTask {
+
+    protected final FileSystemOperations fileSystemOperations
+    protected final ObjectFactory objectFactory
+
+    @Inject
+    UnpackSauceConnect(FileSystemOperations fileSystemOperations, ObjectFactory objectFactory) {
+        this.fileSystemOperations = fileSystemOperations
+        this.objectFactory = objectFactory
+    }
 
     @InputFiles
     Configuration getSauceConnectConfiguration() {
@@ -37,6 +50,18 @@ class UnpackSauceConnect extends DefaultTask {
     void unpack() {
         def operations = new SauceConnectOperations(sauceConnectConfiguration)
         def manager = operations.loadSauceConnectFourManagerClass().newInstance()
-        manager.extractZipFile(sauceConnectDir, operations.operatingSystem)
+
+        manager.extractZipFile(temporaryDir, operations.operatingSystem)
+
+        fileSystemOperations.delete {
+            it.delete(sauceConnectDir)
+        }
+        fileSystemOperations.copy {
+            it.from(
+                objectFactory.fileTree().from(temporaryDir)
+                    .include("${operations.directory}/${operations.operatingSystem.executable}")
+            )
+            into(sauceConnectDir)
+        }
     }
 }

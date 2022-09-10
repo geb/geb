@@ -42,19 +42,12 @@ class SaucePlugin implements Plugin<Project> {
     }
 
     void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {
+        project.configurations.create('sauceConnect')
         def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) { Task task ->
             task.onlyIf { sauceLabsExtension.useTunnel }
         }
 
-        def connectConfiguration = project.configurations.create('sauceConnect')
-
-        sauceLabsExtension.connect.executable.from {
-            def operations = new SauceConnectOperations(connectConfiguration)
-
-            project.fileTree(unpackSauceConnect.map { it.outputs.files.singleFile })
-                .builtBy(unpackSauceConnect)
-                .include("${operations.directory}/${operations.operatingSystem.executable}")
-        }
+        sauceLabsExtension.connect.executable.from(unpackSauceConnect)
 
         project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
             tunnel = project.sauceLabs.connect
