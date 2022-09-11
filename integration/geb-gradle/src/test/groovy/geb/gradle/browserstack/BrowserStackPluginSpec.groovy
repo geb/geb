@@ -17,10 +17,8 @@ package geb.gradle.browserstack
 
 import geb.gradle.PluginSpec
 
-import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
-import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-import static geb.gradle.browserstack.BrowserStackPlugin.UNZIP_TUNNEL_TASK_NAME
-import static org.gradle.testkit.runner.TaskOutcome.SKIPPED
+import static geb.gradle.browserstack.BrowserStackPlugin.*
+import static org.gradle.testkit.runner.TaskOutcome.NO_SOURCE
 
 class BrowserStackPluginSpec extends PluginSpec {
 
@@ -29,22 +27,27 @@ class BrowserStackPluginSpec extends PluginSpec {
         buildScript """
             plugins {
                 id 'geb-browserstack'
+                id 'java'
             }
 
             browserStack {
                 useTunnel = false
+                browsers {
+                    chromeLinux
+                }
             }
         """
 
         when:
-        def buildResult = runBuild(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME)
+        def buildResult = runBuild("chromeLinuxTest")
 
         then:
         with(buildResult) {
-            task(":downloadBrowserStackTunnel").outcome == SKIPPED
-            task(":$UNZIP_TUNNEL_TASK_NAME").outcome == SKIPPED
-            task(":$OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME").outcome == SKIPPED
-            task(":$CLOSE_TUNNEL_TASK_NAME").outcome == SKIPPED
+            task(":chromeLinuxTest").outcome == NO_SOURCE
+            !task(":downloadBrowserStackTunnel")
+            !task(":$UNZIP_TUNNEL_TASK_NAME")
+            !task(":$OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME")
+            !task(":$CLOSE_TUNNEL_TASK_NAME")
         }
     }
 

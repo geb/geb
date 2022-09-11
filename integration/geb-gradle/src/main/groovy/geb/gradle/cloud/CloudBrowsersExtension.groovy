@@ -15,6 +15,7 @@
  */
 package geb.gradle.cloud
 
+import geb.gradle.ConditionalTaskDependency
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
@@ -22,6 +23,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.provider.Property
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskProvider
@@ -51,12 +53,16 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
 
         this.testTasks = project.objects.domainObjectSet(TaskProvider)
 
+        useTunnel.convention(true)
+
         addExtensions()
     }
 
     abstract String getOpenTunnelInBackgroundTaskName()
     abstract String getCloseTunnelTaskName()
     abstract String getProviderName()
+
+    abstract Property<Boolean> getUseTunnel()
 
     void task(Closure configuration) {
         testTasks.all { TaskProvider taskProvider ->
@@ -91,8 +97,12 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
 
         def testTask = project.tasks.register("${name}Test", Test) { Test task ->
             task.group = tasksGroup
-            task.dependsOn openTunnelInBackgroundTaskName
-            finalizedBy closeTunnelTaskName
+            task.dependsOn(
+                new ConditionalTaskDependency(useTunnel.&get, project.tasks.named(openTunnelInBackgroundTaskName))
+            )
+            finalizedBy(
+                new ConditionalTaskDependency(useTunnel.&get, project.tasks.named(closeTunnelTaskName))
+            )
 
             def reporting = project.reporting as ReportingExtension
             def gebReportsDir = reporting.file("geb/${task.name}")

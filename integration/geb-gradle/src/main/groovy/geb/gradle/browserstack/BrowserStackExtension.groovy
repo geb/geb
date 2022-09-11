@@ -31,7 +31,6 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     BrowserStackAccount account
     BrowserStackLocal local
     List<URL> applicationUrls = []
-    boolean useTunnel = true
 
     void account(Closure configuration) {
         project.configure(account, configuration)

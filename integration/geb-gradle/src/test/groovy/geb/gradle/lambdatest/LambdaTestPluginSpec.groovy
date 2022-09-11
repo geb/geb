@@ -17,11 +17,8 @@ package geb.gradle.lambdatest
 
 import geb.gradle.PluginSpec
 
-import static LambdaTestPlugin.CLOSE_TUNNEL_TASK_NAME
-import static LambdaTestPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-import static LambdaTestPlugin.UNZIP_TUNNEL_TASK_NAME
-import static LambdaTestPlugin.DOWNLOAD_TUNNEL_TASK_NAME
-import static org.gradle.testkit.runner.TaskOutcome.SKIPPED
+import static geb.gradle.lambdatest.LambdaTestPlugin.*
+import static org.gradle.testkit.runner.TaskOutcome.NO_SOURCE
 
 class LambdaTestPluginSpec extends PluginSpec {
 
@@ -30,22 +27,27 @@ class LambdaTestPluginSpec extends PluginSpec {
         buildScript """
             plugins {
                 id 'geb-lambdatest'
+                id 'java'
             }
 
             lambdaTest {
                 useTunnel = false
+                browsers {
+                    chromeLinux
+                }
             }
         """
 
         when:
-        def buildResult = runBuild(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME)
+        def buildResult = runBuild("chromeLinuxTest")
 
         then:
         with(buildResult) {
-            task(":$DOWNLOAD_TUNNEL_TASK_NAME").outcome == SKIPPED
-            task(":$UNZIP_TUNNEL_TASK_NAME").outcome == SKIPPED
-            task(":$OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME").outcome == SKIPPED
-            task(":$CLOSE_TUNNEL_TASK_NAME").outcome == SKIPPED
+            task(":chromeLinuxTest").outcome == NO_SOURCE
+            !task(":$DOWNLOAD_TUNNEL_TASK_NAME")
+            !task(":$UNZIP_TUNNEL_TASK_NAME")
+            !task(":$OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME")
+            !task(":$CLOSE_TUNNEL_TASK_NAME")
         }
     }
 

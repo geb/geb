@@ -17,10 +17,8 @@ package geb.gradle.saucelabs
 
 import geb.gradle.PluginSpec
 
-import static geb.gradle.saucelabs.SaucePlugin.CLOSE_TUNNEL_TASK_NAME
-import static geb.gradle.saucelabs.SaucePlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-import static geb.gradle.saucelabs.SaucePlugin.UNPACK_CONNECT_TASK_NAME
-import static org.gradle.testkit.runner.TaskOutcome.SKIPPED
+import static geb.gradle.saucelabs.SaucePlugin.*
+import static org.gradle.testkit.runner.TaskOutcome.NO_SOURCE
 
 class SaucePluginSpec extends PluginSpec {
 
@@ -29,21 +27,26 @@ class SaucePluginSpec extends PluginSpec {
         buildScript """
             plugins {
                 id 'geb-saucelabs'
+                id 'java'
             }
 
             sauceLabs {
                 useTunnel = false
+                browsers {
+                    chromeLinux
+                }
             }
         """
 
         when:
-        def buildResult = runBuild(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME)
+        def buildResult = runBuild("chromeLinuxTest")
 
         then:
         with(buildResult) {
-            task(":$UNPACK_CONNECT_TASK_NAME").outcome == SKIPPED
-            task(":$OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME").outcome == SKIPPED
-            task(":$CLOSE_TUNNEL_TASK_NAME").outcome == SKIPPED
+            task(":chromeLinuxTest").outcome == NO_SOURCE
+            !task(":$UNPACK_CONNECT_TASK_NAME")
+            !task(":$OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME")
+            !task(":$CLOSE_TUNNEL_TASK_NAME")
         }
     }
 

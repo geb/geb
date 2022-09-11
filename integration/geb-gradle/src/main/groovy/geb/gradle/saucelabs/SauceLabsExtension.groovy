@@ -30,7 +30,6 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
 
     SauceConnect connect
     SauceAccount account
-    boolean useTunnel = true
 
     void account(Closure configuration) {
         project.configure(account, configuration)

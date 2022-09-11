@@ -30,7 +30,6 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
 
     LambdaTestAccount account
     LambdaTestTunnelOps local
-    boolean useTunnel = true
 
     void account(Closure configuration) {
         project.configure(account, configuration)

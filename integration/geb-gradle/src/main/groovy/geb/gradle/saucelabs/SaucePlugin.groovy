@@ -19,7 +19,6 @@ import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.cloud.task.StopExternalTunnel
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 
 class SaucePlugin implements Plugin<Project> {
 
@@ -43,15 +42,12 @@ class SaucePlugin implements Plugin<Project> {
 
     void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {
         project.configurations.create('sauceConnect')
-        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) { Task task ->
-            task.onlyIf { sauceLabsExtension.useTunnel }
-        }
+        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect)
 
         sauceLabsExtension.connect.executable.from(unpackSauceConnect)
 
         project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
             tunnel = project.sauceLabs.connect
-            onlyIf { sauceLabsExtension.useTunnel }
         }
 
         def openSauceTunnel = project.tasks.register('openSauceTunnel', StartExternalTunnel)
@@ -59,7 +55,6 @@ class SaucePlugin implements Plugin<Project> {
         def openSauceTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
             inBackground = true
             finalizedBy CLOSE_TUNNEL_TASK_NAME
-            onlyIf { sauceLabsExtension.useTunnel }
         }
 
         [openSauceTunnel, openSauceTunnelInBackground]*.configure {

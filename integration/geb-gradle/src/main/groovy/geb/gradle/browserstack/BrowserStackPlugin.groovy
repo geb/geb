@@ -57,7 +57,7 @@ class BrowserStackPlugin implements Plugin<Project> {
 
         browserStackExtension.extensions.getByType(BrowserStackTunnel).executable.from(unzipBrowserStackTunnel)
 
-        def closeBrowserStackTunnel = project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
+        project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
             tunnel = project.browserStack.tunnel
         }
 
@@ -71,13 +71,6 @@ class BrowserStackPlugin implements Plugin<Project> {
         [openBrowserStackTunnel, openBrowserStackTunnelInBackground]*.configure {
             tunnel = project.browserStack.tunnel
             workingDir = project.buildDir
-        }
-
-        [
-            downloadBrowserStackTunnel, unzipBrowserStackTunnel, openBrowserStackTunnelInBackground,
-            closeBrowserStackTunnel
-        ]*.configure {
-            onlyIf { browserStackExtension.useTunnel }
         }
     }
 }
