@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package geb.gradle.browserstack
+package geb.gradle
 
-import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 
-abstract class BrowserStackAccount {
-    public static final String USER_ENV_VAR = "GEB_BROWSERSTACK_USERNAME"
-    public static final String ACCESS_KEY_ENV_VAR = "GEB_BROWSERSTACK_AUTHKEY"
+class ToStringProviderValue {
 
-    abstract Property<String> getUsername()
-    abstract Property<String> getAccessKey()
+    private final Provider<String> provider
+
+    ToStringProviderValue(Provider<String> provider) {
+        this.provider = provider
+    }
+
+    @Override
+    String toString() {
+        provider.get()
+    }
 }

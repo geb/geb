@@ -15,8 +15,11 @@
  */
 package geb.gradle.browserstack
 
+import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.testing.Test
 
 import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
@@ -28,14 +31,8 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "browserstack"
 
-    BrowserStackAccount account
     BrowserStackLocal local
     List<URL> applicationUrls = []
-
-    void account(Closure configuration) {
-        project.configure(account, configuration)
-        configureTestTasksWith(account)
-    }
 
     void local(Closure configuration) {
         project.configure(local, configuration)
@@ -52,8 +49,20 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
     protected void addExtensions() {
         super.addExtensions()
-        account = new BrowserStackAccount()
-        local = new BrowserStackLocal()
-        extensions.create('tunnel', BrowserStackTunnel, this)
+        def account = extensions.create("account", BrowserStackAccount)
+
+        testTasks.all { TaskProvider<Test> taskProvider ->
+            taskProvider.configure { test ->
+                test.environment(
+                    (BrowserStackAccount.USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
+                    (BrowserStackAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+                )
+            }
+        }
+
+        local = extensions.create("local", BrowserStackLocal)
+
+        def tunnel = extensions.create('tunnel', BrowserStackTunnel, this)
+        tunnel.accessKey.convention(account.accessKey)
     }
 }
