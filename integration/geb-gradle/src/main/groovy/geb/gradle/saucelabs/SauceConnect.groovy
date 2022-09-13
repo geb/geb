@@ -18,6 +18,7 @@ package geb.gradle.saucelabs
 import geb.gradle.cloud.ExternalTunnel
 import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.testing.Test
 import org.gradle.process.ExecOperations
@@ -27,8 +28,6 @@ import javax.inject.Inject
 abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
 
     public static final String TUNNEL_ID_ENV_VAR = "GEB_SAUCE_LABS_TUNNEL_ID"
-
-    final protected SauceAccount account
 
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
@@ -43,21 +42,26 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
     List<String> additionalOptions = []
 
     @Inject
-    SauceConnect(ExecOperations execOperations, SauceAccount account) {
+    SauceConnect(ExecOperations execOperations) {
         super(execOperations)
-        this.account = account
     }
+
+    @Internal
+    abstract Property<String> getUsername()
+
+    @Internal
+    abstract Property<String> getAccessKey()
 
     @Override
     void validateState() {
-        if (!account.username || !account.accessKey) {
+        if (!username.present || !accessKey.present) {
             throw new InvalidUserDataException('No sauce labs username or passwords set')
         }
     }
 
     @Override
     List<String> assembleCommandLine() {
-        def options = [executablePath, '--user', account.username, '--api-key', account.accessKey, '--se-port', port.toString()]
+        def options = [executablePath, '--user', username.get(), '--api-key', accessKey.get(), '--se-port', port.toString()]
         if (identifier) {
             options << '--tunnel-identifier' << identifier
         }

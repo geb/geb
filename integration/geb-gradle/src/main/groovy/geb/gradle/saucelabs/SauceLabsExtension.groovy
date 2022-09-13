@@ -15,9 +15,12 @@
  */
 package geb.gradle.saucelabs
 
+import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
 
+import static geb.gradle.saucelabs.SauceAccount.ACCESS_KEY_ENV_VAR
+import static geb.gradle.saucelabs.SauceAccount.USER_ENV_VAR
 import static geb.gradle.saucelabs.SaucePlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.saucelabs.SaucePlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
 
@@ -29,12 +32,6 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
     final String providerName = "saucelabs"
 
     SauceConnect connect
-    SauceAccount account
-
-    void account(Closure configuration) {
-        project.configure(account, configuration)
-        configureTestTasksWith(account)
-    }
 
     void connect(Closure configuration) {
         project.configure(connect, configuration)
@@ -43,7 +40,17 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
 
     protected void addExtensions() {
         super.addExtensions()
-        account = new SauceAccount()
-        connect = objectFactory.newInstance(SauceConnect, account)
+        def account = extensions.create("account", SauceAccount)
+
+        task {
+            it.environment(
+                (USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
+                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+            )
+        }
+
+        connect = objectFactory.newInstance(SauceConnect)
+        connect.username.convention(account.username)
+        connect.accessKey.convention(account.accessKey)
     }
 }

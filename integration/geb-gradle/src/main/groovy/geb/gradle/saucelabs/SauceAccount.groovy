@@ -15,18 +15,12 @@
  */
 package geb.gradle.saucelabs
 
-import geb.gradle.cloud.TestTaskConfigurer
-import org.gradle.api.tasks.testing.Test
+import org.gradle.api.provider.Property
 
-class SauceAccount implements TestTaskConfigurer {
+abstract class SauceAccount {
     public static final String USER_ENV_VAR = "GEB_SAUCE_LABS_USER"
     public static final String ACCESS_KEY_ENV_VAR = "GEB_SAUCE_LABS_ACCESS_PASSWORD"
 
-    String username
-    String accessKey
-
-    void configure(Test test) {
-        test.environment(USER_ENV_VAR, username)
-        test.environment(ACCESS_KEY_ENV_VAR, accessKey)
-    }
+    abstract Property<String> getUsername()
+    abstract Property<String> getAccessKey()
 }
