@@ -18,8 +18,6 @@ package geb.gradle.browserstack
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
-import org.gradle.api.tasks.TaskProvider
-import org.gradle.api.tasks.testing.Test
 
 import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
@@ -51,13 +49,11 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
         super.addExtensions()
         def account = extensions.create("account", BrowserStackAccount)
 
-        testTasks.all { TaskProvider<Test> taskProvider ->
-            taskProvider.configure { test ->
-                test.environment(
-                    (BrowserStackAccount.USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
-                    (BrowserStackAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
-                )
-            }
+        task { test ->
+            test.environment(
+                (BrowserStackAccount.USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
+                (BrowserStackAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+            )
         }
 
         local = extensions.create("local", BrowserStackLocal)

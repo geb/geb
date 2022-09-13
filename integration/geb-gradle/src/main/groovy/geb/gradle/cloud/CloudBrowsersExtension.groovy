@@ -17,6 +17,7 @@ package geb.gradle.cloud
 
 import geb.gradle.ConditionalTaskDependency
 import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
+import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -64,13 +65,13 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
 
     abstract Property<Boolean> getUseTunnel()
 
-    void task(Closure configuration) {
+    void task(Action<Test> configuration) {
         testTasks.all { TaskProvider taskProvider ->
             taskProvider.configure(configuration)
         }
     }
 
-    void additionalTask(String namePrefix, Closure configuration) {
+    void additionalTask(String namePrefix, Action<Test> configuration) {
         browsers.all {
             def task = addTestTask(it, namePrefix)
             task.configure(configuration)
