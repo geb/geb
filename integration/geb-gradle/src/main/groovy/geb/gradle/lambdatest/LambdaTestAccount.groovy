@@ -15,22 +15,12 @@
  */
 package geb.gradle.lambdatest
 
-import geb.gradle.cloud.TestTaskConfigurer
-import org.gradle.api.tasks.testing.Test
+import org.gradle.api.provider.Property
 
-class LambdaTestAccount implements TestTaskConfigurer {
+abstract class LambdaTestAccount {
     public static final String USER_ENV_VAR = "GEB_LAMBDATEST_USERNAME"
     public static final String ACCESS_KEY_ENV_VAR = "GEB_LAMBDATEST_AUTHKEY"
 
-    String username
-    String accessKey
-
-    void configure(Test test) {
-        if (username) {
-            test.environment(USER_ENV_VAR, username)
-        }
-        if (accessKey) {
-            test.environment(ACCESS_KEY_ENV_VAR, accessKey)
-        }
-    }
+    abstract Property<String> getUsername()
+    abstract Property<String> getAccessKey()
 }

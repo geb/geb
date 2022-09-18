@@ -15,6 +15,7 @@
  */
 package geb.gradle.lambdatest
 
+import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
 
@@ -28,13 +29,7 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "lambdatest"
 
-    LambdaTestAccount account
     LambdaTestTunnelOps local
-
-    void account(Closure configuration) {
-        project.configure(account, configuration)
-        configureTestTasksWith(account)
-    }
 
     void tunnelOps(Closure configuration) {
         project.configure(local, configuration)
@@ -43,8 +38,18 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
 
     protected void addExtensions() {
         super.addExtensions()
-        account = new LambdaTestAccount()
+        def account = extensions.create("account", LambdaTestAccount)
+
+        task { test ->
+            test.environment(
+                (LambdaTestAccount.USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
+                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+            )
+        }
+
         local = new LambdaTestTunnelOps(project)
-        extensions.create('tunnel', LambdaTestTunnel, this)
+        def tunnel = extensions.create('tunnel', LambdaTestTunnel, this)
+        tunnel.username.convention(account.username)
+        tunnel.accessKey.convention(account.accessKey)
     }
 }

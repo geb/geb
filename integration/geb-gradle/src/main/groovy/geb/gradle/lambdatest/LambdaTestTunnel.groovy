@@ -19,6 +19,7 @@ import geb.gradle.cloud.ExternalTunnel
 
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
 
@@ -42,12 +43,18 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
         this.extension = extension
     }
 
+    @Internal
+    abstract Property<String> getUsername()
+
+    @Internal
+    abstract Property<String> getAccessKey()
+
     @Override
     void validateState() {
-        if (!extension.account.username) {
+        if (!username.present) {
             throw new InvalidUserDataException("LambdaTest username not provided")
         }
-        if (!extension.account.accessKey) {
+        if (!accessKey.present) {
             throw new InvalidUserDataException("LambdaTest accesskey not provided")
         }
     }
@@ -55,8 +62,8 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
     @Override
     List<String> assembleCommandLine() {
         def commandLine = [executablePath]
-        commandLine << "--user" << extension.account.username
-        commandLine << "--key" << extension.account.accessKey
+        commandLine << "--user" << username.get()
+        commandLine << "--key" << accessKey.get()
         commandLine << "-v"
         if (extension.local.tunnelName) {
             commandLine << '--tunnelName' << extension.local.tunnelName
