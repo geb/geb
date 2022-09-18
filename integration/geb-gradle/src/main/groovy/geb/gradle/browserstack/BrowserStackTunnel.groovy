@@ -16,7 +16,6 @@
 package geb.gradle.browserstack
 
 import geb.gradle.cloud.ExternalTunnel
-import org.gradle.api.InvalidUserDataException
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
@@ -53,13 +52,6 @@ abstract class BrowserStackTunnel extends ExternalTunnel {
 
     @Internal
     abstract Property<String> getAccessKey()
-
-    @Override
-    void validateState() {
-        if (!accessKey.present) {
-            throw new InvalidUserDataException('No BrowserStack access key set')
-        }
-    }
 
     @Override
     List<String> assembleCommandLine() {

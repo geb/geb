@@ -53,9 +53,6 @@ abstract class ExternalTunnel {
         executable.asFileTree.singleFile.absolutePath
     }
 
-    void validateState() {
-    }
-
     @Internal
     abstract String getOutputPrefix()
 
@@ -65,8 +62,6 @@ abstract class ExternalTunnel {
     abstract String getTunnelReadyMessage()
 
     void startTunnel(File workingDir, boolean background) {
-        validateState()
-
         def command = assembleCommandLine()*.toString()
         log.debug("Executing command: {}", command)
         if (background) {

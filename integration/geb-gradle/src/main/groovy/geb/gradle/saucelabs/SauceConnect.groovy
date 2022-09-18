@@ -17,7 +17,6 @@ package geb.gradle.saucelabs
 
 import geb.gradle.cloud.ExternalTunnel
 import geb.gradle.cloud.TestTaskConfigurer
-import org.gradle.api.InvalidUserDataException
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.testing.Test
@@ -51,13 +50,6 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
 
     @Internal
     abstract Property<String> getAccessKey()
-
-    @Override
-    void validateState() {
-        if (!username.present || !accessKey.present) {
-            throw new InvalidUserDataException('No sauce labs username or passwords set')
-        }
-    }
 
     @Override
     List<String> assembleCommandLine() {

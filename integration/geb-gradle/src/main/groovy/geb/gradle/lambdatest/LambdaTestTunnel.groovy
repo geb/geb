@@ -16,8 +16,6 @@
 package geb.gradle.lambdatest
 
 import geb.gradle.cloud.ExternalTunnel
-
-import org.gradle.api.InvalidUserDataException
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
@@ -48,16 +46,6 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
 
     @Internal
     abstract Property<String> getAccessKey()
-
-    @Override
-    void validateState() {
-        if (!username.present) {
-            throw new InvalidUserDataException("LambdaTest username not provided")
-        }
-        if (!accessKey.present) {
-            throw new InvalidUserDataException("LambdaTest accesskey not provided")
-        }
-    }
 
     @Override
     List<String> assembleCommandLine() {
