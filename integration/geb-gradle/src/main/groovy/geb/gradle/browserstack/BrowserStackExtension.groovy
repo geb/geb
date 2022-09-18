@@ -18,6 +18,8 @@ package geb.gradle.browserstack
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
+import org.gradle.api.Action
+import org.gradle.api.tasks.Nested
 
 import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
@@ -33,9 +35,16 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     BrowserStackLocal local
     List<URL> applicationUrls = []
 
+    @Nested
+    abstract BrowserStackAccount getAccount()
+
     void local(Closure configuration) {
         project.configure(local, configuration)
         configureTestTasksWith(local)
+    }
+
+    void account(Action<? super BrowserStackAccount> action) {
+        action.execute(account)
     }
 
     void application(String... urls) {
@@ -48,7 +57,6 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
     protected void addExtensions() {
         super.addExtensions()
-        def account = extensions.create("account", BrowserStackAccount)
 
         task { test ->
             test.environment(
