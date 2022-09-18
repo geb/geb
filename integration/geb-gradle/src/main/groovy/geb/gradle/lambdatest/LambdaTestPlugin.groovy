@@ -56,10 +56,10 @@ class LambdaTestPlugin implements Plugin<Project> {
             into(project.file("${project.buildDir}/lambdatest/unzipped"))
         }
 
-        lambdaTestExtension.extensions.getByType(LambdaTestTunnel).executable.from(unzipLambdaTestTunnel)
+        lambdaTestExtension.tunnel.executable.from(unzipLambdaTestTunnel)
 
         project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopLambdaTestTunnel) {
-            tunnel = project.lambdaTest.tunnel
+            tunnel = lambdaTestExtension.tunnel
             lambdaTestTunnelOps = lambdaTestExtension.local
         }
 
@@ -71,7 +71,7 @@ class LambdaTestPlugin implements Plugin<Project> {
         }
 
         [openLambdaTestTunnel, openLambdaTestTunnelInBackground]*.configure {
-            tunnel = project.lambdaTest.tunnel
+            tunnel = lambdaTestExtension.tunnel
             workingDir = project.buildDir
         }
     }

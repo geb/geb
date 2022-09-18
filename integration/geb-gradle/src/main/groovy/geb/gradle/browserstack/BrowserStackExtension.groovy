@@ -29,6 +29,7 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "browserstack"
 
+    BrowserStackTunnel tunnel
     BrowserStackLocal local
     List<URL> applicationUrls = []
 
@@ -58,7 +59,7 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
         local = extensions.create("local", BrowserStackLocal)
 
-        def tunnel = extensions.create('tunnel', BrowserStackTunnel, this)
+        tunnel = objectFactory.newInstance(BrowserStackTunnel, this)
         tunnel.accessKey.convention(account.accessKey)
     }
 }

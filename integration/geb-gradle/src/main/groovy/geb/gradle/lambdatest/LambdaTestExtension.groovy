@@ -29,6 +29,7 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "lambdatest"
 
+    LambdaTestTunnel tunnel
     LambdaTestTunnelOps local
 
     void tunnelOps(Closure configuration) {
@@ -48,7 +49,7 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
         }
 
         local = new LambdaTestTunnelOps(project)
-        def tunnel = extensions.create('tunnel', LambdaTestTunnel, this)
+        tunnel = objectFactory.newInstance(LambdaTestTunnel, this)
         tunnel.username.convention(account.username)
         tunnel.accessKey.convention(account.accessKey)
     }
