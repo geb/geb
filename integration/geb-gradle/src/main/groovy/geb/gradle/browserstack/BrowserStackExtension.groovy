@@ -60,8 +60,8 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
         task { test ->
             test.environment(
-                (BrowserStackAccount.USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
-                (BrowserStackAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+                (BrowserStackAccount.USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (BrowserStackAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey)
             )
         }
 

@@ -51,8 +51,8 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
 
         task { test ->
             test.environment(
-                (LambdaTestAccount.USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
-                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+                (LambdaTestAccount.USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey)
             )
         }
 

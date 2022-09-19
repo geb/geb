@@ -52,8 +52,8 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
 
         task {
             it.environment(
-                (USER_ENV_VAR): new ToStringProviderValue(account.username.orElse("")),
-                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey.orElse(""))
+                (USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey)
             )
         }
 
