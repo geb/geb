@@ -23,6 +23,7 @@ import org.gradle.api.tasks.Nested
 
 import static geb.gradle.saucelabs.SauceAccount.ACCESS_KEY_ENV_VAR
 import static geb.gradle.saucelabs.SauceAccount.USER_ENV_VAR
+import static geb.gradle.saucelabs.SauceConnect.TUNNEL_ID_ENV_VAR
 import static geb.gradle.saucelabs.SaucePlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.saucelabs.SaucePlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
 
@@ -33,14 +34,14 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "saucelabs"
 
-    SauceConnect connect
+    @Nested
+    abstract SauceConnect getConnect()
 
     @Nested
     abstract SauceAccount getAccount()
 
-    void connect(Closure configuration) {
-        project.configure(connect, configuration)
-        configureTestTasksWith(connect)
+    void connect(Action<? super SauceConnect> action) {
+        action.execute(connect)
     }
 
     void account(Action<? super SauceAccount> action) {
@@ -50,15 +51,15 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
     protected void addExtensions() {
         super.addExtensions()
 
+        connect.username.convention(account.username)
+        connect.accessKey.convention(account.accessKey)
+
         task {
             it.environment(
                 (USER_ENV_VAR): new ToStringProviderValue(account.username),
-                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey)
+                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
+                (TUNNEL_ID_ENV_VAR): new ToStringProviderValue(connect.identifier)
             )
         }
-
-        connect = objectFactory.newInstance(SauceConnect)
-        connect.username.convention(account.username)
-        connect.accessKey.convention(account.accessKey)
     }
 }

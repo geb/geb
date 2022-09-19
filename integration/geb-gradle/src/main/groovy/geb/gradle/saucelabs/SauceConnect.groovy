@@ -16,23 +16,18 @@
 package geb.gradle.saucelabs
 
 import geb.gradle.cloud.ExternalTunnel
-import geb.gradle.cloud.TestTaskConfigurer
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.testing.Test
 import org.gradle.process.ExecOperations
 
 import javax.inject.Inject
 
-abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer {
+abstract class SauceConnect extends ExternalTunnel {
 
     public static final String TUNNEL_ID_ENV_VAR = "GEB_SAUCE_LABS_TUNNEL_ID"
 
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
-
-    @Internal
-    String identifier
 
     @Internal
     int port = 4445
@@ -43,6 +38,7 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
     @Inject
     SauceConnect(ExecOperations execOperations) {
         super(execOperations)
+        identifier.convention("")
     }
 
     @Internal
@@ -51,16 +47,13 @@ abstract class SauceConnect extends ExternalTunnel implements TestTaskConfigurer
     @Internal
     abstract Property<String> getAccessKey()
 
+    @Internal
+    abstract Property<String> getIdentifier()
+
     @Override
     List<String> assembleCommandLine() {
         def options = [executablePath, '--user', username.get(), '--api-key', accessKey.get(), '--se-port', port.toString()]
-        if (identifier) {
-            options << '--tunnel-identifier' << identifier
-        }
+        options << '--tunnel-identifier' << identifier.get()
         options + additionalOptions
-    }
-
-    void configure(Test test) {
-        test.environment(TUNNEL_ID_ENV_VAR, identifier)
     }
 }

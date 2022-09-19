@@ -58,7 +58,7 @@ class SaucePlugin implements Plugin<Project> {
         }
 
         [openSauceTunnel, openSauceTunnelInBackground]*.configure {
-            tunnel = project.sauceLabs.connect
+            tunnel = sauceLabsExtension.connect
             workingDir = project.buildDir
         }
     }
