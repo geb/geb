@@ -18,6 +18,8 @@ package geb.gradle.saucelabs
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
+import org.gradle.api.Action
+import org.gradle.api.tasks.Nested
 
 import static geb.gradle.saucelabs.SauceAccount.ACCESS_KEY_ENV_VAR
 import static geb.gradle.saucelabs.SauceAccount.USER_ENV_VAR
@@ -33,14 +35,20 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
 
     SauceConnect connect
 
+    @Nested
+    abstract SauceAccount getAccount()
+
     void connect(Closure configuration) {
         project.configure(connect, configuration)
         configureTestTasksWith(connect)
     }
 
+    void account(Action<? super SauceAccount> action) {
+        action.execute(account)
+    }
+
     protected void addExtensions() {
         super.addExtensions()
-        def account = extensions.create("account", SauceAccount)
 
         task {
             it.environment(
