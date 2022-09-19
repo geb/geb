@@ -18,6 +18,8 @@ package geb.gradle.lambdatest
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
+import org.gradle.api.Action
+import org.gradle.api.tasks.Nested
 
 import static geb.gradle.lambdatest.LambdaTestPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.lambdatest.LambdaTestPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
@@ -32,14 +34,20 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     LambdaTestTunnel tunnel
     LambdaTestTunnelOps local
 
+    @Nested
+    abstract LambdaTestAccount getAccount()
+
     void tunnelOps(Closure configuration) {
         project.configure(local, configuration)
         configureTestTasksWith(local)
     }
 
+    void account(Action<? super LambdaTestAccount> action) {
+        action.execute(account)
+    }
+
     protected void addExtensions() {
         super.addExtensions()
-        def account = extensions.create("account", LambdaTestAccount)
 
         task { test ->
             test.environment(
