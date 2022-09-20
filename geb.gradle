@@ -46,6 +46,7 @@ tasks.register("stage", Sync) {
 ideaProjectComponents { components ->
     components.file "gradle/idea/codeStyle.xml"
     components.file "gradle/idea/codeStyleGroovy.xml"
+    components.file "gradle/idea/InspectionProjectProfileManager.xml"
 }
 
 idea {
