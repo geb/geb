@@ -68,7 +68,7 @@ abstract class BrowserStackLocal extends ExternalTunnel {
     @Override
     List<Object> assembleCommandLine() {
         def commandLine = [executablePath, accessKey.get(), '-localIdentifier', identifier.get()]
-        if (applicationUrls.present) {
+        if (applicationUrls.getOrElse([])) {
             commandLine << "-only" << assembleAppSpecifier()
         }
         if (proxyHost.present) {
