@@ -48,7 +48,7 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
     abstract Property<String> getAccessKey()
 
     @Override
-    List<String> assembleCommandLine() {
+    List<Object> assembleCommandLine() {
         def commandLine = [executablePath]
         commandLine << "--user" << username.get()
         commandLine << "--key" << accessKey.get()

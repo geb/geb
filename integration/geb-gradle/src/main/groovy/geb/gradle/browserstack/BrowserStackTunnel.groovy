@@ -54,7 +54,7 @@ abstract class BrowserStackTunnel extends ExternalTunnel {
     abstract Property<String> getAccessKey()
 
     @Override
-    List<String> assembleCommandLine() {
+    List<Object> assembleCommandLine() {
         def commandLine = [executablePath, accessKey.get()]
         if (extension.local.identifier) {
             commandLine << '-localIdentifier' << extension.local.identifier

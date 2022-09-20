@@ -17,6 +17,7 @@ package geb.gradle.cloud
 
 import groovy.util.logging.Slf4j
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.PathSensitive
@@ -34,14 +35,10 @@ abstract class ExternalTunnel {
 
     protected Process tunnelProcess
 
-    @Internal
-    long timeout = 3
-
-    @Internal
-    TimeUnit timeoutUnit = TimeUnit.MINUTES
-
     ExternalTunnel(ExecOperations execOperations) {
         this.execOperations = execOperations
+        timeout.convention(3)
+        timeoutUnit.convention(TimeUnit.MINUTES)
     }
 
     @InputFiles
@@ -49,17 +46,23 @@ abstract class ExternalTunnel {
     abstract ConfigurableFileCollection getExecutable()
 
     @Internal
-    String getExecutablePath() {
-        executable.asFileTree.singleFile.absolutePath
-    }
+    abstract Property<Integer> getTimeout()
+
+    @Internal
+    abstract Property<TimeUnit> getTimeoutUnit()
 
     @Internal
     abstract String getOutputPrefix()
 
-    abstract List<String> assembleCommandLine()
+    abstract List<Object> assembleCommandLine()
 
     @Internal
     abstract String getTunnelReadyMessage()
+
+    @Internal
+    String getExecutablePath() {
+        executable.asFileTree.singleFile.absolutePath
+    }
 
     void startTunnel(File workingDir, boolean background) {
         def command = assembleCommandLine()*.toString()
@@ -88,7 +91,7 @@ abstract class ExternalTunnel {
                 }
             }
 
-            if (!latch.await(timeout, timeoutUnit)) {
+            if (!latch.await(timeout.get(), timeoutUnit.get())) {
                 throw new RuntimeException("Timeout waiting for tunnel to open")
             }
         } else {

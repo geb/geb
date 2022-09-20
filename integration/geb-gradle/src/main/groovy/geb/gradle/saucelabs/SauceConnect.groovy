@@ -16,6 +16,7 @@
 package geb.gradle.saucelabs
 
 import geb.gradle.cloud.ExternalTunnel
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
@@ -29,16 +30,12 @@ abstract class SauceConnect extends ExternalTunnel {
     final String outputPrefix = 'sauce-connect'
     final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
-    @Internal
-    int port = 4445
-
-    @Internal
-    List<String> additionalOptions = []
-
     @Inject
     SauceConnect(ExecOperations execOperations) {
         super(execOperations)
         identifier.convention("")
+        port.convention(4445)
+        additionalOptions.convention([])
     }
 
     @Internal
@@ -50,10 +47,20 @@ abstract class SauceConnect extends ExternalTunnel {
     @Internal
     abstract Property<String> getIdentifier()
 
+    @Internal
+    abstract Property<Integer> getPort()
+
+    @Internal
+    abstract ListProperty<String> getAdditionalOptions()
+
     @Override
-    List<String> assembleCommandLine() {
-        def options = [executablePath, '--user', username.get(), '--api-key', accessKey.get(), '--se-port', port.toString()]
-        options << '--tunnel-identifier' << identifier.get()
-        options + additionalOptions
+    List<Object> assembleCommandLine() {
+        [
+            executablePath,
+            '--user', username.get(),
+            '--api-key', accessKey.get(),
+            '--se-port', port.get(),
+            '--tunnel-identifier', identifier.get()
+        ] + additionalOptions.get()
     }
 }
