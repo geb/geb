@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,88 @@
  */
 package geb.gradle.browserstack
 
-import geb.gradle.cloud.TestTaskConfigurer
-import org.gradle.api.tasks.testing.Test
+import geb.gradle.cloud.ExternalTunnel
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Internal
+import org.gradle.process.ExecOperations
 
-class BrowserStackLocal implements TestTaskConfigurer {
+import javax.inject.Inject
 
+abstract class BrowserStackLocal extends ExternalTunnel {
     public static final String LOCAL_ID_ENV_VAR = "GEB_BROWSERSTACK_LOCALID"
 
-    String tunnelReadyMessage = 'You can now access your local server(s) in our remote browser'
+    private static final String HTTPS_PROTOCOL = 'https'
 
-    String identifier
-    boolean force
-    String proxyHost
-    String proxyPort
-    String proxyUser
-    String proxyPass
+    final String outputPrefix = 'browserstack-tunnel'
 
-    List<String> additionalOptions = []
+    @Inject
+    BrowserStackLocal(ExecOperations execOperations) {
+        super(execOperations)
+        tunnelReadyMessage.convention("You can now access your local server(s) in our remote browser")
+        additionalOptions.convention([])
+        identifier.convention("")
+    }
 
-    void configure(Test test) {
-        test.environment(LOCAL_ID_ENV_VAR, identifier)
+    @Internal
+    abstract Property<String> getAccessKey()
+
+    @Internal
+    abstract Property<String> getIdentifier()
+
+    @Internal
+    abstract Property<Boolean> getForce()
+
+    @Internal
+    abstract Property<String> getProxyHost()
+
+    @Internal
+    abstract Property<String> getProxyPort()
+
+    @Internal
+    abstract Property<String> getProxyUser()
+
+    @Internal
+    abstract Property<String> getProxyPass()
+
+    @Internal
+    abstract ListProperty<String> getAdditionalOptions()
+
+    @Internal
+    abstract ListProperty<URL> getApplicationUrls()
+
+    @Override
+    List<Object> assembleCommandLine() {
+        def commandLine = [executablePath, accessKey.get(), '-localIdentifier', identifier.get()]
+        if (applicationUrls.present) {
+            commandLine << "-only" << assembleAppSpecifier()
+        }
+        if (proxyHost.present) {
+            commandLine << "-proxyHost" << proxyHost.get()
+        }
+        if (proxyPort.present) {
+            commandLine << "-proxyPort" << proxyPort.get()
+        }
+        if (proxyUser.present) {
+            commandLine << "-proxyUser" << proxyUser.get()
+        }
+        if (proxyPass.present) {
+            commandLine << "-proxyPass" << proxyPass.get()
+        }
+        if (force.getOrElse(false)) {
+            commandLine << "-forcelocal"
+        }
+        commandLine.addAll(additionalOptions.get())
+        commandLine
+    }
+
+    private String assembleAppSpecifier() {
+        applicationUrls.get().collect {
+            "${it.host},${determinePort(it)},${it.protocol == HTTPS_PROTOCOL ? '1' : '0'}"
+        }.join(',')
+    }
+
+    protected int determinePort(URL url) {
+        url.port > 0 ? url.port : (url.protocol == HTTPS_PROTOCOL ? 443 : 80)
     }
 }

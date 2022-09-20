@@ -21,8 +21,11 @@ import groovy.transform.InheritConstructors
 import org.gradle.api.Action
 import org.gradle.api.tasks.Nested
 
+import static geb.gradle.browserstack.BrowserStackAccount.ACCESS_KEY_ENV_VAR
+import static geb.gradle.browserstack.BrowserStackAccount.USER_ENV_VAR
 import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
 import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
+import static BrowserStackLocal.LOCAL_ID_ENV_VAR
 
 @InheritConstructors(constructorAnnotations = true)
 abstract class BrowserStackExtension extends CloudBrowsersExtension {
@@ -31,16 +34,16 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "browserstack"
 
-    BrowserStackTunnel tunnel
-    BrowserStackLocal local
     List<URL> applicationUrls = []
+
+    @Nested
+    abstract BrowserStackLocal getLocal()
 
     @Nested
     abstract BrowserStackAccount getAccount()
 
-    void local(Closure configuration) {
-        project.configure(local, configuration)
-        configureTestTasksWith(local)
+    void local(Action<? super BrowserStackLocal> action) {
+        action.execute(local)
     }
 
     void account(Action<? super BrowserStackAccount> action) {
@@ -48,11 +51,11 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
     }
 
     void application(String... urls) {
-        applicationUrls.addAll(urls.collect { new URL(it) })
+        local.applicationUrls.addAll(urls.collect { new URL(it) })
     }
 
     void application(URL... urls) {
-        applicationUrls.addAll(urls)
+        local.applicationUrls.addAll(urls)
     }
 
     protected void addExtensions() {
@@ -60,14 +63,12 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
         task { test ->
             test.environment(
-                (BrowserStackAccount.USER_ENV_VAR): new ToStringProviderValue(account.username),
-                (BrowserStackAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey)
+                (USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
+                (LOCAL_ID_ENV_VAR): local.identifier.get()
             )
         }
 
-        local = extensions.create("local", BrowserStackLocal)
-
-        tunnel = objectFactory.newInstance(BrowserStackTunnel, this)
-        tunnel.accessKey.convention(account.accessKey)
+        local.accessKey.convention(account.accessKey)
     }
 }

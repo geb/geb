@@ -28,7 +28,6 @@ abstract class SauceConnect extends ExternalTunnel {
     public static final String TUNNEL_ID_ENV_VAR = "GEB_SAUCE_LABS_TUNNEL_ID"
 
     final String outputPrefix = 'sauce-connect'
-    final String tunnelReadyMessage = 'Sauce Connect is up, you may start your tests'
 
     @Inject
     SauceConnect(ExecOperations execOperations) {
@@ -36,6 +35,7 @@ abstract class SauceConnect extends ExternalTunnel {
         identifier.convention("")
         port.convention(4445)
         additionalOptions.convention([])
+        tunnelReadyMessage.convention('Sauce Connect is up, you may start your tests')
     }
 
     @Internal

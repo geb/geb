@@ -57,7 +57,7 @@ abstract class ExternalTunnel {
     abstract List<Object> assembleCommandLine()
 
     @Internal
-    abstract String getTunnelReadyMessage()
+    abstract Property<String> getTunnelReadyMessage()
 
     @Internal
     String getExecutablePath() {
@@ -80,7 +80,7 @@ abstract class ExternalTunnel {
                     tunnelProcess.inputStream.eachLine { String line ->
                         if (latch.count) {
                             log.info "$outputPrefix: $line"
-                            if (line.contains(tunnelReadyMessage)) {
+                            if (line.contains(tunnelReadyMessage.get())) {
                                 latch.countDown()
                             }
                         } else {

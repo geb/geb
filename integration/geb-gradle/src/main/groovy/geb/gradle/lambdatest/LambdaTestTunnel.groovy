@@ -39,6 +39,7 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
         super(execOperations)
         this.objectFactory = objectFactory
         this.extension = extension
+        tunnelReadyMessage.convention('You can start testing now')
     }
 
     @Internal
@@ -143,10 +144,5 @@ abstract class LambdaTestTunnel extends ExternalTunnel {
 
         commandLine.addAll(extension.local.additionalOptions)
         commandLine
-    }
-
-    @Override
-    String getTunnelReadyMessage() {
-        extension.local.tunnelReadyMessage
     }
 }
