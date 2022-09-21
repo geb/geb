@@ -38,6 +38,7 @@ abstract class LambdaTestTunnelOps extends ExternalTunnel {
         tunnelReadyMessage.convention('You can start testing now')
         tunnelName.convention("")
         infoAPIPort.convention(providerFactory.provider(new FreePortNumberProvider()))
+        additionalOptions.convention([])
     }
 
     @Internal
