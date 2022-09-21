@@ -38,7 +38,6 @@ abstract class LambdaTestTunnelOps extends ExternalTunnel {
         tunnelReadyMessage.convention('You can start testing now')
         tunnelName.convention("")
         infoAPIPort.convention(providerFactory.provider(new FreePortNumberProvider()))
-        additionalOptions.convention([])
     }
 
     @Internal
@@ -133,9 +132,6 @@ abstract class LambdaTestTunnelOps extends ExternalTunnel {
 
     @Internal
     abstract Property<Boolean> getVersion()
-
-    @Internal
-    abstract ListProperty<String> getAdditionalOptions()
 
     @Override
     List<Object> assembleCommandLine() {

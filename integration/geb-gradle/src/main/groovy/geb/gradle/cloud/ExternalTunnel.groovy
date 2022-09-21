@@ -17,6 +17,7 @@ package geb.gradle.cloud
 
 import groovy.util.logging.Slf4j
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -39,6 +40,7 @@ abstract class ExternalTunnel {
         this.execOperations = execOperations
         timeout.convention(3)
         timeoutUnit.convention(TimeUnit.MINUTES)
+        additionalOptions.convention([])
     }
 
     @InputFiles
@@ -58,6 +60,9 @@ abstract class ExternalTunnel {
 
     @Internal
     abstract Property<String> getTunnelReadyMessage()
+
+    @Internal
+    abstract ListProperty<String> getAdditionalOptions()
 
     @Internal
     String getExecutablePath() {

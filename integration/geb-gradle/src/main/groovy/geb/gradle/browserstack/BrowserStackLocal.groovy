@@ -34,7 +34,6 @@ abstract class BrowserStackLocal extends ExternalTunnel {
     BrowserStackLocal(ExecOperations execOperations) {
         super(execOperations)
         tunnelReadyMessage.convention("You can now access your local server(s) in our remote browser")
-        additionalOptions.convention([])
         identifier.convention("")
     }
 
@@ -58,9 +57,6 @@ abstract class BrowserStackLocal extends ExternalTunnel {
 
     @Internal
     abstract Property<String> getProxyPass()
-
-    @Internal
-    abstract ListProperty<String> getAdditionalOptions()
 
     @Internal
     abstract ListProperty<URL> getApplicationUrls()
