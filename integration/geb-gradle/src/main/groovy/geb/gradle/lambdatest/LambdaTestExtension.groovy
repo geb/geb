@@ -31,15 +31,14 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
     final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "lambdatest"
 
-    LambdaTestTunnel tunnel
-    LambdaTestTunnelOps local
+    @Nested
+    abstract LambdaTestTunnelOps getTunnelOps()
 
     @Nested
     abstract LambdaTestAccount getAccount()
 
-    void tunnelOps(Closure configuration) {
-        project.configure(local, configuration)
-        configureTestTasksWith(local)
+    void tunnelOps(Action<? super LambdaTestTunnelOps> action) {
+        action.execute(tunnelOps)
     }
 
     void account(Action<? super LambdaTestAccount> action) {
@@ -52,13 +51,12 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
         task { test ->
             test.environment(
                 (LambdaTestAccount.USER_ENV_VAR): new ToStringProviderValue(account.username),
-                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey)
+                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
+                (LambdaTestTunnelOps.TUNNEL_NAME_ENV_VAR): new ToStringProviderValue(tunnelOps.tunnelName)
             )
         }
 
-        local = new LambdaTestTunnelOps(project)
-        tunnel = objectFactory.newInstance(LambdaTestTunnel, this)
-        tunnel.username.convention(account.username)
-        tunnel.accessKey.convention(account.accessKey)
+        tunnelOps.username.convention(account.username)
+        tunnelOps.accessKey.convention(account.accessKey)
     }
 }

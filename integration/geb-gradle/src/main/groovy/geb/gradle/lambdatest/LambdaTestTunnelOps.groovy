@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,64 +15,218 @@
  */
 package geb.gradle.lambdatest
 
-import geb.gradle.cloud.TestTaskConfigurer
-import org.gradle.api.Project
+import geb.gradle.cloud.ExternalTunnel
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.testing.Test
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.tasks.Internal
+import org.gradle.process.ExecOperations
 
-class LambdaTestTunnelOps implements TestTaskConfigurer {
+import javax.inject.Inject
+
+abstract class LambdaTestTunnelOps extends ExternalTunnel {
 
     public static final String TUNNEL_NAME_ENV_VAR = "GEB_LAMBDATEST_TUNNEL_NAME"
 
-    private final Property<String> infoAPIPortProperty
+    private static final String COMMA = ","
 
-    String tunnelReadyMessage = 'You can start testing now'
+    final String outputPrefix = 'lambdatest-tunnel'
 
-    String tunnelName
-    List<String> allowHosts
-    List<String> bypassHosts
-    String callbackURL
-    String config
-    String clientCert
-    String clientKey
-    String dir
-    String dns
-    boolean egressOnly
-    String env
-    boolean ingressOnly
-    boolean loadBalanced
-    String logFile
-    boolean mitm
-    String mode
-    List<String> mTLSHosts
-    List<String> noProxy
-    String pidfile
-    String port
-    String proxyhost
-    String proxypass
-    String proxyport
-    String proxyuser
-    String pacfile
-    boolean sharedtunnel
-    String sshConnType
-    boolean version
-
-    List<String> additionalOptions = []
-
-    LambdaTestTunnelOps(Project project) {
-        this.infoAPIPortProperty = project.objects.property(String)
-        this.infoAPIPortProperty.set(project.providers.provider(new FreePortNumberProvider()))
+    @Inject
+    LambdaTestTunnelOps(ExecOperations execOperations, ProviderFactory providerFactory) {
+        super(execOperations)
+        tunnelReadyMessage.convention('You can start testing now')
+        tunnelName.convention("")
+        infoAPIPort.convention(providerFactory.provider(new FreePortNumberProvider()))
     }
 
-    void configure(Test test) {
-        test.environment(TUNNEL_NAME_ENV_VAR, tunnelName)
-    }
+    @Internal
+    abstract Property<String> getUsername()
 
-    void setInfoAPIPort(String infoAPIPort) {
-        infoAPIPortProperty.set(infoAPIPort)
-    }
+    @Internal
+    abstract Property<String> getAccessKey()
 
-    String getInfoAPIPort() {
-        infoAPIPortProperty.get()
+    @Internal
+    abstract Property<String> getTunnelName()
+
+    @Internal
+    abstract ListProperty<String> getAllowHosts()
+
+    @Internal
+    abstract ListProperty<String> getBypassHosts()
+
+    @Internal
+    abstract Property<String> getCallbackURL()
+
+    @Internal
+    abstract Property<String> getConfig()
+
+    @Internal
+    abstract Property<String> getClientCert()
+
+    @Internal
+    abstract Property<String> getClientKey()
+
+    @Internal
+    abstract Property<String> getDir()
+
+    @Internal
+    abstract Property<String> getDns()
+
+    @Internal
+    abstract Property<Boolean> getEgressOnly()
+
+    @Internal
+    abstract Property<String> getEnv()
+
+    @Internal
+    abstract Property<String> getInfoAPIPort()
+
+    @Internal
+    abstract Property<Boolean> getIngressOnly()
+
+    @Internal
+    abstract Property<Boolean> getLoadBalanced()
+
+    @Internal
+    abstract Property<String> getLogFile()
+
+    @Internal
+    abstract Property<Boolean> getMitm()
+
+    @Internal
+    abstract Property<String> getMode()
+
+    @Internal
+    abstract ListProperty<String> getmTLSHosts()
+
+    @Internal
+    abstract ListProperty<String> getNoProxy()
+
+    @Internal
+    abstract Property<String> getPidfile()
+
+    @Internal
+    abstract Property<String> getPort()
+
+    @Internal
+    abstract Property<String> getProxyhost()
+
+    @Internal
+    abstract Property<String> getProxypass()
+
+    @Internal
+    abstract Property<String> getProxyport()
+
+    @Internal
+    abstract Property<String> getProxyuser()
+
+    @Internal
+    abstract Property<String> getPacfile()
+
+    @Internal
+    abstract Property<Boolean> getSharedTunnel()
+
+    @Internal
+    abstract Property<String> getSshConnType()
+
+    @Internal
+    abstract Property<Boolean> getVersion()
+
+    @Internal
+    abstract ListProperty<String> getAdditionalOptions()
+
+    @Override
+    List<Object> assembleCommandLine() {
+        def commandLine = [executablePath]
+        commandLine << "--user" << username.get()
+        commandLine << "--key" << accessKey.get()
+        commandLine << "-v"
+        commandLine << '--tunnelName' << tunnelName.get()
+        if (allowHosts.orElse([])) {
+            commandLine << '--allowHosts' << allowHosts.get().join(COMMA)
+        }
+        if (bypassHosts.orElse([])) {
+            commandLine << '--bypassHosts' << bypassHosts.get().join(COMMA)
+        }
+        if (callbackURL.present) {
+            commandLine << '--callbackURL' << callbackURL.get()
+        }
+        if (config.present) {
+            commandLine << "--config" << config.get()
+        }
+        if (clientCert.present) {
+            commandLine << "--clientCert" << clientCert.get()
+        }
+        if (clientKey.present) {
+            commandLine << "--clientKey" << clientKey.get()
+        }
+        if (dir.present) {
+            commandLine << "--dir" << dir.get()
+        }
+        if (dns.present) {
+            commandLine << "--dns" << dns.get()
+        }
+        if (egressOnly.orElse(false)) {
+            commandLine << "--egress-only"
+        }
+        if (env.present) {
+            commandLine << "--env" << env.get()
+        }
+        commandLine << "--infoAPIPort" << infoAPIPort.get()
+        if (ingressOnly.orElse(false)) {
+            commandLine << "--ingress-only"
+        }
+        if (loadBalanced.orElse(false)) {
+            commandLine << "--load-balanced"
+        }
+        if (logFile.present) {
+            commandLine << "--logFile" << logFile.get()
+        }
+        if (mitm.getOrElse(false)) {
+            commandLine << "--mitm"
+        }
+        if (mode.present) {
+            commandLine << "--mode" << mode.get()
+        }
+        if (mTLSHosts.orElse([])) {
+            commandLine << "--mTLSHosts" << mTLSHosts.get().join(COMMA)
+        }
+        if (noProxy.orElse([])) {
+            commandLine << "--no-proxy" << noProxy.get().join(COMMA)
+        }
+        if (pidfile.present) {
+            commandLine << "--pidfile" << pidfile.get()
+        }
+        if (port.present) {
+            commandLine << "--port" << port.get()
+        }
+        if (proxyhost.present) {
+            commandLine << "--proxy-host" << proxyhost.get()
+        }
+        if (proxypass.present) {
+            commandLine << "--proxy-pass" << proxypass.get()
+        }
+        if (proxyport.present) {
+            commandLine << "--proxy-port" << proxyport.get()
+        }
+        if (proxyuser.present) {
+            commandLine << "--proxy-user" << proxyuser.get()
+        }
+        if (pacfile.present) {
+            commandLine << "--pacfile" << pacfile.get()
+        }
+        if (sharedTunnel.orElse(false)) {
+            commandLine << "--shared-tunnel"
+        }
+        if (sshConnType.present) {
+            commandLine << "--sshConnType" << sshConnType.get()
+        }
+        if (version.getOrElse(false)) {
+            commandLine << "--version"
+        }
+
+        commandLine.addAll(additionalOptions.get())
+        commandLine
     }
 }

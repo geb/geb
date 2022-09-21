@@ -87,12 +87,6 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
         extensions.add("browsers", browsers)
     }
 
-    protected void configureTestTasksWith(TestTaskConfigurer configurer) {
-        testTasks.all { TaskProvider<Test> taskProvider ->
-            taskProvider.configure(configurer.&configure)
-        }
-    }
-
     protected TaskProvider<Test> addTestTask(BrowserSpec browser, String prefix = null) {
         def name = prefix ? "${prefix}${browser.displayName.capitalize()}" : browser.displayName
 

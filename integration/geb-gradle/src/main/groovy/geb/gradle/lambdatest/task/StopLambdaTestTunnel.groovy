@@ -15,7 +15,6 @@
  */
 package geb.gradle.lambdatest.task
 
-import geb.gradle.cloud.ExternalTunnel
 import geb.gradle.lambdatest.LambdaTestTunnelOps
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
@@ -24,18 +23,11 @@ import org.gradle.api.tasks.TaskAction
 class StopLambdaTestTunnel extends DefaultTask {
 
     @Internal
-    LambdaTestTunnelOps lambdaTestTunnelOps
-
-    @Internal
-    ExternalTunnel tunnel
+    LambdaTestTunnelOps tunnelOps
 
     @TaskAction
     void stop() {
-        if (lambdaTestTunnelOps.infoAPIPort) {
-            stopTunnelUsingHttpRequest()
-        } else {
-            tunnel.stopTunnel()
-        }
+        stopTunnelUsingHttpRequest()
     }
 
     private void stopTunnelUsingHttpRequest() {
@@ -47,7 +39,7 @@ class StopLambdaTestTunnel extends DefaultTask {
     }
 
     private int sendDeleteRequestToStopEndpoint() {
-        def url = new URL("http://127.0.0.1:${lambdaTestTunnelOps.infoAPIPort}/api/v1.0/stop")
+        def url = new URL("http://127.0.0.1:${tunnelOps.infoAPIPort.get()}/api/v1.0/stop")
         def connection = url.openConnection() as HttpURLConnection
         def closeableConnection = { connection.disconnect() } as Closeable
 
