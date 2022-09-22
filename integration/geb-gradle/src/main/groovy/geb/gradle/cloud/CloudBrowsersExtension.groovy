@@ -18,7 +18,7 @@ package geb.gradle.cloud
 import geb.gradle.ConditionalTaskDependency
 import geb.gradle.SystemPropertiesCommandLineArgumentProvider
 import org.gradle.api.Action
-import org.gradle.api.DomainObjectCollection
+import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -38,7 +38,6 @@ abstract class CloudBrowsersExtension {
     protected final TaskProvider<? extends Task> openTunnelInBackgroundTask
     protected final TaskProvider<? extends Task> closeTunnelTask
     protected final String tasksGroup
-    protected final DomainObjectCollection<TaskProvider<Test>> testTasks
 
     protected NamedDomainObjectContainer<BrowserSpec> browsers
 
@@ -59,8 +58,6 @@ abstract class CloudBrowsersExtension {
             it.group = tasksGroup
         }
 
-        this.testTasks = project.objects.domainObjectSet(TaskProvider)
-
         useTunnel.convention(true)
 
         addExtensions()
@@ -69,6 +66,8 @@ abstract class CloudBrowsersExtension {
     abstract String getProviderName()
 
     abstract Property<Boolean> getUseTunnel()
+
+    abstract DomainObjectSet<TaskProvider<Test>> getTestTasks()
 
     void browsers(Action<NamedDomainObjectContainer<BrowserSpec>> action) {
         action.execute(browsers)
