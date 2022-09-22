@@ -28,23 +28,38 @@ class BrowserStackPlugin implements Plugin<Project> {
     public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openBrowserStackTunnelInBackground'
     public static final String UNZIP_TUNNEL_TASK_NAME = 'unzipBrowserStackTunnel'
 
-    Project project
-
     @Override
     void apply(Project project) {
-        this.project = project
-
         def allBrowserStackTests = project.tasks.register("allBrowserStackTests")
 
+        def closeTunnel = project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel)
+
+        def openBrowserStackTunnelInBackground = project.tasks.register(
+            OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel
+        ) {
+            inBackground = true
+            finalizedBy closeTunnel
+        }
+
         def browserStackExtension = project.extensions.create(
-            'browserStack', BrowserStackExtension, allBrowserStackTests, "BrowserStack Test"
+            'browserStack', BrowserStackExtension, allBrowserStackTests, openBrowserStackTunnelInBackground,
+            closeTunnel, "BrowserStack Test"
         )
 
-        addTunnelTasks(browserStackExtension)
-    }
+        closeTunnel.configure {
+            it.tunnel = browserStackExtension.local
+        }
 
-    void addTunnelTasks(BrowserStackExtension browserStackExtension) {
-        def downloadBrowserStackTunnel = project.tasks.register('downloadBrowserStackTunnel', DownloadBrowserStackTunnel)
+        def openBrowserStackTunnel = project.tasks.register('openBrowserStackTunnel', StartExternalTunnel)
+
+        [openBrowserStackTunnel, openBrowserStackTunnelInBackground]*.configure {
+            tunnel = browserStackExtension.local
+            workingDir = project.buildDir
+        }
+
+        def downloadBrowserStackTunnel = project.tasks.register(
+            'downloadBrowserStackTunnel', DownloadBrowserStackTunnel
+        )
 
         def unzipBrowserStackTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
             from(
@@ -56,21 +71,5 @@ class BrowserStackPlugin implements Plugin<Project> {
         }
 
         browserStackExtension.local.executable.from(unzipBrowserStackTunnel)
-
-        project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
-            tunnel = browserStackExtension.local
-        }
-
-        def openBrowserStackTunnel = project.tasks.register('openBrowserStackTunnel', StartExternalTunnel)
-
-        def openBrowserStackTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
-            inBackground = true
-            finalizedBy CLOSE_TUNNEL_TASK_NAME
-        }
-
-        [openBrowserStackTunnel, openBrowserStackTunnelInBackground]*.configure {
-            tunnel = browserStackExtension.local
-            workingDir = project.buildDir
-        }
     }
 }

@@ -24,14 +24,10 @@ import org.gradle.api.tasks.Nested
 import static BrowserStackLocal.LOCAL_ID_ENV_VAR
 import static geb.gradle.browserstack.BrowserStackAccount.ACCESS_KEY_ENV_VAR
 import static geb.gradle.browserstack.BrowserStackAccount.USER_ENV_VAR
-import static geb.gradle.browserstack.BrowserStackPlugin.CLOSE_TUNNEL_TASK_NAME
-import static geb.gradle.browserstack.BrowserStackPlugin.OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
 
 @InheritConstructors(constructorAnnotations = true)
 abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
-    final String openTunnelInBackgroundTaskName = OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME
-    final String closeTunnelTaskName = CLOSE_TUNNEL_TASK_NAME
     final String providerName = "browserstack"
 
     @Nested

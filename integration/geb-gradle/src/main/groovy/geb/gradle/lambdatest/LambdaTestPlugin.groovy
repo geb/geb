@@ -26,25 +26,38 @@ class LambdaTestPlugin implements Plugin<Project> {
 
     public static final String CLOSE_TUNNEL_TASK_NAME = 'closeLambdaTestTunnel'
     public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openLambdaTestTunnelInBackground'
-    public static final String OPEN_TUNNEL_TASK_NAME = 'openLambdaTestTunnel'
     public static final String UNZIP_TUNNEL_TASK_NAME = 'unzipLambdaTestTunnel'
     public static final String DOWNLOAD_TUNNEL_TASK_NAME = 'downloadLambdaTestTunnel'
-    Project project
 
     @Override
     void apply(Project project) {
-        this.project = project
-
         def allLambdaTestTests = project.tasks.register("allLambdaTestTests")
 
+        def closeTunnel = project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopLambdaTestTunnel)
+
+        def openLambdaTestTunnelInBackground = project.tasks.register(
+            OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel
+        ) {
+            inBackground = true
+            finalizedBy closeTunnel
+        }
+
         def lambdaTestExtension = project.extensions.create(
-            'lambdaTest', LambdaTestExtension, allLambdaTestTests, "LambdaTest Test"
+            'lambdaTest', LambdaTestExtension, allLambdaTestTests, openLambdaTestTunnelInBackground, closeTunnel,
+            "LambdaTest Test"
         )
 
-        addTunnelTasks(lambdaTestExtension)
-    }
+        closeTunnel.configure {
+            tunnelOps = lambdaTestExtension.tunnelOps
+        }
 
-    void addTunnelTasks(LambdaTestExtension lambdaTestExtension) {
+        def openLambdaTestTunnel = project.tasks.register('openLambdaTestTunnel', StartExternalTunnel)
+
+        [openLambdaTestTunnel, openLambdaTestTunnelInBackground]*.configure {
+            tunnel = lambdaTestExtension.tunnelOps
+            workingDir = project.buildDir
+        }
+
         def downloadLambdaTestTunnel = project.tasks.register(DOWNLOAD_TUNNEL_TASK_NAME, DownloadLambdaTestTunnel)
 
         def unzipLambdaTestTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
@@ -57,21 +70,5 @@ class LambdaTestPlugin implements Plugin<Project> {
         }
 
         lambdaTestExtension.tunnelOps.executable.from(unzipLambdaTestTunnel)
-
-        project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopLambdaTestTunnel) {
-            tunnelOps = lambdaTestExtension.tunnelOps
-        }
-
-        def openLambdaTestTunnel = project.tasks.register(OPEN_TUNNEL_TASK_NAME, StartExternalTunnel)
-
-        def openLambdaTestTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
-            inBackground = true
-            finalizedBy CLOSE_TUNNEL_TASK_NAME
-        }
-
-        [openLambdaTestTunnel, openLambdaTestTunnelInBackground]*.configure {
-            tunnel = lambdaTestExtension.tunnelOps
-            workingDir = project.buildDir
-        }
     }
 }

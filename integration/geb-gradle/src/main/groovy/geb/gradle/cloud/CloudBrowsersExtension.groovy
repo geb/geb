@@ -35,17 +35,25 @@ import javax.inject.Inject
 abstract class CloudBrowsersExtension implements ExtensionAware {
     protected final ObjectFactory objectFactory
     protected final Project project
-    protected final TaskProvider<Task> allTestsLifecycleTask
+    protected final TaskProvider<? extends Task> allTestsLifecycleTask
+    protected final TaskProvider<? extends Task> openTunnelInBackgroundTask
+    protected final TaskProvider<? extends Task> closeTunnelTask
     protected final String tasksGroup
     protected final DomainObjectCollection<TaskProvider<Test>> testTasks
 
     protected NamedDomainObjectContainer<BrowserSpec> browsers
 
     @Inject
-    CloudBrowsersExtension(ObjectFactory objectFactory, Project project, TaskProvider<Task> allTestsLifecycleTask, String tasksGroup) {
+    CloudBrowsersExtension(
+        ObjectFactory objectFactory, Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
+        String tasksGroup
+    ) {
         this.objectFactory = objectFactory
         this.project = project
         this.allTestsLifecycleTask = allTestsLifecycleTask
+        this.openTunnelInBackgroundTask = openTunnelInBackgroundTask
+        this.closeTunnelTask = closeTunnelTask
         this.tasksGroup = tasksGroup
 
         allTestsLifecycleTask.configure {
@@ -59,8 +67,6 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
         addExtensions()
     }
 
-    abstract String getOpenTunnelInBackgroundTaskName()
-    abstract String getCloseTunnelTaskName()
     abstract String getProviderName()
 
     abstract Property<Boolean> getUseTunnel()
@@ -93,10 +99,10 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
         def testTask = project.tasks.register("${name}Test", Test) { Test task ->
             task.group = tasksGroup
             task.dependsOn(
-                new ConditionalTaskDependency(useTunnel.&get, project.tasks.named(openTunnelInBackgroundTaskName))
+                new ConditionalTaskDependency(useTunnel.&get, openTunnelInBackgroundTask)
             )
             finalizedBy(
-                new ConditionalTaskDependency(useTunnel.&get, project.tasks.named(closeTunnelTaskName))
+                new ConditionalTaskDependency(useTunnel.&get, closeTunnelTask)
             )
 
             def reporting = project.reporting as ReportingExtension

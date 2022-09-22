@@ -25,41 +25,38 @@ class SaucePlugin implements Plugin<Project> {
     public static final String CLOSE_TUNNEL_TASK_NAME = 'closeSauceTunnel'
     public static final String OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME = 'openSauceTunnelInBackground'
     public static final String UNPACK_CONNECT_TASK_NAME = 'unpackSauceConnect'
-    Project project
 
     @Override
     void apply(Project project) {
-        this.project = project
-
         def allSauceLabsTests = project.tasks.register("allSauceLabsTests")
 
+        def closeTunnel = project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel)
+
+        def openSauceTunnelInBackground = project.tasks.register(
+            OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel
+        ) {
+            inBackground = true
+            finalizedBy closeTunnel
+        }
+
         def sauceLabsExtension = project.extensions.create(
-            'sauceLabs', SauceLabsExtension, allSauceLabsTests, "Sauce Test"
+            'sauceLabs', SauceLabsExtension, allSauceLabsTests, openSauceTunnelInBackground, closeTunnel, "Sauce Test"
         )
 
-        addTunnelTasks(sauceLabsExtension)
-    }
-
-    void addTunnelTasks(SauceLabsExtension sauceLabsExtension) {
-        project.configurations.create('sauceConnect')
-        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect)
-
-        sauceLabsExtension.connect.executable.from(unpackSauceConnect)
-
-        project.tasks.register(CLOSE_TUNNEL_TASK_NAME, StopExternalTunnel) {
+        closeTunnel.configure {
             tunnel = project.sauceLabs.connect
         }
 
         def openSauceTunnel = project.tasks.register('openSauceTunnel', StartExternalTunnel)
 
-        def openSauceTunnelInBackground = project.tasks.register(OPEN_TUNNEL_IN_BACKGROUND_TASK_NAME, StartExternalTunnel) {
-            inBackground = true
-            finalizedBy CLOSE_TUNNEL_TASK_NAME
-        }
-
         [openSauceTunnel, openSauceTunnelInBackground]*.configure {
             tunnel = sauceLabsExtension.connect
             workingDir = project.buildDir
         }
+
+        project.configurations.create('sauceConnect')
+        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect)
+
+        sauceLabsExtension.connect.executable.from(unpackSauceConnect)
     }
 }
