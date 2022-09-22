@@ -17,11 +17,11 @@ package geb.gradle
 
 import org.gradle.process.CommandLineArgumentProvider
 
-class EnvironmentVariablesCommandLineArgumentProvider implements CommandLineArgumentProvider {
+class SystemPropertiesCommandLineArgumentProvider implements CommandLineArgumentProvider {
 
     private final Map<String, String> variables
 
-    EnvironmentVariablesCommandLineArgumentProvider(Map<String, String> variables) {
+    SystemPropertiesCommandLineArgumentProvider(Map<String, String> variables) {
         this.variables = variables
     }
 

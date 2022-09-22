@@ -16,7 +16,7 @@
 
 import org.gebish.gradle.BaseExtension
 import org.ysb33r.grolifant.api.core.OperatingSystem
-import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
+import geb.gradle.SystemPropertiesCommandLineArgumentProvider
 
 plugins {
     id 'geb.coordinates'
@@ -63,7 +63,7 @@ tasks.withType(Test).configureEach {
     def gebReportsDir = reporting.file("geb/$name")
     outputs.dir(gebReportsDir)
     jvmArgumentProviders.add(
-        new EnvironmentVariablesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
+        new SystemPropertiesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
     )
 
     afterSuite { desc, result ->

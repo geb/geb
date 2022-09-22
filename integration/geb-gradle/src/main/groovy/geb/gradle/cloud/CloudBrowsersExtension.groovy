@@ -16,7 +16,7 @@
 package geb.gradle.cloud
 
 import geb.gradle.ConditionalTaskDependency
-import geb.gradle.EnvironmentVariablesCommandLineArgumentProvider
+import geb.gradle.SystemPropertiesCommandLineArgumentProvider
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
@@ -105,7 +105,7 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
             def gebReportsDir = reporting.file("geb/${task.name}")
             outputs.dir(gebReportsDir)
             jvmArgumentProviders.add(
-                new EnvironmentVariablesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
+                new SystemPropertiesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
             )
         }
 
