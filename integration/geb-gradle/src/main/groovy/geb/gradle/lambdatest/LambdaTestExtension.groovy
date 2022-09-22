@@ -19,18 +19,19 @@ import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.Nested
 
 @InheritConstructors(constructorAnnotations = true)
 abstract class LambdaTestExtension extends CloudBrowsersExtension {
-
-    final String providerName = "lambdatest"
 
     @Nested
     abstract LambdaTestTunnelOps getTunnelOps()
 
     @Nested
     abstract LambdaTestAccount getAccount()
+
+    abstract NamedDomainObjectContainer<LambdaTestBrowserSpec> getBrowsers()
 
     void tunnelOps(Action<? super LambdaTestTunnelOps> action) {
         action.execute(tunnelOps)

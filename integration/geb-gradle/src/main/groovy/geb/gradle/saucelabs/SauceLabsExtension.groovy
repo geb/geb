@@ -19,6 +19,7 @@ import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.Nested
 
 import static geb.gradle.saucelabs.SauceAccount.ACCESS_KEY_ENV_VAR
@@ -28,13 +29,13 @@ import static geb.gradle.saucelabs.SauceConnect.TUNNEL_ID_ENV_VAR
 @InheritConstructors(constructorAnnotations = true)
 abstract class SauceLabsExtension extends CloudBrowsersExtension {
 
-    final String providerName = "saucelabs"
-
     @Nested
     abstract SauceConnect getConnect()
 
     @Nested
     abstract SauceAccount getAccount()
+
+    abstract NamedDomainObjectContainer<SauceLabsBrowserSpec> getBrowsers()
 
     void connect(Action<? super SauceConnect> action) {
         action.execute(connect)

@@ -25,17 +25,13 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE
 
 abstract class BrowserSpec {
-    final String cloudProvider
     final String name
     final String displayName
 
     private final Properties capabilities = new Properties()
 
-    abstract DomainObjectSet<TaskProvider<Test>> getTasks()
-
     @Inject
-    BrowserSpec(String cloudProvider, String name) {
-        this.cloudProvider = cloudProvider
+    BrowserSpec(String name) {
         this.name = name
         String[] split = name.split("_", 3)
         capabilities["browserName"] = split[0]
@@ -51,6 +47,10 @@ abstract class BrowserSpec {
         }
         setCapabilitiesOnTasks()
     }
+
+    abstract String getCloudProvider()
+
+    abstract DomainObjectSet<TaskProvider<Test>> getTasks()
 
     void capability(String capability, String value) {
         capabilities.put(capability, value)

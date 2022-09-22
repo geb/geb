@@ -19,6 +19,7 @@ import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import groovy.transform.InheritConstructors
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.Nested
 
 import static BrowserStackLocal.LOCAL_ID_ENV_VAR
@@ -28,13 +29,13 @@ import static geb.gradle.browserstack.BrowserStackAccount.USER_ENV_VAR
 @InheritConstructors(constructorAnnotations = true)
 abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
-    final String providerName = "browserstack"
-
     @Nested
     abstract BrowserStackLocal getLocal()
 
     @Nested
     abstract BrowserStackAccount getAccount()
+
+    abstract NamedDomainObjectContainer<BrowserStackBrowserSpec> getBrowsers()
 
     void local(Action<? super BrowserStackLocal> action) {
         action.execute(local)

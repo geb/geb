@@ -22,7 +22,6 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.Copy
@@ -32,22 +31,18 @@ import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
 
 abstract class CloudBrowsersExtension {
-    protected final ObjectFactory objectFactory
     protected final Project project
     protected final TaskProvider<? extends Task> allTestsLifecycleTask
     protected final TaskProvider<? extends Task> openTunnelInBackgroundTask
     protected final TaskProvider<? extends Task> closeTunnelTask
     protected final String tasksGroup
 
-    protected NamedDomainObjectContainer<BrowserSpec> browsers
-
     @Inject
     CloudBrowsersExtension(
-        ObjectFactory objectFactory, Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
         TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
         String tasksGroup
     ) {
-        this.objectFactory = objectFactory
         this.project = project
         this.allTestsLifecycleTask = allTestsLifecycleTask
         this.openTunnelInBackgroundTask = openTunnelInBackgroundTask
@@ -60,12 +55,14 @@ abstract class CloudBrowsersExtension {
 
         useTunnel.convention(true)
 
+        browsers.configureEach { addTestTask(it) }
+
         addExtensions()
     }
 
-    abstract String getProviderName()
-
     abstract Property<Boolean> getUseTunnel()
+
+    abstract NamedDomainObjectContainer<? extends BrowserSpec> getBrowsers()
 
     abstract DomainObjectSet<TaskProvider<Test>> getTestTasks()
 
@@ -87,11 +84,6 @@ abstract class CloudBrowsersExtension {
     }
 
     protected void addExtensions() {
-        browsers = objectFactory.domainObjectContainer(BrowserSpec) { name ->
-            objectFactory.newInstance(BrowserSpec, providerName, name).tap { browserSpec ->
-                addTestTask(browserSpec)
-            }
-        }
     }
 
     protected TaskProvider<Test> addTestTask(BrowserSpec browser, String prefix = null) {
