@@ -23,7 +23,6 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Property
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.Copy
@@ -32,7 +31,7 @@ import org.gradle.api.tasks.testing.Test
 
 import javax.inject.Inject
 
-abstract class CloudBrowsersExtension implements ExtensionAware {
+abstract class CloudBrowsersExtension {
     protected final ObjectFactory objectFactory
     protected final Project project
     protected final TaskProvider<? extends Task> allTestsLifecycleTask
@@ -71,6 +70,10 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
 
     abstract Property<Boolean> getUseTunnel()
 
+    void browsers(Action<NamedDomainObjectContainer<BrowserSpec>> action) {
+        action.execute(browsers)
+    }
+
     void task(Action<Test> configuration) {
         testTasks.all { TaskProvider taskProvider ->
             taskProvider.configure(configuration)
@@ -90,7 +93,6 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
                 addTestTask(browserSpec)
             }
         }
-        extensions.add("browsers", browsers)
     }
 
     protected TaskProvider<Test> addTestTask(BrowserSpec browser, String prefix = null) {
