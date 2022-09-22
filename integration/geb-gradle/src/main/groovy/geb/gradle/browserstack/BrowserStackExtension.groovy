@@ -17,17 +17,39 @@ package geb.gradle.browserstack
 
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
-import groovy.transform.InheritConstructors
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.TaskProvider
+
+import javax.inject.Inject
 
 import static BrowserStackLocal.LOCAL_ID_ENV_VAR
 import static geb.gradle.browserstack.BrowserStackAccount.ACCESS_KEY_ENV_VAR
 import static geb.gradle.browserstack.BrowserStackAccount.USER_ENV_VAR
 
-@InheritConstructors(constructorAnnotations = true)
 abstract class BrowserStackExtension extends CloudBrowsersExtension {
+
+    @Inject
+    BrowserStackExtension(
+        Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
+        String tasksGroup
+    ) {
+        super(project, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
+
+        task { test ->
+            test.environment(
+                (USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
+                (LOCAL_ID_ENV_VAR): local.identifier.get()
+            )
+        }
+
+        local.accessKey.convention(account.accessKey)
+    }
 
     @Nested
     abstract BrowserStackLocal getLocal()
@@ -51,19 +73,5 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
     void application(URL... urls) {
         local.applicationUrls.addAll(urls)
-    }
-
-    protected void addExtensions() {
-        super.addExtensions()
-
-        task { test ->
-            test.environment(
-                (USER_ENV_VAR): new ToStringProviderValue(account.username),
-                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
-                (LOCAL_ID_ENV_VAR): local.identifier.get()
-            )
-        }
-
-        local.accessKey.convention(account.accessKey)
     }
 }

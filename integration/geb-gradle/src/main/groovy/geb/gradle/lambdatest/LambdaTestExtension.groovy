@@ -17,13 +17,36 @@ package geb.gradle.lambdatest
 
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
-import groovy.transform.InheritConstructors
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.TaskProvider
 
-@InheritConstructors(constructorAnnotations = true)
+import javax.inject.Inject
+
 abstract class LambdaTestExtension extends CloudBrowsersExtension {
+
+    @Inject
+    LambdaTestExtension(
+        Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
+        String tasksGroup
+    ) {
+        super(project, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
+
+        task { test ->
+            test.environment(
+                (LambdaTestAccount.USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
+                (LambdaTestTunnelOps.TUNNEL_NAME_ENV_VAR): new ToStringProviderValue(tunnelOps.tunnelName)
+            )
+        }
+
+        tunnelOps.username.convention(account.username)
+        tunnelOps.accessKey.convention(account.accessKey)
+    }
 
     @Nested
     abstract LambdaTestTunnelOps getTunnelOps()
@@ -39,20 +62,5 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
 
     void account(Action<? super LambdaTestAccount> action) {
         action.execute(account)
-    }
-
-    protected void addExtensions() {
-        super.addExtensions()
-
-        task { test ->
-            test.environment(
-                (LambdaTestAccount.USER_ENV_VAR): new ToStringProviderValue(account.username),
-                (LambdaTestAccount.ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
-                (LambdaTestTunnelOps.TUNNEL_NAME_ENV_VAR): new ToStringProviderValue(tunnelOps.tunnelName)
-            )
-        }
-
-        tunnelOps.username.convention(account.username)
-        tunnelOps.accessKey.convention(account.accessKey)
     }
 }

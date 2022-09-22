@@ -17,17 +17,40 @@ package geb.gradle.saucelabs
 
 import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
-import groovy.transform.InheritConstructors
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.TaskProvider
+
+import javax.inject.Inject
 
 import static geb.gradle.saucelabs.SauceAccount.ACCESS_KEY_ENV_VAR
 import static geb.gradle.saucelabs.SauceAccount.USER_ENV_VAR
 import static geb.gradle.saucelabs.SauceConnect.TUNNEL_ID_ENV_VAR
 
-@InheritConstructors(constructorAnnotations = true)
 abstract class SauceLabsExtension extends CloudBrowsersExtension {
+
+    @Inject
+    SauceLabsExtension(
+        Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
+        String tasksGroup
+    ) {
+        super(project, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
+
+        connect.username.convention(account.username)
+        connect.accessKey.convention(account.accessKey)
+
+        task {
+            it.environment(
+                (USER_ENV_VAR): new ToStringProviderValue(account.username),
+                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
+                (TUNNEL_ID_ENV_VAR): new ToStringProviderValue(connect.identifier)
+            )
+        }
+    }
 
     @Nested
     abstract SauceConnect getConnect()
@@ -43,20 +66,5 @@ abstract class SauceLabsExtension extends CloudBrowsersExtension {
 
     void account(Action<? super SauceAccount> action) {
         action.execute(account)
-    }
-
-    protected void addExtensions() {
-        super.addExtensions()
-
-        connect.username.convention(account.username)
-        connect.accessKey.convention(account.accessKey)
-
-        task {
-            it.environment(
-                (USER_ENV_VAR): new ToStringProviderValue(account.username),
-                (ACCESS_KEY_ENV_VAR): new ToStringProviderValue(account.accessKey),
-                (TUNNEL_ID_ENV_VAR): new ToStringProviderValue(connect.identifier)
-            )
-        }
     }
 }

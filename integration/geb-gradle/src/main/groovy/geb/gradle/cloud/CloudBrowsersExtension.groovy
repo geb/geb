@@ -56,8 +56,6 @@ abstract class CloudBrowsersExtension {
         useTunnel.convention(true)
 
         browsers.configureEach { addTestTask(it) }
-
-        addExtensions()
     }
 
     abstract Property<Boolean> getUseTunnel()
@@ -81,9 +79,6 @@ abstract class CloudBrowsersExtension {
             def task = addTestTask(it, namePrefix)
             task.configure(configuration)
         }
-    }
-
-    protected void addExtensions() {
     }
 
     protected TaskProvider<Test> addTestTask(BrowserSpec browser, String prefix = null) {
