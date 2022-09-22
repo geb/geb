@@ -98,12 +98,8 @@ abstract class CloudBrowsersExtension implements ExtensionAware {
 
         def testTask = project.tasks.register("${name}Test", Test) { Test task ->
             task.group = tasksGroup
-            task.dependsOn(
-                new ConditionalTaskDependency(useTunnel.&get, openTunnelInBackgroundTask)
-            )
-            finalizedBy(
-                new ConditionalTaskDependency(useTunnel.&get, closeTunnelTask)
-            )
+            task.dependsOn(new ConditionalTaskDependency(useTunnel.&get, openTunnelInBackgroundTask))
+            finalizedBy(new ConditionalTaskDependency(useTunnel.&get, closeTunnelTask))
 
             def reporting = project.reporting as ReportingExtension
             def gebReportsDir = reporting.file("geb/${task.name}")
