@@ -108,7 +108,7 @@ jobs:
             - gradle-home-saucelabs
       - run:
           command: |
-            ./gradlew --no-daemon -Pci --max-workers 4 --parallel allSauceLabsTests
+            ./gradlew --no-daemon -Pci --max-workers 5 --parallel allSauceLabsTests
       - store_test_results:
           path: .
       - store_artifacts:
@@ -133,7 +133,7 @@ jobs:
             - gradle-home-lambdatest
       - run:
           command: |
-            ./gradlew --no-daemon -Pci --max-workers 4 --parallel allLambdaTestTests
+            ./gradlew --no-daemon -Pci --max-workers 5 --parallel allLambdaTestTests
       - store_test_results:
           path: .
       - store_artifacts:
@@ -158,7 +158,7 @@ jobs:
             - gradle-home-non-ie
       - run:
           command: |
-            ./gradlew --no-daemon -Pci --max-workers 4 --parallel nonIeBrowserStackTests
+            ./gradlew --no-daemon -Pci --max-workers 5 --parallel nonIeBrowserStackTests
       - store_test_results:
           path: .
       - store_artifacts:
@@ -183,7 +183,7 @@ jobs:
             - gradle-home-ie
       - run:
           command: |
-            ./gradlew --no-daemon -Pci --max-workers 4 --parallel ieBrowserStackTests
+            ./gradlew --no-daemon -Pci --max-workers 5 --parallel ieBrowserStackTests
       - store_test_results:
           path: .
       - store_artifacts:
