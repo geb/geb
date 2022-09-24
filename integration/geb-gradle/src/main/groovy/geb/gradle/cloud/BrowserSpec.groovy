@@ -71,12 +71,6 @@ abstract class BrowserSpec {
         tasks.add(task)
     }
 
-    void configureTasks(Closure configuration) {
-        tasks.all { TaskProvider taskProvider ->
-            taskProvider.configure(configuration)
-        }
-    }
-
     protected void configureCapabilitiesOnTask(Test task) {
         task.systemProperty "geb.${cloudProvider}.browser", capabilitiesAsString
     }
