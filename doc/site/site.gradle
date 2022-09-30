@@ -50,6 +50,11 @@ dependencies {
     testImplementation libs.htmlUnitDriver
 
     currentManual project(path: ":doc:manual", configuration: "manual")
+
+    codenarc libs.codenarc, {
+        exclude module: "GMetrics"
+        exclude group: "org.codehaus.groovy"
+    }
 }
 
 node {

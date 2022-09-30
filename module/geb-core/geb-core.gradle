@@ -32,7 +32,7 @@ dependencies {
 
     testImplementation libs.cglib
     testImplementation libs.jsoup
-    testImplementation libs.ratpack.groovyTest
+    testImplementation libs.ratpack.test
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect

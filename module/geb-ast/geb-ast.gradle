@@ -8,5 +8,5 @@ publishing.publications.main.pom {
 }
 
 dependencies {
-    groovy "org.codehaus.groovy:groovy-macro"
+    groovy "org.apache.groovy:groovy-macro"
 }

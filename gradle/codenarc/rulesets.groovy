@@ -158,9 +158,6 @@ ruleset {
         UnnecessaryGString {
             enabled = false
         }
-        UnnecessarySubstring {
-            enabled = false
-        }
         UnnecessaryObjectReferences {
             enabled = false
         }

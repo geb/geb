@@ -1,5 +1,5 @@
 plugins {
-    id 'geb.published-groovy-3-module'
+    id 'geb.published-groovy-4-module'
 }
 
 configurations {

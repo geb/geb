@@ -80,7 +80,7 @@ class PageContentNameSpec extends GebSpecWithCallbackServer {
 
 class DynamicContentNamePage extends Page {
     static content = {
-        "$contentName" { $() }
+        delegate."$contentName" { $() }
     }
 
     String contentName
@@ -88,7 +88,7 @@ class DynamicContentNamePage extends Page {
 
 class DynamicContentNameModule extends Module {
     static content = {
-        "$contentName" { $() }
+        delegate."$contentName" { $() }
     }
 
     String contentName

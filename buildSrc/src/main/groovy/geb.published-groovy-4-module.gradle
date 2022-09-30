@@ -1,4 +1,4 @@
 plugins {
     id 'geb.published-groovy-module'
-    id 'geb.groovy-3-module'
+    id 'geb.groovy-4-module'
 }

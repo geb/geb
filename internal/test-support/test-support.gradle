@@ -1,10 +1,10 @@
 plugins {
-    id 'geb.groovy-3-module'
+    id 'geb.groovy-4-module'
 }
 
 dependencies {
-    groovy "org.codehaus.groovy:groovy-xml"
-    groovy "org.codehaus.groovy:groovy-json"
+    groovy "org.apache.groovy:groovy-xml"
+    groovy "org.apache.groovy:groovy-json"
 
     api project(':module:geb-core')
     api libs.htmlUnitDriver

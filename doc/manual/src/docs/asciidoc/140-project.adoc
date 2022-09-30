@@ -94,6 +94,9 @@ This page lists the high level changes between versions of Geb.
 
 No changes have been made, yet.
 
+==== Breaking changes
+* Update Groovy to 4.0.5 and Spock to 2.3-groovy-4.0. [issue:668[]]
+
 === 6.0
 
 ==== New features

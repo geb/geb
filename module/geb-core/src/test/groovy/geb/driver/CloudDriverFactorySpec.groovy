@@ -18,7 +18,7 @@ package geb.driver
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
-import ratpack.groovy.test.embed.GroovyEmbeddedApp
+import ratpack.test.embed.EmbeddedApp
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
@@ -30,17 +30,17 @@ class CloudDriverFactorySpec extends Specification {
     private static final String TEST_CAPABILITY_NAME = "testCapability"
 
     @AutoCleanup
-    GroovyEmbeddedApp mockWebDriverServer = GroovyEmbeddedApp.of {
-        handlers {
-            post("session") {
-                render(
-                        parse(fromJson(NewSessionCommand)).map { command ->
-                            json(
-                                    sessionId: UUID.randomUUID(),
-                                    value: command.desiredCapabilities,
-                                    status: 0
-                            )
-                        }
+    EmbeddedApp mockWebDriverServer = EmbeddedApp.of {
+        it.handlers {
+            it.post("session") {
+                it.render(
+                    it.parse(fromJson(NewSessionCommand)).map { command ->
+                        json(
+                            sessionId: UUID.randomUUID(),
+                            value: command.desiredCapabilities,
+                            status: 0
+                        )
+                    }
                 )
             }
         }

@@ -13,13 +13,6 @@ configurations {
     codenarc.extendsFrom groovy
 }
 
-dependencies {
-    codenarc libs.codenarc, {
-        exclude module: "GMetrics"
-        exclude group: "org.codehaus.groovy"
-    }
-}
-
 codenarc.configFile = rootProject.file('gradle/codenarc/rulesets.groovy')
 
 def codenarcTasks = tasks.withType(CodeNarc)

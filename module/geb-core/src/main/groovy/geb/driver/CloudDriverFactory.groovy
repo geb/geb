@@ -21,7 +21,7 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 abstract class CloudDriverFactory {
 
-    private static final String VENDOR_PREFIX_DELIMETER = "."
+    protected static final String VENDOR_PREFIX_DELIMETER = "."
 
     abstract String assembleProviderUrl(String username, String password)
 

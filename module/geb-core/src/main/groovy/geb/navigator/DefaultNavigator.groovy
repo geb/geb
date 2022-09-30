@@ -183,7 +183,7 @@ class DefaultNavigator implements Navigator {
     }
 
     Navigator findAll(Closure predicate) {
-        browser.navigatorFactory.createFromNavigators(super.findAll(predicate))
+        browser.navigatorFactory.createFromNavigators(toList().findAll(predicate))
     }
 
     JQueryAdapter getJquery() {

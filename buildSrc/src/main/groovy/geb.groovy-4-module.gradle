@@ -1,0 +1,15 @@
+plugins {
+    id 'geb.groovy-module'
+    id 'geb.spock-2-groovy-4-module'
+}
+
+dependencies {
+    groovy platform(libs.groovy.bom)
+    groovy "org.apache.groovy:groovy"
+    groovy "org.apache.groovy:groovy-templates"
+
+    codenarc libs.codenarcGroovy4, {
+        exclude module: "GMetrics"
+        exclude group: "org.apache.groovy"
+    }
+}

@@ -38,7 +38,7 @@ class ReportsFolder implements IMethodInterceptor {
     }
 
     @Override
-    @SuppressWarnings("BracesForTryCatchFinally")
+    @SuppressWarnings("EmptyTryBlock")
     void intercept(IMethodInvocation invocation) throws Throwable {
         try(def tempDirectory = new CloseableTempDirectory()) {
             directory = tempDirectory.file

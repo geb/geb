@@ -1,0 +1,7 @@
+plugins {
+    id 'geb.spock-2-module'
+}
+
+dependencies {
+    testImplementation libs.spockCoreGroovy3
+}
