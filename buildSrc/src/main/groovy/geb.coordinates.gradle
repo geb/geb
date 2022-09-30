@@ -13,5 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-version = '6.1-SNAPSHOT'
+version = '7.0-SNAPSHOT'
 group = 'org.gebish'
