@@ -85,6 +85,7 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 * github-profile:pbielicki[Przemysław Bielicki] - Removal of deprecations from the build
 * github-profile:arixmkii[Arthur Sengileyev] - Dependency updates
 * github-profile:Vampire[Björn Kautler] - Various improvements
+* github-profile:AlexeyAkentyev[Alexey Akentyev] - Fix handling of skipped and aborted tests in `OnFailureReporter`
 
 == History
 
@@ -93,6 +94,9 @@ This page lists the high level changes between versions of Geb.
 === {geb-version}
 
 No changes have been made, yet.
+
+==== Fixes
+* Correctly handle skipped and aborted tests in `OnFailureReporter`. [issue:676[]]
 
 ==== Breaking changes
 * Update Groovy to 4.0.5 and Spock to 2.3-groovy-4.0. [issue:668[]]
