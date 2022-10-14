@@ -17,7 +17,7 @@ package geb.gradle
 
 import org.gradle.api.provider.Provider
 
-class ToStringProviderValue {
+class ToStringProviderValue implements Serializable {
 
     private final Provider<String> provider
 
@@ -28,5 +28,15 @@ class ToStringProviderValue {
     @Override
     String toString() {
         provider.get()
+    }
+
+    @SuppressWarnings("UnusedPrivateMethod")
+    private void writeObject(ObjectOutputStream output) throws IOException {
+        output.writeUTF(provider.get())
+    }
+
+    @SuppressWarnings(["UnusedPrivateMethod", "UnusedPrivateMethodParameter"])
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        throw new NotSerializableException()
     }
 }

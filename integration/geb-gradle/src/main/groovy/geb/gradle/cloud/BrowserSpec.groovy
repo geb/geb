@@ -15,7 +15,10 @@
  */
 package geb.gradle.cloud
 
+import geb.gradle.ToStringProviderValue
 import org.gradle.api.DomainObjectSet
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
@@ -28,23 +31,28 @@ abstract class BrowserSpec {
     final String name
     final String displayName
 
-    private final Properties capabilities = new Properties()
-
     @Inject
     BrowserSpec(String name) {
         this.name = name
         String[] split = name.split("_", 3)
-        capabilities["browserName"] = split[0]
+
+        String browserName = split[0]
+        capabilities.put("browserName", browserName)
+
+        String platformName
         if (split.size() > 1) {
-            capabilities["platformName"] = split[1]
+            platformName = split[1]
+            capabilities.put("platformName", platformName.toUpperCase())
         }
+
+        String browserVersion
         if (split.size() > 2) {
-            capabilities["browserVersion"] = split[2]
+            browserVersion = split[2]
+            capabilities.put("browserVersion", browserVersion)
         }
-        displayName = "${camelCase(capabilities["browserName"])}${capabilities["platformName"]?.capitalize() ?: ""}${capabilities["browserVersion"]?.capitalize() ?: ""}"
-        if (capabilities["platformName"]) {
-            capabilities["platformName"] = capabilities["platformName"].toUpperCase()
-        }
+
+        displayName = "${camelCase(browserName)}${platformName?.capitalize() ?: ""}${browserVersion?.capitalize() ?: ""}"
+
         setCapabilitiesOnTasks()
     }
 
@@ -52,19 +60,14 @@ abstract class BrowserSpec {
 
     abstract DomainObjectSet<TaskProvider<Test>> getTasks()
 
+    abstract MapProperty<String, String> getCapabilities()
+
     void capability(String capability, String value) {
         capabilities.put(capability, value)
-        setCapabilitiesOnTasks()
     }
 
     void capabilities(Map<String, String> capabilities) {
-        this.capabilities.putAll(capabilities)
-        setCapabilitiesOnTasks()
-    }
-
-    void setCapabilities(Map<String, String> capabilities) {
-        capabilities.clear()
-        capabilities(capabilities)
+        getCapabilities().putAll(capabilities)
     }
 
     void addTask(TaskProvider<Test> task) {
@@ -72,16 +75,18 @@ abstract class BrowserSpec {
     }
 
     protected void configureCapabilitiesOnTask(Test task) {
-        task.systemProperty "geb.${cloudProvider}.browser", capabilitiesAsString
+        task.systemProperty "geb.${cloudProvider}.browser", new ToStringProviderValue(capabilitiesStringProvider)
     }
 
-    protected String getCapabilitiesAsString() {
-        StringWriter writer = new StringWriter()
-        capabilities.store(writer, null)
+    protected Provider<String> getCapabilitiesStringProvider() {
+        capabilities.map { capabilitiesMap ->
+            StringWriter writer = new StringWriter()
+            new Properties().tap { putAll(capabilitiesMap) }.store(writer, null)
 
-        writer.toString().readLines().findAll {
-            !it.startsWith("#")
-        }.join(System.lineSeparator())
+            writer.toString().readLines().findAll {
+                !it.startsWith("#")
+            }.join(System.lineSeparator())
+        }
     }
 
     protected void setCapabilitiesOnTasks() {
