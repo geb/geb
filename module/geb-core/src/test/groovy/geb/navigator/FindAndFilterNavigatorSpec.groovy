@@ -263,7 +263,10 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $("div").filter("#a,#b")*.@id == ["a", "b"]
         $("div").filter(id: "a")*.@id == ["a"]
         $("div").filter(text: "a")*.@id == ["a"]
-        $("div").filter(text: ~/\w/)*.@id == ["a", "b", "c"]
+        $("div").filter(text: ~/\w/)*.@id in [
+            ["a", "b", "c"],
+            ["a", "b", "c", "d"] //most browsers do not return not visible text from WebElement.text() but some do
+        ]
         $("div").filter(displayed: false)*.@id == ["d"]
     }
 
