@@ -37,4 +37,24 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         $("div", dynamic: true)
         // end::example[]
     }
+
+    def "dynamic navigator from web element supplier"() {
+        given:
+        bodyWithJquery()
+        def navigator = sizeBasedDynamicNavigator()
+
+        when:
+        $("body").jquery.append('<div style="height: 10px">div</div>')
+
+        then:
+        navigator
+    }
+
+    Navigator sizeBasedDynamicNavigator() {
+        // tag::navigator_factory_example[]
+        browser.navigatorFactory.createDynamic {
+            $("div").allElements().findAll { it.size.height == 10 }
+        }
+        // end::navigator_factory_example[]
+    }
 }

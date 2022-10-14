@@ -21,6 +21,8 @@ import geb.navigator.Navigator
 import jodd.util.collection.CompositeIterator
 import org.openqa.selenium.WebElement
 
+import java.util.function.Supplier
+
 abstract class AbstractNavigatorFactory implements NavigatorFactory {
 
     private final Browser browser
@@ -29,6 +31,10 @@ abstract class AbstractNavigatorFactory implements NavigatorFactory {
     AbstractNavigatorFactory(Browser browser, InnerNavigatorFactory innerNavigatorFactory) {
         this.browser = browser
         this.innerNavigatorFactory = innerNavigatorFactory
+    }
+
+    Navigator createDynamic(Supplier<Iterable<WebElement>> elementsSupplier) {
+        createFromWebElements({ elementsSupplier.get().iterator() } as Iterable<WebElement>)
     }
 
     Navigator createFromWebElements(Iterable<WebElement> elements) {

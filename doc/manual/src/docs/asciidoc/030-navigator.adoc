@@ -150,6 +150,16 @@ While dynamic navigators make `StaleElementReferenceException` less likely, it's
 It's also worth noting that the risk of it occurring is exacerbated for navigators with long creation chains.
 ====
 
+==== Creating directly from `WebElement` objects
+
+Certain selection logic, for example selecting elements based on their size, cannot be expressed via Geb's `$()` method but can be expressed by filtering Selenium's {webelement-api} instances.
+So, if you for example wanted to create a dynamic `Navigator` matching all divs in a page which are exactly 10 pixel high you could do so using {navigator-factory-create-dynamic-api}…
+
+[source,groovy]
+----
+include::{snippets-dir}/navigator/DynamicNavigatorSpec.groovy[tag=navigator_factory_example,indent=0]
+----
+
 === Indexes and ranges
 
 When matching, a single positive integer or integer range can be given to restrict by index.

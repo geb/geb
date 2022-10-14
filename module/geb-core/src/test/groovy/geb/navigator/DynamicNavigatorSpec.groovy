@@ -983,4 +983,21 @@ class DynamicNavigatorSpec extends GebSpecWithCallbackServer {
         dynamic.size() == 2
     }
 
+    def "web elements supplier based dynamic navigator"() {
+        given:
+        bodyWithJquery {
+            div("div")
+        }
+
+        and:
+        def nonDynamic = $("div")
+        def dynamic = navigatorFactory.createDynamic { $("div").allElements() }
+
+        when:
+        $("body").jquery.append('<div></div>')
+
+        then:
+        nonDynamic.size() == 1
+        dynamic.size() == 2
+    }
 }

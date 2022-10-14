@@ -19,6 +19,8 @@ import geb.navigator.Locator
 import geb.navigator.Navigator
 import org.openqa.selenium.WebElement
 
+import java.util.function.Supplier
+
 /**
  * The object that produces Navigator objects.
  *
@@ -39,6 +41,14 @@ interface NavigatorFactory {
      * @return The locator used for all content lookups from this factory.
      */
     Locator getLocator()
+
+    /**
+     * Create a dynamic navigator, backed by the given web elements supplier.
+     *
+     * @param elementsSupplier A supplier of web elements to back the navigator.
+     * @return The created navigator
+     */
+    Navigator createDynamic(Supplier<Iterable<WebElement>> elementsSupplier)
 
     /**
      * Create a navigator, backed by the given web elements.

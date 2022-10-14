@@ -97,6 +97,7 @@ No changes have been made, yet.
 
 ==== New features
 * Add support for selecting elements by visibility when creating a `Navigator`. [issue:675[]]
+* Add a convenience method for creating dynamic navigators based on a `Supplier<Iterable<WebElement>>`. [issue:674[]]
 
 ==== Fixes
 * Correctly handle skipped and aborted tests in `OnFailureReporter`. [issue:676[]]
