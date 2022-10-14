@@ -156,7 +156,7 @@ class GebReportingSpecSpec extends Specification {
 
     def "report is not written after a skipped or aborted test when reporting on failure only is enabled"() {
         when:
-        runReportingSpec """
+        def result = runReportingSpec """
             @PendingFeature
             def "aborted test"() {
                 expect:
@@ -174,6 +174,8 @@ class GebReportingSpecSpec extends Specification {
 
         then:
         !reportGroupDir.listFiles()
+        result.testsStartedCount == 2
+        result.testsSucceededCount == 0
     }
 
     def "failure when writing a report does not overwrite the original test failure"() {
