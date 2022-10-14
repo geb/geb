@@ -18,7 +18,6 @@ import geb.report.ReportState
 import geb.report.Reporter
 import geb.report.ReportingListener
 import geb.test.CallbackHttpServer
-import org.opentest4j.TestAbortedException
 import org.opentest4j.TestSkippedException
 import org.spockframework.runtime.ConditionNotSatisfiedError
 import spock.lang.*
@@ -54,7 +53,7 @@ class GebReportingSpecSpec extends Specification {
         specRunner.addClassImport(ReportingListener)
         specRunner.addClassImport(ReportState)
         specRunner.addClassImport(Shared)
-        specRunner.addClassImport(TestAbortedException)
+        specRunner.addClassImport(PendingFeature)
         specRunner.addClassImport(TestSkippedException)
     }
 
@@ -155,26 +154,18 @@ class GebReportingSpecSpec extends Specification {
         reportFile("001-001-failing test _parameter_ 0_ _0_-failure.html").exists()
     }
 
-    def "report is not written after a skipping test when reporting on failure only is enabled"() {
+    def "report is not written after a skipped or aborted test when reporting on failure only is enabled"() {
         when:
         runReportingSpec """
-            def "skipping test via TestSkippedException"() {
-                given:
-                throw new TestSkippedException('Skipping test')
-
-                and:
-                go "/"
-
+            @PendingFeature
+            def "aborted test"() {
                 expect:
                 false
             }
 
-            def "skipping test via TestAbortedException"() {
+            def "skipped test"() {
                 given:
-                throw new TestAbortedException('Aborting test')
-
-                and:
-                go "/"
+                throw new TestSkippedException()
 
                 expect:
                 false
