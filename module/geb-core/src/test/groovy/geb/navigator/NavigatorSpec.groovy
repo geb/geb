@@ -95,6 +95,12 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
                 div("class": "c-1 z-1", "c")
                 input(type: "text")
             }
+            div(id: "d") {
+                div(style: "display: none;", "d")
+            }
+            div(id: "e") {
+                p(style: "display: none;", "e")
+            }
         }
 
         then:
@@ -104,6 +110,8 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         $("div").has("div", text: "b")*.@id == ["b"]
         $("div").has("input", type: "text")*.@id == ["a", "c"]
         $("div").has(text: ~/[abc]/)*.@id == ["a", "b", "c"]
+        $("div").has(displayed: false)*.@id == ["d", "e"]
+        $("div").has("div", displayed: false)*.@id == ["d"]
     }
 
     def hasNot() {
@@ -136,7 +144,7 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         html {
             div(id: "a", 'class': 'z', 'hello')
             div(id: "b", 'class': 'x', 'hello')
-            div(id: "c", 'class': 'z')
+            div(id: "c", 'class': 'z', style: 'display: none;')
         }
 
         then:
@@ -145,6 +153,8 @@ class NavigatorSpec extends GebSpecWithCallbackServer {
         $("foo").not("foo")*.@id == []
         $("div").not(text: ~/.+/)*.@id == ["c"]
         $("div").not(".z", text: 'hello')*.@id == ["b", "c"]
+        $("div").not(displayed: true)*.@id == ["c"]
+        $("div").not(".z", displayed: false)*.@id == ["a", "b"]
     }
 
     def plus() {

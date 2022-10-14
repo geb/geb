@@ -30,6 +30,7 @@ class WebElementPredicates {
             switch (name) {
                 case "text": actualValue = element.text; break
                 case "class": actualValue = element.getAttribute("class")?.tokenize(); break
+                case "displayed": actualValue = element.displayed; break
                 default: actualValue = element.getAttribute(name)
             }
             matches(actualValue, requiredValue)
@@ -60,4 +61,7 @@ class WebElementPredicates {
         actualValue.any { matcher.matches(it) }
     }
 
+    protected static boolean matches(boolean actualValue, Object requiredValue) {
+        actualValue == requiredValue.asBoolean()
+    }
 }

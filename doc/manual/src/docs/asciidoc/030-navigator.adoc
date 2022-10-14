@@ -16,7 +16,7 @@ The signature of the `$()` function is as follows…
 
 [source,groovy]
 ----
-$(«css selector», «index or range», «attribute / text matchers»)
+$(«css selector», «index or range», «attribute / text / visibility matchers»)
 ----
 
 The following is a concrete example…
@@ -170,11 +170,13 @@ include::{snippets-dir}/navigator/DollarExamplesSpec.groovy[tag=indexes_and_rang
 
 See below for an explanation of the `text()` method and the use of the spread operator.
 
-=== Attribute and text matching
+=== Attribute, text and visibility matching
 
-Matches can be made on attributes and node text values via Groovy's named parameter syntax.
-The value `text` is treated specially as a match against the node's text.
+Matches can be made on attributes, node text values as well as visibility via Groovy's named parameter syntax.
+For matching on node's text use `text` as the parameter name and for matching on node visibility use `displayed` as the parameter name.
 All other values are matched against their corresponding attribute values.
+
+==== Attributes and text
 
 Consider the following html…
 
@@ -211,7 +213,7 @@ You can mix attribute and text matchers…
 include::{snippets-dir}/navigator/DollarExamplesSpec.groovy[tag=matchers_and_attributes,indent=0]
 ----
 
-==== Using patterns
+===== Using patterns
 
 To match the entire value of an attribute, or the text you use a `String` value. It is also possible to use a `Pattern` to do regexp matching…
 
@@ -256,7 +258,7 @@ They are methods that are available on `geb.Page` and other _places_ where you c
 They simply just return patterns.
 ====
 
-==== Using more than one pattern
+===== Using more than one pattern
 
 Sometimes, you have the need to search for alternative patterns, for example if you have a multi-brand page with different text for each brand,
 in this case you can use the composite matchers `allOf` and `anyOf`. Both, accept any combinations of the other matchers.
@@ -272,6 +274,22 @@ include::{snippets-dir}/navigator/DollarExamplesSpec.groovy[tag=pattern_composit
 |`allOf` |Matches if all the given matchers match
 |`anyOf` |Matches if any of the given matchers match
 |===
+
+==== Visibility
+
+Consider the following html…
+
+[source,html]
+----
+include::{snippets-dir}/navigator/DollarExamplesSpec.groovy[tag=visibility_html,indent=0]
+----
+
+We can use visibility matchers like so…
+
+[source,groovy]
+----
+include::{snippets-dir}/navigator/DollarExamplesSpec.groovy[tag=visibility,indent=0]
+----
 
 === Navigators are iterable
 

@@ -26,8 +26,8 @@ class NavigableSpec extends GebSpecWithCallbackServer {
     def setupSpec() {
         responseHtml {
             body {
-                ['a', 'b', 'c'].each {
-                    p(it, 'class': it)
+                ['a', 'b', 'c', 'd'].each {
+                    p(it, 'class': it, style: "display: ${it == 'd' ? 'none' : 'inline'};")
                 }
                 input(type: "text", name: "e", value: "val")
                 img(name: "notAControl")
@@ -55,8 +55,8 @@ class NavigableSpec extends GebSpecWithCallbackServer {
 
     def "just selector"() {
         expect:
-        $("p").size() == 3
-        find("p").size() == 3
+        $("p").size() == 4
+        find("p").size() == 4
     }
 
     def "just attributes"() {
@@ -69,6 +69,12 @@ class NavigableSpec extends GebSpecWithCallbackServer {
         expect:
         $(text: "a").text() == "a"
         find(text: "a").text() == "a"
+    }
+
+    def "just attributes - displayed"() {
+        expect:
+        $(displayed: false)*.classes().contains(["d"])
+        find(displayed: false)*.classes().contains(["d"])
     }
 
     def "selector and index"() {
@@ -181,7 +187,7 @@ class NavigableSpec extends GebSpecWithCallbackServer {
         expect:
         $($(".a")).size() == 1
         $($(".a"), $(".c")).size() == 2
-        $($("p"), $("input")).size() == 4
+        $($("p"), $("input")).size() == 5
     }
 
     def "composition with content"() {
@@ -191,20 +197,20 @@ class NavigableSpec extends GebSpecWithCallbackServer {
         then:
         $(input).size() == 1
         $(input, pElem('a')).size() == 2
-        $(input, pElems).size() == 4
+        $(input, pElems).size() == 5
     }
 
     def "composition with web elements"() {
         expect:
         $($(".a").firstElement()).size() == 1
         $($(".a").firstElement(), $(".c").firstElement()).size() == 2
-        $(*($("p").allElements()), $("input").firstElement()).size() == 4
+        $(*($("p").allElements()), $("input").firstElement()).size() == 5
     }
 
     def "attribute access notation"() {
         expect:
         $(".a").@class == 'a'
-        $("p")*.@class == ['a', 'b', 'c']
+        $("p")*.@class == ['a', 'b', 'c', 'd']
     }
 
     def "obtaining a navigator for the focused element"() {

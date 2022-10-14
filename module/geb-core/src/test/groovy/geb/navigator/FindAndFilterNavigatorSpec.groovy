@@ -67,6 +67,7 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
             div(id: "a") {
                 div(id: "b", class: "nested", "b")
                 div(id: "c", class: "nested", "c")
+                div(id: "hidden", class: "nested", style: "display: none;", "d")
             }
         }
 
@@ -77,6 +78,8 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $("#a")."$findMethod"(By.id("d")).empty
         $("#a")."$findMethod"(text: "b").text() == "b"
         $("#a")."$findMethod"(text: "b", 0).text() == "b"
+        $("#a")."$findMethod"(displayed: false).@id == "hidden"
+        $("#a")."$findMethod"(displayed: true, 1).text() == "c"
         $("#a")."$findMethod"(class: "nested", 0..1)*.@id == ["b", "c"]
         $("#a")."$findMethod"(class: "nested", "#c").text() == "c"
         $("#a")."$findMethod"(class: "nested", By.id("c")).text() == "c"
@@ -159,6 +162,18 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $(text: ~/\w/)*.text() == ["a", "b", "c"]
     }
 
+    def "find by visibility"() {
+        given:
+        html {
+            p(class: "displayed")
+            p(class: "hidden", style: "display: none;")
+        }
+
+        expect:
+        $(displayed: true)*.classes().contains(["displayed"])
+        $(displayed: false)*.classes().contains(["hidden"])
+    }
+
     def "selecting with index"() {
         given:
         html {
@@ -220,12 +235,27 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $(By.className("c"), text: "d")*.@id == []
     }
 
+    def "find by selector and visibility"() {
+        given:
+        html {
+            div('class': 'a', id: 'a1', 'a1')
+            div('class': 'a', id: 'a2', 'a2', style: "display: none;")
+            div('class': 'b', id: 'b1', 'b1')
+            div('class': 'b', id: 'b2', 'b2', style: "display: none;")
+        }
+
+        expect:
+        $(".a", displayed: true).@id == "a1"
+        $("div", displayed: false)*.@id == ["a2", "b2"]
+    }
+
     def filter() {
         given:
         html {
             div(id: "a", "a")
             div(id: "b", "b")
             div(id: "c", "c")
+            div(id: "d", "d", style: "display: none;")
         }
 
         expect:
@@ -234,6 +264,7 @@ class FindAndFilterNavigatorSpec extends GebSpecWithCallbackServer {
         $("div").filter(id: "a")*.@id == ["a"]
         $("div").filter(text: "a")*.@id == ["a"]
         $("div").filter(text: ~/\w/)*.@id == ["a", "b", "c"]
+        $("div").filter(displayed: false)*.@id == ["d"]
     }
 
 }

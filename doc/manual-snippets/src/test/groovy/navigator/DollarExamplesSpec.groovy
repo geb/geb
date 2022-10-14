@@ -143,6 +143,26 @@ class DollarExamplesSpec extends GebSpecWithCallbackServer {
         // end::pattern_composite[]
     }
 
+    def "visibility"() {
+        given:
+        responseHtml """
+            <html>
+                // tag::visibility_html[]
+                <p>p1</p>
+                <p style="display: none;">p2</p>
+                // end::visibility_html[]
+            </html>
+        """
+
+        when:
+        go()
+
+        then:
+        // tag::visibility[]
+        assert $("p", displayed: true).size() == 1
+        // end::visibility[]
+    }
+
     private void attributesAndTextMatchingHtml() {
         responseHtml """
             <html>
