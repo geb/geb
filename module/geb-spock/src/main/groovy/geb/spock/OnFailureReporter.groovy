@@ -16,8 +16,7 @@
 package geb.spock
 
 import geb.test.ManagedGebTest
-import org.opentest4j.TestAbortedException
-import org.opentest4j.TestSkippedException
+import org.opentest4j.IncompleteExecutionException
 import org.spockframework.runtime.extension.IMethodInterceptor
 import org.spockframework.runtime.extension.IMethodInvocation
 
@@ -25,8 +24,8 @@ class OnFailureReporter implements IMethodInterceptor {
     void intercept(IMethodInvocation invocation) throws Throwable {
         try {
             invocation.proceed()
-        } catch (TestAbortedException | TestSkippedException ignoredException) {
-            throw ignoredException
+        } catch (IncompleteExecutionException notACauseForReporting) {
+            throw notACauseForReporting
         } catch (Throwable throwable) {
             ManagedGebTest spec = invocation.instance
             if (spec.testManager.reportingEnabled) {
