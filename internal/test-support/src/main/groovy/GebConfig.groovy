@@ -40,7 +40,9 @@ BrowserWebDriverContainer containerForDriver(String driverName) {
             container = containerForCapabilities(options)
             break
         case "firefox":
-            container = containerForCapabilities(new FirefoxOptions())
+            def options = new FirefoxOptions()
+            options.setCapability("se:cdpEnabled", false)
+            container = containerForCapabilities(options)
             container.withSharedMemorySize(2 * FileUtils.ONE_GB)
             break
         default:
