@@ -67,11 +67,9 @@ node {
 
 def npmCiTask = tasks.register("npmCi", NpmTask) {
     inputs.files(
-        'src/npm/package-lock.json',
-        'src/npm/semantic.json'
+        'src/npm/package-lock.json'
     )
     outputs.dir 'src/npm/node_modules'
-    outputs.dir 'src/npm/semantic'
 
     npmCommand = ["ci"]
 }
@@ -85,7 +83,7 @@ def generateResourcesTask = tasks.register("generateResources", Sync) {
     into 'src/main/generatedResources'
 }
 
-sourceSets.main.resources.srcDir generateResourcesTask
+sourceSets.main.resources.srcDirs generateResourcesTask, 'src/semantic'
 
 tasks.named("ideaModule") {
     dependsOn generateResourcesTask
@@ -109,22 +107,6 @@ tasks.named("processResources") {
         include '@browser-logos/firefox/firefox_128x128.png'
         eachFile {
             it.relativePath = new RelativePath(true, 'public', 'images', it.sourceName)
-        }
-    }
-    from(npmCiTask) {
-        includeEmptyDirs = false
-        include 'dist/semantic.min.js'
-        eachFile {
-            it.relativePath = new RelativePath(true, 'public', 'js', *it.relativePath.segments[1..-1])
-        }
-    }
-    from(npmCiTask) {
-        includeEmptyDirs = false
-        include 'dist/semantic.min.css'
-        include 'dist/themes/default/assets/fonts/**'
-        include 'dist/themes/default/assets/images/**'
-        eachFile {
-            it.relativePath = new RelativePath(true, 'public', 'css', *it.relativePath.segments[1..-1])
         }
     }
 }
