@@ -8,11 +8,9 @@
   "license": "ISC",
   "devDependencies": {
     "jquery": "3.2.1",
-    "@browser-logos/android": "^1.0.3",
-    "@browser-logos/chrome": "^1.0.1",
-    "@browser-logos/edge": "^1.0.1",
-    "@browser-logos/firefox": "^1.0.1",
-    "@browser-logos/safari": "^1.0.0",
-    "@browser-logos/safari-ios": "^1.0.0"
+    "@browser-logos/chrome": "^2.0.0",
+    "@browser-logos/edge": "^2.0.5",
+    "@browser-logos/firefox": "^3.0.9",
+    "@browser-logos/safari": "^2.0.1"
   }
 }
