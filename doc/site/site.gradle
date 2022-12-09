@@ -65,15 +65,6 @@ node {
     nodeModulesDir = file("src/npm")
 }
 
-def npmCiTask = tasks.register("npmCi", NpmTask) {
-    inputs.files(
-        'src/npm/package-lock.json'
-    )
-    outputs.dir 'src/npm/node_modules'
-
-    npmCommand = ["ci"]
-}
-
 def generateResourcesTask = tasks.register("generateResources", Sync) {
     from(tasks.named("gatherManuals")) {
         into 'public/manual'
@@ -89,15 +80,19 @@ tasks.named("ideaModule") {
     dependsOn generateResourcesTask
 }
 
+def pnpmInstallTask = tasks.named("pnpmInstall") {
+    args.add("--frozen-lockfile")
+}
+
 tasks.named("processResources") {
-    from(npmCiTask) {
+    from(pnpmInstallTask) {
         includeEmptyDirs = false
         include 'jquery/dist/jquery.min.js'
         eachFile {
             it.relativePath = new RelativePath(true, 'public', 'js', it.sourceName)
         }
     }
-    from(npmCiTask) {
+    from(pnpmInstallTask) {
         includeEmptyDirs = false
         include '@browser-logos/android/android_128x128.png'
         include '@browser-logos/chrome/chrome_128x128.png'
