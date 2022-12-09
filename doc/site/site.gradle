@@ -58,7 +58,7 @@ dependencies {
 }
 
 node {
-    version = '8.17.0'
+    version = '19.2.0'
 
     download = true
 
