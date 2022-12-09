@@ -2,7 +2,7 @@ version: 2
 jobs:
   check:
     docker:
-      - image: gebish/ci:v7
+      - image: gebish/ci:v12
     resource_class: large
     environment:
       GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
