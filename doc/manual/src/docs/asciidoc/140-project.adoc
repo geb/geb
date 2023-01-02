@@ -91,6 +91,10 @@ Ideas and new features for Geb can be discussed on the link:mailto:geb-dev@googl
 
 This page lists the high level changes between versions of Geb.
 
+=== {geb-version}
+
+No changes have been made, yet.
+
 === 7.0
 
 No changes have been made, yet.
