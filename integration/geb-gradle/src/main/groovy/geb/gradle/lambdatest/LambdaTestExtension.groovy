@@ -21,6 +21,7 @@ import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.TaskProvider
 
@@ -30,11 +31,11 @@ abstract class LambdaTestExtension extends CloudBrowsersExtension {
 
     @Inject
     LambdaTestExtension(
-        Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        Project project, ObjectFactory objectFactory, TaskProvider<? extends Task> allTestsLifecycleTask,
         TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
         String tasksGroup
     ) {
-        super(project, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
+        super(project, objectFactory, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
 
         task { test ->
             test.environment(

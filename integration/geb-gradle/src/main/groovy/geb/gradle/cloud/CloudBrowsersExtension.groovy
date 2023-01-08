@@ -22,9 +22,10 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.reporting.ReportingExtension
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
@@ -32,6 +33,7 @@ import javax.inject.Inject
 
 abstract class CloudBrowsersExtension {
     protected final Project project
+    protected final ObjectFactory objectFactory
     protected final TaskProvider<? extends Task> allTestsLifecycleTask
     protected final TaskProvider<? extends Task> openTunnelInBackgroundTask
     protected final TaskProvider<? extends Task> closeTunnelTask
@@ -39,11 +41,12 @@ abstract class CloudBrowsersExtension {
 
     @Inject
     CloudBrowsersExtension(
-        Project project, TaskProvider<? extends Task> allTestsLifecycleTask,
+        Project project, ObjectFactory objectFactory, TaskProvider<? extends Task> allTestsLifecycleTask,
         TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
         String tasksGroup
     ) {
         this.project = project
+        this.objectFactory = objectFactory
         this.allTestsLifecycleTask = allTestsLifecycleTask
         this.openTunnelInBackgroundTask = openTunnelInBackgroundTask
         this.closeTunnelTask = closeTunnelTask
@@ -95,6 +98,7 @@ abstract class CloudBrowsersExtension {
             jvmArgumentProviders.add(
                 new SystemPropertiesCommandLineArgumentProvider('geb.build.reportsDir': gebReportsDir.absolutePath)
             )
+            doLast(owner.objectFactory.newInstance(DecorateJUnitXmlReportsAction))
         }
 
         allTestsLifecycleTask.configure {
@@ -104,14 +108,35 @@ abstract class CloudBrowsersExtension {
         browser.addTask(testTask)
         testTasks.add(testTask)
 
-        def decorateReportsTask = project.tasks.register("${name}DecorateReports", Copy) {
-            from testTask.map { it.reports.junitXml.destination }
-            into testTask.map { "${it.reports.junitXml.destination}-decorated" }
-            filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($name)\"") }
+        testTask
+    }
+
+    static class DecorateJUnitXmlReportsAction implements Action<Test> {
+
+        private final FileSystemOperations fileSystemOperations
+
+        @Inject
+        DecorateJUnitXmlReportsAction(FileSystemOperations fileSystemOperations) {
+            this.fileSystemOperations = fileSystemOperations
         }
 
-        testTask.configure { finalizedBy decorateReportsTask }
+        @Override
+        void execute(Test testTask) {
+            def nameForReport = testTask.name[0..-5]
+            def originalXmlFiles = testTask.reports.junitXml.outputLocation.asFileTree.matching {
+                it.include '**/*.xml'
+            }.files
 
-        testTask
+            fileSystemOperations.copy {
+                from originalXmlFiles
+                into testTask.reports.junitXml.outputLocation
+                rename(/^(.*)\.xml$/, '$1-decorated.xml')
+                filter { it.replaceAll("(testsuite|testcase) name=\"(.+?)\"", "\$1 name=\"\$2 ($nameForReport)\"") }
+            }
+
+            fileSystemOperations.delete {
+                delete(originalXmlFiles)
+            }
+        }
     }
 }
