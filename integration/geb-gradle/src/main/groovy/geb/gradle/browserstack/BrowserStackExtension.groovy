@@ -19,10 +19,10 @@ import geb.gradle.ToStringProviderValue
 import geb.gradle.cloud.CloudBrowsersExtension
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 
 import javax.inject.Inject
@@ -35,11 +35,11 @@ abstract class BrowserStackExtension extends CloudBrowsersExtension {
 
     @Inject
     BrowserStackExtension(
-        Project project, ObjectFactory objectFactory, TaskProvider<? extends Task> allTestsLifecycleTask,
+        ObjectFactory objectFactory, TaskContainer tasks, TaskProvider<? extends Task> allTestsLifecycleTask,
         TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
         String tasksGroup
     ) {
-        super(project, objectFactory, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
+        super(objectFactory, tasks, allTestsLifecycleTask, openTunnelInBackgroundTask, closeTunnelTask, tasksGroup)
 
         task { test ->
             test.environment(

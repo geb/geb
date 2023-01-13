@@ -20,19 +20,19 @@ import geb.gradle.SystemPropertiesCommandLineArgumentProvider
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.reporting.ReportingExtension
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
 import javax.inject.Inject
 
 abstract class CloudBrowsersExtension {
-    protected final Project project
+    protected final TaskContainer tasks
     protected final ObjectFactory objectFactory
     protected final TaskProvider<? extends Task> allTestsLifecycleTask
     protected final TaskProvider<? extends Task> openTunnelInBackgroundTask
@@ -41,11 +41,11 @@ abstract class CloudBrowsersExtension {
 
     @Inject
     CloudBrowsersExtension(
-        Project project, ObjectFactory objectFactory, TaskProvider<? extends Task> allTestsLifecycleTask,
+        ObjectFactory objectFactory, TaskContainer tasks, TaskProvider<? extends Task> allTestsLifecycleTask,
         TaskProvider<? extends Task> openTunnelInBackgroundTask, TaskProvider<? extends Task> closeTunnelTask,
         String tasksGroup
     ) {
-        this.project = project
+        this.tasks = tasks
         this.objectFactory = objectFactory
         this.allTestsLifecycleTask = allTestsLifecycleTask
         this.openTunnelInBackgroundTask = openTunnelInBackgroundTask
@@ -87,7 +87,7 @@ abstract class CloudBrowsersExtension {
     protected TaskProvider<Test> addTestTask(BrowserSpec browser, String prefix = null) {
         def name = prefix ? "${prefix}${browser.displayName.capitalize()}" : browser.displayName
 
-        def testTask = project.tasks.register("${name}Test", Test) { Test task ->
+        def testTask = tasks.register("${name}Test", Test) { Test task ->
             task.group = tasksGroup
             task.dependsOn(new ConditionalTaskDependency(useTunnel.&get, openTunnelInBackgroundTask))
             finalizedBy(new ConditionalTaskDependency(useTunnel.&get, closeTunnelTask))
