@@ -16,16 +16,18 @@
 package geb.gradle.browserstack.task
 
 import geb.gradle.cloud.task.DownloadExternalTunnel
+import groovy.transform.InheritConstructors
 import org.apache.tools.ant.taskdefs.condition.Os
 
-class DownloadBrowserStackTunnel extends DownloadExternalTunnel {
+@InheritConstructors(constructorAnnotations = true)
+abstract class DownloadBrowserStackTunnel extends DownloadExternalTunnel {
 
     @Override
     protected String downloadUrl() {
         "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart()}.zip"
     }
 
-    protected String outputPath() {
+    protected String defaultOutputPath() {
         "browserstack/BrowserStackTunnel.zip"
     }
 

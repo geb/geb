@@ -61,11 +61,7 @@ class LambdaTestPlugin implements Plugin<Project> {
         def downloadLambdaTestTunnel = project.tasks.register(DOWNLOAD_TUNNEL_TASK_NAME, DownloadLambdaTestTunnel)
 
         def unzipLambdaTestTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
-            from(
-                project.files(
-                    project.zipTree(downloadLambdaTestTunnel.map { it.outputs.files.singleFile })
-                ).builtBy(downloadLambdaTestTunnel)
-            )
+            from(project.zipTree(downloadLambdaTestTunnel.flatMap { it.tunnelZip }))
             into(project.file("${project.buildDir}/lambdatest/unzipped"))
         }
 

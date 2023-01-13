@@ -16,11 +16,13 @@
 package geb.gradle.lambdatest.task
 
 import geb.gradle.cloud.task.DownloadExternalTunnel
+import groovy.transform.InheritConstructors
 import org.apache.tools.ant.taskdefs.condition.Os
 
-class DownloadLambdaTestTunnel extends DownloadExternalTunnel {
+@InheritConstructors(constructorAnnotations = true)
+abstract class DownloadLambdaTestTunnel extends DownloadExternalTunnel {
 
-    protected String outputPath() {
+    protected String defaultOutputPath() {
         "lambdatest/LambdaTestTunnel.zip"
     }
 
