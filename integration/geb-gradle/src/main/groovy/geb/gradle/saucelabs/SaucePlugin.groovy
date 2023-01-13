@@ -39,19 +39,14 @@ class SaucePlugin implements Plugin<Project> {
             finalizedBy closeTunnel
         }
 
+        def openSauceTunnel = project.tasks.register('openSauceTunnel', StartExternalTunnel)
+
         def sauceLabsExtension = project.extensions.create(
             'sauceLabs', SauceLabsExtension, allSauceLabsTests, openSauceTunnelInBackground, closeTunnel, "Sauce Test"
         )
 
-        closeTunnel.configure {
-            tunnel = project.sauceLabs.connect
-        }
-
-        def openSauceTunnel = project.tasks.register('openSauceTunnel', StartExternalTunnel)
-
-        [openSauceTunnel, openSauceTunnelInBackground]*.configure {
+        [openSauceTunnel, openSauceTunnelInBackground, closeTunnel]*.configure {
             tunnel = sauceLabsExtension.connect
-            workingDir = project.buildDir
         }
 
         project.configurations.create('sauceConnect')

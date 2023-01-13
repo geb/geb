@@ -16,6 +16,7 @@
 package geb.gradle.saucelabs
 
 import geb.gradle.cloud.ExternalTunnel
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
@@ -29,8 +30,8 @@ abstract class SauceConnect extends ExternalTunnel {
     final String outputPrefix = 'sauce-connect'
 
     @Inject
-    SauceConnect(ExecOperations execOperations) {
-        super(execOperations)
+    SauceConnect(ExecOperations execOperations, ProjectLayout projectLayout) {
+        super(execOperations, projectLayout)
         identifier.convention("")
         port.convention(4445)
         tunnelReadyMessage.convention('Sauce Connect is up, you may start your tests')

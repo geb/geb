@@ -41,20 +41,15 @@ class BrowserStackPlugin implements Plugin<Project> {
             finalizedBy closeTunnel
         }
 
+        def openBrowserStackTunnel = project.tasks.register('openBrowserStackTunnel', StartExternalTunnel)
+
         def browserStackExtension = project.extensions.create(
             'browserStack', BrowserStackExtension, allBrowserStackTests, openBrowserStackTunnelInBackground,
             closeTunnel, "BrowserStack Test"
         )
 
-        closeTunnel.configure {
-            it.tunnel = browserStackExtension.local
-        }
-
-        def openBrowserStackTunnel = project.tasks.register('openBrowserStackTunnel', StartExternalTunnel)
-
-        [openBrowserStackTunnel, openBrowserStackTunnelInBackground]*.configure {
+        [openBrowserStackTunnel, openBrowserStackTunnelInBackground, closeTunnel]*.configure {
             tunnel = browserStackExtension.local
-            workingDir = project.buildDir
         }
 
         def downloadBrowserStackTunnel = project.tasks.register(

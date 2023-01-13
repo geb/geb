@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,7 @@
 package geb.gradle.cloud.task
 
 import geb.gradle.cloud.ExternalTunnel
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.TaskAction
 
-class StopExternalTunnel extends DefaultTask implements HasTunnel {
-
-    @Internal
-    ExternalTunnel tunnel
-
-    @TaskAction
-    void stop() {
-        tunnel.stopTunnel()
-    }
+interface HasTunnel {
+    void setTunnel(ExternalTunnel tunnel)
 }

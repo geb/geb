@@ -16,6 +16,7 @@
 package geb.gradle.browserstack
 
 import geb.gradle.cloud.ExternalTunnel
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
@@ -31,8 +32,8 @@ abstract class BrowserStackLocal extends ExternalTunnel {
     final String outputPrefix = 'browserstack-tunnel'
 
     @Inject
-    BrowserStackLocal(ExecOperations execOperations) {
-        super(execOperations)
+    BrowserStackLocal(ExecOperations execOperations, ProjectLayout projectLayout) {
+        super(execOperations, projectLayout)
         tunnelReadyMessage.convention("You can now access your local server(s) in our remote browser")
         identifier.convention("")
     }

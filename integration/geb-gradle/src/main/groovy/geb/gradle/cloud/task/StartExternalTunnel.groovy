@@ -21,19 +21,16 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.TaskAction
 
-class StartExternalTunnel extends DefaultTask {
+class StartExternalTunnel extends DefaultTask implements HasTunnel {
 
     @Internal
     boolean inBackground = false
-
-    @Internal
-    File workingDir
 
     @Nested
     ExternalTunnel tunnel
 
     @TaskAction
     void start() {
-        tunnel.startTunnel(workingDir, inBackground)
+        tunnel.startTunnel(inBackground)
     }
 }

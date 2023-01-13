@@ -17,6 +17,7 @@ package geb.gradle.cloud
 
 import groovy.util.logging.Slf4j
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
@@ -33,11 +34,13 @@ import static org.gradle.api.tasks.PathSensitivity.RELATIVE
 abstract class ExternalTunnel {
 
     final protected ExecOperations execOperations
+    final protected ProjectLayout projectLayout
 
     protected Process tunnelProcess
 
-    ExternalTunnel(ExecOperations execOperations) {
+    ExternalTunnel(ExecOperations execOperations, ProjectLayout projectLayout) {
         this.execOperations = execOperations
+        this.projectLayout = projectLayout
         timeout.convention(3)
         timeoutUnit.convention(TimeUnit.MINUTES)
         additionalOptions.convention([])
@@ -69,14 +72,13 @@ abstract class ExternalTunnel {
         executable.asFileTree.singleFile.absolutePath
     }
 
-    void startTunnel(File workingDir, boolean background) {
+    void startTunnel(boolean background) {
         def command = assembleCommandLine()*.toString()
         log.debug("Executing command: {}", command)
         if (background) {
-            workingDir.mkdirs()
             tunnelProcess = new ProcessBuilder(command).
                 redirectErrorStream(true).
-                directory(workingDir).
+                directory(projectLayout.buildDirectory.asFile.get()).
                 start()
 
             def latch = new CountDownLatch(1)

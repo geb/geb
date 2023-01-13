@@ -16,6 +16,7 @@
 package geb.gradle.lambdatest
 
 import geb.gradle.cloud.ExternalTunnel
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
@@ -33,8 +34,8 @@ abstract class LambdaTestTunnelOps extends ExternalTunnel {
     final String outputPrefix = 'lambdatest-tunnel'
 
     @Inject
-    LambdaTestTunnelOps(ExecOperations execOperations, ProviderFactory providerFactory) {
-        super(execOperations)
+    LambdaTestTunnelOps(ExecOperations execOperations, ProjectLayout projectLayout, ProviderFactory providerFactory) {
+        super(execOperations, projectLayout)
         tunnelReadyMessage.convention('You can start testing now')
         tunnelName.convention("")
         infoAPIPort.convention(providerFactory.provider(new FreePortNumberProvider()))
