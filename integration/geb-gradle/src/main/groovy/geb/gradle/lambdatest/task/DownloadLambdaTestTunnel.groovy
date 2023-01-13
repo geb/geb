@@ -15,26 +15,18 @@
  */
 package geb.gradle.lambdatest.task
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
-
+import geb.gradle.cloud.task.DownloadExternalTunnel
 import org.apache.tools.ant.taskdefs.condition.Os
 
-class DownloadLambdaTestTunnel extends DefaultTask {
+class DownloadLambdaTestTunnel extends DownloadExternalTunnel {
 
-    @OutputFile
-    File tunnelZip = project.file("${project.buildDir}/lambdatest/LambdaTestTunnel.zip")
-
-    DownloadLambdaTestTunnel() {
-        outputs.upToDateWhen { false }
+    protected String outputPath() {
+        "lambdatest/LambdaTestTunnel.zip"
     }
 
-    @TaskAction
-    void download() {
-        def url = "https://downloads.lambdatest.com/tunnel/v3/${osSpecificUrlPart()}.zip"
-        logger.info("Downloading {} to {}", url, tunnelZip)
-        tunnelZip.withOutputStream { it << new URL(url).bytes }
+    @Override
+    protected String downloadUrl() {
+        "https://downloads.lambdatest.com/tunnel/v3/${osSpecificUrlPart()}.zip"
     }
 
     private String osSpecificUrlPart() {

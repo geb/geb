@@ -15,26 +15,18 @@
  */
 package geb.gradle.browserstack.task
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
-
+import geb.gradle.cloud.task.DownloadExternalTunnel
 import org.apache.tools.ant.taskdefs.condition.Os
 
-class DownloadBrowserStackTunnel extends DefaultTask {
+class DownloadBrowserStackTunnel extends DownloadExternalTunnel {
 
-    @OutputFile
-    File tunnelZip = project.file("${project.buildDir}/browserstack/BrowserStackTunnel.zip")
-
-    DownloadBrowserStackTunnel() {
-        outputs.upToDateWhen { false }
+    @Override
+    protected String downloadUrl() {
+        "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart()}.zip"
     }
 
-    @TaskAction
-    void download() {
-        def url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-${osSpecificUrlPart()}.zip"
-        logger.info("Downloading {} to {}", url, tunnelZip)
-        tunnelZip.withOutputStream { it << new URL(url).bytes }
+    protected String outputPath() {
+        "browserstack/BrowserStackTunnel.zip"
     }
 
     private String osSpecificUrlPart() {
