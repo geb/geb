@@ -15,12 +15,15 @@
  */
 package geb.gradle.lambdatest
 
+import geb.gradle.cloud.task.SingleFileCopy
 import geb.gradle.cloud.task.StartExternalTunnel
 import geb.gradle.lambdatest.task.DownloadLambdaTestTunnel
 import geb.gradle.lambdatest.task.StopLambdaTestTunnel
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Sync
+
+import static org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS
 
 class LambdaTestPlugin implements Plugin<Project> {
 
@@ -55,11 +58,13 @@ class LambdaTestPlugin implements Plugin<Project> {
 
         def downloadLambdaTestTunnel = project.tasks.register(DOWNLOAD_TUNNEL_TASK_NAME, DownloadLambdaTestTunnel)
 
-        def unzipLambdaTestTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, Sync) {
-            from(project.zipTree(downloadLambdaTestTunnel.flatMap { it.tunnelZip }))
-            into(project.file("${project.buildDir}/lambdatest/unzipped"))
+        def unzipLambdaTestTunnel = project.tasks.register(UNZIP_TUNNEL_TASK_NAME, SingleFileCopy) {
+            source.from(project.zipTree(downloadLambdaTestTunnel.flatMap { it.tunnelZip }))
+
+            def fileExtension = Os.isFamily(FAMILY_WINDOWS) ? ".exe" : ""
+            outputFile.set(project.layout.buildDirectory.file("lambdatest/LambdaTestTunnel${fileExtension}"))
         }
 
-        lambdaTestExtension.tunnelOps.executable.from(unzipLambdaTestTunnel)
+        lambdaTestExtension.tunnelOps.executable.set(unzipLambdaTestTunnel.flatMap { it.outputFile })
     }
 }

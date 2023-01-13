@@ -52,6 +52,6 @@ class SaucePlugin implements Plugin<Project> {
         project.configurations.create('sauceConnect')
         def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect)
 
-        sauceLabsExtension.connect.executable.from(unpackSauceConnect)
+        sauceLabsExtension.connect.executable.set(unpackSauceConnect.flatMap { it.outputFile })
     }
 }

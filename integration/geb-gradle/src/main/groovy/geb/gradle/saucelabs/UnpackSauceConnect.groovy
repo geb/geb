@@ -15,25 +15,36 @@
  */
 package geb.gradle.saucelabs
 
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 import javax.inject.Inject
 
-class UnpackSauceConnect extends DefaultTask {
+import static java.nio.file.Files.copy
+import static org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS
+
+abstract class UnpackSauceConnect extends DefaultTask {
 
     protected final FileSystemOperations fileSystemOperations
     protected final ObjectFactory objectFactory
 
     @Inject
-    UnpackSauceConnect(FileSystemOperations fileSystemOperations, ObjectFactory objectFactory) {
+    UnpackSauceConnect(
+        FileSystemOperations fileSystemOperations, ObjectFactory objectFactory, ProjectLayout projectLayout
+    ) {
         this.fileSystemOperations = fileSystemOperations
         this.objectFactory = objectFactory
+
+        def fileExtension = Os.isFamily(FAMILY_WINDOWS) ? ".exe" : ""
+        outputFile.set(projectLayout.buildDirectory.file("sauce-connect/sc${fileExtension}"))
     }
 
     @InputFiles
@@ -41,27 +52,28 @@ class UnpackSauceConnect extends DefaultTask {
         project.configurations.sauceConnect
     }
 
-    @OutputDirectory
-    File getSauceConnectDir() {
-        new File(project.buildDir, "sauce-connect")
-    }
+    @OutputFile
+    abstract RegularFileProperty getOutputFile()
 
     @TaskAction
     void unpack() {
+        deleteOutputFile()
+
         def operations = new SauceConnectOperations(sauceConnectConfiguration)
         def manager = operations.loadSauceConnectFourManagerClass().newInstance()
 
         manager.extractZipFile(temporaryDir, operations.operatingSystem)
 
+        def unpackedExecutable = objectFactory.fileTree().from(temporaryDir).tap {
+            include("${operations.directory}/${operations.operatingSystem.executable}")
+        }.singleFile
+
+        copy(unpackedExecutable.toPath(), outputFile.get().asFile.toPath())
+    }
+
+    private void deleteOutputFile() {
         fileSystemOperations.delete {
-            it.delete(sauceConnectDir)
-        }
-        fileSystemOperations.copy {
-            it.from(
-                objectFactory.fileTree().from(temporaryDir)
-                    .include("${operations.directory}/${operations.operatingSystem.executable}")
-            )
-            into(sauceConnectDir)
+            delete(outputFile)
         }
     }
 }

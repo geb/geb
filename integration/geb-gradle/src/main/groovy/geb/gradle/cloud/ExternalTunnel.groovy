@@ -16,19 +16,16 @@
 package geb.gradle.cloud
 
 import groovy.util.logging.Slf4j
-import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.PathSensitive
 import org.gradle.process.ExecOperations
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-
-import static org.gradle.api.tasks.PathSensitivity.RELATIVE
 
 @Slf4j
 abstract class ExternalTunnel {
@@ -46,9 +43,8 @@ abstract class ExternalTunnel {
         additionalOptions.convention([])
     }
 
-    @InputFiles
-    @PathSensitive(RELATIVE)
-    abstract ConfigurableFileCollection getExecutable()
+    @InputFile
+    abstract RegularFileProperty getExecutable()
 
     @Internal
     abstract Property<Integer> getTimeout()
@@ -69,7 +65,7 @@ abstract class ExternalTunnel {
 
     @Internal
     String getExecutablePath() {
-        executable.asFileTree.singleFile.absolutePath
+        executable.asFile.get().absolutePath
     }
 
     void startTunnel(boolean background) {
