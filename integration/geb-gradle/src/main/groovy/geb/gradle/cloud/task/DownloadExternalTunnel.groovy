@@ -16,16 +16,20 @@
 package geb.gradle.cloud.task
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 abstract class DownloadExternalTunnel extends DefaultTask {
 
+    private String eTag
+
     @OutputFile
     File tunnelZip = project.file("${project.buildDir}/${outputPath()}")
 
-    DownloadExternalTunnel() {
-        outputs.upToDateWhen { false }
+    @Input
+    String getETag() {
+        eTag ?= fetchETag()
     }
 
     @TaskAction
@@ -38,4 +42,14 @@ abstract class DownloadExternalTunnel extends DefaultTask {
     abstract protected String outputPath()
 
     abstract protected String downloadUrl()
+
+    private String fetchETag() {
+        def connection = new URL(downloadUrl()).openConnection() as HttpURLConnection
+        try {
+            connection.requestMethod = "HEAD"
+            connection.getHeaderField("etag")
+        } finally {
+            connection.disconnect()
+        }
+    }
 }
