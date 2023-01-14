@@ -16,12 +16,7 @@ For example to run all the automated tests and quality checks for the entire pro
     
 ## IDE import
 
-The project is setup to work with IntelliJ IDEA.
-Run the following in the checkout…
-
-    ./gradlew idea
-
-Then import the project into IDEA or open the `geb.ipr` file.
+The project is setup to work with IntelliJ IDEA, simply import it using the native IntelliJ IDEA import for Gradle projects.
 
 If you use a different IDE or editor you're on your own.    
 

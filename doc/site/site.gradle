@@ -76,10 +76,6 @@ def generateResourcesTask = tasks.register("generateResources", Sync) {
 
 sourceSets.main.resources.srcDirs generateResourcesTask, 'src/semantic'
 
-tasks.named("ideaModule") {
-    dependsOn generateResourcesTask
-}
-
 def pnpmInstallTask = tasks.named("pnpmInstall") {
     args.add("--frozen-lockfile")
 }

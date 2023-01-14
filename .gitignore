@@ -7,7 +7,6 @@ build
 build.sh
 *.log
 *.iml
-.idea
 out
 *.ipr
 *.hprof

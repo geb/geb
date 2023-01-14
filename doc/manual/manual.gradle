@@ -165,9 +165,3 @@ tasks.register("openManual") {
         new java.awt.Desktop().browse(fileTree(tasks.asciidoctor.outputDir).find { it.name == 'index.html' }.toURI())
     }
 }
-
-idea {
-    module {
-        excludeDirs += file('build')
-    }
-}

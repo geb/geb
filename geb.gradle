@@ -1,10 +1,10 @@
 import java.time.Duration
 
 plugins {
+    id 'idea'
     id 'geb.coordinates'
     alias(libs.plugins.nexusPublish)
     alias(libs.plugins.asl2)
-    alias(libs.plugins.extendedIdea)
 }
 
 configurations {
@@ -43,27 +43,8 @@ tasks.register("stage", Sync) {
     into 'deploy'
 }
 
-ideaProjectComponents { components ->
-    components.file "gradle/idea/codeStyle.xml"
-    components.file "gradle/idea/codeStyleGroovy.xml"
-    components.file "gradle/idea/InspectionProjectProfileManager.xml"
-}
-
 idea {
     project {
         jdkName "1.8"
-
-        wildcards += ['good-conf.groovy', 'gebScript*.groovy']
-    }
-
-    extended {
-        workspace {
-            junit {
-                tasks = [
-                    ':integration:geb-gradle:classes', ':integration:geb-gradle:pluginUnderTestMetadata',
-                    ':doc:site:generateResources'
-                ]
-            }
-        }
     }
 }

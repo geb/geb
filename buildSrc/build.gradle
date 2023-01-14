@@ -16,7 +16,6 @@
 
 plugins {
 	id 'groovy'
-	id 'idea'
 	id 'groovy-gradle-plugin'
 }
 
