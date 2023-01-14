@@ -49,8 +49,15 @@ class SaucePlugin implements Plugin<Project> {
             tunnel = sauceLabsExtension.connect
         }
 
-        project.configurations.create('sauceConnect')
-        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect)
+        def sauceConnectConfiguration = project.configurations.create('sauceConnect').defaultDependencies {
+            def message = "sauceConnect configuration is empty, please add a " +
+                "dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it"
+            throw new IllegalStateException(message)
+        }
+
+        def unpackSauceConnect = project.tasks.register(UNPACK_CONNECT_TASK_NAME, UnpackSauceConnect) {
+            sauceConnect.from(sauceConnectConfiguration)
+        }
 
         sauceLabsExtension.connect.executable.set(unpackSauceConnect.flatMap { it.outputFile })
     }

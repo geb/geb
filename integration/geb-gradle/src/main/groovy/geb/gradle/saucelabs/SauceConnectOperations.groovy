@@ -15,17 +15,16 @@
  */
 package geb.gradle.saucelabs
 
-import org.gradle.api.InvalidUserDataException
-import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.FileCollection
 
 class SauceConnectOperations {
 
     private URLClassLoader sauceConnectManagerClassLoader
 
-    Configuration sauceConnectConfiguration
+    private final FileCollection sauceConnect
 
-    SauceConnectOperations(Configuration sauceConnectConfiguration) {
-        this.sauceConnectConfiguration = sauceConnectConfiguration
+    SauceConnectOperations(FileCollection sauceConnect) {
+        this.sauceConnect = sauceConnect
     }
 
     def getOperatingSystem() {
@@ -50,20 +49,10 @@ class SauceConnectOperations {
     }
 
     protected URLClassLoader getSauceConnectManagerClassLoader() {
-        if (!sauceConnectManagerClassLoader) {
-            if (sauceConnectConfiguration.empty) {
-                throw new InvalidUserDataException("'${sauceConnectConfiguration.name}' configuration is empty, please add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to it")
-            }
-            sauceConnectManagerClassLoader = new URLClassLoader(sauceConnectConfiguration.files*.toURI()*.toURL() as URL[])
-        }
-        sauceConnectManagerClassLoader
+        sauceConnectManagerClassLoader ?= new URLClassLoader(sauceConnect.files*.toURI()*.toURL() as URL[])
     }
 
     private Class loadClass(String name) {
-        try {
-            getSauceConnectManagerClassLoader().loadClass(name)
-        } catch (ClassNotFoundException e) {
-            throw new InvalidUserDataException("Could not load '$name' class, did you add a dependency on 'ci-sauce' artifact from 'com.saucelabs' group to 'sauceConnect' configuration?", e)
-        }
+        getSauceConnectManagerClassLoader().loadClass(name)
     }
 }

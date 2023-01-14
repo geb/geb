@@ -17,7 +17,7 @@ package geb.gradle.saucelabs
 
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.DefaultTask
-import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
@@ -48,9 +48,7 @@ abstract class UnpackSauceConnect extends DefaultTask {
     }
 
     @InputFiles
-    Configuration getSauceConnectConfiguration() {
-        project.configurations.sauceConnect
-    }
+    abstract ConfigurableFileCollection getSauceConnect()
 
     @OutputFile
     abstract RegularFileProperty getOutputFile()
@@ -59,7 +57,7 @@ abstract class UnpackSauceConnect extends DefaultTask {
     void unpack() {
         deleteOutputFile()
 
-        def operations = new SauceConnectOperations(sauceConnectConfiguration)
+        def operations = new SauceConnectOperations(sauceConnect)
         def manager = operations.loadSauceConnectFourManagerClass().newInstance()
 
         manager.extractZipFile(temporaryDir, operations.operatingSystem)
