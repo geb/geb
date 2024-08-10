@@ -1,37 +1,54 @@
-lockfileVersion: 5.4
+lockfileVersion: '9.0'
 
-specifiers:
-  '@browser-logos/chrome': ^2.0.0
-  '@browser-logos/edge': ^2.0.5
-  '@browser-logos/firefox': ^3.0.9
-  '@browser-logos/safari': ^2.0.1
-  jquery: 3.2.1
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
-devDependencies:
-  '@browser-logos/chrome': 2.0.0
-  '@browser-logos/edge': 2.0.5
-  '@browser-logos/firefox': 3.0.9
-  '@browser-logos/safari': 2.1.0
-  jquery: 3.2.1
+importers:
+
+  .:
+    devDependencies:
+      '@browser-logos/chrome':
+        specifier: ^2.0.0
+        version: 2.0.0
+      '@browser-logos/edge':
+        specifier: ^2.0.5
+        version: 2.0.7
+      '@browser-logos/firefox':
+        specifier: ^3.0.9
+        version: 3.0.10
+      '@browser-logos/safari':
+        specifier: ^2.0.1
+        version: 2.1.0
+      jquery:
+        specifier: 3.2.1
+        version: 3.2.1
 
 packages:
 
-  /@browser-logos/chrome/2.0.0:
+  '@browser-logos/chrome@2.0.0':
     resolution: {integrity: sha512-JDr78z/3x4zTtBgZ0bunFq9D4QhjT5gPBy90rpJQ5VlJugK/7xGFUgwUIkVT5vfU7lTi2F0wB/5XeOPrV67ErA==}
-    dev: true
 
-  /@browser-logos/edge/2.0.5:
-    resolution: {integrity: sha512-5eEA9FQw8wxLruWSygbwadtYhvr9RS3nZI7M6tSxIoxcMgpDZ4npbkDCJ5+QXYuCriQAsKeQKX+tW6u2wWJMvg==}
-    dev: true
+  '@browser-logos/edge@2.0.7':
+    resolution: {integrity: sha512-hH7CXLY5kCqSCF5ZJdJ+kkzd/0kj8E+wfBIQyLcX6VHugSBhJiRU5y1njIOSkZxMUgXSO3HjV1i4LnBDFHCkzg==}
 
-  /@browser-logos/firefox/3.0.9:
-    resolution: {integrity: sha512-meqjnDFsUz0XLqMvda2ymr9FIUo+fdGQzwXkOGbgvPi9A9ZHhJewRWAlhsv7TKVG2g9gUgiITEn5bfrorp6BoQ==}
-    dev: true
+  '@browser-logos/firefox@3.0.10':
+    resolution: {integrity: sha512-Bys3b02btUOvZyt02fFXfqPiNhYX6ukCtdvs4ERCSYnf6BVqCqeBR8niRYgyaECTdZwzqNCaUUKwQ0JX7lV1/A==}
 
-  /@browser-logos/safari/2.1.0:
+  '@browser-logos/safari@2.1.0':
     resolution: {integrity: sha512-diidPiK62E4hlAh0dyLfWQDZXi2SSAGiOuw6iqD1x8ztw7L/Sz3He46FhcxEzYa1hKi1blCkjnKDjqw6rQfgcA==}
-    dev: true
 
-  /jquery/3.2.1:
+  jquery@3.2.1:
     resolution: {integrity: sha512-iQUctXqe/nSa7hshPkQnJaJEUfxM139//hg2nJj+wsqVvd/YgXALR3jTNGh7BylgsyfcC8r4i2cJrClGBkDu5Q==}
-    dev: true
+
+snapshots:
+
+  '@browser-logos/chrome@2.0.0': {}
+
+  '@browser-logos/edge@2.0.7': {}
+
+  '@browser-logos/firefox@3.0.10': {}
+
+  '@browser-logos/safari@2.1.0': {}
+
+  jquery@3.2.1: {}
