@@ -1,6 +1,3 @@
-> # :warning: **Geb is no longer being maintained**
-> Personal and professional circumstances of the sole maintainer have changed leading to lack of capacity and the interest needed to keep maintaining the project.
-
 [![Build Status](https://circleci.com/gh/geb/geb/tree/master.svg?style=shield&circle-token=36ce4eb346f11ba916707d493b3f226bd5c9a5ec)](https://circleci.com/gh/geb/workflows/geb/tree/master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core)
 [![GitHub contributors](https://img.shields.io/github/contributors/geb/geb.svg)](https://github.com/geb/geb/graphs/contributors/)
