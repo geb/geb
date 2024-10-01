@@ -91,7 +91,7 @@
 :page-event-listener-api: link:api/geb/PageEventListener.html
 :page-event-listener-support-api: link:api/geb/PageEventListenerSupport.html[PageEventListenerSupport]
 :clean-report-group-dir-api: link:api/geb/Browser.html#cleanReportGroupDir()[cleanReportGroupDir()]
-:sauce-connect: link:https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy[SauceConnect]
+:sauce-connect: link:https://docs.saucelabs.com/secure-connections/sauce-connect-5/operation/configuration/[SauceConnect]
 :geb-module-package: link:api/geb/module/package-summary.html
 :form-element-api: link:api/geb/module/FormElement.html[FormElement]
 :checkbox-api: link:api/geb/module/Checkbox.html[Checkbox]
