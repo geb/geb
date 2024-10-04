@@ -48,7 +48,7 @@ platformName=MAC
 
 as the ”browser specification“. For a full list of available browsers, versions and operating systems refer to your cloud provider's documentation:
 
-* link:https://saucelabs.com/platforms[SauceLabs platform list]
+* link:https://saucelabs.com/products/supported-browsers-devices[SauceLabs supported browsers]
 * link:http://www.browserstack.com/list-of-browsers-and-platforms?product=automate[BrowserStack Browsers and Platforms list]
 * link:https://www.lambdatest.com/list-of-browsers[LambdaTest platform and browser list]
 
@@ -64,7 +64,7 @@ Since Selenium 4 you will need to use a vendor prefix for any capabilities that 
 So for example to specify Selenium version to be used in SauceLabs you will use `sauce:options.seleniumVersion` as the capability key where `sauce:options` is the vendor prefix and `seleniumVersion` is the vendor specific capability key.
 The configuration options available are described in your cloud provider's documentation:
 
-* link:https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options[SauceLabs additional config]
+* link:https://docs.saucelabs.com/dev/test-configuration-options/[SauceLabs additional config]
 * link:http://www.browserstack.com/automate/capabilities[BrowserStack Capabilities]
 * link:https://www.lambdatest.com/capabilities-generator/[LambdaTest capabilities]
 
