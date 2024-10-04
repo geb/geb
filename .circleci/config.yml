@@ -25,7 +25,7 @@ jobs:
             - .gradle-home
   manual:
     machine:
-      image: ubuntu-2204:2022.04.1
+      image: ubuntu-2204:2024.05.1
     resource_class: large
     steps:
       - checkout
@@ -48,7 +48,7 @@ jobs:
             - .gradle-home
   dockerised-cross-browser:
     machine:
-      image: ubuntu-2204:2022.04.1
+      image: ubuntu-2204:2024.05.1
     resource_class: large
     steps:
       - checkout
