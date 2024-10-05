@@ -10,3 +10,4 @@ build.sh
 out
 *.ipr
 *.hprof
+.pnpm-store/

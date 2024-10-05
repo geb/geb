@@ -1,8 +1,22 @@
+import com.github.erdi.gradle.webdriver.WebDriverBinariesPlugin
+
+buildscript {
+    repositories {
+        maven {
+            url 'https://gitlab.com/api/v4/projects/62281009/packages/maven'
+        }
+    }
+    dependencies {
+        classpath 'com.github.erdi:webdriver-binaries-gradle-plugin:3.2.0-gradle8'
+    }
+}
+
 plugins {
     id 'geb.groovy-4-module'
-    alias(libs.plugins.webdriverBinaries)
     id 'geb.all-sources-configuration'
 }
+
+apply plugin: WebDriverBinariesPlugin
 
 webdriverBinaries {
     geckodriver "0.31.0"

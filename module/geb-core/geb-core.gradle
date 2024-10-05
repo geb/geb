@@ -1,16 +1,29 @@
+import com.github.erdi.gradle.webdriver.WebDriverBinariesPlugin
 import geb.gradle.browserstack.BrowserStackAccount
 import geb.gradle.saucelabs.SauceAccount
 import geb.gradle.lambdatest.LambdaTestAccount
 
+buildscript {
+    repositories {
+        maven {
+            url 'https://gitlab.com/api/v4/projects/62281009/packages/maven'
+        }
+    }
+    dependencies {
+        classpath 'com.github.erdi:webdriver-binaries-gradle-plugin:3.2.0-gradle8'
+    }
+}
+
 plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
-    alias(libs.plugins.webdriverBinaries)
     id 'org.gebish.browserstack'
     id 'org.gebish.saucelabs'
     id 'org.gebish.lambdatest'
     id 'geb.all-sources-configuration'
 }
+
+apply plugin: WebDriverBinariesPlugin
 
 java {
     registerFeature('select') {
