@@ -111,7 +111,7 @@ class PageContentTemplate {
             factoryReturn.init(this, args)
         }
         if (factoryReturn instanceof Navigator) {
-            new TemplateDerivedPageContent(browser, this, factoryReturn, *args)
+            new TemplateDerivedPageContent(browser, this, factoryReturn, args)
         } else {
             factoryReturn
         }
