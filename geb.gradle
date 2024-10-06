@@ -45,6 +45,6 @@ tasks.register("stage", Sync) {
 
 idea {
     project {
-        jdkName "1.8"
+        jdkName "11"
     }
 }

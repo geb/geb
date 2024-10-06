@@ -5,6 +5,12 @@ plugins {
     id 'geb.base'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
 configurations {
     groovy
 
