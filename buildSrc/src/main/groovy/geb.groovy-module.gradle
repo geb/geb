@@ -6,6 +6,12 @@ plugins {
     id 'org.nosphere.apache.rat'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
 configurations {
     groovy
 
