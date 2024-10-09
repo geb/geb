@@ -56,13 +56,6 @@ dependencies {
     sauceConnect libs.sauceConnect
 }
 
-webdriverBinaries {
-    chromedriver {
-        version = "86.0.4240.22"
-        fallbackTo32Bit = true
-    }
-}
-
 tasks.named("test") {
     maxParallelForks gebModule.maxWorkers
 }

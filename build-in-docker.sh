@@ -2,7 +2,8 @@
 
 export WORKING_DIRECTORY=`pwd`
 export HOME_DIRECTORY=`echo ~`
-export VERSION="latest"
+export IMAGE_REPOSITORY="registry.gitlab.com/poundex/geb-ci-docker-image"
+export IMAGE_TAG="20241009185844"
 
 while getopts v: flag
 do
@@ -11,6 +12,6 @@ do
     esac
 done
 
-export IMAGE=`echo gebish/ci:$VERSION`
+export IMAGE="${IMAGE_REPOSITORY}:${IMAGE_TAG}"
 
-docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v ${HOME_DIRECTORY}/.gradle:/gradle-home -w ${WORKING_DIRECTORY} ${IMAGE} /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_USER_HOME=\"/gradle-home\" ./gradlew --no-daemon --max-workers 4 --parallel $*"
+docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v ${HOME_DIRECTORY}/.gradle:/gradle-home -w ${WORKING_DIRECTORY} ${IMAGE} /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp > /dev/null 2>&1 & export DISPLAY=:99 ; ./gradlew --no-daemon --max-workers 4 --parallel $*"
