@@ -2,7 +2,7 @@ version: 2
 jobs:
   check:
     docker:
-      - image: gebish/ci:v12
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     resource_class: large
     environment:
       GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
@@ -42,7 +42,7 @@ jobs:
       - run:
           command: |
             export WORKING_DIRECTORY=`pwd`
-            docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v /var/run/docker.sock:/var/run/docker.sock -w ${WORKING_DIRECTORY} -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE gebish/ci:v7 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 4 --parallel -Pci :doc:manual-snippets:check :doc:manual-snippets:fixtures:check :doc:manual-snippets:real-browser:check :doc:manual:build :doc:asciidoctor-extension:check"
+            docker run -v ${WORKING_DIRECTORY}:${WORKING_DIRECTORY} -v /var/run/docker.sock:/var/run/docker.sock -w ${WORKING_DIRECTORY} -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 4 --parallel -Pci :doc:manual-snippets:check :doc:manual-snippets:fixtures:check :doc:manual-snippets:real-browser:check :doc:manual:build :doc:asciidoctor-extension:check"
       - run:
           name: Copy all test results to a directory
           command: |
@@ -86,7 +86,7 @@ jobs:
             - .gradle-home
   local-cross-browser:
     docker:
-      - image: gebish/ci:v10
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
@@ -114,7 +114,7 @@ jobs:
             - .gradle-home
   saucelabs:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
@@ -175,7 +175,7 @@ jobs:
 #            - .gradle-home
   non-ie:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
@@ -205,7 +205,7 @@ jobs:
             - .gradle-home
   ie:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
@@ -235,7 +235,7 @@ jobs:
             - .gradle-home
   upload:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     resource_class: large
     environment:
         GRADLE_OPTS: -Xmx1024m -XX:MaxMetaspaceSize=256m
@@ -256,7 +256,7 @@ jobs:
             - .gradle-home
   publish-site:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     steps:
       - checkout
       - run:
@@ -265,7 +265,7 @@ jobs:
             git push -f heroku master
   trigger-example-projects-4.x:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     steps:
       - run:
           command: |
@@ -275,7 +275,7 @@ jobs:
             curl -H "Authorization: Bearer ${APPVEYOR_TOKEN}" -H "Content-type: application/json" -X POST https://ci.appveyor.com/api/builds -d '{"accountName": "erdi", "projectSlug": "geb-example-gradle", "branch": "4.x"}'
   trigger-example-projects-master:
     docker:
-      - image: gebish/ci:v7
+      - image: registry.gitlab.com/poundex/geb-ci-docker-image:20241009103634
     steps:
       - run:
           command: |
