@@ -42,11 +42,13 @@ jobs:
       - run:
           command: |
             export WORKING_DIRECTORY=`pwd`
-            whoami
-            id -u
-            docker run -v ${WORKING_DIRECTORY}:/home/circleci/workspace -v /var/run/docker.sock:/var/run/docker.sock -w /home/circleci/workspace -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE registry.gitlab.com/poundex/geb-ci-docker-image:20241009135833 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 4 --parallel -Pci :doc:manual-snippets:check :doc:manual-snippets:fixtures:check :doc:manual-snippets:real-browser:check :doc:manual:build :doc:asciidoctor-extension:check"
-      - run:
+            docker network create dind
+            docker run --rm --network dind -e DOCKER_TLS_CERTDIR="" --privileged --name dind docker:dind
+            sleep 20
+            docker run --network dind -v ${WORKING_DIRECTORY}:/home/circleci/workspace -w /home/circleci/workspace -e DOCKER_HOST="tcp://dind:2375" -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE registry.gitlab.com/poundex/geb-ci-docker-image:20241009135833 /bin/bash -c "Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp > /dev/null 2>&1 & export DISPLAY=:99 ; GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 4 --parallel -Pci :doc:manual-snippets:check :doc:manual-snippets:fixtures:check :doc:manual-snippets:real-browser:check :doc:manual:build :doc:asciidoctor-extension:check"
+      - run: &collectTestResults
           name: Copy all test results to a directory
+          when: always
           command: |
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
@@ -73,11 +75,7 @@ jobs:
           command: |
             export WORKING_DIRECTORY=`pwd`
             docker run -v ${WORKING_DIRECTORY}:/home/circleci/workspace -v /var/run/docker.sock:/var/run/docker.sock -w /home/circleci/workspace -e OCI_WRITER_KEY_PASSPHRASE=$OCI_WRITER_KEY_PASSPHRASE registry.gitlab.com/poundex/geb-ci-docker-image:20241009135833 /bin/bash -c "GRADLE_OPTS=\"-Xmx1024m -XX:MaxMetaspaceSize=256m\" GRADLE_USER_HOME=\".gradle-home\" ./gradlew --no-daemon --max-workers 4 --parallel -Pci allDockerisedCrossBrowserTests"
-      - run:
-          name: Copy all test results to a directory
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+      - *collectTestResults
       - store_test_results:
           path: ~/test-results/
       - store_artifacts:
@@ -101,11 +99,7 @@ jobs:
             - gradle-home-local-crossbrowser-master
             - gradle-home-local-crossbrowser
       - run: ./gradlew --no-daemon --max-workers 4 --parallel -p module -Pci localChromeTest
-      - run:
-          name: Copy all test results to a directory
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+      - *collectTestResults
       - store_test_results:
           path: ~/test-results/
       - store_artifacts:
@@ -131,11 +125,7 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci --max-workers 5 --parallel allSauceLabsTests
-      - run:
-          name: Copy all test results to a directory
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+      - *collectTestResults
       - store_test_results:
           path: ~/test-results/
       - store_artifacts:
@@ -192,11 +182,7 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci --max-workers 5 --parallel nonIeBrowserStackTests
-      - run:
-          name: Copy all test results to a directory
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+      - *collectTestResults
       - store_test_results:
           path: ~/test-results/
       - store_artifacts:
@@ -222,11 +208,7 @@ jobs:
       - run:
           command: |
             ./gradlew --no-daemon -Pci --max-workers 5 --parallel ieBrowserStackTests
-      - run:
-          name: Copy all test results to a directory
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+      - *collectTestResults
       - store_test_results:
           path: ~/test-results/
       - store_artifacts:
