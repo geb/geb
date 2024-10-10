@@ -1,4 +1,3 @@
-import com.github.erdi.gradle.webdriver.WebDriverBinariesPlugin
 import geb.gradle.browserstack.BrowserStackAccount
 import geb.gradle.saucelabs.SauceAccount
 import geb.gradle.lambdatest.LambdaTestAccount
