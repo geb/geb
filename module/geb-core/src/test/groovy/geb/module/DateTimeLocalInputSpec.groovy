@@ -24,7 +24,7 @@ import java.time.LocalDateTime
 
 @Chrome
 @RequiresRealBrowser // maybe due to https://sourceforge.net/p/htmlunit/bugs/1923/
-@Ignore
+@Ignore("https://github.com/geb/geb/issues/188")
 class DateTimeLocalInputSpec extends GebSpecWithCallbackServer {
 
     def setup() {
