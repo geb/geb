@@ -23,8 +23,6 @@ plugins {
     id 'geb.all-sources-configuration'
 }
 
-apply plugin: WebDriverBinariesPlugin
-
 java {
     registerFeature('select') {
         usingSourceSet(sourceSets.main)
@@ -49,13 +47,6 @@ dependencies {
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect
-}
-
-webdriverBinaries {
-    chromedriver {
-        version = "86.0.4240.22"
-        fallbackTo32Bit = true
-    }
 }
 
 tasks.named("test") {
