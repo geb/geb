@@ -11,3 +11,4 @@ out
 *.ipr
 *.hprof
 .pnpm-store/
+**/tags

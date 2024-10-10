@@ -21,10 +21,6 @@ plugins {
     id 'geb.all-sources-configuration'
 }
 
-webdriverBinaries {
-    geckodriver "0.31.0"
-}
-
 dependencies {
     testImplementation project(':internal:test-support-spock')
     testImplementation project(':module:geb-spock')
