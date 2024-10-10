@@ -25,6 +25,7 @@ import spock.util.EmbeddedSpecRunner
 
 import javax.servlet.http.HttpServletRequest
 
+@Ignore("https://github.com/geb/geb/issues/188")
 class ParallelExecutionSpec extends Specification {
 
     EmbeddedSpecRunner specRunner = new EmbeddedSpecRunner(

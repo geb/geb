@@ -4,7 +4,7 @@ plugins {
 }
 
 tasks.register("javadocJar", Jar) {
-    classifier 'javadoc'
+    archiveClassifier = 'javadoc'
     from tasks.named("groovydoc")
 }
 

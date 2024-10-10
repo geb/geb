@@ -32,7 +32,10 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
     RemoteWebDriverWithExpectations(
         URL remoteAddress, List<String> ignoredCommands = DEFAULT_IGNORED_COMMANDS
     ) {
-        super(remoteAddress, new ChromeOptions().addArguments('headless'))
+        super(remoteAddress, new ChromeOptions()
+                .addArguments('headless')
+                .addArguments('--remote-allow-origins=*')
+                .addArguments('--no-sandbox'))
         this.ignoredCommands = ignoredCommands
     }
 

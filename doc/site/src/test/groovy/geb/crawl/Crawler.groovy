@@ -35,14 +35,16 @@ abstract class Crawler {
     final int retryWaitMillis = 1000
 
     final String startingUrl
+    final Set<String> knownBadHosts
 
     protected final AtomicInteger counter = new AtomicInteger(0)
     protected final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(Runtime.runtime.availableProcessors() * 4)
 
     protected final ConcurrentMap<String, Link> seen = new ConcurrentHashMap<>()
 
-    Crawler(String startingUrl) {
+    Crawler(String startingUrl, Set<String> knownBadHosts = [].toSet()) {
         this.startingUrl = startingUrl
+        this.knownBadHosts = knownBadHosts
     }
 
     abstract List<String> findPageLinks(Response response)
@@ -155,6 +157,9 @@ abstract class Crawler {
 
         def targetLink = link
         try {
+            if (knownBadHosts.any { targetLink.uri.toString().contains(it) }) {
+                throw new IOException()
+            }
             while (connection.responseCode > 300 && connection.responseCode < 400) {
                 def redirectTo = connection.getURL().toURI().resolve(connection.getHeaderField("location")).toString()
                 targetLink = new Link(redirectTo)

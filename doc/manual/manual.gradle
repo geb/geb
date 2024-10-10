@@ -110,7 +110,7 @@ def groovydocSourcesTask = tasks.register("groovydocSources", Sync) {
 }
 
 def apiDocTask = tasks.register("apiDoc", Groovydoc) {
-    groovyClasspath = new GroovyRuntime(project).inferGroovyClasspath(configurations.groovydocClasspath)
+    groovyClasspath = new GroovyRuntime(project) {}.inferGroovyClasspath(configurations.groovydocClasspath)
     classpath = configurations.groovydocClasspath
     destinationDir = file("$buildDir/apiDoc")
     source groovydocSourcesTask

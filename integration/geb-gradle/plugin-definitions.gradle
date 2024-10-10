@@ -1,3 +1,5 @@
+List<String> pluginTags = ["geb", "testing", "cloud", "browser"]
+
 gradlePlugin {
     plugins {
         sauceLabsPlugin {
@@ -5,18 +7,21 @@ gradlePlugin {
             displayName = "Geb Sauce Labs plugin"
             description = "A plugin that simplifies running Geb tests at Sauce Labs"
             implementationClass = 'geb.gradle.saucelabs.SaucePlugin'
+            tags = pluginTags
         }
         browserStackPlugin {
             id = 'org.gebish.browserstack'
             displayName = "Geb BrowserStack plugin"
             description = "A plugin that simplifies running Geb tests at BrowserStack"
             implementationClass = 'geb.gradle.browserstack.BrowserStackPlugin'
+            tags = pluginTags
         }
         lambdaTestPlugin {
             id = 'org.gebish.lambdatest'
             displayName = "Geb LambdaTest plugin"
             description = "A plugin that simplifies running Geb tests at LambdaTest"
             implementationClass = 'geb.gradle.lambdatest.LambdaTestPlugin'
+            tags = pluginTags
         }
     }
 }
