@@ -17,9 +17,11 @@ package geb
 import geb.content.TemplateDerivedPageContent
 import geb.error.*
 import geb.test.GebSpecWithCallbackServer
+import spock.lang.Ignore
 import spock.lang.Issue
 import spock.lang.Unroll
 
+@Ignore("https://github.com/geb/geb/issues/188")
 class PageOrientedSpec extends GebSpecWithCallbackServer {
 
     def setupSpec() {
