@@ -86,17 +86,19 @@ When a pull request is send it triggers a CI build to verify the the test and qu
 
 ## Proposing new features
 
-If you would like to implement a new feature, please [raise an issue](https://github.com/geb/issues/issues) before sending a pull request so the feature can be discussed.
+If you would like to implement a new feature, please [raise an issue](https://github.com/geb/geb/issues) before sending a pull request so the feature can be discussed.
 This is to avoid you spending your valuable time working on a feature that the project developers are not willing to accept into the codebase.
 
 ## Fixing bugs
 
-If you would like to fix a bug, please [raise an issue](https://github.com/geb/issues/issues) before sending a pull request so it can be discussed.
+If you would like to fix a bug, please [raise an issue](https://github.com/geb/geb/issues) before sending a pull request so it can be discussed.
 If the fix is trivial or non controversial then this is not usually necessary.
 
-## Development Mailing List
+## Community and Support
 
-If you want to do some work on Geb and want some help, you can join the `geb-dev@googlegroups.com` mailing list via [Google Groups](https://groups.google.com/d/forum/geb-dev).
+If you want to do some work on Geb and want some help, you can join us in 
+ [the GitHub Discussions forum](https://github.com/geb/geb/discussions) or in 
+ the `#geb` channel on [the Groovy Slack workspace](https://groovycommunity.com).
 
 ## Licensing and attribution
 

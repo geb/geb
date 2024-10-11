@@ -1,4 +1,4 @@
-[![Build Status](https://circleci.com/gh/geb/geb/tree/master.svg?style=shield&circle-token=36ce4eb346f11ba916707d493b3f226bd5c9a5ec)](https://circleci.com/gh/geb/workflows/geb/tree/master)
+[![Build Status](https://circleci.com/gh/geb/geb/tree/master.svg?style=shield)](https://circleci.com/gh/geb/workflows/geb/tree/master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.gebish/geb-core)
 [![GitHub contributors](https://img.shields.io/github/contributors/geb/geb.svg)](https://github.com/geb/geb/graphs/contributors/)
 
@@ -12,5 +12,7 @@ Please see [CONTRIBUTING.md](https://github.com/geb/geb/blob/master/CONTRIBUTING
 
 ## Submitting issues
 
-If you'd like to submit an issue against Geb then please use [the issue tracker for geb/issues Github project](https://github.com/geb/issues/issues).
-Please avoid submitting usage questions as issues and use [the user mailing list](https://groups.google.com/forum/#!forum/geb-user) instead.
+If you'd like to submit an issue against Geb then please use [the issue tracker](https://github.com/geb/geb/issues). 
+
+For help and other discussions join us in [the GitHub Discussions forum](https://github.com/geb/geb/discussions) or
+in the `#geb` channel on [the Groovy Slack workspace](https://groovycommunity.com).
