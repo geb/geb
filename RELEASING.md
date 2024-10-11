@@ -4,7 +4,7 @@
 	* signing.keyId=«key id»
 	* signing.password=«key password»
 	* signing.secretKeyRingFile=«path to the secure gpg keyring (not public)»
-1. [Sign up](https://issues.sonatype.org/secure/Signup!default.jspa) for a Jira account @ Sonatype. Send your Jira username to someone who is already allowed to publish Geb to Sonatype so that they add a comment [this ticket](https://issues.sonatype.org/browse/OSSRH-3108) to request access rights for you. Add your Sonatype credentials to `~/.gradle/gradle.properties`:
+1. Create an account at https://central.sonatype.org/register/legacy/. Do not use Github or other social logins. Add your Sonatype credentials to `~/.gradle/gradle.properties`:
 	* sonatypeOssUsername=«Jira@Sontype username»
 	* sonatypeOssPassword=«Jira@Sontype password»
 
