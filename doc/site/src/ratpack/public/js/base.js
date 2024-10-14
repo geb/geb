@@ -26,6 +26,6 @@ $.get('https://api.github.com/repos/geb/geb')
         $('[data-forks]').text(forks);
     })
     .catch(function(e) {
-        console.error('Github api request failed. No stats available.')
+        console.error('GitHub api request failed. No stats available.')
         $('[data-github-stats] > .statistic:not(.static)').transition('fade')
     })

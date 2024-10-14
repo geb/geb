@@ -27,7 +27,7 @@
 1. Bump Geb versions in example projects: 
 	* [geb-example-gradle](https://github.com/geb/geb-example-gradle)
 	* [geb-example-maven](https://github.com/geb/geb-example-maven)
-1. Update issues and milestones in Github tracker:
+1. Update issues and milestones in GitHub tracker:
 	* Find all unresolved issues in the tracker that have the fix version set to the recently released version and bulk edit them to have the fix version set to the next version.
 	* Find the recently released milestone, change the version number if it's different from the one that was released and close it.
 1. Wait for the build of the next version to pass and the site including manual for the released version to be published.
