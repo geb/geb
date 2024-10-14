@@ -5,6 +5,7 @@ plugins {
     id 'geb.coordinates'
     alias(libs.plugins.nexusPublish)
     alias(libs.plugins.asl2)
+    id 'com.github.jk1.dependency-license-report' version '2.9'
 }
 
 configurations {
@@ -13,6 +14,15 @@ configurations {
 
 dependencies {
     site project(path: 'doc:site', configuration: 'distribution')
+}
+
+import com.github.jk1.license.filter.LicenseBundleNormalizer
+
+licenseReport {
+    configurations = ['runtimeClasspath']
+    allowedLicensesFile = new File("$projectDir/gradle/allowed-licenses.json")
+    filters = [new LicenseBundleNormalizer(bundlePath: "$projectDir/gradle/license-normalizer-bundle.json")]
+    excludes = ['io.netty:netty-tcnative']
 }
 
 nexusPublishing {
