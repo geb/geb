@@ -1,3 +1,5 @@
+import com.github.jk1.license.filter.LicenseBundleNormalizer
+
 import java.time.Duration
 
 plugins {
@@ -16,13 +18,12 @@ dependencies {
     site project(path: 'doc:site', configuration: 'distribution')
 }
 
-import com.github.jk1.license.filter.LicenseBundleNormalizer
-
 licenseReport {
+    // ASF policy mostly cares about compileClasspath but we'll also check the handful of additional dependencies for runtime
     configurations = ['runtimeClasspath']
     allowedLicensesFile = new File("$projectDir/gradle/allowed-licenses.json")
     filters = [new LicenseBundleNormalizer(bundlePath: "$projectDir/gradle/license-normalizer-bundle.json")]
-    excludes = ['io.netty:netty-tcnative']
+    excludes = ['io.netty:netty-tcnative'] // Apache2 license but metadata shows null license
 }
 
 nexusPublishing {
