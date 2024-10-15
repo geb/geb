@@ -49,7 +49,7 @@ threeTen-extra = { module = 'org.threeten:threeten-extra', version.ref = 'threeT
 [plugins]
 asciidoc = { id = 'org.asciidoctor.jvm.convert', version = '3.3.2' }
 asl2 = { id = 'com.energizedwork.asl2', version = '1.1' }
-nexusPublish = { id = 'io.github.gradle-nexus.publish-plugin', version = '1.0.0' }
+nexusPublish = { id = 'io.github.gradle-nexus.publish-plugin', version = '2.0.0' }
 node = { id = 'com.github.node-gradle.node', version = '3.5.0' }
 ratpackGroovy = { id = 'io.ratpack.ratpack-groovy', version.ref = 'ratpack' }
 webdriverBinaries = { id = 'com.github.erdi.webdriver-binaries', version = '2.6' }
