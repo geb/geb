@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'codenarc'
     id 'geb.base'
+    id 'org.nosphere.apache.rat'
 }
 
 configurations {
@@ -30,4 +31,27 @@ tasks.withType(GroovyCompile).configureEach {
 
 tasks.withType(Test).configureEach {
     shouldRunAfter codenarcTasks
+}
+
+tasks.named('rat') {
+    excludes = [
+                '.asf.yaml', // ASF metadata for github integration excluded from src zip
+                '**/.gradle/**', '**/wrapper/**', 'gradlew*',  // gradle wrapper files excluded from src zip
+                '**/build/**', '**/target/**', 'licenses/**', 'notices/**',
+                '**/generatedResources/**',
+                '**/node_modules/**',
+                'out/**', '*.ipr', '**/*.iml', '*.iws', '.idea/**', // Intellij files
+                '**/ratpack/public/robots.txt', // Doesn't support comments
+                '**/ratpack/public/css/*.css', // TODO confirm licensing
+                '**/ratpack/public/js/*.js', // JavaScript files MIT license
+                '**/*.min.js', // JavaScript files MIT license
+                '**/*.min.css', // CSS files MIT license
+                '**/TransformedClass.template', // TODO: can we remove this?
+                '**/icons.svg', // TODO: licensing info required
+                '.classpath', '.project', '.settings/**', 'bin/**', // Eclipse files
+                '**/MANIFEST.MF', // TODO: can we remove this?
+                '**/META-INF/services/**', // TODO: can we remove this?
+                '**/META-INF/groovy/**', // TODO: can we remove this?
+                '**/hs_err_pid**.log', // sometimes left over error files
+    ]
 }

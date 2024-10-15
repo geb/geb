@@ -1,3 +1,7 @@
 tasks.register('check') {
     dependsOn subprojects.collect { subproject -> "${subproject.path}:check" }
 }
+
+tasks.register('rat') {
+    dependsOn subprojects.collect { subproject -> "${subproject.path}:rat" }
+}

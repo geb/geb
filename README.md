@@ -12,5 +12,5 @@ Please see [CONTRIBUTING.md](https://github.com/geb/geb/blob/master/CONTRIBUTING
 
 ## Submitting issues
 
-If you'd like to submit an issue against Geb then please use [the issue tracker for geb/issues Github project](https://github.com/geb/issues/issues).
+If you'd like to submit an issue against Geb then please use [the issue tracker for geb/issues GitHub project](https://github.com/geb/issues/issues).
 Please avoid submitting usage questions as issues and use [the user mailing list](https://groups.google.com/forum/#!forum/geb-user) instead.
