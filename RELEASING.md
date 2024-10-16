@@ -4,7 +4,7 @@
 	* signing.keyId=«key id»
 	* signing.password=«key password»
 	* signing.secretKeyRingFile=«path to the secure gpg keyring (not public)»
-1. [Sign up](https://issues.sonatype.org/secure/Signup!default.jspa) for a Jira account @ Sonatype. Send your Jira username to someone who is already allowed to publish Geb to Sonatype so that they add a comment [this ticket](https://issues.sonatype.org/browse/OSSRH-3108) to request access rights for you. Add your Sonatype credentials to `~/.gradle/gradle.properties`:
+1. Create an account at https://central.sonatype.org/register/legacy/. Do not use Github or other social logins. Add your Sonatype credentials to `~/.gradle/gradle.properties`:
 	* sonatypeOssUsername=«Jira@Sontype username»
 	* sonatypeOssPassword=«Jira@Sontype password»
 
@@ -15,7 +15,7 @@
 1. Change `{geb-version}` expression used in `History` section in `140-project.adoc` to a fixed version (the one that you're about to release).
 1. Commit with message "Version «number»" (don't push yet)
 1. Tag commit with name "v«number»" (still don't push yet)
-1. Run `./gradlew publishJarsAndManual closeAndReleaseStagingRepository`
+1. Run `./gradlew publishJarsAndManual closeAndReleaseStagingRepositories`
 1. Wait for the new version to [appear in Maven Central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.gebish%22%20AND%20a%3A%22geb-core%22), this might take several hours.
 
 # Post-release actions
