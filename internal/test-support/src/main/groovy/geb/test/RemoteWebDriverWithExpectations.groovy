@@ -34,7 +34,7 @@ class RemoteWebDriverWithExpectations extends RemoteWebDriver {
     ) {
         super(remoteAddress, new ChromeOptions()
                 .addArguments('headless')
-                .addArguments('--remote-allow-origins=*')
+                .addArguments('--remote-allow-origins=*') // TODO: Can be removed Selenium > 4.8.2
                 .addArguments('--no-sandbox'))
         this.ignoredCommands = ignoredCommands
     }

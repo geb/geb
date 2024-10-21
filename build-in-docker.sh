@@ -2,8 +2,8 @@
 
 export WORKING_DIRECTORY=`pwd`
 export HOME_DIRECTORY=`echo ~`
-export IMAGE_REPOSITORY="registry.gitlab.com/poundex/geb-ci-docker-image"
-export IMAGE_TAG="20241010161232"
+export IMAGE_REPOSITORY="gebish/ci"
+export IMAGE_TAG="v13"
 
 while getopts v: flag
 do
