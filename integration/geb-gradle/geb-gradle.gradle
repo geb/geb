@@ -19,7 +19,7 @@
 plugins {
     id 'geb.groovy-module'
     id 'geb.spock-2-groovy-3-module'
-    id 'com.gradle.plugin-publish' version '1.0.0'
+    id 'com.gradle.plugin-publish' version '1.3.0'
 }
 
 repositories {
@@ -38,10 +38,9 @@ dependencies {
     }
 }
 
-pluginBundle {
+gradlePlugin {
     website = "https://gebish.org/manual/current/#gradle-plugins"
     vcsUrl = "https://github.com/geb/geb"
-    tags = ["geb", "testing", "cloud", "browser"]
 }
 
 apply from: 'plugin-definitions.gradle'

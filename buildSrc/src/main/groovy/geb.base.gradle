@@ -33,6 +33,12 @@ gebModule {
         plugins.withType(ReportingBasePlugin) {
             def projectDirPath = project.path.substring(1).replaceAll(":", "/")
             def copyTask = tasks.register("copyReportsIntoRoot", Copy) {
+                tasks.findByName("validatePlugins")?.tap { vp ->
+                    it.dependsOn(vp)
+                }
+                tasks.findByName("rat")?.tap { rat ->
+                    it.dependsOn(rat)
+                }
                 into "${rootProject.buildDir}/reports/${projectDirPath}"
                 from reporting.baseDir
             }

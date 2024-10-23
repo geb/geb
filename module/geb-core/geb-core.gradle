@@ -23,7 +23,6 @@ import geb.gradle.lambdatest.LambdaTestAccount
 plugins {
     id 'geb.api-module'
     id 'geb.dockerised-test'
-    alias(libs.plugins.webdriverBinaries)
     id 'org.gebish.browserstack'
     id 'org.gebish.saucelabs'
     id 'org.gebish.lambdatest'
@@ -54,13 +53,6 @@ dependencies {
     testImplementation project(":internal:test-support-spock")
 
     sauceConnect libs.sauceConnect
-}
-
-webdriverBinaries {
-    chromedriver {
-        version = "86.0.4240.22"
-        fallbackTo32Bit = true
-    }
 }
 
 tasks.named("test") {

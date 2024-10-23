@@ -126,3 +126,10 @@ idea {
         excludeDirs += file('src/npm/node_modules')
     }
 }
+
+
+tasks.withType(Test).configureEach {
+    jvmArgs('--add-opens', 'java.base/jdk.internal.misc=ALL-UNNAMED')
+}
+
+rat.mustRunAfter(pnpmInstall)
